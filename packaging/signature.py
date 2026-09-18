@@ -97,12 +97,18 @@ DUREE_JOURS = 3653
 
 OSSLSIGNCODE_MAISON = os.path.expanduser("~/.local/opt/osslsigncode")
 
-#  Une copie du certificat PUBLIC à la racine du projet, pour l'avoir sous la
-#  main : c'est lui qu'on publie, qu'on joint à une annonce et que quelqu'un
-#  compare. La clé PRIVÉE, elle, ne quitte jamais ~/.local/share — un dépôt
-#  se recopie, s'archive et se publie, et une clé privée n'y a pas sa place.
+#  Une copie du certificat PUBLIC dans le dépôt, pour l'avoir sous la main :
+#  c'est lui qu'on publie, qu'on joint à une annonce et que quelqu'un compare.
+#  La clé PRIVÉE, elle, ne quitte jamais ~/.local/share — un dépôt se recopie,
+#  s'archive et se publie, et une clé privée n'y a pas sa place.
+#
+#  Dans `certificat/`, et non plus à la racine : le rangement du 2026-09-18 a
+#  donné un dossier à tout ce qui touche au certificat, et en laisser une
+#  copie à la racine en faisait un doublon que personne ne savait à jour.
+#  C'est `packaging/certificat.py` qui remplit ce dossier.
 from commun import RACINE as _RACINE                      # noqa: E402
-CERTIFICAT_PROJET = os.path.join(_RACINE, "phytoscope-certificat.pem")
+CERTIFICAT_PROJET = os.path.join(_RACINE, "certificat",
+                                 "phytoscope-certificat.pem")
 
 
 # ---------------------------------------------------------------------------
@@ -567,7 +573,14 @@ def main(argv: Optional[List[str]] = None) -> int:
              VERT if not mauvais else ROUGE)
         return 0 if not mauvais else 1
     if args.signer:
-        if not certificat_existe() and not generer_certificat(id_):
+        #  On PROPOSE, on ne crée pas d'autorité. Fabriquer une clé de
+        #  signature dans le dos de qui lance un « make » est le genre de
+        #  surprise qu'on ne veut pas : sur une machine d'intégration
+        #  continue, ce serait une clé éphémère qu'on croirait permanente,
+        #  et les paquets porteraient une signature invérifiable ailleurs.
+        import certificat as _certificat
+        if not _certificat.proposer_si_absent():
+            echec("rien n'a été signé — aucun certificat")
             return 1
         signes, rates = signer_tout(id_)
         dire(f"\n  {signes} paquet(s) signé(s), {rates} en échec\n",

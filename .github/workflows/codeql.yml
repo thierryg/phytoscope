@@ -73,7 +73,7 @@ jobs:
               - pdf-src/assets/**
               - '**/tests/**'
 
-      #  Le micrologiciel ne se compile pas sans le Pico SDK. « build.sh --deps »
+      #  Le micrologiciel ne se compile pas sans le Pico SDK. « _make_.sh --deps »
       #  l'installe dans $HOME, sans sudo (C-55).
       - name: Compiler le micrologiciel
         if: matrix.langage == 'c-cpp'
@@ -82,7 +82,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends \
             cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential
           cd src/firmware
-          ./build.sh --deps
+          ./_make_.sh --deps
           ./build.sh
         continue-on-error: true
 

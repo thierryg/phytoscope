@@ -38,6 +38,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import os
+import platform
 import re
 import shutil
 import stat
@@ -104,6 +105,33 @@ def lire_cle_valeur(chemin: str) -> Dict[str, str]:
 #  remplir n'a aucun intérêt.
 PYTHON_WINDOWS = "3.11.9"
 ABI_WINDOWS = "311"
+
+#  ---------------------------------------------------------------------------
+#  Python autonome pour Linux et macOS
+#  ---------------------------------------------------------------------------
+#  Windows a sa « distribution embarquable » officielle ; Linux et macOS n'ont
+#  pas d'équivalent chez python.org. Sans interpréteur livré, l'installateur
+#  .run et le .pkg macOS ne pouvaient qu'échouer en disant « installez
+#  python3 » — ce qui n'est pas « prêt après l'installation », et ce qui exige
+#  des privilèges que le projet s'interdit (C-55).
+#
+#  On livre donc CPython construit par « python-build-standalone » : des
+#  binaires **relogeables**, qui se déplient dans n'importe quel dossier et
+#  fonctionnent sans être installés, sans root et sans toucher au système.
+#  La variante « install_only » est la plus petite qui contienne un
+#  interpréteur complet avec `venv`, `ssl` et `pip`.
+PYTHON_AUTONOME = "3.11.9"
+PBS_TAG = "20240814"
+
+#  Triplet de la chaîne de construction, par système et architecture.
+CIBLES_PBS = {
+    ("linux", "x86_64"):  "x86_64-unknown-linux-gnu",
+    ("linux", "aarch64"): "aarch64-unknown-linux-gnu",
+    ("linux", "arm64"):   "aarch64-unknown-linux-gnu",
+    ("macos", "x86_64"):  "x86_64-apple-darwin",
+    ("macos", "arm64"):   "aarch64-apple-darwin",
+    ("macos", "aarch64"): "aarch64-apple-darwin",
+}
 
 #  Étiquettes de plateforme acceptées par pip pour chaque cible. On en donne
 #  plusieurs : une roue peut être publiée sous « manylinux_2_28 » ou sous
@@ -458,7 +486,7 @@ class Outil:
         return shutil.which(self.commande) is not None
 
 
-#  NSIS installé dans le dossier personnel, à la manière de `build.sh --deps`
+#  NSIS installé dans le dossier personnel, à la manière de `_make_.sh --deps`
 #  du micrologiciel : le projet s'interdit `sudo` (`C-55`), et un outil de
 #  fabrication n'a aucune raison de faire exception.
 NSIS_MAISON = os.path.expanduser("~/.local/opt/nsis")
@@ -528,7 +556,7 @@ def installer_paquets_debian(nom_lisible: str, destination: str,
 
     `apt-get download` récupère un paquet sans l'installer et `dpkg-deb -x` le
     déplie où l'on veut : ni l'un ni l'autre ne demande de mot de passe. C'est
-    exactement ce que fait `build.sh --deps` du micrologiciel pour le SDK et la
+    exactement ce que fait `_make_.sh --deps` du micrologiciel pour le SDK et la
     chaîne ARM (`C-55`).
     """
     if temoin():
@@ -688,6 +716,15 @@ def copier_le_logiciel(vers: str) -> None:
                                 "__pycache__", "*.pyc", "*.pyo", ".pytest_cache"))
         elif os.path.exists(source):
             shutil.copy2(source, cible)
+
+    #  `tools/` reste dehors — c'est de l'outillage de développement —, mais
+    #  `ecrire_langue.py` n'en est pas : c'est lui qui inscrit dans les
+    #  réglages la langue choisie à l'installation, et les trois
+    #  installateurs l'appellent. On le pose à la racine de la charge, au même
+    #  endroit pour tous, plutôt que de laisser chacun deviner un chemin.
+    langue = os.path.join(LOGICIEL, "tools", "ecrire_langue.py")
+    if os.path.exists(langue):
+        shutil.copy2(langue, os.path.join(vers, "ecrire_langue.py"))
 
 
 def remplir(gabarit: str, valeurs: Dict[str, str]) -> str:
@@ -1771,6 +1808,86 @@ def _changelog(id_: "Identite") -> str:
 # ---------------------------------------------------------------------------
 #  Archives et interpréteur embarqué
 # ---------------------------------------------------------------------------
+def cible_pbs(systeme: str, arch: str = "") -> str:
+    """Triplet « python-build-standalone » pour un système et une machine."""
+    if not arch:
+        arch = platform.machine().lower()
+    return CIBLES_PBS.get((systeme, arch), "")
+
+
+def _python_autonome(vers: str, systeme: str, arch: str = "") -> bool:
+    """Récupère et déplie un CPython relogeable pour Linux ou macOS.
+
+    Pendant de `_python_embarquable()`, qui fait la même chose pour Windows
+    avec la distribution officielle. Ici la source est
+    « python-build-standalone » : mêmes binaires que ceux qu'utilise `uv`.
+
+    L'archive se déplie en un dossier `python/` contenant `bin/`, `lib/` et
+    `include/`. On le range donc *dans* ``vers``, et l'appelant trouvera
+    l'interpréteur à ``<vers>/bin/python3``.
+
+    Rend False sans rien casser si le téléchargement échoue : l'installateur
+    retombe alors sur le Python du système, comme avant.
+    """
+    import urllib.request
+
+    cible = cible_pbs(systeme, arch)
+    if not cible:
+        souci(f"aucun Python autonome connu pour {systeme}/{arch or platform.machine()}")
+        return False
+
+    url = (f"https://github.com/astral-sh/python-build-standalone/releases/"
+           f"download/{PBS_TAG}/cpython-{PYTHON_AUTONOME}+{PBS_TAG}-"
+           f"{cible}-install_only.tar.gz")
+    parent = os.path.dirname(os.path.abspath(vers)) or "."
+    os.makedirs(parent, exist_ok=True)
+    archive = os.path.join(parent, "_python-autonome.tar.gz")
+    try:
+        urllib.request.urlretrieve(url, archive)
+    except Exception as exc:                           # noqa: BLE001
+        echec(f"téléchargement du Python autonome impossible : {exc}")
+        return False
+
+    try:
+        #  L'archive contient un unique dossier « python/ » : on le déplie
+        #  dans le parent, puis on le renomme vers la destination demandée.
+        with tarfile.open(archive) as tar:
+            tar.extractall(parent)
+    except Exception as exc:                           # noqa: BLE001
+        echec(f"archive du Python autonome illisible : {exc}")
+        return False
+    finally:
+        if os.path.exists(archive):
+            os.remove(archive)
+
+    deplie = os.path.join(parent, "python")
+    if not os.path.isdir(deplie):
+        echec("l'archive du Python autonome n'a pas la forme attendue")
+        return False
+    if os.path.abspath(deplie) != os.path.abspath(vers):
+        if os.path.isdir(vers):
+            shutil.rmtree(vers)
+        shutil.move(deplie, vers)
+
+    interp = os.path.join(vers, "bin", "python3")
+    if not os.path.exists(interp):
+        echec(f"interpréteur absent de {vers}")
+        return False
+
+    #  Ces binaires sont relogeables mais volumineux : les tests, la
+    #  documentation et les fichiers de compilation ne servent à rien dans un
+    #  paquet d'installation, et pèsent plusieurs dizaines de mégaoctets.
+    for inutile in ("lib/python%s/test" % PYTHON_AUTONOME[:4],
+                    "lib/python%s/idlelib" % PYTHON_AUTONOME[:4],
+                    "lib/python%s/tkinter" % PYTHON_AUTONOME[:4],
+                    "share/man", "share/doc"):
+        chemin = os.path.join(vers, inutile)
+        if os.path.isdir(chemin):
+            shutil.rmtree(chemin, ignore_errors=True)
+
+    return True
+
+
 def _python_embarquable(vers: str) -> bool:
     """Récupère et déplie la distribution Windows embarquable de Python.
 

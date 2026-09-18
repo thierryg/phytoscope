@@ -10,11 +10,11 @@ en même temps que `.ai/journal.md`.
 |---|---|---|
 | Ouvrage principal | 478 p. — construit | `build/La-Musique-des-Plantes.pdf` |
 | Hors-série + 3 fascicules | 198 + 12 + 18 + 7 p. — construits | `build/La-Carte-PhytoSense.pdf` |
-| Logiciel PhytoScope | **1.5.1**, 260 tests au vert (2 ignorés) | `src/phytoscope/` |
+| Logiciel PhytoScope | **1.5.1**, 306 tests au vert | `src/phytoscope/` |
 | Traductions | 11 langues, 861 libellés, couverture 100 % | `tools/i18n.py --couverture` |
 | Échantillons et relecture | capture `Ctrl+E`, relecture dans le moteur | `core/samples.py` |
 | Dictionnaires du mode vocal | 11, un par langue | `phytoscope/lexiques/` |
-| Micrologiciel RP2350 | compile — `phytosense.uf2`, 80 Ko | `./build.sh` |
+| Micrologiciel RP2350 | compile — `phytosense.uf2`, 80 Ko | `src/firmware/build.sh` |
 | Surveillance du disque | mesure, alerte, clôture propre | `core/espace.py` |
 | Vumètres | quatre cadrans à balistique | `widgets.VuMetre` |
 | Empreinte de mesure | huit descripteurs + registre des montages | `core/empreinte.py` |
@@ -37,6 +37,12 @@ en même temps que `.ai/journal.md`.
 | **Contrôle des illustrations** | 104 SVG, 0 mal formée | `tools/verifier_svg.py` |
 | **Reconstruction sélective** | ne refait que les PDF touchés | `tools/pdf_impactes.py` |
 | **Cohérence des licences** | MIT + CERN-OHL-P v2, code tiers rendu à sa licence | `LICENSES/README.md` |
+| **Mises à jour des bibliothèques** | depuis l'interface, sans rien installer d'office | `ui/maj_dialog.py` |
+| **Langue à l'installation** | 11 langues, demandée au tout début, reprise par le logiciel | `packaging/langues.py` |
+| **Libellés des installateurs** | 51 × 11 = 561 traductions, source unique | `packaging/langues/installateur.json` |
+| **Interpréteur embarqué** | `.run` 29 Mo, `.pkg` 18 Mo — installable sur machine nue | `commun._python_autonome` |
+| **Cache de bytecode** | construit à l'installation sur les cinq cibles | `INSTALL.md` |
+| **Tests** | **306 au vert, 0 ignoré** | `make test` |
 | Hors-série développeur | 27 p. — construit | `build/Ecrire-un-module-PhytoScope.pdf` |
 | En-têtes d'attribution | 240 fichiers, outil idempotent | `tools/entetes.py` |
 
@@ -165,5 +171,10 @@ corrigés — et la fabrique des paquets fonctionne pour les cinq cibles.
 - **`.ecarte/` pèse 762 Mo** (l'ancien environnement virtuel, surtout).
   Supprimable sans conséquence — laissé en place parce que la consigne était
   de ne rien perdre.
-- **2 tests sont ignorés** depuis que l'environnement virtuel a été recréé :
-  une dépendance optionnelle manque. `make doctor` le dit.
+- **`build/paquets/` a été vidé le 2026-09-18 au soir**, y compris la
+  fabrication signée que je comptais garder — voir le journal. Tout est
+  régénérable par `make tout` ; la clé de signature est intacte.
+- `.ecarte/` pèse 858 Mo (ancien environnement virtuel, doublons, cache CMake
+  périmé du micrologiciel). Supprimable sans conséquence.
+- **La boîte de choix de langue de Windows n'a pas été vue à l'écran** : elle
+  se compile (trace de `makensis`), mais il n'y a pas de machine Windows ici.

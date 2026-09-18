@@ -405,9 +405,38 @@ class MainWindow(QMainWindow):
         aide.addAction(self.act_about)
         aide.addSeparator()
         aide.addAction(self.act_journal)
+        aide.addSeparator()
+        self.act_maj = QAction(t("Mises à jour des bibliothèques…"), self)
+        self.act_maj.setToolTip(
+            t("Compare les bibliothèques Python installées à ce que publie "
+              "l'index des paquets. N'installe rien sans votre demande."))
+        self.act_maj.triggered.connect(self._mises_a_jour)
+        aide.addAction(self.act_maj)
+        aide.addSeparator()
         self.act_site = QAction(t("Ouvrir le site"), self)
         self.act_site.triggered.connect(self._ouvrir_site)
         aide.addAction(self.act_site)
+
+    def _mises_a_jour(self) -> None:
+        """Ouvre la fenêtre des mises à jour des bibliothèques Python.
+
+        La racine des exigences lui est passée pour qu'elle puisse afficher
+        la contrainte déclarée (« >=1.24 ») à côté de la version installée :
+        sans elle, on ne sait pas si une version ancienne est un retard ou un
+        choix.
+        """
+        import os
+
+        from .maj_dialog import MajDialog
+
+        #  requirements.txt vit à la racine du logiciel, deux niveaux au-dessus
+        #  de ce fichier — et non dans le paquet Python, qui voyage seul dans
+        #  une installation.
+        racine = os.path.dirname(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__))))
+        if not os.path.exists(os.path.join(racine, "requirements.txt")):
+            racine = ""
+        MajDialog(getattr(self, "palette_couleurs", None), racine, self).exec()
 
     def _remplir_menu_langue(self) -> None:
         """Les langues disponibles, cochables, dans le menu Affichage."""

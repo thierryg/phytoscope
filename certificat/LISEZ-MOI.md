@@ -1,61 +1,72 @@
-# Certificat de signature de PhytoScope
+# Le certificat de signature
 
-| Fichier | Nature | Se diffuse ? |
+Ce dossier porte la **copie de travail** du certificat qui signe les paquets
+de PhytoScope. La copie de référence, elle, vit dans
+`~/.local/share/phytoscope-signature/` et n'entre jamais dans le dépôt.
+
+> **FICHIER GÉNÉRÉ** par `packaging/certificat.py`. Le modifier à la main
+> serait perdu à la prochaine exécution (`C-45`).
+
+## Ce qu'il y a ici
+
+| Fichier | Nature | Dans le dépôt ? |
 |---|---|---|
-| `phytoscope-certificat.pem` | certificat **public**, avec son empreinte en en-tête | **oui** |
+| `phytoscope-certificat.pem` | certificat **public**, commenté | **oui** — c'est lui qu'on diffuse |
 | `phytoscope.crt` | le même, brut | **oui** |
-| `phytoscope.key` | **clé privée** | **JAMAIS** |
+| `phytoscope.key` | **la clé privée** | **non, jamais** |
+| `LISEZ-MOI.md` | ce fichier | oui |
 
-La clé de référence vit dans `~/.local/share/phytoscope-signature/` ; les
-fichiers présents ici en sont une copie de travail.
+Le certificat public **doit** se diffuser : c'est lui qui permet de vérifier
+une signature. Le taire rendrait les signatures invérifiables.
 
-## Ce que `.gitignore` protège — et ce qu'il ne protège pas
+## Empreinte SHA-256
 
-`.gitignore` empêche la clé privée d'entrer dans un dépôt Git. Il **ne
-protège pas** d'une sauvegarde du dossier, d'une archive `tar`, d'une
-synchronisation dans un nuage, ni d'un partage du répertoire. La clé reste un
-secret à traiter comme tel :
+```
+57:3D:90:32:5C:16:14:B2:F3:B2:D9:81:68:82:7E:CE:E3:F6:D5:22:F7:B8:6D:0D:24:70:C6:80:7C:22:31:F0
+```
 
-* ne la recopiez pas dans un dossier synchronisé ;
-* excluez `certificat/phytoscope.key` de vos sauvegardes automatiques, ou
-  chiffrez-les ;
-* sur une machine partagée, protégez-la par une phrase de passe :
+C'est ce qu'on publie sur https://bretagne-namaste.com et ce que compare qui veut s'assurer
+qu'un paquet vient bien de nous.
+
+## Trois filets contre la publication de la clé
+
+1. `.gitignore` écarte `certificat/phytoscope.key` nommément, puis `*.key`
+   et `*.pem` partout, avec deux exceptions nommées pour les fichiers
+   publics ;
+2. le crochet `pre-commit` « detection-cle-privee » la refuse **sur son seul
+   nom** — même vide, même renommée ;
+3. le job « secrets » de l'intégration continue échoue si un fichier de ce
+   genre est suivi.
+
+Trois filets parce qu'une clé publiée ne se dépublie pas.
+
+> `.gitignore` protège de `git`, **pas d'une sauvegarde ni d'une archive du
+> dossier**. Si vous archivez ce dépôt, excluez `certificat/phytoscope.key`.
+
+## Recréer, déposer, vérifier
 
 ```bash
-openssl rsa -aes256 -in phytoscope.key -out chiffree.key && mv chiffree.key phytoscope.key
+python3 packaging/certificat.py              # l'état, sans rien changer
+python3 packaging/certificat.py --creer      # créer s'il n'existe pas
+python3 packaging/certificat.py --deposer    # re-remplir ce dossier
+python3 packaging/certificat.py --verifier   # les deux copies concordent ?
 ```
 
-## Si la clé fuit
+**Ne refaites pas le certificat sans raison.** `--refaire` remplace la clé, et
+rompt le lien avec tout ce qui a déjà été signé : les paquets publiés
+deviennent invérifiables avec le nouveau certificat, et qui avait noté
+l'empreinte en voit soudain une autre.
 
-Il n'y a pas de révocation possible pour un certificat auto-signé : personne
-n'interroge de liste de révocation pour lui. La seule réponse est de
-**générer un nouveau certificat**, d'en publier la nouvelle empreinte, et
-d'annoncer que l'ancienne ne vaut plus :
+## Ce que ce certificat prouve, et ce qu'il ne prouve pas
 
-```bash
-cd packaging && python3 signature.py --refaire
-```
+Il est **auto-signé**. Il prouve l'**intégrité** d'un paquet et la
+**continuité d'origine** : deux paquets signés par la même clé viennent bien
+du même endroit.
 
-## Si la clé est perdue
-
-Les paquets déjà publiés restent vérifiables — leur certificat est diffusé
-avec eux. Mais les versions suivantes seront signées par une autre clé, et
-rien ne les rattachera aux précédentes. **Sauvegardez-la**, hors ligne.
-
-## Vérifier un paquet
-
-```bash
-openssl cms -verify -binary -inform DER \
-    -in <paquet>.p7s -content <paquet> \
-    -certfile phytoscope-certificat.pem -noverify -out /dev/null
-```
-
-Et pour les exécutables Windows, sous Windows :
-
-```powershell
-Get-AuthenticodeSignature .\PhytoScope-1.5.1-Windows.exe
-```
+Il ne fait **pas** taire SmartScreen sous Windows ni Gatekeeper sous macOS,
+et n'a jamais prétendu le faire (`C-2Q`). Cela demanderait un certificat
+d'une autorité reconnue, payant et nominatif.
 
 ---
 
-*Bretagne Namasté — Thierry GAYET — https://bretagne-namaste.com*
+Bretagne Namasté — Thierry GAYET — https://bretagne-namaste.com

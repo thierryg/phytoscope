@@ -66,7 +66,7 @@ phrases correctes sans que le moteur connaisse la moindre grammaire.
 
 **Contexte :** compiler le micrologiciel ne doit pas exiger le mot de passe
 administrateur de l'utilisateur.
-**Décision :** `build.sh --deps` installe le Pico SDK dans `~/pico/pico-sdk` et
+**Décision :** `_make_.sh --deps` installe le Pico SDK dans `~/pico/pico-sdk` et
 la chaîne ARM GNU dans `~/.local/opt/`.
 **Conséquence :** reproductible sur une machine d'atelier ; qui préfère les
 paquets de sa distribution les installe, le script les trouve aussi.

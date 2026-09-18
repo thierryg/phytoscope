@@ -31,9 +31,26 @@ BuildArch:      noarch
 
 Requires:       python3 >= 3.9
 Requires:       python3-pip
-Recommends:     python3-numpy
+#  Sans ces bibliothèques, Qt se charge puis échoue au premier affichage, et
+#  le message du chargeur dynamique nomme rarement la bonne. Le paquet Debian
+#  les déclarait déjà ; le .rpm ne les déclarait pas, et l'installation
+#  paraissait réussie jusqu'au premier lancement.
+Requires:       mesa-libGL
+Requires:       mesa-libEGL
+Requires:       libxkbcommon-x11
+Requires:       xcb-util-cursor
+Requires:       xcb-util-wm
+Requires:       xcb-util-keysyms
+Requires:       xcb-util-image
+Requires:       xcb-util-renderutil
+Requires:       fontconfig
+Requires:       freetype
+Requires:       dbus-libs
+#  Audio : facultatif au sens du logiciel, mais son absence désactive
+#  silencieusement l'entrée et la sortie son.
 Recommends:     portaudio
 Recommends:     espeak-ng
+Recommends:     python3-numpy
 Suggests:       python3-pyserial
 
 #  Le contenu est déjà construit : rpmbuild n'a rien à compiler, et surtout
@@ -95,6 +112,13 @@ else
 fi
 "$CIBLE/venv/bin/pip" install --quiet -r "$CIBLE/requirements-optionnel.txt" \
     >/dev/null 2>&1 || :
+
+#  Cache de bytecode : sans lui, Python recompile à chaque démarrage tous les
+#  modules dont le dossier n'est pas inscriptible — et l'attente se voit au
+#  premier lancement. On le construit ici, une fois, tant qu'on a les droits.
+"$CIBLE/venv/bin/python" -m compileall -q "$CIBLE/phytoscope" >/dev/null 2>&1 || :
+"$CIBLE/venv/bin/python" -m compileall -q "$CIBLE/run.py" >/dev/null 2>&1 || :
+"$CIBLE/venv/bin/python" -m compileall -q "$CIBLE/venv/lib" >/dev/null 2>&1 || :
 exit 0
 
 %postun
@@ -102,6 +126,10 @@ exit 0
 #  c'est à nous de l'effacer, sans quoi il survivrait à la désinstallation.
 if [ $1 -eq 0 ]; then
     rm -rf %{_datadir}/phytoscope/venv
+    #  Le bytecode produit après coup n'est pas listé dans %files : rpm ne le
+    #  connaît pas, et sans cela il survivrait à la désinstallation.
+    find %{_datadir}/phytoscope -name '__pycache__' -type d \
+        -exec rm -rf {} + 2>/dev/null || :
 fi
 exit 0
 

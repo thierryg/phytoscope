@@ -71,5 +71,27 @@ phytoscope = ["VERSION", "AUTEURS", "langues/*.json", "lexiques/*.json"]
 line-length = 90
 target-version = "py39"
 
+#  Deux niveaux, et c'est voulu.
+#
+#  « lint.select » ci-dessous est le jeu qui FAIT ÉCHOUER l'intégration
+#  continue : la syntaxe, et les noms qui n'existent pas. Ce sont des
+#  plantages, pas des questions de style. Deux d'entre eux dormaient dans le
+#  dépôt jusqu'au 2026-09-18 — un `mode` disparu d'une refonte qui cassait la
+#  capture de trames, et un `echec` non importé qui faisait planter la
+#  fabrication du .rpm là où elle devait diagnostiquer proprement.
+#
+#  Le reste — annotations PEP 585, imports inutilisés, `except` nus — est
+#  RÉEL mais ne casse rien aujourd'hui : plus de mille occurrences, héritées
+#  d'un code écrit pour Python 3.9. Les corriger d'un coup produirait une
+#  révision illisible. Elles sont donc signalées sans bloquer, par
+#  « make lint » et par un pas facultatif de la CI, et se résorbent au fil
+#  des modifications.
+[tool.ruff.lint]
+select = ["E9", "F821", "F822", "F823", "F811"]
+
+[tool.ruff.lint.per-file-ignores]
+#  Les tests importent parfois pour vérifier qu'un import fonctionne.
+"tests/*" = ["F401"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]

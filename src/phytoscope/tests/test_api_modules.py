@@ -381,9 +381,11 @@ def test_les_modules_integres_se_chargent_et_travaillent():
 
 def test_le_sdk_livre_un_exemple_qui_se_charge():
     """Un SDK dont l'exemple ne fonctionne pas est pire qu'aucun SDK."""
-    racine = os.path.dirname(os.path.dirname(os.path.dirname(
-        os.path.dirname(os.path.abspath(__file__)))))
-    exemple = os.path.join(racine, "sdk", "bonjour-monde", "module.py")
+    #  tests/ → src/phytoscope/ → src/. Le SDK a rejoint le code lors du
+    #  rangement du 2026-09-18 : il est en src/sdk/, non plus à la racine.
+    src = os.path.dirname(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__))))
+    exemple = os.path.join(src, "sdk", "bonjour-monde", "module.py")
     if not os.path.exists(exemple):
         pytest.skip("SDK absent de cette copie de travail")
 

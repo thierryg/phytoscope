@@ -31,9 +31,11 @@ import pytest
 
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAQUET = os.path.join(RACINE, "phytoscope")
+#  Le micrologiciel a quitté `sources/` lors du rangement du 2026-09-18 :
+#  ce n'était pas de la matière de référence, c'est notre développement.
+#  RACINE désigne src/phytoscope/, donc son voisin est src/firmware/.
 FIRMWARE = os.path.normpath(os.path.join(
-    RACINE, "..", "..", "sources", "firmware-phytosense", "phytosense-fw",
-    "usb_descriptors.c"))
+    RACINE, "..", "firmware", "usb_descriptors.c"))
 
 
 def _sources_python():
@@ -330,3 +332,298 @@ def test_la_cle_privee_nentre_jamais_dans_le_depot():
         assert "PRIVATE KEY" not in contenu, \
             "le fichier déposé à la racine contient une clé privée"
         assert "BEGIN CERTIFICATE" in contenu
+
+
+# ---------------------------------------------------------------------------
+#  La nomenclature du projet, et le certificat
+# ---------------------------------------------------------------------------
+def _charger(chemin_relatif):
+    """Charge un script du dépôt par son chemin ; None s'il est absent."""
+    import importlib.util
+    depot = os.path.dirname(os.path.dirname(RACINE))
+    chemin = os.path.join(depot, chemin_relatif)
+    if not os.path.exists(chemin):
+        return None
+    spec = importlib.util.spec_from_file_location(
+        os.path.basename(chemin).replace(".py", "") + "_essai", chemin)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+class TestNomenclatureDuProjet:
+    """`tools/sbom.py` — logiciel ET micrologiciel.
+
+    Ce que ces essais protègent : les versions du micrologiciel sont **lues**
+    dans `_make_.sh` et `CMakeLists.txt`, jamais recopiées dans un tableau.
+    Une version écrite à la main vieillirait en silence, et un SBOM faux est
+    pire qu'aucun SBOM — il sert à répondre « cette faille me concerne-t-elle ? ».
+    """
+
+    def _module(self):
+        m = _charger(os.path.join("tools", "sbom.py"))
+        if m is None:
+            pytest.skip("tools/sbom.py absent de cette copie de travail")
+        return m
+
+    def test_la_version_du_sdk_est_lue_et_non_ecrite(self):
+        m = self._module()
+        firmware = {d["nom"]: d for d in m.inventaire_firmware()}
+        sdk = firmware.get("pico-sdk")
+        assert sdk is not None, "le Pico SDK doit figurer à la nomenclature"
+        assert sdk["version"] != "—", (
+            "version du Pico SDK non lue — SDK_VERSION a-t-il changé de nom "
+            "dans src/firmware/_make_.sh ?")
+        #  Elle doit être celle du fichier, et non une constante du script.
+        attendue = m._lire_version(
+            os.path.join(m.FIRMWARE, "_make_.sh"), "SDK_VERSION")
+        assert sdk["version"] == attendue
+
+    def test_tinyusb_suit_la_version_du_sdk(self):
+        """Elle est livrée *dans* le SDK : lui donner un numéro à part
+        serait l'inventer."""
+        m = self._module()
+        firmware = {d["nom"]: d for d in m.inventaire_firmware()}
+        assert firmware["tinyusb"]["version"] == firmware["pico-sdk"]["version"]
+
+    def test_les_outils_de_construction_ne_sont_pas_embarques(self):
+        """Le compilateur ARM construit le produit, il n'y est pas dedans.
+
+        La distinction compte pour qui lit ce document afin de savoir si une
+        faille le concerne : `scope: excluded` le dit.
+        """
+        m = self._module()
+        firmware = {d["nom"]: d for d in m.inventaire_firmware()}
+        assert firmware["arm-gnu-toolchain"]["scope"] == "excluded"
+        assert firmware["picotool"]["scope"] == "excluded"
+        assert firmware["pico-sdk"]["scope"] == "required"
+
+    def test_les_bibliotheques_liees_sont_lues_dans_cmake(self):
+        m = self._module()
+        liees = m.bibliotheques_liees()
+        assert liees, "aucune bibliothèque lue dans CMakeLists.txt"
+        #  Celles-là sont indispensables au micrologiciel : leur disparition
+        #  de la liste signalerait un CMakeLists.txt mal lu.
+        for indispensable in ("pico_stdlib", "tinyusb_device"):
+            assert indispensable in liees, f"{indispensable} attendue"
+        assert "phytosense" not in liees, "le nom de la cible n'est pas une lib"
+        assert "PRIVATE" not in liees, "les mots-clés CMake ne sont pas des libs"
+
+    def test_le_document_separe_logiciel_et_micrologiciel(self):
+        m = self._module()
+        doc = m.en_cyclonedx(m.inventaire_logiciel(), m.inventaire_firmware())
+        assert doc["bomFormat"] == "CycloneDX"
+        types = {c["type"] for c in doc["components"]}
+        assert types == {"application", "firmware"}, (
+            "les deux natures de produit doivent rester séparables")
+
+    def test_la_signature_ignore_l_horodatage(self):
+        """Sinon il y aurait une révision par jour, sans qu'un composant
+        ait bougé."""
+        m = self._module()
+        a = m.en_cyclonedx(m.inventaire_logiciel(), m.inventaire_firmware())
+        b = m.en_cyclonedx(m.inventaire_logiciel(), m.inventaire_firmware())
+        assert a["metadata"]["timestamp"] != b["metadata"]["timestamp"] \
+            or a["serialNumber"] != b["serialNumber"]
+        assert m._signature(a) == m._signature(b)
+
+
+class TestCertificat:
+    """`packaging/certificat.py` — les emplacements et les garde-fous."""
+
+    def _module(self):
+        m = _charger(os.path.join("packaging", "certificat.py"))
+        if m is None:
+            pytest.skip("packaging/certificat.py absent de cette copie")
+        return m
+
+    def test_la_cle_de_travail_reste_dans_certificat(self):
+        """`C-2R` n'autorise la clé privée qu'à deux endroits."""
+        m = self._module()
+        assert os.path.basename(os.path.dirname(m.CLE_TRAVAIL)) == "certificat"
+        assert m.CLE_TRAVAIL.endswith("phytoscope.key")
+
+    def test_le_certificat_public_va_dans_certificat_et_non_a_la_racine(self):
+        """Il était déposé à la racine du dépôt, ce qui en faisait un doublon
+        que personne ne savait à jour."""
+        m = self._module()
+        import importlib.util
+        assert os.path.basename(os.path.dirname(m.PUBLIC)) == "certificat"
+        signature = _charger(os.path.join("packaging", "signature.py"))
+        if signature is not None:
+            assert os.path.basename(
+                os.path.dirname(signature.CERTIFICAT_PROJET)) == "certificat"
+
+    def test_le_depot_refuse_sans_copie_de_reference(self, monkeypatch):
+        """Créer une clé est une décision, pas un effet de bord."""
+        m = self._module()
+        import packaging  # noqa: F401  (au cas où le nom existe)
+        monkeypatch.setattr(m.signature, "certificat_existe", lambda: False)
+        assert m.deposer() is False
+
+    def test_proposer_ne_cree_rien_sans_terminal(self, monkeypatch):
+        """Sur une machine d'intégration continue, ce serait une clé
+        éphémère qu'on croirait permanente."""
+        m = self._module()
+        monkeypatch.setattr(m.signature, "certificat_existe", lambda: False)
+        cree = []
+        monkeypatch.setattr(m, "creer", lambda *a, **k: cree.append(1) or True)
+        monkeypatch.setattr(m.sys.stdin, "isatty", lambda: False, raising=False)
+        assert m.proposer_si_absent() is False
+        assert not cree, "aucune clé ne doit être créée sans accord explicite"
+
+    def test_proposer_ne_demande_rien_si_le_certificat_est_la(self, monkeypatch):
+        m = self._module()
+        monkeypatch.setattr(m.signature, "certificat_existe", lambda: True)
+        assert m.proposer_si_absent() is True
+
+
+class TestScriptsDuMicrologiciel:
+    """`_make_.sh` compile, `build.sh` range le livrable.
+
+    Deux scripts et deux rôles : `_make_.sh` pour la mise au point — on
+    compile vingt fois d'affilée et ranger un livrable à chaque fois n'a
+    aucun sens —, `build.sh` pour la publication. Ces essais protègent la
+    séparation, sans compiler quoi que ce soit : la chaîne croisée ARM n'est
+    pas une dépendance de la suite de tests.
+    """
+
+    def _firmware(self):
+        chemin = os.path.normpath(os.path.join(RACINE, "..", "firmware"))
+        if not os.path.isdir(chemin):
+            pytest.skip("micrologiciel absent de cette copie de travail")
+        return chemin
+
+    def test_les_deux_scripts_existent_et_sont_executables(self):
+        d = self._firmware()
+        for nom in ("_make_.sh", "build.sh"):
+            chemin = os.path.join(d, nom)
+            assert os.path.exists(chemin), f"{nom} manquant"
+            assert os.access(chemin, os.X_OK), f"{nom} n'est pas exécutable"
+
+    def test_make_porte_la_version_du_sdk(self):
+        """C'est lui qui la fixe, et `tools/sbom.py` la lit là."""
+        source = open(os.path.join(self._firmware(), "_make_.sh"),
+                      encoding="utf-8").read()
+        assert re.search(r'^\s*SDK_VERSION\s*=', source, re.M), (
+            "SDK_VERSION a disparu de _make_.sh — tools/sbom.py ne saura "
+            "plus quelle version du Pico SDK est en service")
+
+    def test_build_delegue_la_compilation(self):
+        """Il ne réimplémente pas cmake : il appelle `_make_.sh`."""
+        source = open(os.path.join(self._firmware(), "build.sh"),
+                      encoding="utf-8").read()
+        assert "_make_.sh" in source
+        assert "cmake --build" not in source, (
+            "build.sh ne doit pas compiler lui-même — c'est le travail "
+            "de _make_.sh, et deux implémentations divergeraient")
+
+    def test_build_lit_la_version_la_ou_elle_fait_foi(self):
+        source = open(os.path.join(self._firmware(), "build.sh"),
+                      encoding="utf-8").read()
+        assert "phytoscope/VERSION" in source, (
+            "la version doit être lue dans VERSION, jamais écrite ici")
+        #  Une version en dur serait un mensonge le jour du prochain bump.
+        assert not re.search(r'VERSION="\d+\.\d+\.\d+"', source)
+
+    def test_build_suit_la_sortie_de_la_fabrique(self):
+        """Lancé par `make tout`, le micrologiciel doit se ranger dans la
+        MÊME fabrication que les .deb et les .msi."""
+        source = open(os.path.join(self._firmware(), "build.sh"),
+                      encoding="utf-8").read()
+        assert "PHYTOSCOPE_SORTIE" in source
+
+    def test_make_jette_un_cache_cmake_perime(self):
+        """Un cache retient le chemin ABSOLU des sources : déplacer la copie
+        de travail le rend périmé, et cmake refuse de continuer. C'est
+        arrivé au rangement du 2026-09-18."""
+        source = open(os.path.join(self._firmware(), "_make_.sh"),
+                      encoding="utf-8").read()
+        assert "CMAKE_HOME_DIRECTORY" in source, (
+            "la détection du cache périmé a disparu — la compilation "
+            "échouera au prochain déplacement du dépôt")
+
+    def test_les_deux_scripts_sont_du_shell_valide(self):
+        """Une coquille de syntaxe ne se voit qu'à l'exécution."""
+        import subprocess
+        d = self._firmware()
+        for nom in ("_make_.sh", "build.sh"):
+            r = subprocess.run(["sh", "-n", os.path.join(d, nom)],
+                               capture_output=True, text=True)
+            assert r.returncode == 0, f"{nom} : {r.stderr.strip()}"
+
+
+class TestGitignoreProtegeLeDepotPublic:
+    """Les règles qui gardent hors du dépôt ce qui n'a rien à y faire.
+
+    Ce que ces essais protègent, et pourquoi ils existent : le 2026-09-18,
+    **toute la section du `.gitignore` qui écarte les documents sous droits a
+    disparu** au cours d'une réécriture par script. Résultat : 6 449 fichiers
+    se sont retrouvés dans l'index, dont les cinq ouvrages sous droits et
+    817 Mo d'archives tierces. Le dépôt est **public** ; rien n'avait encore
+    été poussé, mais une clé ou un livre publiés ne se dépublient pas.
+
+    Un `.gitignore` est du code : il se teste.
+    """
+
+    def _gitignore(self):
+        depot = os.path.dirname(os.path.dirname(RACINE))
+        chemin = os.path.join(depot, ".gitignore")
+        if not os.path.exists(chemin):
+            pytest.skip(".gitignore absent de cette copie de travail")
+        return open(chemin, encoding="utf-8").read()
+
+    @pytest.mark.parametrize("regle,pourquoi", [
+        ("certificat/phytoscope.key", "la clé privée de signature (C-2R)"),
+        ("*.key", "toute clé, où qu'elle soit"),
+        ("*.pem", "idem — avec deux exceptions nommées plus bas"),
+        ("sources/ebooks/", "cinq ouvrages sous droits"),
+        ("sources/documents/articles-scientifiques/*.pdf",
+         "articles payants — nos notes .md, elles, se publient"),
+        ("sources/datasheets/*.pdf", "notices constructeurs"),
+        ("sources/manuels-constructeurs/*.pdf", "manuels constructeurs"),
+        ("sources/brevets/*.pdf", "brevets en fac-similé"),
+        ("sources/documents/domaine-public/*.pdf",
+         "258 Mo de numérisations — libres, mais lourdes"),
+        ("sources/code/*.zip", "dépôts tiers recopiés"),
+        ("sources/software/**/*.zip", "817 Mo de dépôts tiers"),
+        (".ecarte/", "doublons et environnements mis à l'écart"),
+        ("build/", "PDF et paquets produits"),
+        ("src/firmware/build/", "le SDK Pico récupéré, et les objets"),
+    ])
+    def test_la_regle_est_presente(self, regle, pourquoi):
+        lignes = [l.strip() for l in self._gitignore().splitlines()]
+        assert regle in lignes, (
+            f"règle absente du .gitignore : {regle!r} — {pourquoi}")
+
+    @pytest.mark.parametrize("exception,pourquoi", [
+        ("!certificat/phytoscope-certificat.pem",
+         "le certificat PUBLIC se diffuse : c'est lui qui vérifie une signature"),
+        ("!certificat/phytoscope.crt", "idem, en brut"),
+        ("!sources/software/MANIFESTE.md", "la provenance des dépôts tiers"),
+        ("!src/phytoscope/sbom.cdx.json", "la nomenclature du logiciel"),
+        ("!/sbom.cdx.json", "la nomenclature du projet"),
+    ])
+    def test_l_exception_est_presente(self, exception, pourquoi):
+        """Interdire large puis réautoriser nommément : encore faut-il que
+        les exceptions survivent aux réécritures."""
+        lignes = [l.strip() for l in self._gitignore().splitlines()]
+        assert exception in lignes, (
+            f"exception absente : {exception!r} — {pourquoi}")
+
+    def test_les_langages_et_systemes_demandes_sont_couverts(self):
+        """Le `.gitignore` couvre bash, Python, Go, Rust, C/C++, Windows,
+        macOS, Debian et Fedora. Une section perdue ne se voit pas."""
+        contenu = self._gitignore()
+        for repere in ("__pycache__/", ".venv/",          # Python
+                       "*.o", "CMakeCache.txt",           # C/C++
+                       "/target/", "*.rlib",              # Rust
+                       "go.work", "*.test",               # Go
+                       "Thumbs.db", "[Dd]esktop.ini",     # Windows
+                       ".DS_Store", ".AppleDouble",       # macOS
+                       "*.dsc", "*.changes",              # Debian
+                       "*.rpmsave", "BUILDROOT/",         # Fedora
+                       ".bash_history"):                  # bash
+            assert repere in contenu, (
+                f"{repere!r} absent — une section du .gitignore a-t-elle "
+                f"disparu ?")

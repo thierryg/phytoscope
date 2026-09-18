@@ -10,6 +10,68 @@ documents, vérifiées après reconstruction (`C-64`).
 
 ---
 
+## 2026-09-18 (nuit) — mises à jour des bibliothèques, et la langue en onze voix
+
+### Ajouté
+- **« Aide → Mises à jour des bibliothèques… »** — le logiciel compare les
+  bibliothèques Python installées à ce que publie l'index des paquets, classe
+  les écarts en *correctif*, *mineure*, *majeure*, et **n'installe rien sans
+  demande explicite**. L'interrogation se fait dans un fil séparé et la sortie
+  de `pip` défile ligne à ligne. Aucune dépendance ajoutée pour cela (`C-40`).
+- **La langue est demandée au tout début de l'installation**, dans les **onze
+  langues du logiciel**, chacune proposée dans sa propre écriture. Elle est
+  écrite dans `reglages.json` et reprise par PhytoScope : la question ne
+  revient jamais.
+  - `.run` : première question, avant la licence — qui est donc lue dans la
+    langue retenue. `--langue ja` pour une installation sans surveillance ;
+  - `.exe` : boîte NSIS, **onze langues compilées** au lieu de deux, choix
+    mémorisé sous `HKCU` ;
+  - `.pkg` macOS : liste à la première ouverture ;
+  - `.deb` et `.rpm` : `apt` et `dnf` n'interrogent pas — la question se pose
+    au **premier démarrage du logiciel**.
+- **51 libellés d'installateur × 11 langues = 561 traductions**, dans une
+  source unique (`packaging/langues/installateur.json`), d'où sont générés les
+  catalogues shell du `.run` et les `LangString` de NSIS.
+- **Élévation de droits par `pkexec`, `kdesu` ou `gksu`** quand l'installateur
+  vient d'un bureau — une fenêtre d'authentification est la seule chose
+  correcte alors —, par `sudo` en mode texte.
+- **Bannière ASCII** et **checklist** affichées au lancement par défaut, avec
+  les contrôles avant vol dépendance par dépendance.
+- `INSTALL.md` — ce que fait chaque installateur, étape par étape, par système.
+- Régénération automatique de la **nomenclature logicielle** dès qu'une
+  modification touche `src/phytoscope/` (`.github/workflows/sbom.yml`).
+
+### Corrigé
+- **Une pré-diffusion passait pour plus récente que sa version.** Dans le
+  comparateur neuf : ramasser tous les nombres de « 3.0.0rc1 » donne
+  `(3, 0, 0, 1)`, qui se compare après `(3, 0, 0)`. L'ordre couvre désormais
+  `dev < alpha < beta < rc < (rien) < post`.
+- **Deux tests ne vérifiaient plus rien depuis le rangement du dépôt.**
+  `test_le_sdk_livre_un_exemple_qui_se_charge` et
+  `test_les_identifiants_usb_suivent_le_micrologiciel` cherchaient le SDK et
+  le micrologiciel à leurs anciens emplacements, et **s'ignoraient
+  silencieusement**. Chemins corrigés ; ils passent.
+- La **bannière existait en double** dans `__main__.py`, et son premier trait
+  avait perdu un caractère. Une seule source désormais,
+  `core/console.banniere()`, qui porte aussi la version.
+- « bilan de démarrage » devient « **checklist** », partout.
+
+### Changé
+- **`ruff` dans l'intégration continue** : bloquant sur les plantages (`E9`,
+  `F82x`, `F811`), informatif sur les mille avertissements de style hérités
+  d'un code écrit pour Python 3.9. L'intention est déclarée dans
+  `pyproject.toml`, avec son pourquoi. La configuration précédente aurait fait
+  échouer la chaîne au premier envoi.
+
+### Vérifié
+- **306 tests au vert, 0 ignoré** ; `ruff` essentiel : *All checks passed* ;
+- **11 langues à 100 %** (888 libellés) et 561 traductions d'installateur,
+  champs de substitution préservés ;
+- `.run --langue ja` affiche `[ok] 言語：日本語` — le catalogue japonais est
+  bien chargé.
+
+---
+
 ## 2026-09-18 (fin de journée) — la série « L'Arbre qui Parle », et un dépôt public
 
 ### Ajouté
