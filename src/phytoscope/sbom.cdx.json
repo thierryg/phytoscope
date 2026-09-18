@@ -1,10 +1,10 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:d079211a-d56e-4069-90b2-f6e64b6e254e",
+  "serialNumber": "urn:uuid:37ca7dfd-8d06-4a4a-aa37-3b6c58f3b1da",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-09-18T18:31:54.435597+00:00",
+    "timestamp": "2026-09-18T19:41:26.219070+00:00",
     "tools": [
       {
         "vendor": "Bretagne Namasté",
@@ -43,8 +43,8 @@
     {
       "type": "library",
       "name": "numpy",
-      "version": "2.2.6",
-      "purl": "pkg:pypi/numpy@2.2.6",
+      "version": "2.5.3",
+      "purl": "pkg:pypi/numpy@2.5.3",
       "publisher": "NumPy Developers",
       "description": "calcul numérique et traitement du signal",
       "licenses": [
@@ -90,38 +90,6 @@
     },
     {
       "type": "library",
-      "name": "pyqtgraph",
-      "version": "0.14.0",
-      "purl": "pkg:pypi/pyqtgraph@0.14.0",
-      "publisher": "Luke Campagnola et contributeurs",
-      "description": "tracés scientifiques temps réel",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT"
-          }
-        }
-      ],
-      "scope": "optional"
-    },
-    {
-      "type": "library",
-      "name": "sounddevice",
-      "version": "0.5.6",
-      "purl": "pkg:pypi/sounddevice@0.5.6",
-      "publisher": "Matthias Geier",
-      "description": "entrée et sortie audio (liaison PortAudio)",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT"
-          }
-        }
-      ],
-      "scope": "optional"
-    },
-    {
-      "type": "library",
       "name": "pyserial",
       "version": "3.5",
       "purl": "pkg:pypi/pyserial@3.5",
@@ -147,22 +115,6 @@
         {
           "license": {
             "id": "MIT"
-          }
-        }
-      ],
-      "scope": "optional"
-    },
-    {
-      "type": "library",
-      "name": "pyusb",
-      "version": "présent",
-      "purl": "pkg:pypi/pyusb@présent",
-      "publisher": "PyUSB Developers",
-      "description": "descripteurs USB détaillés",
-      "licenses": [
-        {
-          "license": {
-            "id": "BSD-3-Clause"
           }
         }
       ],
