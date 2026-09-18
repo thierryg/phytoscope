@@ -146,8 +146,11 @@ jobs:
       - name: Reverser le SBOM sur main
         if: steps.diff.outputs.change == 'oui' && github.event_name == 'push'
         run: |
+          #  La même adresse que les commits humains : le dépôt ne doit
+          #  montrer que celle-là. Le NOM, lui, reste « phytoscope-ci »,
+          #  pour qu'on voie d'un coup d'œil ce qui vient de la chaîne.
           git config user.name  'phytoscope-ci'
-          git config user.email 'contact@bretagne-namaste.com'
+          git config user.email 'thierry.gayet@gmail.com'
           git add src/phytoscope/sbom.cdx.json sbom.cdx.json
           git commit -m "$(printf 'nomenclature logicielle régénérée\n\nLe logiciel ou ses dépendances ont changé en %s.\nUn SBOM faux est pire qu%s SBOM : il sert à répondre\n« cette faille me concerne-t-elle ? ».\n\n%s' \
             "${GITHUB_SHA::12}" "'aucun" "${{ steps.diff.outputs.resume }}")"

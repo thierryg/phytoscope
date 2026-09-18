@@ -122,7 +122,7 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
-            dpkg-dev fakeroot rpm nsis msitools osslsigncode xar cpio
+            dpkg-dev fakeroot rpm nsis msitools osslsigncode
           cd packaging && make deps || true
 
       #  Certificat éphémère, fabriqué ici et jeté avec le coureur : il prouve
