@@ -46,7 +46,7 @@ jobs:
     outputs:
       version: ${{ steps.lire.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - id: lire
         run: |
@@ -79,8 +79,8 @@ jobs:
     needs: verifier-version
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
           cache: pip
@@ -113,8 +113,8 @@ jobs:
       id-token: write       # exigé par l'attestation Sigstore
       attestations: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
@@ -155,7 +155,7 @@ jobs:
       #  Vérification par qui télécharge :
       #      gh attestation verify phytoscope_1.5.1_all.deb --repo thierryg/phytoscope
       - name: Attester la provenance des paquets
-        uses: actions/attest-build-provenance@v1
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
             build/paquets/**/*.deb
@@ -168,13 +168,13 @@ jobs:
             build/paquets/**/*.tar.gz
 
       - name: Attester la nomenclature logicielle
-        uses: actions/attest-sbom@v1
+        uses: actions/attest-sbom@v4
         with:
           subject-path: sbom.cdx.json
           sbom-path: sbom.cdx.json
         continue-on-error: true
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: paquets-${{ needs.verifier-version.outputs.version }}
           path: |
@@ -199,7 +199,7 @@ jobs:
       id-token: write
       attestations: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Chaîne de compilation croisée
         run: |
@@ -208,7 +208,7 @@ jobs:
             cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential \
             libstdc++-arm-none-eabi-newlib
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         id: sdk
         with:
           path: ~/pico
@@ -235,11 +235,11 @@ jobs:
           cat diffusion-firmware/phytosense-*.sha256
 
       - name: Attester la provenance du micrologiciel
-        uses: actions/attest-build-provenance@v1
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: diffusion-firmware/*.uf2
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: micrologiciel
           path: diffusion-firmware/
@@ -254,8 +254,8 @@ jobs:
     needs: controles
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Bibliothèques de rendu
@@ -286,7 +286,7 @@ jobs:
             total=$((total + n))
           done
           printf '%5d p.  TOTAL\n' "$total"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: publications-pdf
           path: build/*.pdf
@@ -303,9 +303,9 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           path: recolte
 
@@ -324,7 +324,7 @@ jobs:
           cat SHA256SUMS.txt
 
       - name: Publier
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           name: PhytoScope ${{ needs.verifier-version.outputs.version }}
           files: diffusion/*

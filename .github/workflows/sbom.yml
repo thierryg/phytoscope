@@ -48,13 +48,13 @@ jobs:
       contents: write          # pour reverser le SBOM sur main
       pull-requests: write     # pour le signaler sur une demande de fusion
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           #  Le jeton par défaut suffit : on pousse sur la même branche.
           #  `persist-credentials` reste vrai, c'est ce qui le permet.
           ref: ${{ github.head_ref || github.ref_name }}
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
           cache: pip
@@ -156,7 +156,7 @@ jobs:
       # -- sur une demande de fusion : on signale, on n'écrit pas ----------
       - name: Signaler le décalage sur la demande de fusion
         if: steps.diff.outputs.change == 'oui' && github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const resume = `${{ steps.diff.outputs.resume }}`;
@@ -186,7 +186,7 @@ jobs:
               ].join("\n"),
             });
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: sbom
