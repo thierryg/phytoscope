@@ -1,0 +1,64 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/tt-cavitation.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 420" width="880" height="420">
+
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+</defs>
+<rect width="880" height="420" fill="#FBF9F1"/>
+<text x="440" y="34" font-family="Cormorant Garamond, serif" font-size="16.68" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2.2">L'ARBRE QUI CRAQUE : CAVITATION DANS LE XYLÈME</text>
+<rect x="90" y="86" width="180" height="176" rx="14" fill="#F4F1E6" stroke="#6B5A42" stroke-width="2.4"/>
+<rect x="102" y="98" width="156" height="152" rx="8" fill="#9FC4DE"/>
+<text x="180" y="76" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Colonne continue</text>
+<text x="180" y="284" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">L'eau est sous tension (pression</text>
+<text x="180" y="296" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">négative : −0,5 à −3 MPa). La</text>
+<text x="180" y="308" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">colonne tient par cohésion.</text>
+<rect x="350" y="86" width="180" height="176" rx="14" fill="#F4F1E6" stroke="#6B5A42" stroke-width="2.4"/>
+<rect x="362" y="98" width="156" height="152" rx="8" fill="#E2B9A0"/>
+<text x="440" y="76" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Rupture</text>
+<text x="440" y="284" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Le stress hydrique augmente la</text>
+<text x="440" y="296" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">tension. Une bulle d'air est</text>
+<text x="440" y="308" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">aspirée par un pore : la colonne</text>
+<text x="440" y="320" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">casse.</text>
+<rect x="610" y="86" width="180" height="176" rx="14" fill="#F4F1E6" stroke="#6B5A42" stroke-width="2.4"/>
+<rect x="622" y="98" width="156" height="152" rx="8" fill="#DED9CC"/>
+<text x="700" y="76" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Embolie + clic</text>
+<text x="700" y="284" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Le vaisseau se vide. La détente</text>
+<text x="700" y="296" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">libère une onde élastique : un</text>
+<text x="700" y="308" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">clic ultrasonore de 20 à 100 kHz.</text>
+<circle cx="440" cy="168" r="30" fill="#FFFFFF" stroke="#A8552E" stroke-width="2"/>
+<text x="440" y="172" font-family="Lato, sans-serif" font-size="12.18" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">air</text>
+<circle cx="700" cy="174" r="54" fill="#FFFFFF" stroke="#A8552E" stroke-width="2"/>
+<circle cx="700" cy="174" r="62" fill="none" stroke="#A8552E" stroke-width="1.6" opacity="0.55"/>
+<circle cx="700" cy="174" r="78" fill="none" stroke="#A8552E" stroke-width="1.6" opacity="0.40"/>
+<circle cx="700" cy="174" r="94" fill="none" stroke="#A8552E" stroke-width="1.6" opacity="0.25"/>
+<line x1="270" y1="174" x2="344" y2="174" stroke="#6B7A72" stroke-width="2.2" marker-end="url(#ah)"/>
+<line x1="530" y1="174" x2="604" y2="174" stroke="#6B7A72" stroke-width="2.2" marker-end="url(#ah)"/>
+<rect x="90" y="332" width="700" height="58" rx="6" fill="#EAF0F7" stroke="#D2E0EF" stroke-width="1.2"/>
+<text x="440" y="352" font-family="Lato, sans-serif" font-size="13.63" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Ce que cela permet — et ne permet pas</text>
+<text x="440" y="369" font-family="Lato, sans-serif" font-size="11.31" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Le taux de clics est un indicateur reproductible du stress hydrique. Il est mécanique, non intentionnel :</text>
+<text x="440" y="382" font-family="Lato, sans-serif" font-size="11.31" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">l'arbre ne « crie » pas, il se fissure hydrauliquement — ce qui est mesurable, et déjà remarquable.</text>
+</svg>

@@ -1,0 +1,114 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/logiciel-archi.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 720" width="980" height="720">
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+ <marker id="ahk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
+   markerHeight="5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#23302C"/></marker>
+ <marker id="ahc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#A8552E"/></marker>
+ <pattern id="hatch" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#E0C073" stroke-width="2.4"/></pattern>
+ <pattern id="hatchb" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
+</defs>
+<rect width="980" height="720" fill="#FFFFFF"/>
+<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Architecture du logiciel PhytoScope</text>
+<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Trois fils d'exécution, deux files, aucune allocation dans le chemin temps réel</text>
+<rect x="40" y="92" width="260" height="300" rx="8" fill="#F3F8F5" stroke="#3F7D5A" stroke-width="1.4"/>
+<text x="170" y="114" font-family="Lato, sans-serif" font-size="18.81" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">FIL D'ACQUISITION</text>
+<rect x="60" y="138" width="220" height="66" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.3"/>
+<text x="170.0" y="170" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Source</text>
+<text x="170.0" y="190" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">UAC2 · série · fichier · simulée</text>
+<line x1="170" y1="204" x2="170" y2="232" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
+<rect x="60" y="222" width="220" height="66" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.3"/>
+<text x="170.0" y="254" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Horodatage</text>
+<text x="170.0" y="274" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">compteur du CAN → temps UTC</text>
+<line x1="170" y1="288" x2="170" y2="316" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
+<rect x="60" y="306" width="220" height="66" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.3"/>
+<text x="170.0" y="338" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Anneau</text>
+<text x="170.0" y="358" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">collections.deque, 60 s</text>
+<rect x="340" y="92" width="300" height="480" rx="8" fill="#FBF8EF" stroke="#B08528" stroke-width="1.4"/>
+<text x="490" y="114" font-family="Lato, sans-serif" font-size="18.81" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">FIL DE TRAITEMENT (NumPy)</text>
+<rect x="360" y="138" width="260" height="66" rx="7" fill="#fff" stroke="#E0C073" stroke-width="1.3"/>
+<text x="490.0" y="170" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Filtrage</text>
+<text x="490.0" y="190" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">passe-haut, notch 50 Hz, lissage</text>
+<line x1="490" y1="204" x2="490" y2="232" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
+<rect x="360" y="222" width="260" height="66" rx="7" fill="#fff" stroke="#E0C073" stroke-width="1.3"/>
+<text x="490.0" y="254" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Mesures</text>
+<text x="490.0" y="274" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">eff., crête, pente, écart-type</text>
+<line x1="490" y1="288" x2="490" y2="316" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
+<rect x="360" y="306" width="260" height="66" rx="7" fill="#fff" stroke="#E0C073" stroke-width="1.3"/>
+<text x="490.0" y="338" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Détection</text>
+<text x="490.0" y="358" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">seuil adaptatif sur la dérivée</text>
+<line x1="490" y1="372" x2="490" y2="400" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
+<rect x="360" y="390" width="260" height="66" rx="7" fill="#fff" stroke="#E0C073" stroke-width="1.3"/>
+<text x="490.0" y="422" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Sonification</text>
+<text x="490.0" y="442" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">événement → note, durée, nuance</text>
+<line x1="490" y1="456" x2="490" y2="484" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
+<rect x="360" y="474" width="260" height="66" rx="7" fill="#fff" stroke="#E0C073" stroke-width="1.3"/>
+<text x="490.0" y="506" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Synthèse</text>
+<text x="490.0" y="526" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">table d'ondes + enveloppe ADSR</text>
+<line x1="300" y1="240" x2="356" y2="240" stroke="#B08528" stroke-width="2.0" marker-end="url(#ah)"/>
+<text x="328" y="228" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">file</text>
+<rect x="680" y="92" width="260" height="480" rx="8" fill="#EEF3FA" stroke="#2F5E86" stroke-width="1.4"/>
+<text x="810" y="114" font-family="Lato, sans-serif" font-size="18.81" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">FIL D'INTERFACE (Qt)</text>
+<rect x="700" y="138" width="220" height="66" rx="7" fill="#fff" stroke="#2F5E86" stroke-width="1.3"/>
+<text x="810.0" y="170" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Oscilloscope</text>
+<text x="810.0" y="190" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">pyqtgraph · 60 im/s</text>
+<rect x="700" y="222" width="220" height="66" rx="7" fill="#fff" stroke="#2F5E86" stroke-width="1.3"/>
+<text x="810.0" y="254" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Multimètre</text>
+<text x="810.0" y="274" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">afficheur et statistiques</text>
+<rect x="700" y="306" width="220" height="66" rx="7" fill="#fff" stroke="#2F5E86" stroke-width="1.3"/>
+<text x="810.0" y="338" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Analyseur</text>
+<text x="810.0" y="358" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">FFT et spectrogramme</text>
+<rect x="700" y="390" width="220" height="66" rx="7" fill="#fff" stroke="#2F5E86" stroke-width="1.3"/>
+<text x="810.0" y="422" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Écoute</text>
+<text x="810.0" y="442" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">instruments et mixage</text>
+<rect x="700" y="474" width="220" height="66" rx="7" fill="#fff" stroke="#2F5E86" stroke-width="1.3"/>
+<text x="810.0" y="506" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Bibliothèque</text>
+<text x="810.0" y="526" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">séances, relecture</text>
+<line x1="640" y1="240" x2="696" y2="240" stroke="#2F5E86" stroke-width="2.0" marker-end="url(#ahb)"/>
+<text x="668" y="228" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">file</text>
+<rect x="40" y="606" width="260" height="62" rx="7" fill="#0E2A22" stroke="#0E2A22" stroke-width="1.4"/>
+<text x="170.0" y="638" font-family="Cormorant Garamond, serif" font-size="21.57" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Enregistreur</text>
+<text x="170.0" y="658" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">WAV 24 bits + CSV + JSON</text>
+<rect x="340" y="606" width="300" height="62" rx="7" fill="#0E2A22" stroke="#0E2A22" stroke-width="1.4"/>
+<text x="490.0" y="638" font-family="Cormorant Garamond, serif" font-size="21.57" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Sortie audio</text>
+<text x="490.0" y="658" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">sounddevice / PortAudio</text>
+<rect x="680" y="606" width="260" height="62" rx="7" fill="#0E2A22" stroke="#0E2A22" stroke-width="1.4"/>
+<text x="810.0" y="638" font-family="Cormorant Garamond, serif" font-size="21.57" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Sortie MIDI</text>
+<text x="810.0" y="658" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">python-rtmidi</text>
+<line x1="170" y1="392" x2="170" y2="602" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
+<line x1="490" y1="572" x2="490" y2="602" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
+<line x1="810" y1="572" x2="810" y2="602" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
+<text x="28" y="712" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
+<text x="952" y="712" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
+</svg>

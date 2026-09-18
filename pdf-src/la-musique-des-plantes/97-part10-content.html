@@ -1,0 +1,452 @@
+<section class="chapter">
+  <h2 id="c36-nomenclature" data-toc="chapter">Nomenclature, schéma et montage</h2>
+  <p class="chapo">Tout ce qu'il faut acheter, où le placer, et dans quel ordre souder. Comptez une soirée pour un montage sur plaque d'essai, un week-end pour une version en boîtier.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/diy.svg" alt="Synoptique de câblage du dispositif DIY" style="width:100%"/>
+    <figcaption><span class="fig-n">Fig. 10.1.</span> Synoptique général. Sept blocs, dont trois seulement sont indispensables : sondes, oscillateur, microcontrôleur avec sa sortie MIDI.</figcaption>
+  </figure>
+
+  <h3 id="c36-bom" data-toc="sub">Nomenclature complète</h3>
+
+  <table class="tight bom">
+    <thead><tr><th>Rep.</th><th>Désignation</th><th>Valeur / référence</th><th>Tolérance</th><th>Qté</th><th>Prix ind.</th><th>Remarque</th></tr></thead>
+    <tbody>
+      <tr><td>U1</td><td>Temporisateur CMOS</td><td><strong>TLC555CP</strong> ou ICM7555IPA</td><td>—</td><td>1</td><td>0,80 €</td><td>Version CMOS impérative — voir chapitre 35</td></tr>
+      <tr><td>U2</td><td>Carte microcontrôleur</td><td><strong>Arduino Nano</strong> (ATmega328P, 16 MHz) ou Pro Mini 5 V</td><td>—</td><td>1</td><td>6 à 12 €</td><td>Le Pro Mini consomme moins mais exige un programmateur USB-série</td></tr>
+      <tr><td>C1</td><td>Condensateur de temporisation</td><td><strong>4,7 nF</strong> (valeur normalisée la plus proche des 4,2 nF d'origine)</td><td><strong>2 % · NP0/C0G</strong></td><td>1</td><td>0,40 €</td><td><strong>Le composant critique du montage</strong></td></tr>
+      <tr><td>C2, C3</td><td>Découplage d'alimentation</td><td>100 nF céramique</td><td>20 % · X7R</td><td>2</td><td>0,10 €</td><td>Au plus près des broches 8 et 1 du U1 et du VCC de U2</td></tr>
+      <tr><td>C4</td><td>Réservoir d'alimentation</td><td>100 µF / 16 V électrolytique</td><td>20 %</td><td>1</td><td>0,20 €</td><td>Absorbe les pointes de commutation</td></tr>
+      <tr><td>C5</td><td>Broche CV du 555 (broche 5)</td><td>10 nF céramique</td><td>20 %</td><td>1</td><td>0,10 €</td><td>Découple l'entrée de tension de commande ; réduit la gigue</td></tr>
+      <tr><td>R1</td><td>Résistance de temporisation R<sub>B</sub></td><td><strong>100 kΩ</strong></td><td>1 % · couche métal</td><td>1</td><td>0,10 €</td><td>Fixe la borne basse de la plage de période</td></tr>
+      <tr><td>R2</td><td>Résistance série de protection d'électrode</td><td>10 kΩ</td><td>1 %</td><td>2</td><td>0,10 €</td><td>Limite le courant en cas de court-circuit accidentel</td></tr>
+      <tr><td>R3</td><td>Résistance de sortie MIDI</td><td><strong>220 Ω</strong></td><td>5 %</td><td>2</td><td>0,05 €</td><td>Valeur imposée par la norme MIDI</td></tr>
+      <tr><td>R4…R9</td><td>Limitation des LED</td><td>330 Ω à 1 kΩ</td><td>5 %</td><td>6</td><td>0,05 €</td><td>Ajuster selon la luminosité souhaitée</td></tr>
+      <tr><td>R10</td><td>Filtre RC de la sortie de tension de commande</td><td>3,9 kΩ</td><td>5 %</td><td>1</td><td>0,05 €</td><td>Avec C6, lisse la modulation de largeur d'impulsion</td></tr>
+      <tr><td>C6</td><td>Filtre RC de la sortie CV</td><td>100 nF</td><td>20 %</td><td>1</td><td>0,10 €</td><td>Constante de temps ≈ 0,4 ms</td></tr>
+      <tr><td>RV1</td><td>Potentiomètre de seuil</td><td>10 kΩ linéaire</td><td>20 %</td><td>1</td><td>1,00 €</td><td>Relié à A0 — c'est votre réglage de sensibilité</td></tr>
+      <tr><td>LED1…6</td><td>Témoins</td><td>3 mm, diffusantes</td><td>—</td><td>6</td><td>0,10 €</td><td>Une par voix de polyphonie, la sixième pour la sortie CV</td></tr>
+      <tr><td>J1</td><td>Embase MIDI</td><td>DIN 5 broches femelle 180°</td><td>—</td><td>1</td><td>1,50 €</td><td>Ou jack TRS 3,5 mm <strong>type A</strong></td></tr>
+      <tr><td>J2</td><td>Embase sondes</td><td>Jack 3,5 mm stéréo femelle</td><td>—</td><td>1</td><td>0,80 €</td><td>Permet de changer de jeu d'électrodes</td></tr>
+      <tr><td>SW1</td><td>Interrupteur d'alimentation</td><td>Bipolaire à glissière</td><td>—</td><td>1</td><td>0,80 €</td><td>Coupe les deux pôles</td></tr>
+      <tr><td>BAT</td><td>Alimentation</td><td><strong>3 × AA</strong> (4,5 V) ou 4 × AA (6 V)</td><td>—</td><td>1</td><td>2,00 €</td><td><strong>Jamais de secteur</strong> — voir sécurité</td></tr>
+      <tr><td>E1, E2</td><td>Électrodes</td><td><strong>Fil d'argent 0,8 mm chloruré</strong> (chapitre 13) ou pinces inox 316L</td><td>—</td><td>2</td><td>1 à 6 €</td><td>Le composant qui détermine la qualité de tout le reste</td></tr>
+      <tr><td>—</td><td>Câble blindé pour sondes</td><td>Microphone 2 conducteurs blindés, 1 m</td><td>—</td><td>1</td><td>2,00 €</td><td><strong>Blindé obligatoire</strong> ; blindage relié à la masse d'un seul côté</td></tr>
+      <tr><td>—</td><td>Plaque à bandes ou circuit imprimé</td><td>Époxy 70 × 50 mm</td><td>—</td><td>1</td><td>1,50 €</td><td>Le circuit imprimé du MIDI Sprout est publié en fichiers Gerber</td></tr>
+      <tr><td>—</td><td>Boîtier</td><td>ABS ou bois, 110 × 70 × 35 mm</td><td>—</td><td>1</td><td>4,00 €</td><td>Éviter le métal : il faudrait le relier à la masse proprement</td></tr>
+    </tbody>
+    <caption>Nomenclature complète. <strong>Total : 25 à 40 €</strong> selon la carte microcontrôleur et les électrodes choisies. Les trois lignes en gras sont celles où l'économie se paie cher.</caption>
+  </table>
+
+  <h3 id="c36-schema" data-toc="sub">Le schéma, nœud par nœud</h3>
+
+  <div class="schema light">
+    <div class="sch-h">Schéma de principe — version CMOS recommandée</div>
+<pre>
+                              +V (4,5 à 6 V, PILES)
+                               │
+          ┌────────────────────┼────────────────────────┐
+          │                    │                        │
+          │              ┌─────┴─────┐                  │
+       ┌──┴──┐           │  C2 100nF │              ┌───┴────┐
+       │ E1  │           └─────┬─────┘              │ ARDUINO│
+       │sonde│                 │                    │  NANO  │
+       └──┬──┘           ┌─────┴──────┐             │        │
+          │   R2 10k     │ 8  VCC     │             │  VIN ──┤ +V
+          ├───/\/\/──────┤            │             │  GND ──┤ masse
+          │              │ 7  DIS ────┼──┐          │        │
+          │              │            │  │          │        │
+          │              │ 6  THR ────┼──┤          │        │
+          │              │            │  │          │        │
+       ┌──┴──┐           │ 2  TR  ────┼──┤          │        │
+       │ E2  │           │            │  │          │        │
+       │sonde│   R2 10k  │ 3  Q   ────┼──┼──────────┤ D2     │  ← INT0
+       └──┬──┘           │            │  │          │ (INT0) │
+          │              │ 5  CV  ────┼──┼─┐        │        │
+          └──────────────┤            │  │ │        │  A0 ───┤──┬── RV1 10k
+                         │ 4  RST ────┼──┼─┼─ +V    │        │  │  (seuil)
+                         │ 1  GND ────┼──┼─┼─ masse │  D1 ───┤  │
+                         └────────────┘  │ │        │  (TX)  │  │
+                          TLC555 CMOS    │ │        └───┬────┘  │
+                                         │ │            │       │
+     R1 100k                             │ │         R3 220Ω    │
+   masse ──/\/\/──────────────────────────┘ │            │       │
+                                            │            ▼       ▼
+     C1 4,7nF NP0                        C5 10nF      DIN 5 br. masse
+   masse ──┤├─────────────────────────────┤├── masse   broche 5
+                                                       (broche 4 → +V
+                                                        via 220 Ω)
+
+  RÉSEAU DE TEMPORISATION — le cœur du montage
+      R_A = LA PLANTE, entre +V et la broche 7 (DIS)
+      R_B = R1, 100 kΩ, entre la broche 7 et les broches 6/2
+      C   = C1, 4,7 nF NP0, entre les broches 6/2 et la masse
+
+  SORTIE MIDI — câblage normalisé
+      broche 4 de la DIN ← +V à travers 220 Ω
+      broche 5 de la DIN ← TX (D1) à travers 220 Ω
+      broche 2 de la DIN ← masse (blindage uniquement)
+      broches 1 et 3     ← non connectées
+
+  LED — sur D3, D5, D6, D9, D10, D11 (toutes compatibles PWM)
+      chacune en série avec 330 Ω à 1 kΩ vers la masse
+      D11 sert aussi de sortie de tension de commande,
+      via R10 3,9 kΩ + C6 100 nF (filtre passe-bas)
+</pre>
+    <figcaption>Le schéma complet tient en une vingtaine de composants. Comparez-le aux six planches du brevet Damanhur : c'est la même fonction, obtenue par une voie radicalement plus simple.</figcaption>
+  </div>
+
+  <h3 id="c36-montage" data-toc="sub">Ordre de montage</h3>
+
+  <ol class="steps">
+    <li><strong>Vérifiez l'alimentation d'abord, à vide.</strong> Câblez piles, interrupteur, C4 et les découplages. Mesurez la tension avant d'insérer le moindre circuit intégré. Une inversion de polarité détruit tout en une seconde.</li>
+    <li><strong>Montez l'oscillateur seul</strong>, avec une résistance fixe de 150 kΩ à la place de la plante. C'est votre plante d'essai : elle ne sèche pas et ne change pas de valeur.</li>
+    <li><strong>Vérifiez l'oscillation</strong> sur la broche 3, à l'oscilloscope ou, à défaut, avec un petit haut-parleur en série avec un condensateur de 100 nF : vous devez entendre un sifflement grave. Avec 150 kΩ et 4,7 nF, la période théorique est de 1,14 ms, soit 878 Hz.</li>
+    <li><strong>Ajoutez le microcontrôleur</strong> et reliez la broche 3 du 555 à D2. Chargez un croquis minimal qui compte les interruptions et affiche la période sur le moniteur série. <strong>Ne passez pas à l'étape suivante avant que ce chiffre soit stable.</strong></li>
+    <li><strong>Ajoutez le potentiomètre de seuil</strong> sur A0.</li>
+    <li><strong>Ajoutez la sortie MIDI</strong> et testez avec un moniteur MIDI logiciel avant de brancher un synthétiseur.</li>
+    <li><strong>Ajoutez les LED</strong> en dernier. Elles sont confortables mais consomment, et une LED mal câblée peut charger une broche.</li>
+    <li><strong>Remplacez la résistance fixe par les électrodes</strong>, via le câble blindé et l'embase J2.</li>
+    <li><strong>Mettez en boîtier.</strong> Faites cheminer le câble de sondes à l'écart du microcontrôleur et du quartz.</li>
+  </ol>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Sécurité — les cinq règles absolues</div>
+    <ol>
+      <li><strong>Alimentation sur piles uniquement.</strong> Jamais de secteur, jamais de bloc d'alimentation, jamais d'USB relié à un ordinateur branché pendant qu'une plante ou une personne est connectée. Si vous devez programmer la carte, débranchez d'abord les électrodes.</li>
+      <li><strong>Tension maximale 6 V.</strong> Au-delà, le courant injecté dans le végétal devient significatif et le TLC555 sort de sa plage confortable.</li>
+      <li><strong>Courant limité.</strong> Avec R2 = 10 kΩ en série et 6 V, le courant maximal en court-circuit franc est de 0,6 mA. Dans une plante de 1 MΩ, il est de <strong>6 µA</strong> — mille fois moins que le seuil de perception humaine et sans effet physiologique connu sur un végétal.</li>
+      <li><strong>Électrodes inox 316L, argent chloruré ou or.</strong> Jamais de cuivre nu, de laiton ni de zinc au contact prolongé.</li>
+      <li><strong>Sur un être humain</strong>, appliquez en outre toutes les règles du chapitre 34 : batterie, pas de trajet thoracique chez un porteur d'implant, pas de peau lésée.</li>
+    </ol>
+  </div>
+
+  <h3 id="c36-blindage" data-toc="sub">Les quatre règles de câblage qui font la différence</h3>
+
+  <table>
+    <thead><tr><th>Règle</th><th>Raison physique</th><th>Symptôme si elle est violée</th></tr></thead>
+    <tbody>
+      <tr><td>Câble de sondes <strong>blindé</strong>, blindage relié à la masse <strong>d'un seul côté</strong> (celui du boîtier)</td><td>Le blindage intercepte le champ électrique ambiant ; relié aux deux bouts, il devient une boucle de masse captant le champ magnétique</td><td>Ronflement à 50 Hz, ou trille métronomique</td></tr>
+      <tr><td>Pistes de l'entrée haute impédance <strong>les plus courtes possible</strong>, à l'écart du quartz et de la sortie MIDI</td><td>Toute piste est une antenne et un condensateur parasite</td><td>Le montage réagit quand on approche la main</td></tr>
+      <tr><td><strong>Plan de masse continu</strong> sous le circuit</td><td>Retour de courant à faible impédance ; écrantage</td><td>Auto-perturbation, notes erratiques</td></tr>
+      <tr><td><strong>Nettoyage du flux de brasage</strong> à l'alcool isopropylique autour de l'entrée, puis vernis</td><td>Le flux est hygroscopique : il crée un chemin de fuite de quelques centaines de MΩ par temps humide</td><td>Le montage « marche mieux en hiver »</td></tr>
+    </tbody>
+    <caption>Quatre règles. La dernière surprend toujours, et elle explique un nombre étonnant de comportements erratiques.</caption>
+  </table>
+</section>
+
+<section class="chapter">
+  <h2 id="c37-code" data-toc="chapter">Le programme complet de l'ATmega328P</h2>
+  <p class="chapo">Oui, nous l'avons : le micrologiciel du <em>MIDI Sprout</em> a été publié sous licence libre par ses auteurs. Quatre cent vingt-six lignes réparties en cinq fichiers. Le voici, commenté en français.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Provenance et licence</div>
+    <p>Le code reproduit ci-après est celui de <code>MIDI_Psychogalv_328p_v021</code>, publié par <em>Electricity for Progress</em> / Data Garden sur dépôt public, et explicitement désigné comme <em>open-source firmware</em> dans le texte du brevet US&nbsp;10&nbsp;909&nbsp;956 lui-même. Il dépend d'une seule bibliothèque externe, <code>LEDFader</code> de Jeremy Gillick, qui permet de piloter les LED sans bloquer la boucle principale avec des <code>delay()</code>.</p>
+    <p>À titre de comparaison : le programme du microcontrôleur 68HC11 du <em>Device U1</em> de Damanhur est mentionné dans le brevet US&nbsp;6&nbsp;487&nbsp;817 sous la forme « <em>le code objet de l'ANNEXE I</em> », mais cette annexe a été déposée sur microfiche et ne figure pas dans le document numérisé accessible. Le code de Damanhur n'est donc <strong>pas</strong> disponible ; celui du MIDI Sprout l'est intégralement.</p>
+  </div>
+
+  <h3 id="c37-fichiers" data-toc="sub">Architecture des cinq fichiers</h3>
+
+  <table>
+    <thead><tr><th>Fichier</th><th>Lignes</th><th>Rôle</th></tr></thead>
+    <tbody>
+      <tr><td><code>MIDI_Psychogalv_328p_v021.ino</code></td><td>111</td><td>Déclarations, gammes, structures, <code>setup()</code> et <code>loop()</code></td></tr>
+      <tr><td><code>SampleAnalysis.ino</code></td><td>69</td><td>Routine d'interruption et détection statistique de changement</td></tr>
+      <tr><td><code>Scale.ino</code></td><td>23</td><td>Quantification d'une note sur une gamme</td></tr>
+      <tr><td><code>MIDIserial.ino</code></td><td>118</td><td>Gestion de la polyphonie, messages de contrôle, trame MIDI</td></tr>
+      <tr><td><code>Peripherals.ino</code></td><td>105</td><td>Potentiomètre, LED, contrôle de la tension de pile</td></tr>
+    </tbody>
+    <caption>Les cinq fichiers. L'architecture est celle d'un séquenceur temps réel non bloquant : aucun <code>delay()</code> dans la boucle principale.</caption>
+  </table>
+
+  <h3 id="c37-principal" data-toc="sub">Fichier principal — déclarations et boucle</h3>
+
+  <div class="code">
+    <div class="code-h">MIDI_Psychogalv_328p_v021.ino — paramètres réglables</div>
+<pre>// --- Gammes : premier élément = nombre de degrés, puis les degrés ---
+int scaleMajor[]    = {7, 1, 3, 5, 6, 8, 10, 12};
+int scaleDiaMinor[] = {7, 1, 3, 4, 6, 8,  9, 11};
+int scaleIndian[]   = {7, 1, 2, 2, 5, 6,  9, 11};
+int scaleMinor[]    = {7, 1, 3, 4, 6, 8,  9, 11};
+int scaleChrom[]    = {12,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+int *scaleSelect = scaleChrom;   // gamme active — CHROMATIQUE par défaut
+int root = 0;                    // tonique
+
+const byte interruptPin = INT0;  // entrée galvanomètre = broche D2
+const byte knobPin      = A0;    // potentiomètre de seuil
+
+const byte samplesize   = 10;         // taille de la fenêtre d'analyse
+const byte analysize    = samplesize - 1;  // on écarte le premier échantillon
+
+const byte polyphony = 5;    // au-delà de 8 notes, la RAM est saturée
+byte channel  = 1;           // canal MIDI (11 ou 12 simplifient le routage)
+int  noteMin  = 36;          // do2 — note la plus grave
+int  noteMax  = 96;          // do7 — note la plus aiguë
+byte controlNumber  = 80;    // n° de Control Change émis
+byte controlVoltage = 1;     // sortie CV par PWM sur la broche 11
+long batteryLimit   = 3000;  // 3,0 V : en dessous, on coupe les LED
+
+float threshold = 2.3;    // multiplicateur de seuil — LE réglage clé
+float threshMin = 1.61;   // borne basse atteinte par le potentiomètre
+float threshMax = 3.71;   // borne haute</pre>
+  </div>
+
+  <div class="loupe">
+    <div class="l-h">Comment lire un tableau de gamme</div>
+    <p>Chaque tableau commence par le <strong>nombre de degrés</strong>, suivi des degrés eux-mêmes exprimés en demi-tons à partir de la tonique. Ainsi <code>scaleMajor</code> = {7 degrés ; 1, 3, 5, 6, 8, 10, 12} correspond aux intervalles de la gamme majeure décalés d'un demi-ton par convention interne du programme.</p>
+    <p><strong>Pour ajouter votre propre gamme</strong>, il suffit d'une ligne. Une pentatonique mineure s'écrirait <code>int scalePenta[] = {5, 1, 4, 6, 8, 11};</code> et s'active par <code>scaleSelect = scalePenta;</code>. C'est l'une des modifications les plus gratifiantes à faire soi-même.</p>
+    <p>Remarquez que la valeur par défaut est <strong>chromatique</strong> : les auteurs du micrologiciel ont fait le choix de l'honnêteté. C'est l'application qui, plus tard, impose une gamme.</p>
+  </div>
+
+  <div class="code">
+    <div class="code-h">Structure de message et boucle principale</div>
+<pre>typedef struct _MIDImessage {   // un message MIDI en attente
+  unsigned int type;
+  int  value;        // hauteur de note, ou n° de contrôleur
+  int  velocity;     // vélocité, ou valeur cible du contrôleur
+  long duration;     // instant d'extinction (en millisecondes absolues)
+  long period;       // cadence de rampe pour les messages de contrôle
+  int  channel;
+} MIDImessage;
+
+MIDImessage noteArray[polyphony];  // les notes en cours
+MIDImessage controlMessage;        // le message de contrôle en cours
+
+void setup() {
+  pinMode(knobPin, INPUT);
+  randomSeed(analogRead(0));
+  Serial.begin(31250);          // ← DÉBIT MIDI NORMALISÉ
+  controlMessage.value = 0;
+  checkBattery();               // coupe les LED si la pile est faible
+  if (noteLEDs) bootLightshow();
+  attachInterrupt(interruptPin, sample, RISING);  // ← démarre la mesure
+}
+
+void loop() {
+  currentMillis = millis();
+  checkBattery();       // surveille la pile
+  checkKnob();          // relit le potentiomètre de seuil
+  if (index >= samplesize) { analyzeSample(); }   // fenêtre pleine → analyse
+  checkNote();          // éteint les notes arrivées à échéance
+  checkControl();       // avance la rampe du message de contrôle
+  checkLED();           // met à jour les fondus sans delay()
+  previousMillis = currentMillis;
+}</pre>
+  </div>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique — une architecture non bloquante</div>
+    <p>Observez qu'il n'y a <strong>aucun <code>delay()</code></strong> dans la boucle principale. Toute la temporisation repose sur la comparaison d'un horodatage absolu (<code>currentMillis</code>) à une échéance stockée dans chaque message.</p>
+    <p>C'est indispensable ici. La routine d'interruption se déclenche à chaque front du 555, soit environ toutes les millisecondes. Un <code>delay(250)</code> dans la boucle principale ferait manquer deux cent cinquante fronts, et l'analyse statistique porterait sur une fenêtre temporelle aberrante. Cette architecture — boucle rapide, échéances absolues, interruption minimale — est le modèle canonique de tout système temps réel embarqué, et c'est une bonne raison d'étudier ce code même si l'on ne construit pas l'appareil.</p>
+  </div>
+
+  <h3 id="c37-analyse" data-toc="sub">Le cœur : détection de changement</h3>
+
+  <div class="code">
+    <div class="code-h">SampleAnalysis.ino — l'algorithme intégral</div>
+<pre>void sample()          // ROUTINE D'INTERRUPTION — front montant sur D2
+{
+  if (index < samplesize) {
+    samples[index] = micros() - microseconds;
+    microseconds   = samples[index] + microseconds;  // reconstruit micros()
+                                                     // sans le rappeler
+    index += 1;
+  }
+}
+
+void analyzeSample()
+{
+  unsigned long averg = 0, maxim = 0, minim = 100000, delta = 0;
+  float stdevi = 0;
+  byte change = 0;
+
+  if (index == samplesize) {                 // la fenêtre est pleine
+    unsigned long sampanalysis[analysize];
+    for (byte i = 0; i < analysize; i++) {
+      sampanalysis[i] = samples[i+1];        // on écarte le 1er échantillon
+      if (sampanalysis[i] > maxim) maxim = sampanalysis[i];
+      if (sampanalysis[i] < minim) minim = sampanalysis[i];
+      averg  += sampanalysis[i];
+      stdevi += sampanalysis[i] * sampanalysis[i];   // somme des carrés
+    }
+
+    averg  = averg / analysize;
+    stdevi = sqrt(stdevi / analysize - averg * averg);  // écart-type
+    if (stdevi < 1) stdevi = 1.0;            // plancher, évite la division
+    delta  = maxim - minim;
+
+    // ═══════════ DÉTECTION DE CHANGEMENT ═══════════
+    if (delta > (stdevi * threshold)) { change = 1; }
+    // ═══════════════════════════════════════════════
+
+    if (change) {
+      int dur   = 150 + (map(delta % 127, 1, 127, 100, 2500));  // durée
+      int ramp  = 3 + (dur % 100);                              // pente CC
+      int notechannel = random(1, 5);
+
+      int setnote = map(averg % 127, 1, 127, noteMin, noteMax); // hauteur
+      setnote = scaleNote(setnote, scaleSelect, root);          // quantifie
+      setNote(setnote, 100, dur, channel);
+
+      setControl(controlNumber, controlMessage.value, delta % 127, ramp);
+    }
+    index = 0;    // on réarme la fenêtre
+  }
+}</pre>
+  </div>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Trois remarques critiques sur ce code</div>
+    <p><strong>L'écart-type est calculé de façon numériquement instable.</strong> La formule <code>sqrt(Σx²/n − (Σx/n)²)</code> soustrait deux grands nombres presque égaux : sur des périodes de l'ordre de 1 000 µs, les carrés atteignent 10⁶ et la perte de précision est réelle en arithmétique flottante 32 bits. Une implémentation plus robuste utiliserait l'algorithme de Welford. En pratique, cela fonctionne — mais si vous réécrivez le code, corrigez ce point.</p>
+    <p><strong>Le <code>% 127</code> est un choix arbitraire lourd de conséquences.</strong> <code>averg % 127</code> replie la moyenne dans 0-126 : deux valeurs de période séparées de 127 µs donnent <em>exactement la même note</em>. La correspondance période → hauteur n'est donc ni monotone ni continue, mais en dents de scie. C'est musicalement intéressant — cela crée des sauts d'octave inattendus — et physiquement dénué de sens. Sachez-le quand vous interprétez une hauteur.</p>
+    <p><strong>La vélocité est fixée à 100</strong> et ne porte aucune information. Toutes les notes sortent avec la même force. C'est une occasion manquée : la vélocité pourrait porter <code>delta</code>, ce qui donnerait une dynamique réellement issue de la plante. <strong>C'est la première modification que nous suggérons</strong> à qui veut améliorer ce code.</p>
+  </div>
+
+  <div class="code">
+    <div class="code-h">Scale.ino — quantification sur une gamme</div>
+<pre>int scaleSearch(int note, int scale[], int scalesize) {
+  for (byte i = 1; i < scalesize; i++) {
+    if (note == scale[i]) return note;
+    else if (note < scale[i]) return scale[i];  // 1er degré supérieur
+  }
+  return 6;   // valeur arbitraire plutôt qu'un échec
+}
+
+int scaleNote(int note, int scale[], int root) {
+  int scaled    = note % 12;      // position dans l'octave
+  int octave    = note / 12;      // numéro d'octave
+  int scalesize = scale[0];
+  scaled = scaleSearch(scaled, scale, scalesize);
+  scaled = (scaled + (12 * octave)) + root;   // on réassemble
+  return scaled;
+}</pre>
+  </div>
+
+  <div class="code">
+    <div class="code-h">MIDIserial.ino — émission de la trame</div>
+<pre>void midiSerial(int type, int channel, int data1, int data2) {
+  cli();                                  // interruptions désactivées
+    data1 &= 0x7F;                        // on force le bit 7 à 0
+    data2 &= 0x7F;                        // (données MIDI = 7 bits)
+    byte statusbyte = (type | ((channel - 1) & 0x0F));
+    Serial.write(statusbyte);             // 0x9n = Note On, 0xBn = CC
+    Serial.write(data1);
+    Serial.write(data2);
+  sei();                                  // interruptions réactivées
+}</pre>
+  </div>
+
+  <div class="loupe">
+    <div class="l-h">Pourquoi couper les interruptions pendant l'émission</div>
+    <p>Une trame MIDI est un triplet indissociable : octet de statut, puis deux octets de données. Si une interruption survenait entre deux <code>Serial.write()</code> et retardait l'émission, un synthétiseur pourrait interpréter la trame de travers.</p>
+    <p>Le commentaire du code dit « <em>probablement inutile</em> », et c'est exact avec le tampon série de l'Arduino — mais c'est un bon réflexe défensif qui ne coûte rien. Notez tout de même que couper les interruptions fait <em>manquer des fronts</em> du 555 : sur une émission de trois octets à 31 250 bauds, cela dure environ 960 µs, soit à peu près une période complète de l'oscillateur. Un échantillon perdu de temps en temps, sans conséquence sur une fenêtre de dix.</p>
+  </div>
+
+  <div class="code">
+    <div class="code-h">Peripherals.ino — le voltmètre secret</div>
+<pre>long readVcc() {   // mesure la tension d'alimentation SANS composant externe
+  long result;
+  // On mesure la référence interne de 1,1 V PAR RAPPORT à AVcc
+  ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+  delay(2);                          // laisse la référence s'établir
+  ADCSRA |= _BV(ADSC);               // lance la conversion
+  while (bit_is_set(ADCSRA, ADSC));  // attend la fin
+  result  = ADCL;
+  result |= ADCH << 8;
+  result = 1126400L / result;        // 1,1 V × 1024 × 1000 → AVcc en mV
+  return result;
+}</pre>
+  </div>
+
+  <p>Cette fonction est un classique de l'ATmega et mérite d'être connue : elle permet de mesurer la tension de la pile <em>sans aucun composant</em>, en retournant le principe du convertisseur. Au lieu de mesurer une tension inconnue par rapport à une référence connue, on mesure une référence connue (les 1,1 V internes) par rapport à l'alimentation, et l'on en déduit celle-ci. Le programme s'en sert pour éteindre les LED quand la pile descend sous 3,0 V — économisant ainsi l'essentiel de la consommation pour prolonger la mesure.</p>
+
+  <h3 id="c37-modifs" data-toc="sub">Cinq modifications à faire vous-même</h3>
+
+  <table>
+    <thead><tr><th>Modification</th><th>Ligne à changer</th><th>Bénéfice</th><th>Difficulté</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Vélocité proportionnelle au delta</strong></td><td><code>setNote(setnote, 100, ...)</code> → <code>setNote(setnote, map(delta%127,1,127,40,127), ...)</code></td><td>La dynamique devient végétale au lieu d'être constante</td><td>★☆☆</td></tr>
+      <tr><td><strong>Ajouter une gamme</strong></td><td>Une ligne <code>int scaleXXX[] = {...};</code></td><td>Palette personnelle</td><td>★☆☆</td></tr>
+      <tr><td><strong>Journaliser la période brute sur le port série</strong></td><td><code>Serial.println(averg)</code> dans <code>analyzeSample()</code>, sur un second port logiciel</td><td><strong>Accès à la donnée physique</strong>, et non au seul MIDI</td><td>★★☆</td></tr>
+      <tr><td><strong>Écart-type par l'algorithme de Welford</strong></td><td>Réécriture de la boucle d'accumulation</td><td>Stabilité numérique</td><td>★★☆</td></tr>
+      <tr><td><strong>Supprimer le <code>% 127</code> et normaliser proprement</strong></td><td><code>map(constrain(averg, minObs, maxObs), minObs, maxObs, noteMin, noteMax)</code> avec une plage apprise automatiquement</td><td>Correspondance période → hauteur <strong>monotone et physiquement interprétable</strong></td><td>★★★</td></tr>
+    </tbody>
+    <caption>Cinq améliorations, par difficulté croissante. La troisième et la cinquième transforment un jouet musical en instrument de mesure.</caption>
+  </table>
+
+  <div class="callout energie">
+    <div class="callout-title">🌿 Regard énergétique</div>
+    <p>Il y a quelque chose de juste dans le fait que ce code soit public. Les auteurs du <em>MIDI Sprout</em> auraient pu le garder ; ils l'ont publié, et c'est de là que vient tout ce que vous pouvez faire aujourd'hui avec trente euros.</p>
+    <p>Lire ce code change le rapport à l'objet. Vous ne possédez plus une boîte qui fait de la musique : vous connaissez les quatre cent vingt-six lignes qui décident de ce que vous entendez, vous savez lesquelles sont arbitraires, et vous pouvez les changer. C'est exactement ce que ce livre entend par <em>dialogue</em> : non pas une communication mystérieuse avec le végétal, mais la fin de l'opacité entre vous et l'instrument qui vous le rend audible.</p>
+  </div>
+
+  <h3 id="c37-biotron" data-toc="sub">Le second micrologiciel public : Biotron</h3>
+
+  <p>Une seconde architecture est entièrement ouverte, et elle mérite l'étude parce qu'elle résout le même problème par une voie opposée. Le micrologiciel du <em>Biotron</em> de Playtronica, écrit en C pour microcontrôleur RP2040 (Raspberry Pi Pico), est publié sous licence MIT.</p>
+
+  <table>
+    <thead><tr><th></th><th>MIDI Sprout (ATmega328P)</th><th>Biotron (RP2040)</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Méthode de mesure</strong></td><td><strong>Période</strong> — on chronomètre chaque front avec <code>micros()</code></td><td><strong>Fréquence</strong> — on compte les fronts sur une fenêtre de 100 ms</td></tr>
+      <tr><td><strong>Mécanisme matériel</strong></td><td>Interruption externe INT0</td><td>Tranche PWM configurée en compteur de fronts montants</td></tr>
+      <tr><td><strong>Résolution</strong></td><td>4 µs par mesure (limite de <code>micros()</code>)</td><td>1 front — soit 10 Hz de résolution sur une fenêtre de 100 ms</td></tr>
+      <tr><td><strong>Avantage</strong></td><td>Voit chaque impulsion : réactivité maximale</td><td>Moyenne intégrée : insensible aux impulsions isolées, donc au bruit</td></tr>
+      <tr><td><strong>Inconvénient</strong></td><td>Sensible à une impulsion parasite unique</td><td>Latence de 100 ms, et perte des événements très brefs</td></tr>
+      <tr><td><strong>Langage</strong></td><td>Arduino / C++</td><td>C sur SDK Pico</td></tr>
+    </tbody>
+    <caption>Deux façons de mesurer la même grandeur. Compter des fronts sur une durée fixe et chronométrer l'intervalle entre deux fronts sont mathématiquement équivalents — mais leurs propriétés de bruit sont opposées.</caption>
+  </table>
+
+  <div class="code">
+    <div class="code-h">Biotron — mesure de fréquence par compteur matériel (<code>src/raw_plant.c</code>)</div>
+<pre>#define PLANT_PIN        13     /* broche d'entrée du signal de la plante */
+#define TIMER_PLANT_MS   100    /* fenêtre de comptage, en millisecondes  */
+#define TIMER_MULTIPLIER (1000 / TIMER_PLANT_MS)   /* → fronts par seconde */
+
+void setupPwm(uint8_t freq_pin) {
+    slice_num = pwm_gpio_to_slice_num(freq_pin);
+    pwm_config cfg = pwm_get_default_config();
+    pwm_config_set_clkdiv_mode(&amp;cfg, PWM_DIV_B_RISING);  /* ← COMPTEUR DE
+                                                              FRONTS MONTANTS */
+    pwm_config_set_clkdiv(&amp;cfg, 1);
+    pwm_init(slice_num, &amp;cfg, false);
+    gpio_set_function(freq_pin, GPIO_FUNC_PWM);
+    pwm_set_enabled(slice_num, true);
+    /* … interruption de débordement pour étendre le compteur à 32 bits … */
+}
+
+static bool _repeating_timer_callback_t(repeating_timer_t *rt) {
+    freq_ready = true;
+    realFreq = _pwm_read(slice_num) * TIMER_MULTIPLIER
+             + rand() % (settings.random_note * 10);   /* ← voir ci-dessous */
+    return true;
+}</pre>
+  </div>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Une ligne qu'il faut lire attentivement</div>
+    <p>Regardez la dernière ligne du calcul de fréquence : <code>+ rand() % (settings.random_note * 10)</code>. Ce micrologiciel <strong>ajoute délibérément un nombre aléatoire</strong> à la fréquence mesurée, dans une proportion réglable par un paramètre que l'interface nomme « <em>Ultra sensitivity</em> ».</p>
+    <p>Ce n'est ni un bogue ni une tromperie : le paramètre est documenté publiquement, et la fonction est musicalement compréhensible — sur une plante très calme, la fréquence mesurée varie trop peu pour franchir un seuil, et le boîtier resterait muet. L'aléa relance la machine.</p>
+    <p>Mais il faut en mesurer la portée. <strong>Quand ce réglage est actif, une partie de ce que vous entendez ne vient pas de la plante : elle vient d'un générateur de nombres aléatoires.</strong> Pour toute écoute que vous présentez comme informative, mettez ce paramètre à zéro — et vérifiez que les autres appareils, qui ne publient pas leur code, n'en font pas autant sans le dire.</p>
+    <p>Voilà, incidemment, le meilleur argument en faveur du logiciel libre dans ce domaine : <em>on ne peut vérifier que ce que l'on peut lire</em>. Si cette ligne existe ailleurs, personne ne le saura jamais.</p>
+  </div>
+
+  <p>Le micrologiciel expose par ailleurs une trentaine de réglages, accessibles en SysEx et en <em>Control Change</em>, dont la nomenclature complète est publiée : tempo, taille de pas, gamme, vélocités minimale et maximale, « humanisation », répétition de note, tenue, plage du capteur de lumière, mode de <em>pitch bend</em>, note de référence. C'est, de loin, l'appareil le plus paramétrable du marché — et le seul dont on puisse auditer les choix.</p>
+
+  <p>Adresse du dépôt : <a href="https://github.com/Playtronica/biotron-firmware">github.com/Playtronica/biotron-firmware</a>.</p>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Le micrologiciel complet de l'ATmega328P est public : 426 lignes, 5 fichiers, une seule bibliothèque externe.</li>
+      <li>Le code de Damanhur pour le 68HC11, lui, n'est pas disponible (annexe sur microfiche).</li>
+      <li>Architecture non bloquante : aucun <code>delay()</code>, échéances absolues, interruption minimale.</li>
+      <li>La détection est un seuil sur <code>delta > écart-type × seuil</code>, avec le seuil réglé au potentiomètre.</li>
+      <li>Trois défauts connus : écart-type numériquement instable, correspondance en dents de scie par le <code>% 127</code>, vélocité constante.</li>
+      <li>Cinq modifications proposées, dont deux transforment l'appareil en instrument de mesure.</li>
+      <li>Le Biotron mesure une fréquence plutôt qu'une période — et ajoute, de façon documentée, un aléa réglable au signal.</li>
+    </ul>
+  </div>
+
+  <div class="ornament"></div>
+</section>

@@ -1,0 +1,58 @@
+{
+  "nom": "Português — registo contemplativo",
+  "langue": "pt",
+  "auteur": "Bretagne Namasté",
+  "note": "Dictionnaire d'exemple. Le modifier est l'usage normal, pas une entorse : les mots doivent être ceux de celui qui écoute.",
+  "grammaire": "contemplative",
+  "registres": {
+    "sujet": [
+      "eu",
+      "algo",
+      "a seiva",
+      "o tronco",
+      "a folha"
+    ],
+    "verbe_montee": [
+      "estremeço",
+      "desperto",
+      "subo",
+      "lanço-me",
+      "irrompo"
+    ],
+    "verbe_descente": [
+      "acalmo-me",
+      "desço",
+      "recolho-me",
+      "repouso",
+      "desvaneço-me"
+    ],
+    "intensite": [
+      "mal",
+      "suavemente",
+      "nitidamente",
+      "com força",
+      "com toda a minha madeira"
+    ],
+    "tempo": [
+      "ainda",
+      "de novo",
+      "depois de um tempo",
+      "depois de muito tempo",
+      "depois de um silêncio muito longo"
+    ],
+    "couleur": [
+      "surdo",
+      "grave",
+      "amplo",
+      "claro",
+      "agudo"
+    ],
+    "liaison": [
+      "e",
+      "depois",
+      "então",
+      "enquanto",
+      "—"
+    ]
+  }
+}

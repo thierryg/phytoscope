@@ -1,0 +1,101 @@
+<section class="chapter">
+  <h2 id="ann-biblio" data-toc="chapter">Annexe F — Sources</h2>
+
+  <p class="chapo">Ce qui a servi à concevoir la carte, et ce qui permet de vérifier ce qui est
+  affirmé ici. Les notices techniques valent d'être lues : elles contiennent l'essentiel de
+  l'électronique de mesure moderne.</p>
+
+  <h3 id="bib-notices" data-toc="sub">Notices techniques et notes d'application</h3>
+  <div class="bib">
+    <p><strong>Analog Devices.</strong> <em>ADA4530-1 — Femtoampere Input Bias Current
+    Electrometer Amplifier</em>, fiche technique et note d'application AN-1373. La référence
+    absolue sur la garde et le tracé des entrées à très haute impédance. Les vingt pages sur le
+    circuit imprimé valent à elles seules la lecture.</p>
+    <p><strong>Analog Devices.</strong> <em>ADuM4151 — SPIsolator Digital Isolator</em> et
+    <em>AN-0971, Recommendations for Control of Radiated Emissions with iCoupler Devices</em>.</p>
+    <p><strong>Analog Devices.</strong> <em>LT3045 / LT3094 — Ultralow Noise, Ultrahigh PSRR
+    Linear Regulators</em>. Comment obtenir moins d'un microvolt de bruit sur un rail.</p>
+    <p><strong>Texas Instruments.</strong> <em>ADS131M04 — 24-Bit, 4-Channel, Simultaneously
+    Sampling Delta-Sigma ADC</em>, et <em>SBAA532, Analog Front-End Design for ECG Systems</em>.</p>
+    <p><strong>Texas Instruments.</strong> <em>INA828 — Precision Instrumentation Amplifier</em> ;
+    <em>OPA2189 — Zero-Drift Operational Amplifier</em> ; <em>SN6505B — Transformer Driver for
+    Isolated Power Supplies</em>.</p>
+    <p><strong>Raspberry Pi Ltd.</strong> <em>RP2350 Datasheet</em> et <em>Hardware Design with
+    RP2350</em>. Documentation exemplaire, entièrement ouverte.</p>
+    <p><strong>USB Implementers Forum.</strong> <em>Universal Serial Bus Device Class Definition
+    for Audio Devices, Release 2.0</em>. La section sur les horloges asynchrones est celle qui
+    importe ici.</p>
+    <p><strong>MIDI Association.</strong> <em>Specification for use of TRS Connectors with MIDI
+    Devices</em>, 2018. Définit le brochage « type A » employé par la sortie MIDI.</p>
+  </div>
+
+  <h3 id="bib-mesure" data-toc="sub">Électronique de mesure</h3>
+  <div class="bib">
+    <p><strong>Ott, Henry W.</strong> <em>Electromagnetic Compatibility Engineering</em>, Wiley,
+    2009. Les chapitres sur les masses, les blindages et les boucles ont directement inspiré le
+    plan de masse fendu de cette carte.</p>
+    <p><strong>Horowitz, Paul &amp; Hill, Winfield.</strong> <em>The Art of Electronics</em>,
+    3ᵉ édition, Cambridge University Press, 2015. Chapitre 8 pour le bruit, chapitre 5 pour la
+    détection synchrone.</p>
+    <p><strong>Keithley Instruments.</strong> <em>Low Level Measurements Handbook</em>, 7ᵉ édition.
+    Disponible gratuitement. Le seul ouvrage qui traite sérieusement des courants de fuite de
+    surface et des matériaux isolants.</p>
+    <p><strong>Allan, David W.</strong> « Statistics of Atomic Frequency Standards »,
+    <em>Proceedings of the IEEE</em>, 54(2), 1966. L'article fondateur de la variance qui porte son
+    nom.</p>
+  </div>
+
+  <h3 id="bib-plantes" data-toc="sub">Électrophysiologie végétale</h3>
+  <div class="bib">
+    <p><strong>Bose, Jagadish Chandra.</strong> <em>Response in the Living and Non-Living</em>,
+    1902 ; <em>Plant Response as a Means of Physiological Investigation</em>, 1906. Domaine public.
+    Les montages y sont décrits avec une précision qui reste exemplaire.</p>
+    <p><strong>Fromm, Jörg &amp; Lautner, Silke.</strong> « Electrical signals and their
+    physiological significance in plants », <em>Plant, Cell &amp; Environment</em>, 30(3), 2007.
+    Revue de référence sur les potentiels d'action et de variation.</p>
+    <p><strong>Volkov, Alexander G. (dir.).</strong> <em>Plant Electrophysiology — Theory and
+    Methods</em>, Springer, 2006. Les chapitres méthodologiques donnent les ordres de grandeur
+    employés dans le cahier des charges.</p>
+    <p><strong>Mallatt, Jon <em>et al.</em></strong> « Debunking a myth: plant consciousness »,
+    <em>Protoplasma</em>, 258, 2021. Contrepoint indispensable à la littérature enthousiaste.</p>
+  </div>
+
+  <h3 id="bib-appareils" data-toc="sub">Documentation des appareils du commerce</h3>
+  <div class="bib">
+    <p><strong>Music of the Plants.</strong> <em>Ginkgo — Guide d'utilisation</em> ;
+    <em>Guide du boîtier Bamboo</em> ; <em>Guide Device U1, français</em>. Publiés par le
+    distributeur français, musiquedesplantes.fr. Les tableaux comparatifs et les descriptions de
+    panneaux cités en partie VI en proviennent.</p>
+    <p><strong>PlantWave.</strong> <em>Manuel d'utilisation, version française</em>,
+    help.plantwave.com. Réglages de l'application, configuration MIDI, autonomie.</p>
+    <p class="small">Ces documents décrivent ce que les fabricants annoncent. Aucune mesure
+    indépendante de leurs performances électriques n'a été conduite pour cet ouvrage ; les
+    comparaisons de la partie VI portent donc sur des fonctionnalités déclarées, non sur des
+    relevés.</p>
+  </div>
+
+  <h3 id="bib-logiciel" data-toc="sub">Logiciel</h3>
+  <div class="bib">
+    <p><strong>Harris, Charles R. <em>et al.</em></strong> « Array programming with NumPy »,
+    <em>Nature</em>, 585, 2020.</p>
+    <p><strong>Bristow-Johnson, Robert.</strong> <em>Cookbook formulae for audio EQ biquad filter
+    coefficients</em>. Les formules employées dans le module de traitement du signal.</p>
+    <p><strong>Schroeder, Manfred R.</strong> « Natural Sounding Artificial Reverberation »,
+    <em>Journal of the Audio Engineering Society</em>, 10(3), 1962. La réverbération du
+    synthétiseur interne en est l'application directe.</p>
+    <p><strong>The Qt Company.</strong> <em>Qt for Python documentation</em> ; et Campagnola, Luke,
+    <em>pyqtgraph</em>. Les deux briques de l'interface.</p>
+  </div>
+
+  <h3 id="bib-collection" data-toc="sub">Dans la même collection</h3>
+  <div class="bib">
+    <p><strong>Bretagne Namasté.</strong> <em>La Musique des Plantes — Dialogue vibratoire avec le
+    monde végétal</em>, 2026. L'ouvrage principal : histoire, fondements, brevets, comparatif des
+    appareils, protocoles, et le montage de niveau 1 en partie X.</p>
+    <p><strong>Ateliers BN.</strong> <em>Créer un Arbre Parlant — Manuel d'atelier</em>, 2026.
+    Le montage de niveau 2, à INA333 et ADS1115, avec sa chaîne logicielle complète.</p>
+    <p><strong>Ateliers BN.</strong> <em>Biocommunication Végétale et Intelligence
+    Artificielle</em>, 2026. Ce que les données permettent — et ne permettent pas — de faire dire
+    à une machine.</p>
+  </div>
+</section>

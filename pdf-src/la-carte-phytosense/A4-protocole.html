@@ -1,0 +1,97 @@
+<section class="chapter">
+  <h2 id="ann-protocole" data-toc="chapter">Annexe D — Protocole et formats</h2>
+
+  <p class="chapo">Tout ce qu'il faut pour écrire son propre logiciel, ou pour relire un fichier
+  dans dix ans sans celui-ci.</p>
+
+  <h3 id="ann-serie" data-toc="sub">Le dialogue de contrôle</h3>
+  <p>Port série virtuel, 115 200 bauds, huit bits, sans parité. Les commandes sont en texte,
+  terminées par un retour chariot et un saut de ligne. Les réponses tiennent sur une ligne et
+  commencent par <span class="phon">+</span> en cas de succès, <span class="phon">−</span> en cas
+  d'erreur, suivi d'un objet JSON.</p>
+
+  <table class="pinout tight">
+    <thead><tr><th>Commande</th><th>Effet</th><th>Réponse</th></tr></thead>
+    <tbody>
+      <tr><td>?</td><td>Identification complète de la carte et de sa carte fille</td>
+        <td>modèle, série, micrologiciel, voies, fréquence, gains, étalonnage</td></tr>
+      <tr><td>gain &lt;n&gt; | auto</td><td>Force le gain matériel, ou rend la main à l'auto-échelle</td>
+        <td>gain appliqué, état de l'auto-échelle</td></tr>
+      <tr><td>range &lt;0-3&gt;</td><td>Gamme du pont de mesure</td><td>gamme, résistance de référence</td></tr>
+      <tr><td>clock</td><td>Compteur d'échantillons et écart de l'oscillateur</td>
+        <td>n, temps, ppm, échantillons perdus</td></tr>
+      <tr><td>mark &lt;texte&gt;</td><td>Insère un marqueur horodaté dans le flux</td>
+        <td>numéro d'échantillon, étiquette</td></tr>
+      <tr><td>selftest</td><td>Mesure les trois étalons internes</td>
+        <td>mesures, écarts, plancher de bruit, courant de fuite</td></tr>
+      <tr><td>env</td><td>Grandeurs d'ambiance</td>
+        <td>température, humidité, pression, éclairement</td></tr>
+      <tr><td>save</td><td>Mémorise les réglages courants en flash</td><td>confirmation</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="ann-flux" data-toc="sub">Le flux de mesure</h3>
+  <p>Classe audio 2.0, entrée, quatre voies, vingt-quatre bits, source d'horloge asynchrone. La
+  correspondance entre les voies et les grandeurs est donnée par la commande d'identification. La
+  conversion en volts s'écrit :</p>
+  <div class="code">
+    <div class="code-h">Conversion d'un échantillon en volts</div>
+<pre>  V_entrée = (échantillon / 2^23) × pleine_échelle / gain_matériel + offset_CNA
+
+      échantillon      entier signé sur 24 bits, tel que lu dans le flux
+      pleine_échelle   1,2 V pour l'ADS131M04 avec la référence à 2,5 V
+      gain_matériel    valeur renvoyée par « ? » ou par « gain »
+      offset_CNA       tension de recentrage, renvoyée à chaque changement</pre>
+  </div>
+
+  <h3 id="ann-seance" data-toc="sub">Le format d'une séance</h3>
+  <p>Un répertoire, six fichiers, aucun format propriétaire.</p>
+  <table class="tight">
+    <thead><tr><th>Fichier</th><th>Format</th><th>Contenu</th></tr></thead>
+    <tbody>
+      <tr><td><span class="phon">seance.json</span></td><td>JSON</td>
+        <td>Métadonnées, réglages complets, étalonnage, correspondance des horloges, compteurs.
+        <strong>C'est le fichier qui rend les autres interprétables.</strong></td></tr>
+      <tr><td><span class="phon">signal.wav</span></td><td>WAV PCM 24 bits</td>
+        <td>Signal brut, une piste par voie. L'échelle est donnée par <span class="phon">full_scale_v</span>
+        dans le JSON.</td></tr>
+      <tr><td><span class="phon">musique.wav</span></td><td>WAV PCM 16 bits</td>
+        <td>Le rendu sonore, tel qu'il a été entendu, après amplification et limitation.</td></tr>
+      <tr><td><span class="phon">evenements.csv</span></td><td>CSV</td>
+        <td>index, temps_s, amplitude_v, pente_v_s, sigma, voie</td></tr>
+      <tr><td><span class="phon">notes.csv</span></td><td>CSV</td>
+        <td>temps_s, midi, note, vélocité, durée_s, instrument, amplitude_v, sigma, règle</td></tr>
+      <tr><td><span class="phon">marqueurs.csv</span></td><td>CSV</td>
+        <td>temps_s, horodatage_utc, étiquette</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code">
+    <div class="code-h">Relire une séance en Python, sans le logiciel</div>
+<pre>import json, wave, numpy as np
+
+meta = json.load(open("seance.json", encoding="utf-8"))
+with wave.open("signal.wav", "rb") as w:
+    brut = w.readframes(w.getnframes())
+    voies, fs = w.getnchannels(), w.getframerate()
+
+# 24 bits petit-boutiste, signé
+a = np.frombuffer(brut, dtype=np.uint8).reshape(-1, 3).astype(np.int32)
+v = a[:, 0] | (a[:, 1] &lt;&lt; 8) | (a[:, 2] &lt;&lt; 16)
+v = np.where(v &amp; 0x800000, v - 0x1000000, v)
+
+volts = v.astype(float) / 8388607.0 * meta["full_scale_v"]
+volts = volts.reshape(-1, voies)
+temps = np.arange(volts.shape[0]) / fs
+
+print(f"{volts.shape[0]} échantillons, {fs} Hz, {voies} voie(s)")
+print(f"moyenne voie A : {volts[:, 0].mean() * 1e6:+.2f} µV")</pre>
+  </div>
+
+  <h3 id="ann-licences" data-toc="sub">Licences</h3>
+  <p><strong>Matériel</strong> — schémas, nomenclature, dessin du circuit imprimé : licence
+  CERN-OHL-P v2 (permissive). Usage, modification et fabrication commerciale libres, sans
+  obligation de réciprocité.</p>
+  <p><strong>Micrologiciel et logiciel</strong> — licence MIT. Même liberté.</p>
+  <p><strong>Ouvrage</strong> — librement diffusable, sans aucune condition.</p>
+</section>

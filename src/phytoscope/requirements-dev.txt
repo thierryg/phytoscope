@@ -1,0 +1,5 @@
+# Outils de développement — non nécessaires à l'utilisation du logiciel.
+-r requirements.txt
+pytest>=7.0
+pytest-cov>=4.0
+ruff>=0.1

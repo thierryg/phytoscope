@@ -1,0 +1,127 @@
+<section class="chapter">
+  <h2 id="c5-gain" data-toc="chapter">Gain programmable, filtrage et alimentations</h2>
+
+  <p class="chapo">Ce qui reste de la chaîne analogique paraît banal — amplifier, filtrer,
+  alimenter. C'est pourtant là que se perdent la plupart des instruments d'amateur, pour des
+  raisons chaque fois évitables.</p>
+
+  <h3 id="c5-pga" data-toc="sub">Le gain programmable, et pourquoi il n'est pas intégré</h3>
+
+  <p>Il existe des amplificateurs à gain programmable en un seul boîtier. Ils sont commodes et
+  coûtent une dizaine d'euros. Ils ont un défaut rédhibitoire dans notre application :
+  <strong>leur bruit ramené à l'entrée est médiocre aux faibles gains</strong>, typiquement dix à
+  quinze nanovolts par racine de hertz, parce que la commutation interne se fait en amont de
+  l'amplificateur.</p>
+
+  <p>Le montage retenu inverse l'ordre : un amplificateur à dérive nulle, l'OPA2189, à 5,9 nV/√Hz
+  et 0,1 µV/°C, monté en non-inverseur ; et un multiplexeur analogique qui choisit la résistance
+  <em>basse</em> du pont diviseur de contre-réaction. Le multiplexeur se trouve ainsi dans une
+  branche à basse impédance et à faible tension, où sa résistance passante et son bruit
+  n'interviennent que divisés par le gain.</p>
+
+  <table class="tight">
+    <thead><tr><th>Position</th><th>Résistance basse</th><th>Gain</th><th>Pleine échelle ramenée à l'entrée</th><th>Résolution</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="num">20 kΩ</td><td class="num">×2</td><td class="num">±1,25 V</td><td class="num">149 nV</td></tr>
+      <tr><td>2</td><td class="num">2,2 kΩ</td><td class="num">×10</td><td class="num">±250 mV</td><td class="num">30 nV</td></tr>
+      <tr><td>3</td><td class="num">1,05 kΩ</td><td class="num">×20</td><td class="num">±125 mV</td><td class="num">15 nV</td></tr>
+      <tr><td>4</td><td class="num">100 Ω</td><td class="num">×200</td><td class="num">±12,5 mV</td><td class="num">1,5 nV</td></tr>
+    </tbody>
+  </table>
+
+  <p class="small">La résolution indiquée est le quantum du convertisseur ramené à l'entrée. Elle
+  descend bien en dessous du bruit dès le gain de dix : c'est normal et souhaitable — on veut que
+  le bruit, et non la quantification, limite la mesure. Un instrument dont le quantum dépasse le
+  bruit perd de l'information de façon irrécupérable.</p>
+
+  <h3 id="c5-filtre" data-toc="sub">Le filtre anti-repliement, et le choix de Bessel</h3>
+
+  <p>Tout signal au-dessus de la moitié de la fréquence d'échantillonnage se replie dans la bande
+  utile et devient indiscernable d'un vrai signal. Le convertisseur delta-sigma retenu suréchantillonne
+  fortement et intègre son propre filtre numérique, ce qui repousse le problème très haut ; il
+  reste néanmoins à protéger la bande autour de la fréquence de modulation, d'où un filtre
+  analogique modeste mais indispensable.</p>
+
+  <p>Le gabarit retenu est un Bessel du troisième ordre à quatre cents hertz : une cellule de
+  Sallen-Key suivie d'un premier ordre. Le choix de Bessel plutôt que de Butterworth ou de
+  Tchebychev mérite une justification, car il va contre le réflexe habituel.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Choix de conception — la phase avant la raideur</div>
+    <p class="noindent">Un filtre de Butterworth coupe plus net ; un Tchebychev, plus net encore.
+    Mais tous deux présentent un temps de propagation de groupe qui varie fortement avec la
+    fréquence, ce qui <strong>déforme la forme d'onde</strong> : un potentiel d'action y perd son
+    front raide et gagne une oscillation parasite. Le filtre de Bessel a un temps de propagation
+    presque constant : il retarde tout le signal de la même durée, sans le déformer. Comme nous
+    cherchons à décrire des formes — front de montée, temps de retour —, c'est la seule famille
+    acceptable. On perd en raideur ce qu'on gagne en fidélité, et ici la fidélité prime.</p>
+  </div>
+
+  <h3 id="c5-conversion" data-toc="sub">De l'asymétrique au différentiel</h3>
+
+  <p>Le convertisseur accepte des entrées différentielles, ce qui double la dynamique et rejette
+  le bruit commun apporté par la piste. L'amplificateur entièrement différentiel THS4551 assure la
+  conversion, en fixant au passage le mode commun à la valeur exacte qu'attend le convertisseur.
+  C'est un composant à quatre euros qui évite de perdre six décibels de dynamique — le meilleur
+  rapport de toute la carte.</p>
+
+  <section class="planche-page"><figure class="planche" id="pl-mere">
+    <img src="assets/svg/carte-mere.svg" alt="Schéma du gain programmable, du filtre et de la conversion"/>
+    <figcaption><span class="fig-n">PLANCHE ##</span> — Carte mère : gain programmable, filtre de
+    Bessel du troisième ordre, attaque différentielle, convertisseur delta-sigma et références.
+    Feuille 3 sur 6, révision B.</figcaption>
+  </figure></section>
+
+  <h3 id="c5-alim" data-toc="sub">Les alimentations, ou l'art de ne pas gâcher le reste</h3>
+
+  <p>Une chaîne à 0,6 µV de bruit exige des alimentations à la hauteur. Un régulateur ordinaire
+  produit cinquante à cent microvolts efficaces ; un découpage non filtré, plusieurs millivolts.
+  Dans les deux cas, tout le travail précédent est perdu.</p>
+
+  <p>La solution retenue procède en trois temps. Un <strong>convertisseur isolé</strong> —
+  transformateur piloté en push-pull — produit une tension brute des deux polarités, de l'autre
+  côté de la barrière. Un <strong>redressement double alternance</strong> à diodes Schottky la
+  transforme en continu. Enfin deux <strong>régulateurs linéaires à très faible bruit</strong>,
+  LT3045 et LT3094, la nettoient jusqu'à 0,8 µV efficace sur la bande 10 Hz – 100 kHz, avec une
+  réjection de 76 dB à un mégahertz.</p>
+
+  <section class="planche-page"><figure class="planche" id="pl-alim">
+    <img src="assets/svg/carte-alim.svg" alt="Schéma des alimentations et de l'isolement galvanique"/>
+    <figcaption><span class="fig-n">PLANCHE ##</span> — Alimentations et isolement : convertisseur
+    isolé synchronisé, redressement, régulateurs ultra-faible bruit, isolateurs numériques.
+    Feuille 4 sur 6, révision B.</figcaption>
+  </figure></section>
+
+  <div class="loupe">
+    <div class="l-h">La synchronisation du découpage : une astuce qui vaut d'être connue</div>
+    <p class="noindent">Un convertisseur à découpage libre produit un résidu à une fréquence
+    inconnue, qui se mélange à la fréquence d'échantillonnage et engendre des battements très
+    basse fréquence — exactement dans notre bande utile, et impossibles à distinguer d'un signal
+    végétal. Le pilote SN6505B accepte une horloge externe : on lui fournit donc une division de
+    l'horloge du convertisseur. Le résidu tombe alors à une fréquence fixe et connue, 410 kHz, où
+    il est atténué de plus de cent décibels par le filtre du convertisseur. Le battement
+    disparaît, pour le prix d'une piste.</p>
+  </div>
+
+  <h3 id="c5-isolement" data-toc="sub">La barrière, et ce qui la franchit</h3>
+
+  <p>Trois choses seulement traversent la barrière : le champ magnétique du transformateur, six
+  voies d'isolateur numérique pour le bus du convertisseur, et deux voies pour le bus des capteurs
+  d'ambiance. Aucun conducteur, aucune masse, aucun blindage. La capacité de couplage totale
+  mesurée est inférieure à trois picofarads.</p>
+
+  <p>Sur le circuit imprimé, la barrière se matérialise par une <strong>fente</strong> : les plans
+  de masse sont interrompus, sur les quatre couches, sur une largeur de un millimètre et demi.
+  Aucune piste ne la franchit — c'est la règle absolue, et le contrôle visuel de cette fente est le
+  premier point de la recette.</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Vérifier l'isolement sans matériel de laboratoire</div>
+    <p class="noindent">Un multimètre suffit. En position ohmmètre, entre la masse analogique et
+    la masse USB, on doit lire une <strong>résistance infinie</strong> — pas dix mégohms, pas cent :
+    infinie, l'appareil ne doit rien afficher. La moindre valeur finie signale une piste oubliée,
+    une soudure en pont ou une vis de fixation qui court-circuite les deux plans par le boîtier.
+    C'est le défaut le plus fréquent, et il annule tout le bénéfice de l'isolement sans jamais
+    empêcher la carte de fonctionner : d'où l'importance de ce contrôle systématique.</p>
+  </div>
+</section>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<title>PhytoSense One — nomenclature et accessoires</title>
+<meta name="author" content="Bretagne Namasté"/>
+<meta name="publisher" content="Bretagne Namasté"/>
+<meta name="copyright" content="© 2026 Bretagne Namasté — https://bretagne-namaste.com"/>
+<meta name="contact" content="contact@bretagne-namaste.com"/>
+<meta name="source" content="https://bretagne-namaste.com"/>
+<meta name="description" content="Nomenclature chiffrée de la carte PhytoSense One, accessoires, outillage, nomenclature logicielle et budgets. Bretagne Namasté — bretagne-namaste.com"/>
+<meta name="keywords" content="nomenclature, BOM, accessoires, budget, PhytoSense"/>
+<meta name="dcterms.created" content="2026-09-17"/>
+<meta name="generator" content="WeasyPrint"/>
+<link rel="stylesheet" href="fonts.css"/>
+<link rel="stylesheet" href="book.css"/>
+<link rel="stylesheet" href="carte.css"/>
+<style>body{ string-set: booktitle "PhytoSense One — nomenclature"; }</style>
+</head>
+<body>
+<section class="cover">
+  <img class="cover-art" src="assets/svg/carte-cover-bom.svg" alt="Couverture du fascicule nomenclature"/>
+</section>
+
+<section class="frontpage notice">
+  <h2 id="b-intro">Nomenclature et accessoires — PhytoSense One</h2>
+  <p class="lettrine noindent">Ce fascicule accompagne l'ouvrage <em>La Carte PhytoSense</em>. Il
+  rassemble tout ce qu'il faut acheter : les composants de la carte, les accessoires, l'outillage,
+  et les budgets correspondants. Il est fait pour être imprimé et coché.</p>
+  <p>Les prix sont relevés en septembre 2026 chez un distributeur européen, hors taxes, pour des
+  quantités unitaires. Ils servent d'ordre de grandeur, non d'engagement. Les références de
+  distributeur sont indicatives : tous les composants retenus sont des articles de catalogue,
+  disponibles chez plusieurs fournisseurs.</p>
+  <div class="callout key">
+    <div class="callout-title">✦ Les quatre références à ne pas substituer</div>
+    <p class="noindent">L'ADA4530-1, les résistances de référence à 0,1 %, les régulateurs LT3045
+    et LT3094, et le transformateur d'isolement. Elles définissent la performance de l'appareil.
+    Tout le reste accepte des équivalents.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="b-composants" data-toc="chapter">Composants de la carte</h2>
+  <div class="origine"><b>PhytoSense One</b> — nomenclature de la carte<br/><span>Bretagne Namasté · <a href="https://bretagne-namaste.com">bretagne-namaste.com</a> · contact@bretagne-namaste.com</span><br/><span>révision B — septembre 2026 · licence CERN-OHL-P v2</span></div>
+<table class="bom tight"><thead><tr><th>Repère</th><th>Qté</th><th>Désignation</th><th>Boîtier<br/><span class="small">L × l × h (mm)</span></th><th>Fabricant · référence</th><th>PU €</th><th>Total €</th></tr></thead><tbody>
+<tr class="groupe"><td colspan="7">Entrée analogique</td></tr>
+<tr><td>U1, U2</td><td class="num">2</td><td>Amplificateur électrométrique, Ib &lt; 20 fA, garde intégrée<br/><span class="small">Le composant critique : ne pas substituer</span></td><td>SOIC-8<br/><span class="small">4,9 × 3,9 × 1,75</span></td><td>Analog Devices<br/><span class="small">ADA4530-1ARZ</span></td><td class="num">14,20</td><td class="num">28,40</td></tr>
+<tr><td>R1, R11</td><td class="num">2</td><td>Résistance 10 kΩ 0,1 % 25 ppm<br/><span class="small">Protection série, faible bruit</span></td><td>0805<br/><span class="small">2,0 × 1,25 × 0,85</span></td><td>Vishay<br/><span class="small">TNPW080510K0BEEA</span></td><td class="num">0,42</td><td class="num">0,84</td></tr>
+<tr><td>R2, R12</td><td class="num">2</td><td>Résistance 1 GΩ 1 % haute stabilité<br/><span class="small">Polarisation </span></td><td>1206<br/><span class="small">3,2 × 1,6 × 0,95</span></td><td>Vishay<br/><span class="small">VR68000001004JAC00</span></td><td class="num">2,80</td><td class="num">5,60</td></tr>
+<tr><td>D1, D2</td><td class="num">2</td><td>Double diode faible fuite 1 pA<br/><span class="small">Écrêtage d'entrée</span></td><td>SOT-23<br/><span class="small">2,9 × 1,3 × 1,1</span></td><td>Nexperia<br/><span class="small">BAV199</span></td><td class="num">0,18</td><td class="num">0,36</td></tr>
+<tr><td>C1, C2</td><td class="num">2</td><td>Condensateur 100 pF NP0 1 %<br/><span class="small">Limitation de bande</span></td><td>0805<br/><span class="small">2,0 × 1,25 × 0,85</span></td><td>Murata<br/><span class="small">GRM2165C1H101FA01</span></td><td class="num">0,22</td><td class="num">0,44</td></tr>
+<tr><td>J1, J2</td><td class="num">2</td><td>Embase jack 3,5 mm stéréo, à souder<br/><span class="small">Pointe = électrode, bague = garde</span></td><td>traversant<br/><span class="small">selon pièce</span></td><td>CUI<br/><span class="small">SJ1-3535NG</span></td><td class="num">1,05</td><td class="num">2,10</td></tr>
+<tr class="groupe"><td colspan="7">Pont et mesure</td></tr>
+<tr><td>U3</td><td class="num">1</td><td>Amplificateur d'instrumentation, CMRR 140 dB<br/><span class="small">Voie FE-B</span></td><td>MSOP-8<br/><span class="small">3,0 × 3,0 × 1,1</span></td><td>Texas Instruments<br/><span class="small">INA828AIDGKR</span></td><td class="num">7,90</td><td class="num">7,90</td></tr>
+<tr><td>U4</td><td class="num">1</td><td>Commutateur analogique 2:1, 4,5 Ω<br/><span class="small">Démodulateur synchrone</span></td><td>SOT-23-8<br/><span class="small">2,9 × 1,6 × 1,1</span></td><td>Analog Devices<br/><span class="small">ADG1419BRJZ</span></td><td class="num">3,60</td><td class="num">3,60</td></tr>
+<tr><td>U6, U8</td><td class="num">2</td><td>Multiplexeur analogique 8:1, faible charge injectée<br/><span class="small">Gammes et gains</span></td><td>TSSOP-16<br/><span class="small">5,0 × 4,4 × 1,2</span></td><td>Texas Instruments<br/><span class="small">TMUX1208PWR</span></td><td class="num">1,85</td><td class="num">3,70</td></tr>
+<tr><td>R10</td><td class="num">1</td><td>Résistance de référence 1 MΩ 0,1 % 15 ppm<br/><span class="small">Bras de référence du pont</span></td><td>1206<br/><span class="small">3,2 × 1,6 × 0,95</span></td><td>Vishay<br/><span class="small">MFR-12-1M0-0.1%</span></td><td class="num">1,40</td><td class="num">1,40</td></tr>
+<tr><td>R20-R23</td><td class="num">4</td><td>Réseau de gammes 100 k / 1 M / 10 M / 100 MΩ 0,1 %<br/><span class="small">Jeu apparié, prix pour les quatre</span></td><td>1206<br/><span class="small">3,2 × 1,6 × 0,95</span></td><td>Vishay<br/><span class="small">VHP série</span></td><td class="num">9,60</td><td class="num">38,40</td></tr>
+<tr class="groupe"><td colspan="7">Amplification</td></tr>
+<tr><td>U7</td><td class="num">1</td><td>Amplificateur à dérive nulle, 0,1 µV/°C<br/><span class="small">Gain programmable et filtre</span></td><td>SOIC-8<br/><span class="small">4,9 × 3,9 × 1,75</span></td><td>Texas Instruments<br/><span class="small">OPA2189IDR</span></td><td class="num">4,70</td><td class="num">4,70</td></tr>
+<tr><td>U9</td><td class="num">1</td><td>Amplificateur entièrement différentiel<br/><span class="small">Attaque du convertisseur</span></td><td>WSON-10<br/><span class="small">3,0 × 3,0 × 0,8</span></td><td>Texas Instruments<br/><span class="small">THS4551IDGKR</span></td><td class="num">4,10</td><td class="num">4,10</td></tr>
+<tr><td>R24, R25</td><td class="num">2</td><td>Résistance 4,7 kΩ 0,1 %<br/><span class="small">Filtre de Bessel</span></td><td>0805<br/><span class="small">2,0 × 1,25 × 0,85</span></td><td>Vishay<br/><span class="small">TNPW08054K70BEEA</span></td><td class="num">0,42</td><td class="num">0,84</td></tr>
+<tr><td>C20</td><td class="num">1</td><td>Condensateur 33 nF C0G 2 %<br/><span class="small">Filtre de Bessel</span></td><td>0805<br/><span class="small">2,0 × 1,25 × 0,85</span></td><td>Kemet<br/><span class="small">C0805C333G3GACTU</span></td><td class="num">0,64</td><td class="num">0,64</td></tr>
+<tr><td>C21</td><td class="num">1</td><td>Condensateur 68 nF C0G 2 %<br/><span class="small">Filtre de Bessel</span></td><td>1206<br/><span class="small">3,2 × 1,6 × 0,95</span></td><td>Kemet<br/><span class="small">C1206C683G3GACTU</span></td><td class="num">1,10</td><td class="num">1,10</td></tr>
+<tr class="groupe"><td colspan="7">Conversion</td></tr>
+<tr><td>U10</td><td class="num">1</td><td>Convertisseur Δ-Σ 24 bits, 4 voies simultanées<br/><span class="small">Cœur de la mesure</span></td><td>TSSOP-20<br/><span class="small">6,5 × 4,4 × 1,2</span></td><td>Texas Instruments<br/><span class="small">ADS131M04IPWR</span></td><td class="num">9,80</td><td class="num">9,80</td></tr>
+<tr><td>U11</td><td class="num">1</td><td>Référence de tension 2,5 V, 2 ppm/°C<br/><span class="small">Fixe l'échelle absolue</span></td><td>SOIC-8<br/><span class="small">4,9 × 3,9 × 1,75</span></td><td>Analog Devices<br/><span class="small">ADR4525BRZ</span></td><td class="num">6,40</td><td class="num">6,40</td></tr>
+<tr><td>Y1</td><td class="num">1</td><td>Oscillateur TCXO 12,288 MHz ±1 ppm<br/><span class="small">Base de temps unique</span></td><td>3225<br/><span class="small">3,2 × 2,5 × 1,2</span></td><td>Abracon<br/><span class="small">ASTX-H11-12.288MHZ</span></td><td class="num">4,50</td><td class="num">4,50</td></tr>
+<tr><td>C25</td><td class="num">1</td><td>Condensateur 10 µF X7R 25 V<br/><span class="small">Filtrage de la référence</span></td><td>1206<br/><span class="small">3,2 × 1,6 × 0,95</span></td><td>Murata<br/><span class="small">GRM31CR71E106KA12</span></td><td class="num">0,38</td><td class="num">0,38</td></tr>
+<tr class="groupe"><td colspan="7">Isolement</td></tr>
+<tr><td>T1</td><td class="num">1</td><td>Transformateur d'isolement 1:1,3, 3 kV<br/><span class="small">Franchit la barrière</span></td><td>SMD<br/><span class="small">voir notice</span></td><td>Würth<br/><span class="small">750315371</span></td><td class="num">6,90</td><td class="num">6,90</td></tr>
+<tr><td>U20</td><td class="num">1</td><td>Pilote de transformateur push-pull 1 A<br/><span class="small">Synchronisable</span></td><td>SOIC-8<br/><span class="small">4,9 × 3,9 × 1,75</span></td><td>Texas Instruments<br/><span class="small">SN6505BDBVR</span></td><td class="num">2,30</td><td class="num">2,30</td></tr>
+<tr><td>U24</td><td class="num">1</td><td>Isolateur numérique SPI 6 voies, 17 Mb/s<br/><span class="small">Barrière SPI</span></td><td>SOIC-20<br/><span class="small">12,8 × 7,5 × 2,65</span></td><td>Analog Devices<br/><span class="small">ADuM4151BRIZ</span></td><td class="num">9,40</td><td class="num">9,40</td></tr>
+<tr><td>U25</td><td class="num">1</td><td>Isolateur I²C bidirectionnel<br/><span class="small">Capteurs d'ambiance</span></td><td>SOIC-8<br/><span class="small">4,9 × 3,9 × 1,75</span></td><td>Analog Devices<br/><span class="small">ADuM1251ARZ</span></td><td class="num">4,20</td><td class="num">4,20</td></tr>
+<tr><td>D10, D11</td><td class="num">2</td><td>Double diode Schottky 30 V 200 mA<br/><span class="small">Redressement double alternance</span></td><td>SOT-23<br/><span class="small">2,9 × 1,3 × 1,1</span></td><td>Nexperia<br/><span class="small">BAT54S</span></td><td class="num">0,14</td><td class="num">0,28</td></tr>
+<tr class="groupe"><td colspan="7">Alimentation</td></tr>
+<tr><td>U21</td><td class="num">1</td><td>Régulateur linéaire ultra-faible bruit +5 V, 0,8 µVeff<br/><span class="small">Rail analogique positif</span></td><td>MSOP-12<br/><span class="small">3,0 × 4,0 × 1,1</span></td><td>Analog Devices<br/><span class="small">LT3045EMSE</span></td><td class="num">5,60</td><td class="num">5,60</td></tr>
+<tr><td>U22</td><td class="num">1</td><td>Régulateur linéaire négatif −5 V, 0,8 µVeff<br/><span class="small">Rail analogique négatif</span></td><td>MSOP-12<br/><span class="small">3,0 × 4,0 × 1,1</span></td><td>Analog Devices<br/><span class="small">LT3094EMSE</span></td><td class="num">5,90</td><td class="num">5,90</td></tr>
+<tr><td>U23</td><td class="num">1</td><td>Régulateur 3,3 V faible bruit, 300 mA<br/><span class="small">Rail numérique</span></td><td>SOT-23-5<br/><span class="small">2,9 × 1,6 × 1,1</span></td><td>Texas Instruments<br/><span class="small">TPS7A2033PDBVR</span></td><td class="num">1,20</td><td class="num">1,20</td></tr>
+<tr><td>FB1</td><td class="num">1</td><td>Ferrite 600 Ω à 100 MHz, 2 A<br/><span class="small">Filtrage de l'entrée USB</span></td><td>0805<br/><span class="small">2,0 × 1,25 × 0,85</span></td><td>Murata<br/><span class="small">BLM21PG600SN1D</span></td><td class="num">0,15</td><td class="num">0,15</td></tr>
+<tr><td>C30-C34</td><td class="num">5</td><td>Condensateur 22 µF X5R 10 V<br/><span class="small">Réservoirs</span></td><td>0805<br/><span class="small">2,0 × 1,25 × 0,85</span></td><td>Murata<br/><span class="small">GRM21BR61A226ME51</span></td><td class="num">0,32</td><td class="num">1,60</td></tr>
+<tr><td>C40-C55</td><td class="num">16</td><td>Condensateur 100 nF X7R 50 V<br/><span class="small">Découplage</span></td><td>0402<br/><span class="small">1,0 × 0,5 × 0,5</span></td><td>Murata<br/><span class="small">GRM155R71H104KE14</span></td><td class="num">0,04</td><td class="num">0,64</td></tr>
+<tr class="groupe"><td colspan="7">Numérique</td></tr>
+<tr><td>U30</td><td class="num">1</td><td>Microcontrôleur double cœur Cortex-M33 150 MHz<br/><span class="small">Deux cœurs, douze machines PIO</span></td><td>QFN-80<br/><span class="small">10,0 × 10,0 × 0,9</span></td><td>Raspberry Pi<br/><span class="small">RP2350B</span></td><td class="num">1,60</td><td class="num">1,60</td></tr>
+<tr><td>U31</td><td class="num">1</td><td>Mémoire flash QSPI 128 Mbit<br/><span class="small">Micrologiciel et réglages</span></td><td>SOIC-8<br/><span class="small">4,9 × 3,9 × 1,75</span></td><td>Winbond<br/><span class="small">W25Q128JVSIQ</span></td><td class="num">1,10</td><td class="num">1,10</td></tr>
+<tr><td>Y2</td><td class="num">1</td><td>Quartz 12 MHz ±20 ppm<br/><span class="small">Horloge du microcontrôleur</span></td><td>3225<br/><span class="small">3,2 × 2,5 × 1,2</span></td><td>Abracon<br/><span class="small">ABM8-12.000MHZ-B2-T</span></td><td class="num">0,45</td><td class="num">0,45</td></tr>
+<tr><td>J20</td><td class="num">1</td><td>Embase USB-C, 16 broches, montage en surface<br/><span class="small">Alimentation et données</span></td><td>SMD<br/><span class="small">voir notice</span></td><td>GCT<br/><span class="small">USB4085-GF-A</span></td><td class="num">1,30</td><td class="num">1,30</td></tr>
+<tr><td>U33</td><td class="num">1</td><td>Réseau de protection ESD 4 voies, 0,5 pF<br/><span class="small">±15 kV dans l'air</span></td><td>SOT-23-6<br/><span class="small">2,9 × 1,6 × 1,1</span></td><td>Texas Instruments<br/><span class="small">TPD4S014DBVR</span></td><td class="num">0,85</td><td class="num">0,85</td></tr>
+<tr><td>R30, R31</td><td class="num">2</td><td>Résistance 5,1 kΩ 1 %<br/><span class="small">Déclaration USB-C</span></td><td>0402<br/><span class="small">1,0 × 0,5 × 0,5</span></td><td>Yageo<br/><span class="small">RC0402FR-075K1L</span></td><td class="num">0,02</td><td class="num">0,04</td></tr>
+<tr><td>R34, R35</td><td class="num">2</td><td>Résistance 33 Ω 1 %<br/><span class="small">Sortie MIDI</span></td><td>0402<br/><span class="small">1,0 × 0,5 × 0,5</span></td><td>Yageo<br/><span class="small">RC0402FR-0733RL</span></td><td class="num">0,02</td><td class="num">0,04</td></tr>
+<tr><td>J21</td><td class="num">1</td><td>Embase jack 3,5 mm stéréo (MIDI TRS type A)<br/><span class="small">Attaque directe d'un synthétiseur matériel</span></td><td>traversant<br/><span class="small">selon pièce</span></td><td>CUI<br/><span class="small">SJ1-3535NG</span></td><td class="num">1,05</td><td class="num">1,05</td></tr>
+<tr><td>DS1</td><td class="num">1</td><td>LED RVB à commande série<br/><span class="small">État et niveau</span></td><td>PLCC-4<br/><span class="small">3,5 × 3,5 × 1,9</span></td><td>Worldsemi<br/><span class="small">WS2812B-Mini</span></td><td class="num">0,28</td><td class="num">0,28</td></tr>
+<tr><td>S1</td><td class="num">1</td><td>Bouton tactile 6 × 6 mm<br/><span class="small">Marquage et auto-config</span></td><td>traversant<br/><span class="small">selon pièce</span></td><td>Alps<br/><span class="small">SKHHAKA010</span></td><td class="num">0,22</td><td class="num">0,22</td></tr>
+<tr class="groupe"><td colspan="7">Ambiance</td></tr>
+<tr><td>U40</td><td class="num">1</td><td>Capteur température, humidité, pression, COV<br/><span class="small">Facultatif mais recommandé</span></td><td>LGA-8<br/><span class="small">3,0 × 3,0 × 0,9</span></td><td>Bosch<br/><span class="small">BME688</span></td><td class="num">9,50</td><td class="num">9,50</td></tr>
+<tr><td>U41</td><td class="num">1</td><td>Capteur de lumière ambiante numérique<br/><span class="small">Corrélation avec la photosynthèse</span></td><td>DFN-6<br/><span class="small">2,0 × 2,0 × 0,75</span></td><td>ams<br/><span class="small">TSL2591</span></td><td class="num">5,20</td><td class="num">5,20</td></tr>
+<tr><td>RT1</td><td class="num">1</td><td>Sonde platine PT1000 classe A<br/><span class="small">Température du substrat</span></td><td>2 fils</td><td>Heraeus<br/><span class="small">32208551</span></td><td class="num">3,40</td><td class="num">3,40</td></tr>
+<tr class="groupe"><td colspan="7">Étalonnage</td></tr>
+<tr><td>RC1-RC3</td><td class="num">3</td><td>Étalons 1 MΩ / 10 MΩ / 100 MΩ 0,1 %<br/><span class="small">Auto-test, prix pour les trois</span></td><td>1206<br/><span class="small">3,2 × 1,6 × 0,95</span></td><td>Vishay<br/><span class="small">VHP série</span></td><td class="num">7,20</td><td class="num">21,60</td></tr>
+<tr><td>U50</td><td class="num">1</td><td>Commutateur d'auto-test 4 voies<br/><span class="small">Injection des étalons</span></td><td>TSSOP-14<br/><span class="small">5,0 × 4,4 × 1,2</span></td><td>Texas Instruments<br/><span class="small">TMUX1104PWR</span></td><td class="num">1,40</td><td class="num">1,40</td></tr>
+<tr class="groupe"><td colspan="7">Circuit imprimé</td></tr>
+<tr><td>PCB</td><td class="num">1</td><td>Circuit imprimé 4 couches 100 × 60 mm, ENIG, vernis épargné<br/><span class="small">Prix unitaire pour cinq exemplaires</span></td><td>—</td><td>JLCPCB<br/><span class="small">—</span></td><td class="num">12,00</td><td class="num">12,00</td></tr>
+<tr class="groupe"><td colspan="7">Protection alimentation</td></tr>
+<tr><td>J30</td><td class="num">1</td><td>Embase d'alimentation 2,1 mm, à souder, avec contact de coupure<br/><span class="small">Le contact de coupure signale la présence du bloc secteur</span></td><td>traversant<br/><span class="small">selon pièce</span></td><td>CUI<br/><span class="small">PJ-002AH</span></td><td class="num">1,15</td><td class="num">1,15</td></tr>
+<tr><td>D30</td><td class="num">1</td><td>Diode transil unidirectionnelle 18 V, 400 W<br/><span class="small">Écrête les surtensions du bloc secteur et les décharges</span></td><td>DO-214AC<br/><span class="small">5,0 × 2,6 × 2,2</span></td><td>Littelfuse<br/><span class="small">SMAJ18A</span></td><td class="num">0,32</td><td class="num">0,32</td></tr>
+<tr><td>Q30</td><td class="num">1</td><td>Transistor MOS canal P, 30 V 6 A, 35 mΩ — anti-inversion<br/><span class="small">Une inversion de polarité ne détruit plus rien : elle bloque</span></td><td>SOT-23<br/><span class="small">2,9 × 1,3 × 1,1</span></td><td>Diodes Inc<br/><span class="small">DMP3099L-7</span></td><td class="num">0,42</td><td class="num">0,42</td></tr>
+<tr><td>U60</td><td class="num">1</td><td>Convertisseur abaisseur 4–30 V vers 5,2 V, 2 A, protégé<br/><span class="small">Accepte 7 à 24 V : n'importe quel bloc secteur convient</span></td><td>SOT-23-6<br/><span class="small">2,9 × 1,6 × 1,1</span></td><td>Texas Instruments<br/><span class="small">TPS62932DRLR</span></td><td class="num">1,35</td><td class="num">1,35</td></tr>
+<tr><td>U61</td><td class="num">1</td><td>Interrupteur à limitation de courant réglable 75 mA–1,5 A<br/><span class="small">Limite le courant tiré de l'USB à 500 mA, coupe et signale</span></td><td>SOT-23-6<br/><span class="small">2,9 × 1,6 × 1,1</span></td><td>Texas Instruments<br/><span class="small">TPS2553DBVR</span></td><td class="num">1,28</td><td class="num">1,28</td></tr>
+<tr><td>U62</td><td class="num">1</td><td>Aiguilleur d'alimentation automatique à priorité, 2 A<br/><span class="small">Bascule sans coupure entre bloc secteur et USB, priorité au secteur</span></td><td>SOT-23-6<br/><span class="small">2,9 × 1,6 × 1,1</span></td><td>Texas Instruments<br/><span class="small">TPS2116DRLR</span></td><td class="num">1,42</td><td class="num">1,42</td></tr>
+<tr><td>F30, F31</td><td class="num">2</td><td>Fusible réarmable 0,5 A, 16 V<br/><span class="small">Se réarme seul après un court-circuit ; aucune pièce à changer</span></td><td>1812<br/><span class="small">4,5 × 3,2 × 2,5</span></td><td>Bourns<br/><span class="small">MF-MSMF050-2</span></td><td class="num">0,38</td><td class="num">0,76</td></tr>
+<tr><td>U63</td><td class="num">1</td><td>Mesure de courant et de tension sur bus, I²C, 12 bits<br/><span class="small">Alimente l'afficheur : tension, courant, puissance consommée</span></td><td>SOT-23-8<br/><span class="small">2,9 × 1,6 × 1,1</span></td><td>Texas Instruments<br/><span class="small">INA219AIDCNR</span></td><td class="num">2,10</td><td class="num">2,10</td></tr>
+<tr><td>R60, R61</td><td class="num">2</td><td>Résistance de mesure 0,1 Ω 1 % 1 W<br/><span class="small">Shunt de mesure du courant consommé</span></td><td>1206<br/><span class="small">3,2 × 1,6 × 0,95</span></td><td>Vishay<br/><span class="small">WSL1206R1000FEA</span></td><td class="num">0,58</td><td class="num">1,16</td></tr>
+<tr class="groupe"><td colspan="7">Protection des entrées</td></tr>
+<tr><td>F1, F2</td><td class="num">2</td><td>Fusible réarmable 50 mA, 60 V — protection des électrodes<br/><span class="small">Un branchement sur une source active ne détruit plus l'entrée</span></td><td>1206<br/><span class="small">3,2 × 1,6 × 0,95</span></td><td>Bourns<br/><span class="small">MF-PSMF050X-2</span></td><td class="num">0,42</td><td class="num">0,84</td></tr>
+<tr><td>D3, D4</td><td class="num">2</td><td>Réseau de protection ESD à très faible capacité, 0,5 pF<br/><span class="small">±20 kV dans l'air, sans charger l'entrée électrométrique</span></td><td>SOT-23<br/><span class="small">2,9 × 1,3 × 1,1</span></td><td>Nexperia<br/><span class="small">PESD5V0X1BT</span></td><td class="num">0,16</td><td class="num">0,32</td></tr>
+<tr><td>D5</td><td class="num">1</td><td>Diode transil bidirectionnelle 6,5 V sur l'électrode de référence<br/><span class="small">Borne la tension réinjectée quoi qu'il arrive</span></td><td>SOT-23<br/><span class="small">2,9 × 1,3 × 1,1</span></td><td>Nexperia<br/><span class="small">PESD3V3S2UT</span></td><td class="num">0,18</td><td class="num">0,18</td></tr>
+<tr class="groupe"><td colspan="7">Signalisation</td></tr>
+<tr><td>DS2</td><td class="num">1</td><td>LED bicolore vert/ambre 3 mm — source d'alimentation<br/><span class="small">Vert : bloc secteur. Ambre : alimentation par l'USB</span></td><td>traversant<br/><span class="small">selon pièce</span></td><td>Kingbright<br/><span class="small">WP3VEGW</span></td><td class="num">0,45</td><td class="num">0,45</td></tr>
+<tr><td>DS3</td><td class="num">1</td><td>LED bleue 3 mm — lien USB énuméré<br/><span class="small">Fixe : énuméré. Clignotante : flux de mesure actif</span></td><td>traversant<br/><span class="small">selon pièce</span></td><td>Kingbright<br/><span class="small">L-934MBC</span></td><td class="num">0,28</td><td class="num">0,28</td></tr>
+<tr><td>DS4</td><td class="num">1</td><td>LED rouge 3 mm — défaut<br/><span class="small">Surintensité, saturation persistante, auto-test en échec</span></td><td>traversant<br/><span class="small">selon pièce</span></td><td>Kingbright<br/><span class="small">L-934SRC-J4</span></td><td class="num">0,22</td><td class="num">0,22</td></tr>
+<tr><td>DS5</td><td class="num">1</td><td>Afficheur OLED 128 × 64, 0,96 pouce, I²C<br/><span class="small">Source, gain, gamme, tension mesurée, courant consommé, défauts</span></td><td>module<br/><span class="small">27 × 27 × 4</span></td><td>Univers.<br/><span class="small">SSD1306 0,96" I²C</span></td><td class="num">4,20</td><td class="num">4,20</td></tr>
+<tr><td>R70-R73</td><td class="num">4</td><td>Résistance de limitation de LED 1 kΩ 1 %<br/><span class="small">Courant de LED limité à 2 mA : lisible sans éblouir</span></td><td>0805<br/><span class="small">2,0 × 1,25 × 0,85</span></td><td>Yageo<br/><span class="small">RC0805FR-071KL</span></td><td class="num">0,02</td><td class="num">0,08</td></tr>
+<tr class="groupe"><td colspan="7">Blindage et CEM</td></tr>
+<tr><td>SH1</td><td class="num">1</td><td>Capot de blindage étamé 35 × 25 × 3 mm, à souder<br/><span class="small">Couvre l'étage d'entrée : c'est lui qui rend la carte insensible</span></td><td>boîtier métal</td><td>Würth<br/><span class="small">36503250</span></td><td class="num">1,80</td><td class="num">1,80</td></tr>
+<tr><td>SH2</td><td class="num">1</td><td>Capot de blindage étamé 25 × 25 × 3 mm, à souder<br/><span class="small">Couvre le convertisseur abaisseur et son inductance</span></td><td>boîtier métal</td><td>Würth<br/><span class="small">36502550</span></td><td class="num">1,60</td><td class="num">1,60</td></tr>
+<tr><td>FB10-FB15</td><td class="num">6</td><td>Ferrite de mode commun 90 Ω à 100 MHz sur les lignes sortantes<br/><span class="small">Empêche le rayonnement conduit de sortir par les câbles</span></td><td>0805<br/><span class="small">2,0 × 1,25 × 0,85</span></td><td>Murata<br/><span class="small">BLM21PG221SN1D</span></td><td class="num">0,14</td><td class="num">0,84</td></tr>
+<tr><td>C60-C65</td><td class="num">6</td><td>Condensateur de traversée 1 nF, 50 V, X7R<br/><span class="small">Découplage haute fréquence à la traversée des faces</span></td><td>0402<br/><span class="small">1,0 × 0,5 × 0,5</span></td><td>Murata<br/><span class="small">GRM155R71H102KA01</span></td><td class="num">0,03</td><td class="num">0,18</td></tr>
+<tr class="tot"><td colspan="6">Total des composants, un exemplaire</td><td class="num">244,35</td></tr>
+<tr class="origine-pied"><td colspan="7">PhytoSense One · Bretagne Namasté · bretagne-namaste.com · révision B — septembre 2026 · licence CERN-OHL-P v2</td></tr>
+</tbody></table>
+</section>
+
+<section class="chapter">
+  <h2 id="b-accessoires" data-toc="chapter">Accessoires et outillage</h2>
+  <p class="chapo">Ce qui n'est pas sur la carte, et sans quoi la carte ne sert à rien : boîtier,
+  câbles, électrodes, alimentation, instruments de contrôle.</p>
+  <div class="origine"><b>PhytoSense One</b> — accessoires, outillage et consommables<br/><span>Bretagne Namasté · <a href="https://bretagne-namaste.com">bretagne-namaste.com</a> · contact@bretagne-namaste.com</span><br/><span>révision B — septembre 2026 · licence CERN-OHL-P v2</span></div>
+<table class="bom tight"><thead><tr><th>Désignation</th><th>Référence indicative</th><th>Où</th><th>≈ €</th></tr></thead><tbody>
+<tr class="groupe"><td colspan="4">Indispensables</td></tr>
+<tr><td>Câble USB-C vers USB-C, 1 m, blindé, données<br/><span class="small">Vérifier « data » : beaucoup de câbles ne transportent que le courant</span></td><td>Anker 543 ou équivalent</td><td>généraliste</td><td class="num">9,90</td></tr>
+<tr><td>Électrodes Ag/AgCl adhésives (lot de 50)<br/><span class="small">Les mêmes qu'en électrocardiographie</span></td><td>Ambu WhiteSensor 4535M</td><td>médical</td><td class="num">18,00</td></tr>
+<tr><td>Câble coaxial faible bruit RG-174 blindé, 2 m<br/><span class="small">Le blindage est relié à la garde, jamais à la masse</span></td><td>Belden 8216</td><td>Mouser</td><td class="num">4,20</td></tr>
+<tr><td>Électrode de terre laiton doré, tige 80 mm<br/><span class="small">Va dans le substrat, au pied de la plante</span></td><td>—</td><td>horticole</td><td class="num">5,80</td></tr>
+<tr><td>Fer à souder à température régulée, panne 0,4 mm<br/><span class="small">Les boîtiers QFN exigent une panne fine</span></td><td>Pinecil V2</td><td>généraliste</td><td class="num">38,00</td></tr>
+<tr><td>Pâte à souder sans plomb SAC305, seringue<br/><span class="small">Pour le montage en surface</span></td><td>—</td><td>généraliste</td><td class="num">16,00</td></tr>
+<tr><td>Flux de nettoyage et alcool isopropylique 99 %<br/><span class="small">Un flux résiduel conduit : il ruine les entrées à 10¹⁵ Ω</span></td><td>—</td><td>généraliste</td><td class="num">12,00</td></tr>
+<tr class="tot"><td colspan="3">Sous-total — indispensables</td><td class="num">103,90</td></tr>
+<tr class="groupe"><td colspan="4">Recommandés</td></tr>
+<tr><td>Boîtier aluminium extrudé 110 × 70 × 30 mm, façades usinées<br/><span class="small">Le métal sert de blindage : c'est un choix électrique, pas esthétique</span></td><td>Hammond 1455J1201</td><td>Mouser</td><td class="num">22,50</td></tr>
+<tr><td>Entretoises PTFE 6 mm pour les entrées<br/><span class="small">Le PTFE ne conduit pas en surface, contrairement au nylon humide</span></td><td>—</td><td>RS</td><td class="num">2,80</td></tr>
+<tr><td>Ferrite à clipser 5 mm pour le câble USB<br/><span class="small">Atténue le bruit conduit par l'ordinateur</span></td><td>Würth 74271132</td><td>Mouser</td><td class="num">2,10</td></tr>
+<tr><td>Gel conducteur sans chlorure, 250 ml<br/><span class="small">Prolonge la stabilité du contact de plusieurs heures</span></td><td>Signa Gel</td><td>médical</td><td class="num">9,00</td></tr>
+<tr><td>Batterie externe USB-C 10 000 mAh, sortie 5 V 2 A<br/><span class="small">Sur batterie, plus aucune boucle de masse : c'est la meilleure alimentation</span></td><td>Anker PowerCore</td><td>généraliste</td><td class="num">24,90</td></tr>
+<tr><td>Multimètre 6 000 points avec mesure de capacité<br/><span class="small">Indispensable pour la recette de la carte</span></td><td>Brymen BM235</td><td>instrumentation</td><td class="num">135,00</td></tr>
+<tr><td>Résistances étalons 1 MΩ / 10 MΩ / 100 MΩ 0,05 %<br/><span class="small">Vérification indépendante de l'auto-test</span></td><td>—</td><td>instrumentation</td><td class="num">28,00</td></tr>
+<tr><td>Plaque chauffante ou four à refusion<br/><span class="small">Le RP2350 en QFN-80 se soude mal au fer</span></td><td>—</td><td>généraliste</td><td class="num">45,00</td></tr>
+<tr><td>Loupe binoculaire ou microscope USB<br/><span class="small">Contrôle des ponts de soudure</span></td><td>—</td><td>généraliste</td><td class="num">35,00</td></tr>
+<tr class="tot"><td colspan="3">Sous-total — recommandés</td><td class="num">304,30</td></tr>
+<tr class="groupe"><td colspan="4">Variantes possibles</td></tr>
+<tr><td>Boîtier ABS 120 × 80 × 35 mm<br/><span class="small">Moins cher, mais exige un blindage interne collé</span></td><td>Hammond 1591BSBK</td><td>Mouser</td><td class="num">8,40</td></tr>
+<tr><td>Câble USB-C vers USB-A, 1 m, blindé, données<br/><span class="small">Pour les ordinateurs sans port USB-C</span></td><td>—</td><td>généraliste</td><td class="num">7,50</td></tr>
+<tr><td>Adaptateur USB-C femelle vers USB-A mâle<br/><span class="small">Solution la plus souple en atelier</span></td><td>—</td><td>généraliste</td><td class="num">4,50</td></tr>
+<tr><td>Pinces crocodile isolées à mors cuivre (lot de 10)<br/><span class="small">Pour les feuilles épaisses </span></td><td>—</td><td>généraliste</td><td class="num">6,50</td></tr>
+<tr><td>Chargeur secteur USB-C 20 W<br/><span class="small">À éviter pendant les mesures fines</span></td><td>—</td><td>généraliste</td><td class="num">12,90</td></tr>
+<tr class="tot"><td colspan="3">Sous-total — variantes possibles</td><td class="num">39,80</td></tr>
+<tr class="groupe"><td colspan="4">Confort</td></tr>
+<tr><td>Pieds adhésifs silicone (jeu de 4)<br/><span class="small">Évite de faire glisser l'appareil pendant une séance</span></td><td>—</td><td>quincaillerie</td><td class="num">1,20</td></tr>
+<tr><td>Accumulateur Li-Po 3,7 V 2000 mAh avec protection<br/><span class="small">Alimente la carte sans rien tirer du portable ni du secteur</span></td><td>—</td><td>généraliste</td><td class="num">11,50</td></tr>
+<tr><td>Module de charge Li-Po USB-C<br/><span class="small">À associer à l'accumulateur ci-dessus</span></td><td>TP4056 USB-C</td><td>généraliste</td><td class="num">2,40</td></tr>
+<tr><td>Oscilloscope USB 2 voies 20 MHz<br/><span class="small">Utile pour la mise au point de l'excitation</span></td><td>Hantek 6022BE</td><td>instrumentation</td><td class="num">65,00</td></tr>
+<tr class="tot"><td colspan="3">Sous-total — confort</td><td class="num">80,10</td></tr>
+<tr class="origine-pied"><td colspan="4">PhytoSense One · Bretagne Namasté · bretagne-namaste.com · révision B — septembre 2026</td></tr>
+</tbody></table>
+
+  <h3 id="b-conseils" data-toc="sub">Trois remarques qui font gagner du temps</h3>
+  <p><strong>Le câble USB-C doit transporter des données.</strong> Beaucoup de câbles vendus avec
+  des chargeurs ne comportent que les conducteurs d'alimentation. Une carte alimentée mais
+  invisible du système est presque toujours une affaire de câble.</p>
+  <p><strong>La batterie externe est le meilleur accessoire du lot.</strong> Vingt-cinq euros, et
+  la dernière voie de couplage avec le réseau disparaît. Sur les enregistrements longs, le gain
+  est mesurable.</p>
+  <p><strong>L'alcool isopropylique n'est pas un produit de finition.</strong> C'est une étape de
+  fabrication : un résidu de flux entre l'entrée et la garde conduit assez pour ruiner une mesure
+  à très haute impédance.</p>
+</section>
+
+<section class="chapter">
+  <h2 id="b-sbom" data-toc="chapter">Nomenclature logicielle</h2>
+
+  <p class="chapo">Une carte a sa nomenclature de composants ; le logiciel qui l'exploite a la
+  sienne. Elle répond aux mêmes questions : qu'est-ce qui entre dans le produit, d'où cela vient,
+  sous quelle licence, et dans quelle version exacte.</p>
+
+  <div class="origine"><b>PhytoScope 1.3.0</b> — nomenclature logicielle (SBOM)<br/><span>Bretagne Namasté · <a href="https://bretagne-namaste.com">bretagne-namaste.com</a> · contact@bretagne-namaste.com</span><br/><span>licence MIT · établie le 2026-09-18</span></div>
+<table class="bom tight"><thead><tr><th>Composant</th><th>Version</th><th>Licence</th><th>Éditeur</th><th>Rôle</th></tr></thead><tbody>
+<tr class="groupe"><td colspan="5">Bibliothèques Python</td></tr>
+<tr><td>numpy</td><td class="num">2.2.6</td><td>BSD-3-Clause</td><td>NumPy Developers</td><td>calcul numérique et traitement du signal</td></tr>
+<tr><td>PySide6</td><td class="num">6.11.2</td><td>LGPL-3.0-only</td><td>The Qt Company</td><td>interface graphique Qt 6</td></tr>
+<tr><td>shiboken6</td><td class="num">6.11.2</td><td>LGPL-3.0-only</td><td>The Qt Company</td><td>liaison C++/Python de Qt</td></tr>
+<tr><td>pyqtgraph</td><td class="num">0.14.0</td><td>MIT</td><td>Luke Campagnola et contributeurs</td><td>tracés scientifiques temps réel<br/><span class="small">facultatif</span></td></tr>
+<tr><td>sounddevice</td><td class="num">0.5.6</td><td>MIT</td><td>Matthias Geier</td><td>entrée et sortie audio (liaison PortAudio)<br/><span class="small">facultatif</span></td></tr>
+<tr><td>pyserial</td><td class="num">3.5</td><td>BSD-3-Clause</td><td>Chris Liechti</td><td>port série : contrôle de la carte<br/><span class="small">facultatif</span></td></tr>
+<tr><td>python-rtmidi</td><td class="num">1.5.8</td><td>MIT</td><td>Christopher Arndt</td><td>sortie MIDI (liaison RtMidi)<br/><span class="small">facultatif</span></td></tr>
+<tr><td>pyusb</td><td class="num">présent</td><td>BSD-3-Clause</td><td>PyUSB Developers</td><td>descripteurs USB détaillés<br/><span class="small">facultatif</span></td></tr>
+<tr><td>cffi</td><td class="num">2.1.1</td><td>MIT</td><td>Armin Rigo, Maciej Fijalkowski</td><td>interface C, requise par sounddevice<br/><span class="small">facultatif</span></td></tr>
+<tr class="groupe"><td colspan="5">Bibliothèques natives atteintes</td></tr>
+<tr><td>PortAudio</td><td class="num">système</td><td>MIT</td><td>portaudio.com</td><td>couche audio multiplateforme</td></tr>
+<tr><td>RtMidi</td><td class="num">système</td><td>MIT modifiée</td><td>rtmidi (McGill)</td><td>couche MIDI multiplateforme</td></tr>
+<tr><td>Qt</td><td class="num">système</td><td>LGPL-3.0</td><td>The Qt Company</td><td>boîte à outils graphique</td></tr>
+<tr><td>libasound (ALSA)</td><td class="num">système</td><td>LGPL-2.1</td><td>alsa-project.org</td><td>couche audio du noyau Linux — système, non redistribuée</td></tr>
+<tr class="origine-pied"><td colspan="5">PhytoScope 1.3.0 · Bretagne Namasté · bretagne-namaste.com · licence MIT</td></tr>
+</tbody></table>
+
+
+  <h3 id="b-sbom-portee" data-toc="sub">Portée et obligations</h3>
+
+  <p>PhytoScope <strong>n'incorpore aucun code tiers</strong> : il s'appuie sur ces bibliothèques
+  à l'exécution. Distribué sous forme de sources Python, il satisfait de fait l'obligation de
+  substituabilité qu'impose la licence LGPL de Qt — l'utilisateur peut remplacer la bibliothèque
+  sans rien recompiler.</p>
+
+  <p>Les quatre bibliothèques natives figurant en seconde partie du tableau sont atteintes à
+  travers les paquets Python. Elles font partie de ce qui s'exécute sur la machine, et doivent
+  donc figurer à l'inventaire, même si elles ne sont pas redistribuées.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Une nomenclature qui décrit la machine, pas le fichier</div>
+    <p class="noindent">Ce tableau n'est pas recopié d'un fichier de dépendances : il est établi
+    par introspection des modules <em>réellement importables</em>. Il décrit donc ce qui est
+    installé, et non ce que le projet prétend exiger — ce qui est précisément l'intérêt de
+    l'exercice. La commande <span class="phon">python3 tools/sbom.py</span> le régénère à tout
+    moment ; l'option <span class="phon">--json</span> produit un document CycloneDX 1.5,
+    directement exploitable par les outils d'analyse de conformité et de vulnérabilités.</p>
+  </div>
+
+  <div class="term">
+    <div class="t-h">Régénérer la nomenclature logicielle</div>
+<pre><span class="g">$ </span><span class="c">python3 tools/sbom.py</span>              <span class="g"># lisible</span>
+<span class="g">$ </span><span class="c">python3 tools/sbom.py --json</span>       <span class="g"># CycloneDX 1.5</span>
+<span class="g">$ </span><span class="c">python3 tools/sbom.py --html</span>       <span class="g"># fragment du fascicule</span></pre>
+  </div>
+
+  <p class="copyright">PhytoScope est publié sous licence MIT par Bretagne Namasté —
+  <a href="https://bretagne-namaste.com">bretagne-namaste.com</a> —
+  contact@bretagne-namaste.com. Le matériel décrit dans ce fascicule est publié sous licence
+  CERN-OHL-P v2.</p>
+</section>
+
+<section class="chapter">
+  <h2 id="b-budget" data-toc="chapter">Budgets</h2>
+  <div class="origine"><b>PhytoSense One</b> — budgets<br/><span>Bretagne Namasté · <a href="https://bretagne-namaste.com">bretagne-namaste.com</a> · contact@bretagne-namaste.com</span><br/><span>révision B — septembre 2026 · licence CERN-OHL-P v2</span></div><table class="tight"><thead><tr><th>Poste</th><th>Montant</th><th>Ce que cela recouvre</th></tr></thead><tbody>
+<tr><td>Composants de la carte</td><td class="num">244,35 €</td><td>68 références, 120 composants, circuit imprimé compris</td></tr>
+<tr><td>Accessoires indispensables</td><td class="num">103,90 €</td><td>câble, électrodes, gel, outillage de soudure</td></tr>
+<tr><td>Accessoires recommandés</td><td class="num">304,30 €</td><td>boîtier, batterie, instruments de contrôle</td></tr>
+<tr class="tot"><td>Budget minimal</td><td class="num">348,25 €</td><td>une carte qui fonctionne</td></tr>
+<tr class="tot"><td>Budget confortable</td><td class="num">652,55 €</td><td>une carte qu'on peut défendre devant un physicien</td></tr>
+</tbody></table>
+
+  <h3 id="b-comparaison" data-toc="sub">Ce que cela représente</h3>
+  <table class="compare tight">
+    <thead><tr><th>Ce qu'on compare</th><th>Prix</th><th>Ce qu'on obtient</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Montage à NE555</strong><br/><span class="small">niveau 1</span></td>
+        <td class="num">25 – 40 €</td>
+        <td>Une période. De la musique. Aucune grandeur physique.</td></tr>
+      <tr><td><strong>INA333 + ADS1115</strong><br/><span class="small">niveau 2</span></td>
+        <td class="num">60 – 120 €</td>
+        <td>Une tension, en volts, sur seize bits. Suffisant pour un atelier.</td></tr>
+      <tr><td><strong>Appareil du commerce</strong><br/><span class="small">Bamboo, U1 Pro, PlantWave</span></td>
+        <td class="num">350 – 600 €</td>
+        <td>Une musique excellente, immédiatement, sans ordinateur. Aucune grandeur accessible.</td></tr>
+      <tr><td><strong>PhytoSense One</strong><br/><span class="small">niveau 3</span></td>
+        <td class="num">≈ 330 €</td>
+        <td>Des volts et des ohms, datés, isolés, étalonnés, dans des formats ouverts — plus
+        quinze heures de votre temps.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Le poste qu'on oublie toujours</div>
+    <p class="noindent">Ce n'est ni un composant ni un outil : c'est le <strong>temps</strong>.
+    Quinze heures de montage, trois heures de recette, et une petite heure par an pour refaire la
+    fiche de recette. À cela s'ajoute l'apprentissage, qui n'est pas du temps perdu mais qui est du
+    temps. Un appareil du commerce s'ouvre et fonctionne ; celui-ci se construit. Le choix dépend
+    de ce que vous voulez faire, pas de ce que vous voulez posséder.</p>
+  </div>
+
+  <p class="copyright">Nomenclature publiée sous licence CERN-OHL-P v2, avec les schémas.
+  Révision B, septembre 2026. Bretagne Namasté — bretagne-namaste.com</p>
+</section>
+
+</body>
+</html>

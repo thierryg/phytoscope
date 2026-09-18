@@ -1,0 +1,396 @@
+<section class="chapter">
+  <h2 id="c14-usage" data-toc="chapter">Le logiciel à l'usage</h2>
+
+  <p class="chapo">Dix onglets, une barre d'outils qui ne ment pas, et un bandeau d'état qui dit
+  en permanence ce que l'appareil fait réellement. Voici ce qu'on trouve, et pourquoi.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/logiciel-ihm.svg" alt="Maquette de l'interface, onglet oscilloscope"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> L'onglet Oscilloscope. Le bandeau du bas est
+    l'élément le plus important de l'interface : il affiche l'état réel de l'acquisition, la source
+    utilisée, l'origine de l'horloge, la saturation, la dérive et l'état de l'enregistrement.</figcaption>
+  </figure>
+
+  <h3 id="c14-onglets" data-toc="sub">Les dix onglets</h3>
+
+  <table class="tight">
+    <thead><tr><th>Onglet</th><th>Ce qu'il montre</th><th>Quand on s'en sert</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Oscilloscope</strong></td>
+        <td>Le signal dans le temps, de cinq secondes à une heure, avec marqueurs</td>
+        <td>En permanence. C'est l'onglet de la séance.</td></tr>
+      <tr><td><strong>Multimètre</strong></td>
+        <td>Tension, bruit efficace, crête à crête, dérive, ligne de base, qualité du contact</td>
+        <td>Au début, pour juger si le contact est bon avant de lancer une heure d'enregistrement.</td></tr>
+      <tr><td><strong>Analyseur</strong></td>
+        <td>Le spectre, avec détection automatique du réseau</td>
+        <td>Dès qu'un doute naît sur le blindage ou la masse.</td></tr>
+      <tr><td><strong>Descripteurs</strong></td>
+        <td>Six représentations du même signal : forme d'onde, FFT, ondelettes, MFCC, prédiction
+        linéaire, cepstre</td>
+        <td>Quand la courbe ne suffit plus — et pour voir ce qu'une autre représentation
+        révèle. Détaillé au chapitre suivant.</td></tr>
+      <tr><td><strong>Traceur</strong></td>
+        <td>Un gnuplot intégré : neuf sources, styles, échelles logarithmiques, exportation</td>
+        <td>Pour l'analyse fine et pour produire les figures d'un compte rendu.</td></tr>
+      <tr><td><strong>Écoute</strong></td>
+        <td>Timbre, gamme, tonique, diapason, densité — et le journal des notes avec leur raison</td>
+        <td>Pour régler la musique, et pour comprendre pourquoi telle note a sonné.</td></tr>
+      <tr><td><strong>Parole</strong></td>
+        <td>Le mode vocal : dictionnaire, grammaire, voix — et le journal des énoncés avec les
+        valeurs qui les ont déclenchés</td>
+        <td>Pour un atelier, une séance publique, ou pour éprouver soi-même ce que fait une
+        grille de lecture. Ce n'est pas une traduction.</td></tr>
+      <tr><td><strong>Bibliothèque</strong></td>
+        <td>Les séances enregistrées et les échantillons, rejoués dans le moteur jusqu'à six
+        cents fois le temps réel</td>
+        <td>Pour relire une séance de nuit en quelques minutes — et pour régler une sonification
+        le soir, sur le signal du matin.</td></tr>
+      <tr><td><strong>Diagnostic</strong></td>
+        <td>Lien USB avec identifiants, échantillonnage, sortie sonore, journal</td>
+        <td>Quand quelque chose ne va pas — et une fois au début, par habitude.</td></tr>
+      <tr><td><strong>Réglages</strong></td>
+        <td>Sept pages, de l'assistant automatique à la page « Expert »</td>
+        <td>Une fois au début, puis rarement.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c14-autoconfig" data-toc="sub">L'auto-configuration, qui explique ce qu'elle fait</h3>
+
+  <p>L'assistant écoute une douzaine de secondes, puis mesure quatre choses : le plancher de bruit
+  après filtrage, la présence et la fréquence du réseau, la dérive continue, et une éventuelle
+  saturation. Il en déduit un jeu complet de réglages — coupures, réjecteur, seuil, amplitude
+  minimale, densité musicale, gain matériel.</p>
+
+  <p>Il n'applique rien sans accord, et surtout : <strong>il affiche la justification de chaque
+  choix</strong>. « Seuil à 4 σ, choisi d'après le bruit mesuré (3,2 µV efficaces) » vaut mieux
+  qu'un réglage silencieux, parce que l'utilisateur apprend en lisant, et peut contester.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Ce qu'une auto-configuration ne peut pas faire</div>
+    <p class="noindent">Elle ne peut pas savoir ce que vous cherchez. Un seuil réglé pour produire
+    une musique agréable n'est pas un seuil réglé pour détecter des potentiels d'action, et aucun
+    algorithme ne devinera lequel vous voulez. L'assistant propose un réglage <em>équilibré</em> ;
+    dès que l'objectif se précise, il faut reprendre la main — et la page Traitement existe pour
+    cela, avec chaque paramètre exposé et documenté.</p>
+  </div>
+
+  <h3 id="c14-sonification" data-toc="sub">Le moteur de correspondance, règle par règle</h3>
+
+  <figure class="figframe">
+    <img src="assets/svg/logiciel-mapping.svg" alt="Chaîne de sonification"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> De la grandeur mesurée à la note. Chaque
+    flèche est un choix esthétique, explicite et réglable — et consigné dans le fichier de séance,
+    de sorte qu'on puisse, six mois plus tard, savoir pourquoi cette note-là a sonné.</figcaption>
+  </figure>
+
+  <p>Cinq règles, appliquées dans l'ordre. L'amplitude de l'événement, normalisée par l'écart-type
+  courant, donne la <strong>hauteur</strong>. La pente au déclenchement donne la
+  <strong>nuance</strong>. Le temps écoulé depuis la note précédente donne la
+  <strong>durée</strong>. Une contrainte de densité empêche la saturation rythmique. Une contrainte
+  d'anti-répétition évite de rejouer trois fois la même note.</p>
+
+  <p>Vingt-six gammes sont proposées, dont huit traditionnelles non occidentales, et quatre
+  diapasons : 440 Hz, la norme ; 432 Hz, prisé dans les milieux du son thérapeutique ; 426,7 Hz,
+  accord dit historique ; et 415 Hz, diapason baroque. Douze profils rappellent d'un geste un
+  réglage complet, comme le font les appareils du commerce.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ À propos du 432 Hz</div>
+    <p class="noindent">Le réglage est fourni parce qu'il est demandé, qu'il change réellement la
+    couleur sonore — trente-deux centièmes de demi-ton plus bas, ce qui s'entend —, et que rien
+    n'oblige une écoute à se justifier. Mais il faut le dire nettement : <strong>aucune étude
+    contrôlée n'établit d'effet physiologique propre à cette fréquence</strong>. Les travaux
+    invoqués reposent sur de petits effectifs sans insu. Le logiciel le propose donc comme un choix
+    esthétique, pas comme une propriété de la plante ni du monde.</p>
+  </div>
+
+  <h3 id="c14-sortie" data-toc="sub">Écouter réellement : amplification, compression, bips</h3>
+
+  <p>Une plante produit des événements rares et de faible dynamique. Sur les haut-parleurs d'un
+  portable, dans une salle d'atelier, le rendu est inaudible si l'on se contente d'un gain. L'étage
+  de sortie traite donc le problème comme une console de sonorisation : gain jusqu'à trente-six
+  décibels, remontée de présence entre un et quatre kilohertz — là où l'oreille est la plus
+  sensible et où un petit haut-parleur rend le mieux —, compresseur à seuil et rapport réglables,
+  et limiteur qui garantit qu'aucun échantillon ne dépasse la pleine échelle.</p>
+
+  <p>Un générateur de bips complète l'ensemble : un repère sonore court à chaque événement détecté,
+  et un autre, plus grave, en cas de saturation. C'est précieux quand on regarde ailleurs —
+  c'est-à-dire presque toujours. Un bouton d'essai du haut-parleur émet un kilohertz pendant une
+  demi-seconde : c'est la façon la plus rapide de savoir si le son sort.</p>
+
+  <h3 id="c14-empreinte" data-toc="sub">L'empreinte de mesure — et pourquoi ce n'est pas une identité</h3>
+
+  <p>La question revient à chaque atelier : puisqu'on prête à chaque plante une signature qui lui
+  serait propre, le logiciel pourrait-il <em>reconnaître</em> celle qu'on mesure ? Il faut répondre
+  en deux temps, et le premier temps est un refus.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Ce que cette fonction ne fait pas</div>
+    <p class="noindent">Elle ne reconnaît pas une plante : ni son espèce, ni son individu, ni son
+    état. Un signal électrique de surface n'est pas une empreinte digitale. Il dépend autant de
+    l'électrode, du gel, de l'humidité du substrat, de la température de la pièce et de la longueur
+    du câble que du végétal lui-même. <strong>Deux mesures du même ficus à deux jours d'intervalle
+    diffèrent généralement plus que deux mesures de deux ficus voisins le même après-midi.</strong>
+    Prétendre le contraire serait vendre du merveilleux avec des chiffres — exactement ce que cet
+    ouvrage s'interdit.</p>
+  </div>
+
+  <p>Ce que le logiciel calcule, en revanche, a un sens et une utilité : l'empreinte du
+  <strong>montage</strong>. Huit descripteurs stables et interprétables caractérisent l'ensemble
+  <em>plante + électrodes + substrat + câble + carte</em> tel qu'il est à cet instant.</p>
+
+  <table class="tight">
+    <thead><tr><th>Descripteur</th><th>Ce qu'il capture surtout</th></tr></thead>
+    <tbody>
+      <tr><td>Bruit efficace</td><td>la qualité du contact et du blindage</td></tr>
+      <tr><td>Pente spectrale en 1/f<sup>α</sup></td><td>la nature du milieu et de l'électrode</td></tr>
+      <tr><td>Centre de gravité spectral</td><td>la bande où vit l'activité</td></tr>
+      <tr><td>Temps de corrélation</td><td>l'inertie du système mesuré</td></tr>
+      <tr><td>Dérive</td><td>l'électrode qui se stabilise, l'humidité qui change</td></tr>
+      <tr><td>Taux d'événements</td><td>l'activité apparente, au seuil choisi</td></tr>
+      <tr><td>Facteur de Fano</td><td>le groupement des événements dans le temps</td></tr>
+      <tr><td>Aplatissement</td><td>la forme de la distribution des amplitudes</td></tr>
+    </tbody>
+  </table>
+
+  <p>À quoi cela sert, concrètement : à <strong>retrouver un montage</strong> — « ceci ressemble à
+  la séance d'hier, à 86 % » —, donc à s'apercevoir qu'il a changé ; à <strong>voir une
+  dégradation</strong>, car un contact qui sèche fait chuter la ressemblance bien avant qu'on ne
+  le remarque à l'écran ; et à <strong>comparer honnêtement</strong> deux séances avant de les
+  interpréter.</p>
+
+  <p>La ressemblance est une <strong>distance</strong>, jamais une identité. Le logiciel ne produit
+  aucun code d'identification — un code laisserait croire à une exactitude qui n'existe pas — et il
+  affiche toujours les huit valeurs sur lesquelles il se fonde, ainsi qu'une phrase plutôt qu'un
+  simple pourcentage : « le même montage, vraisemblablement », « un montage proche — le contact a
+  pu changer », « une parenté possible, rien de plus », « un autre montage ». Les seuils de ces
+  phrases sont écrits dans le code, en clair, pour qu'on puisse les contester.</p>
+
+  <h3 id="c14-echantillons" data-toc="sub">Le carnet de croquis : garder ce qui vient de passer</h3>
+
+  <p>Un enregistrement de séance est un engagement : on le décide avant, il dure, il produit un
+  répertoire complet. Or l'essentiel arrive souvent <strong>avant</strong> qu'on ait pensé à
+  enregistrer — la plante réagit, et l'on comprend une minute trop tard que cela valait la peine
+  d'être gardé. Le logiciel tient dix minutes de signal en mémoire ; les laisser s'effacer serait
+  absurde.</p>
+
+  <p>D'où l'échantillon : <strong>un bouton, ou Ctrl+E</strong>, et la dernière minute écoulée est
+  sur le disque. Rien à préparer, rien à arrêter. C'est le carnet de croquis à côté de la pièce
+  d'archive.</p>
+
+  <table class="tight">
+    <thead><tr><th></th><th>Une séance</th><th>Un échantillon</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Décision</strong></td><td>avant, explicite</td>
+        <td>après coup, d'un geste</td></tr>
+      <tr><td><strong>Forme</strong></td><td>un répertoire : WAV, CSV, JSON</td>
+        <td>un WAV et un petit JSON de même nom</td></tr>
+      <tr><td><strong>Signal conservé</strong></td><td>brut, avant filtrage</td>
+        <td>filtré et centré — celui qu'on voyait à l'écran</td></tr>
+      <tr><td><strong>Pleine échelle</strong></td><td>celle du convertisseur, ±2,5 V</td>
+        <td>choisie pour chaque échantillon (voir ci-dessous)</td></tr>
+      <tr><td><strong>Durée</strong></td><td>des heures</td><td>quelques secondes à dix minutes</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Pourquoi l'échantillon choisit sa pleine échelle</div>
+    <p class="noindent">Le <span class="phon">signal.wav</span> d'une séance conserve le signal
+    brut, qui occupe réellement la plage du convertisseur : ±2,5 V y est la bonne référence. Un
+    échantillon, lui, garde le signal filtré et centré, dont l'amplitude se compte en microvolts.
+    L'écrire à ±2,5 V reviendrait à n'utiliser que <strong>neuf bits sur vingt-quatre</strong>, et à
+    quantifier à 0,3 µV un signal dont le bruit propre vaut un microvolt : la relecture serait
+    visiblement plus grossière que l'original. La pleine échelle est donc arrondie dans la suite
+    1–2–5 juste au-dessus de l'amplitude observée, et inscrite dans le JSON — le pas de
+    quantification tombe alors sous le picovolt.</p>
+  </div>
+
+  <p>Séances et échantillons se <strong>rejouent dans le moteur</strong>, et non sous forme de
+  courbe : filtres, détection d'événements, descripteurs, musique et mode vocal fonctionnent
+  exactement comme devant une plante vivante. C'est ce qui permet de régler tranquillement une
+  sonification, le soir, sur la séance du matin — puis de rendre la main à la plante branchée d'un
+  seul bouton. On peut aussi charger un fichier pris ailleurs : un enregistrement reçu d'un
+  correspondant se rejoue comme les siens.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Pendant une relecture, l'acquisition est suspendue</div>
+    <p class="noindent">La source vivante est <em>réellement arrêtée</em> : plus rien n'entre par la
+    carte ni par l'entrée audio tant que l'enregistrement joue. Ce n'est pas une limitation, c'est
+    une exigence — si les deux coexistaient, on ne saurait plus ce qu'on écoute, et un
+    enregistrement passerait pour une plante. Un bandeau le rappelle en permanence, avec la
+    position dans le fichier, et un bouton rend la main à la plante branchée.</p>
+  </div>
+
+  <h3 id="c14-disque" data-toc="sub">L'espace disque, surveillé pendant qu'on enregistre</h3>
+
+  <p>Le compte est vite fait, et il surprend :</p>
+
+  <table class="tight">
+    <thead><tr><th>Fichier</th><th>Débit</th><th>En une heure</th></tr></thead>
+    <tbody>
+      <tr><td><span class="phon">signal.wav</span></td><td>3 octets × f<sub>é</sub> × voies</td>
+        <td>2,6 Mo à 250 Hz</td></tr>
+      <tr><td><span class="phon">musique.wav</span></td><td>2 octets × 44 100</td>
+        <td><strong>317 Mo</strong></td></tr>
+      <tr><td><span class="phon">evenements.csv</span></td><td>quelques octets par événement</td>
+        <td>quelques kilo-octets</td></tr>
+    </tbody>
+  </table>
+
+  <p>C'est le rendu musical qui remplit le disque — trois cents mégaoctets l'heure, soit un disque
+  de démonstration plein en une nuit. Un logiciel de mesure qui remplit le disque de son hôte est
+  malpoli ; pire, il perd la fin de la séance, c'est-à-dire souvent ce qu'on attendait.</p>
+
+  <p>Trois règles, donc. On <strong>mesure</strong> l'espace restant pendant l'enregistrement, pas
+  avant. On <strong>prévient</strong> tant qu'il est encore temps de faire de la place — à vingt
+  minutes d'autonomie par défaut. Et l'on <strong>arrête proprement</strong> un peu avant la
+  saturation, en refermant les fichiers : un enregistrement clos vaut infiniment mieux qu'un
+  enregistrement tronqué par une erreur d'écriture. La réserve, de cinq cents mégaoctets par
+  défaut, n'est pas là pour le logiciel mais pour le système — un disque réellement plein empêche
+  d'écrire les réglages, le journal, et parfois d'ouvrir une session.</p>
+
+  <h3 id="c14-langues" data-toc="sub">Onze langues, et comment en ajouter une</h3>
+
+  <p><strong>Au premier lancement, l'interface est en français</strong>, quelle que soit la langue
+  du système : le logiciel ne consulte pas la locale. Ce n'est pas une négligence — l'ouvrage, les
+  planches et le dictionnaire du mode vocal sont en français, et une interface qui ne correspondrait
+  pas à sa documentation coûterait plus cher qu'elle ne rapporterait. Le choix fait ensuite dans les
+  réglages est conservé d'une séance à l'autre.</p>
+
+  <p>L'interface existe en onze langues : français — la langue source —, anglais américain,
+  espagnol, portugais, italien, indonésien, russe, chinois, japonais, coréen et arabe. Le choix de
+  ces langues n'est pas une ambition de diffusion : c'est celui des appareils du commerce que les
+  ateliers emploient déjà, augmenté de celles que réclament les correspondants du projet. En arabe,
+  toute la mise en page s'inverse.</p>
+
+  <p>Le point de conception qui mérite d'être dit tient en une phrase : <strong>les clés du
+  catalogue sont les phrases françaises elles-mêmes</strong>, et non des identifiants abstraits du
+  genre <span class="phon">menu.file.open</span>. Le code reste lisible — <span class="phon">t("Oscilloscope")</span>
+  se comprend sans consulter un dictionnaire — et surtout, une traduction manquante retombe sur une
+  phrase française correcte plutôt que sur un identifiant nu. Un instrument de mesure à moitié
+  traduit doit rester utilisable ; il ne doit jamais afficher <span class="phon">tab.scope.title</span>.</p>
+
+  <p>Un catalogue est un fichier JSON déposé dans un répertoire. Le logiciel <em>découvre</em> au
+  démarrage les langues présentes au lieu d'en connaître une liste : ajouter la sienne ne demande
+  donc ni modification du code, ni compilation, ni connaissance de gettext. Le bouton « Écrire un
+  modèle de traduction » produit le fichier à compléter, en conservant ce qui était déjà traduit.
+  Une entrée laissée vide vaut une entrée absente — on peut livrer une traduction aux trois quarts
+  et la finir phrase par phrase.</p>
+
+  <table class="tight">
+    <thead><tr><th>Opération</th><th>Dans l'interface</th><th>En ligne de commande</th></tr></thead>
+    <tbody>
+      <tr><td>Changer de langue</td><td>Réglages → Interface → Langue</td>
+        <td><span class="phon">run.py --lang ja</span></td></tr>
+      <tr><td>Créer un catalogue</td><td>« Écrire un modèle de traduction… »</td>
+        <td><span class="phon">tools/i18n.py --modele nl</span></td></tr>
+      <tr><td>Voir ce qui manque</td><td>le taux affiché en regard de chaque langue</td>
+        <td><span class="phon">tools/i18n.py --couverture</span></td></tr>
+      <tr><td>Nettoyer les clés périmées</td><td>—</td>
+        <td><span class="phon">tools/i18n.py --inutiles nl</span></td></tr>
+    </tbody>
+  </table>
+
+  <p class="small">Les options de la colonne de droite valent <strong>pour la séance en
+  cours</strong> et ne sont jamais écrites dans le fichier de réglages : lancer une fois
+  <span class="phon">--lang ja</span> pour un essai, ou <span class="phon">--simulation</span> pour
+  une démonstration, ne doit pas engager les six mois suivants. Un réglage permanent se fait dans
+  l'onglet Réglages, où il est bien enregistré.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ L'inventaire ne peut pas mentir</div>
+    <p class="noindent">La liste des libellés traduisibles n'est pas tenue à la main : elle est
+    produite par <strong>analyse syntaxique du code</strong> et parcours des tables de données.
+    Un texte ajouté à l'interface apparaît donc immédiatement comme non traduit, et un test de la
+    suite de vérification échoue tant que les onze catalogues ne sont pas complets. C'est la seule
+    façon connue d'empêcher une traduction de pourrir lentement.</p>
+  </div>
+
+  <p>Le mode vocal, lui, reçoit <strong>un dictionnaire par langue</strong> — onze au total. Ce
+  sont des points de départ, jamais des références : les mots que le dispositif prononce doivent
+  rester ceux de celui qui écoute, et un fichier JSON suffit à en écrire un autre. Les
+  dictionnaires du japonais, du coréen, du chinois et de l'arabe portent en outre leurs
+  <strong>propres gabarits de phrase</strong>, qui l'emportent sur ceux de la grammaire choisie :
+  sans cela, « 私は かすかに ふるえる » sortirait dans l'ordre français et ne voudrait rien dire.</p>
+
+  <h3 id="c14-arret" data-toc="sub">S'arrêter : un Ctrl+C doit toujours aboutir</h3>
+
+  <p>Un programme lancé depuis un terminal doit s'arrêter quand on y tape Ctrl+C. Cela va de soi en
+  mode console ; cela ne va pas de soi derrière une interface graphique, pour une raison technique
+  qu'il vaut mieux connaître. Pendant la boucle d'événements de Qt, le fil principal est bloqué dans
+  du code C++ et l'interpréteur Python n'exécute plus une seule instruction : le signal est bien
+  reçu par le système, mais le gestionnaire ne s'exécutera qu'au prochain retour dans du code
+  Python — c'est-à-dire jamais, tant qu'on ne touche pas à la fenêtre.</p>
+
+  <p>Trois mesures y répondent. Un chronomètre de deux cents millisecondes, dont la fonction ne fait
+  rien, rend périodiquement la main à l'interpréteur. Le gestionnaire d'interruption clôt
+  l'enregistrement en cours, arrête le moteur, sauve les réglages, puis demande à Qt de quitter. Et
+  un chien de garde termine le processus sans ménagement si l'arrêt se bloque — une couche audio qui
+  ne rend pas la main, un sous-processus de synthèse vocale qui traîne. Un second Ctrl+C produit le
+  même effet, immédiatement. <span class="phon">SIGTERM</span> reçoit le même traitement, car c'est
+  ce que le système envoie à l'extinction : une séance de six heures doit se refermer proprement
+  quand la machine s'éteint.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La règle : interruptible, pas seulement poli</div>
+    <p class="noindent">Un logiciel qui, une fois interrompu, oblige à chercher son numéro de
+    processus n'est pas interruptible ; il est seulement poli. La différence se mesure le jour où
+    l'on veut arrêter une acquisition avant la fin d'une séance publique.</p>
+  </div>
+
+  <h3 id="c14-seance" data-toc="sub">Ce qu'une séance laisse derrière elle</h3>
+
+  <p>Une séance est un <strong>répertoire</strong>, pas un fichier. Ce choix a une raison : dans
+  dix ans, on veut pouvoir l'ouvrir et comprendre sans ce logiciel.</p>
+
+  <div class="schema light">
+    <div class="sch-h">Contenu d'une séance</div>
+<pre>2026-09-17_140233_ficus/
+├── seance.json        métadonnées, réglages complets, étalonnage, horloges
+├── signal.wav         signal brut, 24 bits, une piste par voie
+├── musique.wav        le rendu sonore, tel qu'il a été entendu
+├── evenements.csv     un événement par ligne : index, temps, amplitude, pente, sigma
+├── notes.csv          une note par ligne, avec la règle qui l'a produite
+├── enonces.csv        un énoncé par ligne, si le mode vocal est actif
+└── marqueurs.csv      les annotations posées pendant la séance</pre>
+  </div>
+
+  <p>Le WAV s'ouvre dans Audacity, les CSV dans un tableur, le JSON dans un éditeur de texte. Le
+  facteur de conversion pleine échelle est consigné : sans lui, le WAV serait joli mais
+  inexploitable. Rien n'est enfermé.</p>
+
+  <h3 id="c14-install" data-toc="sub">Installer, sur les trois systèmes</h3>
+
+  <div class="term">
+    <div class="t-h">Installation — identique partout, à l'invite près</div>
+<pre><span class="g"># GNU/Linux (Debian, Ubuntu, Mint) et macOS</span>
+<span class="c">make install</span>          <span class="g"># environnement virtuel + dépendances</span>
+<span class="c">make demo</span>             <span class="g"># découverte, sans aucun matériel</span>
+
+<span class="g"># Windows, en invite de commandes</span>
+<span class="c">make.bat install</span>
+<span class="c">make.bat demo</span>
+
+<span class="g"># si quelque chose ne va pas</span>
+<span class="c">make doctor</span>           <span class="g"># ce qui est installé, ce qui manque</span>
+<span class="c">make system-deps</span>      <span class="g"># paquets système de VOTRE distribution</span>
+<span class="c">make sanity</span>           <span class="g"># contrôles avant vol complets</span></pre>
+  </div>
+
+  <p>Le fichier <span class="phon">Makefile</span> détecte les pièges courants. Le plus retors
+  survient sous GNU/Linux lorsque l'interpréteur vient de Homebrew : celui-ci embarque sa propre
+  bibliothèque C et ne sait pas charger les bibliothèques du système, ce qui produit une interface
+  graphique qui refuse de démarrer avec un message trompeur. Le script choisit alors
+  automatiquement l'interpréteur de la distribution.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Le logiciel démarre toujours</div>
+    <p class="noindent">S'il ne trouve pas de carte, il cherche un port série ; s'il n'en trouve
+    pas, il propose l'entrée audio ; s'il n'y en a pas, il bascule sur un générateur interne dont
+    le signal est statistiquement crédible — dérive lente, bruit en 1/f, potentiels d'action
+    occasionnels, ronflette du réseau. Un atelier ne doit jamais commencer par une séance de
+    dépannage. Et pendant que le générateur tourne, le logiciel guette l'arrivée d'une carte sur le
+    port USB-C, et bascule tout seul dès qu'elle apparaît.</p>
+  </div>
+</section>

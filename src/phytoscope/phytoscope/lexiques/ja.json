@@ -1,0 +1,75 @@
+{
+  "nom": "日本語 — 観想の語域",
+  "langue": "ja",
+  "auteur": "Bretagne Namasté",
+  "note": "Dictionnaire d'exemple. Le modifier est l'usage normal, pas une entorse : les mots doivent être ceux de celui qui écoute.",
+  "grammaire": "contemplative",
+  "registres": {
+    "sujet": [
+      "私は",
+      "何かが",
+      "樹液が",
+      "幹が",
+      "葉が"
+    ],
+    "verbe_montee": [
+      "ふるえる",
+      "目覚める",
+      "のぼる",
+      "跳ねあがる",
+      "ほとばしる"
+    ],
+    "verbe_descente": [
+      "しずまる",
+      "下りてゆく",
+      "退く",
+      "やすむ",
+      "消えてゆく"
+    ],
+    "intensite": [
+      "かすかに",
+      "そっと",
+      "はっきりと",
+      "強く",
+      "全身で"
+    ],
+    "tempo": [
+      "また",
+      "ふたたび",
+      "しばらくして",
+      "長い時を経て",
+      "とても長い沈黙のあとで"
+    ],
+    "couleur": [
+      "こもった",
+      "低い",
+      "ゆたかな",
+      "澄んだ",
+      "高い"
+    ],
+    "liaison": [
+      "そして",
+      "それから",
+      "すると",
+      "そのあいだに",
+      "——"
+    ]
+  },
+  "gabarits": {
+    "minimale": [
+      "{verbe}"
+    ],
+    "telegraphique": [
+      "{intensite}{verbe}"
+    ],
+    "contemplative": [
+      "{sujet}{intensite}{verbe}",
+      "{tempo}、{sujet}{intensite}{verbe}",
+      "{sujet}{intensite}{verbe}、{couleur}"
+    ],
+    "descriptive": [
+      "{tempo}、{sujet}{intensite}{verbe}、{couleur}",
+      "{sujet}{intensite}{verbe}{liaison}{couleur}"
+    ]
+  }
+}

@@ -1,0 +1,340 @@
+<section class="chapter">
+  <h2 id="c7-electricite" data-toc="chapter">L'électricité du vivant végétal</h2>
+  <p class="chapo">Toute cellule vivante est une pile. Celle des plantes est même remarquablement puissante : jusqu'à moins cent soixante millivolts de part et d'autre d'une membrane de huit nanomètres d'épaisseur — un champ électrique de vingt millions de volts par mètre.</p>
+
+  <p class="lettrine noindent">Avant de comprendre ce qu'un boîtier de bio-sonification capte, il faut savoir ce qu'il y a à capter. La réponse tient en une phrase : une plante entretient en permanence des gradients ioniques coûteux, et toute perturbation de son environnement déplace ces gradients. C'est tout. Ce n'est pas peu.</p>
+
+  <h3 id="c7-membrane" data-toc="sub">Le potentiel de membrane</h3>
+
+  <p>La membrane plasmique d'une cellule végétale sépare deux milieux de compositions ioniques très différentes. Cette différence n'est pas passive : elle est entretenue, seconde après seconde, par une pompe à protons de type P (l'ATPase H⁺) qui expulse des protons vers l'extérieur en consommant de l'ATP. Le résultat est double : un gradient de pH et un gradient électrique.</p>
+
+  <table>
+    <thead><tr><th>Grandeur</th><th>Valeur typique</th><th>Comparaison animale</th></tr></thead>
+    <tbody>
+      <tr><td>Potentiel de repos</td><td>−120 à −180 mV</td><td>Neurone : −70 mV</td></tr>
+      <tr><td>Épaisseur de membrane</td><td>≈ 8 nm</td><td>Identique</td></tr>
+      <tr><td>Champ électrique transmembranaire</td><td>≈ 2 × 10⁷ V/m</td><td>≈ 10⁷ V/m</td></tr>
+      <tr><td>Part du potentiel due à la pompe H⁺</td><td>50 à 70 %</td><td>Quasi nulle (pompe Na⁺/K⁺)</td></tr>
+      <tr><td>Coût métabolique</td><td>jusqu'à 30 % de l'ATP cellulaire</td><td>≈ 20 % chez le neurone</td></tr>
+    </tbody>
+    <caption>Le potentiel de repos végétal est plus négatif que l'animal, et repose sur une pompe différente. C'est la raison pour laquelle les plantes sont électriquement « bruyantes » : elles ont beaucoup à perdre et à regagner.</caption>
+  </table>
+
+  <h3 id="c7-trois-signaux" data-toc="sub">Trois familles de signaux</h3>
+
+  <p>La littérature distingue aujourd'hui trois types d'événements électriques, qu'il est crucial de ne pas confondre : ils n'ont ni la même cause, ni la même durée, ni le même sens biologique — et surtout, un seul des trois alimente réellement la musique des plantes.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/action-potential.svg" alt="Tracés comparés : potentiel d'action, potentiel de variation, micro-fluctuations" style="width:100%"/>
+    <figcaption><span class="fig-n">Fig. 2.1.</span> Les trois signatures électriques du végétal, à la même échelle de temps. Remarquez la différence d'amplitude d'un facteur dix entre le potentiel d'action et les micro-fluctuations.</figcaption>
+  </figure>
+
+  <h4>1. Le potentiel d'action (PA)</h4>
+  <p>C'est le signal « noble », celui qui ressemble le plus au nerf animal. Il obéit à la loi du tout ou rien : au-delà d'un seuil de dépolarisation, la réponse est maximale et stéréotypée. Le mécanisme ionique est cependant inverse de celui du neurone : ce n'est pas une entrée de sodium mais une <strong>sortie d'anions chlorure</strong>, suivie d'une sortie de potassium qui repolarise. Durée : une à quelques secondes. Vitesse de propagation : de 1 à 20&nbsp;mm/s dans la plupart des espèces, jusqu'à 200&nbsp;mm/s chez la dionée.</p>
+
+  <p>Les plantes qui en produisent spontanément et fréquemment sont rares : <em>Mimosa pudica</em>, <em>Dionaea muscipula</em>, <em>Drosera</em>, certaines <em>Chara</em> et <em>Nitella</em> d'eau douce. Ce sont les « plantes rapides ». Pour un praticien, ce sont aussi les plus spectaculaires à sonifier — et parmi les plus fragiles à manipuler.</p>
+
+  <h4>2. Le potentiel de variation (PV)</h4>
+  <p>Plus lent, gradué, et proportionnel à l'intensité du stimulus — donc non stéréotypé. Sa cause n'est pas électrique mais <strong>hydraulique</strong> : une blessure, une brûlure ou une coupure provoque une onde de pression dans le xylème, qui déforme mécaniquement les membranes sur son passage et les dépolarise. Durée : de dix secondes à plusieurs minutes. C'est le signal de l'alerte systémique : c'est lui qui, chez <em>Arabidopsis</em>, déclenche à distance la synthèse d'acide jasmonique et la mise en défense des feuilles non attaquées.</p>
+
+  <h4>3. Les micro-fluctuations de conductance</h4>
+  <p>C'est la troisième famille, la moins glamour — et la seule que capte réellement un boîtier grand public. Il ne s'agit pas d'un événement mais d'un <strong>bruit structuré permanent</strong> : la résistance électrique entre deux points d'un tissu dérive continuellement, sur des échelles de temps allant de la seconde à la journée.</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique</div>
+    <p>Depuis 2016, cette activité continue porte un nom : l'<strong>électrome</strong> (par analogie avec le génome ou le protéome). Le terme désigne l'ensemble des oscillations électriques d'un organisme considérées comme un système dynamique plutôt que comme du bruit. Les travaux de l'équipe de Gustavo Souza (Universidade Federal do Rio Grande do Norte) ont montré que l'analyse spectrale et fractale de ces oscillations permet de <em>classer</em> l'état d'une plante — stress hydrique, stress lumineux, attaque fongique — avant l'apparition de tout symptôme visible.</p>
+    <p>Des travaux plus récents confirment la structure de ce signal. Une étude de 2026 portant sur <em>Primula vulgaris</em>, conduite sur trois stations de mesure indépendantes, met en évidence un <strong>rythme circadien robuste de 24&nbsp;heures dans la puissance de la bande 1-5&nbsp;Hz</strong>, avec un coefficient de détermination compris entre 0,72 et 0,87 et une amplitude crête-à-creux de 0,35 à 1,19 fois la valeur moyenne. Le rythme persiste la nuit, en l'absence de tout visiteur.</p>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Idée clé</div>
+    <p>Quand votre boîtier « chante », il ne transcrit ni des potentiels d'action, ni des cris de détresse. Il transcrit, dans l'immense majorité des cas, <strong>la troisième famille</strong> : la dérive lente et structurée de l'impédance tissulaire. Cette dérive est réelle, biologique, rythmée par l'horloge circadienne, et corrélée à l'état physiologique de la plante. Ce n'est pas rien. Ce n'est simplement pas ce que l'on croit souvent.</p>
+  </div>
+
+  <h3 id="c7-neurotransmetteurs" data-toc="sub">Une chimie partagée</h3>
+
+  <p>Un fait mérite d'être posé sans emphase, parce qu'il est souvent mal utilisé. Les plantes synthétisent effectivement des molécules que nous appelons « neurotransmetteurs » chez l'animal :</p>
+
+  <ul>
+    <li><strong>le glutamate</strong>, dont les récepteurs végétaux (les <em>GLR</em>, au nombre de vingt chez <em>Arabidopsis</em>) sont apparentés aux récepteurs NMDA de nos synapses, et jouent un rôle démontré dans la propagation du signal de blessure ;</li>
+    <li><strong>l'acide gamma-aminobutyrique (GABA)</strong>, qui s'accumule en quelques secondes sous stress et module l'ouverture de canaux anioniques ;</li>
+    <li><strong>la sérotonine et la mélatonine</strong>, impliquées dans la sénescence et la réponse au stress oxydatif ;</li>
+    <li><strong>la dopamine et l'acétylcholine</strong>, présentes mais aux fonctions moins clairement établies.</li>
+  </ul>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Limites et interprétation</div>
+    <p>Une molécule n'a pas de fonction en soi ; elle a la fonction que lui donne le réseau qui l'emploie. L'ATP transporte de l'énergie chez la bactérie et sert aussi de neurotransmetteur chez l'humain. Le fait qu'une plante fabrique de la sérotonine ne dit <strong>rien</strong> sur son humeur — pas plus que le fait qu'une banane en contienne. L'argument « les plantes ont de la dopamine, donc elles ressentent » est un sophisme par déplacement de contexte, et il faut refuser de l'employer même quand il sert la cause qu'on défend.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Le potentiel de repos végétal atteint −180 mV, soit un champ de 2 × 10⁷ V/m.</li>
+      <li>Trois familles de signaux : potentiel d'action (tout ou rien, rapide), potentiel de variation (hydraulique, gradué), micro-fluctuations (continues).</li>
+      <li>C'est la troisième famille — l'électrome — que captent les dispositifs de bio-sonification.</li>
+      <li>L'électrome présente un rythme circadien de 24 h mesurable et reproductible.</li>
+      <li>Le partage de neurotransmetteurs ne démontre aucun partage d'expérience subjective.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c8-electrode" data-toc="chapter">Ce que mesure réellement une électrode</h2>
+  <p class="chapo">Entre l'intention de mesurer une plante et le nombre affiché par le convertisseur, il y a une interface — et cette interface est, de très loin, la plus grande source d'illusion du domaine.</p>
+
+  <p class="lettrine noindent">Posons la question crûment. Vous placez deux électrodes sur une feuille, votre circuit y fait passer un courant minuscule et mesure la résistance. Que mesurez-vous&nbsp;? La réponse n'est pas « la plante ». Elle est : <strong>la somme de trois résistances en série</strong>, dont une seule est biologique.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/leaf-anatomy.svg" alt="Coupe de limbe avec électrode et flux d'eau" style="width:100%"/>
+    <figcaption><span class="fig-n">Fig. 2.2.</span> Coupe transversale d'un limbe. L'électrode est posée sur l'épiderme inférieur, là où se concentrent les stomates : c'est le point le plus humide et donc le plus conducteur.</figcaption>
+  </figure>
+
+  <div class="schema light">
+    <div class="sch-h">Décomposition de l'impédance mesurée</div>
+<pre>
+  ÉLECTRODE A                TISSU VÉGÉTAL               ÉLECTRODE B
+      │                           │                           │
+      ▼                           ▼                           ▼
+ ┌──────────┐              ┌─────────────┐              ┌──────────┐
+ │  Z_int_A │──────────────│    Z_bio    │──────────────│  Z_int_B │
+ └──────────┘              └─────────────┘              └──────────┘
+   0,5–20 MΩ                  1–50 MΩ                     0,5–20 MΩ
+   variable ++                variable +                  variable ++
+
+   Z_int  = impédance d'interface métal / tissu
+            → dépend de l'humidité du contact, de la pression
+              d'appui, de l'oxydation du métal, de la température
+            → DÉRIVE de 10 à 40 % dans la première demi-heure
+
+   Z_bio  = impédance du trajet à travers le limbe
+            → dépend de la teneur en eau de l'apoplaste,
+              de l'ouverture stomatique, de la concentration ionique
+            → c'est LA SEULE grandeur que vous vouliez mesurer
+</pre>
+    <figcaption>Le signal utile est encadré par deux impédances parasites plus instables que lui. Tout l'art de la mesure consiste à les stabiliser, pas à les supprimer.</figcaption>
+  </div>
+
+  <h3 id="c8-artefacts" data-toc="sub">Le catalogue des artefacts</h3>
+
+  <p>Voici, classés par ordre d'importance décroissante, les phénomènes qui produisent des variations que l'on prend pour des « réactions ». Apprenez-les : ils vous éviteront des années de fausses certitudes.</p>
+
+  <table class="tight">
+    <thead><tr><th>Artefact</th><th>Signature sonore typique</th><th>Échelle de temps</th><th>Comment l'écarter</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Dérive d'interface</strong> — stabilisation du contact métal/tissu</td><td>Glissement lent et monotone du registre, notes de plus en plus espacées ou rapprochées</td><td>20 à 45 min après la pose</td><td>Attendre 30 min avant de considérer la séance commencée</td></tr>
+      <tr><td><strong>Évaporation du contact</strong> — le point d'appui sèche</td><td>Montée progressive du registre puis extinction</td><td>1 à 3 h</td><td>Électrode à surface large, gel conducteur végétal, hygrométrie &gt; 50 %</td></tr>
+      <tr><td><strong>Couplage capacitif humain</strong> — vous bougez près de la plante</td><td>Bouffées de notes exactement synchrones de vos mouvements</td><td>Instantané</td><td>Rester à plus d'un mètre, ou toucher la masse du boîtier</td></tr>
+      <tr><td><strong>Secteur 50 Hz</strong> — induction du réseau électrique</td><td>Trille régulier, métronomique, indifférent à tout</td><td>Permanent</td><td>Éloigner câbles et alimentations ; fonctionner sur pile</td></tr>
+      <tr><td><strong>Micromouvement mécanique</strong> — courant d'air, vibration du sol</td><td>Événement bref et isolé, souvent grave</td><td>Instantané</td><td>Fermer les fenêtres, poser sur surface lourde</td></tr>
+      <tr><td><strong>Variation thermique</strong> — soleil, radiateur, corps humain</td><td>Modulation lente en cloche</td><td>10 à 60 min</td><td>Thermomètre dans la pièce, noter la température</td></tr>
+      <tr><td><strong>Arrosage récent</strong></td><td>Chute franche du registre puis remontée</td><td>2 à 6 h</td><td>Ne pas arroser dans les 12 h précédant une séance</td></tr>
+      <tr><td><strong>Transition lumineuse</strong> — ouverture stomatique</td><td>Changement net de densité rythmique</td><td>5 à 20 min</td><td>Lumière constante, ou noter chaque changement</td></tr>
+    </tbody>
+    <caption>Les huit artefacts majeurs. Un praticien expérimenté les reconnaît à l'oreille en quelques secondes — et c'est la compétence la plus précieuse du domaine.</caption>
+  </table>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Limites et interprétation</div>
+    <p>Le test décisif tient en une phrase : <strong>si votre montage produit une « mélodie » quand vous remplacez la plante par un bocal de terre humide, alors votre mélodie ne vient pas de la plante.</strong> Faites ce test. Il coûte cinq minutes et il vous protégera de tout le reste. Beaucoup de séquences réputées « expressives » sont parfaitement reproductibles sur un substrat inerte qui sèche lentement.</p>
+    <p>Corollaire : gardez toujours un <em>témoin</em>. Deux pots identiques, l'un avec la plante, l'autre sans. Deux canaux MIDI. Si les deux chantent pareil, vous écoutez votre électronique.</p>
+  </div>
+
+  <h3 id="c8-ousposer" data-toc="sub">Où poser les électrodes — la réponse expérimentale</h3>
+
+  <p>La question paraît triviale ; elle ne l'est pas. Le limbe n'est pas un plan de mesure homogène : l'épaisseur de la cuticule, la densité stomatique, la teneur en eau et l'épaisseur du parenchyme varient fortement selon la position sur la feuille et selon le rang de la feuille sur la plante.</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique</div>
+    <p>Une étude de 2026 a tranché la question sur <em>Clivia</em>, en comparant systématiquement les régions basale, médiane et apicale de feuilles de rangs différents, avec un stimulus salin contrôlé et une classification automatique des signaux. Résultat : <strong>la région basale surpasse constamment les régions médiane et apicale</strong>, et la meilleure performance discriminante globale est obtenue à <strong>la base de la feuille la plus haute</strong> — la plus jeune des feuilles matures.</p>
+    <p>L'explication est cohérente avec l'anatomie : la base du limbe est le point le plus proche de l'arrivée du faisceau vasculaire, donc le mieux irrigué et le plus stable en teneur en eau ; la feuille jeune est la plus active métaboliquement et la moins cutinisée.</p>
+  </div>
+
+  <div class="practice">
+    <div class="p-h">Règle pratique de pose</div>
+    <p><strong>Électrode haute :</strong> tiers basal du limbe, face inférieure, sur la feuille mature la plus jeune (généralement la deuxième ou troisième en partant du sommet). Évitez la nervure centrale, trop lignifiée. <strong>Électrode basse :</strong> soit un second point du <em>même</em> limbe à cinq centimètres du premier — trajet court, signal propre —, soit le terreau au pied de la tige — trajet long, signal plus ample mais beaucoup plus bruité par l'humidité du substrat. Pour débuter, choisissez toujours <em>feuille/feuille</em>.</p>
+  </div>
+
+  <h3 id="c8-especes" data-toc="sub">Toutes les plantes ne conviennent pas</h3>
+
+  <table>
+    <thead><tr><th>Type de végétal</th><th>Aptitude</th><th>Remarque</th></tr></thead>
+    <tbody>
+      <tr><td>Grandes feuilles charnues (philodendron, monstera, clivia, calathea)</td><td>Excellente</td><td>Surface d'appui large, teneur en eau élevée, contact stable</td></tr>
+      <tr><td>Plantes aromatiques (menthe, basilic, sauge)</td><td>Bonne</td><td>Très réactives, mais feuilles petites : électrodes à pince fine</td></tr>
+      <tr><td>Arbres, en extérieur (chêne, hêtre, tilleul)</td><td>Bonne à très bonne</td><td>Pose sur feuille basse ou sur cambium via aiguille inox ; attention aux intempéries</td></tr>
+      <tr><td>Fougères arborescentes</td><td>Bonne</td><td>Utilisées dans les protocoles thérapeutiques de Gaujacq</td></tr>
+      <tr><td>Succulentes, cactées</td><td>Moyenne</td><td>Cuticule très épaisse, impédance souvent hors plage de mesure</td></tr>
+      <tr><td>Dionée, drosera, <em>Mimosa pudica</em></td><td>Spectaculaire mais délicate</td><td>Vrais potentiels d'action ; tissus fragiles, risque de lésion</td></tr>
+      <tr><td>Plantes de résurrection, plantules</td><td>Faible</td><td>Trop peu de masse conductrice</td></tr>
+      <tr><td>Champignons (carpophores)</td><td>Variable</td><td>Fonctionne parfois très bien ; hors du champ « végétal » au sens strict</td></tr>
+    </tbody>
+    <caption>Aptitude à la bio-sonification selon le type de végétal. Le critère déterminant n'est pas l'espèce mais la <em>conductance de surface</em> et la stabilité du contact.</caption>
+  </table>
+
+  <div class="callout energie">
+    <div class="callout-title">🌿 Regard énergétique</div>
+    <p>Les praticiens parlent volontiers de plantes « bavardes » et de plantes « silencieuses », et l'expérience de terrain confirme cette impression : deux menthes voisines peuvent produire des séquences très différentes. La lecture énergétique y voit un tempérament. La lecture physique y voit une différence d'épaisseur cuticulaire, d'état hydrique et de qualité de contact.</p>
+    <p>Ces deux lectures ne s'annulent pas. Elles décrivent la même chose à deux échelles. Mais si vous voulez <em>choisir</em> une plante pour une séance publique, c'est la lecture physique qui vous servira : prenez la plus charnue, la mieux arrosée la veille, et la plus jeune des feuilles matures. Le tempérament suivra.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>L'impédance mesurée est la somme de deux impédances d'interface instables et d'une impédance biologique.</li>
+      <li>Huit artefacts majeurs expliquent l'essentiel des variations « expressives ».</li>
+      <li>Le test du bocal de terre humide est obligatoire avant toute conclusion.</li>
+      <li>Meilleur site de pose : région basale de la feuille mature la plus jeune, face inférieure.</li>
+      <li>Trente minutes de stabilisation avant que la séance commence réellement.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c9-phytoacoustique" data-toc="chapter">Phytoacoustique : les plantes entendent-elles ?</h2>
+  <p class="chapo">La question a longtemps fait sourire. Depuis 2012, quatre expériences publiées dans des revues de premier plan l'ont rendue légitime — et les réponses sont plus intéressantes que le fantasme qu'elles remplacent.</p>
+
+  <p class="lettrine noindent">Il faut d'abord clarifier un point de vocabulaire. « Entendre » suppose un organe auditif, une transduction et une intégration centrale. Les plantes n'ont rien de tout cela. Mais elles possèdent des <strong>mécanorécepteurs</strong> — canaux ioniques qui s'ouvrent sous déformation membranaire — répartis dans tous leurs tissus. Une onde acoustique est une onde de pression : elle déforme. Donc elle peut, en principe, être perçue. La question n'est pas de savoir si c'est possible, mais si c'est <em>biologiquement significatif</em>.</p>
+
+  <h3 id="c9-chenille" data-toc="sub">1. La chenille qui mâche (Appel &amp; Cocroft, 2014)</h3>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Expérience fondatrice — <em>Oecologia</em>, 2014</div>
+      <div class="pr-t">Arabidopsis distingue la mastication du vent</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta">
+        <span><b>Équipe</b> H. M. Appel &amp; R. B. Cocroft, Univ. Missouri</span>
+        <span><b>Modèle</b> <em>Arabidopsis thaliana</em></span>
+        <span><b>Statut</b> Répliqué</span>
+      </div>
+      <h4>Principe</h4>
+      <p>Enregistrer les vibrations produites par la chenille de <em>Pieris rapae</em> mangeant une feuille, puis les rejouer par un pot vibrant sur des plantes intactes — sans aucune chenille présente. Comparer la chimie de défense à celle de plantes exposées au silence, au vent, ou au chant d'un cicadelle de spectre voisin.</p>
+      <div class="pr-obs"><strong>Résultat.</strong> Les plantes exposées aux seules vibrations de mastication produisent significativement plus de glucosinolates et d'anthocyanes, 24 et 48&nbsp;h après. Les plantes exposées au vent ou au chant du cicadelle — de spectre comparable — ne montrent aucune induction.</div>
+      <p><strong>Ce que cela établit.</strong> Non seulement la plante perçoit une vibration, mais elle la <em>discrimine</em> d'une autre vibration d'énergie comparable, et n'engage son coût métabolique de défense que pour la bonne. C'est une perception écologiquement pertinente, pas un réflexe brut.</p>
+    </div>
+  </div>
+
+  <h3 id="c9-racines" data-toc="sub">2. Les racines qui cherchent l'eau (Gagliano <em>et al.</em>, 2012 &amp; 2017)</h3>
+
+  <p>Monica Gagliano et ses collègues montrent d'abord que les racines de maïs s'orientent vers une source de vibration de 200-300&nbsp;Hz en hydroponie. Puis, en 2017, un dispositif plus élégant : des plants de pois placés dans un pot en Y, avec de l'eau circulant dans un tuyau scellé le long d'un bras — donc sans aucun gradient d'humidité dans le substrat.</p>
+
+  <p><strong>Résultat :</strong> les racines croissent préférentiellement vers le bras où l'eau circule, en se fiant au seul bruit de l'écoulement. Mais si un vrai gradient d'humidité est offert en parallèle, elles le préfèrent au son. La hiérarchie des sens est donc claire : <em>le son sert à localiser à distance, l'humidité sert à atteindre avec précision</em>.</p>
+
+  <h3 id="c9-pollinisateur" data-toc="sub">3. La fleur qui sucre son nectar (Veits <em>et al.</em>, 2019)</h3>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Expérience fondatrice — <em>Ecology Letters</em>, 2019</div>
+      <div class="pr-t">L'onagre répond au bourdonnement de l'abeille en trois minutes</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta">
+        <span><b>Équipe</b> M. Veits, L. Hadany <em>et al.</em>, Univ. Tel-Aviv</span>
+        <span><b>Modèle</b> <em>Oenothera drummondii</em></span>
+        <span><b>Statut</b> Publié, discuté</span>
+      </div>
+      <h4>Principe</h4>
+      <p>Exposer des fleurs, pendant trois minutes seulement, à l'enregistrement d'un battement d'ailes d'abeille (0,2-0,5&nbsp;kHz), à un son synthétique de même bande, à un son de haute fréquence, ou au silence. Doser ensuite le sucre du nectar.</p>
+      <div class="pr-obs"><strong>Résultat.</strong> Les fleurs exposées au son du pollinisateur — ou à un son synthétique de bande équivalente — produisent un nectar 1,2 fois plus concentré en sucre, en trois minutes. Les hautes fréquences et le silence ne produisent rien. La vibrométrie laser montre que la corolle vibre en réponse, et que l'amplitude chute drastiquement si l'on retire les pétales.</div>
+      <p><strong>Interprétation des auteurs.</strong> La fleur elle-même jouerait le rôle d'organe récepteur — le terme de « phytoacoustique » et l'idée d'oreille florale viennent de là.</p>
+    </div>
+  </div>
+
+  <h3 id="c9-ultrasons" data-toc="sub">4. Les plantes qui émettent (Khait <em>et al.</em>, 2019-2023)</h3>
+
+  <p>Le renversement le plus spectaculaire. La même équipe de Tel-Aviv montre que des plants de tomate et de tabac soumis à un stress — sécheresse, section de la tige — émettent des sons aériens dans la bande ultrasonore de 20 à 100&nbsp;kHz, à raison de plusieurs dizaines de clics par heure contre moins d'un pour les témoins. Le mécanisme proposé est la <strong>cavitation</strong> : sous tension hydrique, des bulles se forment et implosent dans les vaisseaux du xylème.</p>
+
+  <p>Trois éléments en font bien plus qu'une curiosité :</p>
+  <ul>
+    <li>les émissions sont détectables à trois à cinq mètres en champ ouvert ;</li>
+    <li>un algorithme de classification distingue le stress hydrique du stress de coupure avec une précision élevée — <em>les clics portent une information sur la nature du stress</em> ;</li>
+    <li>des travaux ultérieurs indiquent que des insectes peuvent en tenir compte : une étude de 2026 rapporte que des femelles de papillon de nuit intègrent les émissions acoustiques des plantes dans leur décision de ponte.</li>
+  </ul>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Limites et interprétation</div>
+    <p>Il faut résister à deux glissements. <strong>Premier glissement :</strong> « les plantes crient ». Non. Une cavitation est un phénomène physique passif, comme le craquement d'un glaçon dans un verre. Qu'une information soit portée ne signifie pas qu'elle soit <em>émise dans l'intention</em> d'être reçue — la question de la sélection d'un signal véritable reste ouverte. <strong>Second glissement :</strong> confondre ces ultrasons avec ce que produit votre boîtier. Aucun rapport. Les émissions de cavitation sont acoustiques et à 20-100&nbsp;kHz ; votre dispositif mesure une impédance électrique et ne capte rien de tout cela.</p>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Idée clé</div>
+    <p>La phytoacoustique valide un principe général et n'en valide qu'un : <strong>la plante est un système ouvert, sensible à la mécanique de son environnement, capable de discriminer et de répondre de façon écologiquement adaptée.</strong> C'est amplement suffisant pour justifier une pratique attentive. Ce n'est pas suffisant pour justifier l'idée d'un dialogue verbal.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li><em>Arabidopsis</em> discrimine la vibration de mastication d'un vent de spectre voisin, et n'active sa défense que pour la première.</li>
+      <li>Les racines s'orientent au bruit de l'eau, mais préfèrent un gradient d'humidité réel.</li>
+      <li>L'onagre augmente de 20 % le sucre de son nectar en trois minutes d'exposition au bourdonnement.</li>
+      <li>Les plantes stressées émettent des clics ultrasonores porteurs d'information sur la nature du stress.</li>
+      <li>Aucun de ces phénomènes n'est capté par un dispositif de bio-sonification.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c10-biofeedback" data-toc="chapter">Le biofeedback : le mot et la chose</h2>
+  <p class="chapo">Le terme est employé partout dans ce domaine, presque toujours à contresens. Il désigne pourtant quelque chose de très précis, et la précision change tout à votre pratique.</p>
+
+  <p class="lettrine noindent">Un dispositif de <strong>biofeedback</strong>, au sens strict, comporte trois éléments obligatoires : un capteur physiologique, une restitution perceptible en temps réel, et <strong>un sujet qui perçoit cette restitution et peut modifier son état en conséquence</strong>. Le troisième élément est celui qui fait le biofeedback. Sans boucle de retour vers le producteur du signal, il n'y a pas de biofeedback : il y a de la <em>monitorisation</em>.</p>
+
+  <div class="schema light">
+    <div class="sch-h">Trois architectures à ne pas confondre</div>
+<pre>
+ A. MONITORISATION (ce que fait un boîtier posé dans une pièce vide)
+
+      PLANTE ──▶ capteur ──▶ traitement ──▶ son ──▶ (personne)
+         ▲                                            │
+         └────────────── AUCUN RETOUR ────────────────┘
+
+
+ B. BIOFEEDBACK HUMAIN (ce que fait un appareil de cohérence cardiaque)
+
+      HUMAIN ──▶ capteur ──▶ traitement ──▶ son ──▶ OREILLE HUMAINE
+         ▲                                            │
+         └──────── le sujet ajuste son état ──────────┘
+
+
+ C. CE QUI SE PASSE RÉELLEMENT EN SÉANCE (boucle mixte)
+
+      PLANTE ──▶ capteur ──▶ traitement ──▶ son ──▶ OREILLE HUMAINE
+         ▲                                            │
+         │                                            ▼
+         └──── posture, souffle, gestes, chaleur ── HUMAIN
+              (couplage physique réel, faible mais non nul)
+</pre>
+    <figcaption>L'architecture C est la seule honnête. Elle admet une boucle — mais la boucle passe par des canaux physiques identifiables, pas par une transmission inconnue.</figcaption>
+  </div>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique</div>
+    <p>Le biofeedback humain est une technique validée, remboursée dans plusieurs pays pour des indications précises : migraine tensionnelle, incontinence par rééducation périnéale, hypertension légère, trouble anxieux. Ses mécanismes sont établis et ne contiennent rien de mystérieux — apprentissage opérant appliqué à une fonction habituellement non consciente.</p>
+    <p>Le cas végétal est différent : rien n'indique qu'une plante puisse <em>utiliser</em> le retour sonore pour ajuster son état, puisque cela supposerait qu'elle perçoive le son diffusé, l'associe à sa propre activité électrique, et dispose d'un mécanisme de renforcement. Aucune de ces trois étapes n'est documentée. Employer « biofeedback » pour un boîtier de musique des plantes est donc un abus de langage — répandu, y compris chez les fabricants.</p>
+  </div>
+
+  <div class="callout energie">
+    <div class="callout-title">🌿 Regard énergétique</div>
+    <p>Et pourtant. Les praticiens qui pratiquent longtemps rapportent presque tous la même chose : quand ils s'installent vraiment — souffle posé, attention large, absence d'attente —, la séquence sonore change de qualité. Elle devient plus tenue, moins hachée.</p>
+    <p>Cette observation est prise au sérieux dans cet ouvrage, mais elle est expliquée par l'architecture&nbsp;C ci-dessus. Vous bougez moins : moins de couplage capacitif. Vous respirez plus lentement : moins de déplacement d'air autour du feuillage. Vous cessez de manipuler : le contact se stabilise. Votre corps cesse de rayonner de la chaleur par à-coups. La boucle existe — elle est physique, modeste, et entièrement à votre charge. C'est <em>vous</em> qui êtes en biofeedback, avec la plante pour miroir.</p>
+  </div>
+
+  <div class="callout interieur">
+    <div class="callout-title">✨ Expérience intérieure</div>
+    <p>Cette reformulation est libératrice pour la pratique. Elle signifie que vous n'avez rien à obtenir de la plante — vous n'avez qu'à devenir suffisamment stable pour que le signal cesse d'être pollué par vous. Le travail intérieur n'est pas un supplément d'âme greffé sur la technique : <strong>il est la condition technique de la qualité de mesure</strong>. Le druide et l'ingénieur, ici, demandent exactement la même chose : tiens-toi tranquille.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Un biofeedback exige une boucle de retour vers le producteur du signal.</li>
+      <li>Un boîtier de musique des plantes est un moniteur, pas un dispositif de biofeedback végétal.</li>
+      <li>La boucle existe néanmoins — elle passe par l'opérateur, via des canaux physiques identifiables.</li>
+      <li>Se stabiliser n'est pas un ornement spirituel : c'est une exigence métrologique.</li>
+    </ul>
+  </div>
+
+  <div class="ornament"></div>
+</section>

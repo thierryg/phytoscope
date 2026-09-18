@@ -1,0 +1,297 @@
+# ===========================================================================
+#  PhytoScope — analyse statique puis fabrication des paquets
+# ===========================================================================
+#  Se déclenche dès qu'une modification touche la fabrique de paquets
+#  (« packaging/ ») ou le code (« src/ ») : ce sont les deux seules
+#  choses dont un paquet dépend. Modifier un ouvrage ne relance pas cette
+#  chaîne — c'est « ouvrages.yml » qui s'en occupe.
+#
+#  Deux temps, dans cet ordre :
+#
+#    1. « lint » — l'analyse statique de TOUT ce qui est exécutable : Python,
+#       shell, Makefile, YAML. Rien ne se fabrique si elle échoue : un paquet
+#       bâti sur un script fautif est un paquet qu'il faudra republier.
+#
+#    2. « paquets » — une fabrication par système cible, en parallèle, pour
+#       que la panne se lise d'un coup d'œil : c'est Windows qui a cassé, ou
+#       Fedora. Puis « paquets-signes » rejoue la chaîne complète dans le bon
+#       ordre, signature comprise, parce que la signature Authenticode MODIFIE
+#       le .exe et le .msi et que les empreintes se calculent après elle.
+#
+#  La signature utilise un certificat AUTO-SIGNÉ fabriqué sur le coureur et
+#  jeté avec lui. La vraie clé privée du projet n'entre jamais ici : elle vit
+#  dans ~/.local/share/phytoscope-signature/ sur le poste de l'éditeur, et
+#  aucun secret de dépôt n'est déclaré pour cette chaîne (C-2R).
+# ===========================================================================
+name: Paquets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packaging/**'
+      - 'src/**'
+      - '.github/workflows/paquets.yml'
+  pull_request:
+    paths:
+      - 'packaging/**'
+      - 'src/**'
+      - '.github/workflows/paquets.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paquets-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: '3.12'
+
+jobs:
+
+  # -------------------------------------------------------------------------
+  #  1. Analyse statique
+  # -------------------------------------------------------------------------
+  lint:
+    name: Analyse statique
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Outils d'analyse
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install ruff yamllint
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends shellcheck
+
+      # --- Python -----------------------------------------------------------
+      #  D'abord la syntaxe : un fichier qui ne compile pas rend tout le reste
+      #  illisible. Puis ruff, qui porte les règles du projet.
+      - name: Python — syntaxe
+        run: |
+          python -m compileall -q packaging src/phytoscope tools \
+            build.py build_arbre.py build_carte.py build_sdk.py
+
+      - name: Python — ruff
+        run: |
+          ruff check --output-format=github packaging tools src/phytoscope \
+            build.py build_arbre.py build_carte.py build_sdk.py
+
+      - name: Python — mise en forme
+        run: ruff format --check --diff packaging tools src/phytoscope
+        continue-on-error: true
+
+      # --- Shell ------------------------------------------------------------
+      #  « src/firmware/build.sh » est du bash strict et volontairement non
+      #  portable (voir .ai/portabilite.md) : shellcheck est lancé en mode
+      #  bash, pas sh, sans quoi il signale des faux positifs.
+      - name: Shell — shellcheck
+        run: |
+          mapfile -t scripts < <(git ls-files '*.sh' | grep -v '^sources/')
+          if [ ${#scripts[@]} -eq 0 ]; then echo "aucun script"; exit 0; fi
+          printf '  · %s\n' "${scripts[@]}"
+          shellcheck --shell=bash --severity=warning --color=always "${scripts[@]}"
+
+      - name: Shell — les .run produits sont-ils du shell valide ?
+        run: |
+          for f in $(git ls-files 'packaging/gabarits/*.run*' 2>/dev/null); do
+            bash -n "$f" && echo "  · $f : syntaxe correcte"
+          done
+
+      # --- Makefile ---------------------------------------------------------
+      #  On ne peut pas « make -n » la fabrique sans ses outils ; on contrôle
+      #  donc ce qui se contrôle sans eux : que make sait lire le fichier et
+      #  que les cibles annoncées existent bien.
+      - name: Makefile — lecture et cibles
+        run: |
+          for mf in packaging/Makefile src/phytoscope/Makefile; do
+            echo "── $mf"
+            make -f "$mf" -p --question >/dev/null 2>&1 || true
+            make -f "$mf" --dry-run aide >/dev/null && echo "  · lisible par make"
+          done
+          echo "── cibles attendues de packaging/Makefile"
+          for cible in outils deps debian fedora windows macos source linux tout \
+                       certificat signer verifier propre; do
+            grep -qE "^${cible}:" packaging/Makefile \
+              && echo "  · $cible" \
+              || { echo "  ! cible manquante : $cible"; exit 1; }
+          done
+
+      - name: Makefile — tabulations (une recette indentée par espaces est muette)
+        run: |
+          for mf in $(git ls-files '*Makefile' 'Makefile' | grep -v '^sources/'); do
+            if grep -nP '^    [a-zA-Z@$]' "$mf"; then
+              echo "! $mf : recette indentée par des espaces"; exit 1
+            fi
+          done
+          echo "  · indentation correcte"
+
+      # --- YAML et divers ---------------------------------------------------
+      - name: YAML — yamllint
+        run: |
+          yamllint -c .yamllint.yml .github/
+
+      - name: Les en-têtes d'attribution sont-ils à jour ?
+        run: python3 tools/entetes.py --verifier
+
+  # -------------------------------------------------------------------------
+  #  2a. Une fabrication par système cible, en parallèle
+  # -------------------------------------------------------------------------
+  paquets:
+    name: Paquets — ${{ matrix.nom }}
+    needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - cible: source
+            nom: Source (.tar.gz, .zip)
+            apt: ''
+          - cible: debian
+            nom: Debian / Ubuntu / Mint (.deb, .run)
+            apt: dpkg-dev fakeroot
+          - cible: fedora
+            nom: Fedora / RHEL (.rpm)
+            apt: rpm
+          - cible: windows
+            nom: Windows 10/11 (.exe, .msi, .zip)
+            apt: nsis msitools osslsigncode
+          - cible: macos
+            nom: macOS / Darwin (.pkg, .zip)
+            apt: xar cpio
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Outils système de la cible
+        if: matrix.apt != ''
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ${{ matrix.apt }}
+
+      - name: Ce que la fabrique voit
+        run: cd packaging && make outils
+
+      #  « make deps » déplie NSIS, msitools et osslsigncode dans ~/.local/opt
+      #  sans sudo (C-55). Sur le coureur, apt les a déjà : la cible sert de
+      #  filet, et son échec n'est pas bloquant.
+      - name: Compléter les outils manquants, sans sudo
+        run: cd packaging && make deps
+        continue-on-error: true
+
+      - name: Fabriquer — ${{ matrix.cible }}
+        run: cd packaging && make ${{ matrix.cible }}
+
+      - name: Ce qui a été produit
+        run: |
+          find build/paquets -type f -printf '%10s  %p\n' | sort -k2
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paquets-${{ matrix.cible }}
+          path: build/paquets/
+          if-no-files-found: error
+          retention-days: 14
+
+  # -------------------------------------------------------------------------
+  #  2b. La chaîne complète, dans l'ordre, signature comprise
+  # -------------------------------------------------------------------------
+  paquets-signes:
+    name: Chaîne complète signée et vérifiée
+    needs: lint
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Tous les outils d'empaquetage
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            dpkg-dev fakeroot rpm nsis msitools osslsigncode xar cpio
+          cd packaging && make deps || true
+
+      #  Certificat AUTO-SIGNÉ fabriqué ici et jeté avec le coureur. Il sert à
+      #  prouver que la chaîne de signature fonctionne, rien de plus : il ne
+      #  fait taire ni SmartScreen ni Gatekeeper (C-2Q), et ce n'est pas le
+      #  certificat de diffusion du projet.
+      - name: Certificat éphémère d'intégration
+        run: cd packaging && make certificat
+
+      - name: make tout
+        run: cd packaging && make tout
+
+      - name: make verifier — rouvrir et contrôler chaque paquet
+        run: cd packaging && make verifier
+
+      - name: Aucun secret n'a fui dans les paquets
+        run: |
+          if find build/paquets -name '*.key' -o -name 'phytoscope.key' | grep -q .; then
+            echo "! une clé privée se trouve dans les paquets"; exit 1
+          fi
+          echo "  · aucune clé privée dans les produits"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paquets-complets-signes
+          path: build/paquets/
+          if-no-files-found: error
+          retention-days: 30
+
+  # -------------------------------------------------------------------------
+  #  3. Le logiciel sur chaque système, réellement
+  # -------------------------------------------------------------------------
+  #  Fabriquer un .pkg depuis Linux ne dit pas que le logiciel tourne sous
+  #  macOS. Les tests, eux, le disent — et .ai/portabilite.md tient le relevé
+  #  des écarts entre systèmes.
+  logiciel:
+    name: Tests — ${{ matrix.os }}
+    needs: lint
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.10', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Dépendances
+        working-directory: src/phytoscope
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -r requirements-dev.txt
+
+      #  Aucun test n'a besoin de matériel ni de réseau, mais Qt a besoin d'un
+      #  serveur d'affichage : en mode « offscreen », il n'en demande aucun.
+      #  XDG_CONFIG_HOME est détourné vers un dossier jetable : le logiciel ne
+      #  doit jamais écrire dans les réglages de qui l'exécute.
+      - name: Tests
+        working-directory: src/phytoscope
+        env:
+          QT_QPA_PLATFORM: offscreen
+        shell: bash
+        run: |
+          export XDG_CONFIG_HOME="$(mktemp -d)"
+          python -m pytest tests -q

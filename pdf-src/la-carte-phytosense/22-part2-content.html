@@ -1,0 +1,149 @@
+<section class="chapter">
+  <h2 id="c4-pont" data-toc="chapter">Le pont de mesure et la détection synchrone</h2>
+
+  <p class="chapo">Mesurer une impédance de deux gigaohms avec une exactitude de un pour cent, en
+  présence d'un réseau électrique à cinquante hertz mille fois plus fort que le signal : le
+  problème semble insoluble. Il se résout par une idée vieille de quatre-vingts ans, et qui reste
+  la plus élégante de toute l'électronique de mesure.</p>
+
+  <p class="lettrine noindent">L'approche naïve consiste à injecter un courant continu et à
+  mesurer la tension qui en résulte. Elle échoue pour quatre raisons cumulatives : le bruit en 1/f
+  de la chaîne domine à basse fréquence, la dérive thermique s'y ajoute, le réseau électrique s'y
+  superpose, et surtout un courant continu dans un tissu vivant <strong>le polarise</strong> —
+  l'électrode se charge, la mesure dérive, et au bout de quelques minutes on mesure sa propre
+  perturbation.</p>
+
+  <h3 id="c4-principe" data-toc="sub">Le principe : déplacer la mesure loin du bruit</h3>
+
+  <p>La détection synchrone — qu'on appelle aussi détection à verrouillage de phase, ou par son nom
+  anglais <em>lock-in</em> — procède autrement. On excite le pont par une tension alternative à
+  une fréquence choisie, ici mille hertz. Le signal utile se retrouve alors porté par cette
+  fréquence. On multiplie ensuite le signal reçu par une référence de même fréquence et de même
+  phase, puis on moyenne le résultat.</p>
+
+  <p>L'opération a une propriété remarquable. Tout ce qui est exactement à la fréquence
+  d'excitation et en phase avec elle donne un produit toujours positif, dont la moyenne vaut
+  l'amplitude. Tout le reste — le bruit, le réseau, la dérive — change de signe en permanence, et
+  sa moyenne tend vers zéro. La bande de mesure effective devient celle du filtre de moyennage,
+  ici un hertz et demi, centrée sur mille hertz.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/carte-lockin.svg" alt="Chronogramme de la détection synchrone"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Les quatre signaux de la détection synchrone.
+    Le signal reçu (deuxième trace) est visuellement dominé par une perturbation basse fréquence et
+    par le bruit ; après multiplication par la référence et moyennage, l'amplitude utile ressort
+    proprement.</figcaption>
+  </figure>
+
+  <div class="loupe">
+    <div class="l-h">Pourquoi mille hertz, et pas dix mille</div>
+    <p class="noindent">Trois contraintes se croisent. En dessous de cinq cents hertz, le bruit en
+    1/f de la chaîne n'a pas encore disparu. Au-dessus de quelques kilohertz, la capacité du câble
+    d'électrode (environ 100 pF/m) commence à court-circuiter une impédance de cent mégohms :
+    à 10 kHz, 200 pF représentent 80 kΩ, et l'on ne mesure plus le végétal mais le câble. Enfin,
+    la fréquence doit être suffisamment éloignée du réseau et de ses harmoniques : mille hertz
+    tombe exactement entre le dix-neuvième et le vingtième harmonique du cinquante hertz.
+    Le choix n'est donc pas arbitraire ; il est cerné par trois murs.</p>
+  </div>
+
+  <h3 id="c4-schema" data-toc="sub">Le schéma de la carte FE-B</h3>
+
+  <section class="planche-page"><figure class="planche" id="pl-fe-b">
+    <img src="assets/svg/carte-fe-b.svg" alt="Schéma du pont de mesure et de la détection synchrone"/>
+    <figcaption><span class="fig-n">PLANCHE ##</span> — Carte fille FE-B : pont excité en
+    alternatif, amplificateur d'instrumentation, démodulateur synchrone et filtre de sortie.
+    Feuille 2 sur 6, révision B.</figcaption>
+  </figure></section>
+
+  <p>Le pont est un demi-pont : une branche de référence, constituée de R10 et d'une résistance de
+  gamme choisie par le multiplexeur U6 ; une branche de mesure, constituée de R12 et du végétal.
+  L'amplificateur d'instrumentation U3 mesure la différence entre les deux points milieux.</p>
+
+  <p>Le multiplexeur U6 sélectionne l'une des quatre résistances de référence — cent kilohms, un
+  mégohm, dix mégohms, cent mégohms — ce qui couvre les quatre décades et demie annoncées au cahier
+  des charges. Le choix est automatique : le microcontrôleur essaie les gammes du plus sensible au
+  moins sensible et retient la première qui ne sature pas, exactement comme un multimètre.</p>
+
+  <div class="callout caution">
+    <div class="callout-title">⚠️ La résistance de gamme est un composant de précision</div>
+    <p class="noindent">L'exactitude de la mesure ne dépasse jamais celle de la résistance de
+    référence : si R10 vaut un mégohm à cinq pour cent près, la mesure vaut cinq pour cent près,
+    quelle que soit la qualité de tout le reste. D'où le recours à des résistances à 0,1 % et à
+    faible coefficient de température (15 ppm/°C) — trois euros pièce au lieu de deux centimes.
+    C'est le second poste de dépense justifié de la carte.</p>
+  </div>
+
+  <h3 id="c4-demodulation" data-toc="sub">Le démodulateur : un commutateur, pas un multiplieur</h3>
+
+  <p>La théorie demande une multiplication par une sinusoïde. En pratique, on multiplie par un
+  signal carré, ce qui revient à inverser périodiquement le signe du signal — opération qu'un
+  simple commutateur analogique réalise parfaitement. C'est le rôle d'U4, un ADG1419 dont la
+  résistance passante de quatre ohms et demi et la charge injectée de quelques picocoulombs sont
+  négligeables devant les impédances en jeu.</p>
+
+  <p>Multiplier par un carré plutôt que par un sinus a une conséquence connue : les harmoniques
+  impairs de la référence sont également démodulés, ce qui ajoute un peu de bruit (environ dix pour
+  cent en puissance). En contrepartie, on évite un multiplieur analogique à vingt euros et ses
+  propres défauts. Le compromis est universellement retenu dans l'instrumentation.</p>
+
+  <h3 id="c4-filtre" data-toc="sub">Le filtre de sortie fixe le temps de réponse</h3>
+
+  <p>Après démodulation, R15 et C10 forment un passe-bas du premier ordre à un hertz et demi. Ce
+  choix gouverne deux grandeurs opposées : la réjection du bruit, qui s'améliore quand on ralentit,
+  et le temps de réponse, qui se dégrade. Avec cent kilohms et un microfarad, la constante de temps
+  vaut cent millisecondes, et le régime établi est atteint en une demi-seconde environ.</p>
+
+  <div class="chiffre">
+    <div class="val">62 dB</div>
+    <div class="txt">La réjection du réseau à cinquante hertz mesurée sur prototype, entre le
+    signal reçu et la sortie du démodulateur. Autrement dit : une perturbation de un volt crête à
+    cinquante hertz ressort à huit cents microvolts — soit, ramenée à l'entrée après le gain de
+    neuf, moins de cent microvolts. Sans détection synchrone, la même perturbation aurait saturé
+    la chaîne.</div>
+  </div>
+
+  <h3 id="c4-offset" data-toc="sub">Le recentrage automatique par convertisseur numérique-analogique</h3>
+
+  <p>Un pont proche de l'équilibre donne une tension faible, qu'on peut amplifier beaucoup. Un pont
+  déséquilibré donne une tension forte, qui sature. Comme l'impédance d'une plante dérive sur
+  plusieurs heures, l'équilibre ne tient pas.</p>
+
+  <p>La broche de référence de l'amplificateur d'instrumentation offre la solution : elle fixe le
+  potentiel autour duquel la sortie évolue. En la pilotant par un convertisseur numérique-analogique
+  seize bits, le microcontrôleur recentre en permanence la sortie sans toucher au gain. La valeur
+  appliquée est transmise à l'ordinateur et consignée dans le fichier : la mesure absolue reste
+  donc reconstructible, ce qui ne serait pas le cas avec un recentrage analogique aveugle.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Choix de conception — tout ce qui est corrigé doit être consigné</div>
+    <p class="noindent">C'est la règle qui distingue un instrument d'un gadget. Gain matériel,
+    gamme sélectionnée, tension de recentrage, coefficients d'étalonnage : chacune de ces valeurs
+    est envoyée à l'ordinateur à chaque changement, et écrite dans le fichier de séance. Six mois
+    plus tard, on peut reconstituer exactement la grandeur physique. Un appareil qui corrige sans
+    dire ce qu'il corrige produit des données invérifiables — et donc, au sens strict, sans valeur
+    scientifique.</p>
+  </div>
+
+  <h3 id="c4-autotest" data-toc="sub">L'auto-test, ou comment croire son propre appareil</h3>
+
+  <p>Trois résistances étalons à 0,1 % — un mégohm, dix mégohms, cent mégohms — sont installées à
+  demeure sur la carte, et un commutateur analogique permet de les substituer au végétal. Sur
+  commande, le microcontrôleur mesure successivement les trois, compare aux valeurs attendues et
+  renvoie un rapport.</p>
+
+  <p>Cette fonction, qui coûte huit euros, change la nature de l'appareil. Elle permet de répondre
+  en trente secondes à la question qui empoisonne toute mesure inhabituelle : <em>est-ce la plante
+  qui fait cela, ou est-ce ma carte qui est cassée ?</em> On lance l'auto-test ; s'il passe, le
+  doute se déplace vers l'électrode et vers le végétal, et c'est là qu'il doit être.</p>
+
+  <div class="term">
+    <div class="t-h">Dialogue d'auto-test sur le port série virtuel</div>
+<pre><span class="g">$ </span><span class="c">selftest</span>
+<span class="k">+</span>{"passed": true,
+  "measurements": {"1M": 1000420.0, "10M": 9994100.0, "100M": 100310000.0},
+  "errors":      {"1M": 0.042,      "10M": -0.059,    "100M": 0.310},
+  "noise_floor_v": 6.4e-07,
+  "leakage_fa": 14.2,
+  "message": "trois étalons dans les tolérances ; fuite conforme"}</pre>
+  </div>
+</section>

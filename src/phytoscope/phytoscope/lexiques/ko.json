@@ -1,0 +1,75 @@
+{
+  "nom": "한국어 — 관조의 어조",
+  "langue": "ko",
+  "auteur": "Bretagne Namasté",
+  "note": "Dictionnaire d'exemple. Le modifier est l'usage normal, pas une entorse : les mots doivent être ceux de celui qui écoute.",
+  "grammaire": "contemplative",
+  "registres": {
+    "sujet": [
+      "나는",
+      "무언가가",
+      "수액이",
+      "줄기가",
+      "잎이"
+    ],
+    "verbe_montee": [
+      "떨린다",
+      "깨어난다",
+      "오른다",
+      "솟구친다",
+      "터져 나온다"
+    ],
+    "verbe_descente": [
+      "잦아든다",
+      "내려온다",
+      "물러난다",
+      "쉰다",
+      "사라진다"
+    ],
+    "intensite": [
+      "겨우",
+      "가만히",
+      "또렷이",
+      "강하게",
+      "온 나무로"
+    ],
+    "tempo": [
+      "또",
+      "다시",
+      "잠시 뒤",
+      "오랜 뒤",
+      "아주 긴 침묵 끝에"
+    ],
+    "couleur": [
+      "먹먹한",
+      "낮은",
+      "너른",
+      "맑은",
+      "높은"
+    ],
+    "liaison": [
+      "그리고",
+      "이윽고",
+      "그러자",
+      "그러는 동안",
+      "——"
+    ]
+  },
+  "gabarits": {
+    "minimale": [
+      "{verbe}"
+    ],
+    "telegraphique": [
+      "{intensite} {verbe}"
+    ],
+    "contemplative": [
+      "{sujet} {intensite} {verbe}",
+      "{tempo}, {sujet} {intensite} {verbe}",
+      "{sujet} {intensite} {verbe}, {couleur}"
+    ],
+    "descriptive": [
+      "{tempo}, {sujet} {intensite} {verbe}, {couleur}",
+      "{sujet} {intensite} {verbe} {liaison} {couleur}"
+    ]
+  }
+}

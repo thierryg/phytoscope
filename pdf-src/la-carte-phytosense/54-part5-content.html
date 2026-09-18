@@ -1,0 +1,224 @@
+<section class="chapter">
+  <h2 id="c15-descripteurs" data-toc="chapter">Six regards sur le même signal</h2>
+
+  <p class="chapo">La courbe montre les événements et cache les périodicités ; la transformée de
+  Fourier montre les périodicités et efface le temps. Aucun outil ne dit tout. Ce chapitre expose
+  les six représentations que le logiciel propose, ce que chacune apporte — et, ce qui importe
+  davantage, ce qu'aucune ne permet de conclure.</p>
+
+  <p>Les outils rassemblés ici viennent tous du traitement de la parole. C'est une dette qu'il faut
+  reconnaître, et une transposition qu'il faut justifier : un signal de parole est échantillonné à
+  16 000 Hz et occupe la bande 80 Hz – 8 kHz ; le nôtre est échantillonné à 250 Hz et vit entre le
+  millihertz et quelques dizaines de hertz. <strong>Cinq décades plus bas.</strong> Toutes les
+  constantes de ces outils — largeur des fenêtres, bornes du banc de filtres, ordre de prédiction —
+  sont donc recalculées d'après la fréquence d'échantillonnage réelle, jamais recopiées. Une trame
+  de MFCC dure ici huit secondes, non vingt-cinq millisecondes : la stationnarité locale d'un signal
+  végétal se mesure en secondes.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/logiciel-descripteurs.svg" alt="Les six représentations du signal"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> La même minute d'enregistrement, vue par six
+    outils. Chaque vignette porte son verdict : ce que la représentation montre, et ce qu'elle
+    suppose. La vignette du scalogramme est la seule à montrer le temps et la fréquence
+    ensemble — c'est la raison pour laquelle elle est ici la mieux adaptée.</figcaption>
+  </figure>
+
+  <h3 id="c15-survit" data-toc="sub">Ce qui survit à la transposition, et ce qui n'y survit pas</h3>
+
+  <table class="tight">
+    <thead><tr><th>Outil</th><th>Ce qu'il vaut ici</th><th>Ce qu'il ne dit pas</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Forme d'onde</strong></td>
+        <td>La référence : rien n'y est calculé, donc rien n'y est perdu</td>
+        <td>Ni les périodicités lentes, ni la répartition de l'énergie</td></tr>
+      <tr><td><strong>FFT</strong></td>
+        <td>Directement valable — les périodicités et le réseau à 50 Hz</td>
+        <td>Suppose la stationnarité, que ce signal n'a jamais longtemps</td></tr>
+      <tr><td><strong>Ondelettes</strong></td>
+        <td><strong>Le mieux adapté</strong> : situe dans le temps ce que la FFT moyenne</td>
+        <td>Résolution partout moyenne : c'est le prix du compromis</td></tr>
+      <tr><td><strong>MFCC</strong></td>
+        <td>Compression du spectre en quelques nombres comparables</td>
+        <td>L'échelle de Mel modélise l'oreille humaine, pas la plante</td></tr>
+      <tr><td><strong>LPC</strong></td>
+        <td>Enveloppe spectrale et résonances du système de mesure</td>
+        <td>Ces résonances ne sont pas des formants — voir ci-dessous</td></tr>
+      <tr><td><strong>Cepstre</strong></td>
+        <td>Les périodicités lentes qu'une dérive de fond masque</td>
+        <td>Un pic isolé sur un signal court ne prouve aucune périodicité</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c15-ondelettes" data-toc="sub">Pourquoi l'ondelette, et pas la FFT</h3>
+
+  <p>L'analyse de Fourier suppose que le signal analysé est stationnaire sur la fenêtre observée.
+  Un signal végétal ne l'est pas : une bouffée d'activité de trois secondes dans une heure
+  d'enregistrement disparaît purement et simplement dans une transformée globale, noyée dans la
+  moyenne. L'ondelette la situe dans le temps <em>et</em> en donne l'étendue fréquentielle.</p>
+
+  <p>L'ondelette retenue est celle de Morlet — une sinusoïde enveloppée d'une gaussienne. Son
+  paramètre <span class="phon">ω₀</span> règle le compromis entre les deux résolutions : six est la
+  valeur usuelle, qui satisfait presque exactement la condition d'admissibilité tout en gardant une
+  bonne localisation temporelle. L'augmenter affine la fréquence et brouille le temps ; le diminuer
+  fait l'inverse. Le logiciel expose ce réglage plutôt que de le cacher, car il n'existe pas de
+  bonne valeur universelle : il existe une valeur adaptée à ce qu'on cherche.</p>
+
+  <p>Le calcul se fait par produit dans le domaine de Fourier, en <span class="phon">O(N log N)</span>
+  par échelle — seule méthode praticable sur des dizaines de milliers de points. Le cône
+  d'influence, c'est-à-dire la zone où le résultat est contaminé par les bords de la fenêtre, est
+  affiché : sans lui, on prendrait un artefact de bord pour un événement.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Le mot « formant » ne sera pas employé</div>
+    <p class="noindent">En traitement de la parole, les pôles du filtre obtenu par prédiction
+    linéaire s'interprètent comme les résonances du conduit vocal, et on les appelle formants.
+    <strong>Ici, il n'y a pas de conduit vocal.</strong> Une plante n'a aucun résonateur acoustique,
+    et parler de formants végétaux serait une faute — de celles qui se propagent ensuite de blog en
+    blog. Ce que les pôles décrivent réellement, ce sont les résonances du <em>système de
+    mesure et du milieu</em> : la constante de temps de l'électrode, le filtrage de la carte, les
+    oscillations lentes du potentiel. C'est utile, et c'est autre chose. Le logiciel affiche donc
+    « résonances », jamais « formants ».</p>
+  </div>
+
+  <h3 id="c15-cepstre" data-toc="sub">Le cepstre, ou le détour qui révèle les rythmes lents</h3>
+
+  <p>L'idée est un joli détour. Le spectre d'un signal périodique est lui-même périodique, avec ses
+  harmoniques régulièrement espacées. En prenant le logarithme du spectre, puis sa transformée
+  inverse, cette régularité devient un <strong>pic unique</strong>, situé à la période du signal.
+  La variable obtenue n'est ni un temps ni une fréquence ; on l'appelle quéfrence, et elle se
+  mesure en secondes.</p>
+
+  <p>Sur un signal végétal, c'est ce qui permet de détecter une périodicité lente — un cycle
+  jour/nuit, une modulation d'arrosage, un rythme d'une dizaine de minutes — que ni la transformée
+  de Fourier ni l'autocorrélation ne font ressortir aussi nettement lorsque le fond dérive. La plage
+  explorée est bornée par défaut entre deux échantillons et le tiers de la durée analysée : en deçà
+  on lit du bruit, au-delà on n'a pas assez de répétitions pour conclure quoi que ce soit.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Ce que ces outils ne feront jamais</div>
+    <p class="noindent">Aucune de ces représentations ne <em>décode</em> quoi que ce soit. Elles
+    décrivent la forme du signal, plus finement qu'une courbe. La tentation est grande, devant un
+    scalogramme coloré, d'y lire une intention ; c'est la même tentation que devant un nuage. Le
+    chapitre de déontologie de l'ouvrage principal s'applique ici mot pour mot : on décrit ce qu'on
+    mesure, on nomme les hypothèses, et l'on s'interdit de conclure au-delà.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c16-vocal" data-toc="chapter">Des mots au lieu des notes</h2>
+
+  <p class="chapo">Le logiciel sait produire, au lieu d'une note, un énoncé court : « la feuille
+  frémit doucement ». Ce chapitre explique comment, et surtout pourquoi ce dispositif est présenté
+  avec un avertissement permanent plutôt qu'avec de l'émerveillement.</p>
+
+  <p>Le moteur lexical est le jumeau du moteur musical. Mêmes événements en entrée, mêmes garde-fous
+  de densité et d'anti-répétition, même traçabilité. Là où le moteur musical choisit une hauteur
+  dans une gamme, celui-ci choisit un mot dans un dictionnaire, puis assemble quelques mots en une
+  phrase. Les deux peuvent tourner ensemble : la même bouffée d'activité donne alors une note et
+  une phrase.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/logiciel-lexique.svg" alt="Du microvolt au mot : les axes du mode vocal"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Les quatre axes mesurés, les registres du
+    dictionnaire qu'ils commandent, et le sujet — qui ne vient d'aucune mesure. C'est la case rouge
+    qui fait tout l'intérêt et tout le danger du dispositif : « je » est un choix de
+    l'utilisateur, pas une donnée.</figcaption>
+  </figure>
+
+  <h3 id="c16-registres" data-toc="sub">Six registres, quatre axes mesurés</h3>
+
+  <table class="tight">
+    <thead><tr><th>Registre</th><th>Axe du signal</th><th>Rôle dans la phrase</th></tr></thead>
+    <tbody>
+      <tr><td><strong>verbe</strong></td><td>sens de la pente de l'événement</td>
+        <td>l'action : monter, ou s'apaiser</td></tr>
+      <tr><td><strong>intensité</strong></td><td>amplitude en écarts-types</td>
+        <td>l'adverbe : à peine, nettement, fortement</td></tr>
+      <tr><td><strong>tempo</strong></td><td>temps écoulé depuis l'énoncé précédent</td>
+        <td>la circonstance de temps</td></tr>
+      <tr><td><strong>couleur</strong></td><td>centre de gravité spectral du signal</td>
+        <td>la qualification : sourd, ample, clair</td></tr>
+      <tr><td><strong>sujet</strong></td><td><em>aucun</em> — choisi par l'utilisateur</td>
+        <td>qui parle</td></tr>
+      <tr><td><strong>liaison</strong></td><td><em>aucun</em> — fixe</td>
+        <td>l'articulation entre deux propositions</td></tr>
+    </tbody>
+  </table>
+
+  <p>Chaque registre est une liste ordonnée de mots ; la position dans la liste correspond à une
+  position sur l'axe, de zéro à un. Quatre grammaires règlent l'assemblage, de la plus avare à la
+  plus bavarde : <em>minimale</em> (un seul mot), <em>télégraphique</em> (le verbe et son
+  intensité), <em>contemplative</em> (une phrase courte) et <em>descriptive</em> (chaque axe donne
+  son mot). La plus honnête est la première : rien n'y est ajouté qui ne soit mesuré.</p>
+
+  <h3 id="c16-dictionnaire" data-toc="sub">Le dictionnaire est un fichier, et c'est voulu</h3>
+
+  <p>Le dictionnaire livré est un simple fichier JSON, et le modifier n'est pas une entorse : c'est
+  l'usage normal. Un praticien du soin écrira un registre différent de celui d'un botaniste ;
+  un atelier avec des enfants n'emploiera pas les mots d'un compte rendu clinique. Traduire le
+  dictionnaire en breton, en espagnol ou en langage de signes écrit ne demande qu'un éditeur de
+  texte.</p>
+
+  <p>Les listes livrées sont volontairement courtes — cinq mots par registre. Un dictionnaire trop
+  riche produit du bavardage, et le bavardage donne l'illusion du sens. La densité par défaut est
+  de six énoncés par minute, là où la musique en autorise vingt-quatre : une plante qui
+  « parlerait » vingt fois par minute ne serait pas écoutée.</p>
+
+  <h3 id="c16-voix" data-toc="sub">Prononcer, hors ligne, ou se taire</h3>
+
+  <p>Les énoncés peuvent être prononcés. La synthèse vocale est l'une des rares choses pour
+  lesquelles il n'existe aucune solution portable : chaque système a la sienne, et aucune n'est
+  garantie présente. Le logiciel essaie donc, dans l'ordre, la bibliothèque
+  <span class="phon">pyttsx3</span>, la voix intégrée de macOS, celle de Windows, puis
+  <span class="phon">espeak-ng</span> — et, si rien ne répond, il se tait sans que ce soit une
+  erreur : l'énoncé reste écrit à l'écran et consigné dans le fichier de séance.</p>
+
+  <p>Toutes ces voies parlent <strong>hors ligne</strong>. C'est une exigence, pas une préférence :
+  on enregistre des séances chez des gens, parfois dans des lieux de soin, et rien de ce qui s'y
+  dit n'a à partir sur un service distant. Aucun texte ne quitte la machine, jamais.</p>
+
+  <p>La parole est émise dans un fil séparé, avec une file d'attente bornée à quatre énoncés. Si la
+  plante « parle » plus vite que la voix ne prononce, les énoncés en trop sont abandonnés plutôt
+  qu'accumulés, et le compteur d'abandons est affiché : mieux vaut perdre une phrase que prendre
+  trois minutes de retard sur la mesure.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Ce n'est pas une traduction</div>
+    <p class="noindent">Il faut le dire nettement, parce que le dispositif invite à croire le
+    contraire. La plante n'émet pas de mots, n'a pas de langage, et rien dans son signal électrique
+    ne correspond à un vocabulaire. Ce que fait ce module est exactement ce que fait la sonification
+    musicale, avec un matériau différent : il applique des règles explicites, réglables et
+    consignées, qui associent une région de l'espace des descripteurs à un mot choisi par
+    l'utilisateur.</p>
+    <p class="noindent">Le mot qui sort est donc dans le dictionnaire de celui qui l'a écrit. Il dit
+    quelque chose du signal — son intensité, son sens de variation, son rythme, sa couleur
+    spectrale — et rien du tout de ce que « pense » la plante. Le dialogue qui s'installe est un
+    dialogue entre l'utilisateur et sa propre grille de lecture ; il peut être fécond, à condition
+    de savoir cela. C'est pourquoi l'avertissement figure en permanence en tête de l'onglet, et non
+    dans une aide qu'on ouvre une fois.</p>
+  </div>
+
+  <h3 id="c16-justification" data-toc="sub">Chaque énoncé porte sa justification</h3>
+
+  <p>Un énoncé sans justification serait un oracle. Chacun est donc accompagné de la ligne qui l'a
+  produit :</p>
+
+  <div class="schema tight">
+<pre>σ=4,1→i0,58 · pente=+2,3e−05→montée · Δt=38,4 s→t0,32 · f=0,214 Hz→c0,21</pre>
+  </div>
+
+  <p>On y lit l'amplitude en écarts-types et la position qu'elle occupe sur l'axe d'intensité, le
+  sens et la valeur de la pente, le temps écoulé, le centre de gravité spectral. Le fichier
+  <span class="phon">enonces.csv</span> de la séance conserve ces valeurs à côté du texte, de sorte
+  qu'on puisse, six mois plus tard, refaire le chemin à l'envers — et vérifier qu'aucune phrase ne
+  sort de nulle part.</p>
+
+  <div class="callout science">
+    <div class="callout-title">🔬 Une expérience à faire, et qui désillusionne utilement</div>
+    <p class="noindent">Chargez deux dictionnaires très différents — l'un contemplatif, l'autre
+    clinique — et relisez la même séance enregistrée avec chacun. Les mots changent du tout au
+    tout ; les valeurs, elles, sont identiques au millième près. On tient là, en une minute, la
+    démonstration la plus claire de ce que ce mode est : un miroir de la grille de lecture, posé
+    sur une mesure qui, elle, ne bouge pas.</p>
+  </div>
+</section>

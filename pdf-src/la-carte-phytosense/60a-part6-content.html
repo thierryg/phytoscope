@@ -1,0 +1,180 @@
+<section class="chapter">
+  <h2 id="c15a-raccorder" data-toc="chapter">Raccorder : la plante, le boîtier, l'ordinateur</h2>
+
+  <p class="chapo">Tout ce qui précède se joue maintenant sur trois câbles et trois points de
+  contact. C'est la partie du travail où l'on perd le plus de qualité de mesure, et celle qui ne
+  demande aucun instrument — seulement de la méthode.</p>
+
+  <h3 id="c15a-ensemble" data-toc="sub">Ce qui est relié à quoi</h3>
+
+  <p>La chaîne compte trois éléments et deux liaisons, et il faut résister à la tentation d'en
+  imaginer un quatrième. <strong>L'ordinateur portable est requis en permanence</strong> : c'est
+  lui qui configure la carte, reçoit le flux de mesure, l'enregistre et l'analyse. La carte ne
+  fonctionne pas seule ; elle n'a jamais été conçue pour cela, et la partie V explique pourquoi ce
+  choix était le bon.</p>
+
+  <p>Ce qui est double, en revanche, c'est l'énergie. Elle peut venir du port USB de l'ordinateur,
+  d'un bloc d'alimentation externe, ou d'un accumulateur — et le passage de l'une à l'autre se
+  fait sans coupure, en pleine séance.</p>
+
+  <figure id="fig-raccordement">
+    <img src="assets/svg/raccordement-ensemble.svg" alt="Raccordement d'ensemble : plante, boîtier, ordinateur, alimentations"/>
+    <figcaption><span class="fig-n">FIGURE ##</span> — La chaîne complète et les trois
+    provenances possibles de l'énergie. Les deux liaisons ne sont pas interchangeables : celle de
+    gauche porte la mesure, celle de droite la commande.</figcaption>
+  </figure>
+
+  <table class="tight">
+    <thead><tr><th>Situation</th><th>Alimentation conseillée</th><th>Pourquoi</th></tr></thead>
+    <tbody>
+      <tr><td>Séance courte à l'intérieur</td><td>USB de l'ordinateur</td>
+          <td>un seul câble, rien à préparer</td></tr>
+      <tr><td>Séance de plusieurs heures</td><td>bloc externe sur J30</td>
+          <td>épargne la batterie et écarte le 5 V bruyant du portable</td></tr>
+      <tr><td>Mesure fine, plancher de bruit</td><td>bloc externe, ou accumulateur</td>
+          <td>c'est là que se gagnent les derniers dixièmes de microvolt</td></tr>
+      <tr><td>Extérieur, loin de toute prise</td><td>accumulateur Li-Po</td>
+          <td>l'ordinateur portable fonctionne alors sur sa propre batterie</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c15a-electrodes" data-toc="sub">Les trois points de contact</h3>
+
+  <p>Deux électrodes mesurent, une troisième sert de retour vers le substrat. Leur emplacement
+  compte davantage que leur nature : deux contacts médiocres bien placés donnent un meilleur signal
+  que deux contacts parfaits mal placés.</p>
+
+  <p>La règle tient en une phrase : <strong>les deux électrodes de mesure doivent se trouver sur
+  le même individu, séparées de dix à trente centimètres, sur des tissus qui n'ont pas la même
+  fonction</strong> — une feuille et la tige qui la porte, par exemple. Trop près l'une de l'autre,
+  elles voient le même potentiel et la différence s'annule ; sur deux plantes distinctes, elles
+  mesurent surtout la différence entre deux pots.</p>
+
+  <figure id="fig-electrodes">
+    <img src="assets/svg/raccordement-electrodes.svg" alt="Détail du raccordement : électrodes, câble, connecteur"/>
+    <figcaption><span class="fig-n">FIGURE ##</span> — Le détail du raccordement : où poser les
+    trois contacts, comment est fait le câble, et sur quelle broche du jack aboutit chaque
+    conducteur.</figcaption>
+  </figure>
+
+  <h3 id="c15a-feuille-racine" data-toc="sub">Une feuille et une racine : le montage le plus courant</h3>
+
+  <p>Le montage que tout le monde essaie en premier relie une <strong>feuille</strong> et le
+  <strong>substrat</strong>, c'est-à-dire, électriquement, les racines. Il a deux mérites : il ne
+  demande qu'une pince et une tige, et il donne tout de suite quelque chose. Il a un défaut qu'il
+  faut énoncer avant de s'en servir : <em>on ne mesure pas la feuille</em>. On mesure le chemin
+  complet — feuille, pétiole, tige, racines, substrat, électrode — et un arrosage y pèse autant
+  qu'un changement de la plante.</p>
+
+  <figure id="fig-feuille-racine">
+    <img src="assets/svg/raccordement-feuille-racine.svg" alt="Brancher une feuille et une racine : le montage et le choix de l'électrode de substrat"/>
+    <figcaption><span class="fig-n">FIGURE ##</span> — Le montage feuille / racine en coupe, et ce
+    qu'on plante dans la terre. La colonne de droite est la réponse à la question la plus posée :
+    quel métal, sous quelle forme, et pourquoi trois d'entre eux sont à proscrire.</figcaption>
+  </figure>
+
+  <h4>Que planter dans la terre</h4>
+
+  <p>C'est le point où l'on se trompe le plus souvent, et l'erreur ne se voit pas : elle produit un
+  signal, simplement ce n'est pas celui de la plante.</p>
+
+  <table class="tight">
+    <thead><tr><th></th><th>Électrode</th><th>Pourquoi</th></tr></thead>
+    <tbody>
+      <tr><td>✓</td><td><strong>Tige inox 316L</strong>, ø 4 à 6 mm, 60 à 100 mm</td>
+        <td>Inerte, stable, increvable, quelques euros. Le choix par défaut.</td></tr>
+      <tr><td>✓</td><td><strong>Graphite</strong> — mine de ø 5 mm ou charbon de pile</td>
+        <td>Peu polarisable, n'injecte aucun ion métallique dans le sol. Fragile.</td></tr>
+      <tr><td>✓</td><td><strong>Ag/AgCl avec pont salin</strong> — agar-agar 3 % et KCl 3 mol/L</td>
+        <td>La référence de laboratoire : dérive minimale, et aucun métal ne touche les racines.
+        Se prépare, et se refait tous les quelques mois.</td></tr>
+      <tr><td>✗</td><td>Laiton, cuivre</td>
+        <td>Forment une pile galvanique avec l'électrode de feuille — des dizaines de millivolts
+        qui dérivent avec l'humidité — et le cuivre est toxique pour les racines.</td></tr>
+      <tr><td>✗</td><td>Acier galvanisé</td>
+        <td>Le zinc se dissout : décalage énorme, croissant, et sol pollué.</td></tr>
+      <tr><td>✗</td><td>Aluminium</td>
+        <td>S'oxyde en quelques heures ; la mesure devient instable sans prévenir.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La règle qui gouverne tout le reste : le même métal aux deux bouts</div>
+    <p class="noindent">Deux métaux différents plongés dans un milieu humide constituent une pile.
+    On mesure alors sa tension — quelques dizaines de millivolts, cent fois le signal cherché — et
+    surtout <strong>sa dérive avec l'humidité</strong>. La ligne de base retire le décalage
+    constant ; elle ne retire pas la dérive. Si l'électrode de feuille est une pastille Ag/AgCl, la
+    meilleure électrode de substrat est un pont salin ; à défaut, de l'inox des deux côtés.</p>
+  </div>
+
+  <p>Trois précautions complètent la règle. <strong>Profondeur de trois à cinq centimètres</strong>,
+  à cinq centimètres au moins de la tige : plus près, on tranche des racines ; plus loin, on mesure
+  surtout le pot. <strong>Substrat humide, jamais détrempé ni sec</strong> — sec, l'impédance monte
+  et le bruit avec elle ; quelques gouttes d'eau claire avant la séance suffisent, jamais d'eau
+  salée, qui brûle les racines à la longue. Et <strong>la même place d'une séance à l'autre</strong>
+  si l'on veut comparer : la profondeur, la distance à la tige et la feuille choisie se notent, sans
+  quoi deux séances ne sont pas comparables.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Ce que ce montage ne permet pas de conclure</div>
+    <p class="noindent">Une variation observée entre feuille et substrat peut venir de la plante,
+    du contact, de l'humidité du sol, de la température, ou du câble qu'on a frôlé. Le montage ne
+    permet pas de trancher : il donne une grandeur, et c'est le protocole — répétitions, témoin,
+    notes de séance — qui décide de ce qu'elle vaut. La partie sur la déontologie de l'ouvrage
+    principal s'applique ici sans retrait.</p>
+  </div>
+
+  <h3 id="c15a-cable" data-toc="sub">Le câble, et l'erreur qui annule tout le reste</h3>
+
+  <p>Le câble recommandé est du RG-174 à faible bruit — un coaxial souple de deux millimètres et
+  demi, du type employé en instrumentation. Deux mètres au maximum. Chaque mètre supplémentaire
+  ajoute de la capacité, donc de l'atténuation aux fréquences hautes, et surtout offre une prise
+  supplémentaire au champ du réseau à cinquante hertz.</p>
+
+  <div class="callout caution">
+    <div class="callout-title">⚠ La tresse va sur la bague, jamais sur le corps</div>
+    <p class="noindent">C'est l'erreur la plus fréquente, et la plus coûteuse. Le réflexe de tout
+    électronicien est de relier le blindage à la masse : ici, il faut le relier à la
+    <strong>garde</strong>, c'est-à-dire à la bague du jack, qui est portée au potentiel du signal
+    par un suiveur. Une tresse à la masse transforme la capacité du câble en charge sur l'entrée,
+    et l'on perd d'un seul geste tout ce que l'étage électrométrique avait gagné — plusieurs
+    décennies de courant de fuite, réduites à néant par un coup de fer à souder.</p>
+  </div>
+
+  <table class="tight">
+    <thead><tr><th>Conducteur</th><th>Broche du jack J1</th><th>Va vers</th></tr></thead>
+    <tbody>
+      <tr><td>Âme centrale</td><td>T — pointe</td><td>E1, électrode de mesure</td></tr>
+      <tr><td>Tresse de blindage</td><td>R — bague</td><td>garde : ni masse, ni signal</td></tr>
+      <tr><td>Second conducteur</td><td>S — corps</td><td>E2, électrode de référence</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c15a-contacts" data-toc="sub">Choisir le contact selon le végétal</h3>
+
+  <table class="tight">
+    <thead><tr><th>Support</th><th>Contact conseillé</th><th>Tenue</th></tr></thead>
+    <tbody>
+      <tr><td>Feuille souple et large</td><td>électrode Ag/AgCl adhésive d'électrocardiographie</td><td class="num">4 à 8 h</td></tr>
+      <tr><td>Feuille épaisse, succulente</td><td>pince crocodile à mors cuivre, éponge humide</td><td class="num">2 à 4 h</td></tr>
+      <tr><td>Écorce, tronc</td><td>pince à mors larges, éponge et gel sans chlorure</td><td class="num">6 à 12 h</td></tr>
+      <tr><td>Substrat (racines)</td><td>tige inox 316L de 60 à 100 mm, enfoncée de 3 à 5 cm —
+        ou pont salin Ag/AgCl</td><td>durable</td></tr>
+    </tbody>
+  </table>
+
+  <p class="small">Les durées indiquées sont celles au bout desquelles la dérive du contact devient
+  comparable au signal cherché. Elles s'allongent nettement à l'ombre et par forte humidité, et
+  s'effondrent au soleil direct. Une séance de référence commence donc toujours par vingt minutes
+  d'attente : le temps que le potentiel de contact se stabilise. Ce délai n'est pas du temps
+  perdu, c'est la première mesure.</p>
+
+  <div class="callout info">
+    <div class="callout-title">◆ Le geste qui évite la moitié des déboires</div>
+    <p class="noindent">Fixer le câble à la plante ou au pot par un serre-câble souple, à une
+    vingtaine de centimètres du contact. La traction du câble sur l'électrode est la première
+    cause d'artefact : elle produit des sauts de plusieurs millivolts, bien plus grands que tout
+    ce que la plante peut faire, et parfaitement indiscernables d'un vrai événement pour qui n'a
+    pas vu le câble bouger.</p>
+  </div>
+</section>

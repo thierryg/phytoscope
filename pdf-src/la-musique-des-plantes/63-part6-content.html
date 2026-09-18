@@ -1,0 +1,191 @@
+<section class="chapter">
+  <h2 id="c25-midi" data-toc="chapter">Le câble MIDI et l'intégration audio</h2>
+  <p class="chapo">Le MIDI est une norme de 1983 qui n'a pratiquement pas changé — et c'est ce qui la rend précieuse : un boîtier acheté aujourd'hui pilotera encore un synthétiseur dans vingt ans.</p>
+
+  <p class="lettrine noindent">Commençons par lever le malentendu le plus répandu. <strong>Le MIDI ne transporte aucun son.</strong> Il transporte des instructions : « joue la note 60 avec une force de 90 », « relâche-la », « mets le paramètre 80 à la valeur 34 ». C'est une partition qui défile, pas un enregistrement. Un fichier MIDI d'une heure de plante pèse quelques dizaines de kilo-octets ; le même enregistrement audio pèse cinq cents mégaoctets.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/midi-flow.svg" alt="Chaîne boîtier, interface, station audionumérique, instrument" style="width:100%"/>
+    <figcaption><span class="fig-n">Fig. 6.3.</span> La chaîne d'intégration. Chaque maillon peut être matériel ou logiciel ; seule la nature des messages ne change pas.</figcaption>
+  </figure>
+
+  <h3 id="c25-messages" data-toc="sub">Les messages qui circulent réellement</h3>
+
+  <div class="schema light">
+    <div class="sch-h">Anatomie d'un message MIDI de plante</div>
+<pre>
+  LIAISON SÉRIE ASYNCHRONE — 31 250 bauds, 8 bits, 1 bit d'arrêt
+
+  ┌──────────────────────────────────────────────────────────────┐
+  │  NOTE ON            1001nnnn  0kkkkkkk  0vvvvvvv             │
+  │                     └─ 0x9n   └ note    └ vélocité           │
+  │                        n = canal 0–15                        │
+  │                        kkkkkkk = hauteur 0–127 (60 = do3)    │
+  │                        vvvvvvv = force 0–127                 │
+  ├──────────────────────────────────────────────────────────────┤
+  │  NOTE OFF           1000nnnn  0kkkkkkk  0vvvvvvv             │
+  │     (ou NOTE ON avec vélocité 0 — équivalent par convention) │
+  ├──────────────────────────────────────────────────────────────┤
+  │  CONTROL CHANGE     1011nnnn  0ccccccc  0vvvvvvv             │
+  │                     └─ 0xBn   └ n° CC   └ valeur 0–127       │
+  │       CC 80 = affectation par défaut de PlantsPlay           │
+  │       CC 1  = molette de modulation (usage courant)          │
+  │       CC 74 = fréquence de coupure de filtre (convention)    │
+  ├──────────────────────────────────────────────────────────────┤
+  │  PITCH BEND         1110nnnn  0lllllll  0mmmmmmm             │
+  │       Seul moyen d'obtenir une hauteur CONTINUE, donc de     │
+  │       restituer la microtonalité réelle du signal.           │
+  └──────────────────────────────────────────────────────────────┘
+
+  DÉBIT : 31 250 bauds ÷ 10 bits = 3 125 octets/s
+          ÷ 3 octets par message ≈ 1 041 messages/s
+  Une plante en produit 0,2 à 4 par seconde. Marge : 250 fois.
+</pre>
+    <figcaption>Les quatre messages utiles. Un boîtier de bio-sonification n'utilise jamais plus de 1 % de la bande passante disponible.</figcaption>
+  </div>
+
+  <h3 id="c25-cables" data-toc="sub">Les quatre connectiques, et comment ne pas se tromper</h3>
+
+  <table class="tight">
+    <thead><tr><th>Connectique</th><th>Description</th><th>Sur quels appareils</th><th>Piège à éviter</th></tr></thead>
+    <tbody>
+      <tr><td><strong>DIN 5 broches</strong></td><td>La prise historique, ronde. Seules les broches 4 et 5 portent les données ; la 2 est la masse du blindage.</td><td>U1, matériel de studio, montage DIY</td><td>Un câble DIN audio (5 broches câblées) fonctionne, mais un câble « MIDI » à 3 broches câblées ne passera pas l'alimentation fantôme de certains montages</td></tr>
+      <tr><td><strong>Jack TRS 3,5 mm type A</strong></td><td>Mini-jack, norme adoptée en 2018 : pointe = courant sortant, anneau = courant entrant, corps = masse</td><td>PlantWave, Pocket Scion, Bamboo</td><td><strong>Le type B existe et a la pointe et l'anneau inversés.</strong> Un adaptateur de type B sur un appareil de type A ne transmet rien. Vérifiez toujours le type.</td></tr>
+      <tr><td><strong>USB-MIDI</strong></td><td>Classe standard : aucun pilote à installer sous Windows, macOS ou Linux</td><td>PlantWave, PlantsPlay, Pocket Scion, Biotron</td><td>La masse USB relie votre montage au secteur : source majeure de ronflement à 50 Hz</td></tr>
+      <tr><td><strong>MIDI sur Bluetooth (BLE-MIDI)</strong></td><td>Norme officielle depuis 2015 ; latence de 10 à 30 ms</td><td>PlantWave (via passerelle), PlantsPlay</td><td>Émission radio à quelques centimètres du capteur haute impédance ; latence variable</td></tr>
+    </tbody>
+    <caption>Les quatre connectiques. Le piège du type A contre type B est de loin la cause n° 1 des « mon appareil ne transmet rien ».</caption>
+  </table>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Limites et interprétation</div>
+    <p><strong>Ne branchez jamais un casque sur une sortie MIDI jack 3,5 mm.</strong> L'avertissement figure noir sur blanc dans le manuel PlantWave et il est à prendre au sérieux : c'est une sortie de données numériques, pas une sortie audio. Au mieux vous n'entendrez qu'un crépitement ; au pire vous chargerez la sortie et l'endommagerez.</p>
+  </div>
+
+  <h3 id="c25-ardour" data-toc="sub">Mise en œuvre pas à pas — Ardour (libre, Linux / macOS / Windows)</h3>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Marche à suivre</div>
+      <div class="pr-t">Router une plante dans Ardour</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta">
+        <span><b>Prérequis</b> Ardour 7+ · un serveur audio (JACK ou PipeWire sous Linux)</span>
+        <span><b>Durée</b> 15 min la première fois</span>
+      </div>
+      <ol class="steps">
+        <li><strong>Branchez le boîtier</strong> en USB, ou reliez sa sortie MIDI à une interface MIDI elle-même en USB. Sous Linux, vérifiez qu'il est reconnu : <code>aconnect -l</code> doit lister le périphérique.</li>
+        <li><strong>Lancez Ardour</strong> et créez une session. Dans <em>Window → Audio/MIDI Setup</em>, activez le port MIDI de votre boîtier.</li>
+        <li><strong>Créez une piste MIDI</strong> : <em>Track → Add Track, Bus or VCA → MIDI Tracks</em>. Choisissez un instrument, par exemple <em>General MIDI Synth</em> ou un greffon comme <em>Helm</em> ou <em>Surge XT</em>.</li>
+        <li><strong>Assignez l'entrée</strong> : cliquez sur le bouton d'entrée de la piste et sélectionnez le port de votre boîtier. Armez la piste (bouton rouge).</li>
+        <li><strong>Vérifiez</strong> : l'indicateur d'entrée MIDI doit clignoter à chaque note de la plante. Si rien ne bouge, le problème est en amont — connectique ou seuil, jamais le logiciel.</li>
+        <li><strong>Enregistrez</strong> : appuyez sur l'enregistrement global. Ardour capte le flux MIDI <em>et</em> l'audio rendu.</li>
+        <li><strong>Exportez le MIDI brut</strong> : clic droit sur la région → <em>Export</em> → format <code>.mid</code>. <strong>C'est votre donnée. Archivez-la, pas seulement l'audio.</strong></li>
+      </ol>
+      <div class="pr-obs"><strong>Astuce.</strong> Créez deux pistes alimentées par la même entrée : l'une avec une sinusoïde nue pour l'analyse, l'autre avec l'instrument de votre choix pour l'écoute. Vous basculez de l'une à l'autre d'un clic, sans rien changer aux données.</div>
+    </div>
+  </div>
+
+  <h3 id="c25-ableton" data-toc="sub">Mise en œuvre pas à pas — Ableton Live</h3>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Marche à suivre</div>
+      <div class="pr-t">Router une plante dans Ableton Live</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta">
+        <span><b>Prérequis</b> Live 10+ · le boîtier reconnu par le système</span>
+        <span><b>Durée</b> 10 min</span>
+      </div>
+      <ol class="steps">
+        <li><strong>Préférences → Link / Tempo / MIDI.</strong> Repérez votre boîtier dans la liste des ports d'entrée.</li>
+        <li><strong>Activez « Track » et « Remote »</strong> sur la ligne du port d'entrée. « Track » autorise les notes, « Remote » autorise les messages de contrôle à piloter des paramètres.</li>
+        <li><strong>Créez une piste MIDI</strong> (<em>Ctrl/Cmd + Maj + T</em>) et déposez-y un instrument : <em>Wavetable</em>, <em>Operator</em>, ou un instrument échantillonné.</li>
+        <li><strong>Dans l'en-tête de la piste</strong>, réglez <em>MIDI From</em> sur votre boîtier, canal <em>All</em>. Activez le bouton <em>In</em> (monitoring).</li>
+        <li><strong>Armez la piste</strong> et jouez.</li>
+        <li><strong>Affectez un message de contrôle</strong> : entrez en mode <em>MIDI Map</em> (<em>Ctrl/Cmd + M</em>), cliquez sur un paramètre — par exemple la coupure du filtre —, puis attendez que la plante envoie un CC. L'affectation se fait automatiquement. Quittez le mode.</li>
+        <li><strong>Enregistrez</strong> dans une scène de la vue Session, ou en vue Arrangement.</li>
+      </ol>
+      <div class="pr-warn"><strong>Attention au quantificateur.</strong> Par défaut, Ableton peut aligner les notes enregistrées sur la grille du tempo. <strong>Désactivez la quantification d'enregistrement</strong> (<em>Edit → Record Quantization → None</em>). Sinon vous détruisez précisément ce qui fait l'intérêt du signal : ses irrégularités.</div>
+    </div>
+  </div>
+
+  <h3 id="c25-conscient" data-toc="sub">Créer de la musique consciente</h3>
+
+  <p>Une fois la technique en place, une question demeure, et c'est la seule qui compte artistiquement : <strong>quelle est la juste place de l'humain dans cette musique ?</strong></p>
+
+  <table>
+    <thead><tr><th>Posture</th><th>Ce que fait l'humain</th><th>Part de la plante</th><th>Honnêteté du résultat</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Documentaire</strong></td><td>Rien. Sinusoïde nue, chromatique, sans horloge ni effets</td><td>≈ 100 %</td><td>Totale — souvent aride</td></tr>
+      <tr><td><strong>Traduction</strong></td><td>Choisit un instrument et une réverbération, rien d'autre</td><td>80 à 95 %</td><td>Élevée — le meilleur compromis</td></tr>
+      <tr><td><strong>Dialogue</strong></td><td>Joue en direct <em>avec</em> la plante, sur un autre instrument</td><td>40 à 60 %</td><td>Élevée, à condition de l'annoncer</td></tr>
+      <tr><td><strong>Arrangement</strong></td><td>Gamme, horloge, arpégiateur, accompagnement, structure</td><td>10 à 30 %</td><td>Correcte si annoncée, trompeuse sinon</td></tr>
+      <tr><td><strong>Prétexte</strong></td><td>Compose, puis ajoute quelques notes végétales par-dessus</td><td>&lt; 5 %</td><td><strong>Douteuse</strong> si présentée comme « musique des plantes »</td></tr>
+    </tbody>
+    <caption>Cinq postures créatives. Aucune n'est interdite ; une seule règle s'impose : <strong>dire laquelle vous avez adoptée</strong>.</caption>
+  </table>
+
+  <div class="callout energie">
+    <div class="callout-title">🌿 Regard énergétique</div>
+    <p>La posture de <em>dialogue</em> mérite qu'on s'y arrête, parce qu'elle est la plus riche et la moins pratiquée. Il ne s'agit pas d'accompagner la plante comme on accompanierait un chanteur — en la suivant — mais d'accepter une conversation avec un interlocuteur dont le temps n'est pas le vôtre.</p>
+    <p>Concrètement : jouez une note, puis <strong>attendez</strong>. Trente secondes, une minute. Écoutez ce qui vient. Rejouez. Ce que vous découvrirez très vite, c'est que l'exercice est un excellent révélateur de votre propre impatience — et que la moitié de vos interventions ne répondaient à rien sinon à votre inconfort devant le silence. Les praticiens qui persévèrent décrivent tous le même apprentissage : <em>ils jouent de moins en moins</em>.</p>
+    <p>Sur le plan de la mesure, rien ne prouve que la plante « réponde » à votre note. Sur le plan de la pratique, l'exercice est l'un des plus transformateurs de cet ouvrage.</p>
+  </div>
+
+  <h3 id="c25-depannage" data-toc="sub">Dépannage : l'arbre de décision</h3>
+
+  <div class="schema light">
+    <div class="sch-h">Aucun son — que faire, dans l'ordre</div>
+<pre>
+  AUCUNE NOTE NE SORT
+      │
+      ├─ L'indicateur d'entrée MIDI du logiciel bouge-t-il ?
+      │     │
+      │     ├─ NON → le problème est AVANT le logiciel
+      │     │        1. Câble type A ou type B ? (cause n° 1)
+      │     │        2. Appareil allumé, batterie chargée ?
+      │     │        3. Port MIDI activé dans les préférences ?
+      │     │        4. Sortie MIDI activée sur le boîtier ?
+      │     │        5. Test : aconnect -l (Linux) / MIDI Monitor (macOS)
+      │     │
+      │     └─ OUI → le problème est DANS le logiciel
+      │              1. Piste armée ? Monitoring « In » activé ?
+      │              2. Un instrument est-il chargé sur la piste ?
+      │              3. Volume de la piste, du master, du système ?
+      │              4. Canal MIDI : réglez sur « All »
+      │
+      └─ L'appareil lui-même n'émet-il rien ?
+            1. Le témoin lumineux clignote-t-il aux événements ?
+            2. Contact : pastille décollée ? feuille sèche ?
+            3. Seuil trop haut → abaissez-le temporairement
+            4. TEST DÉCISIF : pincez brièvement les deux
+               électrodes entre vos doigts. Si l'appareil
+               réagit, la chaîne complète fonctionne et le
+               problème est le CONTACT AVEC LA PLANTE.
+
+  TRILLE RÉGULIER ET MÉTRONOMIQUE
+      → induction du secteur à 50 Hz
+      1. Passer sur batterie, débrancher le chargeur
+      2. Éloigner alimentations, néons, variateurs
+      3. Si alimenté par USB d'ordinateur : batterie externe
+</pre>
+    <figcaption>Le test du pincement des électrodes entre les doigts isole en cinq secondes un problème de chaîne d'un problème de contact. À faire en premier, toujours.</figcaption>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Le MIDI transporte des instructions, jamais du son : archivez toujours le fichier <code>.mid</code>, pas seulement l'audio.</li>
+      <li>Piège n° 1 : jack TRS type A contre type B, aux broches inversées.</li>
+      <li>Ne jamais brancher un casque sur une sortie MIDI 3,5 mm.</li>
+      <li>Désactiver la quantification d'enregistrement : elle détruit l'irrégularité, seule information réelle.</li>
+      <li>Cinq postures créatives possibles ; la seule règle est d'annoncer laquelle.</li>
+      <li>Test de diagnostic : pincer les électrodes entre ses doigts.</li>
+    </ul>
+  </div>
+
+  <div class="ornament"></div>
+</section>

@@ -1,0 +1,246 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/gabarit-carte.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1340" width="1800" height="1340">
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+ <marker id="ahk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
+   markerHeight="5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#23302C"/></marker>
+ <marker id="ahc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#A8552E"/></marker>
+ <pattern id="hatch" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#E0C073" stroke-width="2.4"/></pattern>
+ <pattern id="hatchb" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
+</defs>
+<rect width="1800" height="1340" fill="#FFFFFF"/>
+<rect x="180" y="150" width="1000.0" height="600.0" rx="6" fill="#F7F9F7" stroke="#3F7D5A" stroke-width="2.2" stroke-dasharray="10 6"/>
+<text x="180" y="98" font-family="Cormorant Garamond, serif" font-size="35.28" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Fond du boîtier — gabarit 1:1</text>
+<text x="1180.0" y="98" font-family="Lato, sans-serif" font-size="22.58" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">contour de la carte, 100 × 60 mm</text>
+<rect x="180.0" y="210.0" width="120.0" height="120.0" rx="0" fill="#EEF2F0" stroke="#6B7A72" stroke-width="1.0" stroke-dasharray="4 3"/>
+<text x="240.0" y="274.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">J1</text>
+<rect x="180.0" y="390.0" width="120.0" height="120.0" rx="0" fill="#EEF2F0" stroke="#6B7A72" stroke-width="1.0" stroke-dasharray="4 3"/>
+<text x="240.0" y="454.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">J2</text>
+<rect x="1065.0" y="313.0" width="90.0" height="74.0" rx="0" fill="#EEF2F0" stroke="#6B7A72" stroke-width="1.0" stroke-dasharray="4 3"/>
+<text x="1110.0" y="354.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">J20</text>
+<rect x="1080.0" y="560.0" width="60.0" height="60.0" rx="0" fill="#EEF2F0" stroke="#6B7A72" stroke-width="1.0" stroke-dasharray="4 3"/>
+<text x="1110.0" y="594.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">J21</text>
+<rect x="540.0" y="250.0" width="40.0" height="340.0" rx="0" fill="#EEF2F0" stroke="#6B7A72" stroke-width="1.0" stroke-dasharray="4 3"/>
+<text x="560.0" y="424.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">J10</text>
+<rect x="410.0" y="560.0" width="140.0" height="100.0" rx="0" fill="#EEF2F0" stroke="#6B7A72" stroke-width="1.0" stroke-dasharray="4 3"/>
+<text x="480.0" y="614.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">T1</text>
+<circle cx="220.0" cy="190.0" r="16.0" fill="none" stroke="#23302C" stroke-width="1.6"/>
+<line x1="182.0" y1="190.0" x2="258.0" y2="190.0" stroke="#A8552E" stroke-width="0.9" stroke-linecap="round"/>
+<line x1="220.0" y1="152.0" x2="220.0" y2="228.0" stroke="#A8552E" stroke-width="0.9" stroke-linecap="round"/>
+<circle cx="220.0" cy="190.0" r="1.6" fill="#A8552E" stroke="#A8552E" stroke-width="0.6"/>
+<text x="220.0" y="114.0" font-family="Lato, sans-serif" font-size="21.87" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">F1</text>
+<text x="220.0" y="128.0" font-family="DejaVu Sans Mono, monospace" font-size="20.46" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Ø 3,2</text>
+<text x="220.0" y="142.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">entretoise</text>
+<circle cx="1140.0" cy="190.0" r="16.0" fill="none" stroke="#23302C" stroke-width="1.6"/>
+<line x1="1102.0" y1="190.0" x2="1178.0" y2="190.0" stroke="#A8552E" stroke-width="0.9" stroke-linecap="round"/>
+<line x1="1140.0" y1="152.0" x2="1140.0" y2="228.0" stroke="#A8552E" stroke-width="0.9" stroke-linecap="round"/>
+<circle cx="1140.0" cy="190.0" r="1.6" fill="#A8552E" stroke="#A8552E" stroke-width="0.6"/>
+<text x="1140.0" y="114.0" font-family="Lato, sans-serif" font-size="21.87" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">F2</text>
+<text x="1140.0" y="128.0" font-family="DejaVu Sans Mono, monospace" font-size="20.46" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Ø 3,2</text>
+<text x="1140.0" y="142.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">entretoise</text>
+<circle cx="220.0" cy="710.0" r="16.0" fill="none" stroke="#23302C" stroke-width="1.6"/>
+<line x1="182.0" y1="710.0" x2="258.0" y2="710.0" stroke="#A8552E" stroke-width="0.9" stroke-linecap="round"/>
+<line x1="220.0" y1="672.0" x2="220.0" y2="748.0" stroke="#A8552E" stroke-width="0.9" stroke-linecap="round"/>
+<circle cx="220.0" cy="710.0" r="1.6" fill="#A8552E" stroke="#A8552E" stroke-width="0.6"/>
+<text x="220.0" y="662.0" font-family="Lato, sans-serif" font-size="21.87" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">F3</text>
+<text x="220.0" y="770.0" font-family="DejaVu Sans Mono, monospace" font-size="20.46" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Ø 3,2</text>
+<text x="220.0" y="784.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">entretoise</text>
+<circle cx="1140.0" cy="710.0" r="16.0" fill="none" stroke="#23302C" stroke-width="1.6"/>
+<line x1="1102.0" y1="710.0" x2="1178.0" y2="710.0" stroke="#A8552E" stroke-width="0.9" stroke-linecap="round"/>
+<line x1="1140.0" y1="672.0" x2="1140.0" y2="748.0" stroke="#A8552E" stroke-width="0.9" stroke-linecap="round"/>
+<circle cx="1140.0" cy="710.0" r="1.6" fill="#A8552E" stroke="#A8552E" stroke-width="0.6"/>
+<text x="1140.0" y="662.0" font-family="Lato, sans-serif" font-size="21.87" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">F4</text>
+<text x="1140.0" y="770.0" font-family="DejaVu Sans Mono, monospace" font-size="20.46" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Ø 3,2</text>
+<text x="1140.0" y="784.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">entretoise</text>
+<text x="680.0" y="846.0" font-family="Lato, sans-serif" font-size="21.17" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">les rectangles grisés sont les empreintes des connecteurs et des pièces hautes : vérifier leur dégagement avant de percer</text>
+<rect x="180" y="890.0" width="1000.0" height="26" rx="0" fill="none" stroke="#23302C" stroke-width="1.4"/>
+<line x1="180.0" y1="890.0" x2="180.0" y2="916.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="180.0" y="932.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">0</text>
+<line x1="190.0" y1="906.0" x2="190.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="200.0" y1="906.0" x2="200.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="210.0" y1="906.0" x2="210.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="220.0" y1="906.0" x2="220.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="230.0" y1="898.0" x2="230.0" y2="916.0" stroke="#23302C" stroke-width="0.9" stroke-linecap="round"/>
+<line x1="240.0" y1="906.0" x2="240.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="250.0" y1="906.0" x2="250.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="260.0" y1="906.0" x2="260.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="270.0" y1="906.0" x2="270.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="280.0" y1="890.0" x2="280.0" y2="916.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="280.0" y="932.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">10</text>
+<line x1="290.0" y1="906.0" x2="290.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="300.0" y1="906.0" x2="300.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="310.0" y1="906.0" x2="310.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="320.0" y1="906.0" x2="320.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="330.0" y1="898.0" x2="330.0" y2="916.0" stroke="#23302C" stroke-width="0.9" stroke-linecap="round"/>
+<line x1="340.0" y1="906.0" x2="340.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="350.0" y1="906.0" x2="350.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="360.0" y1="906.0" x2="360.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="370.0" y1="906.0" x2="370.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="380.0" y1="890.0" x2="380.0" y2="916.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="380.0" y="932.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">20</text>
+<line x1="390.0" y1="906.0" x2="390.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="400.0" y1="906.0" x2="400.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="410.0" y1="906.0" x2="410.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="420.0" y1="906.0" x2="420.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="430.0" y1="898.0" x2="430.0" y2="916.0" stroke="#23302C" stroke-width="0.9" stroke-linecap="round"/>
+<line x1="440.0" y1="906.0" x2="440.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="450.0" y1="906.0" x2="450.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="460.0" y1="906.0" x2="460.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="470.0" y1="906.0" x2="470.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="480.0" y1="890.0" x2="480.0" y2="916.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="480.0" y="932.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">30</text>
+<line x1="490.0" y1="906.0" x2="490.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="500.0" y1="906.0" x2="500.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="510.0" y1="906.0" x2="510.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="520.0" y1="906.0" x2="520.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="530.0" y1="898.0" x2="530.0" y2="916.0" stroke="#23302C" stroke-width="0.9" stroke-linecap="round"/>
+<line x1="540.0" y1="906.0" x2="540.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="550.0" y1="906.0" x2="550.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="560.0" y1="906.0" x2="560.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="570.0" y1="906.0" x2="570.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="580.0" y1="890.0" x2="580.0" y2="916.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="580.0" y="932.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">40</text>
+<line x1="590.0" y1="906.0" x2="590.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="600.0" y1="906.0" x2="600.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="610.0" y1="906.0" x2="610.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="620.0" y1="906.0" x2="620.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="630.0" y1="898.0" x2="630.0" y2="916.0" stroke="#23302C" stroke-width="0.9" stroke-linecap="round"/>
+<line x1="640.0" y1="906.0" x2="640.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="650.0" y1="906.0" x2="650.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="660.0" y1="906.0" x2="660.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="670.0" y1="906.0" x2="670.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="680.0" y1="890.0" x2="680.0" y2="916.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="680.0" y="932.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">50</text>
+<line x1="690.0" y1="906.0" x2="690.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="700.0" y1="906.0" x2="700.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="710.0" y1="906.0" x2="710.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="720.0" y1="906.0" x2="720.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="730.0" y1="898.0" x2="730.0" y2="916.0" stroke="#23302C" stroke-width="0.9" stroke-linecap="round"/>
+<line x1="740.0" y1="906.0" x2="740.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="750.0" y1="906.0" x2="750.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="760.0" y1="906.0" x2="760.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="770.0" y1="906.0" x2="770.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="780.0" y1="890.0" x2="780.0" y2="916.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="780.0" y="932.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">60</text>
+<line x1="790.0" y1="906.0" x2="790.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="800.0" y1="906.0" x2="800.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="810.0" y1="906.0" x2="810.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="820.0" y1="906.0" x2="820.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="830.0" y1="898.0" x2="830.0" y2="916.0" stroke="#23302C" stroke-width="0.9" stroke-linecap="round"/>
+<line x1="840.0" y1="906.0" x2="840.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="850.0" y1="906.0" x2="850.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="860.0" y1="906.0" x2="860.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="870.0" y1="906.0" x2="870.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="880.0" y1="890.0" x2="880.0" y2="916.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="880.0" y="932.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">70</text>
+<line x1="890.0" y1="906.0" x2="890.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="900.0" y1="906.0" x2="900.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="910.0" y1="906.0" x2="910.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="920.0" y1="906.0" x2="920.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="930.0" y1="898.0" x2="930.0" y2="916.0" stroke="#23302C" stroke-width="0.9" stroke-linecap="round"/>
+<line x1="940.0" y1="906.0" x2="940.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="950.0" y1="906.0" x2="950.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="960.0" y1="906.0" x2="960.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="970.0" y1="906.0" x2="970.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="980.0" y1="890.0" x2="980.0" y2="916.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="980.0" y="932.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">80</text>
+<line x1="990.0" y1="906.0" x2="990.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1000.0" y1="906.0" x2="1000.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1010.0" y1="906.0" x2="1010.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1020.0" y1="906.0" x2="1020.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1030.0" y1="898.0" x2="1030.0" y2="916.0" stroke="#23302C" stroke-width="0.9" stroke-linecap="round"/>
+<line x1="1040.0" y1="906.0" x2="1040.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1050.0" y1="906.0" x2="1050.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1060.0" y1="906.0" x2="1060.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1070.0" y1="906.0" x2="1070.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1080.0" y1="890.0" x2="1080.0" y2="916.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="1080.0" y="932.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">90</text>
+<line x1="1090.0" y1="906.0" x2="1090.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1100.0" y1="906.0" x2="1100.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1110.0" y1="906.0" x2="1110.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1120.0" y1="906.0" x2="1120.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1130.0" y1="898.0" x2="1130.0" y2="916.0" stroke="#23302C" stroke-width="0.9" stroke-linecap="round"/>
+<line x1="1140.0" y1="906.0" x2="1140.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1150.0" y1="906.0" x2="1150.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1160.0" y1="906.0" x2="1160.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1170.0" y1="906.0" x2="1170.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="1180.0" y1="890.0" x2="1180.0" y2="916.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="1180.0" y="932.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">100</text>
+<text x="680.0" y="880.0" font-family="Lato, sans-serif" font-size="22.58" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0.8">RÉGLETTE DE CONTRÔLE — CETTE BARRE DOIT MESURER 100 mm</text>
+<text x="180" y="1000.0" font-family="Lato, sans-serif" font-size="23.99" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.2">PERÇAGES DU FOND — origine : coin supérieur gauche de la carte</text>
+<text x="180" y="1016.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">origine : coin supérieur gauche · X vers la droite, Y vers le bas</text>
+<text x="180" y="1040.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0.6">REPÈRE</text>
+<text x="290" y="1040.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0.6">X (mm)</text>
+<text x="380" y="1040.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0.6">Y (mm)</text>
+<text x="470" y="1040.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0.6">COTE</text>
+<text x="600" y="1040.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0.6">DESTINATION</text>
+<line x1="180" y1="1048.0" x2="1080" y2="1048.0" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<text x="180" y="1068.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">F1</text>
+<text x="290" y="1068.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">4</text>
+<text x="380" y="1068.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">4</text>
+<text x="470" y="1068.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Ø 3,2</text>
+<text x="600" y="1068.0" font-family="Lato, sans-serif" font-size="21.87" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">entretoise M3, hauteur 6 mm, PTFE — côté analogique</text>
+<rect x="172" y="1075.0" width="916" height="21" rx="0" fill="#FAFBFA" stroke="none" stroke-width="1.4"/>
+<text x="180" y="1090.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">F2</text>
+<text x="290" y="1090.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">96</text>
+<text x="380" y="1090.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">4</text>
+<text x="470" y="1090.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Ø 3,2</text>
+<text x="600" y="1090.0" font-family="Lato, sans-serif" font-size="21.87" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">entretoise M3, hauteur 6 mm, PTFE — isolée</text>
+<text x="180" y="1112.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">F3</text>
+<text x="290" y="1112.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">4</text>
+<text x="380" y="1112.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">56</text>
+<text x="470" y="1112.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Ø 3,2</text>
+<text x="600" y="1112.0" font-family="Lato, sans-serif" font-size="21.87" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">entretoise M3, hauteur 6 mm, PTFE — côté analogique</text>
+<rect x="172" y="1119.0" width="916" height="21" rx="0" fill="#FAFBFA" stroke="none" stroke-width="1.4"/>
+<text x="180" y="1134.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">F4</text>
+<text x="290" y="1134.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">96</text>
+<text x="380" y="1134.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">56</text>
+<text x="470" y="1134.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Ø 3,2</text>
+<text x="600" y="1134.0" font-family="Lato, sans-serif" font-size="21.87" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">entretoise M3, hauteur 6 mm, PTFE — isolée</text>
+<rect x="180" y="1140" width="760" height="138" rx="5" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.1"/>
+<text x="194" y="1168" font-family="Lato, sans-serif" font-size="24.34" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">LES ENTRETOISES NE SONT PAS NEUTRES</text>
+<text x="194" y="1192" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Entretoises en PTFE, jamais en nylon : le nylon absorbe l'humidité et</text>
+<text x="194" y="1214" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">conduit assez, en surface, pour dégrader une mesure à 10¹⁵ ohms.</text>
+<text x="194" y="1236" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Seules F1 et F3, du côté analogique, touchent un plan de masse ; F2 et F4</text>
+<text x="194" y="1258" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">restent isolées, sous peine de refermer la boucle ouverte par la fente.</text>
+<rect x="1000" y="1140" width="740" height="182" rx="5" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.1"/>
+<text x="1014" y="1168" font-family="Lato, sans-serif" font-size="24.34" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">AVANT DE PERCER — À LIRE</text>
+<text x="1014" y="1192" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Imprimer à 100 %, sans « ajuster à la page ».</text>
+<text x="1014" y="1214" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Vérifier la réglette à la règle AVANT de percer :</text>
+<text x="1014" y="1236" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">4 % d'erreur décalent le dernier trou de 4 mm.</text>
+<text x="1014" y="1258" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Coller le gabarit à la face au ruban adhésif,</text>
+<text x="1014" y="1280" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">pointer au pointeau, puis percer en deux passes :</text>
+<text x="1014" y="1302" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">avant-trou de 3 mm, puis cote finale.</text>
+<text x="900" y="1320" font-family="Lato, sans-serif" font-size="20.46" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté · bretagne-namaste.com · révision B</text>
+</svg>

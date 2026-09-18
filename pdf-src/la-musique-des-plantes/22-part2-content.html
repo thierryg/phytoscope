@@ -1,0 +1,217 @@
+<section class="chapter">
+  <h2 id="c12-chimie" data-toc="chapter">La chimie du signal végétal</h2>
+  <p class="chapo">Derrière chaque millivolt mesuré, il y a des ions qui traversent une membrane, des pompes qui consomment de l'ATP et des cascades moléculaires qui se déclenchent. Cette section détaille le mécanisme, molécule par molécule.</p>
+
+  <p class="lettrine noindent">Un signal électrique, dans le vivant, n'est jamais un courant d'électrons : c'est un <strong>courant d'ions</strong>. Cette distinction n'est pas un détail de vocabulaire, elle commande tout le reste — la lenteur des signaux végétaux, leur coût métabolique, leur sensibilité à la température, et jusqu'au choix du métal de vos électrodes.</p>
+
+  <h3 id="c12-ions" data-toc="sub">L'inventaire ionique d'une cellule végétale</h3>
+
+  <table>
+    <thead><tr><th>Ion</th><th>Concentration cytosolique</th><th>Concentration apoplastique ou vacuolaire</th><th>Rôle dans le signal</th></tr></thead>
+    <tbody>
+      <tr><td>K⁺ (potassium)</td><td>80 à 150 mM</td><td>1 à 10 mM (apoplaste)</td><td>Repolarisation ; principal porteur de charge du mouvement d'eau</td></tr>
+      <tr><td>Cl⁻ (chlorure)</td><td>10 à 50 mM</td><td>1 à 10 mM</td><td><strong>Dépolarisation</strong> — sortie déclenchante du potentiel d'action</td></tr>
+      <tr><td>Ca²⁺ (calcium)</td><td>0,05 à 0,2 µM au repos</td><td>1 à 10 mM (apoplaste, vacuole)</td><td>Second messager ; gradient de 10 000 fois</td></tr>
+      <tr><td>H⁺ (proton)</td><td>pH 7,2 à 7,5</td><td>pH 5,0 à 5,5 (apoplaste)</td><td>Entretien du potentiel de repos par l'ATPase</td></tr>
+      <tr><td>Na⁺ (sodium)</td><td>1 à 10 mM</td><td>Variable</td><td>Marginal — contrairement à l'animal</td></tr>
+      <tr><td>NO₃⁻ (nitrate)</td><td>1 à 30 mM</td><td>Variable</td><td>Nutriment ; contribue à la conductivité mesurée</td></tr>
+    </tbody>
+    <caption>Le gradient de calcium est le plus extrême du vivant : quatre ordres de grandeur. C'est ce qui en fait un messager idéal — une ouverture de canal brève suffit à multiplier la concentration intracellulaire par dix.</caption>
+  </table>
+
+  <div class="schema light">
+    <div class="sch-h">Séquence moléculaire d'un potentiel d'action végétal</div>
+<pre>
+  ÉTAT DE REPOS                     −120 à −180 mV
+  ┌────────────────────────────────────────────────────────┐
+  │  H⁺-ATPase de type P expulse des protons (coût : ATP)  │
+  │  → gradient électrochimique entretenu en permanence    │
+  └────────────────────────────────────────────────────────┘
+                          │
+             stimulus (blessure, froid, toucher, électricité)
+                          ▼
+  ① DÉPOLARISATION INITIALE          quelques mV
+     ouverture de canaux mécanosensibles (famille MSL, OSCA)
+     entrée de Ca²⁺ depuis l'apoplaste et la vacuole
+                          │
+                          ▼   si le seuil (≈ −100 mV) est franchi
+  ② PHASE ASCENDANTE                 +40 à +80 mV en 1–2 s
+     le Ca²⁺ active les canaux anioniques SLAC1 / ALMT
+     → SORTIE MASSIVE DE Cl⁻  (charge négative qui part)
+     → l'intérieur devient moins négatif : DÉPOLARISATION
+                          │
+                          ▼
+  ③ PHASE DESCENDANTE                retour vers −120 mV
+     ouverture des canaux K⁺ sortants (GORK)
+     → SORTIE DE K⁺ : la charge positive part à son tour
+     → REPOLARISATION
+                          │
+                          ▼
+  ④ PÉRIODE RÉFRACTAIRE              5 à 60 s selon l'espèce
+     la H⁺-ATPase rétablit le gradient ; les pompes Ca²⁺
+     (ACA, ECA) évacuent le calcium cytosolique
+     → aucun nouveau potentiel d'action n'est possible
+
+  NOTA — la séquence est l'INVERSE de l'animal :
+  chez le neurone, l'entrée de Na⁺ dépolarise.
+  Chez la plante, c'est la SORTIE de Cl⁻ qui dépolarise.
+</pre>
+    <figcaption>Le mécanisme anionique explique la lenteur végétale : les canaux chlorure s'ouvrent en centaines de millisecondes, là où les canaux sodium neuronaux s'ouvrent en quelques dizaines de microsecondes.</figcaption>
+  </div>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique</div>
+    <p>La découverte la plus marquante de la dernière décennie concerne la propagation à longue distance. Les travaux de Masatsugu Toyota, Simon Gilroy et leurs collègues, publiés dans <em>Science</em> en 2018, ont permis de <em>filmer</em> le signal : en utilisant des plants d'<em>Arabidopsis</em> exprimant un rapporteur calcique fluorescent, ils ont visualisé une onde de calcium se propageant depuis une feuille blessée vers les feuilles distantes à environ 1&nbsp;mm par seconde, atteignant l'ensemble de la plante en une à deux minutes et déclenchant la synthèse d'acide jasmonique.</p>
+    <p>Le mécanisme implique les récepteurs au glutamate <strong>GLR3.3</strong> et <strong>GLR3.6</strong> : des mutants privés de ces gènes ne propagent plus l'onde. Autrement dit, le glutamate joue ici un rôle de signal extracellulaire propagateur — fonctionnellement analogue, sans être homologue, à son rôle synaptique animal.</p>
+  </div>
+
+  <h3 id="c12-cascade" data-toc="sub">Ce que déclenche le signal : la cascade en aval</h3>
+
+  <p>Un potentiel d'action n'est pas une fin, c'est un déclencheur. Voici ce qu'il met en route, dans l'ordre chronologique :</p>
+
+  <table>
+    <thead><tr><th>Délai après le signal</th><th>Événement moléculaire</th><th>Conséquence observable</th></tr></thead>
+    <tbody>
+      <tr><td>0 à 2 s</td><td>Pic de Ca²⁺ cytosolique ; production d'espèces réactives de l'oxygène (H₂O₂) par les NADPH-oxydases RBOHD</td><td>Aucune — invisible</td></tr>
+      <tr><td>2 à 60 s</td><td>Alcalinisation de l'apoplaste ; phosphorylation de protéines cibles par les kinases CDPK et MAPK</td><td>Variation d'impédance mesurable</td></tr>
+      <tr><td>1 à 10 min</td><td>Synthèse d'acide jasmonique ; expression des gènes <em>JAZ</em>, <em>VSP2</em>, <em>PDF1.2</em></td><td>Début de la mise en défense</td></tr>
+      <tr><td>10 à 60 min</td><td>Émission de composés organiques volatils (terpènes, acétate de (Z)-3-hexényle)</td><td>Odeur d'herbe coupée ; alerte des plantes voisines</td></tr>
+      <tr><td>1 à 24 h</td><td>Accumulation de glucosinolates, d'anthocyanes, d'inhibiteurs de protéases</td><td>Feuille devenue moins comestible</td></tr>
+      <tr><td>24 à 72 h</td><td>Modifications épigénétiques ; « amorçage » (<em>priming</em>) de la défense</td><td>Réponse accélérée à la prochaine attaque</td></tr>
+    </tbody>
+    <caption>La cascade complète après un signal électrique de blessure. Seules les deux premières lignes sont dans la fenêtre temporelle d'un dispositif de bio-sonification.</caption>
+  </table>
+
+  <div class="callout energie">
+    <div class="callout-title">🌿 Regard énergétique</div>
+    <p>Ce tableau contient une information précieuse pour la pratique, et rarement soulignée. <strong>La plante n'oublie pas.</strong> Trois jours après une blessure, ses gènes de défense restent amorcés ; six semaines après une expérience d'habituation, un <em>Mimosa pudica</em> se souvient encore qu'une chute contrôlée n'est pas dangereuse.</p>
+    <p>Autrement dit : la manière dont vous manipulez une plante s'inscrit dans son état physiologique pour plusieurs jours. Ce n'est pas un rappel moral, c'est un fait de laboratoire — et c'est un argument technique en faveur d'un protocole de pose lent et soigneux. Une plante que vous avez brusquée hier ne produira pas le même signal aujourd'hui.</p>
+  </div>
+
+  <h3 id="c12-memoire" data-toc="sub">La mémoire végétale : ce qui est établi</h3>
+
+  <p>Le mot « mémoire » déclenche des réactions vives. Précisons donc ce que la littérature établit, en distinguant trois niveaux qui n'ont pas la même solidité.</p>
+
+  <ol class="steps">
+    <li><strong>La mémoire de stress (solidement établie).</strong> Une plante exposée à une sécheresse modérée résiste mieux à la suivante. Le support est moléculaire et bien décrit : modifications des histones, méthylation de l'ADN, accumulation de facteurs de transcription dormants. Cette mémoire dure de quelques jours à quelques semaines, et peut dans certains cas se transmettre à la descendance.</li>
+    <li><strong>La vernalisation (solidement établie).</strong> Le froid hivernal prolongé lève, par répression épigénétique progressive du gène <em>FLC</em>, le blocage de la floraison. La plante « compte » la durée du froid et conserve cette information au printemps. C'est le cas d'école de mémoire cellulaire végétale.</li>
+    <li><strong>L'habituation comportementale (établie mais débattue).</strong> Monica Gagliano a montré en 2014 que des <em>Mimosa pudica</em> soumis à des chutes répétées sans conséquence cessent de replier leurs feuilles, et conservent cet apprentissage jusqu'à vingt-huit jours — plus longtemps que beaucoup d'insectes. Les plantes discriminaient : elles continuaient de réagir à un stimulus différent. La réplication indépendante reste limitée, ce qui justifie la prudence.</li>
+  </ol>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Limites et interprétation</div>
+    <p>Une mémoire n'implique ni conscience, ni expérience vécue. Un thermostat « se souvient » d'une consigne ; un système immunitaire « se souvient » d'un pathogène. Ce sont des mémoires réelles et parfaitement mécaniques. La question de savoir s'il y a « quelque chose que cela fait » d'être une plante — le problème philosophique de l'expérience subjective — n'est pas tranchée par la biologie moléculaire, et ne le sera probablement jamais par elle.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Le signal végétal est un courant d'ions, dominé par la sortie de Cl⁻ puis de K⁺ — l'inverse du neurone.</li>
+      <li>Le calcium, avec un gradient de 10 000 fois, est le second messager universel de la cascade.</li>
+      <li>Les récepteurs au glutamate GLR3.3 et GLR3.6 propagent l'onde de blessure à 1 mm/s.</li>
+      <li>Trois formes de mémoire végétale sont documentées, dont deux très solidement.</li>
+      <li>Une plante manipulée brusquement reste modifiée physiologiquement plusieurs jours.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c13-electrochimie" data-toc="chapter">L'électrochimie de l'interface électrode/tissu</h2>
+  <p class="chapo">C'est la physique la plus négligée du domaine, et celle qui détermine si votre montage produit une donnée ou une illusion. Deux pages de chimie vous éviteront des mois d'erreurs.</p>
+
+  <p class="lettrine noindent">Reprenons le problème posé plus haut : le métal conduit par électrons, le tissu par ions. À leur jonction, il faut une réaction chimique pour convertir l'un en l'autre. Cette réaction s'appelle une <strong>demi-réaction d'électrode</strong>, et elle obéit à des lois parfaitement établies depuis Nernst.</p>
+
+  <div class="schema light">
+    <div class="sch-h">La double couche électrochimique</div>
+<pre>
+   MÉTAL                  INTERFACE                  TISSU (apoplaste)
+   ─────                ─────────────                ─────────────────
+                         ┌───────────┐
+    e⁻ e⁻ e⁻ ──────────▶ │  réaction │ ──────────▶  K⁺  Cl⁻  Ca²⁺  H⁺
+    e⁻ e⁻ e⁻             │  redox    │               Cl⁻  K⁺   NO₃⁻
+                         └───────────┘
+                          ≈ 1 nm         ≈ 1 à 100 nm
+                      couche compacte    couche diffuse
+                       (Helmholtz)          (Gouy-Chapman)
+
+   MODÈLE ÉLECTRIQUE ÉQUIVALENT DE CETTE INTERFACE
+
+              ┌──── Cdl ────┐            Cdl  capacité de double couche
+              │             │                 1 à 50 µF/cm² — très grande
+      ──── ●──┤             ├──●──── Rs ────   Rct  résistance de transfert
+              │             │                       de charge (réaction lente
+              └──── Rct ────┘                       ⇒ Rct grande)
+                                             Rs   résistance de la solution
+                  + Vhalf (source de tension)      = le signal recherché
+                                             Vhalf potentiel de demi-pile
+                                                   ⇒ LE PARASITE PRINCIPAL
+
+   CONSÉQUENCES PRATIQUES
+
+   · Cdl grande ⇒ l'interface se comporte en filtre passe-haut :
+     elle laisse passer l'alternatif, bloque le continu très lent.
+   · Vhalf dérive avec T (≈ 0,2 à 2 mV par °C selon le couple)
+     ⇒ une variation de 1 °C peut simuler une « réaction » entière.
+   · Rct dépend de la surface : DOUBLER la surface d'électrode
+     DIVISE Rct par deux et stabilise la mesure d'autant.
+</pre>
+    <figcaption>Le modèle de Randles. Toute la difficulté de la bio-mesure tient à ce que Rs — la seule grandeur intéressante — est encadrée par trois éléments parasites plus grands et plus instables.</figcaption>
+  </div>
+
+  <h3 id="c13-nernst" data-toc="sub">Pourquoi l'argent chloruré est la référence</h3>
+
+  <p>Le couple Ag/AgCl doit son statut de référence à une propriété rare : sa demi-réaction est <em>réversible et rapide</em>.</p>
+
+  <div class="loupe">
+    <div class="l-h">La demi-réaction Ag/AgCl</div>
+    <p style="text-align:center;font-family:'DejaVu Sans Mono',monospace;font-size:10pt;">AgCl(solide) + e⁻ ⇌ Ag(solide) + Cl⁻(solution)</p>
+    <p>Le potentiel suit la loi de Nernst et ne dépend que de l'activité du chlorure :</p>
+    <p style="text-align:center;font-family:'DejaVu Sans Mono',monospace;font-size:10pt;">E = E° − (RT/F) · ln(a<sub>Cl⁻</sub>),&nbsp;&nbsp; avec E° = +0,222 V</p>
+    <p>Comme la concentration en chlorure d'un tissu végétal varie lentement et faiblement, le potentiel reste stable. De plus, la réaction ne consomme pas l'électrode et ne libère aucun ion métallique dans le tissu : <strong>elle n'empoisonne pas le vivant</strong>.</p>
+  </div>
+
+  <p>À l'opposé, considérons le cuivre — métal des pinces crocodile bon marché. Sa demi-réaction est Cu ⇌ Cu²⁺ + 2e⁻. Elle <em>dissout l'électrode</em> et libère des ions Cu²⁺ dans le tissu. Or le cuivre est un oligo-élément à fenêtre thérapeutique étroite : indispensable à l'état de traces, il devient phytotoxique dès quelques dizaines de micromolaires, où il inhibe la photosynthèse et génère un stress oxydatif. Un contact prolongé de plusieurs heures avec une électrode de cuivre nu sous excitation continue n'est pas neutre pour la plante.</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique</div>
+    <p>Le brevet Damanhur de 2004 (US&nbsp;6&nbsp;743&nbsp;164) mentionne explicitement ce problème et sa solution : « <em>dans un mode de réalisation préféré, une source d'excitation alternative est utilisée afin d'éviter le dépôt du métal des contacts A et B sur l'organisme à long terme</em> ». C'est exactement l'argument électrochimique développé ci-dessus. En excitation alternative, la charge nette transférée sur un cycle est nulle : la dissolution anodique d'une demi-période est compensée par le dépôt cathodique de la suivante. C'est pour cette raison que les dispositifs modernes travaillent en alternatif à environ 1&nbsp;kHz, et non en continu.</p>
+  </div>
+
+  <div class="practice">
+    <div class="p-h">Fabriquer soi-même des électrodes Ag/AgCl</div>
+    <p>C'est simple, peu coûteux, et cela améliore radicalement la qualité d'un montage DIY. <strong>1.</strong> Procurez-vous du fil d'argent pur à 99,9 % (bijouterie, diamètre 0,8 à 1&nbsp;mm). <strong>2.</strong> Dégraissez à l'alcool, polissez légèrement. <strong>3.</strong> Plongez deux fils dans une solution de chlorure de sodium saturée (eau + sel de table jusqu'à saturation). <strong>4.</strong> Reliez-les à une pile de 1,5&nbsp;V à travers une résistance de 1&nbsp;kΩ, pendant vingt à trente minutes. <strong>5.</strong> Le fil relié au pôle <em>positif</em> se couvre d'un dépôt gris-violet : c'est la couche d'AgCl. C'est votre électrode. <strong>6.</strong> Rincez à l'eau déminéralisée, stockez à l'abri de la lumière (l'AgCl est photosensible).</p>
+    <p>Coût total : quelques euros. Gain de stabilité : un facteur cinq à dix sur la dérive d'interface.</p>
+  </div>
+
+  <h3 id="c13-mesure" data-toc="sub">Ce que mesure une excitation alternative</h3>
+
+  <p>Un dernier point de physique, décisif pour interpréter les données. En excitation continue, on mesure une <em>résistance</em>. En excitation alternative, on mesure une <strong>impédance</strong> — une grandeur complexe qui dépend de la fréquence. Et le tissu végétal ne répond pas de la même façon selon la fréquence utilisée.</p>
+
+  <table>
+    <thead><tr><th>Bande de fréquence</th><th>Le courant passe par…</th><th>Ce que l'on caractérise</th></tr></thead>
+    <tbody>
+      <tr><td>Continu à 100 Hz</td><td>L'apoplaste seul — les membranes se comportent en isolants</td><td>Volume et composition ionique de l'espace extracellulaire</td></tr>
+      <tr><td>1 à 100 kHz</td><td>L'apoplaste <em>et</em>, de plus en plus, le cytoplasme à travers les capacités membranaires</td><td>Zone de transition — c'est là que travaillent les boîtiers (≈ 1 kHz)</td></tr>
+      <tr><td>Au-delà de 1 MHz</td><td>Tous les compartiments indifféremment</td><td>Teneur en eau totale du tissu</td></tr>
+    </tbody>
+    <caption>La dispersion diélectrique du tissu végétal. La mesure à 1 kHz des boîtiers du commerce est un compromis : assez basse pour rester sensible à l'état extracellulaire, assez haute pour éviter la polarisation des électrodes.</caption>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Idée clé</div>
+    <p>Retenez cette phrase, elle résume tout le chapitre : <strong>à 1&nbsp;kHz, vous mesurez essentiellement la quantité et la mobilité de l'eau ionisée dans les espaces entre les cellules du trajet.</strong> Cette grandeur est bien biologique, elle bouge avec l'ouverture des stomates, l'activité photosynthétique et l'état hydrique. Mais ce n'est ni un potentiel d'action, ni une émotion, ni un message. C'est un <em>indicateur hydrique dynamique</em>. Et c'est, honnêtement décrit, déjà remarquable.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>L'interface métal/tissu se modélise par le circuit de Randles : Rs utile, encadré de Cdl, Rct et Vhalf parasites.</li>
+      <li>Vhalf dérive de 0,2 à 2 mV par degré : un artefact thermique imite parfaitement une réaction.</li>
+      <li>Ag/AgCl est la référence : réaction réversible, potentiel stable, aucune libération métallique.</li>
+      <li>L'excitation alternative annule le transfert net de charge et protège la plante du dépôt métallique.</li>
+      <li>À 1 kHz, on mesure la mobilité de l'eau ionisée de l'apoplaste sur le trajet.</li>
+    </ul>
+  </div>
+
+  <div class="ornament"></div>
+</section>

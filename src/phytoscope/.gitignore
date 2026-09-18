@@ -1,0 +1,19 @@
+# Environnement virtuel — recréé par « make install », jamais versionné
+.venv/
+venv/
+
+# Artefacts Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Produits de publication
+build/
+dist/
+requirements.lock.txt
+
+# Journaux et captures produits à l'exécution
+*.log
+captures/

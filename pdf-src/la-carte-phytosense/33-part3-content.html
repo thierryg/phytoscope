@@ -1,0 +1,121 @@
+<section class="chapter">
+  <h2 id="c7b-ihm" data-toc="chapter">Ce que l'appareil dit de lui-même</h2>
+
+  <p class="chapo">Quatre voyants et un afficheur de deux centimètres. C'est peu de chose à côté
+  d'une chaîne de mesure à 0,6 microvolt, et c'est pourtant ce qui sépare un instrument
+  utilisable d'un boîtier muet qu'il faut brancher à un ordinateur pour savoir s'il est
+  vivant.</p>
+
+  <p>La question s'est posée franchement : fallait-il quoi que ce soit ? La carte travaille
+  <strong>toujours reliée à un ordinateur</strong> — c'est lui qui la règle, qui reçoit le flux et
+  qui enregistre — et le logiciel PhytoScope affiche déjà tout, mieux et en couleurs. L'argument
+  contre est réel : chaque voyant est un trou dans le boîtier, donc une entrée pour l'humidité, et
+  une piste de plus à faire courir près de l'étage d'entrée.</p>
+
+  <p>L'argument pour tient à une distance. L'ordinateur est requis, mais il n'est pas
+  <em>sous la main</em> : il est posé trois mètres plus loin sur une table, dans un sac, ou en
+  veille. <strong>On pose les électrodes accroupi devant la plante, l'écran hors de portée et hors
+  de vue.</strong> À cet endroit précis, on se pose quatre questions et toujours les mêmes : est-ce
+  alimenté, est-ce relié, est-ce que ça mesure, est-ce qu'il y a un problème. Quatre questions,
+  quatre voyants — pour n'avoir pas à se relever quatre fois.</p>
+
+  <h3 id="c7b-voyants" data-toc="sub">Les quatre voyants, et ce qu'ils répondent</h3>
+
+  <table class="tight">
+    <thead><tr><th>Voyant</th><th>Question</th><th>États</th></tr></thead>
+    <tbody>
+      <tr><td>DS2 · bicolore</td><td>Est-ce alimenté&nbsp;?</td>
+          <td>vert&nbsp;: bloc externe · ambre&nbsp;: alimenté par l'USB · ambre clignotant&nbsp;: limitation en cours</td></tr>
+      <tr><td>DS3 · bleu</td><td>Est-ce relié&nbsp;?</td>
+          <td>éteint&nbsp;: non énuméré · fixe&nbsp;: énuméré, au repos · clignotant&nbsp;: flux de mesure actif</td></tr>
+      <tr><td>DS1 · RVB</td><td>Est-ce que ça mesure&nbsp;?</td>
+          <td>vert&nbsp;: acquisition normale · ambre&nbsp;: saturation · bleu&nbsp;: aucune électrode détectée</td></tr>
+      <tr><td>DS4 · rouge</td><td>Y a-t-il un problème&nbsp;?</td>
+          <td>surintensité ou court-circuit · saturation persistante · auto-test en échec</td></tr>
+    </tbody>
+  </table>
+
+  <p>DS1 mérite un mot : c'est une LED RVB à commande série, dont le micrologiciel module la
+  <em>luminosité</em> selon le niveau du signal. On obtient une sorte de vu-mètre à un seul point,
+  qui respire au rythme de la plante. L'effet est secondaire pour la mesure et considérable pour
+  l'usage : on voit que quelque chose se passe, de loin, sans rien lire.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Choix de conception — deux milliampères, pas vingt</div>
+    <p class="noindent">Chaque voyant est en série avec 1 kΩ (R70 à R73), ce qui donne environ
+    <strong>2 mA</strong> là où l'usage courant est de dix à vingt. Trois raisons, dans cet ordre.
+    Une séance d'écoute se fait souvent au crépuscule ou dans le noir, et un voyant à 20 mA éblouit
+    et détruit l'adaptation à l'obscurité. Ensuite, quatre voyants à 20 mA feraient 80 mA, soit
+    plus de la moitié de ce que consomme toute la chaîne de mesure. Enfin, un courant de LED qui
+    commute est un courant qui circule : à 2 mA, la perturbation ramenée à l'entrée reste sous le
+    bruit propre de l'étage. Les LED modernes sont parfaitement lisibles à 2 mA — cette valeur
+    n'est pas un compromis, c'est simplement la bonne.</p>
+  </div>
+
+  <h3 id="c7b-afficheur" data-toc="sub">L'afficheur : OLED plutôt que cristaux liquides</h3>
+
+  <p>La demande initiale parlait d'« un indicateur LED ou à cristaux liquides ». Le choix s'est
+  porté sur un <strong>afficheur OLED SSD1306 de 128 × 64 points, 0,96 pouce, sur bus I²C</strong>
+  (DS5). Les raisons valent d'être exposées, car un LCD aurait coûté moins cher.</p>
+
+  <table class="tight">
+    <thead><tr><th>Critère</th><th>LCD caractères 16 × 2</th><th>OLED 128 × 64</th></tr></thead>
+    <tbody>
+      <tr><td>Lisibilité dans le noir</td><td>rétroéclairage nécessaire</td><td>émissif, contraste infini</td></tr>
+      <tr><td>Consommation</td><td class="num">25 à 60 mA</td><td class="num">8 à 15 mA</td></tr>
+      <tr><td>Angle de vision</td><td>étroit, dépend de la température</td><td class="num">160°</td></tr>
+      <tr><td>Contenu affichable</td><td>32 caractères</td><td>8 lignes, courbes, symboles</td></tr>
+      <tr><td>Liaison</td><td>6 à 11 fils, ou extenseur I²C</td><td class="num">2 fils</td></tr>
+      <tr><td>Prix</td><td class="num">≈ 3 €</td><td class="num">≈ 4,20 €</td></tr>
+    </tbody>
+  </table>
+
+  <p>Un écart de un euro vingt achète donc deux fils au lieu de onze, trois fois moins de courant,
+  et la possibilité d'afficher une courbe. Le rétroéclairage d'un LCD aurait par ailleurs posé le
+  même problème d'éblouissement que les voyants, en pire, puisqu'il éclaire une surface.</p>
+
+  <p>L'afficheur pend à l'adresse 0x3C du bus I²C, alimenté en 3,3 V, du côté <em>non isolé</em>
+  de la carte — c'est important : rien de ce qui touche à l'affichage ne franchit la barrière
+  d'isolement, qui reste réservée à la mesure.</p>
+
+  <h3 id="c7b-pages" data-toc="sub">Quatre pages, un bouton, deux appuis</h3>
+
+  <p>Le bouton S1 fait défiler quatre pages par appui bref. Un appui long pose un marqueur
+  horodaté dans le flux — le geste qu'on fait quand on remarque quelque chose et qu'on veut
+  pouvoir le retrouver dans l'enregistrement.</p>
+
+  <div class="term">
+    <div class="t-h">PAGE 1 — MESURE</div>
+<pre><span class="c">PhytoSense One</span>
+source   bloc secteur
+gain     ×100  gamme 10 MΩ
+mesure   <span class="k">+412,7 µV</span>
+bruit    0,63 µV eff.
+conso.   5,03 V · 137 mA
+USB      flux actif · 0 perdu
+événem.  37 · 12,4 /min</pre>
+  </div>
+
+  <p class="small">Les trois autres pages détaillent l'alimentation (source active, tension,
+  courant, marge restante), le lien USB (état d'énumération, débit, échantillons perdus depuis le
+  démarrage) et le dernier auto-test (les trois étalons, le plancher de bruit, la fuite mesurée).
+  C'est exactement ce que la commande <code>selftest</code> renvoie sur le port de contrôle —
+  mais lisible à l'endroit où l'on a les mains, sans retourner à l'écran.</p>
+
+  <div class="callout info">
+    <div class="callout-title">◆ Ce que l'affichage local ne fait pas</div>
+    <p class="noindent">Il ne remplace ni l'oscilloscope ni l'analyse, et il ne rend pas
+    l'ordinateur facultatif — celui-ci reste indispensable au réglage, à l'enregistrement et à
+    l'interprétation. Aucune décision de mesure ne se prend sur ces huit lignes. Leur rôle est de
+    répondre en deux secondes, là où l'on se trouve, à la question « est-ce que ça marche&nbsp;? »
+    — et de laisser tout le reste au logiciel, où c'est vérifiable, exportable et
+    reproductible.</p>
+  </div>
+
+  <section class="planche-page"><figure class="planche" id="pl-ihm">
+    <img src="assets/svg/carte-ihm.svg" alt="Schéma de la signalisation et de l'afficheur"/>
+    <figcaption><span class="fig-n">PLANCHE ##</span> — Signalisation et afficheur : les quatre
+    voyants et leurs résistances de limitation, l'afficheur OLED sur bus I²C, le bouton à appui
+    bref et long. Feuille 8 sur 8, révision B.</figcaption>
+  </figure></section>
+</section>

@@ -1,0 +1,22 @@
+# ============================================================================
+#  PhytoScope — dépendances facultatives
+#  Installation :  python3 -m pip install -r requirements-optionnel.txt
+#
+#  Elles s'installent SÉPARÉMENT et leur échec est sans conséquence : le
+#  logiciel démarre, seule la fonction concernée manque, et il le dit.
+#  `make install` les tente puis poursuit quoi qu'il arrive.
+# ============================================================================
+
+# Sortie MIDI vers un séquenceur ou un synthétiseur matériel.
+#   Module C++ : sans roue pour votre version de Python, pip tentera de le
+#   compiler — ce qui exige MSVC Build Tools sous Windows ou les outils en
+#   ligne de commande Xcode sous macOS. Sans lui, l'onglet Écoute fonctionne,
+#   mais sans sortie MIDI. Sous Windows il faut en outre loopMIDI pour
+#   disposer d'un port virtuel.
+python-rtmidi>=1.5
+
+# Synthèse vocale du mode Parole, hors ligne.
+#   Sous Linux, « espeak-ng » installé par le système fait aussi bien : le
+#   logiciel prend ce qu'il trouve et se tait sinon. Sous macOS, la commande
+#   « say » du système suffit également.
+pyttsx3>=2.90

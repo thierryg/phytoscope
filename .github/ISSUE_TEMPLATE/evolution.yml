@@ -1,0 +1,51 @@
+name: Évolution
+description: Proposer un changement ou un ajout
+labels: [évolution]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Avant d'écrire : `constraints.md` fait autorité, et
+        `.ai/decisions.md` garde la trace des décisions **et de leurs
+        raisons**. Beaucoup de propositions y ont déjà une réponse — ce qui
+        ne veut pas dire que la réponse est définitive, mais qu'il faut
+        reprendre l'argument là où il s'est arrêté.
+
+  - type: textarea
+    id: probleme
+    attributes:
+      label: Le problème
+      description: >
+        Ce qui ne va pas aujourd'hui, du point de vue de qui utilise le
+        projet. Pas la solution — le problème.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposition
+    attributes:
+      label: Ce que vous proposez
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Ce que vous avez écarté, et pourquoi
+
+  - type: checkboxes
+    id: contraintes
+    attributes:
+      label: Compatibilité avec le cahier des charges
+      options:
+        - label: >
+            Cela n'ajoute aucune dépendance obligatoire (C-40), et surtout
+            pas SciPy
+        - label: Cela n'exige pas `sudo` (C-55)
+        - label: >
+            Cela ne fait pas dire au projet qu'une plante « parle » ou
+            « ressent » sans mesure ni avertissement (C-5)
+        - label: >
+            Cela ne modifie aucun fichier généré à la main (C-45) — si un
+            fichier généré change, c'est son générateur qui change
+        - label: J'ai lu .ai/decisions.md et le sujet n'y est pas tranché

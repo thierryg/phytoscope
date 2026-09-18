@@ -1,0 +1,109 @@
+<section class="chapter">
+  <h2 id="c8b-cem" data-toc="chapter">Blindage, compatibilité électromagnétique et ordre d'assemblage</h2>
+
+  <p class="chapo">Une carte qui mesure le microvolt est, par construction, une excellente
+  antenne. Le chapitre précédent a tracé les pistes ; celui-ci referme le couvercle — et explique
+  pourquoi ce couvercle n'est pas un accessoire.</p>
+
+  <p>La compatibilité électromagnétique se lit dans les deux sens, et les deux comptent ici. En
+  <em>immunité</em>, l'appareil doit ignorer le réseau à cinquante hertz, les lampes à variateur,
+  les chargeurs à découpage et le téléphone posé à côté. En <em>émission</em>, il ne doit rien
+  rayonner : non par civisme abstrait, mais parce que le seul appareil qu'il perturberait
+  sérieusement, à trente centimètres, c'est lui-même.</p>
+
+  <h3 id="c8b-quoi" data-toc="sub">Ce qu'il faut blinder, et ce qu'il est inutile de blinder</h3>
+
+  <p>Le réflexe du débutant est de tout enfermer dans du métal. C'est coûteux, cela complique le
+  montage, et cela ne sert pratiquement à rien : un blindage ne vaut que par la qualité de sa
+  liaison de masse, et dix capots mal reliés protègent moins qu'un seul bien soudé. Deux zones
+  seulement le justifient, pour deux raisons opposées.</p>
+
+  <table class="tight">
+    <thead><tr><th>Capot</th><th>Couvre</th><th>Dimensions</th><th>Rôle</th></tr></thead>
+    <tbody>
+      <tr><td>SH1</td><td>Étage d'entrée électrométrique, garde, FE-Z</td><td class="num">35 × 25 × 3 mm</td><td>empêche d'<strong>entrer</strong></td></tr>
+      <tr><td>SH2</td><td>Convertisseur abaisseur U60 et son inductance</td><td class="num">25 × 25 × 3 mm</td><td>empêche de <strong>sortir</strong></td></tr>
+    </tbody>
+  </table>
+
+  <p>SH1 protège l'endroit où le signal vaut encore quelques microvolts et où l'impédance se compte
+  en gigaohms. À cette impédance, un champ électrique de quelques volts par mètre — un câble
+  d'alimentation qui passe à vingt centimètres — induit davantage que le signal cherché. C'est le
+  capot qui rend la carte insensible à son environnement, et c'est celui qu'il ne faut jamais
+  omettre.</p>
+
+  <p>SH2 fait l'inverse. L'abaisseur commute deux ampères à quelques centaines de kilohertz ; son
+  inductance rayonne un champ magnétique que rien, sur le plan de masse, n'arrête. Le capot le
+  contient à la source, ce qui coûte infiniment moins cher que de le filtrer partout ailleurs.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Règle — un blindage se relie, il ne se pose pas</div>
+    <p class="noindent">Les deux capots se soudent sur un cadre continu de pastilles, au pas de
+    2,5 mm au maximum. L'intervalle entre deux points de soudure détermine la fréquence à partir de
+    laquelle le capot cesse d'être un blindage pour devenir une fente rayonnante : à 2,5 mm, la
+    coupure se situe bien au-delà du gigahertz, donc hors sujet. Un capot maintenu par quatre
+    points aux angles, en revanche, laisse passer tout ce qui compte. Cette règle vaut plus que le
+    choix du capot lui-même.</p>
+  </div>
+
+  <h3 id="c8b-conduit" data-toc="sub">Le rayonnement qui sort par les câbles</h3>
+
+  <p>Un boîtier parfaitement blindé rayonne quand même, par ses câbles. Trois sortent d'ici : le
+  cordon USB, la sortie audio, la sortie MIDI. Chacun mesure un mètre ou deux, c'est-à-dire un
+  quart d'onde autour de quelques dizaines de mégahertz — précisément la bande où le
+  microcontrôleur et l'USB travaillent.</p>
+
+  <p>Le traitement est le même pour les trois, et il est banal : une ferrite de mode commun en
+  série sur chaque ligne sortante (FB10 à FB15, 90 Ω à 100 MHz) et un condensateur de traversée
+  de 1 nF à la masse (C60 à C65), placés <strong>au ras du connecteur</strong>, du côté extérieur
+  du plan de masse. Placés ailleurs, ils ne servent à rien : le courant de mode commun aura déjà
+  parcouru la carte avant d'être filtré.</p>
+
+  <div class="callout caution">
+    <div class="callout-title">⚠ Ce qui n'a pas été mesuré</div>
+    <p class="noindent">Les dispositions décrites ici sont celles qu'on emploie couramment pour
+    satisfaire la norme EN 55032 en classe B. <strong>Aucune mesure en laboratoire accrédité n'a
+    été faite</strong>, et ce document ne constitue donc pas une déclaration de conformité. Un
+    exemplaire construit pour un usage personnel n'y est pas soumis ; un exemplaire mis sur le
+    marché l'est, et il faudra alors passer par une campagne de mesures en chambre — dont
+    l'expérience montre qu'elle révèle toujours un détail qu'aucune règle de tracé n'avait
+    anticipé.</p>
+  </div>
+
+  <h3 id="c8b-assemblage" data-toc="sub">L'ordre d'assemblage imposé par le blindage</h3>
+
+  <p>Souder les capots empêche d'accéder à ce qu'ils couvrent. L'ordre de montage général est
+  donné au chapitre suivant ; il se termine par ces quatre étapes, qui ne souffrent pas
+  d'inversion.</p>
+
+  <table class="tight">
+    <thead><tr><th>Étape</th><th>Opération</th><th>Vérification avant de passer à la suivante</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>Monter et régler tout ce qui se trouve sous SH1 et SH2</td><td>plancher de bruit relevé, fuite d'entrée mesurée</td></tr>
+      <tr><td class="num">2</td><td>Nettoyer soigneusement les zones à couvrir</td><td>aucun résidu de flux : il est conducteur et hygroscopique</td></tr>
+      <tr><td class="num">3</td><td>Souder SH2 (abaisseur), puis SH1 (entrée)</td><td>continuité du cadre en dix points au moins</td></tr>
+      <tr><td class="num">4</td><td>Reprendre le relevé du plancher de bruit</td><td>il doit <em>baisser</em> — sinon, un capot n'est pas relié</td></tr>
+    </tbody>
+  </table>
+
+  <p>L'étape 4 est le seul test de blindage réellement utile sans matériel de laboratoire :
+  la comparaison avant/après, dans la même pièce et à la même heure. Une amélioration de six à
+  douze décibels sur le plancher de bruit en présence d'un câble secteur voisin est le résultat
+  attendu. Une absence d'amélioration signifie presque toujours un cadre soudé par intermittence,
+  jamais un capot inefficace.</p>
+
+  <p class="small">Le nettoyage de l'étape 2 n'est pas une coquetterie. Sous SH1, l'impédance
+  atteint le gigaohm : un résidu de flux qui absorbe l'humidité crée une résistance de fuite de
+  quelques centaines de mégaohms — invisible, stable par temps sec, et qui fait dériver la mesure
+  dès qu'il pleut. C'est la panne la plus difficile à diagnostiquer de toute la carte, et la plus
+  facile à éviter.</p>
+
+  <div class="callout info">
+    <div class="callout-title">◆ Les capots à couvercle amovible</div>
+    <p class="noindent">Würth propose, pour les deux références retenues, une variante en deux
+    pièces : un cadre soudé à demeure et un couvercle qui se clipse. Elle coûte environ un euro de
+    plus par capot et permet de rouvrir sans dessouder. Pour un premier exemplaire, ou pour un
+    prototype qu'on sait devoir modifier, c'est de l'argent bien placé. Pour une série, le capot
+    monobloc suffit.</p>
+  </div>
+</section>

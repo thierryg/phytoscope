@@ -1,0 +1,13 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Faille de sécurité
+    url: https://github.com/thierryg/phytoscope/security/advisories/new
+    about: >
+      N'ouvrez PAS de ticket public pour une faille. Passez par un avis privé,
+      ou écrivez à contact@bretagne-namaste.com avec « [sécurité] » en objet.
+      Voir SECURITY.md.
+  - name: Question d'usage
+    url: https://github.com/thierryg/phytoscope/discussions
+    about: >
+      Pour « comment fait-on pour… », les discussions conviennent mieux qu'un
+      ticket. Lisez d'abord src/phytoscope/README.txt et src/sdk/docs/.

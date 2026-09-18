@@ -1,0 +1,167 @@
+<section class="chapter">
+  <h2 id="c35-conception" data-toc="chapter">Concevoir avant de souder</h2>
+  <p class="chapo">Deux architectures sont dans le domaine public. Elles ne mesurent pas la même chose de la même façon, et le choix que vous ferez déterminera tout le reste du projet.</p>
+
+  <p class="lettrine noindent">Rappelons la situation juridique, car elle est exceptionnellement favorable. Le brevet fondateur de Damanhur a expiré en 2019, sa continuation également, et le brevet PlantWave est déchu depuis février 2025. Le schéma et le code du <em>MIDI Sprout</em> ont par ailleurs été publiés sous licence libre dès 2014. <strong>Tout ce qui suit est librement reproductible, y compris à des fins commerciales.</strong></p>
+
+  <h3 id="c35-choix" data-toc="sub">Choisir son architecture</h3>
+
+  <table class="compare">
+    <thead><tr><th>Voie A — Oscillateur NE555<br/><span class="small">d'après MIDI Sprout / PlantWave</span></th><th>Voie B — Pont de Wheatstone<br/><span class="small">d'après Damanhur US 6 487 817</span></th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Principe :</strong> la plante fixe la fréquence d'un oscillateur. On mesure une <em>période</em>.</td>
+        <td><strong>Principe :</strong> la plante est un bras d'un pont. On mesure une <em>tension de déséquilibre</em>.</td>
+      </tr>
+      <tr>
+        <td><strong>Composants critiques :</strong> un NE555 et un condensateur NP0. C'est tout.</td>
+        <td><strong>Composants critiques :</strong> un amplificateur d'instrumentation, un réseau de résistances apparié, des résistances de référence en MΩ.</td>
+      </tr>
+      <tr>
+        <td><strong>Coût :</strong> 25 à 40 €</td>
+        <td><strong>Coût :</strong> 60 à 110 €</td>
+      </tr>
+      <tr>
+        <td><strong>Difficulté :</strong> accessible à un débutant soigneux. Aucun réglage analogique.</td>
+        <td><strong>Difficulté :</strong> exige de comprendre le CMRR, la dérive et la mise à la masse.</td>
+      </tr>
+      <tr>
+        <td><strong>Robustesse :</strong> très bonne. Insensible à la dérive continue, car c'est un rapport de temps qui est mesuré.</td>
+        <td><strong>Robustesse :</strong> moyenne sans soin. Excellente avec un rééquilibrage automatique.</td>
+      </tr>
+      <tr>
+        <td><strong>Ce qu'on perd :</strong> la grandeur physique. La période n'est pas une impédance : la relation est non linéaire et dépend des capacités parasites.</td>
+        <td><strong>Ce qu'on gagne :</strong> une mesure quantitative. Vous obtenez une résistance en ohms, comparable d'une séance à l'autre.</td>
+      </tr>
+      <tr>
+        <td><strong>Pour qui :</strong> faire de la musique, comprendre, démarrer.</td>
+        <td><strong>Pour qui :</strong> faire de la mesure, comparer des espèces, suivre une plante dans la durée.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Notre recommandation</div>
+    <p><strong>Commencez par la voie A.</strong> Elle fonctionne du premier coup, coûte trois fois moins cher, et vous enseigne toute la chaîne — électrodes, excitation, détection statistique, MIDI. Une fois qu'elle marche et que vous avez fait le protocole 7 d'étalonnage, la voie B devient une évolution naturelle, et vous saurez alors <em>pourquoi</em> vous la construisez.</p>
+    <p>Ce chapitre détaille la voie A intégralement, et donne en fin de partie le schéma complet de la voie B.</p>
+  </div>
+
+  <h3 id="c35-physique" data-toc="sub">La physique du montage à NE555</h3>
+
+  <p>Comprendre l'équation gouvernante évite les trois quarts des déboires. Le NE555 en montage astable charge un condensateur à travers deux résistances et le décharge à travers une seule, entre un tiers et deux tiers de la tension d'alimentation.</p>
+
+  <div class="code">
+    <div class="code-h">Équations du multivibrateur astable</div>
+<pre>  Notations
+      R_A = résistance entre V+ et la broche 7 (DIS)  → ici : LA PLANTE
+      R_B = résistance entre la broche 7 et la broche 6/2 (THR/TR) → 100 kΩ
+      C   = condensateur entre la broche 6/2 et la masse → 4,2 nF
+
+  Temps de charge (sortie à l'état haut)
+      T_haut = ln(2) · (R_A + R_B) · C  ≈ 0,693 · (R_A + R_B) · C
+
+  Temps de décharge (sortie à l'état bas)
+      T_bas  = ln(2) · R_B · C          ≈ 0,693 · R_B · C
+
+  Période totale et fréquence
+      T = T_haut + T_bas = 0,693 · (R_A + 2·R_B) · C
+      f = 1,44 / ((R_A + 2·R_B) · C)
+
+  APPLICATION NUMÉRIQUE — avec C = 4,2 nF et R_B = 100 kΩ
+
+  ┌──────────────┬───────────────┬──────────────┬──────────────────┐
+  │ R_plante     │ R_A + 2·R_B   │ Période T    │ Fréquence f      │
+  ├──────────────┼───────────────┼──────────────┼──────────────────┤
+  │  100 kΩ      │    300 kΩ     │    0,87 ms   │  1 143 Hz  ✔     │
+  │  150 kΩ      │    350 kΩ     │    1,02 ms   │    980 Hz  ✔     │
+  │  500 kΩ      │    700 kΩ     │    2,04 ms   │    490 Hz  ✔     │
+  │    1 MΩ      │    1,2 MΩ     │    3,49 ms   │    286 Hz  ✔     │
+  │    5 MΩ      │    5,2 MΩ     │   15,1 ms    │     66 Hz  ~     │
+  │   20 MΩ      │   20,2 MΩ     │   58,8 ms    │     17 Hz  ✘     │
+  └──────────────┴───────────────┴──────────────┴──────────────────┘
+
+  LECTURE — le point de fonctionnement visé est ≈ 1 kHz, soit une
+  résistance de contact de l'ordre de 100 à 200 kΩ. C'est ce qu'on
+  obtient avec un contact HUMIDE et de SURFACE SUFFISANTE.
+  Au-delà de 5 MΩ (contact sec), la période devient si longue que
+  la fenêtre d'analyse de 10 échantillons dépasse la seconde : le
+  dispositif ne suit plus rien d'intéressant.
+
+  ⇒ CONSÉQUENCE PRATIQUE N° 1 DU MONTAGE :
+    la QUALITÉ DU CONTACT n'est pas un détail de confort,
+    elle détermine si le circuit fonctionne DU TOUT.
+</pre>
+  </div>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique — pourquoi le condensateur doit être NP0</div>
+    <p>Reprenons l'équation : f est <strong>inversement proportionnelle à C</strong>. Une dérive de 10 % sur C produit donc une dérive de 10 % sur la période mesurée — soit exactement le type de glissement lent que l'algorithme interprétera comme une évolution de la plante.</p>
+    <p>Or un condensateur céramique X7R dérive typiquement de 15 % entre 20 et 40 °C, et perd jusqu'à 50 % de sa valeur sous tension continue. Un Y5V est pire encore : −82 % sur sa plage de température. Placez l'un de ces deux-là en position C, et votre boîtier racontera l'histoire de son propre échauffement.</p>
+    <p>Un condensateur <strong>NP0 / C0G</strong> (céramique de classe 1) dérive de ± 30 ppm/°C, soit <strong>0,06 % sur vingt degrés</strong>. C'est mille fois mieux, pour quelques dizaines de centimes de plus. Un film polypropylène est également excellent (± 200 ppm/°C) mais plus encombrant.</p>
+    <p>C'est, dans tout le montage, le composant sur lequel il ne faut jamais faire d'économie.</p>
+  </div>
+
+  <h3 id="c35-cmos" data-toc="sub">NE555 bipolaire ou TLC555 CMOS ?</h3>
+
+  <table>
+    <thead><tr><th>Critère</th><th>NE555 bipolaire</th><th>TLC555 / ICM7555 CMOS</th><th>Conséquence pour nous</th></tr></thead>
+    <tbody>
+      <tr><td>Tension d'alimentation</td><td>4,5 à 16 V</td><td><strong>2 à 15 V</strong></td><td>Le CMOS fonctionne sur 2 piles usées ; le bipolaire lâche à 4,5 V</td></tr>
+      <tr><td>Consommation au repos</td><td>3 à 10 mA</td><td><strong>0,17 mA</strong></td><td>Autonomie multipliée par 20 à 50</td></tr>
+      <tr><td>Courant de gâchette absorbé sur THR</td><td>≈ 100 nA</td><td><strong>≈ 10 pA</strong></td><td>Décisif : avec R en MΩ, 100 nA fausse complètement la mesure</td></tr>
+      <tr><td>Pointe de courant à la commutation</td><td><strong>Jusqu'à 400 mA</strong></td><td>&lt; 10 mA</td><td>Le bipolaire injecte des parasites dans toute l'alimentation</td></tr>
+      <tr><td>Valeur maximale utilisable de R</td><td>≈ 1 MΩ en pratique</td><td><strong>Plusieurs dizaines de MΩ</strong></td><td>Le CMOS accepte les contacts secs</td></tr>
+      <tr><td>Prix</td><td>≈ 0,30 €</td><td>≈ 0,80 €</td><td>Négligeable</td></tr>
+    </tbody>
+    <caption>Comparaison des deux familles. Le schéma d'origine du <em>MIDI Sprout</em> utilise un 555 bipolaire ; <strong>nous recommandons fortement la version CMOS</strong>, pour les trois raisons soulignées.</caption>
+  </table>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Limites et interprétation</div>
+    <p>La pointe de courant de 400 mA du NE555 bipolaire à chaque commutation mérite un mot de plus, parce qu'elle explique un symptôme fréquent et déroutant : le montage « chante » mieux quand on le pose sur la table que quand on le tient en main, ou change de caractère quand on approche un téléphone.</p>
+    <p>Ces pointes se propagent dans la masse et l'alimentation, et se recouplent capacitivement vers l'entrée haute impédance. Le circuit s'auto-perturbe. Les remèdes sont classiques : condensateur de découplage de 100 nF au plus près des broches 8 et 1, condensateur réservoir de 10 à 100 µF sur l'alimentation, plan de masse continu, et — le plus efficace — passer au CMOS.</p>
+  </div>
+
+  <h3 id="c35-mesure" data-toc="sub">Comment le microcontrôleur mesure la période</h3>
+
+  <p>Le principe est d'une élégance minimale : on ne mesure pas une tension, on chronomètre. Chaque front montant du NE555 déclenche une interruption ; on relève l'horloge et on soustrait.</p>
+
+  <div class="code">
+    <div class="code-h">Routine d'interruption — MIDI Sprout, <code>SampleAnalysis.ino</code></div>
+<pre>volatile unsigned long microseconds;   // horodatage précédent
+volatile byte index = 0;
+volatile unsigned long samples[10];    // tableau circulaire
+
+void sample()                          // appelée à chaque front montant
+{
+  if (index < samplesize) {
+    samples[index] = micros() - microseconds;   // durée depuis le front précédent
+    microseconds = samples[index] + microseconds; // reconstruit micros()
+                                                  // sans le rappeler : micros()
+                                                  // est une fonction LENTE
+    index += 1;
+  }
+}</pre>
+  </div>
+
+  <div class="loupe">
+    <div class="l-h">Deux subtilités de ce code, à ne pas rater si vous le réécrivez</div>
+    <p><strong>Un.</strong> <code>micros()</code> n'est appelée qu'<em>une seule fois</em> par interruption, et la valeur suivante est reconstruite par addition. Sur un ATmega328P à 16 MHz, <code>micros()</code> coûte plusieurs microsecondes ; l'appeler deux fois dans une routine d'interruption qui se déclenche toutes les millisecondes fausserait la mesure.</p>
+    <p><strong>Deux.</strong> Le mot-clé <code>volatile</code> est obligatoire sur toutes les variables partagées entre l'interruption et la boucle principale. Sans lui, le compilateur peut placer la variable dans un registre et la boucle principale lira une valeur périmée. C'est un bogue classique, silencieux, et très difficile à diagnostiquer.</p>
+    <p><strong>Corollaire de résolution.</strong> La fonction <code>micros()</code> de l'Arduino a une résolution de 4 µs. Sur une période de 1 ms, cela représente une incertitude de 0,4 % — largement suffisante. Sur une période de 50 µs, ce serait 8 % : inutilisable. Autre argument pour maintenir le point de fonctionnement autour du kilohertz.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Les deux architectures sont dans le domaine public depuis 2019 et 2025.</li>
+      <li>Voie A (NE555) : 25 à 40 €, fonctionne du premier coup, mesure une période. Voie B (Wheatstone) : 60 à 110 €, mesure une impédance quantifiée.</li>
+      <li>f = 1,44 / ((R_A + 2·R_B)·C) : le point de fonctionnement visé est 1 kHz, soit un contact de 100 à 200 kΩ.</li>
+      <li>Le condensateur de temporisation doit impérativement être NP0 / C0G.</li>
+      <li>Préférez un 555 CMOS (TLC555, ICM7555) au bipolaire : consommation, courant de gâchette et parasites.</li>
+      <li>Mesure par interruption, <code>micros()</code> appelée une seule fois, variables <code>volatile</code>.</li>
+    </ul>
+  </div>
+
+  <div class="ornament"></div>
+</section>

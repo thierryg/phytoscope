@@ -1,0 +1,97 @@
+<section class="chapter">
+  <h2 id="c9-montage" data-toc="chapter">Nomenclature, approvisionnement et montage</h2>
+
+  <p class="chapo">Deux cent vingt-trois euros de composants, quarante-sept références, une
+  douzaine d'heures de travail. Voici comment les dépenser et les employer sans mauvaise surprise.</p>
+
+  <h3 id="c9-budget" data-toc="sub">Le budget, dans son ensemble</h3>
+
+  <!--INCLURE:_budget.html-->
+
+  <p class="small">Le détail complet figure au fascicule <em>Nomenclature et accessoires</em>,
+  publié séparément pour être imprimé et emporté à l'établi. L'annexe B du présent ouvrage en
+  reproduit le tableau principal.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Où l'argent va, et où il ne faut pas économiser</div>
+    <p class="noindent">Quatre postes concentrent la moitié de la dépense et la totalité de la
+    performance : l'amplificateur d'entrée (14 €), les résistances de référence (14 €), les
+    régulateurs à faible bruit (11 €) et l'ensemble isolement (16 €). Les substituer par des
+    équivalents « suffisants » fait économiser une trentaine d'euros et perdre un facteur dix sur
+    le bruit — soit exactement la raison d'être de la carte. Tout le reste peut être choisi au
+    moins cher.</p>
+  </div>
+
+  <h3 id="c9-appro" data-toc="sub">Trois conseils d'approvisionnement</h3>
+
+  <p><strong>Commandez les passifs en lot.</strong> Un assortiment de résistances et de
+  condensateurs en boîtier 0402 et 0805 coûte une vingtaine d'euros et couvre ce projet et les dix
+  suivants. Commander seize condensateurs de découplage à l'unité coûte plus cher en frais de port
+  qu'en composants.</p>
+
+  <p><strong>Vérifiez les tolérances, pas seulement les valeurs.</strong> Une résistance de un
+  mégohm à cinq pour cent et une à 0,1 % ont la même valeur nominale et un prix cent fois
+  différent. Le distributeur ne vous préviendra pas si vous vous trompez ; la carte, si — trois
+  mois plus tard, quand vous comparerez deux séances.</p>
+
+  <p><strong>Achetez deux amplificateurs d'entrée.</strong> C'est le composant le plus cher, le
+  plus fragile aux décharges électrostatiques, et celui qu'on dessoude le plus souvent en cherchant
+  une panne ailleurs. Avoir le second dans un tiroir évite une semaine d'attente.</p>
+
+  <h3 id="c9-ordre" data-toc="sub">L'ordre de montage, et pourquoi il compte</h3>
+
+  <p>On ne monte pas la carte d'un bloc : on la monte par étages, en vérifiant chacun avant de
+  passer au suivant. Cette discipline paraît lente ; elle est en réalité la plus rapide, car elle
+  circonscrit toute panne à ce qu'on vient de souder.</p>
+
+  <ul class="steps">
+    <li><strong>Les alimentations seules.</strong> Régulateurs, transformateur, pilote,
+    redressement, condensateurs. Aucun autre composant. Sous tension, on doit lire +5,00 V,
+    −5,00 V et +3,30 V à ±2 %, et une ondulation inférieure à deux millivolts crête. Contrôler
+    aussi, à l'ohmmètre, l'isolement infini entre les deux masses.</li>
+    <li><strong>Le microcontrôleur et l'USB.</strong> Il doit être reconnu par l'ordinateur et
+    répondre « ? » sur le port série. À ce stade, aucune mesure n'est possible : c'est normal.</li>
+    <li><strong>Le convertisseur, la référence et l'horloge.</strong> L'auto-test doit trouver le
+    convertisseur et lire sa référence. Entrées en l'air, on doit voir un bruit de quelques
+    dizaines de microvolts — un signal parfaitement plat signale un convertisseur muet.</li>
+    <li><strong>La chaîne d'amplification et le filtre.</strong> En injectant un signal connu par
+    un diviseur, vérifier les quatre gains à ±1 %.</li>
+    <li><strong>La carte fille, en dernier.</strong> C'est elle qui porte les composants
+    sensibles ; on ne la monte que sur une carte mère déjà éprouvée.</li>
+    <li><strong>Nettoyage complet à l'alcool</strong>, séchage à l'air, puis vingt-quatre heures
+    de repos avant la recette définitive. Le solvant résiduel fausse la mesure de fuite.</li>
+  </ul>
+
+  <div class="callout caution">
+    <div class="callout-title">⚠️ Décharges électrostatiques</div>
+    <p class="noindent">L'ADA4530-1 et le convertisseur sont sensibles. Un bracelet antistatique
+    coûte trois euros ; un composant grillé, quatorze, plus une semaine d'attente. Surtout, une
+    décharge ne détruit pas toujours : elle dégrade. Un amplificateur « zappé » fonctionne encore,
+    mais son courant d'entrée passe de vingt femtoampères à quelques picoampères — et vous
+    chercherez pendant des jours une fuite qui n'est pas dans le circuit imprimé.</p>
+  </div>
+
+  <h3 id="c9-boitier" data-toc="sub">Le boîtier : un choix électrique</h3>
+
+  <p>Le boîtier aluminium recommandé n'est pas un choix esthétique. Il forme une cage qui réduit le
+  couplage capacitif avec l'environnement d'une vingtaine de décibels. Trois précautions le rendent
+  efficace.</p>
+
+  <p>Le boîtier est relié <strong>à la masse analogique flottante</strong>, et à elle seule —
+  jamais à la masse USB, ce qui rétablirait le couplage qu'on vient d'éliminer. Les entrées
+  traversent la façade par des embases dont la bague est reliée à la garde. Enfin, les vis de
+  fixation de la carte ne touchent que des pastilles de la zone analogique : une vis qui relierait
+  les deux plans par le boîtier annulerait l'isolement, et c'est l'erreur de montage la plus
+  fréquente.</p>
+
+  <div class="callout energie">
+    <div class="callout-title">🌿 Sur le choix du bambou</div>
+    <p class="noindent">Les appareils du commerce les plus soignés emploient un boîtier de bambou,
+    et l'on serait tenté de les imiter. Il faut savoir ce qu'on échange : le bois est plaisant,
+    chaleureux, cohérent avec le propos — et transparent aux champs électriques. Sur un appareil
+    dont l'étage d'entrée présente une impédance de dix millions de mégohms, l'absence de blindage
+    se paie par une sensibilité à tout ce qui bouge dans la pièce, à commencer par l'opérateur.
+    Un compromis honnête existe : boîtier de bois, doublé intérieurement d'un feuillard de cuivre
+    adhésif relié à la garde. On garde le geste, on garde la mesure.</p>
+  </div>
+</section>

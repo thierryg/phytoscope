@@ -1,0 +1,90 @@
+<section class="chapter">
+  <h2 id="c10-pile" data-toc="chapter">La pile, étage par étage</h2>
+  <p class="chapo">Quatre étages, tous remplaçables, tous libres. C'est cette substituabilité — et non la performance — qui fait la reproductibilité.</p>
+
+  <figure class="full">
+    <img src="assets/svg/tt-stack.svg" alt="Pile logicielle libre en quatre étages"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> La pile complète, de l'électrode à la voix. Aucun maillon ne dépend d'un service propriétaire : c'est ce qui rend l'expérience reproductible et durable.</figcaption>
+  </figure>
+
+  <h3 id="c10-firmware" data-toc="sub">Étage 1 — Le micrologiciel du nœud</h3>
+
+  <table>
+    <thead><tr><th>Solution</th><th>Approche</th><th>Quand la choisir</th></tr></thead>
+    <tbody>
+      <tr><td><strong>ESPHome</strong></td><td>Configuration déclarative en YAML ; mise à jour par radio</td><td><strong>Choix par défaut.</strong> Couvre la quasi-totalité des capteurs I²C et 1-Wire sans écrire une ligne de code</td></tr>
+      <tr><td><strong>Tasmota</strong></td><td>Binaire configurable, MQTT natif</td><td>Si vous ne voulez rien compiler du tout</td></tr>
+      <tr><td><strong>MicroPython</strong></td><td>Interprété, interactif</td><td>Prototypage, exploration d'un capteur inconnu</td></tr>
+      <tr><td><strong>C++ / Arduino</strong></td><td>Contrôle total</td><td>Quand il faut maîtriser le timing — échantillonnage synchrone, chauffage cyclique</td></tr>
+    </tbody>
+    <caption>Le programme n° 2 de l'annexe donne une configuration ESPHome complète ; le n° 3 une acquisition électrophysiologique en C++, là où le timing exige un contrôle fin.</caption>
+  </table>
+
+
+  <div class="duo">
+    <figure class="photo"><img src="assets/img/p/electronique-esp32-carte-01.jpg" alt="Une carte ESP32. Attention : les chiffres de veille du SoC ne sont pas ceux de la carte "/><figcaption><span class="fig-n">Fig. ##.</span> Une carte ESP32. Attention : les chiffres de veille du SoC ne sont pas ceux de la carte — le régulateur et l'interface USB dominent.<span class="credit">ESP32 Dev Board — Edwiyanto, CC BY-SA 4.0.</span></figcaption></figure>
+    <figure class="photo"><img src="assets/img/p/electronique-raspberry-pi5-03.jpg" alt="Un nano-ordinateur. C'est ici que tourneront la base de séries temporelles, le modèle de"/><figcaption><span class="fig-n">Fig. ##.</span> Un nano-ordinateur. C'est ici que tourneront la base de séries temporelles, le modèle de langage et la synthèse vocale.<span class="credit">Raspberry Pi 5 — SimonWaldherr, CC BY 4.0.</span></figcaption></figure>
+  </div>
+
+  <h3 id="c10-collecte" data-toc="sub">Étage 2 — Collecte et stockage</h3>
+
+  <table>
+    <thead><tr><th>Composant</th><th>Rôle</th><th>Licence</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Mosquitto</strong></td><td>Courtier de messages MQTT</td><td>EPL / EDL</td></tr>
+      <tr><td><strong>Telegraf</strong></td><td>Agent d'ingestion, MQTT vers base</td><td>MIT</td></tr>
+      <tr><td><strong>InfluxDB 3 Core</strong></td><td>Base de séries temporelles</td><td><strong>MIT / Apache-2.0</strong></td></tr>
+      <tr><td><strong>TimescaleDB</strong></td><td>Extension PostgreSQL pour séries temporelles</td><td>Apache-2.0 hors <code>tsl/</code></td></tr>
+      <tr><td><strong>Node-RED</strong></td><td>Orchestration graphique</td><td>Apache-2.0</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout caution">
+    <div class="callout-title">✦ Deux idées reçues sur les licences, à corriger</div>
+    <p><strong>InfluxDB ne s'est pas fermé, contrairement à ce qu'on lit souvent.</strong> La version 3 Core est passée sous licence MIT/Apache-2.0 en 2025 ; c'est l'édition <em>Enterprise</em> qui est propriétaire. C'est l'inverse du mouvement habituel, et c'est une bonne nouvelle.</p>
+    <p><strong>Grafana, en revanche, est passé en AGPLv3 en avril 2021.</strong> Pour un usage personnel ou pédagogique, aucune conséquence. Si vous distribuez un service fondé dessus, lisez la licence : l'AGPL impose la publication des modifications, y compris pour un usage en réseau.</p>
+    <p>Ces deux points illustrent une règle générale de ce manuel : <strong>vérifiez la licence à la date où vous lisez, pas à la date du tutoriel.</strong></p>
+  </div>
+
+  <h3 id="c10-analyse" data-toc="sub">Étage 3 — Analyse et visualisation</h3>
+
+  <p>Rien d'exotique ici : Python avec NumPy et Pandas pour le calcul des descripteurs, scikit-learn si vous voulez classifier, et Grafana pour les tableaux de bord. L'essentiel n'est pas l'outil mais <strong>la discipline</strong> : le programme n° 4 de l'annexe montre comment la réduction du flux de sève doit être faite — en conservant les valeurs intermédiaires, jamais en écrasant la donnée brute.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La règle d'or du stockage</div>
+    <p><strong>Ne jamais écraser la donnée brute.</strong> Stockez toujours, côte à côte : la valeur brute du convertisseur, la valeur calibrée, et le descripteur calculé.</p>
+    <p>Pourquoi&nbsp;? Parce que dans six mois vous découvrirez que votre coefficient d'étalonnage était faux. Avec les valeurs brutes, vous recalculez tout en cinq minutes. Sans elles, la saison est perdue.</p>
+    <p>Le coût de cette règle est de quelques mégaoctets. Le coût de son oubli est une année de terrain.</p>
+  </div>
+
+  <h3 id="c10-restitution" data-toc="sub">Étage 4 — Restitution</h3>
+
+  <table>
+    <thead><tr><th>Outil</th><th>Rôle</th><th>Remarque</th></tr></thead>
+    <tbody>
+      <tr><td><strong>SuperCollider</strong></td><td>Synthèse temps réel</td><td>Le plus puissant ; le programme n° 6 donne une définition de synthèse complète</td></tr>
+      <tr><td><strong>Pure Data</strong></td><td>Patch graphique</td><td>Plus accessible, excellent en atelier collectif</td></tr>
+      <tr><td><strong>Sonic Pi</strong></td><td>Programmation musicale en direct</td><td>Pédagogique</td></tr>
+      <tr><td><strong>strauss</strong></td><td>Bibliothèque Python de sonification scientifique</td><td><strong>La seule réellement maintenue</strong> des trois bibliothèques du domaine</td></tr>
+      <tr><td><strong>astronify</strong></td><td>Sonification de séries temporelles</td><td>Maintenu lentement ; licence BSD-3</td></tr>
+      <tr><td><s>sonipy</s></td><td>—</td><td><strong>Abandonné</strong> : aucune publication depuis 2020</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Une divergence de licence non résolue</div>
+    <p>La bibliothèque <em>strauss</em> déclare <strong>Apache-2.0 dans son dépôt</strong> et <strong>MIT sur l'index de paquets</strong>. Les deux sont des licences permissives compatibles, donc l'usage n'est pas bloqué ; mais si vous redistribuez, la divergence mérite d'être signalée en amont ou clarifiée auprès des auteurs.</p>
+    <p>Ce genre de détail n'est pas une coquetterie juridique : c'est exactement le type de point qui bloque un projet au moment de le publier.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>ESPHome comme micrologiciel par défaut ; C++ quand le timing compte.</li>
+      <li>InfluxDB 3 Core est en MIT/Apache-2.0 ; Grafana est en AGPLv3 depuis 2021.</li>
+      <li>Vérifiez la licence à la date où vous lisez, pas à celle du tutoriel.</li>
+      <li><strong>Ne jamais écraser la donnée brute</strong> : brut, calibré, descripteur, côte à côte.</li>
+      <li><em>strauss</em> est la seule bibliothèque de sonification réellement maintenue ; <em>sonipy</em> est abandonnée.</li>
+    </ul>
+  </div>
+</section>

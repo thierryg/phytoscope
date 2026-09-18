@@ -1,0 +1,27 @@
+#!/bin/sh
+#  ==========================================================================
+#  PhytoScope — attribution — packaging/gabarits/debian/prerm
+#
+#  Version  : 1.5.1
+#  Date     : 2026-09-18
+#  Éditeur  : Bretagne Namasté
+#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Site     : https://bretagne-namaste.com
+#  Contact  : contact@bretagne-namaste.com
+#  Licence  : MIT — voir LICENCE.txt
+#
+#  SPDX-License-Identifier: MIT
+#  fin de l'attribution
+#  ==========================================================================
+
+#  Avant la suppression : retirer ce que le postinst a créé.
+#  dpkg ne connaît pas l'environnement virtuel — il ne figure dans aucune
+#  liste de fichiers —, c'est donc à nous de le nettoyer, faute de quoi
+#  /usr/share/phytoscope resterait après « apt remove ».
+set -e
+case "$1" in
+  remove|purge)
+    rm -rf /usr/share/phytoscope/venv
+    ;;
+esac
+exit 0

@@ -1,0 +1,32 @@
+# ===========================================================================
+#  PhytoScope — LA version du logiciel.
+#
+#  Ce fichier est la SEULE source de vérité. Le logiciel le lit au démarrage
+#  pour l'afficher, la fabrique de paquets le lit pour estampiller le .deb, le
+#  .rpm, le .msi et le .pkg, et `tools/release.py` est le seul à l'écrire.
+#
+#  Il vit DANS le paquet Python — et non à la racine du dépôt — pour une
+#  raison simple : un logiciel installé n'emporte pas le dépôt. Placé ici, il
+#  suit le logiciel partout où il va, et la version affichée dans « À propos »
+#  est forcément celle du code qui tourne.
+#
+#  Format : « clé = valeur », une par ligne. Volontairement pauvre : pas de
+#  JSON, pas de TOML, aucune bibliothèque à charger avant d'afficher un
+#  numéro de version. Les lignes vides et celles commençant par « # » sont
+#  ignorées.
+# ===========================================================================
+
+version = 1.5.1
+
+# Nom de code de la version. Laissé vide : les versions ne portent plus de
+# nom. Le champ reste — le logiciel, la fabrique de paquets et les en-têtes
+# savent l'ignorer quand il est vide, et le remplir le ferait réapparaître
+# partout sans toucher au code.
+nom =
+
+# Date de publication, au format ISO 8601.
+date = 2026-09-18
+
+# Suffixe de pré-diffusion : vide pour une version publiée, sinon -dev, -rc1…
+# Une version suffixée n'est pas destinée à être diffusée.
+suffixe =

@@ -1,0 +1,600 @@
+================================================================================
+  PhytoScope — Journal des modifications
+  https://bretagne-namaste.com — contact@bretagne-namaste.com
+================================================================================
+
+  Ce journal suit le format « Keep a Changelog » et la numérotation
+  sémantique MAJEUR.MINEUR.CORRECTIF :
+
+    · majeur    — le format des séances change, ou une habitude est cassée ;
+    · mineur    — nouvelle fonction, format compatible ;
+    · correctif — correction de bogue, aucune fonction nouvelle.
+
+  Les versions portant un suffixe (-dev, -rc1) ne sont pas diffusées.
+
+================================================================================
+
+1.5.1 — 2026-09-18
+------------------------------------------------------------------------------
+  Revue de portabilité Windows 10/11, macOS (Intel et Apple Silicon) et
+  GNU/Linux (Debian, Ubuntu, Mint, Fedora, Red Hat). Treize points relevés,
+  treize corrigés. Le logiciel démarrait déjà partout ; il fonctionne
+  désormais partout.
+
+  Corrigé — ce qui empêchait de travailler
+    · **La carte n'était jamais reconnue.** Le logiciel la cherchait sur
+      `0x2E8A:0x10F5` alors que le micrologiciel déclare `0x1209:0x7A01`.
+      C'est le logiciel qui avait tort : `0x1209` est la plage libre de
+      pid.codes, ouverte aux projets comme celui-ci, tandis que `0x2E8A`
+      appartient à Raspberry Pi et ne nous autorise à y attribuer aucun PID.
+      Sous Linux et macOS un repli par nom de produit masquait la faute ; sous
+      Windows, où pyserial ne renseigne pas ce champ, le lien de contrôle
+      (gain, calibre, auto-test, marqueurs, horloge) était **inutilisable**.
+      Un essai lit désormais `usb_descriptors.c` et compare : la dérive ne
+      peut plus se reproduire.
+
+    · **L'entrée audio refusait de s'ouvrir sur Mac et sous Windows.** On
+      demandait 250 Hz à PortAudio ; CoreAudio et WASAPI n'acceptent que le
+      format de mixage du périphérique, et seul ALSA rééchantillonnait en
+      coulisse. On tente maintenant le débit demandé — une vraie carte
+      PhytoSense le déclare — puis l'on se replie sur le débit natif du
+      périphérique avec décimation logicielle. Le décimateur conserve le reste
+      entre deux blocs : pas un échantillon perdu, donc pas de dérive lente de
+      l'horodatage.
+
+    · **Une dépendance facultative faisait échouer toute l'installation.**
+      `python-rtmidi` est un module C++ sans roue pour les Python les plus
+      récents ; sur la même ligne que NumPy, son échec laissait l'utilisateur
+      sans NumPy ni Qt. Les facultatives vivent dans
+      `requirements-optionnel.txt`, installé à part et sans conséquence.
+
+    · **Le diagnostic redirigé était illisible sous Windows.** Sans
+      `sys.stdout.reconfigure`, `run.py --check > rapport.txt` levait
+      `UnicodeEncodeError` au premier « ✓ » — c'est-à-dire précisément quand
+      on cherchait à comprendre une panne.
+
+  Corrigé — ce qui fonctionnait mal
+    · **Les polices.** « DejaVu Sans Mono » était nommée en dur à vingt et un
+      endroits, sans repli. Absente de Windows et de macOS, Qt lui substituait
+      souvent une police **proportionnelle** : les colonnes de valeurs mesurées
+      cessaient d'être alignées. Tout passe par `ui/polices.py`, qui déclare une
+      pile (DejaVu, Menlo, Consolas, Liberation, Courier New) et surtout le
+      **genre** de la police, de sorte que même un repli inconnu reste à chasse
+      fixe. Le même module corrige au passage la taille : macOS compte 72
+      points par pouce logique contre 96 ailleurs, et l'interface y était donc
+      un tiers plus petite.
+
+    · **Le mauvais périphérique audio sous Windows.** Le même matériel y
+      apparaît sous MME, DirectSound, WASAPI et WDM-KS, avec des noms presque
+      identiques — MME tronquant le sien à 31 caractères. Choisi par son nom,
+      c'était MME qui gagnait : la plus ancienne et la plus latente. On
+      résout maintenant vers un index, en préférant l'interface hôte moderne,
+      et la liste des réglages affiche l'interface de chaque entrée.
+
+    · **Les raccourcis mentaient sur Mac.** La page d'aide listait « Ctrl+R »
+      là où Qt produit ⌘R. Elle affiche désormais ce que le système présente.
+      `Ctrl+.` devient `Ctrl+Maj+.` sur macOS, où ⌘. signifie « annuler »
+      depuis toujours et peut être intercepté par le système.
+
+    · **Pas de port MIDI virtuel sous Windows**, et l'utilisateur n'en savait
+      rien : le message indique maintenant qu'il faut brancher un instrument
+      ou installer loopMIDI.
+
+    · **Une voix choisie sous Windows cassait la parole sous Linux.** Un
+      identifiant SAPI passé à `espeak -v` produisait un échec à chaque
+      énoncé. Chaque moteur vérifie désormais que l'identifiant est bien le
+      sien et retombe sur sa voix par défaut sinon.
+
+    · **Affinité COM.** Le moteur SAPI5 était créé dans un fil et utilisé dans
+      un autre ; il naît maintenant dans le fil qui parle, après
+      `CoInitialize`.
+
+    · **Le redémarrage après changement de langue.** Lancé par
+      `python -m phytoscope`, il relançait `__main__.py` directement, ce qui
+      casse les imports relatifs. La commande est reconstruite selon le mode
+      de lancement, cas gelé compris.
+
+    · **La rotation du journal sous Windows.** Windows ne renomme pas un
+      fichier ouvert ailleurs : deux instances la faisaient échouer, et
+      `logging` déversait une trace à chaque message suivant. La rotation est
+      désormais tolérante — le journal continue de s'écrire.
+
+    · **Les noms de fichiers.** `core/noms.py` translittère en ASCII, ce qui
+      règle d'un coup la normalisation NFD d'APFS (un échantillon accentué
+      devenait introuvable sur Mac) et les noms réservés de Windows (`CON`,
+      `NUL`, `COM1`…), points et espaces finaux compris.
+
+    · Un chemin de réglages relatif (`--settings reglages.json`) levait
+      `FileNotFoundError` ; `SetConsoleMode` écrasait le mode console au lieu
+      d'ajouter son bit ; `sys.stdout.flush()` échouait sur un point d'entrée
+      graphique Windows, qui n'a pas de console.
+
+  Hors du logiciel
+    · **Micrologiciel** : `build.sh --deps` téléchargeait une chaîne ARM
+      « x86_64 » codée en dur — il échouait donc sur Apple Silicon comme sur
+      Raspberry Pi. L'architecture est détectée, et le point de montage de la
+      carte cherché plutôt que supposé (`/media`, `/run/media`, `/Volumes`).
+    · **Fabrication des PDF** : le compte de pages dépendait de `pdfinfo`,
+      absent par défaut des trois systèmes ; il se lit maintenant dans le PDF
+      lui-même. Les prérequis Pango / HarfBuzz / fontconfig sont déclarés dans
+      `platform_info.py`, rôle « documents ».
+
+  Ajouté
+    · `tests/test_portabilite.py` — vingt-trois essais qui vérifient sous Linux
+      ce qui ne se voit qu'ailleurs : identifiants USB alignés sur le
+      micrologiciel (l'essai lit `usb_descriptors.c`), aucun chemin concaténé,
+      aucun `open()` sans encodage, aucune police nommée en dur, aucun appel
+      réservé à Unix, et la cohérence de la fabrique de paquets — gabarits
+      présents, jetons tous remplis, version annoncée juste.
+    · `pyproject.toml` lit désormais la version dans `phytoscope/version.py`
+      au lieu de la déclarer : elle était restée à 1.0.0 pendant cinq versions.
+    · 221 essais au vert.
+
+1.5.0 — 2026-09-18 « Ce que dit le bruit »
+------------------------------------------------------------------------------
+  Le bruit d'une mesure n'est pas un déchet : c'est un renseignement. Cette
+  version le lit — et ouvre enfin le journal du logiciel sans passer par un
+  terminal.
+
+  Ajouté
+    · **Quinze grandeurs scientifiques** dans le Multimètre, page « Grandeurs
+      scientifiques », recalculées toutes les deux secondes.
+
+      La principale est la **résistance équivalente**. La carte ne mesure pas
+      d'impédance pendant une séance : on écoute, on n'excite pas. Mais toute
+      résistance produit son propre bruit, celui de Johnson et Nyquist,
+      e = √(4kTR) — d'où R = Sᵥ / 4kT. Le calcul est exact ; son
+      interprétation demande une précaution, et l'interface la dit : le bruit
+      observé contient aussi celui de l'amplificateur et tout ce que le
+      montage capte, si bien que **le nombre obtenu est un majorant**. La
+      source ne peut pas être plus résistive que cela. C'est déjà beaucoup :
+      un contact qui sèche fait grimper ce majorant d'une décade en quelques
+      minutes, et c'est précisément ce qu'on veut voir.
+
+      La densité est lue **entre 10 et 40 Hz**, au-dessus de la bande
+      biologique — sans quoi on compterait l'activité de la plante comme du
+      bruit, et le majorant n'aurait plus aucun sens.
+
+    · Les quatorze autres : densité de bruit (nV/√Hz), bruit intégré dans
+      0,01–10 Hz, résidu de réseau au-dessus du plancher, facteur de crête,
+      pente spectrale (−10 dB/décade signe un bruit en 1/f, celui des
+      électrodes et des milieux vivants), écart d'Allan à 1 s et à 10 s,
+      durée d'intégration optimale et régime associé, temps de corrélation,
+      normalité d'Agostino-Pearson, résolution effective en bits, marge avant
+      saturation, taux d'événements et facteur de Fano — ce dernier se tait en
+      dessous de dix événements, faute de quoi il afficherait du bruit déguisé
+      en chiffre.
+
+    · **Trois afficheurs de plus** sur la façade du Multimètre : RÉSISTANCE
+      ÉQUIV., PLANCHER DE BRUIT et RÉSEAU, qui passe au rouge au-delà de 20 dB.
+
+    · **Le calcul porte sur le signal BRUT**, avant le réjecteur et le
+      passe-bas. C'est capital : filtrer avant de mesurer le bruit revient à
+      mesurer son propre filtre. Le réjecteur effacerait le résidu de réseau
+      qu'on cherche justement à voir, et le passe-bas à 40 Hz effacerait la
+      bande où se lit le bruit thermique.
+
+    · **Fenêtre du journal (Ctrl+L)**, menu Aide. Elle répond aux trois
+      questions qu'on se pose quand quelque chose s'est mal passé : où est le
+      fichier (le chemin est écrit, sélectionnable, copiable d'un bouton, avec
+      un accès au dossier), que dit-il maintenant (le contenu se complète tout
+      seul, une ligne écrite pendant la séance apparaît dans la seconde), et
+      comment l'envoyer (« Enregistrer une copie… » écrit le fichier où l'on
+      veut, en proposant d'y joindre les archives de rotation — car un
+      incident d'il y a une heure est souvent dans phytoscope.log.1 et non
+      dans le fichier courant).
+
+      La lecture est **incrémentale** : on retient la position atteinte et on
+      ne lit que l'ajout. Surveiller un journal de deux mégaoctets ne coûte
+      donc rien. Si le fichier rapetisse — rotation ou vidage —, on s'en
+      aperçoit et l'on repart du début plutôt que de lire au milieu d'une
+      ligne. Fenêtre fermée, la minuterie s'arrête : une fenêtre invisible qui
+      réveille le disque deux fois par seconde serait une faute.
+
+      S'y ajoutent un filtre par texte, le choix du niveau à chaud, une case
+      « suivre la fin » et le vidage du fichier.
+
+  Modifié
+    · La colonne « Valeur » des grandeurs ne contient plus que des symboles
+      d'unité, internationaux : « +37.2 dB » et non « +37.2 dB au-dessus du
+      plancher », qui serait resté en français dans l'interface japonaise. Un
+      essai le vérifie désormais à chaque campagne.
+    · Les libellés des grandeurs sont des **gabarits** — « Écart d'Allan à
+      {tau} s » — et non des phrases déjà composées : une phrase où le nombre
+      est incrusté ne peut pas entrer dans un catalogue de traduction.
+    · 826 libellés traduisibles (contre 755), toujours à 100 % dans les dix
+      langues livrées. Les libellés des grandeurs sont **récoltés en faisant
+      tourner le calcul**, jamais recopiés dans une table : une grandeur
+      ajoutée sans traduction fait échouer la campagne d'essais.
+    · Les essais disposent enfin d'un `conftest.py` qui détourne
+      XDG_CONFIG_HOME, XDG_DATA_HOME et APPDATA vers un dossier temporaire.
+      Aucun essai ne peut plus toucher la configuration de l'utilisateur.
+
+  Vérifié
+    · La densité de bruit et la résistance équivalente sont confrontées au
+      calcul au crayon : 2 µV eff. sur 125 Hz de bande donnent 179 nV/√Hz en
+      théorie, le module en lit 174 ; la résistance suit en R² quand le bruit
+      décuple.
+    · 198 essais au vert.
+
+1.4.0 — 2026-09-18 « Le cadran et l'empreinte »
+------------------------------------------------------------------------------
+  Des aiguilles pour voir le mouvement, une empreinte pour reconnaître un
+  montage — et l'aide qu'on avait perdue.
+
+  Ajouté
+    · **Quatre vumètres** dans l'onglet Multimètre : tension, bruit efficace,
+      crête à crête et dérive. Un afficheur numérique donne la valeur ; il ne
+      donne pas le mouvement, et c'est le mouvement qu'on guette devant une
+      plante. Trois emprunts aux appareils réels : la **balistique** (l'aiguille
+      rejoint la valeur en 150 ms, sinon elle tremblerait à trente images par
+      seconde), la **mémoire de crête** qui retient une pointe brève, et
+      l'**échelle par paliers 1–2–5**, écrite sous le cadran — une échelle
+      continue rendrait toute comparaison impossible.
+    · **Empreinte de mesure.** Huit descripteurs — bruit, pente spectrale,
+      centre de gravité, temps de corrélation, dérive, taux d'événements,
+      facteur de Fano, aplatissement — caractérisent le montage, et un registre
+      permet de retenir les montages connus pour les reconnaître ensuite.
+      Elle n'identifie **pas** une plante, et l'interface le dit en toutes
+      lettres : deux mesures du même végétal à deux jours d'intervalle
+      diffèrent souvent plus que deux végétaux voisins le même après-midi. La
+      ressemblance est une distance, jamais une identité ; elle s'accompagne
+      d'une phrase — « le même montage, vraisemblablement » — plutôt que d'un
+      pourcentage nu, et aucun code d'identification n'est produit.
+    · **Barre de menus** — Séance, Affichage, Aide. Elle porte l'aide, « À
+      propos », le chargement d'un enregistrement et le choix de la langue.
+    · Séparateur mobile dans l'onglet Multimètre : chacun décide de ce qu'il
+      veut voir en grand.
+
+  Corrigé
+    · **L'aide et « À propos » étaient devenus inaccessibles.** Les boutons
+      ajoutés à la barre d'outils l'avaient fait déborder, et Qt avait rangé
+      les dernières actions derrière un chevron « » » — sans prévenir. Elles
+      vivent désormais dans la barre de menus, qui ne tronque rien ; les
+      raccourcis F1 et Maj+F1 restent attachés aux mêmes actions.
+    · Le conseil de l'électrode de substrat était mauvais : le laiton forme une
+      pile galvanique avec l'électrode de feuille et le cuivre est toxique pour
+      les racines. C'est désormais l'inox 316L, le graphite ou un pont salin
+      Ag/AgCl — documenté par une planche entière du hors-série.
+
+1.3.0 — 2026-09-18 « Le carnet de croquis »
+------------------------------------------------------------------------------
+  Garder ce qui vient de passer, le rejouer, et ne plus remplir le disque de
+  son hôte.
+
+  Ajouté
+    · **Échantillons.** Un bouton — ou Ctrl+E — et la dernière minute écoulée
+      est écrite sur le disque. Rien à préparer, rien à arrêter : le logiciel
+      tient dix minutes de signal en mémoire, et l'essentiel arrive souvent
+      avant qu'on ait pensé à enregistrer.
+    · Un échantillon est un **fichier WAV** et un petit JSON de même nom. Le WAV
+      s'ouvre dans Audacity ; le JSON porte ce qu'un WAV ne sait pas dire — la
+      pleine échelle en volts, la plante, le lieu, les réglages de la chaîne.
+      Sans lui, l'échantillon reste lisible et l'interface signale que son
+      amplitude est supposée.
+    · La pleine échelle est **choisie pour chaque échantillon**, arrondie dans
+      la suite 1–2–5 au-dessus de l'amplitude observée. Un signal de 150 µV
+      écrit à ±2,5 V n'utiliserait que neuf bits sur vingt-quatre ; ainsi, le
+      pas de quantification tombe sous le picovolt.
+    · **Relecture dans le moteur** : filtres, détection, descripteurs, musique
+      et mode vocal fonctionnent sur l'enregistrement exactement comme devant
+      une plante vivante. On peut donc régler une sonification le soir, sur la
+      séance du matin. Vitesse de ×1 à ×600, retour en direct d'un bouton.
+    · Page « Échantillons » dans la Bibliothèque : capturer, rejouer, renommer,
+      supprimer, ouvrir le dossier ; aperçu et résumé chiffré de chaque
+      échantillon.
+    · Bouton « Charger un enregistrement… » : rejoue un fichier pris n'importe
+      où — un échantillon, le signal.wav d'une séance, un WAV reçu d'un
+      correspondant. La pleine échelle vient du JSON compagnon s'il existe ;
+      sinon elle est supposée, et l'interface le dit.
+    · Pendant une relecture, **l'acquisition en direct est suspendue** — la
+      source est réellement arrêtée — et un bandeau permanent le rappelle, avec
+      la position dans l'enregistrement. Taire cette suspension serait le
+      meilleur moyen de faire prendre un enregistrement pour une plante.
+    · **Surveillance de l'espace disque** pendant l'enregistrement : mesure
+      toutes les cinq secondes, alerte quand il reste moins de vingt minutes
+      d'autonomie, et **clôture propre de la séance** avant saturation. Le
+      rendu musical écrit trois cents mégaoctets par heure — c'est lui qui
+      remplit le disque, pas le signal (2,6 Mo/h). Réserve, seuil d'alerte et
+      répertoire réglables ; l'espace restant s'affiche dans le bandeau d'état.
+    · **Onze dictionnaires du mode vocal**, un par langue de l'interface. Ceux
+      du japonais, du coréen, du chinois et de l'arabe portent leurs propres
+      gabarits de phrase : l'ordre des mots n'est pas le nôtre.
+    · **Sélecteur de langue dans la barre d'outils**, en plus de la page des
+      réglages : chercher son réglage dans une interface qu'on ne lit pas est
+      une épreuve.
+    · **Ctrl+0 — zoom d'origine.** Les tracés se zooment à la molette ; on s'y
+      perd, et l'on croit l'acquisition arrêtée. Un petit bouton « ⟲ »
+      **apparaît sur la courbe dès que la vue est déplacée**, et disparaît dès
+      qu'elle est revenue ; l'action de la barre d'outils suit le même état.
+      Un bouton toujours visible serait du bruit, un bouton absent un piège.
+    · Trente-quatre tests de plus : échantillons, espace disque, relecture.
+
+  Modifié
+    · **Le mode vocal coupe la musique** tant qu'il est actif : une voix et un
+      synthétiseur qui jouent ensemble se couvrent l'un l'autre, et l'on
+      conclut que la parole ne fonctionne pas. La détection continue.
+    · Un voyant permanent de l'onglet Parole dit l'état, le moteur de synthèse
+      et le dernier énoncé — le mode vocal parle rarement, et son silence ne
+      doit pas passer pour une panne.
+    · La **fenêtre se réduit** de nouveau : sa hauteur minimale passe de 1094 à
+      520 pixels. Les colonnes de réglages défilent à l'intérieur de leur
+      onglet au lieu d'imposer leur hauteur à toute la fenêtre — le défaut
+      était invisible sur un grand moniteur et bloquant sur un portable.
+
+  Corrigé
+    · La relecture rouvrait la sortie audio déjà ouverte : deux fils écrivaient
+      dans le même flux PortAudio, et la bibliothèque C n'y survivait pas.
+    · La relecture manipulait les attributs privés du moteur ; elle passe
+      désormais par une interface publique qui remet proprement la cadence
+      d'échantillonnage d'origine au retour en direct.
+
+1.2.0 — 2026-09-18 « Onze langues »
+------------------------------------------------------------------------------
+  L'interface parle onze langues, et en ajouter une ne demande pas une ligne
+  de code.
+
+  Ajouté
+    · Le français reste la langue du premier lancement, quelle que soit la
+      locale du système : le logiciel ne la consulte pas. Le choix fait
+      ensuite dans les réglages est conservé d'une séance à l'autre.
+    · Traduction complète de l'interface — 652 libellés — en anglais
+      américain, espagnol, portugais, italien, indonésien, russe, chinois,
+      japonais, coréen et arabe. Le français reste la langue source : c'est
+      lui qui sert de clé, de sorte qu'une traduction manquante affiche une
+      phrase française correcte plutôt qu'un identifiant nu.
+    · Un catalogue est un simple fichier JSON déposé dans
+      « phytoscope/langues/ » : le logiciel découvre au démarrage les langues
+      présentes au lieu d'en connaître une liste. Ajouter la sienne ne demande
+      donc aucune modification du code, ni compilation, ni gettext.
+    · Bouton « Écrire un modèle de traduction… » dans les réglages : il produit
+      un fichier contenant tous les libellés, les traductions déjà faites
+      conservées et les nouvelles laissées vides. Les valeurs vides retombent
+      sur le français, si bien qu'un catalogue à moitié rempli reste utilisable.
+    · Prise en charge de l'écriture de droite à gauche : en arabe, toute la
+      mise en page est inversée. Les fenêtres standard de Qt suivent la langue
+      choisie lorsque ses traductions sont installées sur la machine.
+    · Option « --lang » en ligne de commande, et proposition de redémarrer
+      lorsque la langue change — les libellés sont traduits à la construction
+      de l'interface, non à l'affichage.
+    · Outil « tools/i18n.py » : inventaire des libellés, création et mise à
+      jour d'un catalogue, rapport de couverture, détection des clés périmées.
+      L'inventaire est produit par analyse syntaxique du code et parcours des
+      tables de données : il ne peut donc pas diverger de ce qui est affiché.
+    · Dix-neuf tests de traduction, dont un qui vérifie que **chaque catalogue
+      livré couvre la totalité des libellés** : ajouter un texte sans le
+      traduire fait échouer la vérification.
+
+  Corrigé
+    · Une option passée en ligne de commande ne s'inscrit plus dans le fichier
+      de réglages. Lancer une fois « --simulation » pour une démonstration
+      laissait le logiciel en simulation pour toujours ; lancer « --lang ko »
+      pour un essai laissait l'interface en coréen au démarrage suivant. Les
+      valeurs d'origine sont retenues et remises au moment d'écrire le
+      fichier — sauf si l'utilisateur change lui-même le réglage pendant la
+      séance, auquel cas c'est bien son choix qui est conservé. Les mêmes
+      règles valent pour --theme, --rate, --device, --record, --debug,
+      --log-level, --log-file, --log-console et --capture-frames.
+
+  Modifié
+    · Le bandeau d'état distingue désormais la clé interne d'une case et son
+      libellé affiché : changer de langue ne peut plus casser les mises à jour.
+    · Les messages du moteur — carte détectée, repli sur le générateur interne,
+      séance enregistrée, marqueur posé — passent par le catalogue.
+
+  Connu
+    · Les dix traductions livrées ont été écrites en une fois et n'ont pas
+      encore été relues par des locuteurs natifs. Les corriger ne demande
+      qu'un éditeur de texte, et le taux de couverture affiché dans les
+      réglages ne ment pas.
+    · Le dictionnaire du mode vocal reste en français : c'est un choix
+      d'auteur, pas un oubli. Les mots prononcés par le dispositif doivent
+      être ceux de celui qui écoute, et un fichier JSON suffit à en écrire un
+      dans n'importe quelle langue.
+
+1.1.0 — 2026-09-17 « Les mots et les ondes »
+------------------------------------------------------------------------------
+  Deux façons nouvelles de regarder et d'entendre le même signal, et un défaut
+  d'ergonomie corrigé qui gênait les deux.
+
+  Ajouté
+    · Onglet « Descripteurs » : six représentations du même signal — forme
+      d'onde, spectre instantané par FFT, scalogramme par ondelettes de
+      Morlet, coefficients cepstraux sur échelle de Mel (MFCC), enveloppe et
+      résonances par prédiction linéaire (LPC), et cepstre. Chacune affiche ce
+      qu'elle montre, ce qu'elle suppose et ce qu'elle ne permet pas de
+      conclure. Les constantes des outils de la parole sont transposées
+      d'après la fréquence d'échantillonnage réelle — une trame de MFCC dure
+      ici huit secondes, non vingt-cinq millisecondes.
+    · Les résonances trouvées par la prédiction linéaire sont nommées
+      résonances, et non formants : une plante n'a pas de conduit vocal, et ce
+      que les pôles décrivent est la constante de temps de l'électrode et le
+      filtrage de la carte.
+    · Mode vocal : un dictionnaire de mots au lieu d'une gamme. Six registres
+      rattachés chacun à un axe mesuré, quatre grammaires d'assemblage, et un
+      énoncé court par événement, accompagné des valeurs qui l'ont déclenché.
+      Le dictionnaire est un fichier JSON : le modifier, le traduire ou en
+      écrire un autre est l'usage normal.
+    · Onglet « Parole » : dictionnaire, grammaire, sujet, densité, voix, et le
+      journal des énoncés avec leur justification. L'avertissement — ce n'est
+      pas une traduction — figure en permanence en tête de l'onglet, non dans
+      une aide qu'on ouvre une fois.
+    · Synthèse vocale hors ligne, par ordre de préférence : pyttsx3, la
+      synthèse de macOS, celle de Windows, espeak-ng, puis le silence. Aucun
+      texte ne quitte la machine. L'absence de synthèse n'est jamais une
+      erreur : les énoncés restent écrits et enregistrés.
+    · Fichier « enonces.csv » dans la séance enregistrée, avec le texte, les
+      quatre axes mesurés, la grammaire, le dictionnaire et la règle appliquée.
+    · Centre de gravité spectral publié par le moteur, calculé une fois toutes
+      les deux secondes pour tout le monde — c'est l'axe « couleur » du mode
+      vocal.
+    · Ctrl+C interrompt désormais le logiciel **y compris en interface
+      graphique**, ce qui n'allait pas de soi : pendant la boucle d'événements
+      de Qt, l'interpréteur Python n'exécute plus rien et le signal restait
+      sans effet. La séance en cours est close, les réglages sauvés, puis le
+      programme s'arrête. Un chien de garde termine le processus si l'arrêt se
+      bloque, et un second Ctrl+C n'attend pas. SIGTERM reçoit le même
+      traitement, pour les extinctions de machine.
+    · Page « Raccourcis » de l'aide complétée : vingt-deux raccourcis en cinq
+      groupes, séance, fenêtre, traceur, champs de saisie et terminal. La page
+      est vérifiée par le programme à son ouverture — tout raccourci installé
+      dans la fenêtre et absent de la liste y est ajouté d'office et signalé
+      comme non décrit.
+    · Onglet « Diagnostic » : état des synthèses vocales installées, avec la
+      commande d'installation quand il n'y en a aucune.
+    · Cinquante-cinq tests de plus : descripteurs vérifiés contre des signaux
+      dont la réponse est connue, dictionnaire, moteur lexical, sortie parlée
+      et interruption.
+
+  Modifié
+    · La chaîne de traitement n'est plus reconstruite que si l'un de ses
+      propres réglages a changé. Auparavant, tout réglage passant par le même
+      rappel — le volume, le timbre, la gamme — reconstruisait filtres et
+      détecteur, et vidait donc les dix minutes de signal gardées en mémoire.
+      Un changement de filtre repart toujours de zéro, comme il se doit.
+    · pyttsx3 rejoint les dépendances facultatives connues des contrôles avant
+      vol et de la fenêtre « À propos ».
+
+  Connu
+    · Le mode vocal n'a pas de mémoire : chaque énoncé est décidé à partir du
+      seul événement courant et du temps écoulé. Une grammaire tenant compte
+      de ce qui vient d'être dit reste à écrire.
+    · Le scalogramme est calculé dans le fil de l'interface : sur une fenêtre
+      de dix minutes et une machine modeste, l'affichage peut marquer un
+      temps. Le calcul n'a lieu que lorsque l'onglet est visible.
+
+1.0.0 — 2026-09-17 « Première sève »
+------------------------------------------------------------------------------
+  Première version publique, publiée avec le document « La Carte PhytoSense ».
+
+  Ajouté
+    · Acquisition depuis quatre sources : carte PhytoSense en classe audio 2.0
+      (aucun pilote à installer), entrée audio quelconque, port série pour les
+      montages à NE555 ou à Arduino, et générateur interne pour travailler
+      sans matériel.
+    · Quatre instruments : oscilloscope à fenêtre réglable de 5 s à 1 h,
+      multimètre avec dérive et qualité de contact, analyseur de spectre par
+      la méthode de Welch, et onglet d'écoute.
+    · Chaîne de traitement complète : passe-haut à 0,01 Hz, passe-bas, double
+      réjecteur 50/60 Hz et son harmonique, ligne de base exponentielle
+      suivie mais jamais supprimée.
+    · Détection d'événements à seuil adaptatif exprimé en écarts-types, avec
+      période réfractaire et amplitude minimale absolue.
+    · Moteur de sonification documenté : chaque règle de correspondance est
+      affichée dans l'interface et consignée dans le fichier de séance.
+    · Synthétiseur interne polyphonique à dix timbres, enveloppe ADSR et
+      réverbération de Schroeder — aucune dépendance supplémentaire.
+    · Sortie MIDI facultative vers un séquenceur ou un instrument matériel,
+      avec création d'un port virtuel si aucun port n'est disponible.
+    · Treize gammes, dont cinq traditionnelles non occidentales.
+    · Enregistrement d'une séance sous forme de répertoire ouvert :
+      signal.wav en 24 bits, musique.wav, evenements.csv, notes.csv,
+      marqueurs.csv et seance.json contenant l'intégralité des réglages.
+    · Bibliothèque de séances avec relecture accélérée jusqu'à ×600.
+    · Assistant d'auto-configuration qui mesure le bruit, la dérive et la
+      présence du réseau, propose un jeu complet de réglages et justifie
+      chacun d'eux avant de rien appliquer.
+    · Réglages détaillés en sept pages, dont une page « Expert » exposant
+      le facteur de qualité du réjecteur et le facteur de conversion en volts.
+    · Trois thèmes, dont un à contraste renforcé pour l'accessibilité, et
+      mise à l'échelle du texte de 0,8 à 2,0.
+    · Mode sans interface (--headless) pour les séances de longue durée.
+    · Fenêtre « À propos » détaillant version, auteur, contact, composants
+      réellement installés et rapport d'environnement copiable.
+    · Makefile, make.bat, requirements.txt et outils de diagnostic et de
+      publication.
+    · Écran d'accueil dessiné par le programme, affichant l'étape de démarrage
+      en cours, et emblème en fleur de lotus blanche à toutes les résolutions.
+    · Contrôles avant vol : distinction entre paquet Python absent, paquet
+      présent mais inutilisable faute d'une bibliothèque système, et
+      environnement verrouillé par la distribution (PEP 668). La chaîne des
+      dépendances partagées est suivie, car le chargeur nomme souvent la
+      mauvaise bibliothèque. Installation proposée en console et en fenêtre.
+    · Détection des familles de distribution — Debian, Ubuntu, Mint, Fedora,
+      RHEL, CentOS, Rocky, AlmaLinux, Arch, Manjaro, openSUSE, Alpine, macOS,
+      Windows — avec la commande d'installation exacte pour chacune.
+    · Détection du piège Homebrew sous GNU/Linux : un interpréteur Homebrew ne
+      sait pas charger les bibliothèques du système, et le Makefile choisit
+      alors automatiquement l'interpréteur de la distribution.
+    · Journalisation dans un fichier avec rotation, niveau ERROR par défaut,
+      réglable à chaud en WARNING, INFO ou DEBUG depuis l'interface ou la
+      ligne de commande.
+    · Diagnostic du lien USB : inventaire par identifiants constructeur et
+      produit (VID/PID) à partir de quatre sources, reconnaissance des cartes
+      connues du domaine, surveillance des décrochages, et capture des trames
+      reçues dans un fichier en texte, hexadécimal ou binaire.
+    · Module d'échantillonnage : modes continu, par blocs et déclenché, avec
+      décimation, moyennage de blocs, cinq fenêtres d'apodisation et leurs
+      facteurs de correction, pré-déclenchement et temps mort.
+    · Onglet « Traceur » : un gnuplot intégré, avec ligne de commande et
+      panneau de réglages agissant sur le même état. Neuf sources de données,
+      sept styles, échelles logarithmiques, exportation en PNG, SVG, données
+      ASCII et script gnuplot.
+    · Grandeurs scientifiques : densité spectrale en V/√Hz, variance d'Allan
+      avec interprétation du régime, autocorrélation et temps de corrélation,
+      régression de dérive avec incertitude et R², statistique des événements
+      (coefficient de variation, facteur de Fano), rapport signal sur bruit,
+      distorsion harmonique, nombre effectif de bits, test de normalité de
+      d'Agostino-Pearson, et rapport de mesure complet exportable.
+    · Étage de sortie sonore : amplification jusqu'à +36 dB, correction de
+      présence entre 1 et 4 kHz, compresseur à genou doux avec rattrapage
+      automatique, limiteur, et générateur de bips de repérage sur événement
+      ou sur saturation. Essai du haut-parleur à 1 kHz depuis la barre
+      d'outils.
+    · Rendu audio anticipé dans un tampon circulaire : le rappel audio ne fait
+      que copier de la mémoire, ce qui supprime les coupures dues au partage
+      du verrou global avec l'interface graphique.
+    · Barre d'outils complète et permanente : profil, timbre, gamme, diapason,
+      volume, coupure du son, essai du haut-parleur, marqueur, enregistrement,
+      auto-configuration, silence, à propos et quitter. Tous les réglages sont
+      pris en compte à chaud, sans interrompre l'acquisition.
+    · Quatre diapasons (440, 432, 426,7 et 415 Hz), vingt-six gammes et douze
+      profils musicaux préréglés, inspirés des appareils du commerce.
+    · Banque General MIDI complète (128 timbres) pour la sortie MIDI.
+    · Onglet « Écoute » enrichi : tableau des notes de la gamme avec leur
+      fréquence exacte et leur écart en centièmes, et panneau des grandeurs
+      mesurées mises à jour en continu.
+    · Attente et détection automatique d'une carte sur le port USB-C : le
+      logiciel travaille sur la source disponible et bascule seul dès que la
+      carte apparaît.
+    · Onglet « Diagnostic » : lien USB, échantillonnage, sortie sonore et
+      journal, avec activation du mode de mise au point.
+    · Sortie sonore en écriture bloquante : le fil qui écrit ne calcule rien,
+      le rendu vit dans son propre fil et constitue une avance d'une seconde.
+      Aucun calcul n'est donc intercalé entre deux écritures — une seule
+      milliseconde suffisait à faire décrocher le flux au démarrage, avant que
+      le tampon du périphérique ne soit rempli. Réglages exposés (mode, taille
+      de bloc, latence) pour les machines récalcitrantes.
+    · Messages d'ALSA et de JACK détournés vers le journal par un gestionnaire
+      d'erreurs installé dans la bibliothèque C : le terminal reste propre,
+      sans rien perdre. Option --verbose-audio pour les revoir.
+    · Nomenclature logicielle (SBOM) produite par introspection des modules
+      réellement importables — et non recopiée du fichier de dépendances :
+      formats CycloneDX 1.5, texte et HTML. Outil « tools/sbom.py ».
+
+  Connu
+    · Le tracé de repli (sans pyqtgraph) plafonne autour de 15 images par
+      seconde sur une fenêtre d'une heure.
+    · La quantification rythmique et les effets de chorus et d'espace sont
+      présents dans les réglages mais ne sont pas encore appliqués par le
+      moteur de rendu.
+    · L'écriture CSV de toutes les valeurs brutes est prévue mais désactivée.
+    · Le mode d'échantillonnage déclenché n'alimente pas encore l'onglet
+      Oscilloscope : ses blocs ne sont visibles que dans le Traceur.
+    · La sortie MIDI n'envoie pas encore les changements de programme General
+      MIDI lors d'un changement de profil.
+
+================================================================================
+  Versions à venir — intentions, sans engagement de date
+================================================================================
+
+  1.2  · application effective de la quantification rythmique ;
+       · export MusicXML et MIDI d'une séance entière ;
+       · comparaison de deux séances à l'écran ;
+       · superposition synchrone des blocs déclenchés (persistance).
+
+  1.3  · corrélation avec les capteurs d'ambiance (température, lumière) ;
+       · détection automatique des artefacts de contact.
+
+  2.0  · acquisition multivoie simultanée sur quatre plantes ;
+       · format de séance étendu — d'où le changement de numéro majeur.

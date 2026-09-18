@@ -1,0 +1,48 @@
+# ===========================================================================
+#  PhytoScope — mises à jour de dépendances
+# ===========================================================================
+#  Pourquoi hebdomadaire et groupé : le projet s'interdit d'ajouter une
+#  dépendance obligatoire à la légère (C-40), et n'en a donc que quelques
+#  unes. Un lot par semaine se relit ; un lot par jour ne se relit pas.
+# ===========================================================================
+version: 2
+updates:
+
+  # --- Le logiciel ---------------------------------------------------------
+  - package-ecosystem: pip
+    directory: /src/phytoscope
+    schedule:
+      interval: weekly
+      day: monday
+      time: '05:00'
+      timezone: Europe/Paris
+    open-pull-requests-limit: 5
+    labels: [dépendances, logiciel]
+    commit-message:
+      prefix: 'dépendances'
+    groups:
+      outils-de-developpement:
+        patterns: ['pytest*', 'ruff', 'bandit', 'pip-audit', 'pre-commit']
+        dependency-type: development
+    #  Un changement majeur d'une dépendance d'exécution se décide à la main :
+    #  il peut casser la portabilité, que .ai/portabilite.md tient à jour.
+    ignore:
+      - dependency-name: '*'
+        update-types: [version-update:semver-major]
+
+  # --- Les actions de l'intégration continue -------------------------------
+  #  Une action épinglée à une version qui disparaît casse toute la CI sans
+  #  qu'on ait touché au code.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '05:00'
+      timezone: Europe/Paris
+    labels: [dépendances, ci]
+    commit-message:
+      prefix: 'ci'
+    groups:
+      actions:
+        patterns: ['*']

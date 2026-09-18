@@ -1,0 +1,58 @@
+{
+  "nom": "Italiano — registro contemplativo",
+  "langue": "it",
+  "auteur": "Bretagne Namasté",
+  "note": "Dictionnaire d'exemple. Le modifier est l'usage normal, pas une entorse : les mots doivent être ceux de celui qui écoute.",
+  "grammaire": "contemplative",
+  "registres": {
+    "sujet": [
+      "io",
+      "qualcosa",
+      "la linfa",
+      "il tronco",
+      "la foglia"
+    ],
+    "verbe_montee": [
+      "fremo",
+      "mi desto",
+      "salgo",
+      "mi slancio",
+      "erompo"
+    ],
+    "verbe_descente": [
+      "mi quieto",
+      "ridiscendo",
+      "mi ritiro",
+      "riposo",
+      "svanisco"
+    ],
+    "intensite": [
+      "appena",
+      "dolcemente",
+      "nettamente",
+      "con forza",
+      "con tutto il mio legno"
+    ],
+    "tempo": [
+      "ancora",
+      "di nuovo",
+      "dopo un poco",
+      "dopo molto tempo",
+      "dopo un lunghissimo silenzio"
+    ],
+    "couleur": [
+      "sordo",
+      "grave",
+      "ampio",
+      "chiaro",
+      "acuto"
+    ],
+    "liaison": [
+      "e",
+      "poi",
+      "allora",
+      "mentre",
+      "—"
+    ]
+  }
+}

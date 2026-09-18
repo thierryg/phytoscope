@@ -1,0 +1,166 @@
+<section class="pagebreak">
+<h2 id="p2" data-toc="chapter">Planche 2 — La voie d'électrophysiologie</h2>
+
+<p class="lettrine noindent">Ici, contrairement à la planche 1, on n'injecte
+rien. On écoute une différence de potentiel qui existe déjà dans l'arbre, de
+l'ordre de quelques millivolts, sur une source dont l'impédance se compte en
+mégohms voire en gigohms. Tout le schéma découle de cette seule contrainte.</p>
+
+<section class="planche-page"><figure class="planche" id="fig-2"><img src="assets/svg/sch-electrophysio-ina333.svg" alt="Voie d&#x27;électrophysiologie extracellulaire"/><figcaption><span class="fig-n">PLANCHE 2</span> — électrodes → amplificateur d'instrumentation → convertisseur ΔΣ → liaison I²C isolée. Schéma d'application d'après les datasheets TI INA333, TI ADS1115 et ADI ADuM1251.</figcaption></figure></section>
+
+<h3 id="p2-imp" data-toc="sub">Pourquoi l'impédance commande tout</h3>
+
+<p>Une électrode plantée dans l'aubier voit une source dont l'impédance
+équivalente se situe couramment entre 1 et 50 MΩ. Tout étage qui prélève du
+courant sur cette source crée une chute de tension parasite. C'est pourquoi le
+choix de l'amplificateur ne se fait pas sur son gain — n'importe quel montage
+sait amplifier — mais sur son <strong>courant de polarisation d'entrée</strong>.</p>
+
+<p>L'INA333 tire 200 picoampères. Sur 10 MΩ, cela produit une erreur de 2 mV.
+L'AD620, excellent par ailleurs, tire 1 nanoampère : 10 mV d'erreur sur la même
+source, soit davantage que le signal recherché. Un amplificateur opérationnel
+bipolaire ordinaire tirerait cent fois plus encore. Le critère de sélection est
+donc unique, et il n'est pas négociable.</p>
+
+<div class="callout limite">
+  <div class="callout-title">L'erreur la plus fréquente</div>
+  <p class="noindent">Brancher l'électrode directement sur l'entrée de
+  l'ADS1115, sous prétexte qu'il possède un amplificateur à gain programmable.
+  Cet étage est à capacités commutées : il présente 6 MΩ en mode commun au gain
+  ×1, et seulement 710 kΩ au gain ×16. Face à un tissu de 10 MΩ, on ne mesure
+  plus un potentiel mais le rapport de division entre le tissu et le
+  convertisseur — c'est-à-dire la qualité du contact de l'électrode, qui dérive
+  de son côté. Le montage « marche », produit des courbes, et ne mesure rien.</p>
+</div>
+
+<div class="callout key">
+  <div class="callout-title">Au-delà de 10 MΩ, l'INA333 ne suffit plus</div>
+  <p class="noindent">Le tableau ci-dessous donne l'erreur de tension
+  <i>I</i><sub>bias</sub> × <i>R</i><sub>source</sub> pour les composants
+  usuels. Le signal recherché valant 1 à 50 mV, la lecture est sans appel.</p>
+  <table class="tight" style="margin:.6em 0">
+  <thead><tr><th>Composant</th><th>I<sub>bias</sub> max</th><th>sur 1 MΩ</th>
+  <th>sur 100 MΩ</th><th>sur 1 GΩ</th></tr></thead>
+  <tbody>
+  <tr><td>INA333</td><td>200 pA</td><td>0,2 mV</td><td>20 mV</td><td>200 mV</td></tr>
+  <tr><td>AD8232</td><td>200 pA</td><td>0,2 mV</td><td>20 mV</td><td>200 mV</td></tr>
+  <tr><td>AD8221 (grade BR)</td><td>0,4 nA</td><td>0,4 mV</td><td>40 mV</td><td>400 mV</td></tr>
+  <tr><td>INA128 (pire cas)</td><td>5 nA</td><td>5 mV</td><td>500 mV</td><td>saturé</td></tr>
+  <tr><td>INA826</td><td>65 nA</td><td>65 mV</td><td>saturé</td><td>saturé</td></tr>
+  </tbody></table>
+  <p>L'INA826 est le piège : son impédance d'entrée annoncée de 20 GΩ est
+  excellente, mais son courant de polarisation est cinq cents fois pire que
+  celui de l'INA333. <strong>Impédance d'entrée et courant de polarisation sont
+  deux paramètres indépendants, et c'est le second qui décide.</strong></p>
+  <p>Conséquence : au-delà d'une dizaine de mégohms de source — écorce sèche,
+  contact vieillissant — il faut interposer un <strong>suiveur à entrée
+  électromètre</strong> au plus près de l'électrode (LMP7721, ADA4530-1,
+  OPA129 : courants de polarisation en femtoampères), puis attaquer l'INA333
+  avec sa sortie basse impédance. C'est l'architecture obligatoire pour du
+  potentiel de surface en continu, et elle est presque toujours absente des
+  projets amateurs.</p>
+</div>
+
+<h3 id="p2-ref" data-toc="sub">Référence, garde et masse</h3>
+
+<p>Le signal est unipolaire à la sortie de l'amplificateur : il faut donc le
+recentrer. Le diviseur R4/R5 fixe la broche REF à la moitié de l'alimentation,
+ce qui place le zéro du signal au milieu de la plage du convertisseur et permet
+de voir les excursions dans les deux sens.</p>
+
+<p>Cette même tension sert de <strong>garde active</strong> : le blindage des
+câbles d'entrée n'est pas relié à la masse mais à REF. Le blindage suit alors le
+potentiel du signal, la capacité parasite du câble ne se charge plus, et la
+bande passante ne s'effondre pas malgré la résistance de source élevée. C'est le
+même principe que la « driven right leg » des électrocardiographes.</p>
+
+<p>L'électrode de référence a deux fonctions, souvent confondues. La première
+est d'<strong>offrir un chemin de retour au courant de polarisation</strong> :
+un amplificateur d'instrumentation dont les deux entrées flottent ne mesure
+rien, ses entrées dérivant hors de la plage de mode commun. Sans électrode de
+référence, le montage ne fonctionne pas, quelle que soit la qualité de
+l'amplificateur. La seconde est de fixer un potentiel de comparaison.</p>
+
+<p>Ces deux fonctions n'appellent pas le même emplacement. Une référence
+<strong>dans le sol</strong> offre une impédance faible et une grande surface,
+mais son potentiel de jonction sol/racine dérive avec la pluie et la
+température : bonne pour le retour de courant, médiocre comme référence de
+potentiel. Une référence <strong>dans le tronc</strong>, à cinquante centimètres
+au moins des électrodes de mesure, baigne dans la même chimie : son potentiel de
+jonction est comparable à celui des électrodes de mesure et se soustrait donc au
+premier ordre. C'est le meilleur compromis, au prix d'une blessure
+supplémentaire. Le dispositif employé par Gibert et ses collègues sur un
+peuplier en 2006 utilisait, lui, une électrode plomb / chlorure de plomb
+enterrée à 80 cm.</p>
+
+<p>Dans tous les cas l'électrode doit être <strong>non polarisable</strong>. Un
+piquet d'acier est une électrode polarisable : il se comporte en condensateur de
+double couche, développe des potentiels galvaniques avec le milieu et dérive de
+plusieurs millivolts par jour par corrosion et variation de sa couche d'oxyde.
+L'acier reste acceptable pour un signal rapide en couplage alternatif ; il est
+inutilisable pour un potentiel lent suivi sur plusieurs jours.</p>
+
+<div class="callout key">
+  <div class="callout-title">Le compromis qui résout presque tout</div>
+  <p class="noindent">Le problème dominant en mesure longue durée n'est pas le
+  bruit : c'est la <strong>dérive du potentiel de demi-pile</strong> des
+  électrodes, qui apparaît en différentiel et se confond avec un signal
+  biologique lent. Si le projet ne cherche que des <i>événements</i> — réponse à
+  une blessure, à un choc thermique, à l'arrosage — un couplage alternatif à
+  0,05 Hz élimine le problème d'un seul coup. C'est précisément ce que fait
+  l'AD8232 avec son passe-haut intégré à deux pôles, explicitement conçu pour
+  supprimer les artefacts de mouvement et le potentiel de demi-pile. Pour un
+  arbre parlant, c'est très probablement le bon choix — à condition d'assumer
+  qu'on renonce alors aux dérives lentes, c'est-à-dire à la saisonnalité.</p>
+  <p>Deux précautions gratuites : prendre les deux électrodes de mesure dans le
+  <strong>même lot et le même modèle</strong>, pour que leurs dérives se
+  soustraient ; et interposer un pont de gel <strong>KCl</strong> — les mobilités
+  du potassium et du chlorure étant quasi identiques, le potentiel de jonction
+  y est minimal. C'est exactement ce que fait le gel d'une électrode ECG
+  jetable.</p>
+</div>
+
+<h3 id="p2-50hz" data-toc="sub">Le 50 Hz et l'isolation</h3>
+
+<p>Un arbre instrumenté est une antenne de plusieurs mètres au milieu d'un champ
+électrique à 50 Hz. Trois lignes de défense se cumulent, dans cet ordre :</p>
+<ol>
+  <li><strong>Le mode commun.</strong> Les deux électrodes captent le secteur
+  presque à l'identique ; l'amplificateur d'instrumentation, qui ne répond qu'à
+  la différence, en élimine l'essentiel — d'où l'importance de câbles de même
+  longueur et de même cheminement.</li>
+  <li><strong>L'intégration.</strong> En échantillonnant sur une durée multiple
+  entière de 20 ms, la moyenne du secteur est rigoureusement nulle. À 8
+  échantillons par seconde, l'ADS1115 intègre sur 125 ms, soit très exactement
+  six périodes et quart — on préférera un réglage à 8 SPS ou 16 SPS.</li>
+  <li><strong>Le filtre réjecteur numérique</strong>, en dernier recours, sur ce
+  qui reste.</li>
+</ol>
+
+<p>L'isolateur ADuM1251 ne sert pas à protéger l'humain : sous 3,3 V il n'y a
+rien à protéger. Il coupe la <strong>boucle de masse</strong>. Sans lui, la masse
+du montage rejoint la terre du réseau par l'alimentation de la passerelle, et le
+secteur revient dans la mesure par ce chemin, en contournant toutes les
+précautions prises en amont.</p>
+
+<h3 id="p2-bom" data-toc="sub">Nomenclature</h3>
+<table class="bom tight-xs"><caption>Nomenclature de la planche 2. Les deux postes dominants sont les électrodes non polarisables et l'isolation galvanique — c'est-à-dire précisément les deux éléments que l'on est tenté de supprimer, et dont la suppression ruine la mesure.</caption><thead><tr><th>Rep.</th><th>Composant</th><th>Caractéristique déterminante</th><th>Référence</th><th>≈ €</th></tr></thead><tbody>
+<tr><td>U1</td><td>Ampli d'instrumentation</td><td>I<sub>bias</sub> 200 pA typ., 0,05 µV/°C</td><td>TI <b>INA333AIDGKR</b></td><td>6,50</td></tr>
+<tr><td>—</td><td>Variante plus bruyante mais courante</td><td>I<sub>bias</sub> 1 nA, bruit 9 nV/√Hz</td><td>ADI AD8221 / AD620</td><td>9,00</td></tr>
+<tr><td>U2</td><td>Convertisseur ΔΣ 16 bits</td><td>4 voies, PGA ×1…×16, I²C, 860 SPS</td><td>TI <b>ADS1115IDGSR</b></td><td>5,40</td></tr>
+<tr><td>—</td><td>Variante 24 bits pour signaux lents</td><td>PGA ×128, réf. interne</td><td>TI ADS1220 / ADS1256</td><td>8,00 – 14,00</td></tr>
+<tr><td>U3</td><td>Isolateur I²C</td><td>barrière 2,5 kV, alimentation isolée à part</td><td>ADI <b>ADuM1251ARZ</b></td><td>6,80</td></tr>
+<tr><td>—</td><td>Convertisseur DC-DC isolé</td><td>1 W, 3,3 V → 3,3 V isolé</td><td>Recom R1SE-3.33.3S</td><td>5,90</td></tr>
+<tr><td>R1, R2</td><td>Limitation d'entrée</td><td>10 kΩ 0,1 %, métal</td><td>Vishay MMA0204</td><td>0,60</td></tr>
+<tr><td>R_G</td><td>Gain</td><td>1 kΩ 0,1 % → G = 101</td><td>Vishay MMA0204</td><td>0,30</td></tr>
+<tr><td>R4, R5</td><td>Référence à mi-alimentation</td><td>100 kΩ 0,1 % appairées</td><td>Vishay</td><td>0,60</td></tr>
+<tr><td>R3</td><td>Anti-repliement</td><td>16 kΩ avec C3 → f<sub>c</sub> ≈ 100 Hz</td><td>—</td><td>0,10</td></tr>
+<tr><td>C1, C2</td><td>Filtrage RF d'entrée</td><td>1 nF C0G</td><td>KEMET</td><td>0,40</td></tr>
+<tr><td>C3</td><td>Anti-repliement</td><td>100 nF C0G</td><td>KEMET</td><td>0,25</td></tr>
+<tr><td>E1, E2</td><td>Pastilles Ag/AgCl (×2)</td><td>non polarisables : interface réversible, dérive faible</td><td>A-M Systems <b>550015</b> (Ø 2 × 4 mm), 36 $ pièce</td><td>68,00</td></tr>
+<tr><td>—</td><td>Variante économique</td><td>aiguilles inox 316L Ø 1 mm</td><td>quincaillerie</td><td>2,00</td></tr>
+<tr><td>REF</td><td>Électrode de référence de sol</td><td>Pb/PbCl₂ ou Cu/CuSO₄</td><td>électrode de potentiel spontané</td><td>45,00</td></tr>
+<tr><td>—</td><td>Câble blindé par paire</td><td>faible triboélectricité, PTFE</td><td>au mètre</td><td>4,00/m</td></tr>
+<tr class="tot"><td></td><td><b>Total voie complète, électrodes de laboratoire</b></td><td></td><td></td><td><b>≈ 115 – 180 €</b></td></tr>
+</tbody></table>
+</section>

@@ -1,0 +1,100 @@
+<section class="pagebreak">
+<h2 id="p4" data-toc="chapter">Planche 4 — Énergie et survie en extérieur</h2>
+
+<p class="lettrine noindent">Une station qui s'arrête en novembre n'a pas
+mesuré une année : elle a mesuré un été. L'autonomie n'est pas un raffinement,
+c'est la condition de l'existence même d'une série temporelle.</p>
+
+<section class="planche-page"><figure class="planche" id="fig-4"><img src="assets/svg/sch-alim-solaire.svg" alt="Alimentation solaire LiFePO₄"/><figcaption><span class="fig-n">PLANCHE 4</span> — chaîne panneau → MPPT → accumulateur → régulateur, avec budget d'énergie.</figcaption></figure></section>
+
+<h3 id="p4-budget" data-toc="sub">Le budget d'énergie, ligne à ligne</h3>
+
+<p>Le calcul se fait toujours sur un cycle complet, pas sur une consommation
+moyenne. Pour un relevé toutes les quinze minutes avec émission LoRa :</p>
+
+<table class="tight">
+<thead><tr><th>Phase</th><th>Courant</th><th>Durée</th><th>Charge</th></tr></thead>
+<tbody>
+<tr><td>Veille profonde</td><td>15 µA</td><td>899 s</td><td>13,5 mA·s</td></tr>
+<tr><td>Réveil, stabilisation et mesures</td><td>40 mA</td><td>0,9 s</td><td>36,0 mA·s</td></tr>
+<tr><td>Émission LoRa</td><td>120 mA</td><td>0,1 s</td><td>12,0 mA·s</td></tr>
+<tr class="tot"><td><b>Par cycle</b></td><td></td><td>900 s</td><td><b>61,5 mA·s</b></td></tr>
+</tbody>
+</table>
+
+<p>Soit 0,0171 mA·h par cycle, 1,64 mA·h par jour, environ 600 mA·h par an. Une
+cellule de 6 000 mA·h tiendrait donc près de dix ans sans le moindre apport
+solaire. Ce résultat, contre-intuitif, a une conséquence pratique nette :
+<strong>dans une station bien conçue, la capacité n'est jamais la contrainte.</strong>
+Ce qui tue les stations, c'est la consommation résiduelle des cartes de
+développement — un régulateur à faible rendement ou une puce USB-série qui
+continue de tirer dix milliampères pendant la veille suffit à multiplier le
+budget par mille.</p>
+
+<div class="callout limite">
+  <div class="callout-title">La charge sous zéro degré</div>
+  <p class="noindent">Toutes les chimies au lithium, LiFePO₄ comprise,
+  interdisent la charge sous 0 °C : le lithium se dépose alors sous forme
+  métallique sur l'anode, de façon irréversible, et la capacité s'effondre en
+  quelques cycles. C'est l'avarie numéro un des stations hivernales, et elle est
+  silencieuse. La parade tient en trois euros : un DS18B20 collé contre la
+  cellule et un verrouillage logiciel de la charge.</p>
+</div>
+
+<h3 id="p4-liaison" data-toc="sub">Choisir la liaison</h3>
+
+<table class="tight">
+<thead><tr><th>Liaison</th><th>Portée réaliste</th><th>Débit utile</th>
+<th>Contrainte</th><th>Abonnement</th></tr></thead>
+<tbody>
+<tr><td>Wi-Fi</td><td>30 – 80 m</td><td>élevé</td>
+<td>consommation d'association élevée</td><td>—</td></tr>
+<tr><td>LoRaWAN (TTN)</td><td>2 – 15 km</td><td>quelques octets</td>
+<td>1 % de rapport cyclique en EU868 ; sur le réseau communautaire TTN,
+politique d'usage équitable de 30 s d'émission par jour et 10 messages
+descendants</td><td>gratuit</td></tr>
+<tr><td>NB-IoT / LTE-M</td><td>couverture opérateur</td><td>quelques ko</td>
+<td>dépend d'un opérateur, carte SIM</td><td>≈ 10 – 30 €/an</td></tr>
+<tr><td>Maillage LoRa (Meshtastic)</td><td>quelques km, relayé</td><td>faible</td>
+<td>pas d'infrastructure, mais pas de garantie</td><td>—</td></tr>
+</tbody>
+</table>
+
+<p>La politique d'usage équitable de TTN est plus contraignante qu'il n'y
+paraît : trente secondes d'émission par jour, à un facteur d'étalement moyen,
+autorisent environ une centaine de messages courts — soit très exactement le
+rythme d'un relevé au quart d'heure. Il n'y a pas de marge pour transmettre une
+forme d'onde. <strong>Le traitement doit donc avoir lieu dans le nœud</strong>,
+et c'est le résumé statistique, non le signal brut, qui voyage.</p>
+
+<h3 id="p4-boitier" data-toc="sub">Le boîtier : condensation et presse-étoupes</h3>
+
+<p>Un boîtier IP67 parfaitement étanche est une machine à fabriquer de l'eau. Le
+jour, l'air intérieur se dilate ; la nuit, il se contracte et aspire de l'air
+humide par le moindre défaut ; au matin, la vapeur condense sur l'électronique
+froide. Le cycle se répète et l'eau s'accumule.</p>
+
+<p>La solution n'est pas de mieux étancher mais de <strong>ventiler
+sélectivement</strong> : un évent à membrane ePTFE laisse passer les molécules
+de gaz et de vapeur, bloque l'eau liquide et les poussières, et supprime la
+différence de pression qui aspirait l'air humide. Les câbles, eux, entrent par
+des presse-étoupes à joint, toujours <strong>par le dessous</strong>, avec une
+boucle d'égouttement en amont pour que l'eau ruisselant le long du câble tombe
+avant d'atteindre l'entrée.</p>
+
+<h3 id="p4-bom" data-toc="sub">Nomenclature</h3>
+<table class="bom tight-xs"><caption>Nomenclature de la planche 4. L'évent à membrane et l'abri météorologique sont les deux lignes que l'on supprime le plus volontiers, et les deux dont l'absence se paie en données inutilisables.</caption><thead><tr><th>Rep.</th><th>Composant</th><th>Caractéristique</th><th>Référence indicative</th><th>≈ €</th></tr></thead><tbody>
+<tr><td>PV</td><td>Panneau solaire</td><td>6 V / 5 W, verre trempé</td><td>générique cadre alu</td><td>18,00</td></tr>
+<tr><td>D1</td><td>Diode Schottky anti-retour</td><td>40 V / 3 A, V<sub>f</sub> 0,5 V</td><td>SS34</td><td>0,20</td></tr>
+<tr><td>U1</td><td>Chargeur MPPT 1 cellule</td><td>point de puissance par pont résistif</td><td>CN3791 (module)</td><td>6,00</td></tr>
+<tr><td>BT1</td><td>Accumulateur LiFePO₄</td><td>3,2 V · 6 000 mA·h · −20…+60 °C</td><td>cellule 32700 + support</td><td>14,00</td></tr>
+<tr><td>U2</td><td>Convertisseur abaisseur-élévateur</td><td>3,3 V, η > 90 %, arrêt commandé</td><td>TI TPS63020</td><td>7,50</td></tr>
+<tr><td>—</td><td>Sonde de température de batterie</td><td>verrouillage de charge < 0 °C</td><td>DS18B20</td><td>3,00</td></tr>
+<tr><td>F1</td><td>Fusible réarmable</td><td>PTC 1 A</td><td>MF-R110</td><td>0,40</td></tr>
+<tr><td>—</td><td>Boîtier étanche</td><td>IP65/IP67, ABS, presse-étoupes</td><td>160 × 110 × 90 mm</td><td>16,00</td></tr>
+<tr><td>—</td><td>Évent à membrane ePTFE</td><td>équilibrage de pression, anti-condensation</td><td>Gore Protective Vent (vissant)</td><td>7,00</td></tr>
+<tr><td>—</td><td>Presse-étoupes M12 à joint</td><td>×4</td><td>nylon IP68</td><td>4,00</td></tr>
+<tr><td>—</td><td>Abri météorologique à persiennes</td><td>erreur radiative réduite</td><td>type Stevenson, 7 coupelles</td><td>35,00</td></tr>
+<tr class="tot"><td></td><td><b>Total chaîne d'énergie et protection</b></td><td></td><td></td><td><b>≈ 111 €</b></td></tr>
+</tbody></table>
+</section>

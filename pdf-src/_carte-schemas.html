@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<title>PhytoSense One — dossier de schémas</title>
+<meta name="author" content="Bretagne Namasté"/>
+<meta name="publisher" content="Bretagne Namasté"/>
+<meta name="copyright" content="© 2026 Bretagne Namasté — https://bretagne-namaste.com"/>
+<meta name="contact" content="contact@bretagne-namaste.com"/>
+<meta name="source" content="https://bretagne-namaste.com"/>
+<meta name="description" content="Les huit feuilles de schéma de la carte PhytoSense One, protections, alimentation et signalisation comprises. Bretagne Namasté — bretagne-namaste.com"/>
+<meta name="keywords" content="schéma électronique, PhytoSense, électrophysiologie"/>
+<meta name="dcterms.created" content="2026-09-17"/>
+<meta name="generator" content="WeasyPrint"/>
+<link rel="stylesheet" href="fonts.css"/>
+<link rel="stylesheet" href="book.css"/>
+<link rel="stylesheet" href="carte.css"/>
+<style>body{ string-set: booktitle "PhytoSense One — schémas"; }</style>
+</head>
+<body>
+<section class="cover">
+  <img class="cover-art" src="assets/svg/carte-cover-schemas.svg" alt="Couverture du dossier de schémas"/>
+</section>
+
+<section class="frontpage notice">
+  <h2 id="s-notice">Dossier de schémas — PhytoSense One</h2>
+  <p class="lettrine noindent">Ce fascicule rassemble les huit feuilles de schéma de la carte
+  PhytoSense One, au format paysage, pour être imprimé et emporté à l'établi. Il ne contient
+  aucune explication : celles-ci figurent dans l'ouvrage <em>La Carte PhytoSense</em>, dont les
+  renvois sont indiqués sur chaque feuille.</p>
+
+  <table class="tight">
+    <thead><tr><th>Feuille</th><th>Bloc</th><th>Contenu</th><th>Commentaire dans l'ouvrage</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>Carte fille FE-Z</td>
+        <td>Entrée électrométrique, tampon de garde, contre-réaction de mode commun</td>
+        <td>chapitre 3</td></tr>
+      <tr><td class="num">2</td><td>Carte fille FE-B</td>
+        <td>Pont excité en alternatif, amplificateur d'instrumentation, démodulation synchrone</td>
+        <td>chapitre 4</td></tr>
+      <tr><td class="num">3</td><td>Carte mère</td>
+        <td>Gain programmable, filtre de Bessel, attaque différentielle, convertisseur</td>
+        <td>chapitre 5</td></tr>
+      <tr><td class="num">4</td><td>Carte mère</td>
+        <td>Alimentations isolées, régulateurs à faible bruit, isolateurs numériques</td>
+        <td>chapitre 5</td></tr>
+      <tr><td class="num">5</td><td>Carte mère</td>
+        <td>Microcontrôleur, USB-C, MIDI, interface homme-machine</td><td>chapitre 7</td></tr>
+      <tr><td class="num">6</td><td>Interconnexion</td>
+        <td>Brochage du connecteur mezzanine</td><td>chapitre 2</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="s-conventions">Conventions</h3>
+  <p>Symboles selon la norme CEI 60617. Masse analogique en triangle plein, masse numérique en
+  peigne. Les étiquettes pentagonales désignent les signaux inter-feuilles. Le trait mixte cuivre
+  matérialise la barrière d'isolement galvanique : <strong>aucun conducteur ne la franchit</strong>.</p>
+
+  <div class="securite">
+    <div class="s-h">Avant de brancher</div>
+    <p class="noindent">La carte fonctionne sur le 5 V de l'USB, sur une batterie, ou sur un bloc
+    d'alimentation externe de 7 à 24 V à très basse tension de sécurité. Elle ne comporte aucune
+    partie raccordée directement au secteur, et ne doit jamais en comporter : l'isolement du
+    réseau est le travail du bloc externe, qui doit porter le marquage CE et la double isolation. Ne jamais relier un oscilloscope relié à la terre sur un
+    montage connecté à un être vivant. La résistance de 22 kΩ en série avec l'électrode de
+    référence est une limitation de sécurité : elle ne se substitue pas.</p>
+  </div>
+
+  <p class="copyright">Schémas publiés sous licence CERN-OHL-P v2. Révision B, septembre 2026.
+  Bretagne Namasté — bretagne-namaste.com — contact@bretagne-namaste.com</p>
+</section>
+
+<section class="planche-page"><figure class="planche">
+  <img src="assets/svg/carte-fe-z.svg" alt="Feuille 1 — entrée électrométrique"/>
+  <figcaption><span class="fig-n">FEUILLE 1 / 8</span> — Carte fille FE-Z : entrée
+  électrométrique, tampon de garde, contre-réaction de mode commun. Commentée au chapitre 3 de
+  l'ouvrage.</figcaption>
+</figure></section>
+
+<section class="planche-page"><figure class="planche">
+  <img src="assets/svg/carte-fe-b.svg" alt="Feuille 2 — pont et détection synchrone"/>
+  <figcaption><span class="fig-n">FEUILLE 2 / 8</span> — Carte fille FE-B : pont excité en
+  alternatif, amplificateur d'instrumentation, démodulateur synchrone et filtre. Chapitre 4.</figcaption>
+</figure></section>
+
+<section class="planche-page"><figure class="planche">
+  <img src="assets/svg/carte-mere.svg" alt="Feuille 3 — gain, filtre, conversion"/>
+  <figcaption><span class="fig-n">FEUILLE 3 / 8</span> — Carte mère : gain programmable, filtre de
+  Bessel du troisième ordre, attaque différentielle, convertisseur delta-sigma, références.
+  Chapitre 5.</figcaption>
+</figure></section>
+
+<section class="planche-page"><figure class="planche">
+  <img src="assets/svg/carte-alim.svg" alt="Feuille 4 — alimentations et isolement"/>
+  <figcaption><span class="fig-n">FEUILLE 4 / 8</span> — Alimentations et isolement galvanique :
+  convertisseur isolé synchronisé, redressement, régulateurs à faible bruit, isolateurs.
+  Chapitre 5.</figcaption>
+</figure></section>
+
+<section class="planche-page"><figure class="planche">
+  <img src="assets/svg/carte-num.svg" alt="Feuille 5 — partie numérique"/>
+  <figcaption><span class="fig-n">FEUILLE 5 / 8</span> — Partie numérique : microcontrôleur
+  RP2350, mémoire, prise USB-C protégée, sortie MIDI TRS, interface. Chapitre 7.</figcaption>
+</figure></section>
+
+<section class="planche-page"><figure class="planche">
+  <img src="assets/svg/carte-mezzanine.svg" alt="Feuille 6 — brochage mezzanine"/>
+  <figcaption><span class="fig-n">FEUILLE 6 / 8</span> — Brochage du connecteur mezzanine, vingt
+  points au pas de 1,27 mm. Les masses encadrent les signaux sensibles ; la garde est portée par
+  deux broches. Chapitre 2.</figcaption>
+</figure></section>
+
+<section class="planche-page"><figure class="planche">
+  <img src="assets/svg/carte-protections.svg" alt="Feuille 7 — protections et gestion d'alimentation"/>
+  <figcaption><span class="fig-n">FEUILLE 7 / 8</span> — Protections et gestion d'alimentation :
+  entrée bloc secteur protégée contre l'inversion et la surtension, entrée USB limitée en courant,
+  aiguilleur à priorité sans coupure, mesure de consommation, protection des entrées de mesure.
+  Voir le chapitre « Protéger, alimenter, survivre aux fausses manœuvres ».</figcaption>
+</figure></section>
+
+<section class="planche-page"><figure class="planche">
+  <img src="assets/svg/carte-ihm.svg" alt="Feuille 8 — signalisation et afficheur"/>
+  <figcaption><span class="fig-n">FEUILLE 8 / 8</span> — Signalisation et afficheur : quatre
+  voyants, afficheur OLED sur bus I²C, bouton à appui bref et long. Voir le chapitre « Ce que l'appareil dit de lui-même ».</figcaption>
+</figure></section>
+
+</body>
+</html>
