@@ -412,7 +412,13 @@ class FrameCapture:
         self.active = True
         self.count = self.bytes = self.dropped = 0
         self._t0 = time.time()
-        if mode != "wb":
+        #  L'en-tête est du texte : il n'a de sens que dans un fichier texte.
+        #  Cette ligne testait autrefois un `mode` calculé, remplacé plus haut
+        #  par deux ouvertures franches — le nom n'existait plus, et démarrer
+        #  une capture levait NameError. Défaut trouvé par ruff (F821) le
+        #  2026-09-18, jamais rencontré parce qu'aucun test ne démarrait de
+        #  capture. Il y en a un maintenant.
+        if diag.capture_format != "binaire":
             self._f.write(self._header())
         log.warning("Capture de trames démarrée : %s", self.path)
         return self.path

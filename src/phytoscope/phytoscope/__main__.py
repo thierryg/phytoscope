@@ -40,14 +40,9 @@ import os
 import sys
 from typing import List, Optional
 
-BANNIERE = r"""
-   ____  _          _        ____
-  |  _ \| |__  _   _| |_ ___ / ___|  ___ ___  _ __   ___
-  | |_) | '_ \| | | | __/ _ \\___ \ / __/ _ \| '_ \ / _ \
-  |  __/| | | | |_| | || (_) |___) | (_| (_) | |_) |  __/
-  |_|   |_| |_|\__, |\__\___/|____/ \___\___/| .__/ \___|
-               |___/                         |_|
-"""
+#  La bannière vit dans `core/console.py` : elle y porte la version et
+#  l'éditeur, et une seule copie du dessin évite qu'elles divergent. Celle
+#  qui était ici avait d'ailleurs perdu un caractère sur son premier trait.
 
 
 # ---------------------------------------------------------------------------
@@ -117,7 +112,7 @@ def build_parser() -> argparse.ArgumentParser:
     g.add_argument("--no-check", action="store_true",
                    help="saute les contrôles avant vol")
     g.add_argument("--diagnostic", "--diag", action="store_true", dest="diagnostic",
-                   help="affiche un bilan complet au démarrage, puis lance "
+                   help="affiche la checklist complète au démarrage, puis lance "
                         "le logiciel (comportement de « make run »)")
     g.add_argument("--no-diagnostic", action="store_true",
                    help="démarre sans afficher le bilan")
@@ -183,15 +178,16 @@ def main(argv: Optional[List[str]] = None) -> int:
     log.info("Démarrage — arguments : %s", vars(args))
 
     # -- 3. contrôles avant vol ---------------------------------------------
+    from . import VERSION
     from .core import preflight
+    from .version import AUTHOR
     rapport = None
     if not args.no_check:
         rapport = preflight.run(settings)
         besoin_interface = not (args.headless or args.check)
 
         if args.check:
-            if C.ACTIF:
-                print(C.colorier(BANNIERE, C.VERT))
+            print(C.banniere(VERSION, AUTHOR))
             from .core.platform_info import detect as detecter_systeme
             systeme = detecter_systeme()
             print(C.discret(f"  {systeme.libelle()} — famille "
@@ -216,7 +212,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         pret = (rapport.peut_demarrer if besoin_interface
                 else rapport.peut_demarrer_sans_interface)
         if not pret:
-            print(BANNIERE if C.ACTIF else "")
+            print(C.banniere(VERSION, AUTHOR))
             if not preflight.resoudre_en_console(rapport, interactif=True):
                 _rappel_final(rapport, chemin_journal)
                 return int(ExitCode.DEPENDANCE_MANQUANTE)
@@ -257,9 +253,19 @@ def main(argv: Optional[List[str]] = None) -> int:
         #  réécrire pour autant le choix de l'utilisateur.
         settings.forcer("ui", "language", retenue)
 
-    # -- 5. bilan de démarrage ----------------------------------------------
-    if args.diagnostic and not args.no_diagnostic:
+    # -- 5. checklist de démarrage -------------------------------------------
+    #  Affichée PAR DÉFAUT. C'était l'inverse : il fallait « --diagnostic »
+    #  pour la voir, et l'on démarrait donc le plus souvent sans savoir sur
+    #  quel interpréteur, quelle carte ni quelle sortie audio on travaillait.
+    #  « --no-diagnostic » la supprime pour qui n'en veut pas.
+    if not args.no_diagnostic:
         _bilan(settings, rapport)
+        #  Les contrôles avant vol avec elle : la checklist dit « toutes
+        #  présentes », le détail dit lesquelles et en quelle version. C'est
+        #  ce détail que réclame tout signalement d'anomalie.
+        if rapport is not None:
+            print(rapport.to_console())
+            print()
 
     if args.debug_usb or settings.diagnostics.debug_mode:
         try:
@@ -272,7 +278,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     # -- 6. lancement --------------------------------------------------------
     if args.headless:
         return _headless(settings, args.duration)
-    return _graphique(settings, rapport)
+    return _graphique(settings, rapport, langue_imposee=bool(args.lang))
 
 
 def _bilan(settings, rapport=None) -> None:
@@ -288,9 +294,17 @@ def _bilan(settings, rapport=None) -> None:
     from .core.logging_setup import log_path
     from .core.platform_info import detect as detecter_systeme
 
+    from . import VERSION
+    from .version import AUTHOR
+
     ligne = "─" * 74
-    print()
-    print(C.titre(f"  {FULL_NAME} — bilan de démarrage"))
+    #  La bannière remplace le pavé que `run.py` écrivait autrefois sur la
+    #  sortie d'erreur quand il écartait un interpréteur : elle sépare
+    #  franchement ce que PhytoScope raconte de ce qui précède dans le
+    #  terminal, et donne la version sans qu'on la cherche — c'est le premier
+    #  renseignement que demande tout signalement d'anomalie.
+    print(C.banniere(VERSION, AUTHOR))
+    print(C.titre(f"  {FULL_NAME} — checklist"))
     print(C.discret("  " + ligne))
 
     # 1. machine
@@ -367,7 +381,7 @@ def _bilan(settings, rapport=None) -> None:
         print("  " + C.alerte("Bibliothèques système manquantes : ")
               + C.info(rapport.commande_systeme()))
     print(C.discret("  Diagnostic détaillé : make sanity   ·   "
-                    "sans ce bilan : run.py --no-diagnostic"))
+                    "sans cette checklist : run.py --no-diagnostic"))
     print()
     # L'interface va prendre la main pour des heures : si la sortie est
     # redirigée vers un fichier, elle est bloquée en tampon et l'utilisateur
@@ -392,7 +406,7 @@ def _rappel_final(rapport, chemin_journal: str) -> None:
 # ---------------------------------------------------------------------------
 #  Interface graphique
 # ---------------------------------------------------------------------------
-def _graphique(settings, rapport=None) -> int:
+def _graphique(settings, rapport=None, langue_imposee: bool = False) -> int:
     from .core import console as C
     from .core.errors import ExitCode
     from .core.logging_setup import get_logger
@@ -401,11 +415,27 @@ def _graphique(settings, rapport=None) -> int:
     try:
         from PySide6.QtWidgets import QApplication
     except BaseException as exc:                       # noqa: BLE001
-        from .core.preflight import analyser_import_casse
-        lib, paquet, cmd = analyser_import_casse(str(exc))
+        from .core.preflight import analyser_import_casse, interpreteur_etranger
+        lib, paquet, cmd, presente = analyser_import_casse(str(exc))
         print()
         print(C.erreur("  L'interface graphique ne peut pas se charger."))
-        if lib:
+        if lib and presente:
+            #  Rien ne manque sur la machine : c'est cet interpréteur-ci qui
+            #  ne voit pas les bibliothèques du système. Conseiller un
+            #  « apt install » ici ferait réinstaller un paquet déjà présent.
+            venu_de = interpreteur_etranger()
+            print(f"  {C.alerte(lib)} est bien installée sur ce système, mais "
+                  f"l'interpréteur qui exécute PhytoScope ne l'atteint pas.")
+            print(f"  Interpréteur : {C.info(sys.executable)}")
+            if venu_de:
+                print(f"  Il vient de {C.alerte(venu_de)} — un interpréteur "
+                      f"installé hors du système a son propre chemin de")
+                print("  recherche et ne lit pas celui de la distribution.")
+            print(C.discret("  Il n'y a aucun paquet à installer."))
+            print("  Remède : lancer PhytoScope par l'environnement du projet,")
+            print("  " + C.info("cd src/phytoscope && make run") +
+                  C.discret("   (ou .venv/bin/python run.py)"))
+        elif lib:
             print(f"  PySide6 est installé, mais la bibliothèque système "
                   f"{C.alerte(lib)} est introuvable.")
             if cmd:
@@ -419,6 +449,29 @@ def _graphique(settings, rapport=None) -> int:
         return int(ExitCode.DEPENDANCE_MANQUANTE)
 
     app = QApplication(sys.argv[:1])
+
+    #  La langue, au tout premier démarrage et jamais ensuite. Les
+    #  installateurs .run, .exe et .app la demandent déjà ; apt et dnf, eux,
+    #  installent sans rien demander — c'est ce qu'on attend d'eux —, et ce
+    #  passage couvre ces deux cas ainsi que le lancement depuis les sources.
+    #
+    #  Avant `_appliquer_langue_qt` : la langue retenue ici doit être celle
+    #  que Qt applique, pas la précédente.
+    if getattr(settings, "premier_lancement", False) and not langue_imposee:
+        try:
+            from .ui.langue_dialog import demander_si_premier_lancement
+            retenue = demander_si_premier_lancement(settings)
+            if retenue and retenue != settings.ui.language:
+                settings.ui.language = retenue
+                from .i18n import definir_langue
+                definir_langue(retenue)
+            #  Écrit tout de suite : un logiciel fermé brutalement juste après
+            #  reposerait la question, ce qui est le genre de détail qui use.
+            settings.save()
+        except Exception as exc:                       # noqa: BLE001
+            #  Une question de langue ne doit jamais empêcher de démarrer.
+            log.error("Choix de la langue impossible : %s", exc)
+
     _appliquer_langue_qt(app, settings)
     # Dès maintenant, et non après la construction de la fenêtre : un Ctrl+C
     # pendant un démarrage qui traîne doit aboutir lui aussi.

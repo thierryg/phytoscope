@@ -33,6 +33,28 @@ if not exist "%PYTHON%" (
     exit /b 1
 )
 
+rem ---------------------------------------------------------------------------
+rem   Cache de bytecode, construit une seule fois
+rem ---------------------------------------------------------------------------
+rem   Le paquet est livre sans le moindre .pyc : Python recompile alors tous
+rem   les modules au demarrage — Qt et NumPy compris — et l'attente se voit,
+rem   quelques secondes a chaque lancement si le dossier n'est pas
+rem   inscriptible. L'installateur .exe le construit pendant l'installation ;
+rem   le .msi et l'archive portable n'ont pas cette occasion, d'ou ce passage.
+rem
+rem   Le temoin evite de recommencer. Il est ecrit APRES, pour qu'une
+rem   compilation interrompue soit reprise au lancement suivant.
+set "TEMOIN=%ICI%python\.bytecode-pret"
+if not exist "%TEMOIN%" (
+    echo Premiere ouverture : preparation du cache de bytecode...
+    "%ICI%python\python.exe" -m compileall -q "%ICI%app" >nul 2>&1
+    "%ICI%python\python.exe" -m compileall -q "%ICI%python\Lib" >nul 2>&1
+    rem  Si le dossier est en lecture seule — Program Files sans droits —, le
+    rem  temoin ne s'ecrit pas et l'on retentera. Ce n'est pas bloquant : sans
+    rem  cache, le logiciel demarre seulement plus lentement.
+    echo pret> "%TEMOIN%" 2>nul
+)
+
 rem  pythonw.exe n'ouvre pas de console : c'est ce qu'on veut pour une
 rem  application graphique. Le diagnostic, lui, a besoin d'une console et
 rem  passe donc par python.exe — voir Diagnostic.cmd.

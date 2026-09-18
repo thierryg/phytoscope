@@ -80,8 +80,9 @@ make verifier      # rouvre et contrôle tout ce qui a été produit
 
 # Micrologiciel
 cd src/firmware
-./build.sh --deps              # installe SDK + chaîne ARM dans $HOME, sans sudo
-./build.sh                     # → phytosense.uf2
+./_make_.sh --deps             # installe SDK + chaîne ARM dans $HOME, sans sudo
+./_make_.sh                    # → build/phytosense.uf2 — compile seulement
+./build.sh                     # compile ET range le livrable dans build/paquets/
 ```
 
 ## 5. Où vit quoi
@@ -94,6 +95,8 @@ la **matière de référence** — ce que nous n'avons pas écrit.
 constraints.md              le cahier des charges (fait autorité)
 CHANGELOG.md                l'historique du projet entier
 README.md                   le projet vu de l'extérieur
+INSTALL.md                  ce que fait chaque installateur, par système
+PACKAGING.md                comment (re)fabriquer un paquet, ou tous
 CONTRIBUTING.md             comment contribuer ; SECURITY.md : comment signaler
 LICENSE, LICENSES/          MIT (logiciel) et CERN-OHL-P v2 (matériel) — C-53
 .ai/                        la mémoire des agents (journal, décisions, état)
@@ -112,7 +115,8 @@ src/                        TOUT LE CODE
     phytoscope/lexiques/    les 11 dictionnaires du mode vocal (JSON)
     tests/                  12 fichiers de tests, sans matériel ni réseau
   firmware/                 le micrologiciel RP2350 (C, Pico SDK) — 7 fichiers
-    build.sh                « --deps » installe SDK et chaîne ARM dans $HOME
+    _make_.sh               compile — « --deps » installe SDK et chaîne ARM
+    build.sh                compile ET range le livrable dans build/paquets/
   sdk/                      la trousse pour écrire un module tiers
     docs/                   les sept parties de la documentation
     bonjour-monde/          le module d'exemple, avec son test
@@ -148,12 +152,15 @@ packaging/                  la fabrique des paquets d'installation
   commun.py                 ce qui ne dépend d'aucun système
   construire_<os>.py        un générateur par système, autonome
   signature.py              certificat X.509, Authenticode et CMS
+  certificat.py             crée, recrée et dépose le certificat
+  langues.py                les libellés des installateurs, 11 langues
   macos_pkg.py              le format .pkg, écrit de bout en bout
   gabarits/                 control, .spec, .nsi, .wxs, Info.plist, lanceurs
 tools/                      les outils du dépôt
   entetes.py                pose et vérifie les en-têtes d'attribution
   verifier_svg.py           les illustrations sont-elles du XML bien formé ?
   pdf_impactes.py           quelles publications refaire, vu ce qui a changé
+  sbom.py                   la nomenclature du PROJET — logiciel ET micrologiciel
   gen_bom.py gen_index.py   fragments générés — ne jamais les éditer (C-45)
   gen_glossaire.py gen_credits.py gen_code_annex.py
   fetch-software.py         récupère les dépôts tiers (817 Mo, hors dépôt)

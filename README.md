@@ -147,6 +147,8 @@ phytoscope/
 ├── .github/workflows/              6 workflows d'intégration continue
 ├── constraints.md                  LE CAHIER DES CHARGES — fait autorité
 ├── AGENTS.md                       le point d'entrée pour un agent ou un humain
+├── INSTALL.md                      ce que fait chaque installateur, par OS
+├── PACKAGING.md                    comment (re)fabriquer un paquet, ou tous
 ├── CONTRIBUTING.md  SECURITY.md  CODE_OF_CONDUCT.md
 └── LICENSE  LICENSES/              MIT et CERN-OHL-P v2
 ```
@@ -227,8 +229,9 @@ versions 1.x ne connaissent que le RP2040 et échouent à la configuration).
 
 ```bash
 cd src/firmware
-./build.sh --deps     # installe le SDK et la chaîne ARM dans $HOME, sans sudo
-./build.sh            # → phytosense.uf2
+./_make_.sh --deps    # installe le SDK et la chaîne ARM dans $HOME, sans sudo
+./_make_.sh           # compile seulement → build/phytosense.uf2
+./build.sh            # compile ET range le livrable dans build/paquets/
 ```
 
 ### Répartition des deux cœurs
@@ -369,6 +372,10 @@ make certificat    # une seule fois ; idempotent ensuite
 make tout          # tous les paquets, signés
 make verifier      # rouvre et contrôle tout ce qui a été produit
 ```
+
+> **Comment (re)fabriquer un paquet précis, ou tous**, est décrit dans
+> [`PACKAGING.md`](PACKAGING.md). **Ce que fait chaque installateur, étape par
+> étape et par système**, dans [`INSTALL.md`](INSTALL.md).
 
 ### Ce que `make tout` produit
 

@@ -53,6 +53,14 @@ case "$1" in
     #  Les facultatives : leur échec est sans conséquence, par construction.
     "$VENV/bin/pip" install --quiet -r "$CIBLE/requirements-optionnel.txt" \
         >/dev/null 2>&1 || true
+
+    #  Cache de bytecode. /usr/share n'est pas inscriptible pour qui lance le
+    #  logiciel : sans ce cache, Python recompile à chaque démarrage tous les
+    #  modules et jette le résultat, et l'attente se voit. On le construit
+    #  ici, une fois, pendant qu'on a les droits de root.
+    "$VENV/bin/python" -m compileall -q "$CIBLE/phytoscope" >/dev/null 2>&1 || true
+    "$VENV/bin/python" -m compileall -q "$CIBLE/run.py" >/dev/null 2>&1 || true
+    "$VENV/bin/python" -m compileall -q "$VENV/lib" >/dev/null 2>&1 || true
     ;;
 esac
 

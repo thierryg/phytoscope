@@ -184,6 +184,69 @@ jobs:
           retention-days: 90
 
   # -------------------------------------------------------------------------
+  #  Le micrologiciel accompagne la version
+  # -------------------------------------------------------------------------
+  #  Le `.uf2` est un livrable à part entière : sans lui, la carte n'a rien à
+  #  exécuter. Il est compilé ici, à partir du commit étiqueté, et sa
+  #  provenance est attestée comme celle des paquets — un binaire de
+  #  micrologiciel trouvé quelque part ne dit pas d'où il vient.
+  micrologiciel:
+    name: Micrologiciel RP2350
+    needs: [verifier-version, controles]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Chaîne de compilation croisée
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential \
+            libstdc++-arm-none-eabi-newlib
+
+      - uses: actions/cache@v4
+        id: sdk
+        with:
+          path: ~/pico
+          key: pico-sdk-${{ hashFiles('src/firmware/_make_.sh') }}
+
+      - name: Pico SDK et chaîne ARM, dans $HOME et sans sudo
+        if: steps.sdk.outputs.cache-hit != 'true'
+        working-directory: src/firmware
+        run: ./build.sh --deps
+
+      #  `build.sh` nomme le livrable avec sa version, calcule ses empreintes
+      #  et écrit la notice : rien à refaire ici. « phytosense.uf2 » tout
+      #  court, sur le disque de quelqu'un, ne dirait pas de quelle version
+      #  il sort.
+      - name: Compiler et ranger le livrable
+        working-directory: src/firmware
+        run: ./build.sh --sortie "$GITHUB_WORKSPACE/diffusion-firmware-brut"
+
+      - name: Rassembler
+        run: |
+          mkdir -p diffusion-firmware
+          cp diffusion-firmware-brut/Firmware/* diffusion-firmware/
+          ls -la diffusion-firmware/
+          cat diffusion-firmware/phytosense-*.sha256
+
+      - name: Attester la provenance du micrologiciel
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: diffusion-firmware/*.uf2
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: micrologiciel
+          path: diffusion-firmware/
+          if-no-files-found: error
+          retention-days: 90
+
+  # -------------------------------------------------------------------------
   #  Les publications PDF accompagnent la version
   # -------------------------------------------------------------------------
   publications:
@@ -234,7 +297,7 @@ jobs:
   # -------------------------------------------------------------------------
   publier:
     name: Publier la version
-    needs: [verifier-version, paquets, publications]
+    needs: [verifier-version, paquets, micrologiciel, publications]
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
@@ -254,6 +317,7 @@ jobs:
                -o -name '*.exe' -o -name '*.msi' -o -name '*.pkg' \
                -o -name '*.zip' -o -name '*.tar.gz' -o -name '*.p7s' \
                -o -name '*.pdf' -o -name 'sbom.cdx.json' \
+               -o -name '*.uf2' -o -name '*.elf' \
                -o -name 'AUTHENTICITE.txt' -o -name '*.pem' \) \
             -exec cp -n {} diffusion/ \;
           cd diffusion && sha256sum -- * > SHA256SUMS.txt
@@ -290,6 +354,15 @@ jobs:
             continuité d'origine. Il ne fait taire ni SmartScreen ni
             Gatekeeper, et il n'a jamais prétendu le faire.
 
+            ### Le micrologiciel
+
+            `phytosense-<version>.uf2` est le micrologiciel de la carte
+            PhytoSense One. Pour le programmer : brancher la carte en
+            maintenant **BOOTSEL**, puis copier le fichier sur le disque
+            amovible qui apparaît. Voir `INSTALL.md`.
+
             ### Nomenclature logicielle
 
-            `sbom.cdx.json` (CycloneDX) liste chaque dépendance et sa version.
+            `sbom.cdx.json` (CycloneDX) liste chaque dépendance et sa
+            version — **micrologiciel compris** : Pico SDK, TinyUSB, chaîne
+            ARM.

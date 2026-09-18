@@ -327,6 +327,12 @@ class Settings:
     metadata: Dict[str, str] = field(default_factory=lambda: {
         "plante": "", "lieu": "", "operateur": "", "notes": ""})
 
+    #  Vrai quand aucun fichier de réglages n'existait au démarrage. Sert à
+    #  une chose : demander la langue, une fois. Il n'est PAS écrit dans le
+    #  fichier — c'est une observation du démarrage, pas un réglage —, d'où
+    #  son exclusion dans `to_dict`.
+    premier_lancement: bool = False
+
     # -- valeurs imposées en ligne de commande -------------------------------
     #  Une option passée au lancement — « --lang ja », « --simulation »,
     #  « --theme contraste » — vaut **pour cette séance seulement**. La rendre
@@ -367,6 +373,10 @@ class Settings:
         c'est la forme qu'on écrit sur le disque, et elle seule.
         """
         donnees = asdict(self)
+        #  `premier_lancement` observe le démarrage, il ne se règle pas :
+        #  l'écrire ferait croire, au lancement suivant, que c'est encore le
+        #  premier.
+        donnees.pop("premier_lancement", None)
         return self._rendre_les_valeurs_dorigine(donnees) if persistant else donnees
 
     @classmethod
@@ -408,7 +418,12 @@ class Settings:
     def load(cls, path: str | None = None) -> "Settings":
         path = path or cls.default_path()
         if not os.path.exists(path):
-            return cls()
+            #  Aucun fichier : c'est le premier lancement. L'interface s'en
+            #  sert pour demander la langue — une fois, et jamais ensuite.
+            #  On ne DEVINE pas la locale (`C-31`) : on pose la question.
+            reglages = cls()
+            reglages.premier_lancement = True
+            return reglages
         try:
             with open(path, encoding="utf-8") as f:
                 return cls.from_dict(json.load(f))

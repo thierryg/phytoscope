@@ -73,7 +73,7 @@ export PHYTOSCOPE_SORTIE := $(SORTIE)
 IDENT      := --version "$(VERSION)" --release "$(RELEASE)"
 
 .PHONY: aide outils deps debian fedora windows macos source tout linux \
-        hors-ligne verifier documents empreintes propre version \
+        hors-ligne micrologiciel livrables verifier documents empreintes propre version \
         certificat signer empreinte-certificat
 
 aide:
@@ -95,9 +95,16 @@ aide:
 	@echo "    make tout         les cinq"
 	@echo "    make linux        .deb et .rpm"
 	@echo "    make hors-ligne   avec les bibliothèques embarquées"
+	@echo ""
+	@echo "  Micrologiciel"
+	@echo "    make micrologiciel  compile le .uf2 et le range dans la fabrication"
+	@echo "    make livrables      les paquets ET le micrologiciel"
 	@echo
 	@echo "  Signature"
-	@echo "    make certificat   cree le certificat (une seule fois)"
+	@echo "    make certificat   cree le certificat et remplit certificat/"
+	@echo "    make certificat-etat        ce qui existe, et ou"
+	@echo "    make certificat-verifier    les deux copies concordent ?"
+	@echo "    make certificat-refait      REMPLACE la cle (rompt le lien)"
 	@echo "    make signer       signe les paquets de la fabrication"
 	@echo "    make empreinte-certificat   son empreinte SHA-256"
 	@echo
@@ -138,6 +145,22 @@ macos:
 source:
 	@$(PY) "$(ICI)construire_source.py" $(IDENT)
 
+# --- micrologiciel ---------------------------------------------------------
+#  Volontairement HORS de « tout » : compiler le micrologiciel demande une
+#  chaîne croisée ARM que la machine qui empaquette n'a pas forcément, et un
+#  `make tout` qui échouerait faute de `arm-none-eabi-gcc` serait une
+#  mauvaise surprise. La cible existe pour qui veut les deux d'un coup.
+#
+#  SORTIE lui est passée : le livrable se range alors dans la MÊME
+#  fabrication que les .deb et les .msi.
+micrologiciel:
+	@PHYTOSCOPE_SORTIE="$(SORTIE)" "$(RACINE)/src/firmware/build.sh"
+
+#  Les paquets ET le micrologiciel, dans la même fabrication.
+livrables: tout micrologiciel
+	@echo
+	@echo "  Paquets et micrologiciel : $(SORTIE)"
+
 # --- groupes ---------------------------------------------------------------
 #  L'ordre n'est pas indifférent : les cibles rapides d'abord, de sorte qu'une
 #  panne d'outil se voie en dix secondes plutôt qu'au bout du quart d'heure
@@ -162,8 +185,21 @@ hors-ligne:
 # --- signature -------------------------------------------------------------
 #  Le certificat est AUTO-SIGNÉ : il prouve l'intégrité et la continuité
 #  d'origine, il ne fait taire ni SmartScreen ni Gatekeeper. Voir signature.py.
+#  Le certificat de signature. `certificat.py` est le point d'entrée : il
+#  appelle `signature.py` pour la cryptographie, et remplit `certificat/`.
 certificat:
-	@$(PY) "$(ICI)signature.py" --certificat
+	@$(PY) "$(ICI)certificat.py" --creer
+
+certificat-etat:
+	@$(PY) "$(ICI)certificat.py"
+
+certificat-verifier:
+	@$(PY) "$(ICI)certificat.py" --verifier
+
+#  REMPLACE la clé : rompt le lien avec tout ce qui a déjà été signé.
+#  Demande une confirmation explicite, et refuse sans terminal.
+certificat-refait:
+	@$(PY) "$(ICI)certificat.py" --refaire
 
 signer:
 	@$(PY) "$(ICI)signature.py" --signer --sortie "$(SORTIE)"

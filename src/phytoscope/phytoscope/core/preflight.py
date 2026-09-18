@@ -97,6 +97,11 @@ class CheckResult:
     bibliotheque_manquante: str = ""   # ex. « libGL.so.1 »
     paquet_systeme: str = ""       # ex. « libgl1 »
     commande_systeme: str = ""     # ex. « sudo apt install libgl1 »
+    #  Vrai quand la bibliothèque EST installée sur le système mais que
+    #  l'interpréteur courant ne peut pas l'atteindre. Le remède n'est alors
+    #  pas d'installer un paquet — il est déjà là — mais de changer
+    #  d'interpréteur. Voir `interpreteur_etranger()`.
+    presente_mais_inatteignable: bool = False
 
     @property
     def ok(self) -> bool:
@@ -239,6 +244,46 @@ def _resoudre_chemin(nom: str) -> str:
     return ""
 
 
+def presente_sur_le_systeme(nom: str) -> str:
+    """Chemin de la bibliothèque si le SYSTÈME la connaît, sinon "".
+
+    À ne pas confondre avec « on sait la charger ». Un interpréteur installé
+    hors du système — Homebrew, Nix, conda, une construction maison — vient
+    souvent avec son propre chargeur dynamique et son propre chemin de
+    recherche ; il ne voit pas `/lib/x86_64-linux-gnu`. La bibliothèque est
+    alors présente et pourtant introuvable, et conseiller
+    « sudo apt install libgl1 » envoie réinstaller un paquet déjà là.
+
+    On interroge donc le système par `ldconfig`, qui répond pour le système
+    et non pour nous.
+    """
+    return _resoudre_chemin(nom)
+
+
+def interpreteur_etranger() -> str:
+    """Dit d'où vient l'interpréteur courant s'il n'est pas celui du système.
+
+    Rend une phrase prête à afficher, ou "" si l'interpréteur est celui du
+    système ou un environnement virtuel bâti sur lui.
+    """
+    reel = os.path.realpath(getattr(sys, "_base_executable", None) or sys.executable)
+    for prefixe, origine in (
+        ("/home/linuxbrew/.linuxbrew", "Homebrew"),
+        ("/opt/homebrew", "Homebrew"),
+        ("/usr/local/Cellar", "Homebrew"),
+        ("/nix/store", "Nix"),
+        ("/opt/conda", "conda"),
+        ("/opt/miniconda", "conda"),
+        ("/opt/anaconda", "conda"),
+    ):
+        if reel.startswith(prefixe):
+            return f"{origine} ({reel})"
+    #  conda se signale aussi par une variable d'environnement
+    if os.environ.get("CONDA_PREFIX") and reel.startswith(os.environ["CONDA_PREFIX"]):
+        return f"conda ({reel})"
+    return ""
+
+
 def sonder_bibliotheque(nom: str, profondeur: int = 4) -> str:
     """Trouve la bibliothèque RÉELLEMENT manquante derrière une erreur de chargement.
 
@@ -278,20 +323,35 @@ def sonder_bibliotheque(nom: str, profondeur: int = 4) -> str:
     return courant
 
 
-def analyser_import_casse(message: str) -> Tuple[str, str, str]:
-    """D'un message d'ImportError, tire (bibliothèque, paquet, commande).
+def analyser_import_casse(message: str) -> Tuple[str, str, str, bool]:
+    """D'un message d'ImportError, tire (bibliothèque, paquet, commande, présente).
 
     La bibliothèque nommée par le chargeur n'est pas toujours celle qui
     manque : on sonde la chaîne de dépendances pour nommer la bonne.
+
+    Le quatrième élément vaut ``True`` quand la bibliothèque est **installée
+    sur le système** et que c'est l'interpréteur courant qui ne l'atteint pas.
+    Il n'y a alors rien à installer, et le dire évite d'envoyer quelqu'un
+    réinstaller en boucle un paquet déjà présent.
     """
     m = _RE_LIB.search(message or "")
     if not m:
-        return "", "", ""
+        return "", "", "", False
     lib = m.group(1)
     reelle = sonder_bibliotheque(lib)
     if reelle and reelle != lib:
         log.info("Bibliothèque annoncée %s, réellement manquante : %s", lib, reelle)
         lib = reelle
+
+    #  Avant de conseiller un paquet : le système l'a-t-il déjà ? Si oui, le
+    #  défaut est chez nous — un interpréteur venu d'ailleurs (Homebrew, Nix,
+    #  conda) ne lit pas le chemin de recherche du système.
+    chemin = presente_sur_le_systeme(lib)
+    if chemin:
+        log.info("%s est présente (%s) mais illisible depuis %s",
+                 lib, chemin, sys.executable)
+        return lib, "", "", True
+
     table = BIBLIOTHEQUES.get(lib)
     if table is None:
         # tolérance aux suffixes de version : libGL.so.1.7.0 → libGL.so.1
@@ -301,10 +361,11 @@ def analyser_import_casse(message: str) -> Tuple[str, str, str]:
                 lib = connue
                 break
     if table is None:
-        return lib, "", ""
+        return lib, "", "", False
     g = gestionnaire_paquets()
     paquet = table.get(g, "")
-    return lib, paquet, commande_installation([paquet], g) if paquet else ""
+    commande = commande_installation([paquet], g) if paquet else ""
+    return lib, paquet, commande, False
 
 
 # ---------------------------------------------------------------------------
@@ -333,7 +394,8 @@ def verifier(requirement: Requirement) -> CheckResult:
         res.statut = Statut.CASSE
         res.erreur = f"{type(exc).__name__}: {exc}"
         (res.bibliotheque_manquante, res.paquet_systeme,
-         res.commande_systeme) = analyser_import_casse(str(exc))
+         res.commande_systeme,
+         res.presente_mais_inatteignable) = analyser_import_casse(str(exc))
         log.error("Import de %s impossible : %s", requirement.module, res.erreur)
     return res
 
@@ -649,6 +711,17 @@ def installer(paquets: Sequence[str], strategie: Optional[InstallStrategy] = Non
 # ---------------------------------------------------------------------------
 #  Façade
 # ---------------------------------------------------------------------------
+#  Le lanceur `run.py` écarte les interpréteurs qui ne voient pas les
+#  bibliothèques du système — Homebrew, Nix, conda — et se relance avec un
+#  autre. Il le faisait en écrivant trois lignes sur la sortie d'erreur à
+#  chaque lancement ; c'était du bruit. Il laisse maintenant cette trace,
+#  et c'est le bilan de démarrage qui la rapporte, une fois, au bon endroit.
+#
+#  Format : « origine|interpréteur écarté|interpréteur retenu ». Le dernier
+#  champ est vide si aucun ne convenait, ou porte le message d'échec.
+INTERPRETEUR_ECARTE = "PHYTOSCOPE_INTERPRETEUR_ECARTE"
+
+
 def run(settings=None, verifier_repertoires: bool = True) -> PreflightReport:
     """Exécute tous les contrôles et renvoie le rapport."""
     rep = PreflightReport(python_version=platform.python_version())
@@ -673,6 +746,27 @@ def run(settings=None, verifier_repertoires: bool = True) -> PreflightReport:
         rep.avertissements.append(
             "Cet interpréteur vient de Homebrew : il embarque sa propre glibc "
             "et ne sait pas charger les bibliothèques du système.")
+
+    #  Ce que le lanceur a fait de l'interpréteur, dit ici plutôt qu'écrit sur
+    #  la sortie d'erreur à chaque lancement.
+    trace = os.environ.get(INTERPRETEUR_ECARTE, "")
+    if trace:
+        origine, ecarte, retenu = (trace.split("|") + ["", "", ""])[:3]
+        if retenu.startswith("échec"):
+            rep.avertissements.append(
+                f"Interpréteur {origine} écarté ({ecarte}) mais la relance a "
+                f"échoué — {retenu}")
+        elif retenu:
+            rep.avertissements.append(
+                f"Interpréteur {origine} écarté ({ecarte}) : il ne voit pas "
+                f"les bibliothèques du système. PhytoScope s'est relancé avec "
+                f"{retenu}.")
+        else:
+            rep.avertissements.append(
+                f"Interpréteur {origine} ({ecarte}) : aucun interpréteur de "
+                f"rechange n'a été trouvé. Préparez l'environnement du "
+                f"projet — « make install-dev ».")
+        log.info("Interpréteur : %s", trace)
 
     if sys.platform.startswith("linux") and not os.environ.get("DISPLAY") \
             and not os.environ.get("WAYLAND_DISPLAY"):

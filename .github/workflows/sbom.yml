@@ -1,0 +1,196 @@
+# ===========================================================================
+#  PhytoScope — la nomenclature logicielle suit le code
+# ===========================================================================
+#  Se déclenche dès qu'une modification touche le logiciel, le micrologiciel
+#  ou leurs dépendances déclarées. Elle régénère les **deux** nomenclatures —
+#  celle du logiciel, livrée dans les paquets, et celle du projet entier — et,
+#  si elles ont changé, les ajoute au dépôt.
+#
+#  Pourquoi automatiser plutôt que rappeler de le faire : **un SBOM faux est
+#  pire qu'aucun SBOM.** Il sert à répondre « cette faille me concerne-t-elle ? »
+#  et une réponse fondée sur une liste périmée est une fausse assurance. Le
+#  seul moment où l'on est sûr qu'il correspond au code est celui où le code
+#  vient de changer.
+#
+#  Sur une demande de fusion, rien n'est écrit — on n'écrit pas dans la
+#  branche de quelqu'un d'autre : le décalage est signalé en commentaire, et
+#  `securite.yml` le refuse s'il persiste.
+# ===========================================================================
+name: Nomenclature logicielle
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/phytoscope/**'
+      - 'src/firmware/**'
+      - 'tools/sbom.py'
+      - '.github/workflows/sbom.yml'
+  pull_request:
+    paths:
+      - 'src/phytoscope/**'
+      - 'src/firmware/**'
+      - 'tools/sbom.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sbom-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sbom:
+    name: Régénérer le SBOM
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write          # pour reverser le SBOM sur main
+      pull-requests: write     # pour le signaler sur une demande de fusion
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          #  Le jeton par défaut suffit : on pousse sur la même branche.
+          #  `persist-credentials` reste vrai, c'est ce qui le permet.
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      #  Le SBOM énumère ce qui est RÉELLEMENT installé : il faut donc
+      #  installer les dépendances, et non se contenter de lire
+      #  requirements.txt. C'est la différence entre « ce qu'on demande » et
+      #  « ce qu'on a ».
+      - name: Dépendances du logiciel
+        working-directory: src/phytoscope
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -r requirements-optionnel.txt
+
+      #  Deux nomenclatures, deux portées — et c'est voulu :
+      #
+      #    · src/phytoscope/sbom.cdx.json  le LOGICIEL, livré dans les paquets
+      #    · sbom.cdx.json (racine)        le PROJET, micrologiciel compris
+      #
+      #  La seconde couvre le Pico SDK, TinyUSB et la chaîne ARM, qui ne sont
+      #  pas des paquets Python. Sans elles la liste était partielle, et une
+      #  liste partielle donne une fausse assurance.
+      - name: Régénérer les deux nomenclatures
+        run: |
+          cp src/phytoscope/sbom.cdx.json /tmp/avant-logiciel.json 2>/dev/null \
+            || echo '{}' > /tmp/avant-logiciel.json
+          cp sbom.cdx.json /tmp/avant-projet.json 2>/dev/null \
+            || echo '{}' > /tmp/avant-projet.json
+          python tools/sbom.py --ecrire --logiciel-seul
+          python tools/sbom.py
+
+      #  La comparaison ignore l'horodatage : le SBOM porte la date de sa
+      #  production, qui change à chaque passage sans que rien n'ait bougé.
+      #  Comparer les fichiers bruts ferait donc une révision par jour.
+      - name: Ont-elles réellement changé ?
+        id: diff
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
+
+          def utile(chemin):
+              """Les composants et leur version — pas l'horodatage.
+
+              Le document porte la date de sa production et un numéro de
+              série tiré au hasard : les comparer ferait une révision par
+              jour, sans qu'une dépendance ait bougé.
+              """
+              try:
+                  d = json.load(open(chemin))
+              except Exception:
+                  return None
+              trouves = []
+
+              def parcourir(liste):
+                  for c in liste or []:
+                      if c.get("name"):
+                          trouves.append((c.get("name", ""),
+                                          str(c.get("version", ""))))
+                      parcourir(c.get("components"))
+
+              parcourir(d.get("components"))
+              return sorted(trouves)
+
+          avant = (utile("/tmp/avant-logiciel.json"),
+                   utile("/tmp/avant-projet.json"))
+          apres = (utile("src/phytoscope/sbom.cdx.json"),
+                   utile("sbom.cdx.json"))
+          change = avant != apres
+          avant = [x for p in avant for x in (p or [])]
+          apres = [x for p in apres for x in (p or [])]
+          print(f"change={'oui' if change else 'non'}")
+          if change:
+              a = dict(avant or []); b = dict(apres or [])
+              lignes = []
+              for nom in sorted(set(a) | set(b)):
+                  if a.get(nom) != b.get(nom):
+                      lignes.append(f"  {nom} : {a.get(nom, '—')} → {b.get(nom, '—')}")
+              print("resume<<FIN")
+              print("\n".join(lignes) or "  (structure modifiée)")
+              print("FIN")
+          PY
+
+      - name: Ce qui a changé
+        if: steps.diff.outputs.change == 'oui'
+        run: |
+          echo "${{ steps.diff.outputs.resume }}"
+
+      # -- sur main : on reverse ------------------------------------------
+      - name: Reverser le SBOM sur main
+        if: steps.diff.outputs.change == 'oui' && github.event_name == 'push'
+        run: |
+          git config user.name  'phytoscope-ci'
+          git config user.email 'contact@bretagne-namaste.com'
+          git add src/phytoscope/sbom.cdx.json sbom.cdx.json
+          git commit -m "$(printf 'nomenclature logicielle régénérée\n\nLe logiciel ou ses dépendances ont changé en %s.\nUn SBOM faux est pire qu%s SBOM : il sert à répondre\n« cette faille me concerne-t-elle ? ».\n\n%s' \
+            "${GITHUB_SHA::12}" "'aucun" "${{ steps.diff.outputs.resume }}")"
+          git push
+
+      # -- sur une demande de fusion : on signale, on n'écrit pas ----------
+      - name: Signaler le décalage sur la demande de fusion
+        if: steps.diff.outputs.change == 'oui' && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const resume = `${{ steps.diff.outputs.resume }}`;
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: [
+                "### La nomenclature logicielle a changé",
+                "",
+                "Les nomenclatures ne correspondent plus aux dépendances",
+                "réellement installées :",
+                "",
+                "```",
+                resume,
+                "```",
+                "",
+                "À régénérer avant la fusion :",
+                "",
+                "```bash",
+                "cd src/phytoscope",
+                "python3 tools/sbom.py --ecrire --logiciel-seul",
+                "```",
+                "",
+                "_Un SBOM faux est pire qu'aucun SBOM : il sert à répondre",
+                "« cette faille me concerne-t-elle ? »._",
+              ].join("\n"),
+            });
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sbom
+          path: |
+            src/phytoscope/sbom.cdx.json
+            sbom.cdx.json
+          retention-days: 30

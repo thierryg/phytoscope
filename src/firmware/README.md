@@ -98,6 +98,50 @@ https://marketplace.visualstudio.com/items?itemName=raspberry-pi.raspberry-pi-pi
 
 ## 3. Construire
 
+**Deux scripts, deux usages.**
+
+| | Ce qu'il fait | Quand s'en servir |
+|---|---|---|
+| **`./_make_.sh`** | compile, et rien de plus → `build/phytosense.uf2` | pendant la mise au point, quand on compile vingt fois d'affilée |
+| **`./build.sh`** | compile **puis range le livrable** dans `build/paquets/`, nommé avec sa version, avec ses empreintes et une notice | pour publier, et dans l'intégration continue |
+
+```bash
+./build.sh --deps     # Pico SDK et chaîne ARM dans $HOME, sans sudo — une fois
+./build.sh            # compile et range le livrable
+```
+
+La première commande installe le SDK et la chaîne croisée **dans le dossier
+personnel, sans privilèges** (`C-55`). La seconde produit :
+
+```
+build/phytosense.uf2                        ce que produit la compilation
+build/paquets/<version>-<horodatage>/Firmware/
+    phytosense-<version>.uf2                ce qu'on copie sur la carte
+    phytosense-<version>.elf                pour le débogage
+    phytosense-<version>.bin                image brute
+    phytosense-<version>.sha256             les empreintes
+    LISEZ-MOI.txt                           comment programmer la carte
+```
+
+**Pourquoi nommer le fichier avec sa version** : « phytosense.uf2 » tout court,
+sur le disque de quelqu'un six mois plus tard, ne dit pas de quelle version il
+sort. Et le `.uf2` est un livrable à part entière — sans lui, les paquets
+installent un logiciel qui n'a rien à écouter.
+
+### Les options
+
+| Option | Effet |
+|---|---|
+| `--deps` | installe le Pico SDK et la chaîne ARM dans `$HOME` |
+| `--propre` | repart d'un répertoire de construction vide |
+| `--sortie DOSSIER` | range le livrable ailleurs |
+| `--sans-installer` | compile seulement, comme `./_make_.sh` |
+
+`build.sh` passe à `_make_.sh` tout ce qu'il ne reconnaît pas : les options de
+compilation restent donc celles de `_make_.sh`.
+
+### À la main, si l'on préfère
+
 ```bash
 export PICO_SDK_PATH=/chemin/vers/pico-sdk
 cp "$PICO_SDK_PATH/external/pico_sdk_import.cmake" .
@@ -109,6 +153,18 @@ make -j$(nproc)
 
 `-DPICO_BOARD=pico2` sélectionne le RP2350. Pour une carte nue, sans définition de
 carte toute faite : `-DPICO_PLATFORM=rp2350 -DPICO_BOARD=none`.
+
+### Si `cmake` refuse de partir
+
+```
+CMake Error: The current CMakeCache.txt directory … is different than
+the directory … where CMakeCache.txt was created.
+```
+
+Un cache CMake retient le **chemin absolu** des sources : déplacer ou renommer
+la copie de travail le rend périmé. `_make_.sh` le détecte maintenant et le
+jette de lui-même — ce message ne devrait plus apparaître. Si cela arrive
+quand même : `rm -rf build`.
 
 ---
 
@@ -192,6 +248,8 @@ carte qui perd sa configuration n'existe pas.
 | `usb_descriptors.c` | descripteurs du périphérique composite UAC2 + CDC | 221 |
 | `tusb_config.h` | configuration de TinyUSB | 62 |
 | `CMakeLists.txt` | construction | 38 |
+| `_make_.sh` | compile — SDK, chaîne ARM, cmake | — |
+| `build.sh` | compile **et range le livrable** dans `build/paquets/` | — |
 
 ---
 
@@ -220,22 +278,35 @@ indique quoi chercher, dans quel ordre.
 
 ## 8. État de cette publication
 
-Ces sources sont **complètes et cohérentes, mais n'ont pas été compilées ici** :
-la machine de rédaction n'a ni le SDK, ni la chaîne croisée, ni la carte. Elles
-sont publiées comme référence de conception — ce que fait chaque registre, et
-pourquoi — et non comme un binaire éprouvé.
+**Ces sources compilent.** Elles produisent `phytosense.uf2` (80 ko),
+`phytosense.elf` (764 ko) et `phytosense.bin` (40 ko), pour 44 776 octets de
+code et 106 508 de données. L'intégration continue les compile à chaque
+passage — `.github/workflows/paquets.yml`, job « micrologiciel » — et joint le
+livrable aux artéfacts avec ses empreintes.
 
-Attendez-vous donc à corriger quelques détails à la première compilation :
-un nom de macro TinyUSB qui a changé de version, une broche à ajuster selon le
-brochage définitif de votre carte. Ce qui est juste, en revanche, et ce qui a
-demandé le travail : la configuration du convertisseur, la discipline
-d'horodatage, la séparation des deux cœurs et le dialogue de contrôle.
+> Cette section disait jusqu'au 2026-09-18 que les sources « n'avaient pas été
+> compilées ici ». C'était vrai quand elle a été écrite, et c'est ce que
+> corrige la contrainte `C-3` : **vérifier avant d'affirmer.** La compilation
+> est désormais automatique, et le décompte ci-dessus vient de
+> `arm-none-eabi-size`.
+
+### Ce qui reste à éprouver, et qui ne peut pas l'être ici
+
+**Aucune carte n'a été branchée.** Ce qui compile n'est pas ce qui fonctionne :
+la configuration du convertisseur, le brochage et les temps de réponse
+demandent le matériel. Attendez-vous donc à ajuster :
+
+- une broche, selon le brochage définitif de votre carte ;
+- les constantes de gain de l'étage d'entrée ;
+- les délais du dialogue avec le convertisseur.
+
+Ce qui est juste, en revanche, et ce qui a demandé le travail : la discipline
+d'horodatage, la séparation des deux cœurs, et le dialogue de contrôle — que
+l'on peut éprouver sans carte, par un terminal série (voir le § 7).
+
+### Une dépendance à surveiller
 
 `usb_descriptors.c` dépend de la macro `TUD_AUDIO_MIC_FOUR_CH_DESCRIPTOR`,
-présente dans TinyUSB depuis la version fournie avec le SDK 2.0. Si votre SDK
-expose une signature différente, l'exemple `audio_4_channel_mic` de
-https://github.com/hathach/tinyusb/tree/master/examples/device donne la forme
-en vigueur.
-
-Le couple VID/PID `1209:7A01` provient de la plage ouverte de https://pid.codes
-et ne convient pas à un produit commercialisé.
+présente dans TinyUSB depuis la version fournie avec le SDK 2.0. Le SDK utilisé
+est figé dans `_make_.sh` (`SDK_VERSION`), et `tools/sbom.py` le lit là :
+la nomenclature du projet dit donc toujours quelle version est en service.

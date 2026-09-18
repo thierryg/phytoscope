@@ -1,0 +1,306 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:3d78297d-28d1-4fe3-9a68-4809f050858a",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-09-18T19:05:37.359703+00:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "phytoscope-sbom-projet",
+          "version": "1.5.1",
+          "publisher": "Bretagne Namasté"
+        }
+      ]
+    },
+    "authors": [
+      {
+        "name": "Bretagne Namasté",
+        "email": "contact@bretagne-namaste.com"
+      }
+    ],
+    "component": {
+      "type": "application",
+      "name": "PhytoScope",
+      "version": "1.5.1",
+      "publisher": "Bretagne Namasté",
+      "description": "Écouter les plantes sans raconter d'histoires — logiciel, micrologiciel et matériel.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://bretagne-namaste.com"
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "type": "application",
+      "name": "phytoscope-logiciel",
+      "version": "1.5.1",
+      "description": "Le logiciel d'acquisition et de sonification (Python 3, Qt 6).",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "components": [
+        {
+          "type": "library",
+          "name": "numpy",
+          "version": "2.2.6",
+          "purl": "pkg:pypi/numpy@2.2.6",
+          "publisher": "NumPy Developers",
+          "description": "calcul numérique et traitement du signal",
+          "licenses": [
+            {
+              "license": {
+                "id": "BSD-3-Clause"
+              }
+            }
+          ],
+          "scope": "required"
+        },
+        {
+          "type": "library",
+          "name": "PySide6",
+          "version": "6.11.2",
+          "purl": "pkg:pypi/PySide6@6.11.2",
+          "publisher": "The Qt Company",
+          "description": "interface graphique Qt 6",
+          "licenses": [
+            {
+              "license": {
+                "id": "LGPL-3.0-only"
+              }
+            }
+          ],
+          "scope": "required"
+        },
+        {
+          "type": "library",
+          "name": "shiboken6",
+          "version": "6.11.2",
+          "purl": "pkg:pypi/shiboken6@6.11.2",
+          "publisher": "The Qt Company",
+          "description": "liaison C++/Python de Qt",
+          "licenses": [
+            {
+              "license": {
+                "id": "LGPL-3.0-only"
+              }
+            }
+          ],
+          "scope": "required"
+        },
+        {
+          "type": "library",
+          "name": "pyqtgraph",
+          "version": "0.14.0",
+          "purl": "pkg:pypi/pyqtgraph@0.14.0",
+          "publisher": "Luke Campagnola et contributeurs",
+          "description": "tracés scientifiques temps réel",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT"
+              }
+            }
+          ],
+          "scope": "optional"
+        },
+        {
+          "type": "library",
+          "name": "sounddevice",
+          "version": "0.5.6",
+          "purl": "pkg:pypi/sounddevice@0.5.6",
+          "publisher": "Matthias Geier",
+          "description": "entrée et sortie audio (liaison PortAudio)",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT"
+              }
+            }
+          ],
+          "scope": "optional"
+        },
+        {
+          "type": "library",
+          "name": "pyserial",
+          "version": "3.5",
+          "purl": "pkg:pypi/pyserial@3.5",
+          "publisher": "Chris Liechti",
+          "description": "port série : contrôle de la carte",
+          "licenses": [
+            {
+              "license": {
+                "id": "BSD-3-Clause"
+              }
+            }
+          ],
+          "scope": "optional"
+        },
+        {
+          "type": "library",
+          "name": "python-rtmidi",
+          "version": "1.5.8",
+          "purl": "pkg:pypi/python-rtmidi@1.5.8",
+          "publisher": "Christopher Arndt",
+          "description": "sortie MIDI (liaison RtMidi)",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT"
+              }
+            }
+          ],
+          "scope": "optional"
+        },
+        {
+          "type": "library",
+          "name": "pyusb",
+          "version": "présent",
+          "purl": "pkg:pypi/pyusb@présent",
+          "publisher": "PyUSB Developers",
+          "description": "descripteurs USB détaillés",
+          "licenses": [
+            {
+              "license": {
+                "id": "BSD-3-Clause"
+              }
+            }
+          ],
+          "scope": "optional"
+        },
+        {
+          "type": "library",
+          "name": "cffi",
+          "version": "2.1.1",
+          "purl": "pkg:pypi/cffi@2.1.1",
+          "publisher": "Armin Rigo, Maciej Fijalkowski",
+          "description": "interface C, requise par sounddevice",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT"
+              }
+            }
+          ],
+          "scope": "optional"
+        }
+      ]
+    },
+    {
+      "type": "firmware",
+      "name": "phytosense-firmware",
+      "version": "1.5.1",
+      "description": "Le micrologiciel de la carte PhytoSense One (RP2350, C).",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "components": [
+        {
+          "type": "library",
+          "name": "pico-sdk",
+          "version": "2.3.1",
+          "publisher": "Raspberry Pi Ltd",
+          "description": "bibliothèque de base du RP2350 : horloges, DMA, multicœur",
+          "licenses": [
+            {
+              "license": {
+                "id": "BSD-3-Clause"
+              }
+            }
+          ],
+          "scope": "required",
+          "externalReferences": [
+            {
+              "type": "website",
+              "url": "https://github.com/raspberrypi/pico-sdk"
+            }
+          ],
+          "purl": "pkg:github/raspberrypi/pico-sdk@2.3.1"
+        },
+        {
+          "type": "library",
+          "name": "tinyusb",
+          "version": "2.3.1",
+          "publisher": "Ha Thach et contributeurs",
+          "description": "pile USB : port série virtuel et MIDI",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT"
+              }
+            }
+          ],
+          "scope": "required",
+          "externalReferences": [
+            {
+              "type": "website",
+              "url": "https://github.com/hathach/tinyusb"
+            }
+          ]
+        },
+        {
+          "type": "library",
+          "name": "arm-gnu-toolchain",
+          "version": "14.2.rel1",
+          "publisher": "Arm Ltd",
+          "description": "compilateur croisé — outil de construction, non embarqué",
+          "licenses": [
+            {
+              "license": {
+                "id": "GPL-3.0-with-GCC-exception"
+              }
+            }
+          ],
+          "scope": "excluded",
+          "externalReferences": [
+            {
+              "type": "website",
+              "url": "https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads"
+            }
+          ]
+        },
+        {
+          "type": "library",
+          "name": "picotool",
+          "version": "2.3.1",
+          "publisher": "Raspberry Pi Ltd",
+          "description": "produit le .uf2 — outil de construction, non embarqué",
+          "licenses": [
+            {
+              "license": {
+                "id": "BSD-3-Clause"
+              }
+            }
+          ],
+          "scope": "excluded",
+          "externalReferences": [
+            {
+              "type": "website",
+              "url": "https://github.com/raspberrypi/picotool"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
