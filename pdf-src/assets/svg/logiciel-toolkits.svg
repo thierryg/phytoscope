@@ -1,0 +1,194 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/logiciel-toolkits.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 600" width="980" height="600">
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+ <marker id="ahk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
+   markerHeight="5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#23302C"/></marker>
+ <marker id="ahc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#A8552E"/></marker>
+ <pattern id="hatch" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#E0C073" stroke-width="2.4"/></pattern>
+ <pattern id="hatchb" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
+</defs>
+<rect width="980" height="600" fill="#FFFFFF"/>
+<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Quelle boîte à outils graphique ?</text>
+<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Le critère décisif n'est pas la beauté : c'est le tracé de 250 points par seconde</text>
+<text x="525.0" y="104" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Vitesse</text>
+<text x="525.0" y="117" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">de tracé</text>
+<text x="635.0" y="104" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Richesse</text>
+<text x="635.0" y="117" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">des widgets</text>
+<text x="745.0" y="104" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Installation</text>
+<text x="745.0" y="117" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">simple</text>
+<text x="855.0" y="104" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Beauté</text>
+<text x="855.0" y="117" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">native</text>
+<rect x="40" y="132" width="900" height="64" rx="4" fill="#fff" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="56" y="158" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Qt 6 (PySide6)</text>
+<text x="56" y="178" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">LGPL · 60 im/s via pyqtgraph</text>
+<circle cx="496.0" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="506.92" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="517.84" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="528.76" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="539.6800000000001" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="606.0" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="616.92" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="627.84" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="638.76" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="649.6800000000001" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="716.0" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="726.92" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="737.84" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="748.76" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="759.6800000000001" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="826.0" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="836.92" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="847.84" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="858.76" cy="162" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="869.6800000000001" cy="162" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<rect x="40" y="204" width="900" height="64" rx="4" fill="#FAFBFA" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="56" y="230" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">GTK 4 (PyGObject)</text>
+<text x="56" y="250" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">pénible à installer sous Windows</text>
+<circle cx="496.0" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="506.92" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="517.84" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="528.76" cy="234" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="539.6800000000001" cy="234" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="606.0" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="616.92" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="627.84" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="638.76" cy="234" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="649.6800000000001" cy="234" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="716.0" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="726.92" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="737.84" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="748.76" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="759.6800000000001" cy="234" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="826.0" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="836.92" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="847.84" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="858.76" cy="234" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="869.6800000000001" cy="234" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<rect x="40" y="276" width="900" height="64" rx="4" fill="#fff" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="56" y="302" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">wxWidgets (wxPython)</text>
+<text x="56" y="322" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">natif, mais tracé vieillissant</text>
+<circle cx="496.0" cy="306" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="506.92" cy="306" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="517.84" cy="306" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="528.76" cy="306" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="539.6800000000001" cy="306" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="606.0" cy="306" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="616.92" cy="306" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="627.84" cy="306" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="638.76" cy="306" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="649.6800000000001" cy="306" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="716.0" cy="306" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="726.92" cy="306" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="737.84" cy="306" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="748.76" cy="306" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="759.6800000000001" cy="306" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="826.0" cy="306" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="836.92" cy="306" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="847.84" cy="306" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="858.76" cy="306" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="869.6800000000001" cy="306" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<rect x="40" y="348" width="900" height="64" rx="4" fill="#FAFBFA" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="56" y="374" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Tkinter</text>
+<text x="56" y="394" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">canevas saturé au-delà de 20 im/s</text>
+<circle cx="496.0" cy="378" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="506.92" cy="378" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="517.84" cy="378" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="528.76" cy="378" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="539.6800000000001" cy="378" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="606.0" cy="378" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="616.92" cy="378" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="627.84" cy="378" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="638.76" cy="378" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="649.6800000000001" cy="378" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="716.0" cy="378" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="726.92" cy="378" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="737.84" cy="378" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="748.76" cy="378" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="759.6800000000001" cy="378" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="826.0" cy="378" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="836.92" cy="378" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="847.84" cy="378" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="858.76" cy="378" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="869.6800000000001" cy="378" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<rect x="40" y="420" width="900" height="64" rx="4" fill="#fff" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="56" y="446" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Dear PyGui</text>
+<text x="56" y="466" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">GPU rapide, peu accessible</text>
+<circle cx="496.0" cy="450" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="506.92" cy="450" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="517.84" cy="450" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="528.76" cy="450" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="539.6800000000001" cy="450" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="606.0" cy="450" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="616.92" cy="450" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="627.84" cy="450" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="638.76" cy="450" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="649.6800000000001" cy="450" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="716.0" cy="450" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="726.92" cy="450" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="737.84" cy="450" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="748.76" cy="450" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="759.6800000000001" cy="450" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="826.0" cy="450" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="836.92" cy="450" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="847.84" cy="450" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="858.76" cy="450" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="869.6800000000001" cy="450" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<rect x="40" y="492" width="900" height="64" rx="4" fill="#FAFBFA" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="56" y="518" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">HTML5 + TypeScript</text>
+<text x="56" y="538" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Electron/Tauri : 180 Mo, passerelle</text>
+<circle cx="496.0" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="506.92" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="517.84" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="528.76" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="539.6800000000001" cy="522" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="606.0" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="616.92" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="627.84" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="638.76" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="649.6800000000001" cy="522" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="716.0" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="726.92" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="737.84" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="748.76" cy="522" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="759.6800000000001" cy="522" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="826.0" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="836.92" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="847.84" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="858.76" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="869.6800000000001" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<text x="490" y="580" font-family="Lato, sans-serif" font-size="17.7" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Retenu : PySide6 + pyqtgraph. Le reste du document explique comment le remplacer si ce choix vieillit.</text>
+<text x="28" y="592" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
+<text x="952" y="592" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
+</svg>

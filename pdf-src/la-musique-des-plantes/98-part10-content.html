@@ -1,0 +1,358 @@
+<section class="chapter">
+  <h2 id="c38-oscillo" data-toc="chapter">À l'oscilloscope analogique</h2>
+  <p class="chapo">Un oscilloscope à tube, même très ancien, est l'instrument le plus révélateur de tout ce domaine — à condition de savoir ce qu'on lui demande. Voici comment voir, point par point de la chaîne, ce que l'oreille ne fait que deviner.</p>
+
+  <p class="lettrine noindent">L'oscilloscope analogique a une réputation d'obsolescence imméritée. Pour notre usage, il offre trois avantages décisifs sur un modèle numérique d'entrée de gamme : une bande passante d'entrée parfaitement continue jusqu'au continu, aucune quantification qui masquerait un détail, et surtout un affichage <em>persistant et lisse</em> qui rend visibles des dérives lentes qu'un affichage numérique rafraîchi hache en morceaux.</p>
+
+  <p>Son inconvénient est symétrique : il ne mémorise rien. Sur des phénomènes de quelques secondes à quelques minutes, c'est un vrai handicap — mais il existe des parades, que nous verrons.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Sécurité — à lire avant de brancher quoi que ce soit</div>
+    <p><strong>La masse de la sonde d'un oscilloscope est reliée à la terre du secteur.</strong> C'est le point le plus dangereux de tout ce chapitre.</p>
+    <p>Conséquence n° 1 : dès que vous clipsez la pince de masse de la sonde sur votre montage, <strong>votre montage alimenté par piles se retrouve relié à la terre du réseau</strong>. Vous introduisez exactement la boucle de masse que vous cherchiez à éviter, et le ronflement à 50 Hz explose.</p>
+    <p>Conséquence n° 2, bien plus grave : <strong>ne branchez jamais un oscilloscope sur un montage relié à une personne.</strong> Vous créeriez un chemin direct entre un être humain et la terre du secteur. Si vous devez observer une chaîne connectée à un humain, utilisez une sonde différentielle isolée, ou un oscilloscope portable sur batterie, sans aucune liaison au secteur.</p>
+    <p>Conséquence n° 3 : ne tentez <em>jamais</em> de « flotter » un oscilloscope en supprimant sa broche de terre. C'est une pratique dangereuse qui met le châssis et les masses de toutes les sondes au potentiel du point de mesure.</p>
+    <p><strong>Configuration recommandée pour ce chapitre :</strong> montage sur piles, plante seule (aucun humain connecté), oscilloscope relié à la terre, et acceptation du ronflement supplémentaire pendant la durée de l'observation.</p>
+  </div>
+
+  <h3 id="c38-points" data-toc="sub">Les cinq points de mesure, et ce qu'on y voit</h3>
+
+  <table class="tight">
+    <thead><tr><th>Point</th><th>Où</th><th>Couplage</th><th>Calibre vertical</th><th>Base de temps</th><th>Ce que vous devez voir</th></tr></thead>
+    <tbody>
+      <tr><td><strong>① Électrodes</strong></td><td>Directement aux bornes des sondes</td><td><strong>DC</strong></td><td>1 V/div</td><td>0,5 ms/div</td><td>Une exponentielle de charge/décharge entre ⅓ et ⅔ de V<sub>alim</sub></td></tr>
+      <tr><td><strong>② Broche 6 (THR)</strong></td><td>Sur C1</td><td>DC</td><td>1 V/div</td><td>0,5 ms/div</td><td>La rampe caractéristique du 555 — <strong>le plus instructif</strong></td></tr>
+      <tr><td><strong>③ Broche 3 (Q)</strong></td><td>Sortie de l'oscillateur</td><td>DC</td><td>2 V/div</td><td>0,5 ms/div</td><td>Un signal carré à rapport cyclique asymétrique</td></tr>
+      <tr><td><strong>④ Sortie MIDI (D1/TX)</strong></td><td>Avant R3</td><td>DC</td><td>2 V/div</td><td>20 µs/div</td><td>Des salves de trois octets à 31 250 bauds</td></tr>
+      <tr><td><strong>⑤ Sortie CV (D11 filtrée)</strong></td><td>Après R10/C6</td><td>DC</td><td>1 V/div</td><td>0,2 s/div</td><td>Une tension continue qui monte et descend par rampes</td></tr>
+    </tbody>
+    <caption>Les cinq points. Le point ② est de loin le plus riche d'enseignement : c'est là que la plante est directement visible.</caption>
+  </table>
+
+  <h3 id="c38-rampe" data-toc="sub">Le point ② : voir la plante en direct</h3>
+
+  <div class="schema light">
+    <div class="sch-h">Ce que l'écran affiche sur la broche 6 (THR)</div>
+<pre>
+  Réglages : couplage DC · 1 V/div · 0,5 ms/div · déclenchement sur front
+             montant, niveau ≈ 2 V, mode AUTO puis NORMAL
+
+  V
+  │
+  ⅔V ┄┄┄┄┄┄╱╲┄┄┄┄┄┄┄┄┄╱╲┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄╱╲┄┄┄┄┄┄┄┄┄  seuil haut du 555
+  │       ╱  ╲        ╱  ╲                ╱  ╲
+  │      ╱    ╲      ╱    ╲              ╱    ╲
+  │     ╱      ╲    ╱      ╲            ╱      ╲
+  ⅓V ┄┄╱┄┄┄┄┄┄┄┄╲┄┄╱┄┄┄┄┄┄┄┄╲┄┄┄┄┄┄┄┄┄┄╱┄┄┄┄┄┄┄┄╲┄  seuil bas du 555
+  │   ╱          ╲╱          ╲        ╱          ╲
+  0 ─┴────────────────────────────────────────────── t
+      │←── T_haut ──→│←T_bas→│
+      │←─────── T = période ───────→│
+
+  CHARGE (montée)    : à travers LA PLANTE + R1   → T_haut = 0,693·(Rp+R1)·C
+  DÉCHARGE (descente): à travers R1 seule          → T_bas  = 0,693·R1·C
+
+  ⇒ LA MONTÉE EST LA PLANTE. LA DESCENTE EST VOTRE RÉSISTANCE FIXE.
+
+  CE QUE VOUS OBSERVEZ EN DIRECT
+  · La descente est TOUJOURS identique : c'est votre référence interne.
+  · La montée s'allonge quand l'impédance de la plante augmente
+    (feuille qui sèche, stomates qui se ferment, contact qui se dégrade).
+  · La montée raccourcit quand l'impédance baisse.
+  · Le RAPPORT T_haut / T_bas est une mesure directe de Rp :
+
+              Rp = R1 · (T_haut / T_bas − 1)
+
+    Avec R1 = 100 kΩ, T_haut = 1,2 ms et T_bas = 0,33 ms :
+              Rp = 100 k · (3,64 − 1) = 264 kΩ
+</pre>
+    <figcaption>La formule du bas est précieuse : elle transforme un oscilloscope en ohmmètre à très haute impédance, insensible à la dérive de l'alimentation.</figcaption>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Idée clé</div>
+    <p>Cette lecture est la plus honnête de tout l'ouvrage. Sur l'écran, vous voyez <strong>directement</strong> et sans aucun intermédiaire logiciel la grandeur physique que tout le reste transforme, quantifie, filtre et habille. Pas de gamme, pas d'arpégiateur, pas de réverbération : une rampe qui s'allonge et se raccourcit.</p>
+    <p>Passez une heure à regarder cette rampe avant de brancher quoi que ce soit d'autre. Vous saurez ensuite, pour toujours, ce que « la plante chante » veut réellement dire.</p>
+  </div>
+
+  <h3 id="c38-lent" data-toc="sub">Le problème du temps long, et ses trois parades</h3>
+
+  <p>Les phénomènes intéressants durent des secondes, des minutes, parfois des heures. Un oscilloscope analogique, avec sa base de temps la plus lente — typiquement 0,5 ou 1 seconde par division —, affiche un point lumineux qui rampe péniblement et dont la trace s'efface avant d'avoir traversé l'écran. Trois parades existent.</p>
+
+  <table>
+    <thead><tr><th>Parade</th><th>Mise en œuvre</th><th>Ce qu'elle permet</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Mesurer le rapport, pas la dérive</strong></td><td>Rester en base de temps rapide (0,5 ms/div) et observer le <em>changement de forme</em> de la rampe</td><td>Suivi qualitatif en direct, sans mémoire nécessaire — la meilleure méthode</td></tr>
+      <tr><td><strong>2. La photographie à pose longue</strong></td><td>Base de temps à 0,5 s/div, pièce dans le noir, appareil photo ou téléphone en pose de 10 à 30 s face à l'écran</td><td>Capturer un balayage complet sur une carte mémoire — la technique employée avant l'ère numérique</td></tr>
+      <tr><td><strong>3. L'observation de la sortie CV</strong></td><td>Point ⑤, base de temps 0,2 à 1 s/div, couplage DC</td><td>La tension de commande <em>intègre</em> le comportement sur plusieurs secondes : elle rend visible la tendance là où la rampe montre l'instant</td></tr>
+    </tbody>
+    <caption>Trois parades. La première est la plus utile au quotidien ; la seconde reste la méthode historique et elle fonctionne toujours parfaitement.</caption>
+  </table>
+
+  <h3 id="c38-xy" data-toc="sub">Le mode X-Y : les figures de Lissajous du vivant</h3>
+
+  <p>Tout oscilloscope analogique possède un mode X-Y où le second canal pilote le balayage horizontal au lieu du temps. C'est un mode magnifique et sous-exploité.</p>
+
+  <div class="schema light">
+    <div class="sch-h">Trois usages du mode X-Y</div>
+<pre>
+  USAGE A — MESURE D'IMPÉDANCE PAR FIGURE DE LISSAJOUS
+
+     X ← tension aux bornes de la plante
+     Y ← tension aux bornes d'une résistance témoin en série
+     Excitation : générateur sinusoïdal à 1 kHz, faible amplitude
+
+        Résistance PURE            Impédance COMPLEXE
+        (droite inclinée)          (ellipse ouverte)
+
+              ╱                          ╭───╮
+             ╱                          ╱     ╲
+            ╱                          │       │
+           ╱                            ╲     ╱
+          ╱                              ╰───╯
+
+     · La PENTE de la droite donne le rapport des résistances.
+     · L'OUVERTURE de l'ellipse donne le DÉPHASAGE, donc la part
+       CAPACITIVE du tissu — le Cp du modèle de Randles.
+     ⇒ Vous mesurez en direct la composante réactive du végétal,
+       ce qu'aucun boîtier du commerce ne restitue.
+
+
+  USAGE B — COMPARAISON DE DEUX PLANTES
+
+     X ← sortie CV de la plante A
+     Y ← sortie CV de la plante B
+
+     · Deux plantes indépendantes  → nuage informe
+     · Deux plantes couplées par une cause commune (lumière,
+       température, secteur) → la figure se resserre en diagonale
+     ⇒ TEST D'ARTEFACT VISUEL INSTANTANÉ : si vos deux plantes
+       tracent une diagonale, elles ne se parlent pas — elles
+       subissent la même chose.
+
+
+  USAGE C — PLANTE CONTRE TÉMOIN INERTE
+
+     X ← sortie CV de la plante
+     Y ← sortie CV du pot de terreau témoin
+
+     Même lecture : une diagonale accuse l'appareil ou le milieu,
+     un nuage signe une dynamique propre à la plante.
+</pre>
+    <figcaption>Le mode X-Y transforme l'oscilloscope en détecteur de corrélation. C'est, à notre connaissance, la façon la plus élégante et la plus immédiate de démasquer un artefact commun.</figcaption>
+  </div>
+
+  <h3 id="c38-midi" data-toc="sub">Voir la trame MIDI elle-même</h3>
+
+  <p>Dernier plaisir, plus anecdotique mais formateur : observer la liaison série au point ④.</p>
+
+  <div class="schema light">
+    <div class="sch-h">Une trame Note On à 31 250 bauds</div>
+<pre>
+  Réglages : DC · 2 V/div · 20 µs/div · déclenchement sur front DESCENDANT
+
+   5V ──┐   ┌─┐ ┌───┐ ┌─────┐   ┌──────────────
+        │   │ │ │   │ │     │   │
+        │   │ │ │   │ │     │   │
+   0V   └───┘ └─┘   └─┘     └───┘
+        ↑                       ↑
+      start                   stop
+        │←── 8 bits de données ──→│
+
+   Durée d'un bit : 1 / 31 250 = 32 µs exactement
+   Durée d'un octet (1 start + 8 données + 1 stop) : 320 µs
+   Durée d'une trame de 3 octets : 960 µs, soit ≈ 1 ms
+
+   AU REPOS la ligne est à l'état HAUT.
+   Chaque octet commence par un bit de start à l'état BAS.
+   Les bits sont émis POIDS FAIBLE EN PREMIER.
+
+   ⇒ En base de temps 20 µs/div, un bit occupe 1,6 division :
+     vous pouvez LIRE LA TRAME À L'ŒIL et décoder la note.
+</pre>
+    <figcaption>Décoder une trame MIDI à l'oscilloscope est un exercice classique d'électronique numérique — et il permet de vérifier que le boîtier émet bien ce que l'on croit.</figcaption>
+  </div>
+
+  <div class="callout interieur">
+    <div class="callout-title">✨ Expérience intérieure</div>
+    <p>Il y a un moment particulier, quand on observe la rampe du point ② en direct sur un tube cathodique. La trace verte est vivante, légèrement instable, et sa pente change lentement sous vos yeux. Vous voyez, littéralement, l'eau se déplacer dans une feuille.</p>
+    <p>Aucun haut-parleur ne produit cet effet. Le son est déjà une interprétation ; la trace, elle, est presque directe. Beaucoup de gens qui restaient sceptiques devant une jolie mélodie changent d'attitude devant cette rampe qui bouge — parce qu'ils voient enfin <em>quelque chose</em>, et que ce quelque chose est indubitablement en train de changer.</p>
+    <p>C'est peut-être la meilleure démonstration publique que l'on puisse faire de ce domaine : un oscilloscope, une plante, et rien d'autre. Pas de musique, pas de discours. Une pente qui bouge.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>La masse de l'oscilloscope est reliée à la terre : jamais sur un montage connecté à une personne.</li>
+      <li>Point ② (broche THR) : la montée de la rampe <em>est</em> la plante, la descente est votre résistance fixe.</li>
+      <li>Rp = R1 · (T_haut / T_bas − 1) : l'oscilloscope devient un ohmmètre à très haute impédance.</li>
+      <li>Pour les phénomènes lents : rester en base rapide et observer la forme, ou photographier en pose longue.</li>
+      <li>Le mode X-Y démasque instantanément un artefact commun à deux voies : une diagonale accuse une cause partagée.</li>
+      <li>Un bit MIDI dure exactement 32 µs : la trame se lit à l'œil en 20 µs/div.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c39-variantes" data-toc="chapter">Variantes avancées et mise au point</h2>
+  <p class="chapo">La version à pont de Wheatstone, la mesure passive jamais commercialisée, et la procédure d'étalonnage qui rend vos séances comparables entre elles.</p>
+
+  <h3 id="c39-voieB" data-toc="sub">Variante B — le pont de Wheatstone quantitatif</h3>
+
+  <p>Une fois la voie A maîtrisée, voici la version qui donne une <em>vraie</em> mesure en ohms. Elle reprend l'architecture du brevet Damanhur, modernisée avec des composants actuels.</p>
+
+  <div class="schema light">
+    <div class="sch-h">Variante B — schéma de principe moderne</div>
+<pre>
+                        +2,5 V  (référence de tension, REF3025)
+                          │
+          ┌───────────────┴───────────────┐
+          │                               │
+        ┌─┴─┐                          ┌──┴──┐
+        │R3 │ 1 MΩ 0,1 %               │ Rb  │  résistance de RÉFÉRENCE
+        └─┬─┘                          │     │  1 MΩ / 4,7 MΩ / 10 MΩ
+          │                            └──┬──┘  commutables (0,1 %)
+   Va ────●─────────┐          Vb ────────●──────────┐
+          │         │                     │          │
+        ┌─┴─┐       │                  ┌──┴──┐       │
+        │R4 │ 1 MΩ  │                  │ Rp  │       │
+        └─┬─┘ 0,1 % │                  │PLANTE│      │
+          │         │                  └──┬──┘       │
+        masse       │                   masse        │
+                    │                                │
+                    │      ┌──────────────────┐      │
+                    └─────▶│ IN−   INA333     │◀─────┘
+                           │       ou AD8220  │
+                           │ IN+              │
+                           │                  │
+                     Rg ───┤ RG               │  Rg = 1 kΩ → G ≈ 101
+                           │              OUT ├────▶ vers convertisseur A/N
+                           │ REF              │      (ADS1115, 16 bits, I²C)
+                           └───────┬──────────┘
+                                   │
+                                 +1,25 V (mi-course, pour alim. simple)
+
+  POURQUOI CES CHOIX
+  · REF3025 : référence de tension à 2,5 V, dérive 20 ppm/°C.
+    Le pont est un diviseur : toute variation de l'alimentation
+    se retrouve dans la mesure. La stabilité de V est primordiale.
+  · R3 = R4, appariées à 0,1 % → Va = V/2 exactement.
+    (Équivalent moderne de la chaîne de diodes du brevet.)
+  · INA333 : amplificateur d'instrumentation monolithique,
+    CMRR ≥ 100 dB garanti, Vos 25 µV, dérive 0,1 µV/°C,
+    réseau de résistances ajusté au laser en usine.
+    → toute la difficulté du CMRR est résolue par le composant.
+  · ADS1115 : 16 bits, gain programmable, liaison I²C.
+    Résolution : 2,5 V / 2¹⁶ = 38 µV en pleine échelle,
+    et 1,9 µV au gain 16. Le brevet d'origine se contentait
+    de 8 bits : nous faisons 256 fois mieux pour 3 €.
+
+  SENSIBILITÉ RÉSULTANTE, avec Rb = Rp = 1 MΩ, V = 2,5 V, G = 101
+      ΔV_sortie = (V/4) · (ΔRp/Rp) · G = 63 V · (ΔRp/Rp)
+      Plus petite variation résolue (1,9 µV en entrée d'ADC) :
+      ΔRp/Rp = 1,9 µV / 63 V = 30 × 10⁻⁹ = 0,03 ppm
+      → soit 0,03 Ω sur 1 MΩ, en théorie.
+      En pratique, le bruit thermique et la dérive d'interface
+      limitent à quelques ppm — ce qui reste dix fois mieux
+      que le dispositif d'origine.
+</pre>
+    <figcaption>La variante B moderne. Coût : 60 à 110 €. Le gain par rapport au brevet de 1999 vient entièrement de l'intégration : l'INA333 remplace cinq amplificateurs et un réseau apparié.</figcaption>
+  </div>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Le point dur de la variante B</div>
+    <p>Cette architecture <strong>n'a pas de rééquilibrage automatique</strong>, contrairement au brevet d'origine. Avec une dérive d'interface de 10 à 40 % en une demi-heure et un gain de 101, la sortie sature en quelques minutes.</p>
+    <p>Trois solutions, par sophistication croissante. <strong>Un :</strong> attendre la stabilisation et ne mesurer qu'après — simple, et suffisant pour des séances d'une heure. <strong>Deux :</strong> un convertisseur numérique/analogique bon marché (MCP4725) injecté sur la broche REF de l'INA333, piloté par le microcontrôleur pour recentrer la sortie — c'est exactement l'astuce du brevet US 6 743 164, en version moderne. <strong>Trois :</strong> supprimer le gain analogique et numériser directement au gain 16 de l'ADS1115, qui offre une plage suffisante sans amplification externe. Cette dernière solution est la plus élégante et celle que nous recommandons.</p>
+  </div>
+
+  <h3 id="c39-passif" data-toc="sub">Variante C — la mesure passive, jamais commercialisée</h3>
+
+  <p>Le brevet US 6 743 164 mentionne un mode dont aucun appareil du marché n'a jamais fait usage : mesurer <strong>sans aucune excitation</strong> les micro-variations de la tension d'offset électrochimique V<sub>o</sub> entre deux points du tissu.</p>
+
+  <table>
+    <thead><tr><th>Aspect</th><th>Mesure active (tous les appareils)</th><th>Mesure passive (variante C)</th></tr></thead>
+    <tbody>
+      <tr><td>Courant injecté</td><td>1 à 10 µA</td><td><strong>Zéro</strong></td></tr>
+      <tr><td>Grandeur mesurée</td><td>Impédance du trajet</td><td>Différence de potentiel spontanée</td></tr>
+      <tr><td>Origine biologique</td><td>Teneur en eau, ouverture stomatique</td><td><strong>Potentiels d'action et de variation réels</strong></td></tr>
+      <tr><td>Amplitude</td><td>Déduite du signal d'excitation</td><td>0,1 à 50 mV selon l'événement</td></tr>
+      <tr><td>Difficulté principale</td><td>Dérive d'interface</td><td>La dérive d'interface <em>est</em> le signal parasite dominant</td></tr>
+      <tr><td>Électrodes</td><td>Inox acceptable</td><td><strong>Ag/AgCl obligatoire</strong></td></tr>
+      <tr><td>Amplificateur</td><td>Gain 25 à 100</td><td>Gain 100 à 1 000, entrée CMOS, passe-haut à 0,01 Hz</td></tr>
+    </tbody>
+    <caption>Comparaison des deux modes. La variante C est la seule qui capte de véritables potentiels d'action — c'est-à-dire ce que tout le monde croit entendre.</caption>
+  </table>
+
+  <div class="callout energie">
+    <div class="callout-title">🌿 Regard énergétique</div>
+    <p>Voilà, à notre sens, le plus beau chantier ouvert de ce domaine, et il attend quelqu'un.</p>
+    <p>Un dispositif passif ne fait rien subir à la plante — aucun courant, aucun champ, rien. Il se contente d'écouter la différence de potentiel qu'elle entretient déjà. Sur le plan technique, c'est plus difficile. Sur le plan éthique et symbolique, c'est autre chose : ce serait, littéralement, le premier appareil de ce domaine qui <em>n'interroge pas</em>.</p>
+    <p>Toutes les traditions d'écoute du vivant insistent sur ce point — écouter sans demander. La technique a une occasion, ici, de rejoindre le geste. Les brevets sont expirés, les composants coûtent quarante euros, et la voie est décrite dans un document public depuis 2004.</p>
+  </div>
+
+  <h3 id="c39-etalonnage" data-toc="sub">Procédure d'étalonnage</h3>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">À faire une fois, puis une fois par an</div>
+      <div class="pr-t">Étalonner son dispositif DIY</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta">
+        <span><b>Durée</b> 2 h</span>
+        <span><b>Matériel</b> Jeu de résistances 1 %, thermomètre, oscilloscope ou chronomètre logiciel</span>
+      </div>
+      <h4>1. Courbe de réponse</h4>
+      <ol class="steps">
+        <li>Remplacez la plante par une résistance connue et notez la période mesurée. Utilisez au minimum : 100 kΩ, 220 kΩ, 470 kΩ, 1 MΩ, 2,2 MΩ, 4,7 MΩ, 10 MΩ.</li>
+        <li>Tracez période mesurée <em>en fonction de</em> résistance. Vous devez obtenir une droite.</li>
+        <li><strong>Comparez à la théorie</strong> : T = 0,693 · (R + 2·R1) · C. L'écart vous donne la valeur réelle de votre C1 et des capacités parasites de votre câblage.</li>
+      </ol>
+      <h4>2. Dérive thermique</h4>
+      <ol class="steps">
+        <li>Placez une résistance fixe de 1 MΩ à la place de la plante. Laissez tourner 1 h à température ambiante, en notant la période toutes les 5 min.</li>
+        <li>Réchauffez doucement le boîtier — pas la résistance — de 10 °C avec une lampe, sans excéder 40 °C.</li>
+        <li>Notez la nouvelle période. <strong>C'est votre coefficient de dérive thermique, en ppm/°C.</strong></li>
+      </ol>
+      <div class="pr-obs"><strong>Interprétation.</strong> Avec un C1 en NP0, vous devriez trouver moins de 100 ppm/°C au total. Si vous trouvez plus de 1 000 ppm/°C, votre condensateur n'est pas du NP0 — ou vous avez un autre problème. Ce chiffre est essentiel : il vous dit quelle part d'une « évolution » observée en séance pourrait n'être que le réchauffement de votre boîtier.</div>
+      <h4>3. Plancher de bruit</h4>
+      <ol class="steps">
+        <li>Résistance fixe de 1 MΩ, 30 min d'enregistrement MIDI.</li>
+        <li>Comptez les notes. <strong>Ce nombre est votre plancher absolu.</strong></li>
+        <li>Recommencez pour trois positions du potentiomètre de seuil, et notez les trois valeurs.</li>
+      </ol>
+      <h4>4. Fiche d'étalonnage</h4>
+      <p>Consignez sur une étiquette collée à l'intérieur du boîtier : la valeur mesurée de C1, le coefficient de dérive thermique, le plancher de bruit à seuil moyen, et la date. <strong>Cette étiquette vaut plus que tout le reste du montage</strong> : sans elle, aucune de vos séances n'est interprétable.</p>
+    </div>
+  </div>
+
+  <h3 id="c39-pannes" data-toc="sub">Dépannage : les huit pannes classiques</h3>
+
+  <table class="tight">
+    <thead><tr><th>Symptôme</th><th>Cause la plus probable</th><th>Vérification</th><th>Remède</th></tr></thead>
+    <tbody>
+      <tr><td>Aucune oscillation</td><td>Résistance trop élevée pour le 555, ou 555 bipolaire</td><td>Remplacer la plante par 150 kΩ</td><td>Passer au CMOS ; améliorer le contact</td></tr>
+      <tr><td>Oscillation, mais aucune note</td><td>Interruption non attachée, ou D2 mal câblée</td><td>Croquis minimal qui compte les fronts</td><td>Vérifier <code>attachInterrupt</code> et le câblage</td></tr>
+      <tr><td>Notes en continu, sans arrêt</td><td>Seuil trop bas, ou entrée flottante</td><td>Tourner le potentiomètre au maximum</td><td>Monter le seuil ; vérifier le contact</td></tr>
+      <tr><td>Trille régulier et métronomique</td><td>Induction du secteur à 50 Hz</td><td>Débrancher tout ce qui est sur secteur</td><td>Piles, blindage, éloignement</td></tr>
+      <tr><td>Glissement lent et monotone du registre</td><td>Dérive d'interface ou C1 non NP0</td><td>Test sur résistance fixe pendant 1 h</td><td>Attendre 30 min ; changer C1</td></tr>
+      <tr><td>Réagit quand on approche la main</td><td>Couplage capacitif sur l'entrée</td><td>Approcher la main lentement en observant</td><td>Câble blindé, pistes courtes, plan de masse</td></tr>
+      <tr><td>MIDI muet mais LED actives</td><td>R3 absente, ou broches 4/5 de la DIN inversées</td><td>Moniteur MIDI logiciel</td><td>Vérifier le brochage DIN et les 220 Ω</td></tr>
+      <tr><td>Fonctionne mieux en hiver</td><td>Fuite de surface due au flux de brasage hygroscopique</td><td>Souffler de l'air humide sur le circuit</td><td>Nettoyage à l'alcool isopropylique puis vernis</td></tr>
+    </tbody>
+    <caption>Les huit pannes classiques. La dernière est la plus déroutante, et elle se résout en cinq minutes une fois qu'on la connaît.</caption>
+  </table>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Variante B : INA333 + ADS1115 + référence de tension = mesure quantitative en ohms, pour 60 à 110 €.</li>
+      <li>L'INA333 résout à lui seul toute la question du CMRR et de l'appariement des résistances.</li>
+      <li>Variante C, la mesure passive, capte de véritables potentiels d'action — et n'a jamais été commercialisée.</li>
+      <li>L'étalonnage donne quatre chiffres : valeur réelle de C1, dérive thermique, plancher de bruit, date.</li>
+      <li>Sans fiche d'étalonnage collée dans le boîtier, aucune séance n'est interprétable.</li>
+    </ul>
+  </div>
+
+  <div class="ornament"></div>
+</section>

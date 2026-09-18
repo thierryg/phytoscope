@@ -1,0 +1,218 @@
+<section class="chapter">
+  <h2 id="c14-clavier" data-toc="chapter" data-run="Le clavier de mots">La leçon du clavier de mots</h2>
+  <p class="chapo">En 2015, dix ans avant Dublin, un praticien français a eu la même idée — et l'a décrite avec une honnêteté que peu d'ingénieurs atteignent. Son dispositif est le meilleur laboratoire conceptuel dont nous disposions.</p>
+
+  <p class="lettrine noindent">Le 1<sup>er</sup> novembre 2015, au Grand Rex à Paris, lors d'un événement de méditation collective organisé un mois avant la COP21, <strong>Alexandre Ferran</strong> présente un « concert de plantes ». Le dispositif est celui de la communauté italienne de Damanhur : deux pinces, l'une dans la terre près des racines, l'autre sur une feuille, reliées à un boîtier qui convertit les variations mesurées en messages MIDI.</p>
+
+  <p>Jusque-là, rien d'original : ce type d'appareil existe depuis les années 1970. Ce que Ferran a ajouté est décisif — et il le raconte lui-même :</p>
+
+  <blockquote>
+    <p>Je suis le premier à avoir eu l'idée saugrenue de mettre des mots, vu que c'est du MIDI&nbsp;; après, avec un sampler, dans un ordinateur, on peut mettre un piano… ou des mots.</p>
+    <cite>Alexandre Ferran, Le Chant des Plantes, Grand Rex, 2015</cite>
+  </blockquote>
+
+  <h3 id="c14-dispositif" data-toc="sub">Le dispositif, exactement</h3>
+
+  <figure class="full">
+    <img src="assets/svg/tt-word-keyboard.svg" alt="Chaîne du clavier de mots et ses deux lectures"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Le clavier de mots. Le signal est identique à celui qui produisait de la musique&nbsp;; seule la banque de sons a changé. Aucune information nouvelle n'entre dans le système — mais tout change pour l'auditeur.</figcaption>
+  </figure>
+
+  <ul>
+    <li><strong>Un échantillonneur</strong> remplace l'instrument de musique : à chaque numéro de note correspond, non plus une hauteur de piano, mais un fichier audio contenant un mot enregistré.</li>
+    <li><strong>Environ cinquante mots</strong> sont chargés pour la représentation. Le tout premier clavier, réalisé chez lui, contenait les prénoms des habitants de la maison&nbsp;; d'autres versions ont ajouté « oui », « non », « merci » et des noms d'animaux.</li>
+    <li><strong>Un seuil temporel de quatre secondes</strong> : « il faut qu'elle reste quatre secondes appuyée sur la note pour déclencher le mot ». Ce filtre anti-rebond transforme un flux continu et bruité en événements rares.</li>
+    <li><strong>Un clavier de lettres</strong> existe également, de A à Z réparties sur les touches — permettant à la plante d'« écrire » au lieu de « parler ».</li>
+  </ul>
+
+  <p>Ce que le dispositif a produit ce soir-là, en public, est intégralement documenté par la vidéo : <strong>huit mots au total</strong> — « SOLEIL », « AIDE », « MALADE », « TERRE », « SOLEIL », puis « TERRE », puis « CHAUD », « AIDE ». Présentés comme « la parole de sagesse des plantes » pour cette occasion.</p>
+
+  <h3 id="c14-honnetete" data-toc="sub">L'honnêteté remarquable de l'auteur</h3>
+
+  <p>Avant toute critique, il faut rendre justice à une phrase que Ferran prononce au début de la vidéo, et qui est la meilleure description de son propre dispositif qu'on puisse souhaiter :</p>
+
+  <blockquote>
+    <p>L'appareil ne retranscrit pas la musique de la plante&nbsp;; ça lui donne la possibilité d'avoir des mains qui vont appuyer sur un clavier.</p>
+    <cite>Alexandre Ferran, même source</cite>
+  </blockquote>
+
+  <p>C'est une définition exacte du <em>parameter mapping</em>, formulée sans jargon par quelqu'un qui n'appartient pas au monde académique. Elle est plus précise que la plupart des communiqués de fabricants d'appareils de bio-sonification. Cet ouvrage la cite avec respect.</p>
+
+  <h3 id="c14-ce-qui-change" data-toc="sub">Ce que le passage aux mots change — et ne change pas</h3>
+
+  <div class="callout key">
+    <div class="callout-title">✦ L'énoncé central de ce livre</div>
+    <p>Un mapping signal → note et un mapping signal → mot sont <strong>formellement identiques</strong> : dans les deux cas, une table de correspondance. Le signal, lui, est rigoureusement inchangé — mêmes variations, même appareil, même seuil. Seule la banque de sons a été remplacée.</p>
+    <p>Mais ils ne sont pas <strong>sémantiquement</strong> identiques : une note n'a pas de référent, un mot en a un. Passer de l'un à l'autre <strong>n'ajoute aucune information</strong> — cela ajoute de la <strong>référence</strong> dans la tête de l'auditeur.</p>
+    <p>C'est un transfert de charge interprétative du système vers l'humain. Le gain est perceptif et rhétorique&nbsp;; il n'est jamais informationnel. Ferran le dit sans le savoir : « quand tout à coup elle utilise le langage verbal qui est le nôtre… c'est autrement plus impressionnant ».</p>
+  </div>
+
+  <h3 id="c14-vocabulaire" data-toc="sub">Le vocabulaire détermine l'énoncé</h3>
+
+  <p>Les huit mots produits au Grand Rex forment un ensemble cohérent avec le thème de la soirée : soleil, aide, malade, terre, chaud. On y lit spontanément un message écologique. Mais c'est l'opérateur qui a choisi les cinquante mots du dictionnaire.</p>
+
+  <p>Faites l'expérience mentale : chargez le même appareil, sur la même plante, avec cinquante mots de cuisine — « sel », « beurre », « cuisson », « four ». La plante produira des énoncés culinaires, avec exactement la même conviction. <strong>Le vocabulaire disponible contraint entièrement l'énoncé possible.</strong> Ce que l'on entend est, au sens strict, ce que l'on a mis à disposition.</p>
+
+  <p>Il y a plus. C'est aussi l'opérateur qui décide où le message commence et finit — « Bon, je crois que c'était son message… ». <strong>La segmentation du flux en « énoncé » est un acte humain, non machine.</strong> Nous retrouvons trait pour trait la structure de la communication facilitée du chapitre précédent.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Ce qui manque, et qui manque toujours</div>
+    <p>Le dispositif du Grand Rex ne comportait aucune plante témoin, aucune condition « pince débranchée ou posée sur un objet inerte », aucun double aveugle, aucun pré-enregistrement du vocabulaire attendu. Ce n'est pas un reproche adressé à un artiste qui ne prétendait pas faire de science — c'est le constat qu'<strong>aucune conclusion ne peut en être tirée</strong>, dans un sens comme dans l'autre.</p>
+    <p>Et c'est aussi, exactement, ce qui manque au dispositif de 2025. Dix ans de progrès technique, zéro progrès méthodologique.</p>
+  </div>
+
+  <h3 id="c14-defendable" data-toc="sub">Ce qui rend un mapping défendable</h3>
+
+  <p>La littérature scientifique fournit un critère de démarcation utilisable. Un mapping est défendable s'il satisfait trois conditions.</p>
+
+  <table>
+    <thead><tr><th>Critère</th><th>Ce qu'il exige</th><th>Exemple conforme</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Isomorphe</strong></td><td>Préserve une structure physique mesurable</td><td>Buehler (MIT) : les modes de vibration des acides aminés sont <em>transposés</em> dans l'audible en conservant les rapports de fréquences. Chaque acide aminé devient un accord.</td></tr>
+      <tr><td><strong>Inversible</strong></td><td>On peut remonter du son à la donnée</td><td>Même travail : musique → séquence protéique → repliement prédit → validation par modélisation.</td></tr>
+      <tr><td><strong>Falsifiable</strong></td><td>Des conditions d'échec sont spécifiées à l'avance</td><td>Temple, sonification de l'ADN : le mapping est motivé par la granularité du codon, qui est la granularité fonctionnelle réelle du génome.</td></tr>
+    </tbody>
+    <caption>Références : Qin &amp; Buehler (2019), <em>Extreme Mechanics Letters</em> 29:100460 ; Yu et al. (2019), <em>ACS Nano</em> 13(7) ; Temple (2017), <em>BMC Bioinformatics</em> 18:221.</caption>
+  </table>
+
+  <div class="callout caution">
+    <div class="callout-title">✦ Une précision qui évite une erreur répandue</div>
+    <p>Markus Buehler emploie effectivement les mots « langage » et « vocabulaire » à propos des protéines — mais au sens des <em>modèles de langage protéiques</em>, où une séquence d'acides aminés est traitée comme un langage formel. <strong>Aucun de ses travaux ne convertit des données biologiques en mots de langue naturelle prononcés.</strong> Il ne faut pas le lui attribuer.</p>
+    <p>Par ailleurs, la recherche menée pour cet ouvrage n'a trouvé <strong>aucune</strong> sonification établie de l'ADN ou des protéines vers des <em>phonèmes</em> produisant de la parole intelligible. C'est un résultat négatif, affirmé comme tel : nous ne citerons donc aucune source sur ce point.</p>
+  </div>
+
+  <p>Mesuré à cette aune, le clavier de mots n'est ni isomorphe — rien dans le signal ne correspond à « SOLEIL » —, ni inversible, ni falsifiable. Cela n'en fait pas une imposture : cela en fait une <strong>œuvre</strong>, ce que son auteur n'a d'ailleurs jamais nié. Le problème ne commence que lorsqu'on lui prête l'autorité d'une mesure.</p>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Alexandre Ferran, 2015 : ≈ 50 mots dans un échantillonneur, seuil de 4 s, 8 mots produits en public.</li>
+      <li>Son propre diagnostic est exact : l'appareil « donne à la plante des mains qui appuient sur un clavier ».</li>
+      <li>Note et mot sont formellement identiques ; le passage de l'un à l'autre n'ajoute pas d'information, mais de la référence.</li>
+      <li>Le vocabulaire choisi par l'opérateur contraint entièrement l'énoncé possible.</li>
+      <li>Un mapping défendable est isomorphe, inversible et falsifiable. Celui-ci n'est aucun des trois.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c15-tests" data-toc="chapter" data-run="Les trois tests">Les trois tests qui décident de tout</h2>
+  <p class="chapo">Comprendre ne suffit pas — c'est la leçon d'ELIZA. Il faut éprouver. Voici trois protocoles courts, réalisables par quiconque, qui tranchent réellement la question.</p>
+
+  <p class="lettrine noindent">Ce chapitre est le plus opérationnel du livre. Les trois tests qu'il décrit ne demandent aucun matériel supplémentaire, prennent quelques heures, et sont capables de vous détromper. C'est très exactement pour cette raison qu'ils sont presque toujours omis.</p>
+
+  <figure class="full">
+    <img src="assets/svg/tt-control-tests.svg" alt="Les trois tests de contrôle : épreuve du vide, ablation, pré-enregistrement"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Les trois tests de contrôle. Chacun cible un mode de défaillance distinct : la source du signal, la contribution du signal, et la liberté d'interprétation a posteriori.</figcaption>
+  </figure>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Test de contrôle n° 1</div>
+      <div class="pr-t">L'épreuve du vide</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta">
+        <span><b>Durée</b> 2 h</span>
+        <span><b>Matériel</b> le dispositif seul</span>
+        <span><b>Cible</b> la source du signal</span>
+      </div>
+      <h4>Principe</h4>
+      <p>Si le dispositif produit des sorties convaincantes en l'absence de toute plante, alors les sorties convaincantes ne prouvent rien quand une plante est présente.</p>
+      <h4>Mise en œuvre — quatre conditions, à l'aveugle</h4>
+      <ol>
+        <li><strong>Condition normale</strong> : électrodes en place sur la plante ou l'arbre. 30 minutes d'enregistrement.</li>
+        <li><strong>Électrodes débranchées</strong> : entrées laissées en l'air. 30 minutes.</li>
+        <li><strong>Objet inerte</strong> : électrodes posées sur une bouteille d'eau à température ambiante, ou sur une résistance de valeur comparable à l'impédance du tissu. 30 minutes.</li>
+        <li><strong>Bruit blanc</strong> : si votre chaîne le permet, injectez un signal aléatoire d'amplitude comparable à la place du capteur. 30 minutes.</li>
+      </ol>
+      <div class="pr-obs">
+        <p><strong>Ce qu'il faut consigner.</strong> Pour chaque condition : le nombre d'événements déclenchés, et — si le dispositif produit du texte ou de la musique — un échantillon anonymisé. Puis faites juger ces échantillons par une personne qui ignore les conditions.</p>
+      </div>
+      <h4>Lecture du résultat</h4>
+      <p><strong>Le dispositif doit produire du non-sens visible en conditions 2, 3 et 4.</strong> S'il continue de produire de belles phrases ou de la musique agréable, la conclusion est directe : ces belles phrases ne venaient pas de la plante. La condition 3 est la plus importante — c'est l'équivalent exact du « pot de terre sans plante » de Khait et al., qui n'a produit aucun son sur plus de cinq cents heures.</p>
+      <div class="pr-warn">
+        <p><strong>Piège fréquent.</strong> Ne jugez pas vous-même vos propres échantillons en sachant de quelle condition ils viennent. C'est exactement l'erreur que le protocole doit empêcher.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Test de contrôle n° 2</div>
+      <div class="pr-t">L'ablation</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta">
+        <span><b>Durée</b> 1 h + écoute</span>
+        <span><b>Matériel</b> un générateur aléatoire</span>
+        <span><b>Cible</b> la contribution réelle du signal</span>
+      </div>
+      <h4>Principe</h4>
+      <p>Remplacer le signal par du hasard, dans la même chaîne, avec le même vocabulaire. Si personne ne distingue les deux, le signal n'apportait rien.</p>
+      <h4>Mise en œuvre</h4>
+      <ol>
+        <li>Enregistrez dix minutes de sortie en conditions normales.</li>
+        <li>Remplacez l'entrée capteur par un tirage aléatoire de même distribution statistique (même moyenne, même variance, même autocorrélation approximative). Enregistrez dix minutes.</li>
+        <li>Faites écouter les deux extraits, dans un ordre aléatoire, à au moins dix personnes qui ignorent la manipulation.</li>
+        <li>Demandez-leur simplement : « lequel des deux vient de la plante&nbsp;? »</li>
+      </ol>
+      <div class="pr-obs">
+        <p><strong>Seuil de décision.</strong> Un taux de bonne réponse proche de 50 % signifie que les auditeurs ne distinguent pas — donc que le signal n'apporte pas d'information perceptible. Pour être significatif à 5 % avec dix auditeurs, il faut au moins neuf bonnes réponses sur dix.</p>
+      </div>
+      <h4>Pourquoi ce test est fondé</h4>
+      <p>Ce n'est pas une provocation : c'est la transposition d'un résultat publié. <strong>Tan, Merrill, Gupta, Althoff &amp; Hartvigsen (2024)</strong>, <em>Are Language Models Actually Useful for Time Series Forecasting?</em>, NeurIPS 2024, ont montré que sur trois méthodes populaires de traitement de séries temporelles par modèle de langage, <strong>retirer le modèle ne dégradait pas les performances, et les améliorait souvent</strong>. L'ablation est la méthode standard pour mesurer la contribution réelle d'un composant. Elle vaut ici comme ailleurs.</p>
+    </div>
+  </div>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Test de contrôle n° 3</div>
+      <div class="pr-t">Le pré-enregistrement</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta">
+        <span><b>Durée</b> 20 min avant chaque séance</span>
+        <span><b>Matériel</b> un carnet daté</span>
+        <span><b>Cible</b> la liberté d'interprétation a posteriori</span>
+      </div>
+      <h4>Principe</h4>
+      <p>Le protocole doit précéder la donnée. Sans quoi rien n'empêche de choisir, après coup, le passage qui « parle » — et il y en a toujours un.</p>
+      <h4>Mise en œuvre</h4>
+      <ol>
+        <li><strong>Avant</strong> toute séance, consignez par écrit et datez : le vocabulaire ou l'invite exacts, les seuils, la fenêtre d'écoute, la durée totale.</li>
+        <li>Écrivez également ce que vous vous attendez à observer, et ce qui vous ferait conclure à un échec.</li>
+        <li>Menez la séance <strong>sans rien modifier</strong>.</li>
+        <li>N'éditez rien après coup. Si vous publiez, publiez la séance entière ou rien.</li>
+      </ol>
+      <div class="pr-obs">
+        <p><strong>Le point qui dérange.</strong> La quatrième règle est la plus difficile à tenir, parce qu'une séance entière est souvent ennuyeuse et que trois minutes bien choisies sont bouleversantes. C'est précisément pour cela que la règle existe.</p>
+      </div>
+      <h4>Ce que ce test interdit</h4>
+      <p>Il interdit le mécanisme le plus puissant de toute la chaîne d'auto-illusion : la <strong>sélection rétrospective</strong>. Sur trois heures d'enregistrement d'un signal bruité, il existera toujours un passage de deux minutes qui semble répondre à ce qui s'est passé dans la pièce. Ce n'est pas une coïncidence remarquable ; c'est une propriété statistique ordinaire des séries longues.</p>
+    </div>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La règle qui résume les trois</div>
+    <p><strong>Un dispositif qui ne publie pas ses conditions d'échec ne publie rien.</strong></p>
+    <p>Ces trois tests ne détruisent pas l'œuvre — ils la rendent défendable. Un artiste qui les pratique et en publie les résultats peut ensuite revendiquer tout ce qu'il veut sur le plan esthétique ou spirituel : il aura établi, de façon vérifiable, ce que son dispositif fait et ne fait pas. C'est une position infiniment plus solide que celle de qui se contente d'affirmer.</p>
+  </div>
+
+  <div class="callout interieur">
+    <div class="callout-title">✨ Expérience intérieure</div>
+    <p>Une question mérite d'être posée avant de faire ces tests, et il vaut mieux y répondre honnêtement : <em>qu'est-ce que je risque de perdre si le résultat est négatif&nbsp;?</em></p>
+    <p>Si la réponse est « ma relation à cet arbre », alors une bonne nouvelle : cette relation ne dépendait pas du dispositif, et ces tests ne peuvent rien lui faire. Si la réponse est « ma certitude d'avoir raison », alors ces tests sont exactement ce dont vous avez besoin. Et si la réponse est « mon gagne-pain », c'est une raison honorable d'hésiter — mais elle mérite d'être nommée pour ce qu'elle est.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li><strong>Test 1 — l'épreuve du vide</strong> : débranché, sur objet inerte, sur bruit blanc. Le système doit produire du non-sens.</li>
+      <li><strong>Test 2 — l'ablation</strong> : signal remplacé par du hasard, écoute à l'aveugle. 50 % de bonnes réponses = aucune contribution.</li>
+      <li><strong>Test 3 — le pré-enregistrement</strong> : protocole écrit et daté avant la séance, aucune édition après.</li>
+      <li>L'ablation est une méthode standard, validée sur ce type exact de montage (Tan et al., NeurIPS 2024).</li>
+      <li>Ces tests ne détruisent pas l'œuvre : ils la rendent défendable.</li>
+    </ul>
+  </div>
+</section>

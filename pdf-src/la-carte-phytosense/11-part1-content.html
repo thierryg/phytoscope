@@ -1,0 +1,184 @@
+<section class="chapter">
+  <h2 id="c1-mesurer" data-toc="chapter">Ce qu'il y a réellement à mesurer</h2>
+
+  <p class="chapo">Avant toute électronique, une question de physiologie : quelles grandeurs une
+  plante offre-t-elle à un appareil, dans quelles plages, et à quelle vitesse ? La réponse
+  détermine tout le reste, et elle est moins évidente qu'il n'y paraît.</p>
+
+  <p class="lettrine noindent">Un végétal ne produit pas « un signal ». Il en produit plusieurs,
+  de natures différentes, que les appareils du commerce confondent allègrement et que le nôtre
+  doit distinguer. Trois familles suffisent à couvrir ce que la littérature documente et ce qu'un
+  amateur peut espérer observer.</p>
+
+  <h3 id="c1-potentiel" data-toc="sub">Le potentiel de surface, ou électrophysiologie passive</h3>
+
+  <p>C'est la grandeur noble : une différence de potentiel entre deux points du végétal, produite
+  par le vivant lui-même, sans qu'on injecte quoi que ce soit. Elle est l'analogue direct de
+  l'électrocardiogramme ou de l'électroencéphalogramme, et c'est elle que mesuraient Bose en 1902
+  puis les électrophysiologistes du vingtième siècle.</p>
+
+  <p>Trois phénomènes s'y superposent, d'échelles de temps très différentes.</p>
+
+  <table class="tbl-sci tight">
+    <thead><tr><th>Phénomène</th><th>Amplitude</th><th>Durée</th><th>Bande utile</th><th>Ce qu'on en sait</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Potentiel d'action</strong><br/><span class="small">PA</span></td>
+        <td>20 à 120 mV<br/><span class="small">intracellulaire</span><br/>50 µV à 5 mV<br/><span class="small">en surface</span></td>
+        <td>1 à 30 s</td><td>0,05 – 5 Hz</td>
+        <td>Documenté, reproductible, déclenché par blessure, froid brutal, contact. Propagation de 1 à 20 mm/s.</td></tr>
+      <tr><td><strong>Potentiel de variation</strong><br/><span class="small">PV, ou slow wave</span></td>
+        <td>10 µV à 2 mV<br/><span class="small">en surface</span></td>
+        <td>30 s à 30 min</td><td>0,5 mHz – 0,1 Hz</td>
+        <td>Lié aux变 variations de pression hydraulique. Amplitude décroissante avec la distance.</td></tr>
+      <tr><td><strong>Rythmes lents</strong><br/><span class="small">circadiens, nyctipériodiques</span></td>
+        <td>0,1 à 10 mV</td><td>heures à jours</td><td>10 µHz – 1 mHz</td>
+        <td>Bien établis pour l'ouverture stomatique et la nyctinastie ; plus discutés pour le potentiel de surface seul.</td></tr>
+    </tbody>
+  </table>
+
+  <p>Trois conséquences pour la conception, qu'il faut énoncer nettement.</p>
+  <ul>
+    <li><strong>La bande utile descend jusqu'à un millihertz.</strong> Un couplage alternatif avec
+    une constante de temps de quelques secondes — ce que fait tout amplificateur audio — détruit
+    le potentiel de variation et tout ce qui est plus lent. Il faut donc un couplage quasi continu,
+    et la dérive qui va avec.</li>
+    <li><strong>La dynamique atteint cent mille.</strong> Entre le microvolt d'un potentiel de
+    variation lointain et les cent millivolts d'offset d'électrode, il y a cent mille ; un
+    convertisseur à douze bits n'y suffit pas, même de loin.</li>
+    <li><strong>Le signal utile est en dessous du bruit de la plupart des montages.</strong> Un
+    amplificateur ordinaire produit facilement dix microvolts efficaces dans cette bande. Il faut
+    descendre sous le microvolt pour voir un potentiel de variation propre.</li>
+  </ul>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Une confusion à ne jamais commettre</div>
+    <p class="noindent">Les valeurs intracellulaires (20 à 120 mV) sont obtenues avec une
+    microélectrode plantée dans une cellule. En surface, à travers la cuticule, il ne reste qu'une
+    fraction, atténuée par le rapport des impédances — typiquement un facteur cent à mille. Un
+    appareil qui annonce mesurer « le potentiel d'action de la plante » avec une pince crocodile
+    sur une feuille mesure en réalité son ombre lointaine. Ce n'est pas illégitime ; c'est
+    simplement autre chose, et il faut le dire.</p>
+  </div>
+
+  <h3 id="c1-impedance" data-toc="sub">L'impédance de contact, ou électrophysiologie active</h3>
+
+  <p>C'est la grandeur que mesurent, en réalité, la quasi-totalité des appareils grand public,
+  y compris ceux qui prétendent autre chose. On injecte un courant — ou l'on fait osciller un
+  circuit dont la plante est un élément — et l'on observe la résistance rencontrée.</p>
+
+  <p>Cette impédance dépend de trois choses, dans un ordre de grandeur décroissant : la qualité du
+  contact entre l'électrode et le tissu, l'humidité du trajet, et enfin l'état physiologique du
+  végétal. Autrement dit, <strong>le signal de la plante est le troisième terme, derrière deux
+  artefacts</strong>. C'est décourageant, mais ce n'est pas rédhibitoire, à condition de mesurer
+  aussi les deux premiers et de savoir les soustraire — ce que la carte permet, et c'est une de
+  ses raisons d'être.</p>
+
+  <div class="chiffre">
+    <div class="val">10<sup>5</sup> à 2·10<sup>9</sup></div>
+    <div class="txt">La plage d'impédance à couvrir, en ohms : de cent kilohms pour une feuille
+    grasse et bien humidifiée à deux gigaohms pour une aiguille de conifère par temps sec. Quatre
+    décades et demie, qu'aucun étage à gain fixe ne peut embrasser — d'où la commutation
+    automatique de gamme.</div>
+  </div>
+
+  <h3 id="c1-ambiance" data-toc="sub">Les grandeurs d'ambiance, qui ne sont pas un supplément</h3>
+
+  <p>Température, humidité relative, éclairement, température du substrat. On les considère
+  volontiers comme un raffinement ; elles sont en réalité <strong>la condition de toute
+  interprétation</strong>. Une variation de deux degrés modifie l'impédance de contact de plusieurs
+  pour cent — davantage que la plupart des « réactions » filmées sur les réseaux sociaux. Sans
+  mesure d'ambiance simultanée, un enregistrement de plusieurs heures n'est pas défendable : on ne
+  peut pas écarter l'explication triviale.</p>
+
+  <p>La carte les mesure donc, sur le même horodatage, à travers la même barrière d'isolement, et
+  les consigne dans le même fichier. Cela coûte une vingtaine d'euros et deux composants. C'est le
+  meilleur rapport entre la dépense et la crédibilité de tout le projet.</p>
+
+  <h2 id="c1-budget" data-toc="chapter">Le budget de mesure, posé avant de dessiner</h2>
+
+  <p class="chapo">On ne conçoit pas un instrument en choisissant des composants : on choisit une
+  incertitude, et l'on en déduit les composants. La démarche est inhabituelle pour un amateur ;
+  elle est la seule qui évite de refaire la carte trois fois.</p>
+
+  <p>Le cahier des charges tient en huit lignes. Chacune a été fixée en se demandant : « qu'est-ce
+  qui rendrait la mesure indéfendable si je faisais moins bien ? »</p>
+
+  <table class="tbl-sci tight">
+    <thead><tr><th>Caractéristique</th><th>Objectif</th><th>Pourquoi cette valeur</th></tr></thead>
+    <tbody>
+      <tr><td>Bruit ramené à l'entrée, 0,01 – 10 Hz</td><td><strong>&lt; 1 µV eff.</strong></td>
+        <td>Un potentiel de variation faible vaut quelques microvolts : il faut au moins un
+        rapport de trois pour le distinguer.</td></tr>
+      <tr><td>Impédance d'entrée</td><td><strong>&gt; 10<sup>14</sup> Ω // 5 pF</strong></td>
+        <td>Charger une source de 2 GΩ à moins de 1 % impose cent fois plus, et la capacité fixe
+        la bande passante avec cette source.</td></tr>
+      <tr><td>Courant de polarisation</td><td><strong>&lt; 20 fA</strong></td>
+        <td>Vingt femtoampères dans deux gigaohms font quarante microvolts d'erreur : c'est déjà
+        la limite acceptable.</td></tr>
+      <tr><td>Réjection du mode commun</td><td><strong>&gt; 110 dB à 50 Hz</strong></td>
+        <td>Le mode commun capté par une plante atteint couramment plusieurs volts ; il faut le
+        ramener sous le microvolt.</td></tr>
+      <tr><td>Dérive en température</td><td><strong>&lt; 0,5 µV/°C</strong></td>
+        <td>Une pièce varie de cinq degrés dans la journée ; au-delà, la dérive ressemble à un
+        rythme circadien — l'erreur la plus fréquente du domaine.</td></tr>
+      <tr><td>Dynamique utile</td><td><strong>&gt; 120 dB</strong></td>
+        <td>Pour voir un microvolt sans saturer sur cent millivolts d'offset d'électrode.</td></tr>
+      <tr><td>Exactitude de la base de temps</td><td><strong>&lt; 2 ppm</strong></td>
+        <td>Deux parties par million font 0,17 s de dérive par jour : négligeable devant la durée
+        des phénomènes observés.</td></tr>
+      <tr><td>Isolement</td><td><strong>&gt; 2,5 kV, &lt; 5 pF</strong></td>
+        <td>Rompre toute boucle de masse, et garantir qu'un défaut de l'ordinateur n'atteint pas
+        le végétal ni l'opérateur.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c1-chaine" data-toc="sub">Répartir le bruit entre les étages</h3>
+
+  <p>Un objectif global de bruit ne sert à rien s'il n'est pas réparti. La règle est simple et
+  impitoyable : <strong>les bruits indépendants s'ajoutent quadratiquement</strong>, si bien qu'un
+  étage deux fois plus bruyant que les autres impose à lui seul le résultat. Il faut donc que
+  toutes les contributions soient du même ordre, et qu'aucune ne domine.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/carte-chaine.svg" alt="Budget de bruit de la chaîne de mesure"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Budget de bruit, étage par étage, ramené à
+    l'entrée et intégré sur la bande 0,01 – 10 Hz. Aucune contribution ne dépasse le double de la
+    plus faible : c'est le signe d'une chaîne équilibrée. Le total de 0,62 µV efficace tient
+    l'objectif avec une marge de 40 %.</figcaption>
+  </figure>
+
+  <div class="loupe">
+    <div class="l-h">Le calcul, pour qui veut le refaire</div>
+    <p class="noindent">La contribution d'un étage de densité spectrale <i>e</i><sub>n</sub>
+    (en nV/√Hz) sur une bande de <i>f</i><sub>1</sub> à <i>f</i><sub>2</sub> vaut, pour un bruit
+    blanc, <i>e</i><sub>n</sub>·√(<i>f</i><sub>2</sub> − <i>f</i><sub>1</sub>). Pour l'ADA4530-1 à
+    14 nV/√Hz sur 10 Hz : 14 × √10 ≈ 44 nV. Il faut y ajouter le bruit en 1/f, qui domine sous
+    quelques hertz et que l'on obtient en intégrant <i>e</i><sub>n</sub>²·<i>f</i><sub>c</sub>/<i>f</i> ;
+    avec une fréquence de coude de 1 Hz sur trois décades, cela donne un facteur √(ln 1000) ≈ 2,6.
+    D'où les 0,42 µV portés sur la figure — et la raison pour laquelle la bande basse coûte si
+    cher.</p>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Choix de conception — refuser le suréquipement</div>
+    <p class="noindent">Un convertisseur trente-deux bits et une référence à 0,5 ppm auraient
+    flatté la fiche technique. Ils n'auraient rien apporté : le plancher est fixé par l'électrode
+    et par l'étage d'entrée, pas par la conversion. Dépenser là où le gain n'existe pas est la
+    faute la plus commune des projets d'amateur — et la plus coûteuse. Chaque euro de ce projet a
+    été placé là où il déplace le plancher de bruit.</p>
+  </div>
+
+  <h3 id="c1-electrode" data-toc="sub">L'électrode, maillon qu'aucune électronique ne rattrape</h3>
+
+  <p>Il faut le dire avant de parler de composants : <strong>l'électrode est le premier étage de
+  la chaîne, et c'est le plus mauvais</strong>. Une électrode argent–chlorure d'argent correcte
+  produit environ 0,15 µV efficace dans notre bande, dérive de quelques dizaines de microvolts par
+  heure pendant la première demi-heure, et présente une impédance de contact de dix à cinq cents
+  kilohms selon l'humidité.</p>
+
+  <p>Aucun amplificateur ne corrige cela. On peut seulement : choisir un couple métal–électrolyte
+  non polarisable (d'où l'argent chloruré, et non le cuivre ou l'acier), laisser le contact se
+  stabiliser avant de conclure quoi que ce soit, et <strong>mesurer la dérive plutôt que la
+  supprimer</strong>. C'est le principe retenu dans tout l'ouvrage : la ligne de base est suivie,
+  affichée, enregistrée — jamais effacée.</p>
+</section>

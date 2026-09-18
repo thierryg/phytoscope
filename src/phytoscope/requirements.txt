@@ -1,0 +1,24 @@
+# ============================================================================
+#  PhytoScope — dépendances Python indispensables et recommandées
+#  Installation :  python3 -m pip install -r requirements.txt
+#             ou :  make install   (qui installe aussi les facultatives)
+#
+#  Ce fichier ne contient QUE ce qui s'installe partout sans compilateur.
+#  Les dépendances facultatives — celles dont l'échec ne doit pas empêcher
+#  l'installation du reste — vivent dans `requirements-optionnel.txt`.
+#  Motif : `python-rtmidi` est du C++ sans roue pour les Python les plus
+#  récents. Sur la même ligne que NumPy, son échec faisait échouer TOUTE
+#  l'installation, et l'utilisateur se retrouvait sans NumPy ni Qt.
+# ============================================================================
+
+# --- Obligatoires -----------------------------------------------------------
+# Sans elles, le logiciel ne démarre pas.
+numpy>=1.24            # tout le traitement du signal
+PySide6>=6.5           # interface graphique Qt 6 (licence LGPL)
+
+# --- Fortement recommandées -------------------------------------------------
+# Le logiciel démarre sans, mais amputé de fonctions importantes.
+# Toutes trois ont des roues précompilées sur Windows, macOS et Linux.
+pyqtgraph>=0.13        # tracés temps réel accélérés (sinon tracé maison, plus lent)
+sounddevice>=0.4.6     # entrée et sortie audio (PortAudio) — carte USB et haut-parleurs
+pyserial>=3.5          # contrôle de la carte et montages série (Arduino, NE555)

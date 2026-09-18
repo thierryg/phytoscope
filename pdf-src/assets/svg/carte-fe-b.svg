@@ -1,0 +1,249 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/carte-fe-b.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 830" width="1360" height="830">
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+ <marker id="ahk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
+   markerHeight="5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#23302C"/></marker>
+ <marker id="ahc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#A8552E"/></marker>
+ <pattern id="hatch" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#E0C073" stroke-width="2.4"/></pattern>
+ <pattern id="hatchb" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
+</defs>
+<rect width="1360" height="830" fill="#FFFFFF"/>
+<rect x="26" y="26" width="1308" height="778" rx="0" fill="none" stroke="#23302C" stroke-width="1.8"/>
+<rect x="42" y="42" width="1276" height="746" rx="0" fill="none" stroke="#D9D9C6" stroke-width="1.0"/>
+<line x1="201.5" y1="26" x2="201.5" y2="42" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="201.5" y1="788" x2="201.5" y2="804" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="361.0" y1="26" x2="361.0" y2="42" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="361.0" y1="788" x2="361.0" y2="804" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="520.5" y1="26" x2="520.5" y2="42" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="520.5" y1="788" x2="520.5" y2="804" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="680.0" y1="26" x2="680.0" y2="42" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="680.0" y1="788" x2="680.0" y2="804" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="839.5" y1="26" x2="839.5" y2="42" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="839.5" y1="788" x2="839.5" y2="804" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="999.0" y1="26" x2="999.0" y2="42" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="999.0" y1="788" x2="999.0" y2="804" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1158.5" y1="26" x2="1158.5" y2="42" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1158.5" y1="788" x2="1158.5" y2="804" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<text x="121.75" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">1</text>
+<text x="121.75" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">1</text>
+<text x="281.25" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">2</text>
+<text x="281.25" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">2</text>
+<text x="440.75" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">3</text>
+<text x="440.75" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">3</text>
+<text x="600.25" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">4</text>
+<text x="600.25" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">4</text>
+<text x="759.75" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">5</text>
+<text x="759.75" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">5</text>
+<text x="919.25" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">6</text>
+<text x="919.25" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">6</text>
+<text x="1078.75" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">7</text>
+<text x="1078.75" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">7</text>
+<text x="1238.25" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">8</text>
+<text x="1238.25" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">8</text>
+<line x1="26" y1="228.5" x2="42" y2="228.5" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1318" y1="228.5" x2="1334" y2="228.5" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="26" y1="415.0" x2="42" y2="415.0" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1318" y1="415.0" x2="1334" y2="415.0" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="26" y1="601.5" x2="42" y2="601.5" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1318" y1="601.5" x2="1334" y2="601.5" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<text x="34" y="139.25" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">A</text>
+<text x="1326" y="139.25" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">A</text>
+<text x="34" y="325.75" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">B</text>
+<text x="1326" y="325.75" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">B</text>
+<text x="34" y="512.25" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">C</text>
+<text x="1326" y="512.25" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">C</text>
+<text x="34" y="698.75" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">D</text>
+<text x="1326" y="698.75" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">D</text>
+<rect x="916" y="650" width="402" height="138" rx="0" fill="#FDFCF7" stroke="#23302C" stroke-width="1.6"/>
+<line x1="916" y1="690" x2="1318" y2="690" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="916" y1="742" x2="1318" y2="742" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1165.24" y1="690" x2="1165.24" y2="742" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1040.62" y1="742" x2="1040.62" y2="788" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1241.62" y1="742" x2="1241.62" y2="788" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
+<text x="1117.0" y="677" font-family="Cormorant Garamond, serif" font-size="20.37" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Pont de mesure et détection synchrone</text>
+<text x="1040.62" y="708" font-family="Lato, sans-serif" font-size="16.75" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">PhytoSense One</text>
+<text x="1040.62" y="722" font-family="Cormorant Garamond, serif" font-size="14.48" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
+<text x="1040.62" y="735" font-family="DejaVu Sans Mono, monospace" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
+<text x="1241.62" y="710" font-family="Lato, sans-serif" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Carte fille FE-B</text>
+<text x="1241.62" y="726" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">CERN-OHL-P v2</text>
+<text x="1241.62" y="737" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">diffusion libre</text>
+<text x="978.31" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">FEUILLE</text>
+<text x="978.31" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2/8</text>
+<text x="1102.93" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">RÉVISION</text>
+<text x="1102.93" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">B</text>
+<text x="1203.43" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">DATE</text>
+<text x="1203.43" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2026-09</text>
+<text x="1279.81" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">ÉCHELLE</text>
+<text x="1279.81" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">—</text>
+<text x="90" y="76" font-family="Cormorant Garamond, serif" font-size="19.01" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">FE-B · mesure d'impédance par pont excité en alternatif et démodulation synchrone</text>
+<polygon points="158.6,117.0 104,117.0 92,130 104,143.0 158.6,143.0" fill="#fff" stroke="#2F5E86" stroke-width="1.4" stroke-linejoin="round"/>
+<text x="129.3" y="134" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">EXC 1 kHz</text>
+<path d="M 168,130 L 340,130" fill="none" stroke="#23302C" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="round"/>
+<circle cx="340" cy="130" r="3.6" fill="#23302C"/>
+<path d="M 340,130 L 620,130" fill="none" stroke="#23302C" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="round"/>
+<text x="470" y="116" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">sinus 200 mV crête — CNA du microcontrôleur</text>
+<path d="M 340,130 L 340,168" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<line x1="340" y1="168" x2="340" y2="186.0" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<rect x="323.0" y="186.0" width="34" height="56" rx="0" fill="#fff" stroke="#23302C" stroke-width="1.8"/>
+<line x1="340" y1="242.0" x2="340" y2="260" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<text x="315.0" y="208.0" font-family="Lato, sans-serif" font-size="14.94" fill="#3F7D5A" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">R10</text>
+<text x="315.0" y="230.0" font-family="DejaVu Sans Mono, monospace" font-size="14.94" fill="#23302C" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">1 MΩ</text>
+<path d="M 340,260 L 340,292" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<circle cx="340" cy="292" r="3.6" fill="#23302C"/>
+<rect x="230" y="360" width="110" height="240" rx="3" fill="#FBFBF7" stroke="#23302C" stroke-width="1.8"/>
+<text x="285.0" y="380" font-family="Lato, sans-serif" font-size="16.29" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U6</text>
+<text x="285.0" y="396" font-family="DejaVu Sans Mono, monospace" font-size="14.48" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">TMUX1208</text>
+<line x1="206" y1="416.0" x2="230" y2="416.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="240" y="419.0" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">S1</text>
+<line x1="206" y1="472.6666666666667" x2="230" y2="472.6666666666667" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="240" y="475.6666666666667" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">S2</text>
+<line x1="206" y1="529.3333333333334" x2="230" y2="529.3333333333334" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="240" y="532.3333333333334" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">S3</text>
+<line x1="206" y1="586.0" x2="230" y2="586.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="240" y="589.0" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">S4</text>
+<line x1="340" y1="480.0" x2="364" y2="480.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<text x="328" y="483.0" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">D</text>
+<line x1="285.0" y1="600" x2="285.0" y2="618" stroke="#2F5E86" stroke-width="1.2" stroke-linecap="round"/>
+<text x="285.0" y="632" font-family="DejaVu Sans Mono, monospace" font-size="12.67" fill="#2F5E86" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">A0/A1</text>
+<path d="M 340,292 L 340,340 L 364,340 L 364,480.0" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<line x1="96" y1="416.0" x2="123.0" y2="416.0" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<rect x="123.0" y="399.0" width="56" height="34" rx="0" fill="#fff" stroke="#23302C" stroke-width="1.8"/>
+<line x1="179.0" y1="416.0" x2="206" y2="416.0" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<text x="151.0" y="391.0" font-family="Lato, sans-serif" font-size="14.94" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">100 kΩ</text>
+<path d="M 206,416.0 L 206,416.0" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 96,416.0 L 76,416.0" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<line x1="96" y1="472.6666666666667" x2="123.0" y2="472.6666666666667" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<rect x="123.0" y="455.6666666666667" width="56" height="34" rx="0" fill="#fff" stroke="#23302C" stroke-width="1.8"/>
+<line x1="179.0" y1="472.6666666666667" x2="206" y2="472.6666666666667" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<text x="151.0" y="447.6666666666667" font-family="Lato, sans-serif" font-size="14.94" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">1 MΩ</text>
+<path d="M 206,472.6666666666667 L 206,472.6666666666667" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 96,472.6666666666667 L 76,472.6666666666667" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<line x1="96" y1="529.3333333333334" x2="123.0" y2="529.3333333333334" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<rect x="123.0" y="512.3333333333334" width="56" height="34" rx="0" fill="#fff" stroke="#23302C" stroke-width="1.8"/>
+<line x1="179.0" y1="529.3333333333334" x2="206" y2="529.3333333333334" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<text x="151.0" y="504.33333333333337" font-family="Lato, sans-serif" font-size="14.94" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">10 MΩ</text>
+<path d="M 206,529.3333333333334 L 206,529.3333333333334" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 96,529.3333333333334 L 76,529.3333333333334" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<line x1="96" y1="586.0" x2="123.0" y2="586.0" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<rect x="123.0" y="569.0" width="56" height="34" rx="0" fill="#fff" stroke="#23302C" stroke-width="1.8"/>
+<line x1="179.0" y1="586.0" x2="206" y2="586.0" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<text x="151.0" y="561.0" font-family="Lato, sans-serif" font-size="14.94" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">100 MΩ</text>
+<path d="M 206,586.0 L 206,586.0" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 96,586.0 L 76,586.0" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 76,416.0 L 76,586.0" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<line x1="76" y1="586.0" x2="76" y2="604.0" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<polygon points="54,604.0 98,604.0 76,626.0" fill="#23302C" stroke="#23302C" stroke-width="1.0" stroke-linejoin="round"/>
+<text x="76" y="644.0" font-family="DejaVu Sans Mono, monospace" font-size="14.26" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">AGND</text>
+<text x="285" y="652" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">gammes de référence — commutation automatique</text>
+<path d="M 620,130 L 620,168" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<line x1="620" y1="168" x2="620" y2="186.0" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<rect x="603.0" y="186.0" width="34" height="56" rx="0" fill="#fff" stroke="#23302C" stroke-width="1.8"/>
+<line x1="620" y1="242.0" x2="620" y2="260" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<text x="595.0" y="208.0" font-family="Lato, sans-serif" font-size="14.94" fill="#3F7D5A" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">R12</text>
+<text x="595.0" y="230.0" font-family="DejaVu Sans Mono, monospace" font-size="14.94" fill="#23302C" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">10 kΩ</text>
+<path d="M 620,260 L 620,292" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<circle cx="620" cy="292" r="3.6" fill="#23302C"/>
+<path d="M 620,292 L 620,400" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<rect x="660" y="380" width="54" height="148" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.6"/>
+<line x1="620" y1="400" x2="660" y2="400" stroke="#23302C" stroke-width="1.3" stroke-linecap="round"/>
+<circle cx="670" cy="400" r="4.2" fill="#B08528" stroke="#B08528" stroke-width="1"/>
+<text x="687.0" y="403" font-family="DejaVu Sans Mono, monospace" font-size="13.13" fill="#fff" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">T</text>
+<line x1="620" y1="464" x2="660" y2="464" stroke="#23302C" stroke-width="1.3" stroke-linecap="round"/>
+<circle cx="670" cy="464" r="4.2" fill="#B08528" stroke="#B08528" stroke-width="1"/>
+<text x="687.0" y="467" font-family="DejaVu Sans Mono, monospace" font-size="13.13" fill="#fff" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">S</text>
+<text x="687.0" y="370" font-family="Lato, sans-serif" font-size="15.39" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">J1 · électrodes</text>
+<path d="M 620,400 L 620,400" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 620,464 L 620,464" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 620,464 L 620,510" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<line x1="620" y1="510" x2="620" y2="528" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<polygon points="598,528 642,528 620,550" fill="#23302C" stroke="#23302C" stroke-width="1.0" stroke-linejoin="round"/>
+<text x="736" y="404" font-family="Lato, sans-serif" font-size="14.48" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">R(plante)</text>
+<text x="736" y="420" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">100 kΩ à 2 GΩ</text>
+<polygon points="760,170 950,260.0 760,350" fill="#fff" stroke="#23302C" stroke-width="1.7" stroke-linejoin="round"/>
+<text x="784" y="218.6" font-family="Lato, sans-serif" font-size="21.5" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">+</text>
+<text x="784" y="319.4" font-family="Lato, sans-serif" font-size="21.5" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">−</text>
+<text x="817.0" y="254.0" font-family="Lato, sans-serif" font-size="15.84" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">U3</text>
+<text x="817.0" y="276.0" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">INA828</text>
+<line x1="804" y1="234.8" x2="826" y2="234.8" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<line x1="804" y1="285.2" x2="826" y2="285.2" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M 340,292 L 400,292 L 400,210 L 760,210" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 620,292 L 740,292 L 740,310 L 760,310" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 760,224 L 700,224" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 760,296 L 700,296" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<line x1="700" y1="224" x2="700" y2="232.0" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<rect x="683.0" y="232.0" width="34" height="56" rx="0" fill="#fff" stroke="#23302C" stroke-width="1.8"/>
+<line x1="700" y1="288.0" x2="700" y2="296" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<text x="675.0" y="254.0" font-family="Lato, sans-serif" font-size="14.94" fill="#3F7D5A" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">R14</text>
+<text x="675.0" y="276.0" font-family="DejaVu Sans Mono, monospace" font-size="14.94" fill="#23302C" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">6,19 kΩ</text>
+<text x="676" y="336" font-family="Lato, sans-serif" font-size="14.03" fill="#2F5E86" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">G = 9,08</text>
+<path d="M 859,314 L 859,560 L 880,560" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<polygon points="972,547.0 892,547.0 880,560 892,573.0 972,573.0" fill="#fff" stroke="#A8552E" stroke-width="1.4" stroke-linejoin="round"/>
+<text x="930.0" y="564" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">V_OFFSET</text>
+<text x="986" y="556" font-family="Lato, sans-serif" font-size="13.58" fill="#A8552E" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">broche REF pilotée par le CNA 16 bits — recentrage</text>
+<rect x="990" y="150" width="310" height="330" rx="6" fill="#F5F8FB" stroke="#2F5E86" stroke-width="1.2" stroke-dasharray="7 5"/>
+<text x="1145" y="172" font-family="Lato, sans-serif" font-size="14.94" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">DÉTECTION SYNCHRONE</text>
+<rect x="1010" y="214" width="130" height="86" rx="3" fill="#FBFBF7" stroke="#23302C" stroke-width="1.8"/>
+<text x="1075.0" y="236" font-family="Lato, sans-serif" font-size="17.2" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U4</text>
+<text x="1075.0" y="254" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ADG1419</text>
+<text x="1075.0" y="272" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">commutateur</text>
+<path d="M 950,260.0 L 1010,260" fill="none" stroke="#23302C" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="round"/>
+<polygon points="1108,343.0 1024,343.0 1012,356 1024,369.0 1108,369.0" fill="#fff" stroke="#2F5E86" stroke-width="1.4" stroke-linejoin="round"/>
+<text x="1064.0" y="360" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">REF_CARRÉ</text>
+<path d="M 1075,330 L 1075,300" fill="none" stroke="#2F5E86" stroke-width="1.3" stroke-linecap="square" stroke-linejoin="round" stroke-dasharray="5 4"/>
+<path d="M 1140,240 L 1164,240" fill="none" stroke="#23302C" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="round"/>
+<line x1="1164" y1="240" x2="1176.0" y2="240" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<rect x="1176.0" y="223.0" width="56" height="34" rx="0" fill="#fff" stroke="#23302C" stroke-width="1.8"/>
+<line x1="1232.0" y1="240" x2="1244" y2="240" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<text x="1204.0" y="215.0" font-family="Lato, sans-serif" font-size="14.94" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">R15</text>
+<text x="1204.0" y="277.0" font-family="DejaVu Sans Mono, monospace" font-size="14.94" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">100 kΩ</text>
+<circle cx="1244" cy="240" r="3.6" fill="#23302C"/>
+<line x1="1244" y1="250" x2="1244" y2="281.0" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<line x1="1227.0" y1="281.0" x2="1261.0" y2="281.0" stroke="#23302C" stroke-width="2.6" stroke-linecap="round"/>
+<line x1="1227.0" y1="295.0" x2="1261.0" y2="295.0" stroke="#23302C" stroke-width="2.6" stroke-linecap="round"/>
+<line x1="1244" y1="295.0" x2="1244" y2="326" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<text x="1269.0" y="284.0" font-family="Lato, sans-serif" font-size="14.94" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">C10</text>
+<text x="1269.0" y="306.0" font-family="DejaVu Sans Mono, monospace" font-size="14.94" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">1 µF</text>
+<path d="M 1244,240 L 1244,250" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
+<line x1="1244" y1="326" x2="1244" y2="344" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
+<polygon points="1222,344 1266,344 1244,366" fill="#23302C" stroke="#23302C" stroke-width="1.0" stroke-linejoin="round"/>
+<path d="M 1244,240 L 1290,240" fill="none" stroke="#23302C" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="round"/>
+<text x="1298" y="222" font-family="DejaVu Sans Mono, monospace" font-size="14.48" fill="#2F5E86" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">SIG_B</text>
+<text x="1145" y="424" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">f₋₃dB = 1,6 Hz : seule subsiste la composante</text>
+<text x="1145" y="440" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">en phase avec l'excitation</text>
+<rect x="92" y="676" width="800" height="94" rx="5" fill="#EAF1FB" stroke="#2F5E86" stroke-width="1.1"/>
+<text x="106" y="704" font-family="Lato, sans-serif" font-size="15.62" fill="#2F5E86" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">POURQUOI EXCITER EN ALTERNATIF ?</text>
+<text x="106" y="728" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Le pont est excité à 1 kHz et démodulé en phase : le bruit en 1/f de la chaîne, la dérive</text>
+<text x="106" y="750" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">thermique et le 50 Hz du réseau tombent hors de la bande utile. Réjection mesurée : 62 dB à 50 Hz.</text>
+</svg>

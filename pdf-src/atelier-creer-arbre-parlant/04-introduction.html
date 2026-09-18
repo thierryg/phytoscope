@@ -1,0 +1,50 @@
+<section class="chapter first">
+  <h2 id="introduction" data-toc="chapter" data-run="Introduction">Introduction — Ce que vous allez construire</h2>
+
+  <p class="chapo">Une chaîne complète, en cinq blocs, entièrement libre. Et, plus important, les moyens de savoir ce qu'elle mesure réellement.</p>
+
+  <p class="lettrine noindent">Ce manuel construit un dispositif qui ressemble, dans ses grandes lignes, à celui qui a fait le tour du monde en 2025 — mais avec une différence décisive : <strong>le vôtre sera ouvert</strong>. Chaque valeur, chaque seuil, chaque règle de conversion sera publié, donc vérifiable, donc critiquable. C'est la seule supériorité qui compte, et elle ne coûte rien.</p>
+
+  <figure class="full">
+    <img src="assets/svg/tt-architecture.svg" alt="Architecture en quatre étages"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> L'architecture générale. Chaque étage est remplaçable indépendamment — c'est la condition de la reproductibilité, et ce manuel suit cet ordre.</figcaption>
+  </figure>
+
+  <h3 id="intro-trois-niveaux" data-toc="sub">Trois niveaux d'ambition</h3>
+
+  <table>
+    <thead><tr><th>Niveau</th><th>Ce que vous obtenez</th><th>Temps</th><th>Ordre de grandeur</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Paillasse</strong></td><td>Une plante d'intérieur instrumentée ; toute la chaîne comprise ; les trois tests de contrôle réalisables</td><td>Un week-end</td><td>100 à 200 €</td></tr>
+      <tr><td><strong>2. Arbre saisonnier</strong></td><td>Une série temporelle multivoie exploitable sur plusieurs mois, avec autonomie solaire et liaison radio</td><td>Un mois</td><td>600 à 1 200 €</td></tr>
+      <tr><td><strong>3. Installation publique</strong></td><td>Dialogue vocal en local, signalétique, maintenance</td><td>Plusieurs mois</td><td>2 000 à 5 000 €</td></tr>
+    </tbody>
+    <caption>Le niveau 1 suffit à tout comprendre. N'allez au niveau 2 qu'après l'avoir fait, et au niveau 3 qu'après une saison complète au niveau 2.</caption>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Le conseil qui économise le plus de temps</div>
+    <p><strong>Ne commencez pas par un arbre.</strong> Commencez par une plante en pot, sur une table, à côté d'un multimètre. Vous y découvrirez en une après-midi la dérive d'électrode, le couplage à 50 Hz et la sensibilité à l'humidité du contact — trois phénomènes qui, découverts sur un arbre après trois semaines de montage en extérieur, coûtent une saison entière.</p>
+  </div>
+
+  <h3 id="intro-plan" data-toc="sub">Plan du manuel</h3>
+
+  <ul class="plain">
+    <li><strong>I — Avant de toucher un arbre.</strong> Déontologie arboricole, autorisations, et la méthode de travail qui rendra vos données réinterprétables dans cinq ans.</li>
+    <li><strong>II — Les capteurs.</strong> Huit familles, leurs caractéristiques réelles, et les pièges d'achat.</li>
+    <li><strong>III — La chaîne bioélectrique.</strong> Le cœur difficile. Impédances, courants de polarisation, électrodes, référence — et pourquoi la plupart des montages amateurs échouent ici.</li>
+    <li><strong>IV — Acquisition, énergie, réseau.</strong> Microcontrôleur, veille profonde, solaire, radio longue portée.</li>
+    <li><strong>V — La chaîne logicielle.</strong> Firmware, courtier de messages, base de séries temporelles, tableaux de bord — entièrement libre.</li>
+    <li><strong>VI — Sonification et parole.</strong> Mapping déclaré, synthèse vocale locale, modèle de langage local, et l'invite contrainte.</li>
+    <li><strong>VII — Protocoles et contrôles.</strong> Étalonnage, mise en service, et les trois tests qui décident de tout.</li>
+    <li><strong>VIII — Étude de reproductibilité.</strong> Ce que vous pourrez refaire, ce qui résistera, et comment publier votre travail.</li>
+  </ul>
+
+  <p>Les annexes contiennent <strong>cinq planches de schémas en pleine page</strong>, <strong>six nomenclatures chiffrées</strong>, <strong>dix programmes complets</strong> et l'inventaire des licences de tout ce qui est cité.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Une chose à savoir avant de commencer</div>
+    <p>Dans ce domaine, <strong>les échecs réels sont des échecs de plomberie</strong>, pas d'électronique ni d'algorithmique. Classés par fréquence constatée : l'étanchéité, l'alimentation en hiver, la dérive d'électrode, le couplage secteur — et seulement ensuite les questions de traitement du signal.</p>
+    <p>Prévoyez vos efforts en conséquence. Le plus beau code du monde ne survit pas à un presse-étoupe mal serré.</p>
+  </div>
+</section>

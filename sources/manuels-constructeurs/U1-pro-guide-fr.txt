@@ -1,0 +1,491 @@
+GUIDE RAPIDE DE DÉMARRAGE
+
+MUSIQUE DES PLANTES – Modèle : U1
+INSTRUCTIONS DE L'APPAREIL
+Généralités
+Nous sommes heureux de savoir que tu partages
+notre passion pour la musique des plantes. Nous
+sommes enthousiastes à l'idée que tu feras bientôt
+partie d'une communauté en pleine croissance qui
+se consacre à l'exploration de l'intelligence du monde végétal. Posséder
+"l'instrument le plus récent de la nature" te donne l'occasion d'élargir ta conscience
+en découvrant un lien unique et profond avec l'environnement proche.
+Nous t'invitons donc à prendre connaissance des informations contenues dans le
+"Manuel d'utilisation et de maintenance" fourni avec l'appareil, ou à le télécharger
+sur notre site.
+
+But - usage général
+L'équipement "Musique des Plantes" est un équipement qui permet de contrôler un
+générateur de son MIDI en mesurant la résistance électrique des tissus d'une
+plante/arbre.
+Comme décrit dans le paragraphe dédié, l'équipement doit être mis en contact
+avec la plante/arbre à l'aide des fixations appropriées (électrodes) fournies (pour
+les modes de connexion, se référer au paragraphe correspondant).
+Le "Musique des Plantes" modèle U1 peut être connecté directement aux
+amplificateurs préamplifiés ou à un générateur de son MIDI externe.
+Pour plus de détails sur son utilisation, veuillez se référer au paragraphe spécifique
+de ce livret.
+
+
+Lire les instructions
+Avant d'utiliser le produit, toutes les instructions de sécurité et
+d'utilisation doivent être lues avant toute utilisation.
+
+Garantie et responsabilité
+Nos conditions générales de vente sont communiquées au client au plus tard au
+moment de la vente. Aucune responsabilité pour des dommages physiques ou
+matériels ne peut être acceptée si une seule des conditions suivantes n'est pas
+remplie:
+
+
+     •    Utilisation incorrecte de l'appareil en se référant aux instructions du
+          manuel d'utilisation et d'entretien.
+
+
+     •    Mise en marche, utilisation et entretien incorrects de l'appareil.
+     • Ne pas respecter les recommandations d'utilisation du présent manuel
+        concernant le transport, l'installation, le montage, l'allumage, le
+        fonctionnement, l'entretien et l'équipement de l’appareil ;
+
+     • Modifications de l'appareil sans l'accord du fabricant ;
+
+
+   • Absence de contrôle périodique des pièces de raccordement de l'alimentation
+       électrique;
+
+
+   • Réparations effectuées par du personnel non autorisé;
+
+
+   • Connexion à un système d'alimentation électrique non standard;
+
+
+   • Influence des facteurs étrangers de force majeure;
+
+
+  1. Nettoyage
+Lors du nettoyage de l'appareil, utilisez un ventilateur ou des serviettes
+spécialement destinés au nettoyage de l'équipement électronique et veillez à ne
+pas rayer ou endommager l'appareil.
+Toujours débrancher l'appareil de la prise secteur avant le nettoyage, ne pas
+utiliser de détergents liquides ou d'aérosols. Utiliser un tissu humide.
+   2. Accessoires
+N'utilisez pas d'accessoires qui ne sont pas recommandés par le fabricant de
+l'appareil, car ils pourraient causer des dommages.
+   3. Eau et humidité
+Ne pas utiliser le produit à côté de l'eau, par exemple dans la baignoire, le
+lavabo, l'évier ou la salle de bain, dans les caves humides, la piscine, etc.
+   4. Pénétration d'objets et de liquides
+N'insérez pas d'objets dans le produit par les ouvertures, car ils peuvent entrer
+en contact avec des points de tension dangereux ou des composants en court-
+circuit qui pourraient provoquer un incendie ou une électrocution. Ne versez
+aucun liquide sur le produit.
+ Droits d'auteur
+Les droits d'auteur de ce manuel sont la propriété du fabricant Solerà s. c.. Ce
+manuel est destiné à l'utilisateur de la machine.
+Il contient des instructions et des indications qui ne peuvent pas être totalement ou
+partiellement :
+
+
+             •              Reproduit;
+
+
+             •              diffusées;
+
+
+             •              Divulgué à des tiers parties.
+
+Le non-respect de cette règle peut entraîner des conséquences juridiques.
+
+
+
+Accessoires fournis
+Avant de commencer, assurez-vous que tous les composants suivants sont inclus
+dans le package U1. Si certains composants manquent*, veuillez contacter le
+revendeur auprès duquel vous avez acheté l'appareil.
+* Dans la boîte vous trouverez seulement la fiche de référence du pays/état dans lequel vous vivez.
+
+
+
+
+       !
+    GUIDE RAPIDE DE DÉMARRAGE
+    Mode de fonctionnement - mode d'emploi
+    Le dispositif se compose de :
+
+
+
+      1.          Corpo centrale
+      2.          Display
+      3.          Panneau frontal
+      4.          Panneau arrière
+
+
+A   Entrée - Prise stéréo de 3,5 mm pour le raccordement des électrodes à
+    l'installation. Schéma de raccordement (voir figures 6/7):
+    •Brochettes vertes pour le raccordement des feuilles.
+    •Sonde pour raccordement à la terre.
+
+
+B   Res H / L - Sélecteur d'échelle de résistance à mesurer (H: arbres, L: plantes en pot).
+
+
+
+C   Gain - Sélecteur de sensibilité; réglage de la sensibilité d'entrée.
+
+
+D   Autorange display - Indicateur d'état du système autoréglable.
+
+
+
+E   Sample Rate - Réglage de la fréquence d'échantillonnage. Règle le temps de
+    mesure du signal entrant de l'installation et envoie les codes de contrôle MIDI
+    au générateur de son. Augmente et diminue le rythme des signaux musicaux.
+
+
+F   MIDI Velocity -Ajustement de la valeur assignée au code MIDI Velocity, ajuste la
+    dynamique du son généré lorsque vous tournez le son faiblement et doucement
+    vers la gauche, lorsque vous tournez le son fort vers la droite et que vous
+    augmentez le volume..
+
+
+G   MIDI On/Off - Active/désactive l'envoi des codes MIDI au générateur de son.
+    Utilisez-le pour éteindre et rallumer rapidement l'audio.
+
+
+
+H   Note 3 / 1 - Sélectionner le mode monotonique ou polyphonique à trois voix.
+
+
+I   Scale Major / 12 - Sélectionne la production de notes selon un schéma
+    harmonique prédéfini ou sans schéma harmonique..
+
+
+N   MIDI Out - Sortie MIDI pour se connecter à l'entrée MIDI du générateur de son.
+
+
+O   Audio Out – Connexion pour haut-parleurs externes.
+
+P   On/Off - Commutateur d'allumage.
+
+Q   DC 12 V PWR IN - Alimentation électrique.
+   Vue de l'appareil
+                                                            4
+
+
+
+
+    1                                                                       2
+
+
+
+
+                                        3
+
+Figure 1 – Vue générale de l'appareil
+
+
+
+                              D                     F   G       H
+
+
+
+
+                                   C
+
+
+
+
+         A     B       C                    E                       I   L   M
+
+
+  Figure 2 – Vue du panneau avant
+
+
+
+
+                   N                            O                       P       Q
+
+
+Figure 3 - Vue panneau arrière
+       Préparation de l'appareil
+      L'appareil doit être retiré de son emballage fourni pour le stockage pendant
+      les périodes de non-utilisation.
+      L'appareil doit être placé dans un endroit ayant les caractéristiques suivantes:
+
+
+    • Surface stable et plane.
+
+    • La surface et l'environnement doivent être conformes aux spécifications du
+        chapitre sur le lieu d'utilisation de l'appareil (l'appareil n'est pas exposé à
+        l'humidité, à des intempéries, à la pluie, à une exposition excessive au
+        soleil).
+
+
+    • La surface et l'environnement doivent être tels qu'aucune poussière ne pénètre
+        à l'intérieur de l'appareil.
+
+
+
+Raccordement de l'alimentation
+Le raccordement à l'alimentation se fait par le transformateur AC-DC fourni avec
+l'appareil.
+
+Insérez le câble d'alimentation fourni dans la prise DC12V du panneau arrière de
+l'appareil, en vous assurant que l'interrupteur d'alimentation est sur OFF, et insérez
+l'alimentation dans la prise murale.
+
+
+
+
+!
+           Figure 4 – Vue du transformateur AC-DC et de sa connexion à l'appareil
+Connexion de l'instrument à une plante/arbre
+
+
+
+ Raccorder les électrodes à l'installation de la manière suivante:
+
+
+     • Insérez le senseur à spirale dans le sol près des racines de la plante ou de la base de l'arbre..
+
+
+
+     • Attachez les pinces vertes à une feuille, en mouillant légèrement la surface de
+           la feuille.;
+
+
+     • Une fois les deux électrodes connectées comme expliqué ci-dessus, insérez le
+          connecteur dans la prise INPUT à l'avant de l'appareil.
+
+
+
+Connexion de haut-parleurs ou d'amplificateurs externes
+Connecter le connecteur à la prise située sur le panneau arrière de l'appareil.
+Attention : vérifiez que le volume sonore est réglé au minimum pour éviter les
+émissions sonores brusques et incontrôlées.
+Remarque : Si nécessaire, un générateur de sons MIDI externe peut être
+connecté. Dans ce cas, insérez la fiche dans la prise située sur le panneau arrière
+(voir chapitre).
+
+
+
+
+ !
+
+
+
+                                  Figure 5 - Prise AUDIO OUT et MIDI
+                         Figure 6 - Connexion des capteurs à une installation
+
+
+
+
+Figure 7
+ Insertion dans le cric INPUT
+
+
+
+
+                                                                                  Capteur noir dans
+                                                                                  les racines avec
+                                                                                  la tige métal
+
+
+
+                                                                   Capteur vert sur
+                                                                   feuille ou fleurs
+
+
+
+
+                      Figure 8 - Connexion de l'appareil à une installation
+Câble capteur disponible en :
+1,50 mètre (fourni)
+ 5 mètres en option
+10 mètres en option
+Opérations initiales d'ajustement et de réglage
+Les réglages suivants sont nécessaires: Régler les paramètres comme dans la Figure 2
+
+    • Res: L dans le cas de petites plantes en pot; H dans le cas de grandes plantes,
+        d'arbres, etc.
+
+    • Gain: Position centrale;
+
+    • Sample Rate: tourner à 9 heures;
+
+•     MIDI velocity: Position centrale;
+
+    • MIDI: On (position de tête);
+
+    • Note: 3 (position de tête);
+
+    • Scale: Major (position de tête);
+
+
+Mise en marche de l'appareil
+Tournez l'appareil à l'aide de l'interrupteur principal. (ON-OFF) sur le panneau
+arrière.
+
+
+Autorange - Autobalance
+Après la mise sous tension par l'interrupteur, l'appareil passe en mode auto-
+balancement. L'état de la fonction auto-range peut être contrôlé grâce à l'affichage
+spécial à LED placé sur la face avant de l'appareil.
+
+
+
+
+                  Figure 9 – Vue d'affichage LED - Autorange (panneau avant)
+     • Dès que l'appareil est mis sous tension, la fonction de Auto-Range est
+        activée, la LED rouge à gauche indique que la fonction est active. Cette
+        phase peut prendre plusieurs minutes, selon les caractéristiques de
+        l'installation connectée.
+
+     • Attendre aussi longtemps pour permettre au système appareil/plante de
+        trouver un équilibre approprié.
+
+   • A la fin du processus, il sera possible d'activer les différentes commandes
+        pour faire fonctionner les différentes options sonores.
+
+Attention: Les indications suivantes sont des informations possibles sur le display
+d'autorange:
+
+   • LED verte allumée: Système équilibré, fonctionnement correct.
+
+   • LED jaune (droite ou gauche) allumée: le système d'auto-ajustement est
+       alerté en cas de dépassement des limites de la plage de mesure.
+
+   • LED rouge (droite ou gauche) allumée: le système est intervenu et tente de
+       rééquilibrer l'appareil et de le remettre en état de fonctionnement..
+
+   • LEDs rouges (tous deux) allumées: le système n'a pas réussi à atteindre une
+        nouvelle condition d'équilibrage. Le contact avec la plante peut ne pas être
+        correct.
+Si la condition se répète sans atteindre la condition de bon fonctionnement, il est
+nécessaire de vérifier dans l'ordre suivant:
+        1. si les sondes sont connectées correctement (essayer de les déplacer
+        si nécessaire)
+        2. si le câble est correctement connecté à l'installation dans l'appareil
+        et s'assurer qu'il n'est pas endommagé.
+        3. la prise du câble de connexion est correctement insérée dans la
+        prise INPUT.
+        4. si la valeur Res H/L est réglée correctement.
+
+Ajustements
+Lorsque le mode d'auto-ajustement est activé (la lumière verte s'allume), il est
+possible de commencer à modifier lentement les réglages de l'appareil pour
+obtenir les modes de fonctionnement et les effets sonores souhaités en agissant
+sur la fréquence d'échantillonnage et la vitesse midi.
+
+Menu des réglages de sortie
+Sur la partie supérieure de l'appareil, il y a des boutons pour sélectionner les
+réglages de sortie.
+Menu UP                 Défilement vertical - menu suivant
+Menu DOWN               Défilement vertical - menu précédent
+<      Défilement horizontal - sélection gauche
+
+>      Défilement horizontal - sélection droit
+
+
+
+
+    Figure 10 – Vue générale des boutons et affichage du menu de réglage
+
+
+Il est possible d'utiliser les boutons pour sélectionner :
+
+
+
+                                                       Le volume augmente avec le bouton >
+                                                       diminue avec le bouton <
+
+
+
+                                                       L'effet Chorus augmente avec le bouton >
+                                                       diminue avec le bouton <.
+
+
+                                                       Effet de réverbération - Augmente avec le
+                                                       bouton > Diminue avec le bouton <.
+
+
+
+                                                   .
+                                                       PAN - Gauche/droite avec les boutons < ou >
+
+
+
+
+                                                       EFFET SPACIAL - augmenter avec le
+                                                       bouton > diminuer avec le bouton <.
+                                                  Instrument - définition de l'instrument ou
+                                                  de l'effet sonore avec les boutons < o >
+
+
+
+
+Générateur de son MIDI
+
+Si vous utilisez un générateur de sons MIDI externe, connectez la prise MIDI OUT
+
+du panneau arrière de l'appareil à la prise MIDI IN du générateur de sons MIDI
+en votre possession (il n'est pas fourni avec cet appareil) en utilisant un câble MIDI OUT.
+
+Connectez le générateur de sons MIDI à l'alimentation électrique et suivez les
+instructions spécifiques du générateur MIDI en votre possession.
+ UNE COPIE DE LA DÉCLARATION DE CONFORMITÉ CE
+
+ DÉCLARATION DE CONFORMITÉ
+1. Raison sociale et adresse du fabricant:
+          SOLERA’ s.c. Sede operativa: via Baldissero n. 21 -
+          10080 Vidracco (TO) P.I.V.A. IT 08853420019 - Tel
+          0125 789940 - e-mail:
+          info@musicoftheplants.com- web:
+          www.musicoftheplants.com
+
+2. Nom de la personne habilitée à établir le dossier technique: Valter
+         Marenco c/o Solerà s.c. - via Baldissero n. 21 - 10080 Vidracco
+         (TO) Tel 0125 789940
+
+ Déclare sous son unique responsabilité que la machine
+           Dénomination commerciale: Music of the plants
+           Modèle: U1
+           Numéro d'immatriculation: voir plaque signalétique sur l'appareil
+           Année de fabrication: voir plaque signalétique sur l'appareil
+
+ Il a été fabriqué conformément à la norme:
+
+                         directive 2004/108/CE EMC (électromagnétique)
+                                    directive 2002/95/CE RoHS I
+                                    directive 2011/65/CE RoHS II
+                                     directive 2002/96/CE RAEE
+                                    directive 2012/19/CE RAEE II
+
+
+ Il est conforme aux normes harmonisées suivantes:
+
+    • CEI EN 50581 - EN 50581:2012 - Documentation technique pour l'évaluation
+         des produits électriques et électroniques en ce qui concerne la limitation
+         des substances dangereuses.
+
+    • CEI EN 62321 - Produits électrotechniques - Détermination des niveaux de six
+         substrats réglementés (plomb, mercure, cadmium, chrome hexavalent,
+         polybromobiphényles, éthers diphényliques polybromés).
+
+ Lieu, Date: Vidracco, 28/03/2014                                              Signature
+                             !
+
+
+
+
+                                     Solerà s.c.
+
+
+Siège / Quartier général opérationnel: via Baldissero n. 21 - 10080 Vidracco
+                                          (TO)
+                             P.IVA / VAT: 08853420019
+                                Tel +39 0125 789940
+                        e-mail: info@musicoftheplants.com
+                      Website:www.musicoftheplants.com
+

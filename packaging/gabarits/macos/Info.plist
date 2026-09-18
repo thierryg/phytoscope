@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ==========================================================================
+  PhytoScope — attribution — packaging/gabarits/macos/Info.plist
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>                  <string>PhytoScope</string>
+    <key>CFBundleDisplayName</key>           <string>PhytoScope</string>
+    <key>CFBundleIdentifier</key>            <string>com.bretagne-namaste.phytoscope</string>
+    <key>CFBundleVersion</key>               <string>@VERSION@</string>
+    <key>CFBundleShortVersionString</key>    <string>@VERSION@</string>
+    <key>CFBundlePackageType</key>           <string>APPL</string>
+    <key>CFBundleSignature</key>             <string>????</string>
+    <key>CFBundleExecutable</key>            <string>phytoscope</string>
+    <key>CFBundleIconFile</key>              <string>phytoscope.icns</string>
+    <key>LSMinimumSystemVersion</key>        <string>11.0</string>
+    <key>NSHighResolutionCapable</key>       <true/>
+    <!-- Sans cette clé, macOS refuse l'accès au microphone sans explication,
+         et l'entrée audio reste muette : la carte PhytoSense se présente au
+         système comme un périphérique d'entrée audio. -->
+    <key>NSMicrophoneUsageDescription</key>
+    <string>PhytoScope lit le signal de la plante par l'entrée audio (carte PhytoSense, carte son ou montage série).</string>
+    <key>NSHumanReadableCopyright</key>
+    <string>@DROITS@ — licence @LICENCE@</string>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.education</string>
+</dict>
+</plist>

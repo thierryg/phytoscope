@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ==========================================================================
+  PhytoScope — attribution — packaging/gabarits/windows/phytoscope.wxs
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<!--
+  PhytoScope — source WiX pour la fabrication du MSI.
+
+  Un MSI n'est pas un « installateur » de plus : c'est le format que Windows
+  comprend nativement, celui qu'un service informatique déploie par stratégie
+  de groupe ou par Intune, et qu'on installe sans un clic :
+
+      msiexec /i PhytoScope-X.Y.Z.msi /qn
+
+  C'est précisément ce que produisent les outils commerciaux du genre
+  InstallShield. Ici, il est fabriqué depuis Debian par « wixl », de msitools.
+
+  À la différence de l'installateur NSIS, qui se pose dans le profil de
+  l'utilisateur, le MSI s'installe pour toute la machine et demande donc les
+  droits d'administration — c'est ce qu'attend un déploiement en parc.
+
+  Les jetons @…@ sont remplacés par construire_windows.py.
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*"
+           Name="PhytoScope"
+           Language="1036"
+           Codepage="65001"
+           Version="@VERSION_MSI@"
+           Manufacturer="@ATTRIBUTION@"
+           UpgradeCode="@UPGRADE_CODE@">
+
+    <Package InstallerVersion="200"
+             Compressed="yes"
+             InstallScope="perMachine"
+             Manufacturer="@ATTRIBUTION@"
+             Description="PhytoScope @VERSION@ — écoute et mesure des signaux végétaux"
+             Comments="@SITE@ — @COURRIEL@ — licence @LICENCE@"
+             Languages="1036"
+             SummaryCodepage="65001"/>
+
+    <!-- Une mise à jour remplace la version précédente au lieu de s'installer
+         à côté : sans cela, un parc accumulerait les versions. -->
+    <MajorUpgrade DowngradeErrorMessage="Une version plus récente de PhytoScope est déjà installée."/>
+
+    <!-- wixl (msitools 0.101) ne connaît pas l'attribut
+         CompressionLevel : la compression reste celle par défaut. -->
+    <Media Id="1" Cabinet="phytoscope.cab" EmbedCab="yes"/>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="INSTALLDIR" Name="PhytoScope"/>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="DossierMenu" Name="PhytoScope"/>
+      </Directory>
+      <Directory Id="DesktopFolder"/>
+    </Directory>
+
+    <!-- L'icone du Bureau est une FONCTIONNALITE distincte : l'assistant la
+         presente comme une case a cocher, et un deploiement sans interface la
+         choisit par la ligne de commande :
+             msiexec /i PhytoScope.msi /qn ADDLOCAL=Complet,IconeBureau
+         Sans elle, seul le menu Demarrer recoit un raccourci. -->
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="IconeBureau" Guid="@GUID_BUREAU@">
+        <Shortcut Id="RaccourciBureau"
+                  Name="PhytoScope"
+                  Description="Ecoute, mesure et enregistrement des signaux vegetaux"
+                  Target="[INSTALLDIR]PhytoScope.cmd"
+                  WorkingDirectory="INSTALLDIR"
+                  Icon="phytoscope.ico"/>
+        <RegistryValue Root="HKCU" Key="Software\Bretagne Namaste\PhytoScope"
+                       Name="icone_bureau" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="DossierMenu">
+      <Component Id="Raccourcis" Guid="@GUID_RACCOURCIS@">
+        <Shortcut Id="RaccourciMenu"
+                  Name="PhytoScope"
+                  Description="Écoute, mesure et enregistrement des signaux végétaux"
+                  Target="[INSTALLDIR]PhytoScope.cmd"
+                  WorkingDirectory="INSTALLDIR"
+                  Icon="phytoscope.ico"/>
+        <Shortcut Id="RaccourciDiagnostic"
+                  Name="PhytoScope — diagnostic"
+                  Description="Contrôles avant vol, à joindre à un signalement"
+                  Target="[INSTALLDIR]Diagnostic.cmd"
+                  WorkingDirectory="INSTALLDIR"
+                  Icon="phytoscope.ico"/>
+        <RemoveFolder Id="RetirerDossierMenu" On="uninstall"/>
+        <!-- Une clé dans HKCU sert de « témoin » du composant : le format MSI
+             exige une ressource-clé, et un raccourci n'en est pas une. -->
+        <RegistryValue Root="HKCU" Key="Software\Bretagne Namaste\PhytoScope"
+                       Name="installe" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <Icon Id="phytoscope.ico" SourceFile="@ICONE@"/>
+    <Property Id="ARPPRODUCTICON" Value="phytoscope.ico"/>
+    <Property Id="ARPURLINFOABOUT" Value="@SITE@"/>
+    <Property Id="ARPHELPLINK" Value="@SITE@"/>
+
+    <Feature Id="Complet" Title="PhytoScope" Level="1"
+             Description="Le logiciel, son interpréteur Python et ses bibliothèques."
+             ConfigurableDirectory="INSTALLDIR">
+      <ComponentGroupRef Id="Fichiers"/>
+      <ComponentRef Id="Raccourcis"/>
+    </Feature>
+
+    <Feature Id="IconeBureau" Title="Icone sur le Bureau" Level="1"
+             Description="Ajoute un raccourci sur le Bureau. Celui du menu Demarrer est pose dans tous les cas.">
+      <ComponentRef Id="IconeBureau"/>
+    </Feature>
+
+  </Product>
+</Wix>

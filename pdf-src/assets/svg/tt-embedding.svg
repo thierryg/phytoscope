@@ -1,0 +1,77 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/tt-embedding.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 440" width="860" height="440">
+
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+</defs>
+<rect width="860" height="440" fill="#FBF9F1"/>
+<text x="430" y="34" font-family="Cormorant Garamond, serif" font-size="16.68" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2.2">PROJETER UN SIGNAL DANS UN ESPACE DE MOTS</text>
+<text x="430" y="55" font-family="Lato, sans-serif" font-size="11.89" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">L'idée séduisante — et ce qu'elle suppose en silence</text>
+<rect x="440" y="86" width="330" height="270" rx="8" fill="#FFFFFF" stroke="#D9D9C6" stroke-width="1.4"/>
+<text x="605" y="106" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">espace vectoriel de la langue</text>
+<circle cx="540" cy="180" r="4.5" fill="#A8552E" opacity="0.85"/>
+<text x="548" y="183.5" font-family="Lato, sans-serif" font-size="11.02" fill="#A8552E" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">soif</text>
+<circle cx="636" cy="156" r="4.5" fill="#A8552E" opacity="0.85"/>
+<text x="644" y="159.5" font-family="Lato, sans-serif" font-size="11.02" fill="#A8552E" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">sécheresse</text>
+<circle cx="700" cy="196" r="4.5" fill="#A8552E" opacity="0.85"/>
+<text x="708" y="199.5" font-family="Lato, sans-serif" font-size="11.02" fill="#A8552E" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">aridité</text>
+<circle cx="520" cy="300" r="4.5" fill="#2F5E86" opacity="0.85"/>
+<text x="528" y="303.5" font-family="Lato, sans-serif" font-size="11.02" fill="#2F5E86" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">fraîcheur</text>
+<circle cx="604" cy="320" r="4.5" fill="#2F5E86" opacity="0.85"/>
+<text x="612" y="323.5" font-family="Lato, sans-serif" font-size="11.02" fill="#2F5E86" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">pluie</text>
+<circle cx="686" cy="288" r="4.5" fill="#2F5E86" opacity="0.85"/>
+<text x="694" y="291.5" font-family="Lato, sans-serif" font-size="11.02" fill="#2F5E86" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">humide</text>
+<circle cx="720" cy="250" r="4.5" fill="#3F7D5A" opacity="0.85"/>
+<text x="728" y="253.5" font-family="Lato, sans-serif" font-size="11.02" fill="#3F7D5A" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">vent</text>
+<circle cx="500" cy="240" r="4.5" fill="#B08528" opacity="0.85"/>
+<text x="508" y="243.5" font-family="Lato, sans-serif" font-size="11.02" fill="#B08528" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">lumière</text>
+<circle cx="596" cy="196" r="9" fill="none" stroke="#0E2A22" stroke-width="2.2"/>
+<circle cx="596" cy="196" r="3" fill="#0E2A22"/>
+<text x="596" y="176" font-family="Lato, sans-serif" font-size="10.73" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">point projeté</text>
+<line x1="596" y1="196" x2="540" y2="180" stroke="#0E2A22" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="596" y1="196" x2="636" y2="156" stroke="#0E2A22" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="596" y1="196" x2="700" y2="196" stroke="#0E2A22" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="70" y="108" width="250" height="52" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
+<text x="195.0" y="125" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Descripteurs</text>
+<text x="195.0" y="140.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">θ, T°, Δtronc, PAR</text>
+<line x1="195" y1="162" x2="195" y2="176" stroke="#2F5E86" stroke-width="1.8" marker-end="url(#ahb)"/>
+<rect x="70" y="176" width="250" height="52" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
+<text x="195.0" y="193" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Projection</text>
+<text x="195.0" y="208.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">matrice apprise W</text>
+<line x1="195" y1="230" x2="195" y2="244" stroke="#2F5E86" stroke-width="1.8" marker-end="url(#ahb)"/>
+<rect x="70" y="244" width="250" height="52" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
+<text x="195.0" y="261" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Voisins</text>
+<text x="195.0" y="276.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">mots les plus proches</text>
+<line x1="195" y1="298" x2="195" y2="312" stroke="#2F5E86" stroke-width="1.8" marker-end="url(#ahb)"/>
+<rect x="70" y="312" width="250" height="52" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
+<text x="195.0" y="329" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Rédaction</text>
+<text x="195.0" y="344.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">phrase contrainte</text>
+<line x1="324" y1="200" x2="434" y2="200" stroke="#2F5E86" stroke-width="2" marker-end="url(#ahb)"/>
+<rect x="70" y="378" width="720" height="48" rx="6" fill="#FBF0E8" stroke="#F0DCC9" stroke-width="1.2"/>
+<text x="430" y="396" font-family="Lato, sans-serif" font-size="13.05" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Le présupposé caché</text>
+<text x="430" y="412" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">La matrice W est apprise sur des couples (mesure, mot) choisis par un humain. Le sens ne sort pas du signal : il y a été mis, puis retrouvé.</text>
+</svg>

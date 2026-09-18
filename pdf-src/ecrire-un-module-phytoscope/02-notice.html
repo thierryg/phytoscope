@@ -1,0 +1,44 @@
+<section class="notice pagebreak">
+  <h2 id="notice" data-toc="chapter">Avant de commencer</h2>
+
+  <p class="chapo">Ce document s'adresse à quelqu'un qui sait programmer en
+  Python et qui veut ajouter quelque chose à PhytoScope : une analyse, une
+  représentation, une sonification, un format d'export, une source de mesure.
+  Il ne suppose aucune connaissance du code du logiciel — c'est même tout
+  l'objet de l'interface décrite ici.</p>
+
+  <div class="callout">
+    <h4>Ce que vous n'aurez pas à faire</h4>
+    <p>Lire le moteur. Comprendre comment l'acquisition est ordonnancée.
+    Savoir ce qu'est un <code>EngineState</code>. Un module reçoit une surface
+    étroite et documentée, et c'est délibérément tout ce qu'il reçoit.</p>
+  </div>
+
+  <h3 id="notice-promesse" data-toc="sub">Ce que nous promettons</h3>
+
+  <p>L'interface porte un numéro de version, en numérotation sémantique.
+  Tant que le chiffre majeur ne change pas, <strong>un module écrit
+  aujourd'hui fonctionnera</strong> : nous pouvons ajouter, nous ne pouvons
+  pas retirer. Si le jour vient où il faut rompre cette promesse, le numéro
+  majeur changera, le logiciel refusera de charger les modules anciens en le
+  disant clairement, et ce document expliquera la migration.</p>
+
+  <p>Nous promettons aussi que <strong>votre module ne fera jamais tomber le
+  logiciel</strong>. Une faute, où qu'elle survienne, désactive votre module et
+  l'inscrit au journal ; la séance continue. C'est autant pour vous que pour
+  l'utilisateur : on écrit plus librement quand on sait qu'une étourderie ne
+  coûtera pas huit heures de mesure à quelqu'un.</p>
+
+  <h3 id="notice-limite" data-toc="sub">Ce que nous ne promettons pas</h3>
+
+  <p>Ce n'est pas un bac à sable. Votre module s'exécute dans le même
+  processus, avec les mêmes droits que le logiciel : il peut écrire où il veut
+  et lire ce qu'il veut. Nous n'avons ni les moyens ni l'intention de l'en
+  empêcher — Python ne s'y prête pas, et un bac à sable mal fait donne une
+  confiance qu'il ne mérite pas.</p>
+
+  <p>Ce que nous faisons à la place est plus honnête : nous disons clairement
+  ce qu'un module <em>doit</em> faire, nous rendons ce chemin facile, et nous
+  isolons les fautes. Un module qui écrit ailleurs que chez lui n'est pas
+  bloqué ; il est mal élevé, et cela se saura.</p>
+</section>

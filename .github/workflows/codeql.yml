@@ -1,0 +1,92 @@
+# ===========================================================================
+#  PhytoScope — analyse sémantique CodeQL
+# ===========================================================================
+#  Différent de bandit, et complémentaire : bandit reconnaît des motifs
+#  imprudents ligne à ligne, CodeQL suit le chemin d'une donnée depuis son
+#  entrée jusqu'à son usage. C'est ce qui permet de voir qu'une valeur lue
+#  sur le port série finit dans une commande, ce qu'aucune règle locale ne
+#  peut dire.
+#
+#  Deux langages : Python (le logiciel, la fabrique, les outils) et C (le
+#  micrologiciel RP2350). Le C exige une compilation réelle — d'où la
+#  récupération du Pico SDK, en mode manuel.
+# ===========================================================================
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    #  Le lundi matin : une règle nouvelle de CodeQL trouve parfois un défaut
+    #  ancien, sans que personne n'ait touché au code.
+    - cron: '41 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codeql-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyse:
+    name: CodeQL — ${{ matrix.langage }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - langage: python
+            construction: none
+          - langage: c-cpp
+            construction: manual
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        if: matrix.langage == 'python'
+        with:
+          python-version: '3.12'
+
+      - name: Initialiser CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.langage }}
+          build-mode: ${{ matrix.construction }}
+          #  « security-and-quality » ajoute aux alertes de sécurité les
+          #  défauts de correction — code mort, comparaison toujours vraie.
+          queries: security-and-quality
+          config: |
+            paths-ignore:
+              - sources/**
+              - .ecarte/**
+              - build/**
+              - pdf-src/assets/**
+              - '**/tests/**'
+
+      #  Le micrologiciel ne se compile pas sans le Pico SDK. « build.sh --deps »
+      #  l'installe dans $HOME, sans sudo (C-55).
+      - name: Compiler le micrologiciel
+        if: matrix.langage == 'c-cpp'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential
+          cd src/firmware
+          ./build.sh --deps
+          ./build.sh
+        continue-on-error: true
+
+      - name: Analyser
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: /language:${{ matrix.langage }}

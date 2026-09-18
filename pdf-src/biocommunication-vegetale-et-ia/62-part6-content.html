@@ -1,0 +1,66 @@
+<section class="chapter">
+  <h2 id="c16-prosodie" data-toc="chapter" data-run="La piste honnête">La piste honnête : que la plante module le comment, jamais le quoi</h2>
+  <p class="chapo">Il existe une façon de faire « parler » une plante qui soit à la fois esthétiquement forte et épistémiquement défendable. Elle consiste à renoncer à une chose précise — et à en gagner une autre.</p>
+
+  <p class="lettrine noindent">Récapitulons le problème. Mapper un signal vers des <em>mots</em> est arbitraire, non inversible et non falsifiable : rien dans le signal ne correspond à « soif ». Mais mapper un signal vers un <em>paramètre continu</em> est parfaitement légitime — c'est ce que fait toute sonification.</p>
+
+  <p>D'où la proposition : <strong>et si le signal pilotait la manière de dire, plutôt que ce qui est dit&nbsp;?</strong></p>
+
+  <h3 id="c16-gst" data-toc="sub">Les espaces de style prosodique</h3>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique — les jetons de style</div>
+    <p><strong>Wang, Y. et al. (2018)</strong>, « Style Tokens: Unsupervised Style Modeling, Control and Transfer in End-to-End Speech Synthesis », arXiv:1803.09017 ; et <strong>Stanton, D., Wang, Y. &amp; Skerry-Ryan, RJ (2018)</strong>, arXiv:1808.01410.</p>
+    <p>Ces travaux construisent un <strong>espace latent continu de style prosodique</strong>, appris sans étiquettes, à partir d'un corpus de parole. Chaque point de cet espace correspond à une manière de dire : plus lent, plus tendu, plus grave, plus hésitant.</p>
+    <p>Ce qui est décisif pour notre propos : c'est un espace <strong>continu</strong>, et il pilote la <em>réalisation</em> d'un texte, pas son contenu.</p>
+  </div>
+
+  <h3 id="c16-proposition" data-toc="sub">La proposition, formulée</h3>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Mapper vers le style, jamais vers le lexique</div>
+    <p>Au lieu de <code>signal → mot</code> — arbitraire, non falsifiable —, on établit <code>signal → vecteur de style</code> : une correspondance <strong>continue vers continu</strong>, exactement comme en sonification paramétrique.</p>
+    <p><strong>Le contenu lexical reste explicitement humain.</strong> Un texte fixe, ou un constat chiffré produit sous contrainte, ou même un poème assumé comme tel.</p>
+    <p>Résultat : <strong>la plante module le <em>comment</em>, jamais le <em>quoi</em>.</strong> Le signal est réellement audible dans la sortie — un auditeur attentif entend la tension monter — et aucun sens n'est fabriqué.</p>
+  </div>
+
+  <h3 id="c16-avantages" data-toc="sub">Pourquoi cette solution est supérieure</h3>
+
+  <table>
+    <thead><tr><th>Critère</th><th>Mapping vers le lexique</th><th>Mapping vers le style</th></tr></thead>
+    <tbody>
+      <tr><td>Fonction de transfert publiable</td><td>Possible mais arbitraire</td><td><strong>Oui, et motivée</strong> — continu vers continu</td></tr>
+      <tr><td>Reproductible</td><td>Non, si un modèle génératif intervient</td><td><strong>Oui</strong></td></tr>
+      <tr><td>Le signal est-il perceptible dans la sortie&nbsp;?</td><td>Non — le mot est discret, l'auditeur ne peut pas juger</td><td><strong>Oui</strong> — la prosodie varie continûment</td></tr>
+      <tr><td>Peut-on attribuer à tort une intention&nbsp;?</td><td><strong>Oui, massivement</strong></td><td>Beaucoup moins : le texte est annoncé comme humain</td></tr>
+      <tr><td>Force esthétique</td><td>Forte, mais fragile</td><td><strong>Forte, et robuste à l'explication</strong></td></tr>
+    </tbody>
+    <caption>La dernière ligne est la plus importante. Une œuvre dont l'effet survit à son explication est une œuvre solide.</caption>
+  </table>
+
+  <div class="callout interieur">
+    <div class="callout-title">✨ Pourquoi c'est aussi plus beau</div>
+    <p>Un dispositif où l'arbre <em>dit</em> des phrases place l'auditeur en position de destinataire : il attend un message, et il juge le contenu. Un dispositif où l'arbre <strong>colore</strong> une voix humaine place l'auditeur dans une position tout autre — celle de quelqu'un qui perçoit une présence dans la manière, sans qu'on lui ait rien affirmé.</p>
+    <p>C'est plus subtil, plus troublant, et infiniment plus proche de ce que décrivent les praticiens qui passent réellement du temps auprès des arbres. Ils ne rapportent presque jamais des phrases. Ils rapportent des <em>qualités</em> : une lenteur, une densité, une présence. C'est exactement ce qu'un mapping prosodique transmet.</p>
+  </div>
+
+  <h3 id="c16-limites-piste" data-toc="sub">Les limites de cette proposition</h3>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Ce qu'elle ne résout pas</div>
+    <p><strong>Le choix du mapping reste arbitraire.</strong> Décider qu'une humidité basse produit une voix plus tendue est une convention humaine, pas une propriété de l'arbre. La seule différence — mais elle est décisive — est que cette convention est <em>publiable, reproductible et audible</em>.</p>
+    <p><strong>L'attribution reste possible.</strong> Un auditeur pourra toujours entendre de la souffrance dans une voix tendue. On ne supprime pas l'effet ELIZA ; on supprime seulement le prétexte qu'un dispositif lui fournissait.</p>
+    <p><strong>Ce n'est pas une mesure.</strong> Cette proposition produit une œuvre honnête, non une contribution scientifique. Les deux sont légitimes ; il faut juste savoir laquelle on fait.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Les espaces de style prosodique (Wang et al., 2018) fournissent un espace latent continu, appris sans étiquettes.</li>
+      <li>Proposition : <code>signal → vecteur de style</code>, le contenu lexical restant explicitement humain.</li>
+      <li>La plante module le <em>comment</em>, jamais le <em>quoi</em> — mapping continu vers continu, donc publiable et reproductible.</li>
+      <li>Le signal devient réellement perceptible dans la sortie, ce qui n'est pas le cas d'un mapping vers des mots.</li>
+      <li>Cela ne supprime pas l'effet ELIZA : cela supprime le prétexte que le dispositif lui fournissait.</li>
+    </ul>
+  </div>
+</section>

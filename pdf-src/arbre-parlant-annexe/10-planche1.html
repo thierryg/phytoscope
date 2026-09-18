@@ -1,0 +1,102 @@
+<section>
+<h2 id="p1" data-toc="chapter">Planche 1 — Le front-end biodata à LMC555</h2>
+
+<p class="lettrine noindent">C'est le circuit le plus copié de tout le domaine :
+on le retrouve, à peu de chose près identique, dans le MIDI Sprout de Data
+Garden, dans le Biotron de Playtronica et dans la quasi-totalité des projets
+« plante musicale » publiés sur GitHub. Le schéma ci-dessous n'est pas une
+reconstitution : il a été relevé sur le fichier de conception Eagle
+<span class="phon">GalvShield_005.sch</span> du dépôt
+<span class="phon">electricityforprogress/BiodataSonificationBreadboardKit</span>,
+en analysant le netlist du fichier XML.</p>
+
+<section class="planche-page"><figure class="planche" id="fig-1"><img src="assets/svg/sch-biodata-555.svg" alt="Front-end biodata à LMC555"/><figcaption><span class="fig-n">PLANCHE 1</span> — capteur de conductance à oscillateur astable. Relevé du netlist <i>GalvShield_005.sch</i> (Eagle), dépôt electricityforprogress, licence MIT.</figcaption></figure></section>
+
+<h3 id="p1-fonc" data-toc="sub">Comment ça marche</h3>
+
+<p>Un LMC555 monté en <strong>multivibrateur astable</strong> oscille en
+chargeant puis déchargeant un condensateur à travers deux résistances. Dans le
+montage classique, ces deux résistances sont des composants. Ici, la seconde
+a été remplacée par <strong>le végétal lui-même</strong>.</p>
+
+<p>Le courant part du +5 V, traverse R2 (100 kΩ), ressort par la broche 7
+(décharge) vers l'électrode A, traverse le tissu de la feuille jusqu'à
+l'électrode B, et vient charger C1 (4,7 nF). Quand la tension sur C1 atteint
+deux tiers de l'alimentation, le comparateur interne bascule, la broche 7 est
+mise à la masse et C1 se décharge à travers le même chemin. Quand la tension
+retombe au tiers de l'alimentation, le cycle recommence.</p>
+
+<div class="loupe">
+  <div class="l-h">La fréquence est une mesure d'impédance</div>
+  <p class="noindent">La période dépend de la résistance vue entre les deux
+  électrodes :</p>
+  <p class="center"><i>f</i> ≈ 1,44 / ( (R2 + 2·R<sub>plante</sub>) · C1 )</p>
+  <p>Pour C1 = 4,7 nF et R2 = 100 kΩ, une feuille turgescente à 300 kΩ donne
+  environ 480 Hz, tandis qu'un tissu sec à 5 MΩ tombe vers 29 Hz. La plage
+  utile couvre donc plus d'une décade — c'est confortable, et c'est ce qui rend
+  le montage aussi robuste pédagogiquement.</p>
+</div>
+
+<p>La sortie (broche 3) est un signal carré. Le microcontrôleur ne mesure pas
+une tension : il compte le temps entre deux fronts montants, sur une entrée
+d'interruption. Le reste — seuil, gamme musicale, canal MIDI — est du logiciel,
+et se règle avec le potentiomètre R9 et le bouton S1.</p>
+
+<p>Deux sorties coexistent. La sortie MIDI est une boucle de courant sur embase
+DIN-5 : la broche 5 reçoit directement la ligne TX du microcontrôleur, la
+broche 4 est tirée au +5 V par R1. La sortie CV/audio est le signal MLI de la
+broche D11, débarrassé de sa porteuse par le réseau C3-R10-R11 avant de partir
+vers un jack 3,5 mm.</p>
+
+<div class="callout limite">
+  <div class="callout-title">Ce que ce montage ne mesure pas</div>
+  <p class="noindent">Il faut le dire clairement, parce que l'essentiel du
+  discours commercial autour de ces appareils repose sur l'ambiguïté inverse :
+  <strong>ce circuit n'écoute pas la plante, il l'interroge</strong>. Il injecte
+  un courant et mesure l'impédance de surface qui en résulte. C'est l'exact
+  analogue de la réponse électrodermale mesurée sur la peau humaine — et,
+  comme elle, cette impédance dépend au moins autant de l'humidité de l'air, de
+  la qualité du contact et de la température que de l'état physiologique du
+  sujet. Ce n'est pas une raison de s'en priver : c'est une raison de ne pas lui
+  faire dire ce qu'elle ne dit pas.</p>
+</div>
+
+<h3 id="p1-bom" data-toc="sub">Nomenclature</h3>
+<table class="bom tight-xs"><caption>Nomenclature de la planche 1. Les références fabricant, les repères et les valeurs proviennent du fichier <i>Arduino Shield Biodata Sonification — Parts.csv</i> publié avec le dépôt ; les prix en euros sont des ordres de grandeur 2026, convertis et arrondis.</caption><thead><tr><th>Rep.</th><th>Composant</th><th>Valeur</th><th>Référence fabricant</th><th>Boîtier</th><th>≈ €</th></tr></thead><tbody>
+<tr><td>U1</td><td>Temporisateur CMOS</td><td>—</td><td>Texas Instruments <b>LMC555CN</b></td><td>DIP-8</td><td>1,10</td></tr>
+<tr><td>—</td><td>Support de circuit</td><td>8 broches</td><td>Assmann A 08-LC-TT</td><td>DIP-8</td><td>0,15</td></tr>
+<tr><td>R2</td><td>Résistance</td><td>100 kΩ 1 %</td><td>Stackpole RNMF14FTC100K</td><td>axial 1/4 W</td><td>0,10</td></tr>
+<tr><td>R1, R3–R8</td><td>Résistances (×7)</td><td>220 Ω</td><td>Stackpole RNMF14FTC220R</td><td>axial 1/4 W</td><td>0,70</td></tr>
+<tr><td>R9</td><td>Potentiomètre linéaire</td><td>10 kΩ</td><td>Bourns PTV09A-4020F-B103</td><td>6 mm</td><td>0,85</td></tr>
+<tr><td>R10</td><td>Résistance</td><td>3,9 kΩ</td><td>Stackpole RNMF14FTC3K90</td><td>axial</td><td>0,10</td></tr>
+<tr><td>R11</td><td>Résistance</td><td>1 kΩ</td><td>Stackpole RNMF14FTC1K00</td><td>axial</td><td>0,10</td></tr>
+<tr><td>C1</td><td>Condensateur film</td><td>4,7 nF</td><td>KEMET C315C472K1R5TA</td><td>pas 5 mm</td><td>0,25</td></tr>
+<tr><td>C2</td><td>Chimique</td><td>47 µF / 25 V</td><td>KEMET ESH476M025AC3AA</td><td>radial</td><td>0,18</td></tr>
+<tr><td>C3</td><td>Chimique</td><td>1 µF / 50 V</td><td>KEMET ESH105M050AC3AA</td><td>radial</td><td>0,18</td></tr>
+<tr><td>C4</td><td>Découplage</td><td>100 nF</td><td>KEMET C320C104K5R5TA</td><td>pas 5 mm</td><td>0,22</td></tr>
+<tr><td>S1</td><td>Bouton tactile</td><td>—</td><td>Omron B3F-1000</td><td>6 mm</td><td>0,35</td></tr>
+<tr><td>LED1–6</td><td>LED 5 mm</td><td>R/J/V/B/W</td><td>Lite-On LTL2H3KEK et suivantes</td><td>5 mm</td><td>3,40</td></tr>
+<tr><td>MIDI</td><td>Embase DIN 5 broches</td><td>—</td><td>CUI SDS-50J</td><td>traversante</td><td>1,05</td></tr>
+<tr><td>X1, X2</td><td>Jacks stéréo 3,5 mm (×2)</td><td>—</td><td>CUI SJ1-3523N</td><td>traversante</td><td>1,50</td></tr>
+<tr><td>—</td><td>Électrodes adhésives</td><td>TENS</td><td>pastilles + cordons à pression</td><td>—</td><td>6,00</td></tr>
+<tr><td>—</td><td>Carte Arduino Uno (ou compatible)</td><td>—</td><td>ATmega328P</td><td>—</td><td>12,00 – 25,00</td></tr>
+<tr><td>—</td><td>Plaque d'essai + fils</td><td>830 points</td><td>—</td><td>—</td><td>6,00</td></tr>
+<tr class="tot"><td></td><td><b>Total indicatif, hors carte Arduino</b></td><td></td><td></td><td></td><td><b>≈ 22 €</b></td></tr>
+</tbody></table>
+
+<div class="practice">
+  <div class="p-h">Pièges de montage</div>
+  <ul>
+    <li><strong>Utiliser un LMC555, pas un NE555 bipolaire.</strong> La version
+    CMOS a un courant d'entrée de l'ordre du picoampère ; la version bipolaire
+    tire des microampères et fausse complètement la mesure sur une source de
+    plusieurs mégohms.</li>
+    <li><strong>Électrodes : la pression est une variable.</strong> Deux pinces
+    serrées différemment donnent deux signaux différents. Les pastilles
+    adhésives de type TENS sont préférables aux pinces crocodiles.</li>
+    <li><strong>Laisser stabiliser dix minutes</strong> après la pose : le gel
+    des électrodes met ce temps à mouiller la surface, et toute mesure faite
+    avant enregistre la dérive du contact, pas la plante.</li>
+  </ul>
+</div>
+</section>

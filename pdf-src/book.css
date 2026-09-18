@@ -1,0 +1,608 @@
+/*
+ *  ==========================================================================
+ *  PhytoScope — attribution — pdf-src/book.css
+ *
+ *  Version  : 1.5.1
+ *  Date     : 2026-09-18
+ *  Éditeur  : Bretagne Namasté
+ *  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+ *  Site     : https://bretagne-namaste.com
+ *  Contact  : contact@bretagne-namaste.com
+ *  Licence  : MIT — voir LICENCE.txt
+ *
+ *  SPDX-License-Identifier: MIT
+ *  fin de l'attribution
+ *  ==========================================================================
+ */
+
+/* ============================================================
+   LUMIÈRE INTÉRIEURE ET LANGAGE DE LUMIÈRE
+   Charte graphique — WeasyPrint (CSS Paged Media)
+   Palette : bleu nuit · violet · blanc lumineux · or
+   ============================================================ */
+
+:root{
+  --nuit:      #0E2A22;   /* vert forêt profond (fonds de partie) */
+  --nuit-2:    #17392F;   /* vert forêt clair                     */
+  --encre:     #23302C;   /* encre — texte principal              */
+  --violet:    #3F7D5A;   /* vert sève (accents, sous-titres)     */
+  --violet-cl: #6FA98A;   /* vert sève clair                      */
+  --violet-pl: #E9F2EC;   /* vert très pâle (fonds)               */
+  --or:        #B08528;   /* or / ambre                           */
+  --or-cl:     #E0C073;   /* or clair                             */
+  --or-pl:     #F7F0DC;   /* or pâle (fonds encadrés)             */
+  --ivoire:    #FBF9F1;   /* blanc lumineux / ivoire              */
+  --ivoire-2:  #F2EFE2;   /* ivoire ombré                         */
+  --gris:      #6B7A72;   /* gris légende                         */
+  --trait:     #D9D9C6;   /* filets                               */
+  --cuivre:    #A8552E;   /* cuivre (avertissements)              */
+  --bleu:      #2F5E86;   /* bleu (technique / signal)            */
+}
+
+/* ---------- PAGE : format livre 170 × 240 mm ---------- */
+@page{
+  size: 170mm 240mm;
+  margin: 22mm 20mm 20mm 20mm;
+  background: var(--ivoire);
+
+  @top-left{
+    content: string(booktitle);
+    font-family:"Cormorant Garamond", serif; font-style:italic;
+    font-size:8.5pt; color: var(--gris); letter-spacing:.2pt;
+    padding-top:8mm;
+  }
+  @top-right{
+    content: string(chapter);
+    font-family:"Lato", sans-serif; font-size:7.5pt;
+    letter-spacing:1.4pt; text-transform:uppercase; color: var(--violet);
+    padding-top:8mm;
+  }
+  @bottom-center{
+    content: counter(page);
+    font-family:"Cormorant Garamond", serif; font-size:11pt;
+    color: var(--nuit); padding-bottom:6mm;
+  }
+  @bottom-left{
+    content:"bretagne-namaste.com";
+    font-family:"Lato", sans-serif; font-size:7pt; letter-spacing:.6pt;
+    color: var(--violet); padding-bottom:6mm;
+  }
+  @bottom-right{
+    content:"✦";
+    font-size:7pt; color: var(--or); padding-bottom:6mm;
+  }
+}
+@page:first{ margin:0; }
+@page:blank{ @top-left{content:none;} @top-right{content:none;}
+  @bottom-center{content:none;} @bottom-right{content:none;} @bottom-left{content:none;} }
+
+/* Page pleine (couverture, ouvertures de partie) : fond nuit, sans marges */
+@page cover{
+  size:170mm 240mm; margin:0; background: var(--nuit);
+  @top-left{content:none;} @top-right{content:none;}
+  @bottom-center{content:none;} @bottom-right{content:none;} @bottom-left{content:none;}
+}
+@page nofolio{           /* pages liminaires sans numéro */
+  @top-left{content:none;} @top-right{content:none;}
+  @bottom-center{content:none;} @bottom-right{content:none;} @bottom-left{content:none;}
+}
+
+/* ---------- BASE ---------- */
+*{ box-sizing:border-box; }
+html{ font-size:11pt; }
+body{
+  font-family:"Lato", sans-serif;
+  color: var(--encre);
+  line-height:1.62;
+  font-weight:400;
+  hyphens:auto;
+  -weasy-hyphens:auto;
+  text-align:justify;
+  string-set: booktitle "La Musique des Plantes";
+}
+p{ margin:0 0 .55em; }
+p + p{ text-indent:1.1em; }           /* alinéa à la française */
+.noindent + p, p.noindent{ text-indent:0; }
+a{ color: var(--violet); text-decoration:none; }
+
+/* Ligatures & césure élégantes */
+h1,h2,h3,h4{ font-family:"Cormorant Garamond", serif; color: var(--nuit);
+  line-height:1.14; text-align:left; hyphens:none; }
+strong{ color: var(--nuit); font-weight:700; }
+/* Gras sur fonds sombres : or clair, jamais bleu nuit (sinon invisible) */
+.recap strong, .recap b, th strong, th b, .at-band strong, .at-band b,
+.part strong, .part b, .epigraph strong, .epigraph b, .cover strong, .cover b,
+.titlepage strong, .titlepage b{ color: var(--or-cl); }
+em{ font-style:italic; }
+sup{ font-size:.62em; color: var(--violet); }
+
+/* ---------- TITRES COURANTS ---------- */
+h2{ font-size:24pt; font-weight:600; margin:1.4em 0 .5em;
+  string-set: chapter content(text); }
+h2::after{ content:""; display:block; width:46mm; height:2px;
+  margin-top:3mm; background:linear-gradient(90deg,var(--or),transparent); }
+h3{ font-size:16.5pt; font-weight:600; color: var(--violet);
+  margin:1.3em 0 .35em; }
+h4{ font-size:12.5pt; font-weight:700; color: var(--nuit);
+  margin:1.1em 0 .3em; letter-spacing:.2pt; }
+h2,h3,h4{ break-after:avoid; }
+p{ orphans:2; widows:2; }
+
+/* Capitale ornée (versale) sur les paragraphes marqués .lettrine.
+   Sans float — robuste avec la pagination WeasyPrint. */
+p.lettrine::first-letter{
+  font-family:"Cormorant Garamond", serif; font-weight:700;
+  color: var(--or); font-size:2.5em; line-height:1;
+  padding-right:1px;
+}
+p.lettrine{ text-indent:0; }
+
+/* ============================================================
+   COUVERTURE
+   ============================================================ */
+.cover{ page: cover; position:relative; height:240mm; width:170mm;
+  color: var(--ivoire); overflow:hidden; page-break-after:always; }
+.cover .cover-art{ position:absolute; inset:0; width:100%; height:100%; }
+.cover .cover-frame{ position:absolute; inset:10mm; border:1px solid rgba(200,166,84,.55); }
+.cover .cover-frame::before{ content:""; position:absolute; inset:2mm;
+  border:1px solid rgba(200,166,84,.28); }
+.cover .cover-inner{ position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; text-align:center; padding:26mm 16mm; hyphens:none; }
+.cover .kicker{ font-family:"Lato",sans-serif; font-size:8pt; letter-spacing:2.6pt;
+  text-transform:uppercase; color: var(--or-cl); margin-top:4mm; }
+.cover h1.title{ font-family:"Cinzel", serif; font-weight:700; color:#fff;
+  font-size:33pt; line-height:1.08; margin:10mm 0 0; letter-spacing:1.5pt;
+  text-shadow:0 0 18px rgba(143,118,196,.5); }
+.cover .title-rule{ width:38mm; height:1px; background:var(--or); margin:7mm auto; position:relative; }
+.cover .title-rule::before,.cover .title-rule::after{ content:"✦"; color:var(--or);
+  position:absolute; top:-6pt; font-size:9pt; }
+.cover .title-rule::before{ left:-9mm; } .cover .title-rule::after{ right:-9mm; }
+.cover .subtitle{ font-family:"Cormorant Garamond", serif; font-style:italic;
+  font-weight:500; font-size:15pt; color: var(--ivoire); max-width:120mm;
+  line-height:1.4; text-shadow:0 1px 7px rgba(11,16,48,.9); }
+.cover .kicker, .cover .cover-foot .edu, .cover .cover-foot .mono{
+  text-shadow:0 1px 6px rgba(11,16,48,.9); }
+.cover .cover-foot{ margin-top:auto; }
+.cover .cover-foot .mono{ font-family:"Lato",sans-serif; font-size:7.5pt;
+  letter-spacing:2pt; text-transform:uppercase; color:rgba(251,249,243,.75); hyphens:none; }
+.cover .cover-foot .edu{ font-family:"Cormorant Garamond",serif; font-size:11pt;
+  color: var(--or-cl); margin-top:2mm; }
+.cover .cover-link{ display:inline-block; margin-top:5mm; padding:2mm 6mm;
+  font-family:"Lato",sans-serif; font-size:8.5pt; letter-spacing:2pt; text-transform:uppercase;
+  color: var(--nuit); background: var(--or-cl); border-radius:20mm; text-decoration:none; }
+
+/* ============================================================
+   PAGES LIMINAIRES
+   ============================================================ */
+.frontpage{ page: nofolio; page-break-after:always; padding-top:8mm; }
+.titlepage{ page: nofolio; text-align:center; page-break-after:always;
+  display:flex; flex-direction:column; height:200mm; }
+.titlepage .tp-top{ margin-top:20mm; }
+.titlepage h1{ font-family:"Cinzel",serif; font-weight:600; font-size:23pt;
+  color: var(--nuit); letter-spacing:1pt; text-align:center; line-height:1.15; }
+.titlepage .tp-sub{ font-family:"Cormorant Garamond",serif; font-style:italic;
+  font-size:14pt; color: var(--violet); margin-top:8mm; }
+.titlepage .tp-mark{ margin:14mm auto; width:40mm; }
+.titlepage .tp-foot{ margin-top:auto; font-family:"Lato",sans-serif;
+  font-size:8.5pt; letter-spacing:2pt; text-transform:uppercase; color: var(--gris); }
+
+/* Avertissement / crédits */
+.notice{ font-size:9.5pt; color:#4a4d60; line-height:1.55; }
+.notice h2{ font-size:15pt; }
+.copyright{ font-size:8.5pt; color: var(--gris); line-height:1.5; }
+
+/* ============================================================
+   OUVERTURE DE PARTIE (page pleine nuit)
+   ============================================================ */
+.part{ page: cover; position:relative; height:240mm; width:170mm;
+  color: var(--ivoire); page-break-before:right; page-break-after:always; overflow:hidden; }
+.part .part-art{ position:absolute; inset:0; width:100%; height:100%; opacity:.9; }
+.part .part-inner{ position:absolute; inset:0; display:flex; flex-direction:column;
+  justify-content:center; align-items:center; text-align:center; padding:30mm 22mm; }
+.part .part-num{ font-family:"Cinzel",serif; font-size:10pt; letter-spacing:6pt;
+  color: var(--or-cl); text-transform:uppercase; }
+.part .part-num .rom{ display:block; font-size:40pt; color:#fff; margin-top:3mm;
+  letter-spacing:4pt; text-shadow:0 0 20px rgba(143,118,196,.55); }
+.part h1{ font-family:"Cinzel",serif; font-weight:600; color:#fff; font-size:23pt;
+  line-height:1.16; margin:9mm 0 0; text-align:center; letter-spacing:1pt; }
+.part .part-line{ width:34mm; height:1px; background:var(--or); margin:8mm auto; }
+.part .part-lead{ font-family:"Cormorant Garamond",serif; font-style:italic;
+  font-size:14pt; color: var(--ivoire); max-width:118mm; line-height:1.45; }
+
+/* Le premier H2 après une ouverture démarre en haut de page */
+.part + .chapter, .chapter.first{ page-break-before:right; }
+
+/* ============================================================
+   PAGE D'ÉPIGRAPHES (fond nuit)
+   ============================================================ */
+.epigraph{ page: cover; position:relative; height:240mm; width:170mm;
+  color: var(--ivoire); page-break-after:always; overflow:hidden; }
+.epigraph .epi-art{ position:absolute; inset:0; width:100%; height:100%; opacity:.85; }
+.epigraph .epi-inner{ position:absolute; inset:0; display:flex; flex-direction:column;
+  justify-content:center; align-items:center; text-align:center; padding:24mm 20mm; }
+.epigraph .epi-mark{ width:22mm; margin-bottom:6mm; opacity:.9; }
+.epigraph .epi-q{ font-family:"Cormorant Garamond",serif; font-style:italic;
+  font-size:15pt; line-height:1.4; color:#fff; max-width:128mm;
+  text-shadow:0 1px 8px rgba(11,16,48,.9); }
+.epigraph .epi-q .big{ font-size:16.5pt; }
+.epigraph .epi-q::before{ content:"“"; color: var(--or-cl); font-size:1.3em; }
+.epigraph .epi-q::after{ content:"”"; color: var(--or-cl); font-size:1.3em; }
+.epigraph .epi-src{ font-family:"Lato",sans-serif; font-size:8pt; letter-spacing:2pt;
+  text-transform:uppercase; color: var(--or-cl); margin:3mm 0 0;
+  text-shadow:0 1px 6px rgba(11,16,48,.9); }
+.epigraph .epi-sep{ color: var(--or); letter-spacing:5pt; margin:9mm 0; font-size:11pt; }
+.epigraph .epi-sep::before{ content:"✦"; }
+.epigraph .epi-note{ position:absolute; left:20mm; right:20mm; bottom:14mm;
+  font-family:"Lato",sans-serif; font-size:7pt; color:rgba(251,249,243,.6);
+  line-height:1.4; text-align:center; }
+
+/* ============================================================
+   SOMMAIRE
+   ============================================================ */
+.toc{ page: nofolio; page-break-after:always; }
+.toc h1{ font-family:"Cinzel",serif; font-weight:600; font-size:22pt;
+  color: var(--nuit); text-align:center; letter-spacing:1.5pt; margin:6mm 0 3mm; }
+.toc .toc-sub{ text-align:center; font-family:"Cormorant Garamond",serif;
+  font-style:italic; color: var(--violet); font-size:12pt; margin-bottom:8mm; }
+.toc ul{ list-style:none; margin:0; padding:0; }
+.toc li{ margin:0; }
+.toc li::before{ content:none; }
+.toc .toc-part{ margin:6mm 0 1.5mm; border-top:1px solid var(--trait); padding-top:2.5mm; }
+.toc a.tl-part{ display:flex; align-items:baseline; text-decoration:none;
+  font-family:"Cinzel",serif; font-size:10.5pt; letter-spacing:1.2pt;
+  text-transform:uppercase; color: var(--violet); }
+.toc a.tl{ display:flex; align-items:baseline; text-decoration:none;
+  color: var(--encre); font-size:10.5pt; margin:.9mm 0 .9mm 4mm; }
+.toc a.tl.sub{ margin-left:9mm; font-size:9.5pt; color:#55586a; }
+.toc a.tl .t, .toc a.tl-part .t{ flex:0 1 auto; }
+.toc a.tl .leader, .toc a.tl-part .leader{ flex:1 1 auto;
+  border-bottom:1px dotted var(--trait); margin:0 2mm; transform:translateY(-2px); }
+.toc a.tl::after, .toc a.tl-part::after{
+  content: target-counter(attr(href), page);
+  font-family:"Cormorant Garamond",serif; font-weight:600; color: var(--violet);
+  flex:0 0 auto; }
+
+/* ============================================================
+   COMPOSANTS PÉDAGOGIQUES
+   ============================================================ */
+
+/* Chapô d'introduction de section */
+.chapo{ font-family:"Cormorant Garamond",serif; font-size:13.5pt; font-style:italic;
+  color: var(--violet); line-height:1.5; text-align:left; margin:0 0 1.4em;
+  padding-left:6mm; border-left:2px solid var(--or); }
+
+/* Encadré générique */
+.callout{ background: var(--violet-pl); border:1px solid #e0d7f0;
+  border-radius:3mm; padding:5mm 6mm; margin:1.4em 0; font-size:10pt;
+  line-height:1.55; break-inside:avoid; }
+.callout .callout-title{ font-family:"Cormorant Garamond",serif; font-weight:700;
+  font-size:12.5pt; color: var(--violet); margin-bottom:1.5mm;
+  display:flex; align-items:center; gap:2mm; }
+.callout p{ margin:0 0 .4em; } .callout p+p{ text-indent:0; }
+
+/* Variantes d'encadré */
+.callout.info{ background:#eaf1fb; border-color:#d3e0f4; }
+.callout.info .callout-title{ color:#3a5a97; }
+.callout.key{ background: var(--or-pl); border-color:#ecdcb0; }
+.callout.key .callout-title{ color: var(--or); }
+.callout.caution{ background:#fbeee6; border-color:#f0d8c4; }
+.callout.caution .callout-title{ color:#b26a34; }
+.callout.science{ background:#e9f3ef; border-color:#cfe6dc; }
+.callout.science .callout-title{ color:#2f7d5e; }
+
+/* Citation */
+blockquote, .quote{ break-inside:avoid; margin:1.5em 4mm; text-align:center; }
+blockquote p, .quote .q{ font-family:"Cormorant Garamond",serif; font-style:italic;
+  font-size:16pt; line-height:1.35; color: var(--nuit); text-indent:0; }
+.quote .q::before{ content:"“"; color: var(--or); font-size:1.2em; }
+.quote .q::after{ content:"”"; color: var(--or); font-size:1.2em; }
+.quote .src, blockquote cite{ display:block; font-family:"Lato",sans-serif;
+  font-style:normal; font-size:8.5pt; letter-spacing:2pt; text-transform:uppercase;
+  color: var(--violet); margin-top:3mm; }
+
+/* Exercice */
+.exercise{ border:1px solid var(--trait); border-left:4px solid var(--or);
+  border-radius:0 3mm 3mm 0; padding:5mm 6mm; margin:1.5em 0; break-inside:avoid;
+  background:#fff; }
+.exercise .ex-head{ font-family:"Cinzel",serif; font-size:8.5pt; letter-spacing:2.5pt;
+  text-transform:uppercase; color: var(--or); margin-bottom:1mm; }
+.exercise .ex-title{ font-family:"Cormorant Garamond",serif; font-weight:700;
+  font-size:14pt; color: var(--nuit); margin-bottom:2mm; }
+.exercise ol, .exercise ul{ margin:.4em 0 .2em 5mm; padding:0; }
+.exercise li{ margin:.25em 0; }
+
+/* Atelier — bloc étendu */
+.atelier{ border:1.5px solid var(--violet-cl); border-radius:3mm; margin:1.6em 0;
+  break-inside:avoid; overflow:hidden; background:#fff; }
+.atelier .at-band{ background: var(--nuit); color: var(--ivoire);
+  padding:4mm 6mm; display:flex; align-items:baseline; gap:4mm; }
+.atelier .at-num{ font-family:"Cinzel",serif; font-size:20pt; color: var(--or-cl);
+  line-height:1; }
+.atelier .at-t{ font-family:"Cormorant Garamond",serif; font-weight:600; font-size:16pt; }
+.atelier .at-body{ padding:5mm 6mm; font-size:10pt; }
+.atelier .at-meta{ display:flex; flex-wrap:wrap; gap:3mm 8mm; margin-bottom:3mm;
+  font-size:9pt; color: var(--gris); border-bottom:1px solid var(--trait); padding-bottom:3mm; }
+.atelier .at-meta b{ color: var(--violet); font-weight:700; text-transform:uppercase;
+  letter-spacing:.5pt; font-size:8pt; }
+.atelier h4{ margin:3mm 0 1mm; color: var(--violet); }
+.atelier .at-guide{ background: var(--violet-pl); border-radius:2mm; padding:4mm;
+  font-style:italic; font-family:"Cormorant Garamond",serif; font-size:12pt;
+  color: var(--nuit); margin:2mm 0; }
+
+/* Étapes numérotées "pas à pas" */
+.steps{ counter-reset:step; list-style:none; margin:1em 0; padding:0; }
+.steps li{ position:relative; padding-left:11mm; margin:.5em 0; break-inside:avoid; }
+.steps li::before{ counter-increment:step; content:counter(step);
+  position:absolute; left:0; top:-.5mm; width:7mm; height:7mm; border-radius:50%;
+  background: var(--or); color:#fff; font-family:"Cinzel",serif; font-size:9pt;
+  display:flex; align-items:center; justify-content:center; }
+
+/* Listes générales */
+ul,ol{ margin:.4em 0 .8em 6mm; padding:0; }
+li{ margin:.2em 0; }
+ul{ list-style:none; }
+ul > li::before{ content:"✦"; color: var(--or); font-size:.7em;
+  display:inline-block; width:5mm; margin-left:-5mm; }
+ol{ list-style:decimal; margin-left:8mm; }
+ol > li{ padding-left:1mm; }
+.plain li::before{ content:none; }
+
+/* ---------- TABLEAUX ---------- */
+table{ width:100%; border-collapse:collapse; margin:1.3em 0; font-size:9.5pt;
+  break-inside:avoid; }
+caption{ caption-side:bottom; font-size:8.5pt; color: var(--gris);
+  font-style:italic; padding-top:2mm; text-align:left; }
+th{ background: var(--nuit); color: var(--ivoire); font-family:"Lato",sans-serif;
+  font-weight:700; font-size:8.5pt; letter-spacing:.6pt; text-transform:uppercase;
+  text-align:left; padding:2.6mm 3mm; }
+td{ padding:2.4mm 3mm; border-bottom:1px solid var(--trait); vertical-align:top; }
+tr:nth-child(even) td{ background: #f6f2e8; }
+table.compare th:first-child{ background: var(--violet); }
+table.compare th:nth-child(2){ background:#2f7d5e; }
+.tbl-sci{ } /* alias */
+
+/* ---------- FIGURES / ILLUSTRATIONS ---------- */
+figure{ margin:1.4em 0; text-align:center; break-inside:avoid; }
+figure img, figure svg{ max-width:100%; height:auto; }
+figure.full img, figure.full svg{ width:100%; }
+figure.wide{ margin-left:-4mm; margin-right:-4mm; }
+figcaption{ font-family:"Lato",sans-serif; font-size:8.5pt; color: var(--gris);
+  margin-top:2.5mm; line-height:1.4; }
+figcaption .fig-n{ font-weight:700; color: var(--violet); letter-spacing:.5pt; }
+.figframe{ border:1px solid var(--trait); border-radius:3mm; padding:5mm;
+  background:#fff; }
+
+/* Deux colonnes d'illustrations */
+.duo{ display:flex; gap:5mm; margin:1.4em 0; break-inside:avoid; }
+.duo figure{ flex:1 1 0; margin:0; }
+
+/* ---------- GLOSSAIRE / LEXIQUE ---------- */
+.glossary{ column-count:1; }
+.gloss-item{ break-inside:avoid; margin:0 0 3mm; padding-bottom:2.5mm;
+  border-bottom:1px dotted var(--trait); }
+.gloss-term{ font-family:"Cormorant Garamond",serif; font-weight:700; font-size:13pt;
+  color: var(--nuit); }
+.gloss-term .cat{ font-family:"Lato",sans-serif; font-size:7pt; letter-spacing:1pt;
+  text-transform:uppercase; color:#fff; background: var(--violet); border-radius:2mm;
+  padding:.5mm 2mm; margin-left:2mm; vertical-align:middle; }
+.gloss-def{ font-size:9.5pt; margin:.6mm 0; }
+.gloss-item .ctx{ font-size:9pt; color:#55586a; }
+.gloss-item .ex{ font-size:9pt; color: var(--violet); font-style:italic; }
+.gloss-item .lbl{ font-family:"Lato",sans-serif; font-size:7.5pt; font-weight:700;
+  letter-spacing:.5pt; text-transform:uppercase; color: var(--or); }
+.alpha-head{ font-family:"Cinzel",serif; font-size:16pt; color: var(--or);
+  border-bottom:2px solid var(--trait); margin:4mm 0 2mm; break-after:avoid; }
+
+/* ---------- FICHES MUDRA (photos) ---------- */
+.mudra-table{ width:100%; border-collapse:separate; border-spacing:3mm;
+  break-inside:auto; margin:1.4em 0; }
+.mudra-table tr{ break-inside:avoid; }
+.mudra-table td{ width:33.33%; border:1px solid var(--trait); border-radius:3mm;
+  background:#fff; padding:3mm 2.5mm; text-align:center; vertical-align:top; }
+.mudra-table tr:nth-child(even) td{ background:#fff; }
+.mudra-table img{ width:100%; height:auto; border-radius:2mm; }
+.mudra-table .mt-fr{ font-family:"Cormorant Garamond",serif; font-weight:700; font-size:12pt;
+  color: var(--nuit); margin-top:2mm; line-height:1.1; }
+.mudra-table .mt-sk{ font-style:italic; color: var(--violet); font-size:8.5pt; }
+.mudra-table .mt-s{ font-size:8pt; color: var(--gris); margin-top:1mm; line-height:1.3; }
+.mantra-word{ font-family:"Cormorant Garamond",serif; font-weight:600; color: var(--nuit); }
+.phon{ color: var(--violet); font-style:italic; }
+
+/* ---------- INDEX DÉTAILLÉ ---------- */
+.index{ column-count:2; column-gap:9mm; font-size:9pt; line-height:1.4; }
+.index .idx-alpha{ font-family:"Cinzel",serif; font-size:12pt; color: var(--or);
+  margin:3mm 0 1.5mm; break-after:avoid; break-inside:avoid;
+  border-bottom:1px solid var(--trait); }
+.index .idx-e{ break-inside:avoid; margin:.3mm 0; padding-left:5mm; text-indent:-5mm; }
+.index .idx-e .idx-t{ color: var(--encre); }
+.index .idx-e .idx-sub{ display:block; padding-left:5mm; color:#55586a; }
+.index a.pg{ color: var(--violet); text-decoration:none; font-family:"Cormorant Garamond",serif;
+  font-weight:600; }
+.index a.pg::after{ content: target-counter(attr(href), page); }
+.index .idx-e .sc{ color: var(--gris); }
+
+/* ---------- BIBLIOGRAPHIE / RESSOURCES ---------- */
+.bib li{ font-size:9.5pt; margin:.5em 0; line-height:1.45; }
+.bib .work{ font-style:italic; color: var(--nuit); }
+.resource{ font-size:9.5pt; }
+.resource a{ color: var(--violet); word-break:break-all; }
+
+/* ---------- DIVERS ---------- */
+.center{ text-align:center; }
+.small{ font-size:8.5pt; color: var(--gris); }
+.spacer{ height:6mm; }
+.ornament{ text-align:center; color: var(--or); font-size:13pt; margin:5mm 0;
+  letter-spacing:6pt; }
+.ornament::before{ content:"❖ ✦ ❖"; }
+.pagebreak{ page-break-before:always; }
+.avoidbreak{ break-inside:avoid; }
+
+/* Bandeau récapitulatif fin de partie */
+.recap{ background: var(--nuit); color: var(--ivoire); border-radius:3mm;
+  padding:6mm 7mm; margin:1.6em 0; break-inside:avoid; }
+.recap h4{ color: var(--or-cl); font-family:"Cinzel",serif; font-size:10pt;
+  letter-spacing:2pt; text-transform:uppercase; margin:0 0 3mm; }
+.recap ul li::before{ color: var(--or-cl); }
+.recap ul li{ font-size:10pt; }
+
+/* Encadré "pratique express" */
+.practice{ border:1px dashed var(--violet-cl); border-radius:3mm; padding:4mm 5mm;
+  margin:1.3em 0; background:#fff; break-inside:avoid; font-size:10pt; }
+.practice .p-h{ font-family:"Cormorant Garamond",serif; font-weight:700;
+  color: var(--violet); font-size:12.5pt; margin-bottom:1.5mm; }
+
+/* ============================================================
+   SIGNETS PDF (bookmarks) & MÉTA-STRUCTURE
+   ============================================================ */
+.part h1{ bookmark-level:1; bookmark-label: content(text); bookmark-state:open; }
+h2{ bookmark-level:2; bookmark-label: content(text); }
+h3{ bookmark-level:3; bookmark-label: content(text); }
+.frontpage h2, .toc h1{ bookmark-level:1; bookmark-label: content(text); }
+.cover h1, .titlepage h1{ bookmark-level:none; }
+
+
+/* ============================================================
+   ANNEXE ALPHABETS : écritures non latines et tableaux
+   ============================================================ */
+.rune{ font-family:"FreeMono","Noto Sans Runic","Segoe UI Symbol",monospace; }
+.ogh{ font-family:"DejaVu Sans","Noto Sans Ogham",sans-serif; }
+.hebr{ font-family:"FreeSerif","DejaVu Sans","Noto Serif Hebrew",serif; direction:rtl; unicode-bidi:isolate; }
+.deva{ font-family:"Chandas","Samyak Devanagari","Nakula","Noto Sans Devanagari",serif; }
+.tibt{ font-family:"Tibetan Machine Uni","Noto Serif Tibetan",serif; }
+table.alpha td.gl{ font-size:16pt; text-align:center; line-height:1.1; color:var(--nuit); }
+table.alpha td.grp{ background:#efe9f6; color:var(--violet); font-family:"Cormorant Garamond",serif;
+  font-weight:700; font-size:10.5pt; letter-spacing:.5pt; }
+table.alpha tr, table tr{ break-inside:avoid; }
+
+/* ============================================================
+   LA MUSIQUE DES PLANTES — COMPOSANTS SPÉCIFIQUES
+   ============================================================ */
+
+/* ---------- Les quatre encadrés signature ---------- */
+.callout.energie{ background:#eaf4ed; border-color:#cfe4d6; }
+.callout.energie .callout-title{ color:#2f7d5e; }
+.callout.sci{ background:#eaf0f7; border-color:#d2e0ef; }
+.callout.sci .callout-title{ color: var(--bleu); }
+.callout.limite{ background:#fbf0e8; border-color:#f0dcc9; }
+.callout.limite .callout-title{ color: var(--cuivre); }
+.callout.interieur{ background:#f6f1e1; border-color:#e9dcb8; }
+.callout.interieur .callout-title{ color:#8a6a1f; }
+
+/* ---------- Schéma textuel / ASCII (monospace encadré) ---------- */
+.schema{ background:#0E2A22; color:#EAF2EC; border-radius:3mm; padding:5mm 6mm;
+  margin:1.4em 0; break-inside:avoid; }
+.schema .sch-h{ font-family:"Lato",sans-serif; font-size:7.5pt; letter-spacing:2pt;
+  text-transform:uppercase; color: var(--or-cl); margin-bottom:3mm; }
+.schema pre{ font-family:"DejaVu Sans Mono","Liberation Mono",monospace;
+  font-size:7.4pt; line-height:1.34; margin:0; white-space:pre; color:#EAF2EC;
+  text-align:left; hyphens:none; }
+.schema.light{ background:#FFFFFF; color: var(--encre); border:1px solid var(--trait); }
+.schema.light pre{ color:#1d2a26; }
+.schema.light .sch-h{ color: var(--violet); }
+.schema figcaption{ color:#9fb8ab; margin-top:3mm; }
+.schema.light figcaption{ color: var(--gris); }
+.schema.tight pre{ font-size:6.6pt; line-height:1.28; }
+
+/* ---------- Code source / extrait logiciel ---------- */
+.code{ background:#F4F2E8; border:1px solid var(--trait); border-left:3px solid var(--or);
+  border-radius:0 2mm 2mm 0; padding:4mm 5mm; margin:1.2em 0; break-inside:avoid; }
+.code pre{ font-family:"DejaVu Sans Mono","Liberation Mono",monospace; font-size:7.6pt;
+  line-height:1.4; margin:0; white-space:pre-wrap; color:#25322D; text-align:left; hyphens:none; }
+.code .code-h{ font-family:"Lato",sans-serif; font-size:7.5pt; letter-spacing:1.4pt;
+  text-transform:uppercase; color: var(--violet); margin-bottom:2mm; }
+
+/* ---------- Protocole expérimental reproductible ---------- */
+.protocole{ border:1.5px solid var(--violet-cl); border-radius:3mm; margin:1.6em 0;
+  break-inside:avoid; overflow:hidden; background:#fff; }
+.protocole .pr-band{ background: var(--nuit); color: var(--ivoire); padding:3.5mm 6mm; }
+.protocole .pr-kick{ font-family:"Lato",sans-serif; font-size:7pt; letter-spacing:2.4pt;
+  text-transform:uppercase; color: var(--or-cl); }
+.protocole .pr-t{ font-family:"Cormorant Garamond",serif; font-weight:600; font-size:15pt;
+  line-height:1.15; margin-top:1mm; }
+.protocole .pr-body{ padding:4.5mm 6mm; font-size:9.6pt; }
+.protocole .pr-meta{ display:flex; flex-wrap:wrap; gap:2mm 7mm; margin-bottom:3mm;
+  font-size:8.5pt; color: var(--gris); border-bottom:1px solid var(--trait); padding-bottom:2.5mm; }
+.protocole .pr-meta b{ color: var(--violet); font-weight:700; text-transform:uppercase;
+  letter-spacing:.5pt; font-size:7.5pt; display:block; }
+.protocole h4{ margin:3mm 0 1mm; color: var(--violet); font-size:11pt; }
+.protocole .pr-obs{ background: var(--violet-pl); border-radius:2mm; padding:3mm 4mm;
+  margin:2mm 0; font-size:9.2pt; }
+.protocole .pr-warn{ background:#fbf0e8; border-radius:2mm; padding:3mm 4mm; margin:2mm 0;
+  font-size:9pt; color:#7d4a26; }
+
+/* ---------- Fiche appareil (comparatif) ---------- */
+.fiche{ border:1px solid var(--trait); border-radius:3mm; padding:0; margin:1.5em 0;
+  break-inside:avoid; background:#fff; overflow:hidden; }
+.fiche .f-head{ background: var(--violet-pl); padding:3.5mm 5mm;
+  border-bottom:1px solid var(--trait); }
+.fiche .f-name{ font-family:"Cormorant Garamond",serif; font-weight:700; font-size:16pt;
+  color: var(--nuit); line-height:1.1; }
+.fiche .f-maker{ font-family:"Lato",sans-serif; font-size:8pt; letter-spacing:1.2pt;
+  text-transform:uppercase; color: var(--violet); margin-top:.8mm; }
+.fiche .f-body{ padding:4mm 5mm; font-size:9.5pt; }
+.fiche dl{ margin:0; }
+.fiche dt{ font-family:"Lato",sans-serif; font-size:7.5pt; letter-spacing:1pt;
+  text-transform:uppercase; color: var(--or); font-weight:700; margin-top:2.2mm; }
+.fiche dd{ margin:.4mm 0 0; font-size:9.5pt; }
+.fiche .f-url{ font-size:8.5pt; color: var(--violet); word-break:break-all; }
+
+/* ---------- Tableaux serrés (comparatifs larges) ---------- */
+table.tight{ font-size:8.2pt; }
+table.tight th{ font-size:7.2pt; padding:2mm 2mm; }
+table.tight td{ padding:1.8mm 2mm; }
+table.tight-xs{ font-size:7.4pt; }
+table.tight-xs th{ font-size:6.6pt; padding:1.6mm 1.6mm; letter-spacing:.2pt; }
+table.tight-xs td{ padding:1.5mm 1.6mm; }
+
+/* ---------- Nomenclature DIY (BOM) ---------- */
+table.bom td:first-child{ font-family:"DejaVu Sans Mono",monospace; font-size:8pt;
+  color: var(--bleu); white-space:nowrap; }
+
+/* ---------- Encart « à la loupe » ---------- */
+.loupe{ border-left:3px solid var(--bleu); background:#f5f8fb; border-radius:0 2mm 2mm 0;
+  padding:4mm 5mm; margin:1.3em 0; font-size:9.5pt; break-inside:avoid; }
+.loupe .l-h{ font-family:"Cormorant Garamond",serif; font-weight:700; font-size:12.5pt;
+  color: var(--bleu); margin-bottom:1.5mm; }
+
+/* ---------- Journal de perception (grille à remplir) ---------- */
+table.journal td{ height:9mm; }
+table.journal td.lbl{ background: var(--violet-pl); font-size:8.5pt;
+  color: var(--nuit); font-weight:700; width:32%; }
+
+/* ---------- Rituel / texte à dire ---------- */
+.rituel{ background: var(--or-pl); border:1px solid #E9DCB8; border-radius:3mm;
+  padding:5mm 6mm; margin:1.5em 0; break-inside:avoid; }
+.rituel .r-h{ font-family:"Cinzel",serif; font-size:9pt; letter-spacing:2.5pt;
+  text-transform:uppercase; color: var(--or); margin-bottom:2mm; }
+.rituel .r-dit{ font-family:"Cormorant Garamond",serif; font-style:italic; font-size:12.5pt;
+  color: var(--nuit); line-height:1.45; text-align:center; margin:2mm 0; }
+
+/* ---------- Puces sans ornement dans les schémas ---------- */
+.schema ul > li::before{ color: var(--or-cl); }
+
+/* ---------- Index : pas de césure agressive ---------- */
+.index{ hyphens:none; }
+
+/* Couverture : bloc de pied ancré en bas de page */
+.cover .cover-foot{ position:absolute; left:16mm; right:16mm; bottom:20mm; margin-top:0; }
+
+/* ---------- Listings de code source (annexe) ---------- */
+.code.listing{ margin-left:-8mm; margin-right:-8mm; padding:3.5mm 4mm;
+  break-inside:auto; }
+.code.listing pre{ font-size:6.6pt; line-height:1.36; white-space:pre-wrap;
+  word-break:break-word; }
+.code.listing pre, .code pre{ orphans:3; widows:3; }
+
+/* ---------- Traduction des mentions d'une planche de brevet ---------- */
+.trad{ background:#F6F4EA; border:1px solid var(--trait); border-radius:3mm;
+  padding:3.5mm 5mm; margin:-0.6em 0 1.4em; break-inside:avoid; font-size:8.6pt; }
+.trad .t-h{ font-family:"Lato",sans-serif; font-size:7.2pt; letter-spacing:1.6pt;
+  text-transform:uppercase; color: var(--or); font-weight:700; margin-bottom:2mm; }
+.trad table{ margin:0; font-size:8.4pt; }
+.trad th{ font-size:6.8pt; padding:1.4mm 2mm; }
+.trad td{ padding:1.2mm 2mm; }
+.trad td:first-child{ font-family:"DejaVu Sans Mono",monospace; font-size:7.6pt;
+  color: var(--bleu); white-space:nowrap; }
+
+/* Le titre courant de gauche ne doit jamais se couper sur deux lignes */
+@page{ @top-left{ white-space:nowrap; } }

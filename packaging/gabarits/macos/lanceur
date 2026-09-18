@@ -1,0 +1,75 @@
+#!/bin/bash
+#  ==========================================================================
+#  PhytoScope — attribution — packaging/gabarits/macos/lanceur
+#
+#  Version  : 1.5.1
+#  Date     : 2026-09-18
+#  Éditeur  : Bretagne Namasté
+#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Site     : https://bretagne-namaste.com
+#  Contact  : contact@bretagne-namaste.com
+#  Licence  : MIT — voir LICENCE.txt
+#
+#  SPDX-License-Identifier: MIT
+#  fin de l'attribution
+#  ==========================================================================
+
+# ===========================================================================
+#  PhytoScope — lanceur du paquet .app (macOS)
+#
+#  Le paquet embarque le logiciel et ses bibliothèques, mais PAS l'interpréteur
+#  Python : Apple ne fournit plus de Python utilisable depuis macOS 12.3, et
+#  redistribuer CPython depuis Linux donnerait un binaire non signé que
+#  Gatekeeper refuserait de toute façon. On utilise donc le Python de
+#  l'utilisateur, et l'on explique clairement s'il manque — en montrant une
+#  vraie fenêtre, car un .app lancé depuis le Finder n'a pas de terminal où
+#  écrire.
+# ===========================================================================
+set -u
+ICI="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+RESSOURCES="$(cd "$ICI/../Resources" && pwd)"
+
+dire() {
+    /usr/bin/osascript -e "display dialog \"$1\" buttons {\"OK\"} \
+        with title \"PhytoScope\" with icon caution" >/dev/null 2>&1 || echo "$1" >&2
+}
+
+trouver_python() {
+    local p
+    for p in /opt/homebrew/bin/python3 /usr/local/bin/python3 \
+             /Library/Frameworks/Python.framework/Versions/Current/bin/python3 \
+             /usr/bin/python3; do
+        [ -x "$p" ] || continue
+        #  Au moins 3.9, et capable de bâtir un environnement virtuel.
+        "$p" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3,9) else 1)' \
+            >/dev/null 2>&1 && { echo "$p"; return; }
+    done
+    echo ""
+}
+
+PY="$(trouver_python)"
+if [ -z "$PY" ]; then
+    dire "PhytoScope a besoin de Python 3.9 ou plus récent.\n\nLe plus simple :\n    brew install python\n\nOu téléchargez-le sur python.org, puis relancez PhytoScope."
+    exit 1
+fi
+
+#  L'environnement Python vit dans le dossier de l'utilisateur, pas dans le
+#  paquet : un .app installé dans /Applications n'est pas inscriptible, et il
+#  doit pouvoir servir plusieurs comptes.
+VENV="$HOME/Library/Application Support/PhytoScope/venv"
+if [ ! -x "$VENV/bin/python" ]; then
+    dire "Première ouverture : PhytoScope va préparer son environnement Python.\n\nCela prend une à deux minutes et ne se produira qu'une fois."
+    mkdir -p "$(dirname "$VENV")"
+    "$PY" -m venv "$VENV" || { dire "Création de l'environnement impossible."; exit 1; }
+    if [ -d "$RESSOURCES/roues" ]; then
+        "$VENV/bin/pip" install --quiet --no-index --find-links "$RESSOURCES/roues" \
+            -r "$RESSOURCES/app/requirements.txt" 2>/dev/null \
+        || "$VENV/bin/pip" install --quiet -r "$RESSOURCES/app/requirements.txt"
+    else
+        "$VENV/bin/pip" install --quiet -r "$RESSOURCES/app/requirements.txt"
+    fi || { dire "Installation des bibliothèques impossible.\nVérifiez votre connexion et relancez."; exit 1; }
+    "$VENV/bin/pip" install --quiet -r "$RESSOURCES/app/requirements-optionnel.txt" \
+        >/dev/null 2>&1 || true
+fi
+
+exec "$VENV/bin/python" "$RESSOURCES/app/run.py" "$@"

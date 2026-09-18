@@ -1,0 +1,117 @@
+<section class="chapter">
+  <h2 id="c7-couche-ia" data-toc="chapter">La couche d'intelligence artificielle</h2>
+  <p class="chapo">Trois modèles en série, dont un seul écrit. Comprendre leur répartition des rôles, c'est comprendre où naît exactement la personnalité de l'arbre.</p>
+
+  <p class="lettrine noindent">« L'IA » est un mot valise qui désigne ici trois systèmes distincts, entraînés séparément, aux fonctions très différentes. Les confondre empêche de raisonner. Séparons-les.</p>
+
+  <table>
+    <thead><tr><th>Étage</th><th>Fonction</th><th>Ce qu'il apporte</th><th>Ce qu'il n'invente pas</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Reconnaissance vocale</strong></td><td>Audio du visiteur → texte</td><td>Transcription, ponctuation, détection de langue</td><td>Rien du contenu : il transcrit</td></tr>
+      <tr><td><strong>Modèle de langage</strong></td><td>Invite → réponse textuelle</td><td><strong>Syntaxe, ton, images, longueur, sentiment exprimé</strong></td><td>Les nombres qu'on lui a donnés</td></tr>
+      <tr><td><strong>Synthèse vocale</strong></td><td>Texte → audio</td><td>Timbre, prosodie, débit, « âge » perçu de la voix</td><td>Rien du contenu : il prononce</td></tr>
+    </tbody>
+    <caption>Un seul des trois étages produit du contenu. C'est l'étage central — et il ne reçoit de l'arbre qu'une poignée de nombres.</caption>
+  </table>
+
+  <h3 id="c7-voix" data-toc="sub">Le rôle sous-estimé de la voix</h3>
+
+  <p>On attribue spontanément tout l'effet au modèle de langage. C'est une erreur d'appréciation. Le choix du <strong>timbre de la synthèse vocale</strong> fait au moins autant de travail que le texte, et il est intégralement décidé par un humain.</p>
+
+  <p>Une même phrase — « l'air est vif contre mon écorce » — produit des effets radicalement différents selon qu'elle est prononcée par une voix grave et lente, une voix d'enfant, une voix synthétique métallique ou une voix féminine douce. Le choix retenu pour ce type d'installation est presque toujours le même : <strong>grave, lent, légèrement rauque, avec des pauses longues</strong>. Ce n'est pas un hasard acoustique, c'est une construction de personnage : c'est la voix culturellement codée de l'ancien, du sage, du témoin du temps long.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Limites et interprétation</div>
+    <p>Aucune propriété physique de l'arbre ne détermine sa voix. Un platane n'a pas de cordes vocales, pas de fréquence fondamentale, pas de registre. <strong>Le timbre est un choix de mise en scène, au même titre que la musique d'un film.</strong></p>
+    <p>Il faut le dire d'autant plus nettement que ce choix est très efficace : dans les expériences d'attribution, la voix pèse souvent plus lourd que le contenu sur le sentiment de s'adresser à quelqu'un. Un praticien qui construit ce type de dispositif doit savoir qu'en choisissant une voix, il fabrique déjà les trois quarts du personnage — avant même d'avoir écrit une ligne.</p>
+  </div>
+
+  <h3 id="c7-invite" data-toc="sub">L'invite : le vrai lieu de l'auteur</h3>
+
+  <p>Si la voix fait le personnage, l'<strong>invite</strong> fait le caractère. C'est le texte, écrit par un humain, qui précède les données et instruit le modèle sur ce qu'il doit être et comment il doit répondre. C'est la pièce maîtresse du dispositif, et c'est aussi celle qui n'a jamais été publiée.</p>
+
+  <figure class="full">
+    <img src="assets/svg/tt-prompt.svg" alt="Anatomie d'une invite capteurs vers parole, en quatre blocs"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Décomposition d'une invite « capteurs → parole ». Sur les quatre blocs, un seul contient de l'information venue de l'arbre. Le bloc « contraintes » est celui qui sépare un dispositif honnête d'une fable — et c'est aussi celui qu'on omet le plus souvent.</figcaption>
+  </figure>
+
+  <p>La déclaration de Greally selon laquelle « l'arbre met à jour sa propre personnalité et son humeur » suggère un mécanisme d'état persistant : la sortie d'une session influencerait l'invite de la suivante. C'est techniquement banal — on stocke un résumé, on le réinjecte — et cela produit effectivement une dérive au fil du temps. Mais cette dérive est une <strong>propriété de la boucle de rétroaction logicielle</strong>, pas un état interne de l'arbre.</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique — ce que la recherche établit sur ce type de montage</div>
+    <p>La technique dominante pour faire « commenter » des séries temporelles par un modèle de langage consiste simplement à insérer les valeurs sous forme de texte dans l'invite. Cette littérature existe et elle est instructive : <strong>Nepal et al. (2024)</strong> pour la narration de données de capteurs (<em>AWARE Narrator</em>, arXiv:2411.04691), ainsi que plusieurs travaux d'alignement modèle-capteurs (<em>SensorLLM</em>, arXiv:2410.10624).</p>
+    <p>Le constat récurrent de ce corpus est sévère : la méthode fonctionne mal au-delà de quelques centaines de pas de temps, et les sorties sont fréquemment <strong>génériques, inexactes ou mal ancrées dans les données</strong>. Autrement dit, le modèle produit un texte plausible dont le lien effectif aux nombres fournis est faible et difficile à contrôler.</p>
+    <p>Le résultat le plus dur vient de <strong>Tan, Merrill, Gupta, Althoff &amp; Hartvigsen (2024)</strong>, <em>Are Language Models Actually Useful for Time Series Forecasting?</em>, NeurIPS 2024 (arXiv:2406.16964) : sur trois méthodes populaires de prévision de séries temporelles par modèle de langage, <strong>retirer le modèle ou le remplacer par une simple couche d'attention ne dégrade pas les performances — et souvent les améliore</strong>. Un modèle trivial bat la plupart des architectures à base de modèle de langage. Nous exploiterons ce résultat au chapitre 16 pour construire un test de contrôle.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Trois modèles en série ; un seul, le modèle de langage, produit du contenu.</li>
+      <li>Le timbre de la voix est un choix humain de mise en scène, et pèse souvent plus que le texte.</li>
+      <li>L'invite est le véritable lieu de l'auteur — et n'a jamais été publiée.</li>
+      <li>La « personnalité évolutive » est une boucle de rétroaction logicielle, pas un état de l'arbre.</li>
+      <li>La littérature montre que les sorties de ce type de montage sont souvent mal ancrées dans les données (Tan et al., NeurIPS 2024).</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c8-non-publie" data-toc="chapter" data-run="Ce qui n'est pas publié">Ce que le dispositif ne publie pas — et pourquoi cela compte</h2>
+  <p class="chapo">Un projet fermé n'est pas un projet malhonnête. Mais il ne peut prétendre à aucune des vertus qu'on lui attribue : ni vérifiabilité, ni reproductibilité, ni valeur scientifique. Il faut savoir ce qu'on perd.</p>
+
+  <p class="lettrine noindent">Récapitulons sans détour. Le projet n'a publié <strong>aucun</strong> des éléments suivants : code source, spécification matérielle, référence de capteur, invite système, nom du modèle, protocole d'étalonnage, jeu de données, méthode d'analyse, résultat. Le site officiel lui-même a été perdu : le nom de domaine a expiré et sert désormais du contenu publicitaire sans rapport, tandis que la page de l'agence renvoie une erreur.</p>
+
+  <div class="callout caution">
+    <div class="callout-title">✦ Une précision d'équité, encore</div>
+    <p>Une campagne de communication n'a <strong>aucune obligation</strong> de publier son code. Ce n'est pas un manquement : c'est le fonctionnement normal d'une agence, qui protège son savoir-faire et n'a jamais annoncé de démarche scientifique.</p>
+    <p>Le problème apparaît uniquement lorsque le projet est <em>reçu</em> comme une contribution à la connaissance — ce qui s'est produit massivement. À ce moment-là, l'absence de publication cesse d'être neutre : elle rend impossible toute évaluation.</p>
+  </div>
+
+  <h3 id="c8-scientificite" data-toc="sub">La mention d'un « objectif scientifique »</h3>
+
+  <p>Certaines couvertures du projet évoquent une visée scientifique : corréler le stress environnemental à l'activité bioélectrique de l'arbre, en lien avec Trinity College Dublin. C'est une ambition parfaitement légitime — et l'enquête n'a trouvé <strong>aucune trace de sa réalisation</strong>.</p>
+
+  <p>Aucun chercheur n'est nommé. Aucun département n'est identifié. Aucun protocole n'est décrit. Aucune publication, aucune préimpression, aucun jeu de données déposé n'existe. La formule « le projet a été apporté à Trinity College » décrit un lieu d'installation, non un partenariat de recherche.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Comment formuler cela correctement</div>
+    <p>Le formulation exacte est : <strong>le caractère scientifique du volet dublinois n'est pas établi.</strong> Ce n'est pas la même chose que « il n'y a pas eu de science ». Il est possible qu'un travail ait eu lieu sans être publié. Mais en l'absence de toute trace, la seule position tenable est de ne rien affirmer — ni dans un sens, ni dans l'autre.</p>
+    <p>Cette prudence n'est pas de la pusillanimité : c'est l'application directe de la règle posée au chapitre 2. Une affirmation sans support ne vaut pas mieux qu'une affirmation contraire sans support.</p>
+  </div>
+
+  <h3 id="c8-cout" data-toc="sub">Ce que l'opacité coûte concrètement</h3>
+
+  <p>Énumérons ce qui devient impossible dès lors que rien n'est publié. Cette liste n'est pas abstraite : chaque ligne est une opération qu'un praticien voudrait légitimement pouvoir faire.</p>
+
+  <table>
+    <thead><tr><th>Opération impossible</th><th>Ce qu'il aurait fallu publier</th></tr></thead>
+    <tbody>
+      <tr><td>Refaire l'expérience à l'identique</td><td>Références de capteurs, schéma de câblage, code du nœud</td></tr>
+      <tr><td>Vérifier qu'une phrase correspond bien aux données de l'instant</td><td>Journal horodaté des relevés et des sorties</td></tr>
+      <tr><td>Évaluer la part du signal dans la sortie</td><td>Invite système et nom du modèle</td></tr>
+      <tr><td>Contrôler l'absence d'artefact</td><td>Protocole d'étalonnage et mesures de contrôle</td></tr>
+      <tr><td>Réanalyser les données autrement</td><td>Jeu de données brut</td></tr>
+      <tr><td>Construire dessus</td><td>Une licence et un dépôt</td></tr>
+      <tr><td>Comparer à un autre dispositif</td><td>Une spécification quelconque</td></tr>
+    </tbody>
+    <caption>Sept opérations, sept impossibilités. C'est la définition opérationnelle de ce qu'on appelle un dispositif fermé.</caption>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La conclusion à en tirer pour ce livre</div>
+    <p>Cette opacité détermine la suite de l'ouvrage. Puisque nous ne pouvons pas analyser <em>ce dispositif-là</em>, nous allons faire mieux : analyser <strong>la classe de dispositifs à laquelle il appartient</strong>, à partir de la littérature scientifique publique, et construire une version <strong>entièrement ouverte</strong> que le lecteur pourra monter, vérifier et contredire.</p>
+    <p>C'est le programme des parties III à VII, et de l'intégralité du volume III. Là où le projet original s'arrête, ce livre commence.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Aucun code, aucune spécification, aucune donnée, aucun modèle nommé, aucune invite publiée.</li>
+      <li>Le site officiel du projet a été perdu à l'expiration du nom de domaine.</li>
+      <li>Une campagne n'a aucune obligation de publier — le problème naît de sa réception comme contribution scientifique.</li>
+      <li>Le caractère scientifique du volet dublinois n'est pas établi. Ni infirmé.</li>
+      <li>Sept opérations d'évaluation deviennent impossibles : c'est la définition d'un dispositif fermé.</li>
+    </ul>
+  </div>
+</section>

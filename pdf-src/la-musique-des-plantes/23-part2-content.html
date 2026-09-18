@@ -1,0 +1,137 @@
+<section class="chapter">
+  <h2 id="c14-polygraphe" data-toc="chapter">Le polygraphe : l'instrument d'origine</h2>
+  <p class="chapo">Toute la musique des plantes descend d'un appareil conçu pour interroger des humains. Comprendre exactement comment fonctionne un polygraphe, c'est comprendre ce que Backster a réellement branché sur son dracaena — et pourquoi il s'est trompé.</p>
+
+  <p class="lettrine noindent">Le mot est trompeur. « Polygraphe » ne signifie pas « détecteur de mensonge » mais, littéralement, « qui écrit plusieurs choses » : c'est un enregistreur multivoies. L'appareil ne détecte aucun mensonge. Il enregistre des variables physiologiques, et c'est un examinateur humain qui, à partir de ces courbes, formule un jugement. Cette distinction est la clé de toute la controverse — et elle se transpose mot pour mot à la bio-sonification.</p>
+
+  <h3 id="c14-voies" data-toc="sub">Les quatre voies d'un polygraphe</h3>
+
+  <table>
+    <thead><tr><th>Voie</th><th>Grandeur mesurée</th><th>Capteur</th><th>Système nerveux impliqué</th><th>Latence</th></tr></thead>
+    <tbody>
+      <tr><td><strong>EDA</strong> — activité électrodermale</td><td>Conductance de la peau (µS)</td><td>Deux électrodes sur l'index et l'annulaire</td><td>Sympathique <em>pur</em> — aucune innervation parasympathique</td><td>1 à 3 s</td></tr>
+      <tr><td><strong>Cardiovasculaire</strong></td><td>Pression artérielle relative, fréquence cardiaque</td><td>Brassard gonflé à 50–70 mmHg</td><td>Sympathique et parasympathique</td><td>2 à 5 s</td></tr>
+      <tr><td><strong>Respiration</strong></td><td>Amplitude et rythme thoracique et abdominal</td><td>Deux ceintures pneumatiques ou piézoélectriques</td><td>Mixte, partiellement volontaire</td><td>1 à 4 s</td></tr>
+      <tr><td><strong>Activité motrice</strong></td><td>Micromouvements du siège et des pieds</td><td>Capteurs de pression dans le fauteuil</td><td>Contre-mesures volontaires</td><td>Immédiate</td></tr>
+    </tbody>
+    <caption>Les quatre voies standard. C'est la première — l'EDA — que Backster a branchée sur une feuille, et c'est elle qui fonde toute la lignée technique de la musique des plantes.</caption>
+  </table>
+
+  <h3 id="c14-eda" data-toc="sub">L'activité électrodermale, en détail</h3>
+
+  <p>C'est la voie la plus intéressante pour nous, parce que c'est exactement la mesure que reproduisent les boîtiers de bio-sonification. Son principe physiologique est remarquablement propre.</p>
+
+  <div class="schema light">
+    <div class="sch-h">Chaîne physiologique de la réponse électrodermale</div>
+<pre>
+  STIMULUS (question saillante, bruit soudain, pensée chargée)
+        │
+        ▼
+  ① AMYGDALE / SYSTÈME LIMBIQUE — évaluation de saillance
+        │
+        ▼
+  ② HYPOTHALAMUS → chaîne sympathique thoraco-lombaire
+        │
+        ▼
+  ③ FIBRES SUDOMOTRICES CHOLINERGIQUES
+     (particularité : sympathiques mais à acétylcholine,
+      et non à noradrénaline comme le reste du sympathique)
+        │
+        ▼
+  ④ GLANDES SUDORIPARES ECCRINES des paumes et des plantes
+     · densité : 600 à 700 par cm² — la plus élevée du corps
+     · rôle : NON thermorégulateur, mais préhension/vigilance
+        │
+        ▼
+  ⑤ REMPLISSAGE DES CANAUX SUDORIPARES
+     La sueur est une solution ionique (NaCl 20–80 mM).
+     Chaque canal rempli = une RÉSISTANCE EN PARALLÈLE
+     ajoutée au trajet à travers la couche cornée.
+        │
+        ▼
+  ⑥ CHUTE DE LA RÉSISTANCE CUTANÉE / HAUSSE DE CONDUCTANCE
+     Amplitude typique : 0,05 à 1 µS sur une base de 2 à 20 µS
+     Montée : 1 à 3 s · Retour : 2 à 10 s
+
+  MESURE (méthode exosomatique de Féré, 1888)
+     Tension constante 0,5 V appliquée entre deux électrodes
+     Ag/AgCl ; le courant mesuré est proportionnel à la
+     conductance :   G = I / U       (loi d'Ohm)
+</pre>
+    <figcaption>La conductance cutanée est l'un des rares indicateurs d'un seul système : le sympathique. Aucun autre signal physiologique n'offre cette pureté — et c'est ce qui en fait l'étalon-or de la psychophysiologie.</figcaption>
+  </div>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique</div>
+    <p>Deux composantes se superposent dans le signal EDA, et les confondre est l'erreur classique.</p>
+    <p><strong>Le niveau tonique</strong> (<em>Skin Conductance Level</em>, SCL) est la valeur de base, comprise entre 2 et 20&nbsp;µS. Il dérive lentement avec la température, l'hydratation, l'heure de la journée et le niveau d'éveil général. Il ne dit rien d'un événement particulier.</p>
+    <p><strong>La réponse phasique</strong> (<em>Skin Conductance Response</em>, SCR) est la bouffée brève superposée au niveau tonique. C'est elle que l'examinateur analyse. On la qualifie de <em>spécifique</em> si elle survient dans la fenêtre de 1 à 5&nbsp;secondes après un stimulus identifié, et de <em>non spécifique</em> sinon — or un sujet au repos produit spontanément de une à trois réponses non spécifiques par minute, sans aucun stimulus.</p>
+    <p>Retenez ce dernier chiffre. Il est au cœur de l'affaire Backster.</p>
+  </div>
+
+  <h3 id="c14-protocoles" data-toc="sub">Les protocoles d'interrogatoire</h3>
+
+  <p>Puisque l'appareil ne mesure qu'une activation, tout repose sur la <em>comparaison</em>. D'où l'invention de protocoles de questionnement structurés — dont celui que Backster lui-même a formalisé.</p>
+
+  <table>
+    <thead><tr><th>Protocole</th><th>Principe</th><th>Validité</th></tr></thead>
+    <tbody>
+      <tr><td><strong>CQT</strong> — <em>Comparison Question Test</em><br/>(dont la « Backster Zone Comparison Technique », 1960)</td><td>On alterne questions pertinentes (« avez-vous pris l'argent ? ») et questions de comparaison (« avant 25 ans, avez-vous déjà menti ? »). Un innocent est censé réagir davantage aux secondes, un coupable aux premières.</td><td><strong>Contestée.</strong> Repose sur une hypothèse psychologique non démontrée ; taux de faux positifs élevé chez les sujets anxieux.</td></tr>
+      <tr><td><strong>CIT</strong> — <em>Concealed Information Test</em></td><td>On présente une série d'items dont un seul est connu du coupable (l'arme réelle parmi cinq armes). On cherche une réponse plus forte à l'item critique.</td><td><strong>Meilleure.</strong> Logique de reconnaissance, non d'anxiété ; exige que le détail soit resté secret.</td></tr>
+      <tr><td><strong>Test de stimulation</strong></td><td>On demande au sujet de mentir sciemment sur un numéro de carte, pour calibrer sa réactivité individuelle.</td><td>Outil de calibration, pas de preuve.</td></tr>
+    </tbody>
+    <caption>Les trois protocoles standard. Aucun n'est admis comme preuve devant la plupart des juridictions ; l'Académie nationale des sciences américaine a conclu en 2003 que la validité du polygraphe pour le dépistage de sécurité était insuffisante.</caption>
+  </table>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Limites et interprétation</div>
+    <p>Le polygraphe souffre d'un défaut logique irréductible, et il est <em>exactement</em> celui de la musique des plantes. L'appareil mesure une <strong>activation</strong>. L'examinateur veut connaître une <strong>cause</strong>. Or une même bouffée de conductance peut provenir d'un mensonge, d'une peur d'être mal jugé, d'un souvenir douloureux réveillé par la question, d'une colère contre l'examinateur, d'un bruit dans le couloir — ou de rien du tout, puisqu'il s'en produit spontanément une à trois par minute.</p>
+    <p><strong>Passer de l'activation à la cause exige un contrôle expérimental, pas une intuition.</strong> C'est précisément ce qui manquait à Backster : il observait des bouffées sur son dracaena à un rythme parfaitement compatible avec l'activité spontanée d'une interface électrochimique qui dérive, et il leur attribuait une cause — son intention de brûler la feuille.</p>
+  </div>
+
+  <h3 id="c14-heritage" data-toc="sub">Du polygraphe au boîtier : ce qui a été transposé</h3>
+
+  <table class="compare">
+    <thead><tr><th>Polygraphe humain (voie EDA)</th><th>Boîtier de bio-sonification</th></tr></thead>
+    <tbody>
+      <tr><td>Deux électrodes Ag/AgCl sur des doigts</td><td>Deux électrodes sur une feuille, ou feuille et terreau</td></tr>
+      <tr><td>Tension constante de 0,5 V, mesure du courant</td><td>Excitation 3,3 à 9 V, mesure de résistance ou de période</td></tr>
+      <tr><td>Grandeur : conductance cutanée en µS</td><td>Grandeur : impédance du trajet en MΩ</td></tr>
+      <tr><td>Source physiologique : remplissage des canaux sudoripares</td><td>Source physiologique : teneur en eau ionisée de l'apoplaste</td></tr>
+      <tr><td>Commande : système nerveux sympathique</td><td>Commande : ouverture stomatique, flux hydrique, lumière</td></tr>
+      <tr><td>Sortie : tracé sur papier ou écran</td><td>Sortie : note MIDI</td></tr>
+      <tr><td>Interprétation : par un examinateur formé, selon un protocole</td><td>Interprétation : par l'auditeur, sans aucun protocole</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Idée clé</div>
+    <p>La transposition est techniquement rigoureuse sur les six premières lignes. Elle s'effondre sur la septième. Le polygraphe s'accompagne d'un protocole d'interrogatoire, d'une calibration individuelle, de questions de comparaison et d'un examinateur certifié — et malgré tout cet appareillage méthodologique, il reste contesté. Le boîtier de musique des plantes n'a rien de tout cela : ni question, ni comparaison, ni calibration, ni protocole. <strong>Il hérite du capteur, pas de la méthode.</strong></p>
+    <p>C'est réparable, et ce livre s'y emploie : la partie&nbsp;IX propose des protocoles avec témoins, ligne de base et conditions contrôlées. C'est exactement ce qui manque partout ailleurs.</p>
+  </div>
+
+  <div class="callout energie">
+    <div class="callout-title">🌿 Regard énergétique</div>
+    <p>Il y a néanmoins un héritage plus subtil, et il mérite d'être nommé. Un bon examinateur de polygraphe sait une chose que peu de gens savent : <strong>l'appareil rend visible l'état du corps avant que la personne n'en ait conscience</strong>. La bouffée de conductance précède de deux secondes le sentiment d'être troublé.</p>
+    <p>Cette expérience — voir son propre état apparaître sur un écran avant de le ressentir — est bouleversante et parfaitement réelle. C'est elle qui fonde le biofeedback thérapeutique. Et c'est probablement elle, transposée sur le végétal, qui a donné à Backster puis à ses successeurs le sentiment irrésistible d'assister à un dévoilement. Ce sentiment est authentique. Sa cause n'est simplement pas celle qu'on croit : l'appareil ne dévoile pas l'intériorité de la plante, il rend visible une dynamique physique que nos sens ne perçoivent pas. C'est déjà une forme de merveille.</p>
+  </div>
+
+  <div class="callout interieur">
+    <div class="callout-title">✨ Expérience intérieure</div>
+    <p>Si vous disposez d'un boîtier, faites ceci une fois — c'est l'expérience que décrit la fiche d'horticulture thérapeutique de Mikkele Lawless, et elle fonctionne à tous les coups. Tenez vous-même les deux électrodes, une dans chaque main. Écoutez votre propre conductance cutanée devenir musique pendant cinq minutes.</p>
+    <p>Puis observez ce qui se passe quand vous pensez à quelque chose de chargé. Les notes changent, presque toujours, et avec un retard d'une à trois secondes. Vous venez de rencontrer votre propre système nerveux sympathique. Après cela, vous n'écouterez plus jamais une plante de la même façon — parce que vous saurez, dans votre corps, ce que l'appareil mesure et ce qu'il ne mesure pas.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Un polygraphe n'est pas un détecteur de mensonge : c'est un enregistreur multivoies interprété par un humain.</li>
+      <li>La voie EDA mesure la conductance cutanée, indicateur pur du système sympathique.</li>
+      <li>Un sujet au repos produit 1 à 3 réponses spontanées par minute, sans aucun stimulus.</li>
+      <li>Le passage de l'activation à la cause exige un protocole de comparaison — c'est ce qui manquait à Backster.</li>
+      <li>La bio-sonification a hérité du capteur du polygraphe, mais non de sa méthode.</li>
+    </ul>
+  </div>
+
+  <div class="ornament"></div>
+</section>

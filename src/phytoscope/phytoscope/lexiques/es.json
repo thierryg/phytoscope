@@ -1,0 +1,58 @@
+{
+  "nom": "Español — registro contemplativo",
+  "langue": "es",
+  "auteur": "Bretagne Namasté",
+  "note": "Dictionnaire d'exemple. Le modifier est l'usage normal, pas une entorse : les mots doivent être ceux de celui qui écoute.",
+  "grammaire": "contemplative",
+  "registres": {
+    "sujet": [
+      "yo",
+      "algo",
+      "la savia",
+      "el tronco",
+      "la hoja"
+    ],
+    "verbe_montee": [
+      "me estremezco",
+      "despierto",
+      "asciendo",
+      "me impulso",
+      "irrumpo"
+    ],
+    "verbe_descente": [
+      "me calmo",
+      "desciendo",
+      "me retiro",
+      "reposo",
+      "me desvanezco"
+    ],
+    "intensite": [
+      "apenas",
+      "suavemente",
+      "claramente",
+      "con fuerza",
+      "con toda mi madera"
+    ],
+    "tempo": [
+      "otra vez",
+      "de nuevo",
+      "tras un momento",
+      "tras un largo rato",
+      "tras un silencio muy largo"
+    ],
+    "couleur": [
+      "sordo",
+      "grave",
+      "amplio",
+      "claro",
+      "agudo"
+    ],
+    "liaison": [
+      "y",
+      "luego",
+      "entonces",
+      "mientras",
+      "—"
+    ]
+  }
+}

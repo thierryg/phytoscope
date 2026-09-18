@@ -1,0 +1,295 @@
+# ===========================================================================
+#  PhytoScope — publication d'une version
+# ===========================================================================
+#  Déclenchée par une étiquette « v1.5.1 ». Elle fait, dans cet ordre :
+#
+#    1. vérifie que l'étiquette correspond à la version déclarée dans
+#       src/phytoscope/phytoscope/VERSION — la seule source de vérité. Une
+#       étiquette qui ne correspond pas produirait des paquets estampillés
+#       d'un numéro que personne ne retrouverait ;
+#    2. rejoue les tests et l'analyse statique ;
+#    3. fabrique les paquets de tous les systèmes, signés ;
+#    4. produit la nomenclature logicielle (SBOM, CycloneDX) ;
+#    5. **atteste la provenance** de chaque paquet auprès de GitHub — une
+#       signature Sigstore qui dit quel dépôt, quel commit et quel workflow
+#       ont produit ce fichier. C'est ce qui distingue « un .deb trouvé
+#       quelque part » de « ce .deb-là, sorti de ce commit-là » ;
+#    6. publie la version, avec les empreintes.
+#
+#  La signature Authenticode/CMS du projet, elle, reste faite hors ligne avec
+#  la clé privée qui n'entre jamais ici (C-2R). Ce que la CI signe, c'est la
+#  provenance ; ce que l'éditeur signe, c'est l'origine. Les deux sont utiles
+#  et ne se remplacent pas.
+# ===========================================================================
+name: Diffusion
+
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version à publier (sans « v »), pour un essai à blanc"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+
+  # -------------------------------------------------------------------------
+  #  1. L'étiquette dit-elle la vérité ?
+  # -------------------------------------------------------------------------
+  verifier-version:
+    name: L'étiquette correspond à VERSION
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.lire.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: lire
+        run: |
+          declaree=$(grep -E '^version\s*=' src/phytoscope/phytoscope/VERSION \
+                     | head -1 | cut -d= -f2 | tr -d ' ')
+          echo "version=$declaree" >> "$GITHUB_OUTPUT"
+          echo "  · VERSION déclare : $declaree"
+
+          if [ "${{ github.event_name }}" = "push" ]; then
+            etiquette="${GITHUB_REF#refs/tags/v}"
+            echo "  · étiquette       : $etiquette"
+            if [ "$etiquette" != "$declaree" ]; then
+              echo "! l'étiquette ($etiquette) ne correspond pas à VERSION ($declaree)"
+              echo "  corrigez VERSION avec « make bump-patch », ou l'étiquette."
+              exit 1
+            fi
+          fi
+          echo "  · concordance vérifiée"
+
+      #  Une version suffixée (-dev, -rc1) n'est pas destinée à être diffusée :
+      #  le Makefile du logiciel le sait, on le lui demande.
+      - name: La version est-elle diffusable ?
+        run: cd src/phytoscope && make release-check
+
+  # -------------------------------------------------------------------------
+  #  2. Rien ne se publie qui n'ait été vérifié
+  # -------------------------------------------------------------------------
+  controles:
+    name: Tests et analyse statique
+    needs: verifier-version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Dépendances
+        working-directory: src/phytoscope
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -r requirements-dev.txt ruff
+      - name: Tests
+        working-directory: src/phytoscope
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          export XDG_CONFIG_HOME="$(mktemp -d)"
+          python -m pytest tests -q
+      - name: ruff
+        run: ruff check packaging tools src/phytoscope pdf-src/build*.py
+      - name: En-têtes d'attribution
+        run: python3 tools/entetes.py --verifier
+
+  # -------------------------------------------------------------------------
+  #  3, 4, 5. Paquets, nomenclature logicielle, attestation de provenance
+  # -------------------------------------------------------------------------
+  paquets:
+    name: Paquets, SBOM et provenance
+    needs: [verifier-version, controles]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write       # exigé par l'attestation Sigstore
+      attestations: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Outils d'empaquetage
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            dpkg-dev fakeroot rpm nsis msitools osslsigncode xar cpio
+          cd packaging && make deps || true
+
+      #  Certificat éphémère, fabriqué ici et jeté avec le coureur : il prouve
+      #  que la chaîne de signature fonctionne. Le certificat de DIFFUSION du
+      #  projet ne quitte pas le poste de l'éditeur (C-2R).
+      - name: Certificat éphémère
+        run: cd packaging && make certificat
+
+      - name: Fabriquer tous les paquets
+        run: cd packaging && make tout
+
+      - name: Rouvrir et contrôler chaque paquet
+        run: cd packaging && make verifier
+
+      - name: Nomenclature logicielle (CycloneDX)
+        working-directory: src/phytoscope
+        run: |
+          python -m pip install -r requirements.txt
+          python tools/sbom.py --json > "$GITHUB_WORKSPACE/sbom.cdx.json"
+          python -c "import json;d=json.load(open('$GITHUB_WORKSPACE/sbom.cdx.json'));print('  ·',len(d.get('components',[])),'composants')"
+
+      - name: Aucun secret dans les produits
+        run: |
+          if find build/paquets -name '*.key' -o -name '*.p12' -o -name '*.pfx' | grep -q .; then
+            echo "! une clé privée se trouve dans les paquets"; exit 1
+          fi
+          echo "  · aucune clé privée dans les produits"
+
+      #  L'attestation lie chaque fichier à son commit et à ce workflow.
+      #  Vérification par qui télécharge :
+      #      gh attestation verify phytoscope_1.5.1_all.deb --repo thierryg/phytoscope
+      - name: Attester la provenance des paquets
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: |
+            build/paquets/**/*.deb
+            build/paquets/**/*.rpm
+            build/paquets/**/*.run
+            build/paquets/**/*.exe
+            build/paquets/**/*.msi
+            build/paquets/**/*.pkg
+            build/paquets/**/*.zip
+            build/paquets/**/*.tar.gz
+
+      - name: Attester la nomenclature logicielle
+        uses: actions/attest-sbom@v1
+        with:
+          subject-path: sbom.cdx.json
+          sbom-path: sbom.cdx.json
+        continue-on-error: true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paquets-${{ needs.verifier-version.outputs.version }}
+          path: |
+            build/paquets/
+            sbom.cdx.json
+          if-no-files-found: error
+          retention-days: 90
+
+  # -------------------------------------------------------------------------
+  #  Les publications PDF accompagnent la version
+  # -------------------------------------------------------------------------
+  publications:
+    name: Les dix publications PDF
+    needs: controles
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Bibliothèques de rendu
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            libpango-1.0-0 libpangoft2-1.0-0 libcairo2 libharfbuzz0b \
+            libfribidi0 libgdk-pixbuf-2.0-0 fonts-dejavu-core poppler-utils
+          python -m pip install --upgrade pip weasyprint pillow
+      - name: Illustrations, fragments, puis les quatre fabriques
+        run: |
+          for g in gen gen_carte gen_sch gen_sdk gen_tt; do
+            python3 pdf-src/assets/svg/$g.py
+          done
+          python3 tools/verifier_svg.py
+          python3 tools/gen_bom.py
+          python3 tools/gen_code_annex.py
+          python3 pdf-src/build.py
+          python3 pdf-src/build_arbre.py
+          python3 pdf-src/build_carte.py
+          python3 pdf-src/build_sdk.py
+      - name: Nombre de pages produites
+        run: |
+          total=0
+          for f in build/*.pdf; do
+            n=$(pdfinfo "$f" | awk '/^Pages/ {print $2}')
+            printf '%5d p.  %s\n' "$n" "${f##*/}"
+            total=$((total + n))
+          done
+          printf '%5d p.  TOTAL\n' "$total"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: publications-pdf
+          path: build/*.pdf
+          retention-days: 90
+
+  # -------------------------------------------------------------------------
+  #  6. La publication elle-même
+  # -------------------------------------------------------------------------
+  publier:
+    name: Publier la version
+    needs: [verifier-version, paquets, publications]
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: recolte
+
+      - name: Rassembler et calculer les empreintes
+        run: |
+          mkdir -p diffusion
+          find recolte -type f \
+            \( -name '*.deb' -o -name '*.rpm' -o -name '*.run' \
+               -o -name '*.exe' -o -name '*.msi' -o -name '*.pkg' \
+               -o -name '*.zip' -o -name '*.tar.gz' -o -name '*.p7s' \
+               -o -name '*.pdf' -o -name 'sbom.cdx.json' \
+               -o -name 'AUTHENTICITE.txt' -o -name '*.pem' \) \
+            -exec cp -n {} diffusion/ \;
+          cd diffusion && sha256sum -- * > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Publier
+        uses: softprops/action-gh-release@v2
+        with:
+          name: PhytoScope ${{ needs.verifier-version.outputs.version }}
+          files: diffusion/*
+          generate_release_notes: true
+          body: |
+            ## PhytoScope ${{ needs.verifier-version.outputs.version }}
+
+            Le détail des changements est dans
+            [`CHANGELOG.md`](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md).
+
+            ### Vérifier ce que vous téléchargez
+
+            **L'empreinte** — elle dit que le fichier est intact :
+
+            ```bash
+            sha256sum -c SHA256SUMS.txt --ignore-missing
+            ```
+
+            **La provenance** — elle dit d'où il sort, et c'est plus fort :
+
+            ```bash
+            gh attestation verify <fichier> --repo ${{ github.repository }}
+            ```
+
+            **La signature de l'éditeur** — voir `AUTHENTICITE.txt`, joint.
+            Le certificat est **auto-signé** : il prouve l'intégrité et la
+            continuité d'origine. Il ne fait taire ni SmartScreen ni
+            Gatekeeper, et il n'a jamais prétendu le faire.
+
+            ### Nomenclature logicielle
+
+            `sbom.cdx.json` (CycloneDX) liste chaque dépendance et sa version.

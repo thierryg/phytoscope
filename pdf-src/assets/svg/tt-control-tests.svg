@@ -1,0 +1,80 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/tt-control-tests.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" width="900" height="480">
+
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+</defs>
+<rect width="900" height="480" fill="#FBF9F1"/>
+<text x="450" y="34" font-family="Cormorant Garamond, serif" font-size="18.12" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2.6">LES TROIS TESTS QUI DÉCIDENT DE TOUT</text>
+<text x="450" y="55" font-family="Lato, sans-serif" font-size="11.89" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">À faire avant toute présentation publique — et à publier avec le résultat</text>
+<rect x="40" y="86" width="260" height="322" rx="9" fill="#FFFFFF" stroke="#A8552E" stroke-width="1.8"/>
+<circle cx="74" cy="118" r="19" fill="#A8552E"/>
+<text x="74" y="125" font-family="Cormorant Garamond, serif" font-size="23.2" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">1</text>
+<text x="102" y="124" font-family="Lato, sans-serif" font-size="13.92" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.2">L'ÉPREUVE DU VIDE</text>
+<line x1="58" y1="148" x2="282" y2="148" stroke="#D9D9C6" stroke-width="1.3" stroke-dasharray="5 4"/>
+<text x="58" y="170" font-family="Lato, sans-serif" font-size="11.31" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Débrancher la pince. La poser</text>
+<text x="58" y="185" font-family="Lato, sans-serif" font-size="11.31" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">sur une bouteille d'eau. Injecter</text>
+<text x="58" y="200" font-family="Lato, sans-serif" font-size="11.31" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">du bruit blanc à la place du</text>
+<text x="58" y="215" font-family="Lato, sans-serif" font-size="11.31" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">signal.</text>
+<rect x="58" y="244" width="224" height="44" rx="4" fill="#FBFAF4" stroke="#A8552E" stroke-width="1.1"/>
+<text x="170" y="262" font-family="Lato, sans-serif" font-size="11.6" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Le système doit produire du</text>
+<text x="170" y="274" font-family="Lato, sans-serif" font-size="11.6" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">non-sens visible.</text>
+<text x="170" y="306" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">S'il produit encore de belles</text>
+<text x="170" y="318" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">phrases, elles ne venaient pas de la</text>
+<text x="170" y="330" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">plante.</text>
+<rect x="320" y="86" width="260" height="322" rx="9" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.8"/>
+<circle cx="354" cy="118" r="19" fill="#2F5E86"/>
+<text x="354" y="125" font-family="Cormorant Garamond, serif" font-size="23.2" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2</text>
+<text x="382" y="124" font-family="Lato, sans-serif" font-size="13.92" fill="#2F5E86" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.2">L'ABLATION</text>
+<line x1="338" y1="148" x2="562" y2="148" stroke="#D9D9C6" stroke-width="1.3" stroke-dasharray="5 4"/>
+<text x="338" y="170" font-family="Lato, sans-serif" font-size="11.31" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Remplacer le signal par un tirage</text>
+<text x="338" y="185" font-family="Lato, sans-serif" font-size="11.31" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">au hasard dans le même</text>
+<text x="338" y="200" font-family="Lato, sans-serif" font-size="11.31" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">vocabulaire. Faire écouter les</text>
+<text x="338" y="215" font-family="Lato, sans-serif" font-size="11.31" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">deux versions à l'aveugle.</text>
+<rect x="338" y="244" width="224" height="44" rx="4" fill="#FBFAF4" stroke="#2F5E86" stroke-width="1.1"/>
+<text x="450" y="262" font-family="Lato, sans-serif" font-size="11.6" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Un auditeur doit pouvoir les</text>
+<text x="450" y="274" font-family="Lato, sans-serif" font-size="11.6" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">distinguer.</text>
+<text x="450" y="306" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Sinon, le signal n'apporte rien :</text>
+<text x="450" y="318" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">c'est le résultat de Tan et al.,</text>
+<text x="450" y="330" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">NeurIPS 2024.</text>
+<rect x="600" y="86" width="260" height="322" rx="9" fill="#FFFFFF" stroke="#3F7D5A" stroke-width="1.8"/>
+<circle cx="634" cy="118" r="19" fill="#3F7D5A"/>
+<text x="634" y="125" font-family="Cormorant Garamond, serif" font-size="23.2" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">3</text>
+<text x="662" y="124" font-family="Lato, sans-serif" font-size="13.92" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.2">LE PRÉ-ENREGISTREMENT</text>
+<line x1="618" y1="148" x2="842" y2="148" stroke="#D9D9C6" stroke-width="1.3" stroke-dasharray="5 4"/>
+<text x="618" y="170" font-family="Lato, sans-serif" font-size="11.31" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Fixer par écrit, avant la séance :</text>
+<text x="618" y="185" font-family="Lato, sans-serif" font-size="11.31" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">le vocabulaire, le seuil, la fenêtre</text>
+<text x="618" y="200" font-family="Lato, sans-serif" font-size="11.31" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">d'écoute, la durée. Horodater.</text>
+<text x="618" y="215" font-family="Lato, sans-serif" font-size="11.31" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Aucune édition ensuite.</text>
+<rect x="618" y="244" width="224" height="44" rx="4" fill="#FBFAF4" stroke="#3F7D5A" stroke-width="1.1"/>
+<text x="730" y="262" font-family="Lato, sans-serif" font-size="11.6" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Le protocole précède la donnée.</text>
+<text x="730" y="306" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">C'est ce qui interdit de choisir</text>
+<text x="730" y="318" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">après coup le passage qui « parle ».</text>
+<rect x="40" y="424" width="820" height="42" rx="6" fill="#0E2A22"/>
+<text x="450" y="442" font-family="Lato, sans-serif" font-size="13.63" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Un dispositif qui ne publie pas ses conditions d'échec ne publie rien.</text>
+<text x="450" y="458" font-family="Lato, sans-serif" font-size="11.31" fill="#9FB8AB" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Ces trois tests ne détruisent pas l'œuvre : ils la rendent défendable.</text>
+</svg>

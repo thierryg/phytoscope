@@ -1,0 +1,472 @@
+# ===========================================================================
+#  PhytoScope — ce qui ne doit jamais entrer dans le dépôt
+# ===========================================================================
+#  Le dépôt est PUBLIC. Trois familles de choses en sont écartées :
+#
+#    1. les secrets — la clé privée de signature avant tout ;
+#    2. ce que nous n'avons pas le droit de rediffuser — ouvrages sous droits,
+#       articles payants, notices constructeurs, dépôts tiers recopiés ;
+#    3. ce qui se reconstruit — PDF, paquets, caches, environnements.
+#
+#  Attention : .gitignore protège de git, pas d'une sauvegarde ni d'une
+#  archive du dossier. Voir certificat/LISEZ-MOI.md et SECURITY.md.
+# ===========================================================================
+
+
+# ###########################################################################
+#  1. SECRETS — rien de ce bloc ne doit jamais être publié
+# ###########################################################################
+
+# --- La clé privée de signature --------------------------------------------
+#  Elle reste locale. Sa copie de référence vit dans
+#  ~/.local/share/phytoscope-signature/ ; celle de certificat/ est une copie
+#  de travail. Le certificat PUBLIC, lui, se diffuse : voir l'exception plus bas.
+certificat/phytoscope.key
+certificat/*.key
+
+# --- Clés et matériel cryptographique, quel que soit l'endroit --------------
+*.key
+*.pem
+*.der
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.asc
+*.gpg
+*.kdbx
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+*_rsa
+*_ed25519
+.ssh/
+secring.*
+
+#  Exception : le certificat X.509 PUBLIC se diffuse — c'est lui qui permet
+#  de vérifier une signature. Il est ré-autorisé nommément.
+!certificat/phytoscope-certificat.pem
+!certificat/phytoscope.crt
+
+# --- Secrets d'application, jetons, mots de passe ---------------------------
+.env
+.env.*
+!.env.example
+*.env
+secrets.*
+*secret*.json
+*secrets*.yml
+*secrets*.yaml
+credentials
+credentials.*
+*.credentials
+.netrc
+.npmrc
+.pypirc
+.docker/config.json
+.aws/
+.azure/
+.gcloud/
+*token*.txt
+*.token
+
+
+# ###########################################################################
+#  2. CE QUE NOUS N'AVONS PAS LE DROIT DE REDIFFUSER
+# ###########################################################################
+
+# --- Ouvrages et documents sous droits, gardés pour le travail seulement ----
+sources/ebooks/
+
+# --- Articles scientifiques payants -----------------------------------------
+#  Les PDF sont sous droits ; nos NOTES de lecture (.md) se publient, elles.
+sources/documents/articles-scientifiques/*.pdf
+
+# --- Notices constructeurs et brevets en fac-similé -------------------------
+sources/datasheets/*.pdf
+sources/manuels-constructeurs/*.pdf
+sources/brevets/*.pdf
+
+# --- Fac-similés du domaine public ------------------------------------------
+#  Bose (1902-1907) et Darwin (1880) sont dans le domaine public : rien
+#  n'interdirait de les rediffuser. Ils sont écartés pour une autre raison —
+#  ce sont des numérisations de 15 à 71 Mo, 260 Mo à elles seules, pour un
+#  dépôt qui en pèse 155 sans elles. Un clone de 415 Mo pour des livres que
+#  l'on peut retélécharger en une commande n'a pas de sens.
+#
+#  Leurs identifiants archive.org sont consignés dans sources/INDEX.md, et
+#  sources/documents/domaine-public/LISEZ-MOI.md donne la commande.
+#
+#  Les TRANSCRIPTIONS, elles, restent versionnées : ce sont elles que l'on
+#  cite et que l'on recherche en plein texte, et elles pèsent 2 Mo.
+sources/documents/domaine-public/*.pdf
+
+# --- Dépôts tiers recopiés (817 Mo) -----------------------------------------
+#  Reconstituables par « python3 tools/fetch-software.py ». La provenance et
+#  les licences sont consignées dans les manifestes, qui eux sont versionnés.
+sources/code/*.zip
+sources/software/**/*.zip
+!sources/software/MANIFESTE.md
+!sources/software/MANIFESTE.json
+
+# --- Dossier de mise à l'écart (doublons, environnements périmés) -----------
+.ecarte/
+
+
+# ###########################################################################
+#  3. CE QUI SE RECONSTRUIT
+# ###########################################################################
+
+# --- Ouvrages et paquets produits -------------------------------------------
+build/
+!build/.gitkeep
+dist/
+out/
+target/
+
+# --- Paquets d'installation, quel que soit l'endroit ------------------------
+*.deb
+*.rpm
+*.msi
+*.exe
+*.pkg
+*.dmg
+*.run
+*.snap
+*.flatpak
+*.appimage
+*.AppImage
+*.whl
+*.egg
+*.sdist
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tgz
+*.zip
+*.7z
+*.rar
+*.iso
+#  ... mais les archives de dépôts tiers listées au manifeste sont déjà
+#  couvertes plus haut, et un gabarit d'empaquetage doit rester versionné :
+!packaging/gabarits/**
+!sources/schemas/**
+
+# --- Signatures et empreintes de publication --------------------------------
+*.p7s
+*.sig
+*.sha256
+*.sha512
+*.md5
+
+
+# ###########################################################################
+#  4. LANGAGES
+# ###########################################################################
+
+# --- Bash / shell -----------------------------------------------------------
+*.sh~
+.bash_history
+.zsh_history
+.sh.log
+nohup.out
+/core
+core.[0-9]*
+
+# --- Python 3 ---------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build_python/
+develop-eggs/
+eggs/
+.eggs/
+sdist/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+MANIFEST
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+.python-version
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.nox/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+*.py,cover
+htmlcov/
+.cache
+nosetests.xml
+.hypothesis/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+cython_debug/
+*.ipynb_checkpoints
+profile_default/
+ipython_config.py
+
+# --- Go ---------------------------------------------------------------------
+*.exe~
+*.test
+*.out
+go.work
+go.work.sum
+vendor/
+/bin/
+/pkg/
+/go.sum.bak
+__debug_bin*
+coverage.out
+coverage.html
+
+# --- Rust -------------------------------------------------------------------
+/target/
+**/target/
+debug/
+Cargo.lock.bak
+**/*.rs.bk
+*.pdb
+*.rlib
+*.rmeta
+*.crate
+.cargo/
+.rustup/
+flamegraph.svg
+perf.data
+perf.data.old
+
+# --- C / C++ ----------------------------------------------------------------
+*.o
+*.obj
+*.lo
+*.slo
+*.ko
+*.elf
+*.ilk
+*.map
+*.exp
+*.gch
+*.pch
+*.a
+*.lib
+*.la
+*.lai
+*.dll
+*.dylib
+*.so.*
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+*.bin
+*.su
+*.idb
+*.gcno
+*.gcda
+*.gcov
+*.lcov
+lcov.info
+#  CMake / Meson / autotools
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+_deps/
+compile_commands.json
+.cmake/
+Makefile.in
+autom4te.cache/
+config.log
+config.status
+.deps/
+.libs/
+builddir/
+subprojects/*/
+#  Le micrologiciel RP2350 : le SDK et les objets sont récupérés par build.sh
+src/firmware/build/
+*.uf2
+!firmware/**/*.uf2.md5
+
+
+# ###########################################################################
+#  5. SYSTÈMES D'EXPLOITATION
+# ###########################################################################
+
+# --- Windows 10 / 11 --------------------------------------------------------
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+*.stackdump
+*.cab
+*.msix
+*.msm
+*.msp
+NTUSER.DAT*
+ntuser.dat*
+#  Visual Studio / MSBuild, si l'on compile un jour sous Windows
+.vs/
+[Dd]ebug/
+[Rr]elease/
+[Ww]in32/
+[Xx]64/
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.VC.db
+*.VC.opendb
+*.aps
+*.tlog
+
+# --- macOS / Darwin ---------------------------------------------------------
+.DS_Store
+.DS_Store?
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.TemporaryItems
+.DocumentRevisions-V100
+.fseventsd
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.apdisk
+Icon?
+#  Sur un volume réseau ou une clé formatée par macOS
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+#  Produits de notarisation et d'empaquetage macOS
+*.xcuserstate
+xcuserdata/
+*.notarize.log
+*.xcarchive
+
+# --- Linux (commun) ---------------------------------------------------------
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+.cache/
+.local/share/Trash/
+
+# --- Debian / Ubuntu / Mint -------------------------------------------------
+debian/files
+debian/.debhelper/
+debian/debhelper-build-stamp
+debian/*.substvars
+debian/*.debhelper.log
+debian/*.log
+debian/tmp/
+debian/phytoscope/
+debian/*.postinst.debhelper
+debian/*.postrm.debhelper
+debian/*.prerm.debhelper
+*.dsc
+*.changes
+*.buildinfo
+*.ddeb
+*.udeb
+*.orig.tar.*
+*.debian.tar.*
+.pc/
+
+# --- Fedora / RHEL / CentOS / Rocky -----------------------------------------
+#  Arborescence rpmbuild
+BUILD/
+BUILDROOT/
+RPMS/
+SRPMS/
+SOURCES/
+SPECS/*.spec.bak
+*.src.rpm
+*.rpmsave
+*.rpmnew
+*.rpmorig
+.rpmmacros
+mock/
+*.mock.log
+root.log
+state.log
+
+
+# ###########################################################################
+#  6. ÉDITEURS, OUTILLAGE, JOURNAUX
+# ###########################################################################
+
+# --- Éditeurs ---------------------------------------------------------------
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json.example
+.idea/
+*.iml
+*.ipr
+*.iws
+.fleet/
+*.swp
+*.swo
+.*.swp
+.*.swo
+*.bak
+*.orig
+*.rej
+*.tmp
+.netrwhist
+Session.vim
+.vim/
+/tags
+/TAGS
+cscope.*
+.ccls-cache/
+.clangd/
+.history/
+
+# --- Journaux et états locaux ------------------------------------------------
+*.log
+logs/
+*.log.[0-9]*
+reglages.json.avant-correction
+*.pid
+*.seed
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# --- Rapports d'analyse (produits en intégration continue) -------------------
+rapports/
+*.sarif
+bandit-rapport.json
+pip-audit.json
+/sbom*.json
+#  Le SBOM du logiciel, lui, est un livrable : il reste versionné.
+!src/phytoscope/sbom.cdx.json
+!sources/software/MANIFESTE.json

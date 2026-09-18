@@ -1,0 +1,76 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/diy.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 350" width="860" height="350">
+
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+</defs>
+<rect width="860" height="350" fill="#FFFFFF"/>
+<text x="430.0" y="34" font-family="Lato, sans-serif" font-size="17.4" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2">DISPOSITIF DIY — SYNOPTIQUE DE CÂBLAGE</text>
+<rect x="28" y="80" width="178" height="92" rx="8" fill="#FBFAF4" stroke="#3F7D5A" stroke-width="1.8"/>
+<rect x="28" y="80" width="178" height="5" rx="2" fill="#3F7D5A"/>
+<text x="117.0" y="114" font-family="Lato, sans-serif" font-size="13.34" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">SONDES</text>
+<text x="117.0" y="136" font-family="Lato, sans-serif" font-size="9.86" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">2 pinces crocodile</text>
+<text x="117.0" y="153" font-family="Lato, sans-serif" font-size="9.86" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">+ électrodes inox</text>
+<rect x="246" y="80" width="178" height="92" rx="8" fill="#FBFAF4" stroke="#2F5E86" stroke-width="1.8"/>
+<rect x="246" y="80" width="178" height="5" rx="2" fill="#2F5E86"/>
+<text x="335.0" y="114" font-family="Lato, sans-serif" font-size="13.34" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">NE555</text>
+<text x="335.0" y="136" font-family="Lato, sans-serif" font-size="9.86" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">astable</text>
+<text x="335.0" y="153" font-family="Lato, sans-serif" font-size="9.86" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">C1 4,2 nF · R2 100 kΩ</text>
+<rect x="464" y="80" width="178" height="92" rx="8" fill="#FBFAF4" stroke="#2F5E86" stroke-width="1.8"/>
+<rect x="464" y="80" width="178" height="5" rx="2" fill="#2F5E86"/>
+<text x="553.0" y="114" font-family="Lato, sans-serif" font-size="13.34" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">ARDUINO</text>
+<text x="553.0" y="136" font-family="Lato, sans-serif" font-size="9.86" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Nano / Pro Mini</text>
+<text x="553.0" y="153" font-family="Lato, sans-serif" font-size="9.86" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">16 MHz · INT0</text>
+<rect x="682" y="80" width="150" height="92" rx="8" fill="#FBFAF4" stroke="#B08528" stroke-width="1.8"/>
+<rect x="682" y="80" width="150" height="5" rx="2" fill="#B08528"/>
+<text x="757.0" y="114" font-family="Lato, sans-serif" font-size="13.34" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">SORTIE MIDI</text>
+<text x="757.0" y="136" font-family="Lato, sans-serif" font-size="9.86" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">DIN 5 br. ou</text>
+<text x="757.0" y="153" font-family="Lato, sans-serif" font-size="9.86" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">TRS-A · 220 Ω</text>
+<rect x="246" y="232" width="178" height="84" rx="8" fill="#FBFAF4" stroke="#0E2A22" stroke-width="1.8"/>
+<rect x="246" y="232" width="178" height="5" rx="2" fill="#0E2A22"/>
+<text x="335.0" y="266" font-family="Lato, sans-serif" font-size="13.34" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">ALIMENTATION</text>
+<text x="335.0" y="288" font-family="Lato, sans-serif" font-size="9.86" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">3 × AA ou</text>
+<text x="335.0" y="305" font-family="Lato, sans-serif" font-size="9.86" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">LiPo + régulateur</text>
+<rect x="464" y="232" width="178" height="84" rx="8" fill="#FBFAF4" stroke="#0E2A22" stroke-width="1.8"/>
+<rect x="464" y="232" width="178" height="5" rx="2" fill="#0E2A22"/>
+<text x="553.0" y="266" font-family="Lato, sans-serif" font-size="13.34" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">TÉMOINS</text>
+<text x="553.0" y="288" font-family="Lato, sans-serif" font-size="9.86" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">6 LED + R 220 Ω</text>
+<text x="553.0" y="305" font-family="Lato, sans-serif" font-size="9.86" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">indication des notes</text>
+<rect x="682" y="232" width="150" height="84" rx="8" fill="#FBFAF4" stroke="#B08528" stroke-width="1.8"/>
+<rect x="682" y="232" width="150" height="5" rx="2" fill="#B08528"/>
+<text x="757.0" y="266" font-family="Lato, sans-serif" font-size="13.34" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">SYNTHÉ / DAW</text>
+<text x="757.0" y="288" font-family="Lato, sans-serif" font-size="9.86" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">instrument MIDI</text>
+<text x="757.0" y="305" font-family="Lato, sans-serif" font-size="9.86" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ou ordinateur</text>
+<line x1="206" y1="126" x2="242" y2="126" stroke="#B08528" stroke-width="2.2" marker-end="url(#ah)"/>
+<line x1="424" y1="126" x2="460" y2="126" stroke="#B08528" stroke-width="2.2" marker-end="url(#ah)"/>
+<line x1="642" y1="126" x2="678" y2="126" stroke="#B08528" stroke-width="2.2" marker-end="url(#ah)"/>
+<line x1="335" y1="232" x2="335" y2="176" stroke="#B08528" stroke-width="2.2" marker-end="url(#ah)"/>
+<path d="M553,172 v56" stroke="#B08528" stroke-width="2.2" marker-end="url(#ah)"/>
+<path d="M832,126 v148 h-40" stroke="#B08528" stroke-width="2.2" fill="none" marker-end="url(#ah)"/>
+<text x="310" y="210" font-family="Lato, sans-serif" font-size="10.73" fill="#0E2A22" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">5 V</text>
+<text x="566" y="208" font-family="Lato, sans-serif" font-size="10.73" fill="#B08528" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">PWM</text>
+</svg>

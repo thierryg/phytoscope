@@ -1,0 +1,115 @@
+#!/bin/bash
+#  ==========================================================================
+#  PhytoScope — attribution — packaging/gabarits/macos/postinstall
+#
+#  Version  : 1.5.1
+#  Date     : 2026-09-18
+#  Éditeur  : Bretagne Namasté
+#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Site     : https://bretagne-namaste.com
+#  Contact  : contact@bretagne-namaste.com
+#  Licence  : MIT — voir LICENCE.txt
+#
+#  SPDX-License-Identifier: MIT
+#  fin de l'attribution
+#  ==========================================================================
+
+# ===========================================================================
+#  PhytoScope — apres l'installation du paquet .pkg (macOS)
+#
+#  Ce script tourne en tant que root, mais les questions doivent s'afficher
+#  pour l'UTILISATEUR qui installe : on repasse donc par `launchctl asuser`
+#  pour lui parler. Sans cela, la fenetre apparaitrait dans la session de
+#  root, c'est-a-dire nulle part.
+# ===========================================================================
+set -u
+
+APP="/Applications/PhytoScope.app"
+UTILISATEUR="$(stat -f '%Su' /dev/console 2>/dev/null || echo "$USER")"
+UID_UTILISATEUR="$(id -u "$UTILISATEUR" 2>/dev/null || echo 0)"
+
+#  Poser une question dans la session de l'utilisateur, et rendre « oui » ou
+#  « non ». En cas d'installation sans interface (`installer -pkg`), osascript
+#  echoue : on rend alors « non », ce qui n'encombre rien.
+demander() {
+    reponse="$(launchctl asuser "$UID_UTILISATEUR" sudo -u "$UTILISATEUR" \
+        /usr/bin/osascript -e "display dialog \"$1\" buttons {\"Non\", \"Oui\"} \
+        default button \"Oui\" with title \"PhytoScope\" with icon note" 2>/dev/null)"
+    case "$reponse" in *"Oui"*) echo "oui" ;; *) echo "non" ;; esac
+}
+
+# --- 1. le desinstallateur --------------------------------------------------
+#  Ecrit AVANT toute question : meme si l'utilisateur ne repond rien, il doit
+#  pouvoir retirer le logiciel.
+cat > "$APP/Contents/Resources/desinstaller.sh" <<'DESINSTALL'
+#!/bin/bash
+# ===========================================================================
+#  Retire PhytoScope de ce Mac.
+#
+#  NE TOUCHE PAS a vos reglages ni a vos seances : une desinstallation n'est
+#  pas une demande d'oubli. Ils restent dans
+#      ~/Library/Application Support/PhytoScope   reglages, journal, venv
+#      ~/Documents/PhytoScope                     seances enregistrees
+#
+#      ./desinstaller.sh        avec confirmation
+#      ./desinstaller.sh -y     sans question
+# ===========================================================================
+set -e
+SANS_QUESTION=0
+[ "${1:-}" = "-y" ] && SANS_QUESTION=1
+
+echo ""
+echo "  PhytoScope sera retire de :"
+echo "      /Applications/PhytoScope.app"
+echo "      ~/Desktop/PhytoScope (alias, s'il existe)"
+echo ""
+if [ "$SANS_QUESTION" -eq 0 ]; then
+    printf '  Continuer ? [o/N] '
+    read -r r
+    case "$r" in [oO]*) ;; *) echo "  Annule."; exit 0 ;; esac
+fi
+
+rm -f "$HOME/Desktop/PhytoScope"
+#  /Applications appartient a root : on demande le mot de passe seulement ici,
+#  et seulement si c'est necessaire.
+if [ -w /Applications ]; then
+    rm -rf /Applications/PhytoScope.app
+else
+    sudo rm -rf /Applications/PhytoScope.app
+fi
+#  Le recu d'installation, pour que macOS n'annonce plus le paquet.
+pkgutil --forget com.bretagne-namaste.phytoscope >/dev/null 2>&1 || true
+
+echo ""
+echo "  PhytoScope est retire."
+echo ""
+echo "  VOS DONNEES SONT CONSERVEES :"
+echo "      ~/Library/Application Support/PhytoScope   reglages et journal"
+echo "      ~/Documents/PhytoScope                     seances"
+echo ""
+echo "  Pour les effacer aussi :"
+echo "      rm -rf ~/Library/Application\\ Support/PhytoScope ~/Documents/PhytoScope"
+echo ""
+DESINSTALL
+chmod +x "$APP/Contents/Resources/desinstaller.sh"
+
+# --- 2. l'icone sur le Bureau ----------------------------------------------
+if [ "$(demander "Ajouter une icone PhytoScope sur le Bureau ?")" = "oui" ]; then
+    BUREAU="/Users/$UTILISATEUR/Desktop"
+    if [ -d "$BUREAU" ]; then
+        #  Un ALIAS, et non une copie : une copie de 500 Mo sur le Bureau
+        #  serait une mauvaise surprise.
+        ln -sf "$APP" "$BUREAU/PhytoScope"
+        chown -h "$UTILISATEUR" "$BUREAU/PhytoScope" 2>/dev/null || true
+    fi
+fi
+
+# --- 3. lancer maintenant ? -------------------------------------------------
+if [ "$(demander "Lancer PhytoScope maintenant ?
+
+La premiere ouverture prepare son environnement Python : une a deux minutes, une seule fois.")" = "oui" ]; then
+    launchctl asuser "$UID_UTILISATEUR" sudo -u "$UTILISATEUR" \
+        /usr/bin/open "$APP" >/dev/null 2>&1 || true
+fi
+
+exit 0

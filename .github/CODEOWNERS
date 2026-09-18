@@ -1,0 +1,33 @@
+# ===========================================================================
+#  PhytoScope — qui relit quoi
+# ===========================================================================
+#  Le projet est porté par une personne : tout lui revient. Ce fichier n'est
+#  donc pas une répartition, c'est un filet — il garantit qu'aucune
+#  modification ne se fusionne sans que quelqu'un l'ait vue, et il rend la
+#  répartition possible le jour où il y aura quelqu'un d'autre.
+# ===========================================================================
+
+*                       @thierryg
+
+# --- Ce qui ne se modifie pas à la légère ----------------------------------
+#  Le cahier des charges fait autorité : une contrainte qui change change le
+#  projet.
+/constraints.md         @thierryg
+
+#  La version et l'attribution sont les SEULES sources de vérité, lues par le
+#  logiciel, la fabrique de paquets et les en-têtes.
+/src/phytoscope/phytoscope/VERSION   @thierryg
+/src/phytoscope/phytoscope/AUTEURS   @thierryg
+
+#  La chaîne de signature et le certificat.
+/packaging/signature.py @thierryg
+/certificat/            @thierryg
+
+#  Les licences, et ce qui les pose.
+/LICENSE                @thierryg
+/LICENSES/              @thierryg
+/tools/entetes.py       @thierryg
+
+#  L'intégration continue : un workflow est du code qui a des droits.
+/.github/               @thierryg
+/.gitignore             @thierryg

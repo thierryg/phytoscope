@@ -1,0 +1,95 @@
+<section class="chapter">
+  <h2 id="c10-recette" data-toc="chapter">La recette, et le dépannage</h2>
+
+  <p class="chapo">Une carte qui « a l'air de marcher » ne prouve rien. Sept mesures, une heure de
+  travail, et l'on sait exactement ce que vaut l'instrument — ou ce qui lui manque.</p>
+
+  <h3 id="c10-fiche" data-toc="sub">La fiche de recette</h3>
+
+  <p>Elle se remplit une fois, à la construction, puis une fois par an. Conservez-la : c'est elle
+  qui permettra, dans deux ans, de savoir si la carte a dérivé ou si c'est la plante qui a changé.</p>
+
+  <table class="tight recette">
+    <thead><tr><th>№</th><th>Mesure</th><th>Conditions</th><th>Attendu</th><th>Relevé</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Isolement entre masses</td><td>ohmmètre, carte hors tension</td>
+        <td class="att">infini</td><td class="mes"></td></tr>
+      <tr><td>2</td><td>Rails d'alimentation</td><td>voltmètre, à vide</td>
+        <td class="att">+5,00 / −5,00 / +3,30 V ±2 %</td><td class="mes"></td></tr>
+      <tr><td>3</td><td>Ondulation des rails</td><td>oscilloscope, couplage AC, 20 MHz</td>
+        <td class="att">&lt; 2 mV crête</td><td class="mes"></td></tr>
+      <tr><td>4</td><td>Bruit d'entrée</td><td>entrée sur 1 GΩ, boîtier fermé, sur batterie, 5 min</td>
+        <td class="att">&lt; 1,0 µV eff. (0,01–10 Hz)</td><td class="mes"></td></tr>
+      <tr><td>5</td><td>Courant de polarisation</td><td>méthode de la capacité, 100 pF, 60 s</td>
+        <td class="att">&lt; 50 fA</td><td class="mes"></td></tr>
+      <tr><td>6</td><td>Exactitude des gains</td><td>diviseur étalonné, quatre positions</td>
+        <td class="att">±1 %</td><td class="mes"></td></tr>
+      <tr><td>7</td><td>Auto-test des étalons</td><td>commande « selftest »</td>
+        <td class="att">écart &lt; 0,5 % sur les trois</td><td class="mes"></td></tr>
+      <tr><td>8</td><td>Réjection du réseau</td><td>secteur branché, main à 10 cm de l'entrée</td>
+        <td class="att">résidu 50 Hz &lt; 30 µV</td><td class="mes"></td></tr>
+    </tbody>
+  </table>
+
+  <div class="loupe">
+    <div class="l-h">Mesurer un courant de cinquante femtoampères sans picoampèremètre</div>
+    <p class="noindent">On remplace la source par un condensateur de cent picofarads, de bonne
+    qualité (polypropylène ou NP0), et l'on observe la dérive de la tension d'entrée. Le courant
+    vaut <i>I</i> = <i>C</i> · d<i>V</i>/d<i>t</i>. Avec 100 pF, un courant de 50 fA fait dériver
+    la tension de 0,5 mV par seconde — parfaitement mesurable par la carte elle-même. Trente
+    femtoampères donnent 0,3 mV/s. C'est l'une des rares mesures où l'instrument peut se qualifier
+    lui-même, et le logiciel automatise la procédure.</p>
+  </div>
+
+  <h3 id="c10-pannes" data-toc="sub">Les dix pannes, par ordre de fréquence</h3>
+
+  <table class="compare tight">
+    <thead><tr><th>Symptôme</th><th>Cause la plus probable</th><th>Vérification</th></tr></thead>
+    <tbody>
+      <tr><td>Dérive lente et régulière, quelques mV/min, insensible à tout</td>
+        <td>Résidu de flux entre l'entrée et la garde</td>
+        <td>Nettoyer à l'alcool, sécher une heure, remesurer. Guérit neuf fois sur dix.</td></tr>
+      <tr><td>Ronflement à 50 Hz, énorme, qui varie quand on approche la main</td>
+        <td>Garde non connectée, ou blindage du câble relié à la masse au lieu de la garde</td>
+        <td>Continuité entre la bague de l'embase et la broche de garde de U1.</td></tr>
+      <tr><td>L'isolement mesure quelques ohms</td>
+        <td>Vis de fixation reliant les deux plans par le boîtier</td>
+        <td>Retirer les vis une à une en mesurant.</td></tr>
+      <tr><td>Signal parfaitement plat, aucun bruit</td>
+        <td>Convertisseur non initialisé, ou horloge absente</td>
+        <td>Commande « ? » : si la fréquence d'échantillonnage remonte à zéro, l'horloge est en
+        cause.</td></tr>
+      <tr><td>Saturation permanente, quel que soit le gain</td>
+        <td>Électrode débranchée : l'entrée dérive jusqu'au rail</td>
+        <td>L'onglet Multimètre affiche « saturation » et la dérive s'emballe. Brancher l'électrode.</td></tr>
+      <tr><td>Bruit dix fois trop élevé, blanc, sur toute la bande</td>
+        <td>Résistance de protection remplacée par une valeur trop forte, ou résistance à couche
+        de carbone au lieu de couche métallique</td>
+        <td>Relire la nomenclature : le bruit thermique d'une résistance suit √(4<i>kTR</i>).</td></tr>
+      <tr><td>Battements très lents, quelques cycles par minute</td>
+        <td>Découpage non synchronisé : le résidu bat avec l'échantillonnage</td>
+        <td>Vérifier la piste SYNC entre le microcontrôleur et le pilote du transformateur.</td></tr>
+      <tr><td>La carte n'est pas reconnue en audio, seulement en série</td>
+        <td>Descripteur composite refusé par un concentrateur USB ancien</td>
+        <td>Brancher directement sur la machine, sans concentrateur.</td></tr>
+      <tr><td>Auto-test correct, mais les mesures sur plante sont absurdes</td>
+        <td>Mauvaise carte fille sélectionnée, ou mémoire d'identification illisible</td>
+        <td>Commande « ? » : vérifier le champ « frontend ».</td></tr>
+      <tr><td>Tout fonctionne, mais le bruit double quand l'ordinateur est branché au secteur</td>
+        <td>Comportement normal et attendu</td>
+        <td>Passer sur batterie pour les mesures fines. C'est la limite physique de l'exercice.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 La mesure qui tranche tous les doutes</div>
+    <p class="noindent">Quand une observation surprend — une « réaction » à une parole, à une
+    présence, à une intention —, une seule manipulation permet de trancher : remplacer la plante
+    par une résistance de cent mégohms et refaire exactement la même séance, dans les mêmes
+    conditions, sans rien changer d'autre. Si le phénomène persiste, il vient de l'appareil, de
+    l'environnement ou de l'opérateur. S'il disparaît, il vient de la plante — et il devient alors
+    intéressant. Cette manipulation prend dix minutes ; elle est plus instructive que dix heures
+    d'enregistrement supplémentaires, et c'est la raison pour laquelle la carte embarque ses
+    étalons.</p>
+  </div>
+</section>

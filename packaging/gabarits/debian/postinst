@@ -1,0 +1,62 @@
+#!/bin/sh
+#  ==========================================================================
+#  PhytoScope — attribution — packaging/gabarits/debian/postinst
+#
+#  Version  : 1.5.1
+#  Date     : 2026-09-18
+#  Éditeur  : Bretagne Namasté
+#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Site     : https://bretagne-namaste.com
+#  Contact  : contact@bretagne-namaste.com
+#  Licence  : MIT — voir LICENCE.txt
+#
+#  SPDX-License-Identifier: MIT
+#  fin de l'attribution
+#  ==========================================================================
+
+#  Après l'installation : préparer l'environnement Python de l'application.
+#
+#  Pourquoi un environnement privé plutôt que les paquets de la distribution :
+#  PySide6 n'est pas empaqueté par toutes les versions d'Ubuntu ni de Debian,
+#  et sa version y varie de 6.2 à 6.7 selon les dépôts. Un environnement dédié
+#  garantit la même chose partout, sans toucher au Python du système — et sans
+#  risquer de casser un autre logiciel.
+set -e
+
+CIBLE="/usr/share/phytoscope"
+VENV="$CIBLE/venv"
+ROUES="$CIBLE/roues"
+
+case "$1" in
+  configure)
+    if [ ! -d "$VENV" ]; then
+        echo "PhytoScope : préparation de l'environnement Python…"
+        python3 -m venv "$VENV" || {
+            echo "PhytoScope : création de l'environnement impossible." >&2
+            echo "  Installez « python3-venv », puis : sudo dpkg-reconfigure phytoscope" >&2
+            exit 0        # ne JAMAIS faire échouer l'installation pour cela
+        }
+    fi
+    #  Les roues embarquées d'abord : l'installation reste alors hors ligne.
+    #  Sans elles — ou si elles ne conviennent pas à ce Python —, on va les
+    #  chercher sur le réseau. L'échec n'est pas fatal : le logiciel le dira
+    #  au démarrage, avec la commande à taper.
+    if [ -d "$ROUES" ] && [ -n "$(ls -A "$ROUES" 2>/dev/null)" ]; then
+        "$VENV/bin/pip" install --quiet --no-index --find-links "$ROUES" \
+            -r "$CIBLE/requirements.txt" 2>/dev/null \
+        || "$VENV/bin/pip" install --quiet -r "$CIBLE/requirements.txt" \
+        || echo "PhytoScope : dépendances non installées — lancez « phytoscope --check »." >&2
+    else
+        "$VENV/bin/pip" install --quiet -r "$CIBLE/requirements.txt" \
+        || echo "PhytoScope : dépendances non installées — lancez « phytoscope --check »." >&2
+    fi
+    #  Les facultatives : leur échec est sans conséquence, par construction.
+    "$VENV/bin/pip" install --quiet -r "$CIBLE/requirements-optionnel.txt" \
+        >/dev/null 2>&1 || true
+    ;;
+esac
+
+if [ -x /usr/bin/update-desktop-database ]; then
+    update-desktop-database -q /usr/share/applications || true
+fi
+exit 0

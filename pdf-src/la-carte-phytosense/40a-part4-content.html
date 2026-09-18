@@ -1,0 +1,143 @@
+<section class="chapter">
+  <h2 id="c8a-protections" data-toc="chapter">Protéger, alimenter, survivre aux fausses manœuvres</h2>
+
+  <p class="chapo">Un instrument de laboratoire est manipulé par des mains attentives, sur une
+  paillasse, à la lumière. Celui-ci sera branché à genoux au pied d'un arbre, dans la rosée, par
+  quelqu'un qui tient une lampe entre les dents — et relié, par un câble qui traîne, à un
+  ordinateur portable posé plus loin. Cette différence-là commande tout ce chapitre.</p>
+
+  <p>Les cinq chapitres précédents ont cherché le microvolt. Celui-ci cherche autre chose : qu'à
+  aucun moment une erreur de branchement ne coûte un composant. C'est un travail moins gratifiant,
+  et c'est pourtant lui qui décide si l'appareil sera encore en état de marche dans trois ans.</p>
+
+  <h3 id="c8a-sources" data-toc="sub">Deux sources, et l'obligation de n'en privilégier aucune</h3>
+
+  <p>Une précision s'impose avant tout le reste, car elle ferme une porte&nbsp;: <strong>la carte
+  fonctionne toujours reliée à un ordinateur portable</strong>. C'est lui qui la configure, reçoit
+  le flux de mesure, enregistre et analyse ; il n'existe pas de mode où elle se passerait de lui.
+  Ce qui est double, ce n'est pas l'usage, c'est uniquement <em>la provenance de
+  l'énergie</em>.</p>
+
+  <p>Elle doit pouvoir venir <strong>du port USB de l'ordinateur</strong> : c'est le montage le
+  plus simple, un câble unique qui porte à la fois les données et le courant, et c'est ce qu'on
+  utilise neuf fois sur dix. Elle doit aussi pouvoir venir <strong>d'un bloc d'alimentation
+  externe</strong>, pour trois raisons concrètes : ne pas vider la batterie du portable pendant une
+  séance de plusieurs heures ; ne pas dépendre d'un port USB avare ou déjà chargé d'un concentrateur
+  ; et surtout écarter de la chaîne de mesure le 5 V d'un ordinateur, qui est l'un des rails les
+  plus bruyants qu'on puisse trouver.</p>
+
+  <p>Les deux sources ne sont ni à la même tension, ni à la même impédance, ni à la même
+  propreté. Les faire cohabiter sans les additionner, sans coupure au passage de l'une à l'autre,
+  et sans que l'une puisse refouler dans l'autre, est un problème classique d'électronique
+  d'alimentation — qui se résout aujourd'hui avec un seul boîtier.</p>
+
+  <table class="tight">
+    <thead><tr><th>Source</th><th>Tension admise</th><th>Courant</th><th>Priorité</th><th>Voyant DS2</th></tr></thead>
+    <tbody>
+      <tr><td>Bloc externe sur J30</td><td class="num">7 à 24 V</td><td class="num">1 A</td><td>prioritaire</td><td>vert fixe</td></tr>
+      <tr><td>Port USB de l'ordinateur</td><td class="num">5 V ±5 %</td><td class="num">500 mA</td><td>secours</td><td>ambre fixe</td></tr>
+      <tr><td>Consommation typique de la carte</td><td class="num">5,03 V</td><td class="num">137 mA</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <p>L'aiguilleur U62 (TPS2116) surveille les deux entrées et laisse passer celle qu'on lui a
+  désignée comme prioritaire dès qu'elle est présente. Sa bascule prend moins de vingt
+  microsecondes, et le condensateur de maintien couvre largement cet intervalle : <strong>on peut
+  débrancher l'ordinateur en pleine séance d'enregistrement sans perdre un seul
+  échantillon</strong>. Le blocage inverse intégré des deux côtés interdit qu'un bloc secteur
+  renvoie du courant dans le port USB de l'ordinateur — faute qui, sur bien des montages
+  amateurs, se paie d'un contrôleur USB de carte mère.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Choix de conception — un transistor plutôt qu'une diode</div>
+    <p class="noindent">La protection contre l'inversion de polarité se fait traditionnellement par
+    une diode Schottky en série. Elle coûte dix centimes et fonctionne. Elle coûte aussi
+    <strong>0,35 V de chute permanente</strong>, soit 175 mW dissipés à 500 mA, et surtout 0,35 V
+    retirés d'un budget de 5 V qui n'en a pas de reste. Le MOS canal P Q30, monté source vers
+    l'entrée, fait le même travail avec 35 mΩ : 17 mV de chute, six milliwatts. Une inversion de
+    polarité le maintient bloqué au lieu de le traverser. Le surcoût est de trente centimes, et il
+    n'y a aucune contrepartie — c'est le genre de substitution qu'il faut faire systématiquement.</p>
+  </div>
+
+  <h3 id="c8a-accidents" data-toc="sub">Les cinq accidents, et la barrière de chacun</h3>
+
+  <p>Plutôt que d'énumérer des composants, il vaut mieux énumérer les accidents et vérifier
+  qu'aucun ne reste sans réponse. Il y en a cinq, et ce sont toujours les mêmes.</p>
+
+  <table class="tight">
+    <thead><tr><th>Accident</th><th>Barrière</th><th>Composant</th><th>Ce qui se passe</th></tr></thead>
+    <tbody>
+      <tr><td>Polarité inversée sur J30</td><td>MOS série</td><td>Q30</td><td>Rien ne s'allume. Rien n'est détruit.</td></tr>
+      <tr><td>Surtension, décharge sur le câble</td><td>Transil 400 W</td><td>D30</td><td>Écrêtage à 18 V, retour à la normale seul.</td></tr>
+      <tr><td>Court-circuit en sortie</td><td>Limiteur, puis fusible</td><td>U61, F30, F31</td><td>Coupure en 2 µs, voyant rouge, réarmement seul.</td></tr>
+      <tr><td>Surintensité prolongée</td><td>Limitation à 500 mA</td><td>U61</td><td>La carte se bride au lieu de tirer sur l'USB de l'hôte.</td></tr>
+      <tr><td>Décharge électrostatique sur l'électrode</td><td>Réseau 0,5 pF</td><td>D3, D4</td><td>±20 kV dans l'air absorbés, entrée intacte.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="small">Aucun fusible n'est à remplacer : F30, F31, F1 et F2 sont des polymères à
+  coefficient de température positif, qui reviennent d'eux-mêmes à basse résistance une fois la
+  cause disparue et l'alimentation coupée quelques secondes. C'est délibéré : un appareil de
+  terrain ne doit pas exiger un tiroir de pièces détachées.</p>
+
+  <h3 id="c8a-entrees" data-toc="sub">Le cas particulier des entrées de mesure</h3>
+
+  <p>Protéger une entrée électrométrique est un exercice contrariant, parce que <em>toute</em>
+  protection ajoute la chose même qu'on a passé un chapitre entier à éliminer : du courant de
+  fuite et de la capacité. Un réseau de protection ordinaire apporte dix à trente picofarads et
+  quelques nanoampères — de quoi ruiner un étage conçu pour vingt femtoampères.</p>
+
+  <p>Le PESD5V0 retenu pour D3 et D4 présente <strong>0,5 pF</strong> et un courant de fuite au
+  picoampère près. Il absorbe ±20 kV de décharge dans l'air et ne se voit ni sur la bande passante
+  ni sur le courant d'entrée. En série, le fusible réarmable F1 de 50 mA ajoute une résistance
+  négligeable devant les 10 kΩ déjà présents, et transforme l'accident le plus probable de tous —
+  brancher une électrode sur quelque chose de vivant électriquement, une clôture, un circuit sous
+  tension, une source de laboratoire oubliée — en un simple arrêt temporaire.</p>
+
+  <div class="callout caution">
+    <div class="callout-title">⚠ L'accident que la protection ne couvre pas</div>
+    <p class="noindent">Rien de tout cela ne protège <em>la plante</em>, ni la personne qui la
+    touche. Ces barrières protègent l'appareil. La sécurité du vivant tient à un tout autre
+    mécanisme, décrit au chapitre sur l'étage d'entrée : l'isolement galvanique de la partie
+    analogique et la résistance de 22 kΩ en série avec chaque électrode, qui bornent le courant
+    injecté à quelques microampères quoi qu'il arrive en amont. Les deux dispositifs sont
+    indépendants, et c'est ainsi qu'il faut les garder : une protection d'appareil ne doit jamais
+    être le seul rempart d'une protection de personne.</p>
+  </div>
+
+  <h3 id="c8a-consommation" data-toc="sub">Un appareil qui sait ce qu'il consomme</h3>
+
+  <p>Le capteur U63 (INA219) mesure en permanence la tension du bus et le courant qui le traverse,
+  au travers d'un shunt de 0,1 Ω, et rend le résultat sur le bus I²C. Cela coûte deux euros et une
+  résistance, et cela change deux choses.</p>
+
+  <p>D'abord, l'afficheur peut montrer en clair « 5,03 V · 137 mA · 0,69 W ». Un utilisateur qui
+  voit sa consommation grimper sait qu'il se passe quelque chose avant que la protection ne coupe.
+  Ensuite, le micrologiciel dispose d'une mesure objective pour décider : au-delà d'un seuil, il
+  allume DS4, réduit la luminosité de l'afficheur, et refuse de démarrer la sortie audio
+  amplifiée. Un appareil qui se surveille lui-même tombe en panne moins brutalement.</p>
+
+  <div class="chiffre">
+    <div class="val">137 mA</div>
+    <div class="txt">La consommation typique, sous 5 V, tout allumé : chaîne analogique isolée,
+    convertisseur, microcontrôleur, afficheur et quatre voyants. Sur les 500 mA que déclare la
+    carte à l'énumération USB, il reste donc les trois quarts de marge — assez pour l'appel de
+    courant à l'établissement du convertisseur isolé, et assez pour ne jamais faire broncher le
+    port d'un ordinateur portable.</div>
+  </div>
+
+  <section class="planche-page"><figure class="planche" id="pl-protections">
+    <img src="assets/svg/carte-protections.svg" alt="Schéma des protections et de la gestion d'alimentation"/>
+    <figcaption><span class="fig-n">PLANCHE ##</span> — Protections et gestion d'alimentation :
+    les deux entrées, l'anti-inversion, l'écrêtage, le limiteur de courant, l'aiguilleur à
+    priorité, la mesure de consommation et la protection des entrées de mesure. Feuille 7 sur 8,
+    révision B.</figcaption>
+  </figure></section>
+
+  <figure id="fig-alim-arbre">
+    <img src="assets/svg/carte-alim-arbre.svg" alt="Arbre d'alimentation de la carte"/>
+    <figcaption><span class="fig-n">FIGURE ##</span> — L'arbre d'alimentation lu d'un seul
+    tenant : des deux sources jusqu'aux trois rails finaux, avec les cinq barrières en
+    chemin.</figcaption>
+  </figure>
+</section>

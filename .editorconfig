@@ -1,0 +1,68 @@
+# ===========================================================================
+#  PhytoScope — conventions d'édition, valables pour tous les éditeurs
+# ===========================================================================
+#  Ce fichier existe pour une raison précise : une recette de Makefile
+#  indentée par des espaces est silencieusement ignorée par make, et un
+#  fichier source dont les fins de ligne changent d'un poste à l'autre
+#  produit des différences qui ne disent rien. On fixe donc les deux.
+# ===========================================================================
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+max_line_length = 96
+
+#  Les Makefile exigent la tabulation : ce n'est pas un goût, c'est la syntaxe.
+[{Makefile,*.mk,makefile,GNUmakefile}]
+indent_style = tab
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[*.{html,css,svg,xml}]
+indent_size = 2
+#  Une illustration générée n'est jamais éditée à la main (C-45) : on ne
+#  touche pas à ses espaces de fin, cela ferait une différence à chaque
+#  régénération.
+trim_trailing_whitespace = false
+
+[*.{c,h,cpp,hpp}]
+indent_size = 4
+
+[*.{json,cdx.json}]
+indent_size = 2
+
+[*.md]
+#  En Markdown, deux espaces en fin de ligne font un retour à la ligne.
+trim_trailing_whitespace = false
+
+[*.{csv,tsv}]
+trim_trailing_whitespace = false
+insert_final_newline = true
+
+#  Ces fichiers sont lus par une analyse stricte « clé = valeur » : on n'y
+#  touche pas automatiquement.
+[{VERSION,AUTEURS}]
+trim_trailing_whitespace = false
+
+#  Les fichiers Windows de la fabrique doivent garder des fins de ligne CRLF,
+#  sinon NSIS et cmd.exe ne les lisent pas.
+[*.{bat,cmd,nsi,nsh}]
+end_of_line = crlf
+
+#  Le code tiers garde ses conventions : ce n'est pas le nôtre.
+[sources/**]
+indent_style = unset
+indent_size = unset
+max_line_length = unset
+trim_trailing_whitespace = false
+insert_final_newline = false
+
+[LICENSES/**]
+max_line_length = unset
+trim_trailing_whitespace = false

@@ -1,0 +1,57 @@
+# ===========================================================================
+#  PhytoScope — relevé OpenSSF Scorecard
+# ===========================================================================
+#  Scorecard note les pratiques du dépôt, pas son code : les permissions des
+#  workflows, l'épinglage des dépendances, la présence d'une politique de
+#  sécurité, la revue du code, la signature des publications.
+#
+#  Le but n'est pas la note. Le but est que la note soit LUE : elle désigne
+#  précisément ce qui manque, et elle le fait à chaque changement de la
+#  configuration du dépôt — moment où ces choses se cassent sans bruit.
+# ===========================================================================
+name: Scorecard
+
+on:
+  branch_protection_rule:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '23 6 * * 2'
+  workflow_dispatch:
+
+permissions: read-all
+
+jobs:
+  releve:
+    name: Pratiques du dépôt
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      id-token: write
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Scorecard
+        uses: ossf/scorecard-action@v2
+        with:
+          results_file: scorecard.sarif
+          results_format: sarif
+          #  publish_results: le relevé devient public et alimente le badge
+          #  du README. C'est voulu : un projet qui affiche sa note s'engage
+          #  à la regarder.
+          publish_results: true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scorecard-sarif
+          path: scorecard.sarif
+          retention-days: 5
+
+      - uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: scorecard.sarif
+          category: scorecard

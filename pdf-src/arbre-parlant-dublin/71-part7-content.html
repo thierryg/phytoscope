@@ -1,0 +1,201 @@
+<section class="chapter">
+  <h2 id="c23-atelier" data-toc="chapter">Atelier : un arbre parlant simplifié</h2>
+  <p class="chapo">Une version condensée et honnête du dispositif, montable en un week-end. Le volume III en donne le montage complet ; ce chapitre en donne la structure et les règles.</p>
+
+  <p class="lettrine noindent">L'objectif n'est pas de reproduire une installation de campagne, mais de disposer d'un dispositif <strong>que l'on comprend entièrement</strong> — condition sans laquelle aucun des tests du chapitre 16 n'a de sens.</p>
+
+  <h3 id="c23-deontologie" data-toc="sub">Avant tout : la règle arboricole</h3>
+
+  <div class="callout caution">
+    <div class="callout-title">⚠️ La règle qui prime sur toutes les autres</div>
+    <p><strong>L'arbre est un être vivant de plusieurs siècles, pas un support de montage.</strong> Toute mesure qui réduit son espérance de vie est une mesure ratée, quelle que soit la qualité du signal obtenue. En cas de doute : capteur non invasif, ou pas de capteur.</p>
+  </div>
+
+  <figure class="full">
+    <img src="assets/svg/tt-electrode-tree.svg" alt="Bonnes et mauvaises pratiques de pose de capteurs sur un tronc"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Pose de capteurs : ce qui est admissible et ce qui ne l'est pas. Le cambium, juste sous l'écorce, est le tissu vivant qui assure la croissance en diamètre : toute perforation y ouvre une porte aux pathogènes.</figcaption>
+  </figure>
+
+  <table>
+    <thead><tr><th>Interdit</th><th>Pourquoi</th><th>À faire à la place</th></tr></thead>
+    <tbody>
+      <tr><td>Visser ou clouer dans le tronc</td><td>Perfore le cambium, ouvre une voie d'infection fongique</td><td>Collier élastique large, jamais serré</td></tr>
+      <tr><td>Sangler serré autour du tronc</td><td>Strangulation à mesure que l'arbre grossit</td><td>Collier avec ressort ou boucle de dilatation, contrôlé chaque saison</td></tr>
+      <tr><td>Fixer un câble à demeure dans l'écorce</td><td>Il sera incorporé dans le bois en quelques années</td><td>Cheminement libre, boucle lâche aux deux extrémités</td></tr>
+      <tr><td>Compacter le sol au pied</td><td>Asphyxie racinaire — cause majeure de dépérissement des arbres urbains</td><td>Délimiter et respecter la zone racinaire, ne jamais y circuler</td></tr>
+      <tr><td>Décaper l'écorce pour améliorer le contact</td><td>Blessure ouverte permanente</td><td>Contact sur écorce intacte, avec gel conducteur si nécessaire</td></tr>
+    </tbody>
+    <caption>Ces règles ne sont pas des précautions morales facultatives : ce sont les bonnes pratiques arboricoles ordinaires, et leur non-respect engage la responsabilité de qui installe.</caption>
+  </table>
+
+  <p>Ajoutons une évidence trop souvent oubliée : <strong>si l'arbre n'est pas chez vous, il faut une autorisation écrite</strong> du propriétaire ou du gestionnaire. Pour un arbre communal, cela passe par le service des espaces verts, qui vous demandera en général un descriptif du dispositif, une attestation d'assurance et un engagement de remise en état.</p>
+
+  <h3 id="c23-structure" data-toc="sub">La structure minimale honnête</h3>
+
+  <div class="schema light">
+    <div class="sch-h">Chaîne minimale — cinq blocs</div>
+<pre>
+  ┌──────────────┐   ┌──────────────┐   ┌──────────────┐
+  │ 1. CAPTEURS  │──▶│ 2. NŒUD      │──▶│ 3. BASE      │
+  │              │   │              │   │              │
+  │ T° air, HR   │   │ lecture      │   │ série        │
+  │ θ sol, T°sol │   │ horodatage   │   │ temporelle   │
+  │ lumière      │   │ envoi        │   │ + étiquettes │
+  │ (bioélec.)   │   │              │   │              │
+  └──────────────┘   └──────────────┘   └──────┬───────┘
+                                               │
+             ┌─────────────────────────────────┘
+             ▼
+  ┌──────────────────────┐   ┌───────────────────────────┐
+  │ 4. DESCRIPTEURS      │──▶│ 5. RESTITUTION            │
+  │                      │   │                           │
+  │ valeur courante      │   │ ▸ voie A : sonification   │
+  │ tendance sur 3 h     │   │   règle publiée, testable │
+  │ écart au seuil       │   │ ▸ voie B : texte contraint│
+  │ écart à la saison    │   │   chaque phrase ↔ un chiffre│
+  └──────────────────────┘   └───────────────────────────┘
+
+  RÈGLE D'OR DU BLOC 5
+  Toute phrase produite doit pouvoir être reliée à un nombre mesuré.
+  Ce qui ne l'est pas est de la décoration — et doit être annoncé comme tel.
+</pre>
+    <figcaption>Le bloc 4 est celui que les dispositifs commerciaux escamotent. C'est pourtant lui qui rend la sortie interprétable : sans descripteurs explicites, on ne peut pas savoir à quoi le système a réagi.</figcaption>
+  </div>
+
+  <h3 id="c23-invite" data-toc="sub">Écrire une invite honnête</h3>
+
+  <p>Voici le point où un praticien peut faire mieux que la campagne de 2025, sans matériel supplémentaire, en une heure de travail. Il suffit de contraindre.</p>
+
+  <div class="code">
+    <div class="code-h">Gabarit d'invite — version contrainte</div>
+<pre>RÔLE
+Tu décris l'état d'un arbre à partir de relevés de capteurs.
+Tu parles à la première personne, sobrement, sans lyrisme.
+
+DONNÉES DU MOMENT  (horodatées, seule source autorisée)
+  température de l'air   : 14,2 °C   (−1,8 °C en 3 h)
+  humidité relative      : 81 %      (+6 pts en 3 h)
+  humidité du sol        : 0,19 m³/m³ (seuil bas de la station : 0,22)
+  lumière                : 340 µmol·m⁻²·s⁻¹
+  vent                   : 18 km/h
+
+CONTRAINTES  (impératives)
+  1. Trois phrases au maximum.
+  2. Ne mentionne QUE les grandeurs listées ci-dessus.
+  3. Cite le chiffre chaque fois que tu évoques une grandeur.
+  4. N'exprime AUCUNE émotion, aucun souvenir, aucun désir.
+  5. Si une donnée manque, dis « je n'ai pas cette mesure »
+     au lieu de combler.
+  6. N'invente aucun voisinage, aucune histoire, aucun passé.
+
+SORTIE ATTENDUE
+  Un constat, pas une confidence.</pre>
+  </div>
+
+  <p>Comparez la sortie d'une telle invite — « Le sol autour de mes racines est à 0,19, sous le seuil bas de 0,22. L'air a perdu 1,8 degré en trois heures et l'humidité a monté de six points. » — avec la phrase originale du dispositif de Dublin. La seconde est infiniment plus belle. La première est <strong>vérifiable mot à mot</strong>.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ L'arbitrage, posé clairement</div>
+    <p>Vous perdrez en beauté ce que vous gagnerez en honnêteté. C'est un arbitrage réel, et ce livre ne prétend pas qu'il est indolore.</p>
+    <p>Mais il existe une troisième voie, et elle est la plus intéressante : <strong>garder les deux, en les séparant explicitement</strong>. Faites énoncer le constat contraint par une voix, puis — si vous le souhaitez — proposez une évocation libre, annoncée comme telle, avec une autre voix. Le public entendra les deux et saura laquelle est quoi. Personne n'est trompé, et rien n'est perdu.</p>
+  </div>
+
+  <figure class="full">
+    <img src="assets/svg/tt-site-plan.svg" alt="Plan d'implantation vu de dessus avec zones de protection"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Plan d'implantation. Il est daté, photographié et archivé : sans lui, aucune mesure ne sera réinterprétable dans cinq ans — et vous aurez oublié où était exactement l'électrode nord.</figcaption>
+  </figure>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>La règle arboricole prime : ni vis, ni clou, ni sangle serrée, ni décapage d'écorce.</li>
+      <li>Une autorisation écrite est nécessaire dès que l'arbre n'est pas chez vous.</li>
+      <li>Cinq blocs : capteurs, nœud, base, <strong>descripteurs</strong>, restitution.</li>
+      <li>Une invite contrainte impose que chaque phrase soit reliée à un chiffre.</li>
+      <li>La troisième voie : garder constat et évocation, en les séparant explicitement et par deux voix.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c24-protocole" data-toc="chapter">Protocole d'observation en sept séances</h2>
+  <p class="chapo">Un même arbre, une même heure, sept fois. Le protocole qui suit est conçu pour être mené seul, sans matériel coûteux — et pour pouvoir vous détromper.</p>
+
+  <figure class="full">
+    <img src="assets/svg/tt-protocol-wheel.svg" alt="Roue du protocole d'observation en sept séances"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Les sept séances. La sixième est celle que tout le monde saute. C'est la seule qui puisse vous détromper.</figcaption>
+  </figure>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Séances 1 à 3</div>
+      <div class="pr-t">Établir la ligne de base</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta">
+        <span><b>Rythme</b> une séance par semaine</span>
+        <span><b>Durée</b> 1 h à 24 h selon la séance</span>
+      </div>
+      <h4>Séance 1 — Reconnaissance</h4>
+      <p><strong>Aucun appareil.</strong> Décrivez par écrit : l'espèce, le port, l'état sanitaire apparent, l'exposition, le sol, le voisinage, la fréquentation humaine, les bruits. Photographiez sous quatre angles. Cette séance semble inutile ; elle sera la plus consultée dans deux ans.</p>
+      <h4>Séance 2 — Étalonnage</h4>
+      <p>Posez les capteurs. Laissez-les <strong>stabiliser deux heures au minimum</strong> avant de considérer une seule valeur. N'interprétez rien : cette séance ne produit pas de donnée, elle produit une installation.</p>
+      <h4>Séance 3 — Référence</h4>
+      <p>Enregistrez <strong>une journée entière sans intervenir</strong>. C'est votre témoin. Toute observation ultérieure sera comparée à cette journée-là. Sans elle, vous n'avez aucun moyen de savoir ce qui est « normal » pour cet arbre.</p>
+      <div class="pr-obs">
+        <p><strong>À consigner systématiquement</strong> : date, heure, météo, ce que vous avez fait, ce que vous avez remarqué — et ce que vous <em>attendiez</em>. Cette dernière colonne est celle qui vous apprendra le plus sur vous-même.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Séances 4 à 5</div>
+      <div class="pr-t">Perturber, et se perturber</div>
+    </div>
+    <div class="pr-body">
+      <h4>Séance 4 — Perturbation douce</h4>
+      <p>Arrosez de façon mesurée — un volume connu, à une heure notée. <strong>Notez l'heure exacte avant de regarder les tracés.</strong> Puis observez si, et avec quel retard, l'humidité du sol puis les autres voies répondent.</p>
+      <p>C'est la séance la plus satisfaisante : la réponse est généralement nette, et elle vous apprend les constantes de temps de votre arbre. Un sol argileux répond en heures, un sol sableux en minutes.</p>
+      <h4>Séance 5 — Présence</h4>
+      <p>Restez quarante minutes auprès de l'arbre, sans rien faire de particulier. Consignez, <strong>à l'aveugle et horodaté</strong>, ce que vous percevez — sensations, images, pensées, changements d'état. <em>Ne consultez aucun tracé avant d'avoir terminé et daté votre note.</em></p>
+      <div class="pr-warn">
+        <p>Cette règle est la plus difficile à tenir et la plus importante. Une note rédigée après consultation des données n'apprend rien à personne, pas même à vous. Une note rédigée avant est une donnée à part entière, comparable et examinable.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Séances 6 à 7</div>
+      <div class="pr-t">Se donner les moyens d'avoir tort</div>
+    </div>
+    <div class="pr-body">
+      <h4>Séance 6 — Contre-épreuve</h4>
+      <p>Même protocole que la séance 5, mais <strong>avec le capteur bioélectrique posé sur un support inerte</strong> — une bûche morte, une bouteille d'eau, une résistance. Tout le reste identique : même heure, même durée, même façon de consigner.</p>
+      <p>C'est la séance que tout le monde saute, et c'est la seule qui puisse vous détromper. Si vos perceptions corrèlent aussi bien avec le tracé de la bouteille qu'avec celui de l'arbre, vous avez appris quelque chose d'important — et de bien plus intéressant que la confirmation que vous cherchiez.</p>
+      <h4>Séance 7 — Confrontation</h4>
+      <p>Superposez les trois journaux : le journal instrumental, le journal physiologique, le journal sensible. Cherchez explicitement <strong>ce qui ne colle pas</strong>.</p>
+      <div class="pr-obs">
+        <p><strong>La question à se poser.</strong> Non pas « qu'est-ce qui concorde&nbsp;? » — on trouve toujours des concordances dans des séries longues — mais « <em>qu'est-ce qui aurait dû concorder et ne concorde pas&nbsp;?</em> ». Les discordances sont informatives ; les concordances, rarement.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout interieur">
+    <div class="callout-title">✨ Ce que ce protocole donne réellement</div>
+    <p>Il ne donnera probablement pas de preuve. Il donnera quelque chose de plus rare : une <strong>relation documentée avec un arbre précis</strong>, sur une durée, avec des traces datées que vous pourrez relire dans dix ans.</p>
+    <p>Et il vous donnera une compétence que presque personne ne possède dans ce domaine : celle de savoir, devant un tracé, ce que vous avez le droit d'en dire. C'est peu spectaculaire. C'est ce qui sépare un praticien d'un amateur d'anecdotes.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Sept séances, un même arbre, une même heure : reconnaissance, étalonnage, référence, perturbation, présence, contre-épreuve, confrontation.</li>
+      <li>La séance 3 — une journée entière sans intervenir — est le témoin sans lequel rien n'est interprétable.</li>
+      <li>En séance 5, consigner à l'aveugle et horodaté, avant toute consultation des tracés.</li>
+      <li>La séance 6, sur support inerte, est celle que tout le monde saute et la seule qui détrompe.</li>
+      <li>En séance 7, chercher les discordances, non les concordances.</li>
+    </ul>
+  </div>
+</section>

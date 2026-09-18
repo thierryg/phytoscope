@@ -1,0 +1,73 @@
+<section class="chapter pagebreak">
+  <h2 id="fin" data-toc="chapter">6. Pour aller plus loin</h2>
+
+  <h3 id="fin-lire" data-toc="sub">Lire les modules livrés</h3>
+
+  <p>Ils passent par la même interface que les vôtres — aucun privilège, aucun
+  raccourci. C'est ce qui garantit que cette interface suffit réellement, et
+  cela a une conséquence agréable : <strong>pour savoir comment écrire un
+  module, il suffit d'en lire un</strong>.</p>
+
+  <table class="tab">
+    <thead><tr><th>Module</th><th>Ce qu'il montre</th></tr></thead>
+    <tbody>
+      <tr><td><code>grandeurs-scientifiques</code></td>
+          <td>un analyseur qui calcule beaucoup, et explique chaque nombre</td></tr>
+      <tr><td><code>descripteurs-avances</code></td>
+          <td>six représentations, avec leurs avertissements</td></tr>
+      <tr><td><code>empreinte-montage</code></td>
+          <td>un module qui conserve un état sur le disque</td></tr>
+      <tr><td><code>export-csv</code></td>
+          <td>le plus court exemple complet — soixante lignes</td></tr>
+    </tbody>
+  </table>
+
+  <p>Ils vivent dans <code>src/phytoscope/phytoscope/modules/</code>.</p>
+
+  <h3 id="fin-sdk" data-toc="sub">Le SDK</h3>
+
+  <p>Dans <code>sdk/</code>, avec le code source :</p>
+
+  <ul>
+    <li><code>docs/</code> — cette documentation, en sept parties, au format
+      Markdown ;</li>
+    <li><code>bonjour-monde/</code> — un exemple complet avec ses essais ;</li>
+    <li><code>outils/nouveau_module.py</code> — crée un module qui fonctionne
+      déjà.</li>
+  </ul>
+
+  <h3 id="fin-manque" data-toc="sub">Si quelque chose vous manque</h3>
+
+  <p>Dites-le. L'interface a été écrite en essayant d'anticiper, et
+  l'anticipation se trompe toujours un peu. Une capacité qui manque, un
+  événement qu'on n'a pas prévu, une donnée qu'on ne vous donne pas : ce sont
+  les demandes qui font avancer une interface, et elles sont plus utiles que
+  les compliments.</p>
+
+  <p>En revanche, nous ne l'enrichirons pas au coup par coup. Une capacité
+  ajoutée est une capacité à tenir dix ans ; nous préférons attendre qu'une
+  même demande revienne de trois côtés plutôt que de l'ajouter la première
+  fois, et d'avoir à la porter ensuite.</p>
+
+  <div class="callout">
+    <h4>Ce que nous ne ferons pas</h4>
+    <p><strong>Un bac à sable.</strong> Python ne s'y prête pas, et un bac à
+    sable mal fait donne une confiance qu'il ne mérite pas. Nous préférons dire
+    clairement ce qu'un module doit faire, rendre ce chemin facile, et isoler
+    les fautes.</p>
+    <p><strong>Un rechargement à chaud.</strong> Recharger un module dont des
+    objets sont déjà référencés ailleurs laisse deux versions en mémoire et
+    produit des bogues qu'on ne sait pas lire. Un redémarrage coûte trois
+    secondes.</p>
+  </div>
+
+  <h3 id="fin-contact" data-toc="sub">Écrire</h3>
+
+  <p>Bretagne Namasté — Thierry GAYET<br/>
+  <code>contact@bretagne-namaste.com</code> ·
+  <code>Thierry.Gayet@gmail.com</code><br/>
+  <a href="https://bretagne-namaste.com">bretagne-namaste.com</a></p>
+
+  <p class="small">Le logiciel, le SDK et ce document sont publiés sous licence
+  MIT. Le code des exemples est à recopier sans condition.</p>
+</section>

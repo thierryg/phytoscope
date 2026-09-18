@@ -1,0 +1,80 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/tt-acquisition-chain.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 400" width="920" height="400">
+
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+</defs>
+<rect width="920" height="400" fill="#FBF9F1"/>
+<text x="460" y="34" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2.8">CHAÎNE D'ACQUISITION BIOÉLECTRIQUE</text>
+<rect x="40" y="110" width="152" height="74" rx="8" fill="#FFFFFF" stroke="#3F7D5A" stroke-width="1.6"/>
+<text x="116.0" y="127" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Électrodes</text>
+<text x="116.0" y="142.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Ag/AgCl</text>
+<text x="116.0" y="154.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Z ≈ 1-50 MΩ</text>
+<line x1="194" y1="147" x2="226" y2="147" stroke="#3F7D5A" stroke-width="2.2" marker-end="url(#ahv)"/>
+<rect x="226" y="110" width="152" height="74" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
+<text x="302.0" y="127" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Ampli. d'instr.</text>
+<text x="302.0" y="142.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">INA333 · AD8221</text>
+<text x="302.0" y="154.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Zin > 10 GΩ</text>
+<line x1="380" y1="147" x2="412" y2="147" stroke="#2F5E86" stroke-width="2.2" marker-end="url(#ahb)"/>
+<rect x="412" y="110" width="152" height="74" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
+<text x="488.0" y="127" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Filtre passe-bas</text>
+<text x="488.0" y="142.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">fₑ ≈ 10 Hz</text>
+<text x="488.0" y="154.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">réjection 50 Hz</text>
+<line x1="566" y1="147" x2="598" y2="147" stroke="#2F5E86" stroke-width="2.2" marker-end="url(#ahb)"/>
+<rect x="598" y="110" width="152" height="74" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
+<text x="674.0" y="127" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Convertisseur</text>
+<text x="674.0" y="142.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ADS1115 16 bits</text>
+<text x="674.0" y="154.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ADS1256 24 bits</text>
+<line x1="752" y1="147" x2="784" y2="147" stroke="#2F5E86" stroke-width="2.2" marker-end="url(#ahb)"/>
+<rect x="784" y="110" width="152" height="74" rx="8" fill="#FFFFFF" stroke="#B08528" stroke-width="1.6"/>
+<text x="860.0" y="127" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Microcontrôleur</text>
+<text x="860.0" y="142.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">horodatage</text>
+<text x="860.0" y="154.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">moyennage</text>
+<polyline points="52,244.0 54,260.4 56,252.7 58,249.2 60,244.0 62,229.0 64,241.0 66,236.6 68,251.0 70,252.9 72,245.0 74,248.2 76,232.3 78,244.5 80,246.4 82,255.5 84,266.4 86,254.5 88,259.8 90,245.0 92,250.1 94,257.2 96,257.7 98,272.0 100,257.2 102,257.7 104,246.0 106,240.7 108,252.1 110,246.9 112,261.1 114,249.8 116,244.1 118,239.8 120,228.4 122,243.9 124,240.9 126,253.6 128,252.1 130,241.8 132,245.5 134,232.8 136,248.5 138,251.9 140,259.3 142,266.5 144,251.6 146,256.7 148,244.4 150,252.8 152,261.4 154,260.4 156,270.9 158,252.8 160,252.7 162,243.3 164,241.6 166,255.0 168,248.9 170,259.8 172,245.5 174,239.2 176,237.4 178,229.8 180,248.1" fill="none" stroke="#2F5E86" stroke-width="1.5"/>
+<line x1="52" y1="250" x2="182" y2="250" stroke="#D9D9C6" stroke-width="1.3" stroke-dasharray="5 4"/>
+<text x="116" y="286" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">bruit + signal</text>
+<polyline points="238,250.0 240,247.2 242,244.6 244,242.2 246,240.2 248,238.7 250,237.8 252,237.4 254,237.7 256,238.5 258,240.0 260,241.9 262,244.2 264,246.8 266,249.6 268,252.4 270,255.1 272,257.5 274,259.5 276,261.1 278,262.2 280,262.6 282,262.4 284,261.6 286,260.2 288,258.4 290,256.1 292,253.5 294,250.8 296,248.0 298,245.3 300,242.8 302,240.7 304,239.1 306,238.0 308,237.4 310,237.5 312,238.2 314,239.5 316,241.3 318,243.6 320,246.1 322,248.8 324,251.6 326,254.4 328,256.9 330,259.0 332,260.7 334,261.9 336,262.5 338,262.5 340,261.9 342,260.7 344,258.9 346,256.8 348,254.3 350,251.5 352,248.7 354,246.0 356,243.5 358,241.3 360,239.5 362,238.2 364,237.5 366,237.4" fill="none" stroke="#2F5E86" stroke-width="1.5"/>
+<line x1="238" y1="250" x2="368" y2="250" stroke="#D9D9C6" stroke-width="1.3" stroke-dasharray="5 4"/>
+<text x="302" y="286" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">×1000</text>
+<polyline points="424,250.0 426,248.3 428,246.7 430,245.2 432,244.0 434,243.1 436,242.5 438,242.3 440,242.5 442,243.0 444,243.9 446,245.1 448,246.5 450,248.1 452,249.8 454,251.5 456,253.1 458,254.6 460,255.8 462,256.8 464,257.4 466,257.7 468,257.6 470,257.1 472,256.3 474,255.1 476,253.7 478,252.2 480,250.5 482,248.8 484,247.1 486,245.6 488,244.3 490,243.3 492,242.6 494,242.3 496,242.4 498,242.8 500,243.6 502,244.7 504,246.1 506,247.6 508,249.3 510,251.0 512,252.7 514,254.2 516,255.5 518,256.6 520,257.3 522,257.7 524,257.6 526,257.3 528,256.5 530,255.5 532,254.1 534,252.6 536,250.9 538,249.2 540,247.6 542,246.0 544,244.7 546,243.6 548,242.8 550,242.4 552,242.3" fill="none" stroke="#2F5E86" stroke-width="1.5"/>
+<line x1="424" y1="250" x2="554" y2="250" stroke="#D9D9C6" stroke-width="1.3" stroke-dasharray="5 4"/>
+<text x="488" y="286" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">lissé</text>
+<polyline points="610,250.0 612,250.0 614,245.0 616,245.0 618,245.0 620,245.0 622,245.0 624,245.0 626,245.0 628,245.0 630,245.0 632,245.0 634,245.0 636,250.0 638,250.0 640,250.0 642,255.0 644,255.0 646,255.0 648,255.0 650,255.0 652,255.0 654,255.0 656,255.0 658,255.0 660,255.0 662,255.0 664,250.0 666,250.0 668,250.0 670,245.0 672,245.0 674,245.0 676,245.0 678,245.0 680,245.0 682,245.0 684,245.0 686,245.0 688,245.0 690,245.0 692,250.0 694,250.0 696,250.0 698,250.0 700,255.0 702,255.0 704,255.0 706,255.0 708,255.0 710,255.0 712,255.0 714,255.0 716,255.0 718,255.0 720,250.0 722,250.0 724,250.0 726,250.0 728,245.0 730,245.0 732,245.0 734,245.0 736,245.0 738,245.0" fill="none" stroke="#2F5E86" stroke-width="1.5"/>
+<line x1="610" y1="250" x2="740" y2="250" stroke="#D9D9C6" stroke-width="1.3" stroke-dasharray="5 4"/>
+<text x="674" y="286" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">quantifié</text>
+<polyline points="796,250.0 798,248.8 800,247.6 802,246.5 804,245.7 806,245.0 808,244.6 810,244.4 812,244.5 814,244.9 816,245.5 818,246.4 820,247.4 822,248.6 824,249.8 826,251.1 828,252.3 830,253.3 832,254.2 834,254.9 836,255.4 838,255.6 840,255.5 842,255.2 844,254.6 846,253.7 848,252.7 850,251.6 852,250.3 854,249.1 856,247.9 858,246.8 860,245.9 862,245.1 864,244.6 866,244.4 868,244.5 870,244.8 872,245.3 874,246.1 876,247.1 878,248.3 880,249.5 882,250.7 884,251.9 886,253.0 888,254.0 890,254.8 892,255.3 894,255.6 896,255.6 898,255.3 900,254.7 902,254.0 904,253.0 906,251.9 908,250.7 910,249.4 912,248.2 914,247.1 916,246.1 918,245.3 920,244.8 922,244.5 924,244.4" fill="none" stroke="#2F5E86" stroke-width="1.5"/>
+<line x1="796" y1="250" x2="926" y2="250" stroke="#D9D9C6" stroke-width="1.3" stroke-dasharray="5 4"/>
+<text x="860" y="286" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">série datée</text>
+<rect x="28" y="92" width="356" height="106" rx="7" fill="none" stroke="#3F7D5A" stroke-width="1.2" stroke-dasharray="5 4" opacity="0.55"/>
+<rect x="38" y="83" width="150.39999999999998" height="18" rx="9" fill="#3F7D5A"/>
+<text x="113.19999999999999" y="95.5" font-family="Lato, sans-serif" font-size="11.6" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">TERRAIN — sous abri IP65</text>
+<rect x="400" y="92" width="500" height="106" rx="7" fill="none" stroke="#2F5E86" stroke-width="1.2" stroke-dasharray="5 4" opacity="0.55"/>
+<rect x="410" y="83" width="66.4" height="18" rx="9" fill="#2F5E86"/>
+<text x="443.2" y="95.5" font-family="Lato, sans-serif" font-size="11.6" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">NUMÉRIQUE</text>
+<text x="460" y="340" font-family="Lato, sans-serif" font-size="12.18" fill="#A8552E" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Le gain est placé au plus près de l'électrode : toute longueur de câble avant l'amplificateur est une antenne.</text>
+<text x="460" y="362" font-family="Lato, sans-serif" font-size="12.18" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Masse commune obligatoire ; isolation galvanique si une liaison secteur est présente en aval.</text>
+</svg>

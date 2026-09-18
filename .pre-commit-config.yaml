@@ -1,0 +1,124 @@
+#  ==========================================================================
+#  PhytoScope — attribution — .pre-commit-config.yaml
+#
+#  Version  : 1.5.1
+#  Date     : 2026-09-18
+#  Éditeur  : Bretagne Namasté
+#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Site     : https://bretagne-namaste.com
+#  Contact  : contact@bretagne-namaste.com
+#  Licence  : MIT — voir LICENCE.txt
+#
+#  SPDX-License-Identifier: MIT
+#  fin de l'attribution
+#  ==========================================================================
+
+# ===========================================================================
+#  PhytoScope — garde-fous posés avant chaque commit
+# ===========================================================================
+#  Installation, une fois :
+#
+#      python3 -m pip install --user pre-commit
+#      pre-commit install
+#
+#  Pour tout repasser sur le dépôt entier :
+#
+#      pre-commit run --all-files
+#
+#  Le garde-fou qui compte est le dernier : « detection-cle-privee ». Les
+#  autres rattrapent des étourderies ; celui-là évite de publier la clé qui
+#  signe les paquets. Voir SECURITY.md et certificat/LISEZ-MOI.md.
+# ===========================================================================
+exclude: |
+  (?x)^(
+      sources/.*          |   # code tiers : ses conventions, pas les nôtres
+      LICENSES/.*         |   # textes officiels, non modifiables
+      pdf-src/_.*\.html$      |   # assemblages générés
+      pdf-src/assets/svg/.*\.svg$ |
+      \.ecarte/.*         |
+      build/.*
+  )$
+
+repos:
+
+  # --- Étourderies de base -------------------------------------------------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      #  Une recette de Makefile indentée par des espaces est muette : make
+      #  l'ignore sans rien dire. C'est arrivé, d'où ce contrôle.
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      #  Un gros fichier entré par mégarde reste dans l'historique pour
+      #  toujours. Les PDF produits et les archives tierces sont hors dépôt.
+      - id: check-added-large-files
+        args: [--maxkb=2048]
+      - id: detect-private-key
+
+  # --- Python --------------------------------------------------------------
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  # --- Shell ---------------------------------------------------------------
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        args: [--shell=bash, --severity=warning]
+
+  # --- Contrôles propres au projet -----------------------------------------
+  - repo: local
+    hooks:
+
+      #  La clé privée de signature ne doit JAMAIS être indexée (C-2R).
+      #  detect-private-key ci-dessus cherche un bloc PEM dans le contenu ;
+      #  celui-ci refuse le fichier sur son seul nom, même vide, même
+      #  renommé — c'est le cas qui nous est arrivé de près.
+      - id: detection-cle-privee
+        name: la clé privée de signature n'entre pas dans le dépôt
+        entry: >
+          bash -c '
+          fautifs=$(printf "%s\n" "$@" | grep -Ei "\.(key|p12|pfx|jks|keystore|kdbx)$" || true);
+          if [ -n "$fautifs" ]; then
+            echo "refusé — ces fichiers ne doivent pas être versionnés :";
+            echo "$fautifs";
+            echo "la clé de signature vit dans ~/.local/share/phytoscope-signature/";
+            exit 1;
+          fi' --
+        language: system
+        pass_filenames: true
+        always_run: true
+
+      #  Les en-têtes d'attribution portent le chemin du fichier : un
+      #  déplacement les périme, et un fichier qui voyage seul mentirait
+      #  sur sa provenance.
+      - id: entetes-attribution
+        name: les en-têtes d'attribution sont à jour
+        entry: python3 tools/entetes.py --verifier
+        language: system
+        pass_filenames: false
+        files: ^(src|pdf|tools|packaging|hardware|sources/reverse)/
+
+      #  Une illustration qui n'est pas du XML bien formé fait un cadre vide
+      #  dans le PDF sans que rien ne le signale. Le défaut a existé :
+      #  timeline.svg portait un « & » nu, produit par un générateur qui
+      #  n'échappait pas le texte (journal du 2026-09-18).
+      - id: svg-bien-formes
+        name: les illustrations sont du XML bien formé
+        entry: python3 tools/verifier_svg.py
+        language: system
+        files: \.svg$

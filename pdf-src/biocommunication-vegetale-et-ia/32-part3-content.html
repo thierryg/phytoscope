@@ -1,0 +1,156 @@
+<section class="chapter">
+  <h2 id="c7-khait" data-toc="chapter" data-run="L'étude de référence de 2023">2023 : ce que l'étude de référence établit, et ce qu'elle ne dit pas</h2>
+  <p class="chapo">L'article le plus médiatisé du domaine est aussi l'un des mieux contrôlés. Le lire en entier est instructif — y compris pour voir tout ce que la reprise médiatique lui a fait dire.</p>
+
+  <p class="lettrine noindent"><strong>Khait, I., Lewin-Epstein, O., Sharon, R., Saban, K., Goldstein, R., Anikster, Y., Zeron, Y., Agassy, C., Nizan, S., Sharabi, G., Perelman, R., Boonman, A., Sade, N., Yovel, Y. &amp; Hadany, L. (2023)</strong>, « Sounds emitted by plants under stress are airborne and informative », <em>Cell</em> 186(7), p. 1328-1336.e10.</p>
+
+  <h3 id="c7-protocole" data-toc="sub">Le protocole, en détail</h3>
+
+  <p>Il vaut la peine d'être exposé complètement, parce qu'il constitue le meilleur modèle disponible de ce qu'exige une affirmation de ce type.</p>
+
+  <table>
+    <thead><tr><th>Élément</th><th>Mise en œuvre</th></tr></thead>
+    <tbody>
+      <tr><td>Environnement</td><td>Boîte acoustique de 50 × 100 × 150 cm, au sous-sol, parois atténuant d'au moins <strong>100 dB SPL</strong></td></tr>
+      <tr><td>Captation</td><td><strong>Deux microphones directionnels par plante</strong> — pour éliminer les fausses détections dues au bruit électronique et aux interférences entre plantes</td></tr>
+      <tr><td>Matériel</td><td>Microphone à condensateur CM16, convertisseur UltraSoundGate 1216H</td></tr>
+      <tr><td>Échantillonnage</td><td><strong>500 kHz par canal</strong>, filtre passe-haut à 20 kHz</td></tr>
+      <tr><td>Déclenchement</td><td>Enregistrement de 1,5 s dès que le signal dépasse 2 % de la dynamique</td></tr>
+      <tr><td>Bande étudiée</td><td>20 à 150 kHz</td></tr>
+      <tr><td>Espèces</td><td>Tomate et tabac en conditions contrôlées ; sons également enregistrés chez blé, maïs, vigne, cactus et lamier</td></tr>
+      <tr><td><strong>Contrôles</strong></td><td>La même plante avant traitement ; une plante voisine non traitée ; <strong>un pot de terre sans plante</strong></td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c7-resultats" data-toc="sub">Les résultats chiffrés</h3>
+
+  <table>
+    <thead><tr><th>Condition</th><th>Tomate</th><th>Tabac</th></tr></thead>
+    <tbody>
+      <tr><td>Sécheresse</td><td><strong>35,4 ± 6,1</strong> sons/h</td><td><strong>11,0 ± 1,4</strong> sons/h</td></tr>
+      <tr><td>Section</td><td>25,2 ± 3,2 sons/h</td><td>15,2 ± 2,6 sons/h</td></tr>
+      <tr><td>Tous contrôles</td><td>&lt; 1 son/h</td><td>&lt; 1 son/h</td></tr>
+      <tr><td><strong>Pot sans plante</strong></td><td colspan="2"><strong>0 son sur plus de 500 heures d'enregistrement</strong></td></tr>
+    </tbody>
+    <caption>Significativité : p &lt; e⁻⁶, test de Wilcoxon avec correction de Holm-Bonferroni sur douze comparaisons.</caption>
+  </table>
+
+  <table class="tight">
+    <thead><tr><th></th><th>Intensité de pic</th><th>Fréquence de pic</th></tr></thead>
+    <tbody>
+      <tr><td>Tomate, sécheresse</td><td>61,6 ± 0,1 dB SPL</td><td><strong>49,6 ± 0,4 kHz</strong></td></tr>
+      <tr><td>Tabac, sécheresse</td><td>65,6 ± 0,4 dB SPL</td><td>54,8 ± 1,1 kHz</td></tr>
+      <tr><td>Tomate, section</td><td>65,6 ± 0,2 dB SPL</td><td>57,3 ± 0,7 kHz</td></tr>
+      <tr><td>Tabac, section</td><td>63,3 ± 0,2 dB SPL</td><td>57,8 ± 0,7 kHz</td></tr>
+    </tbody>
+    <caption>Mesures à 10,0 cm, référence 20 µPa. Ces intensités sont des <strong>bornes inférieures</strong>, en raison de la directivité du microphone. Toutes les fréquences de pic sont très au-dessus de l'audition humaine, qui plafonne vers 20 kHz.</caption>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Le contrôle qui rend ce résultat publiable</div>
+    <p><strong>Zéro son sur plus de cinq cents heures d'enregistrement d'un pot de terre sans plante.</strong></p>
+    <p>Retenez cette ligne. C'est le modèle absolu du contrôle négatif : une condition où le dispositif <em>devait</em> produire quelque chose s'il fabriquait ses détections, et où il n'a rien produit. Sans elle, rien n'exclurait que les « sons de plantes » soient des artefacts du montage.</p>
+    <p>C'est exactement le test que ce livre recommande — l'épreuve du vide — et c'est exactement celui que ne pratique aucun dispositif commercial de « musique des plantes ».</p>
+  </div>
+
+  <h3 id="c7-ml" data-toc="sub">La partie « informative »</h3>
+
+  <p>Le second volet de l'article est celui que le titre annonce : ces sons sont <em>informatifs</em>. Concrètement, un classificateur automatique entraîné sur ces enregistrements parvient à distinguer l'espèce émettrice et le type de stress.</p>
+
+  <p>C'est une affirmation au sens de la théorie de l'information, et elle est vérifiée : le signal contient de quoi discriminer des états. <strong>Ce n'est pas une affirmation sur l'intention.</strong></p>
+
+  <h3 id="c7-critiques" data-toc="sub">Les deux mises au point de 2024</h3>
+
+  <p>Un an après, deux articles de revues majeures viennent préciser ce que ce résultat autorise à dire. Ils ne le contestent pas : ils le bordent.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Nardini, Cochard &amp; Mayr (2024)</div>
+    <p><em>Trends in Plant Science</em> 29(6), p. 662-667, « Talk is cheap: rediscovering sounds made by plants ».</p>
+    <blockquote style="margin:3mm 0;">
+      <p style="font-size:12pt;">Si les avancées technologiques récentes ont permis de démontrer que ces sons peuvent se propager dans l'air environnant, nous rappelons ici que la recherche sur la production sonore par les plantes a plus de cent ans. Les mécanismes et les motifs d'émission sonore des plantes soumises à différents facteurs de stress sont également raisonnablement compris, grâce aux travaux pionniers de John Milburn et d'autres. En revanche, <strong>la preuve expérimentale d'un rôle de ces sons dans la communication plante-animal ou plante-plante fait toujours défaut</strong> et, à l'heure actuelle, ces idées restent hautement spéculatives.</p>
+    </blockquote>
+  </div>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Son, Jang, Mathevon &amp; Ryu (2024)</div>
+    <p><em>New Phytologist</em> 242(5), p. 1876-1880, « Is plant acoustic communication fact or fiction? ». Cet article apporte <strong>la distinction que la vulgarisation efface systématiquement</strong> :</p>
+    <blockquote style="margin:3mm 0;">
+      <p style="font-size:12pt;">Si les plantes émettent bien des sons sous l'effet du stress, ces sons sont aigus, de faible intensité, et ne se propagent qu'à courte distance. <strong>La plupart des études sur la sensibilité des plantes au son portent en réalité sur des vibrations de substrat plutôt que sur du son aérien.</strong> Des sons de basse fréquence et de forte intensité émis par des haut-parleurs proches peuvent affecter des processus de croissance, mais les plantes ne peuvent probablement pas percevoir leurs propres sons à longue distance. <strong>Aucune donnée ne soutient l'existence d'une communication acoustique de plante à plante.</strong></p>
+    </blockquote>
+    <p>Vibration de substrat et son aérien sont deux physiques différentes, avec deux mécanismes de réception différents. Les confondre permet de faire dire à des études de la première catégorie des choses qui relèveraient de la seconde.</p>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La formulation exacte, à retenir</div>
+    <p><strong>L'émission est démontrée. La communication ne l'est pas.</strong></p>
+    <p>Le son de cavitation est très probablement un <strong>sous-produit physique</strong> — un craquement de parquet qui sèche. Il est informatif pour qui l'écoute avec les bons instruments ; il n'est pas émis pour être écouté.</p>
+    <p>Les auteurs de 2023 écrivent d'ailleurs eux-mêmes que ces sons « <em>pourraient aussi être détectables par d'autres organismes</em> » — au conditionnel. C'est la reprise qui a transformé ce conditionnel en indicatif.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Protocole exemplaire : chambre anéchoïque, deux microphones, 500 kHz, trois conditions de contrôle.</li>
+      <li>Tomate en sécheresse : 35,4 sons/h contre moins de 1 pour tous les contrôles ; fréquence de pic ≈ 50 kHz.</li>
+      <li><strong>Zéro son sur 500 h pour un pot sans plante</strong> — le modèle du contrôle négatif.</li>
+      <li>« Informatif » signifie qu'un classificateur discrimine des états, non qu'il y ait intention.</li>
+      <li>Deux mises au point en 2024 : le mécanisme est connu depuis 1966, et aucune preuve ne soutient une communication acoustique entre plantes.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c8-perception" data-toc="chapter">La perception : les plantes entendent-elles ?</h2>
+  <p class="chapo">Une fleur qui produit un nectar plus sucré trois minutes après avoir entendu une abeille. Le résultat est réel, spectaculaire, contesté — et c'est un cas d'école de lecture critique.</p>
+
+  <p class="lettrine noindent">Si les plantes émettent, réciproquement : perçoivent-elles&nbsp;? La question est distincte, et la réponse est plus nuancée.</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique — la fleur comme oreille</div>
+    <p><strong>Veits, M., Khait, I., Obolski, U., Zinger, E., Boonman, A., Goldshtein, A., Saban, K., Seltzer, R., Ben-Dor, U., Estlein, P., Kabat, A., Peretz, D., Ratzersdorfer, I., Krylov, S., Chamovitz, D., Sapir, Y., Yovel, Y. &amp; Hadany, L. (2019)</strong>, « Flowers respond to pollinator sound within minutes by increasing nectar sugar concentration », <em>Ecology Letters</em> 22(9), p. 1483-1492.</p>
+    <p><em>Oenothera drummondii</em> exposée au son d'une abeille en vol, ou à un signal synthétique de fréquence similaire, produit un nectar plus sucré <strong>en trois minutes</strong>. Les pétales <strong>vibrent mécaniquement</strong> en réponse : la fleur joue le rôle d'organe sensoriel, sa forme en parabole captant les vibrations.</p>
+    <p>La réponse est <strong>spécifique en fréquence</strong> : elle se produit pour les sons de pollinisateur (pic à 200-500 Hz) et pas pour les hautes fréquences de contrôle (35 kHz, 160 kHz).</p>
+    <p>Concentration en sucre : <strong>19,8 ± 0,6 %</strong> et 19,1 ± 0,7 % en conditions sonores, contre 16,3 ± 0,5 % et 16,0 ± 0,4 % en contrôle — soit environ <strong>+20 % en relatif</strong>. Effectifs : plus de 650 fleurs. Amplitude de vibration des pétales : environ 0,1 mm ; vibration très réduite après ablation des pétales (p &lt; 0,0005).</p>
+    <p><span class="small">Certains de ces chiffres proviennent de la préversion et mériteraient d'être revérifiés sur la version publiée.</span></p>
+  </div>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ La réplique critique</div>
+    <p><strong>Pyke, G. H. et al. (2020)</strong>, « Changes in floral nectar are unlikely adaptive responses to pollinator flight sound », <em>Ecology Letters</em>, DOI 10.1111/ele.13403.</p>
+    <p>L'existence de cette réponse critique est confirmée ; son volume et sa pagination n'ont pas pu être vérifiés lors de la préparation de ce volume. Elle conteste principalement l'interprétation <em>adaptative</em> : une réponse physiologique à une vibration n'implique pas qu'elle ait été sélectionnée pour cette fonction.</p>
+    <p>Cette objection est importante et générale. Une plante peut répondre à un stimulus sans que la réponse soit une adaptation à ce stimulus : les tissus vivants réagissent à beaucoup de choses.</p>
+  </div>
+
+  <h3 id="c8-mecanisme" data-toc="sub">Le mécanisme de mécanotransduction</h3>
+
+  <p><strong>Mishra, R. C., Ghosh, R. &amp; Bae, H. (2016)</strong>, « Plant acoustics: in the search of a sound mechanism for sound signaling in plants », <em>Journal of Experimental Botany</em> 67(15), p. 4483-4494, est la revue de référence. Les effets cellulaires documentés des vibrations sonores incluent : modification de la structure secondaire de protéines membranaires, réarrangement des microfilaments, signatures calciques, augmentation de protéines kinases, de peroxydases et d'enzymes antioxydantes, activités de la pompe à protons et des canaux potassiques, élévation des polyamines, des sucres solubles et de l'auxine.</p>
+
+  <p>Les auteurs proposent un modèle de signalisation — <strong>en soulignant qu'il reste hypothétique</strong>. C'est la formulation correcte : des effets sont mesurés, une voie est proposée, elle n'est pas établie.</p>
+
+  <div class="callout caution">
+    <div class="callout-title">✦ Une précaution éditoriale</div>
+    <p>Un article de 2024 intitulé « The plant is neither dumb nor deaf; it talks and hears » (<em>The Plant Journal</em>) circule sur ce sujet. Il a été <strong>rétracté</strong>. Il ne doit pas être cité, et nous le signalons parce qu'il continue d'apparaître dans des bibliographies.</p>
+  </div>
+
+  <h3 id="c8-racines" data-toc="sub">Le cas de la bioacoustique racinaire</h3>
+
+  <p>Une affirmation très diffusée mérite un traitement séparé : les racines de maïs émettraient des clics à 220 Hz, et les racines répondraient préférentiellement à des sons entre 200 et 300 Hz.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Statut : non établi</div>
+    <p>Ce chiffre apparaît dans <strong>Gagliano, Mancuso &amp; Robert (2012)</strong>, « Towards understanding plant bioacoustics », <em>Trends in Plant Science</em> 17(6), p. 323-325 — qui est un <strong>article d'opinion</strong>, posant un cadre de recherche.</p>
+    <p>La recherche documentaire menée pour ce volume <strong>n'a pas permis de remonter à un article primaire publiant ces données avec leurs statistiques</strong>. Nous traitons donc cette affirmation comme non établie, et nous ne la reprenons pas.</p>
+    <p>Signalons également qu'aucune trace d'une chercheuse nommée « Carol Gibson-Wood » travaillant en bioacoustique végétale n'a pu être trouvée dans les bases interrogées. Cette référence, qui circule dans la vulgarisation francophone, est très probablement une confusion.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li><em>Oenothera</em> augmente la concentration en sucre de son nectar d'environ 20 % en trois minutes, en réponse à un son de pollinisateur.</li>
+      <li>Réponse spécifique en fréquence ; les pétales vibrent d'environ 0,1 mm et servent d'organe récepteur.</li>
+      <li>Une réplique critique conteste l'interprétation adaptative : répondre à un stimulus n'est pas être adapté à lui.</li>
+      <li>Les effets cellulaires des vibrations sont documentés ; la voie de signalisation reste hypothétique.</li>
+      <li>Les « clics racinaires à 220 Hz » proviennent d'un article d'opinion : statut non établi.</li>
+    </ul>
+  </div>
+</section>

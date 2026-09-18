@@ -1,0 +1,197 @@
+<section class="chapter">
+  <h2 id="c11-langage" data-toc="chapter">Quel langage pour ce logiciel ?</h2>
+
+  <p class="chapo">La question se pose sérieusement, et mérite mieux qu'une préférence. Quatre
+  candidats — C++, Rust, Go, Python 3 — et une cinquième voie, l'application web enveloppée. La
+  réponse dépend entièrement du cahier des charges, qu'il faut donc écrire d'abord.</p>
+
+  <p class="lettrine noindent">Ce que le logiciel doit faire tient en sept exigences, et aucune
+  n'est négociable.</p>
+
+  <ul>
+    <li><strong>Lire un flux audio</strong> à 250 Hz sur quatre voies, sans perdre un échantillon,
+    pendant huit heures.</li>
+    <li><strong>Filtrer et analyser</strong> ce flux : filtres récursifs, transformée de Fourier,
+    variance d'Allan, détection d'événements.</li>
+    <li><strong>Tracer à soixante images par seconde</strong> des courbes de plusieurs milliers de
+    points, sans saccade.</li>
+    <li><strong>Produire du son</strong> en temps réel, avec une synthèse polyphonique et une
+    sortie MIDI.</li>
+    <li><strong>Écrire sur le disque</strong> en continu, dans des formats ouverts.</li>
+    <li><strong>Fonctionner à l'identique</strong> sous Windows, macOS et GNU/Linux.</li>
+    <li><strong>Pouvoir être modifié</strong> par quelqu'un qui n'est pas informaticien de métier —
+    car c'est la condition pour que le projet survive à son auteur.</li>
+  </ul>
+
+  <h3 id="c11-comparatif" data-toc="sub">Les cinq candidats, notés sur ces exigences</h3>
+
+  <figure class="figframe">
+    <img src="assets/svg/logiciel-langages.svg" alt="Comparatif des langages pour ce cahier des charges"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Comparatif des cinq voies, noté pour
+    <em>ce</em> cahier des charges. Les notes ne valent pas dans l'absolu : Rust est un meilleur
+    langage que Python sur presque tous les critères d'ingénierie, et pourtant il perd ici.</figcaption>
+  </figure>
+
+  <h4>C++ — la puissance, et le prix à payer</h4>
+  <p>C++ apporte la performance maximale, l'accès direct aux bibliothèques audio et graphiques, et
+  quarante ans de bibliothèques de traitement du signal. Qt lui est natif ; JUCE offre une chaîne
+  audio professionnelle complète. Sur le papier, c'est le choix évident pour un instrument.</p>
+  <p>Trois obstacles le disqualifient ici. La <strong>compilation croisée</strong> pour trois
+  systèmes exige une chaîne d'intégration continue et une connaissance que le public visé n'a pas.
+  La <strong>distribution</strong> impose de fournir trois binaires, signés sous macOS et Windows,
+  ce qui coûte de l'argent et du temps chaque année. Enfin, la <strong>barrière à la
+  contribution</strong> est décisive : un botaniste curieux ne corrigera pas un bogue dans un
+  fichier de six cents lignes de C++ avec des gabarits, alors qu'il modifiera volontiers une
+  fonction Python de vingt lignes.</p>
+
+  <h4>Rust — le bon choix, mais pas pour cette version</h4>
+  <p>Rust résout élégamment la moitié des problèmes du C++ : sûreté mémoire garantie, compilation
+  croisée simple, gestion de dépendances exemplaire, binaire unique sans dépendance système. Pour
+  un logiciel embarqué, ou pour une version autonome tournant sur la carte elle-même, ce serait le
+  choix juste.</p>
+  <p>Il échoue pourtant sur deux points précis. L'<strong>écosystème de traitement du signal</strong>
+  reste pauvre : il n'existe pas d'équivalent de NumPy, et l'on réécrit donc ce que d'autres ont
+  déjà fait et vérifié. Les <strong>bibliothèques graphiques</strong> sont jeunes ; aucune n'offre
+  l'équivalent de pyqtgraph pour tracer deux cent cinquante mille points par seconde avec une
+  interaction fluide. On y arriverait, au prix de plusieurs mois — pour un résultat identique.</p>
+
+  <h4>Go — excellent pour les serveurs, inadapté ici</h4>
+  <p>Go compile vite, se distribue en un fichier, et son modèle de concurrence conviendrait
+  parfaitement à l'acquisition. Mais l'interface graphique y est un désert, le calcul numérique
+  aussi, et l'accès audio passe par des liaisons vers le C qui annulent l'avantage du binaire
+  unique. Go est un excellent langage pour ce qu'il vise ; un instrument de mesure graphique n'en
+  fait pas partie.</p>
+
+  <h4>Python 3 — le choix retenu, et ses raisons</h4>
+  <p>Python est lent, et c'est vrai pour les boucles. Mais aucune boucle chaude n'est écrite en
+  Python ici : NumPy exécute le traitement du signal en code compilé, Qt dessine en C++, PortAudio
+  gère l'audio en C. Python ne fait qu'<em>orchestrer</em> — et pour orchestrer, sa lisibilité est
+  un avantage décisif.</p>
+  <p>Trois arguments emportent la décision. L'<strong>écosystème</strong> : NumPy, pyqtgraph,
+  sounddevice, python-rtmidi, pyserial couvrent l'intégralité du besoin, tous éprouvés et
+  maintenus. L'<strong>installation</strong> : trois commandes, les mêmes sur les trois systèmes.
+  La <strong>contribution</strong> : le code se lit, se modifie et se corrige par quelqu'un dont
+  ce n'est pas le métier — ce qui est la seule garantie de survie d'un logiciel d'atelier.</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 La question de la performance, chiffrée</div>
+    <p class="noindent">Mesures relevées sur un ordinateur portable de 2019, huit voix de synthèse
+    actives, tracé à trente images par seconde, acquisition à 250 Hz : le fil de traitement occupe
+    <strong>2,6 %</strong> d'un cœur, la synthèse audio <strong>2,6 %</strong> d'un autre, et
+    l'interface environ <strong>8 %</strong>. Le total reste sous quinze pour cent d'un seul cœur.
+    L'argument de la lenteur de Python ne tient tout simplement pas pour cette classe de problème —
+    à condition de ne jamais écrire de boucle sur les échantillons, ce que le code respecte
+    scrupuleusement.</p>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Verdict, et ce qui le ferait changer</div>
+    <p class="noindent"><strong>Python 3 pour l'application, C pour le micrologiciel, NumPy pour
+    les boucles chaudes.</strong> Cette répartition est retenue parce qu'elle place chaque langage
+    là où il excelle. Deux évolutions la remettraient en cause : le jour où la carte devrait
+    fonctionner seule, sans ordinateur, avec un affichage embarqué — alors ce serait Rust ; et le
+    jour où il faudrait traiter trente-deux voies à trente-deux kilohertz — alors ce serait C++.
+    Aucune de ces deux situations n'est le sujet de cet ouvrage.</p>
+  </div>
+
+  <h2 id="c12-toolkit" data-toc="chapter">Quelle boîte à outils graphique ?</h2>
+
+  <p class="chapo">Qt, GTK, wxWidgets, ou une interface en HTML5 enveloppée ? La question est
+  distincte de la précédente, et le critère décisif n'est pas celui qu'on croit.</p>
+
+  <p>Le critère décisif n'est ni la beauté, ni la richesse des composants, ni même la portabilité :
+  c'est la <strong>capacité à tracer deux cent cinquante points par seconde, en continu, pendant
+  huit heures, sans saccade et sans fuite de mémoire</strong>. Sur ce seul point, le classement
+  est net et ne souffre guère de discussion.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/logiciel-toolkits.svg" alt="Comparatif des boîtes à outils graphiques"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Les six voies envisagées. Qt l'emporte par
+    pyqtgraph, qui est la seule bibliothèque de tracé scientifique réellement temps réel dans
+    l'écosystème Python.</figcaption>
+  </figure>
+
+  <h3 id="c12-qt" data-toc="sub">Qt 6, par PySide6 — retenu</h3>
+  <p>Qt offre trois choses qu'aucun concurrent ne réunit : un jeu de composants complet et cohérent,
+  un rendu identique sur les trois systèmes, et surtout <strong>pyqtgraph</strong>, bibliothèque
+  conçue pour l'instrumentation scientifique, qui trace des millions de points avec une interaction
+  fluide. La liaison officielle PySide6, publiée sous licence LGPL par The Qt Company, autorise
+  tous les usages, y compris commerciaux, sans contrainte pour un logiciel distribué en sources.</p>
+  <p>Le prix à payer est l'encombrement : environ deux cent cinquante mégaoctets installés. Sur une
+  machine de 2026, c'est acceptable ; sur une carte embarquée, ce ne le serait pas — d'où le mode
+  sans interface, qui fonctionne sans Qt.</p>
+
+  <h3 id="c12-autres" data-toc="sub">Les autres voies, et pourquoi elles ont été écartées</h3>
+  <p><strong>GTK 4</strong> produit des applications superbes sous GNOME et s'y intègre
+  parfaitement. Son installation sous Windows relève en revanche du chemin de croix, et son
+  écosystème de tracé scientifique est inexistant en Python. Pour un logiciel destiné à des
+  ateliers où la moitié des machines tournent sous Windows, c'est éliminatoire.</p>
+  <p><strong>wxWidgets</strong> a le mérite d'employer les composants natifs de chaque système :
+  l'application ressemble vraiment à une application de la plateforme. Mais l'écosystème a vieilli,
+  et la partie tracé n'a pas suivi.</p>
+  <p><strong>Tkinter</strong> est livré avec Python, ce qui supprime toute installation. Son
+  canevas s'effondre au-delà de quelques milliers d'éléments : un oscilloscope y est impossible.
+  Il reste excellent pour un utilitaire de configuration ; ce n'est pas ce qu'on construit ici.</p>
+  <p><strong>Dear PyGui</strong> dessine par le processeur graphique et va très vite. Il souffre en
+  revanche d'une accessibilité faible — pas de lecteur d'écran, pas de navigation au clavier
+  complète — et d'un jeu de composants restreint. Pour un logiciel destiné à durer et à être
+  utilisé par des publics variés, c'est un renoncement trop lourd.</p>
+
+  <h3 id="c12-html" data-toc="sub">Et une interface en HTML5 ? La question mérite un examen sérieux</h3>
+
+  <p>C'est la voie que choisiraient beaucoup aujourd'hui, et il faut reconnaître ses mérites plutôt
+  que la balayer. Une interface en HTML5 avec TypeScript apporte : des outils de mise en forme
+  incomparables, une communauté immense, la possibilité d'un accès à distance par le navigateur,
+  et un découplage propre entre le cœur de mesure et l'affichage.</p>
+
+  <p>Deux architectures existent, qu'il ne faut pas confondre.</p>
+
+  <table class="compare tight">
+    <thead><tr><th>Architecture</th><th>Ce qu'elle donne</th><th>Ce qu'elle coûte</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Application enveloppée</strong><br/><span class="small">Electron, Tauri</span></td>
+        <td>Une application de bureau classique, interface web, accès complet au matériel par un
+        cœur natif.</td>
+        <td>180 Mo pour Electron (Tauri descend à 10 Mo). Surtout : <strong>une passerelle à
+        écrire et à maintenir</strong> entre le cœur Python et l'interface web, avec sa
+        sérialisation, ses erreurs propres et son débogage à deux étages.</td></tr>
+      <tr><td><strong>Serveur local et navigateur</strong><br/><span class="small">le logiciel sert une page</span></td>
+        <td>Aucune installation côté interface ; accès depuis un téléphone, une tablette, une
+        autre pièce. Idéal pour une installation d'exposition.</td>
+        <td>Le navigateur ne peut pas ouvrir un port audio ni un port série sans permissions
+        particulières ; les mécanismes existants (Web Serial, Web Audio) ne sont pas uniformément
+        disponibles. Et le tracé de 250 points par seconde dans un canevas web reste nettement plus
+        coûteux qu'avec pyqtgraph.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Le vrai coût du HTML5, qui n'est pas technique</div>
+    <p class="noindent">Une interface web impose <strong>deux langages, deux écosystèmes, deux
+    chaînes de construction et une frontière</strong>. Pour une équipe, c'est un investissement
+    rentable. Pour un projet d'atelier maintenu par une ou deux personnes, c'est la garantie que
+    la moitié du temps passera en plomberie plutôt qu'en mesure. Le critère décisif n'est donc pas
+    la performance — Tauri fait très bien l'affaire — mais le coût de maintenance rapporté aux
+    forces disponibles.</p>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Verdict, nuancé</div>
+    <p class="noindent"><strong>PySide6 et pyqtgraph pour l'application de mesure</strong> : c'est
+    le meilleur rapport entre l'effort et le résultat, et de loin. <strong>Mais une interface web
+    a toute sa place en complément</strong>, pour un usage précis : la supervision à distance d'une
+    installation de longue durée. Le logiciel prévoit d'ailleurs cette extension — le moteur est
+    entièrement séparé de l'interface, et exposer son état par un petit serveur local ne demande
+    qu'une centaine de lignes. Ce qui serait une erreur, c'est d'en faire l'interface
+    <em>principale</em> et de payer la passerelle en permanence pour un bénéfice occasionnel.</p>
+  </div>
+
+  <h3 id="c12-conclusion" data-toc="sub">Ce qu'il faut retenir de ces deux chapitres</h3>
+
+  <p>La bonne question n'est jamais « quel est le meilleur langage », mais « quelles contraintes
+  ai-je, et lesquelles sont irréductibles ». Ici, l'irréductible était double : <strong>tracer
+  vite</strong> et <strong>rester modifiable par un non-professionnel</strong>. Ces deux
+  contraintes désignent Python et Qt sans hésitation possible. Changez l'une des deux, et la
+  réponse change — c'est ainsi que se prend une décision d'architecture, et c'est pourquoi elle
+  doit être écrite, pour pouvoir être révisée quand les contraintes évoluent.</p>
+</section>

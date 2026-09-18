@@ -1,0 +1,86 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/ne555.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 456" width="860" height="456">
+
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+</defs>
+<rect width="860" height="456" fill="#FFFFFF"/>
+<text x="430.0" y="34" font-family="Lato, sans-serif" font-size="17.4" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.8">L'OSCILLATEUR ASTABLE NE555 — APPROCHE OPEN SOURCE</text>
+<rect x="40" y="66" width="240" height="84" rx="8" fill="#F2F7FB" stroke="#2F5E86" stroke-width="1.8"/>
+<text x="160" y="94" font-family="Lato, sans-serif" font-size="14.5" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">ATmega328P</text>
+<text x="160" y="114" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">INT0 — mesure de période</text>
+<text x="160" y="130" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">MIDI 31 250 bauds sur TX</text>
+<rect x="330" y="130" width="170" height="170" rx="6" fill="#FBFAF4" stroke="#0E2A22" stroke-width="2"/>
+<text x="415" y="164" font-family="Cormorant Garamond, serif" font-size="20.3" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">NE555</text>
+<text x="415" y="184" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">astable</text>
+<line x1="296" y1="212" x2="330" y2="212" stroke="#0E2A22" stroke-width="1.6"/>
+<text x="348" y="217" font-family="Lato, sans-serif" font-size="11.6" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">TR</text>
+<text x="292" y="205" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">2</text>
+<line x1="296" y1="246" x2="330" y2="246" stroke="#0E2A22" stroke-width="1.6"/>
+<text x="348" y="251" font-family="Lato, sans-serif" font-size="11.6" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">R</text>
+<text x="292" y="239" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">4</text>
+<line x1="296" y1="280" x2="330" y2="280" stroke="#0E2A22" stroke-width="1.6"/>
+<text x="348" y="285" font-family="Lato, sans-serif" font-size="11.6" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">CV</text>
+<text x="292" y="273" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">5</text>
+<line x1="500" y1="212" x2="534" y2="212" stroke="#0E2A22" stroke-width="1.6"/>
+<text x="482" y="217" font-family="Lato, sans-serif" font-size="11.6" fill="#0E2A22" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">Q</text>
+<text x="538" y="205" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">3</text>
+<line x1="500" y1="246" x2="534" y2="246" stroke="#0E2A22" stroke-width="1.6"/>
+<text x="482" y="251" font-family="Lato, sans-serif" font-size="11.6" fill="#0E2A22" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">DIS</text>
+<text x="538" y="239" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">7</text>
+<line x1="500" y1="280" x2="534" y2="280" stroke="#0E2A22" stroke-width="1.6"/>
+<text x="482" y="285" font-family="Lato, sans-serif" font-size="11.6" fill="#0E2A22" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">THR</text>
+<text x="538" y="273" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">6</text>
+<path d="M534,212 H566 V108 H286" fill="none" stroke="#2F5E86" stroke-width="2.2" marker-end="url(#ahb)"/>
+<rect x="614" y="226" width="218" height="104" rx="8" fill="#EDF6F0" stroke="#3F7D5A" stroke-width="1.8"/>
+<text x="723" y="256" font-family="Cormorant Garamond, serif" font-size="15.95" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">PLANTE</text>
+<text x="723" y="278" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">R variable entre P1 et P2</text>
+<text x="723" y="300" font-family="Lato, sans-serif" font-size="12.18" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">≈ 0,5 – 50 MΩ</text>
+<text x="723" y="320" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">(résistance du limbe)</text>
+<line x1="534" y1="246" x2="614" y2="262" stroke="#3F7D5A" stroke-width="2"/>
+<line x1="534" y1="280" x2="614" y2="296" stroke="#3F7D5A" stroke-width="2"/>
+<path d="M566,280 V176 H700" fill="none" stroke="#0E2A22" stroke-width="1.6"/>
+<rect x="700" y="166" width="54" height="20" rx="3" fill="#FFF" stroke="#2F5E86" stroke-width="1.6"/>
+<text x="727" y="156" font-family="Lato, sans-serif" font-size="10.73" fill="#2F5E86" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">R2  100 kΩ</text>
+<line x1="754" y1="176" x2="800" y2="176" stroke="#0E2A22" stroke-width="1.6"/>
+<line x1="800" y1="176" x2="800" y2="162" stroke="#0E2A22" stroke-width="1.6"/>
+<text x="800" y="152" font-family="Lato, sans-serif" font-size="10.73" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">+5 V</text>
+<line x1="264" y1="200" x2="264" y2="256" stroke="#0E2A22" stroke-width="1.6"/>
+<line x1="248" y1="222" x2="280" y2="222" stroke="#0E2A22" stroke-width="2.6"/>
+<line x1="248" y1="232" x2="280" y2="232" stroke="#0E2A22" stroke-width="2.6"/>
+<path d="M264,212 H296" fill="none" stroke="#0E2A22" stroke-width="1.6"/>
+<text x="232" y="224" font-family="Lato, sans-serif" font-size="12.18" fill="#0E2A22" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">C1</text>
+<text x="232" y="242" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">4,2 nF</text>
+<text x="60" y="344" font-family="Lato, sans-serif" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Train d'impulsions dont la PÉRIODE suit la conductance :</text>
+<path d="M74,398 V376 H84 V398 H94 V376 H104 V398 H114 V376 H124 V398 H134 V376 H150 V398 H166 V376 H182 V398 H198 V376 H206 V398 H214 V376 H222 V398 H230 V376 H238 V398 H246 V376 H260 V398 H274 V376 H288 V398 H302 V376 H314 V398 H326 V376 H338 V398 H350" fill="none" stroke="#B08528" stroke-width="2"/>
+<line x1="68" y1="398" x2="364" y2="398" stroke="#D9D9C6" stroke-width="1"/>
+<text x="60" y="381" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">5 V</text>
+<text x="60" y="402" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">0 V</text>
+<line x1="134" y1="366" x2="198" y2="366" stroke="#3F7D5A" stroke-width="1.2" marker-end="url(#ahv)"/>
+<text x="324" y="370" font-family="Lato, sans-serif" font-size="10.44" fill="#3F7D5A" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">période allongée = conductance en baisse</text>
+<text x="430.0" y="442" font-family="Cormorant Garamond, serif" font-size="12.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Ici la plante n'est pas mesurée : elle FIXE la fréquence de l'oscillateur.</text>
+</svg>

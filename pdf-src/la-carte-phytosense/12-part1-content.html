@@ -1,0 +1,154 @@
+<section class="chapter">
+  <h2 id="c2-architecture" data-toc="chapter">L'architecture qui en découle</h2>
+
+  <p class="chapo">Deux îlots d'alimentation, une barrière, un seul câble. Toute l'organisation de
+  la carte tient dans cette phrase, et chacun de ses termes répond à une contrainte énoncée au
+  chapitre précédent.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/carte-archi.svg" alt="Architecture d'ensemble de la carte PhytoSense One"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Architecture d'ensemble. La colonne de gauche
+    est la chaîne de mesure ; la colonne du milieu regroupe les servitudes qui conditionnent son
+    exactitude ; la barrière d'isolement n'est franchie que par un transformateur et six voies
+    d'isolateurs.</figcaption>
+  </figure>
+
+  <h3 id="c2-ilots" data-toc="sub">Pourquoi deux îlots plutôt qu'une masse commune</h3>
+
+  <p>La tentation est grande de tout référencer à la masse de l'USB : c'est plus simple, moins
+  cher, et cela fonctionne — mal. Trois phénomènes s'y opposent.</p>
+
+  <p><strong>La boucle de masse.</strong> Dès que l'ordinateur est relié au secteur, sa masse
+  porte quelques volts alternatifs par rapport à la terre réelle, et davantage encore s'il est
+  branché sur une multiprise chargée. La plante, elle, est posée sur une table, reliée à la terre
+  par sa propre capacité. Entre les deux, un courant circule, et il passe par nos électrodes.</p>
+
+  <p><strong>Le mode commun.</strong> Une plante est une antenne remarquable : quelques dizaines de
+  centimètres de feuillage captent facilement un volt efficace à cinquante hertz. Si la référence
+  de mesure est celle de l'ordinateur, ce volt se retrouve intégralement en mode commun sur nos
+  entrées, et il faut cent vingt décibels de réjection pour le ramener sous le microvolt.
+  Si la référence <em>flotte avec la plante</em>, le mode commun disparaît presque entièrement.</p>
+
+  <p><strong>La sécurité.</strong> Une carte isolée ne peut pas transporter un défaut de
+  l'ordinateur vers le végétal ni vers l'opérateur. Ce point est décisif dès qu'on sort du pot de
+  fleurs — arbre en extérieur, ou pire, être humain.</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Ce que l'isolement change, mesuré</div>
+    <p class="noindent">Sur prototype, la même plante mesurée avec et sans barrière donne un
+    résidu de réseau à 50 Hz de <strong>2,3 mV crête à crête</strong> en masse commune, contre
+    <strong>18 µV</strong> en masse flottante, ordinateur branché sur le secteur dans les deux cas.
+    Un facteur cent vingt-huit, obtenu pour une vingtaine d'euros de composants. Aucun filtre
+    numérique ne rattrape cela : ce qui a saturé l'entrée est perdu.</p>
+  </div>
+
+  <h3 id="c2-modularite" data-toc="sub">La modularité : une carte mère et des cartes filles</h3>
+
+  <p>La chaîne à partir du gain programmable est identique quelle que soit la grandeur mesurée :
+  amplifier, filtrer, convertir, dater, transmettre. Ce qui change, c'est l'étage d'entrée — et il
+  change radicalement selon qu'on mesure un potentiel, une impédance ou une conductance.</p>
+
+  <p>D'où le partage retenu : une <strong>carte mère</strong> qui porte tout le commun, et des
+  <strong>cartes filles</strong> interchangeables sur un connecteur de vingt points. Quatre cartes
+  filles sont décrites dans cet ouvrage ; rien n'interdit d'en dessiner d'autres, et le connecteur
+  a été prévu large pour cela.</p>
+
+  <table class="compare tight">
+    <thead><tr><th>Carte fille</th><th>Ce qu'elle mesure</th><th>Composant central</th><th>Quand l'employer</th></tr></thead>
+    <tbody>
+      <tr><td><strong>FE-Z</strong><br/><span class="small">électromètre</span></td>
+        <td>Potentiel de surface, en volts, sans rien injecter</td>
+        <td>ADA4530-1</td>
+        <td>Électrophysiologie au sens strict. La seule qui mesure la plante plutôt que de
+        l'interroger.</td></tr>
+      <tr><td><strong>FE-B</strong><br/><span class="small">pont alternatif</span></td>
+        <td>Impédance, en ohms, par excitation à 1 kHz et détection synchrone</td>
+        <td>INA828 + ADG1419</td>
+        <td>Mesure quantitative d'impédance, comparaison entre espèces, suivi de longue durée.</td></tr>
+      <tr><td><strong>FE-C</strong><br/><span class="small">conductance</span></td>
+        <td>Conductance continue, sous courant constant de 10 µA</td>
+        <td>INA333 + source de courant</td>
+        <td>Compatible avec les montages de la littérature et de l'ouvrage <em>Créer un Arbre
+        Parlant</em> ; sert de pont entre les deux générations.</td></tr>
+      <tr><td><strong>FE-AUX</strong><br/><span class="small">ambiance</span></td>
+        <td>Température, humidité, pression, composés volatils, éclairement</td>
+        <td>BME688 + TSL2591</td>
+        <td>Toujours, en parallèle d'une autre carte : c'est elle qui rend les autres défendables.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c2-eeprom" data-toc="sub">Une carte fille qui se présente elle-même</h3>
+
+  <p>Chaque carte fille porte une mémoire de deux kilobits, sur le bus I²C du connecteur, qui
+  contient son type, son numéro de série, sa date d'étalonnage et ses coefficients. Au branchement,
+  le microcontrôleur la lit et transmet le tout à l'ordinateur ; le logiciel adapte alors ses
+  unités, ses gammes et ses libellés sans que l'utilisateur ait rien à déclarer.</p>
+
+  <p>Ce détail de deux euros supprime la classe d'erreurs la plus sournoise du domaine :
+  <strong>afficher des ohms alors qu'on mesure des volts</strong>, ou appliquer un coefficient
+  d'étalonnage qui appartient à une autre carte. Les appareils du commerce ne le font pas, et l'on
+  comprend pourquoi en lisant les forums d'utilisateurs.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/carte-mezzanine.svg" alt="Brochage du connecteur mezzanine"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Brochage du connecteur mezzanine. Les masses
+    encadrent systématiquement les signaux sensibles ; la garde est portée par deux broches pour
+    entourer la voie A ; les deux broches de sélection permettent quatre gammes sans consommer de
+    bus.</figcaption>
+  </figure>
+
+  <h3 id="c2-bande" data-toc="sub">Le plan de bande : ce qu'on garde, ce qu'on rejette</h3>
+
+  <p>Décider de la bande passante est le choix le plus lourd de conséquences, et le plus souvent
+  bâclé. Trop étroite, elle efface le phénomène ; trop large, elle laisse entrer du bruit et le
+  réseau. La carte retient la bande <strong>1 mHz – 40 Hz</strong> pour la mesure, avec un filtre
+  anti-repliement à 400 Hz et un échantillonnage par défaut à 250 Hz.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/carte-bande.svg" alt="Plan de bande de l'instrument"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Plan de bande. Les phénomènes recherchés
+    occupent quatre décades, de dix millihertz à dix hertz. Le réseau et l'excitation du pont sont
+    volontairement placés au-dessus, là où la détection numérique les élimine sans déphaser la
+    bande utile.</figcaption>
+  </figure>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Choix de conception — le 50 Hz n'est pas filtré en analogique</div>
+    <p class="noindent">Un réjecteur analogique à cinquante hertz semble évident. Il est
+    pourtant nuisible : tout filtre à fort facteur de qualité introduit un déphasage important
+    plusieurs octaves en dessous de sa fréquence, donc dans notre bande utile, et ce déphasage
+    déforme la <em>forme</em> des potentiels d'action — précisément ce qu'on cherche à observer.
+    Le réseau est donc laissé passer jusqu'au convertisseur, où il reste soixante décibels sous la
+    pleine échelle, puis retiré numériquement par un filtre à phase linéaire. La bande utile
+    n'est pas touchée.</p>
+  </div>
+
+  <h3 id="c2-alim" data-toc="sub">Le budget d'énergie</h3>
+
+  <p>La carte est alimentée par les cinq volts de l'USB et ne négocie aucune puissance : elle se
+  déclare comme un périphérique à cinq cents milliampères, ce que tout port fournit sans
+  discussion. La répartition est la suivante.</p>
+
+  <table class="tight">
+    <thead><tr><th>Poste</th><th>Courant typique</th><th>Remarque</th></tr></thead>
+    <tbody>
+      <tr><td>Microcontrôleur et USB</td><td class="num">42 mA</td><td>à 150 MHz, deux cœurs actifs</td></tr>
+      <tr><td>Isolateurs numériques</td><td class="num">28 mA</td><td>dont 21 mA côté USB</td></tr>
+      <tr><td>Convertisseur et référence</td><td class="num">18 mA</td><td>quatre voies actives</td></tr>
+      <tr><td>Chaîne analogique (±5 V)</td><td class="num">31 mA</td><td>ramené au 5 V d'entrée, rendement 72 %</td></tr>
+      <tr><td>Capteurs d'ambiance</td><td class="num">4 mA</td><td>moyenne, mesure toutes les 10 s</td></tr>
+      <tr><td>LED et divers</td><td class="num">12 mA</td><td>LED à mi-luminosité</td></tr>
+      <tr class="tot"><td>Total</td><td class="num">135 mA</td><td>soit 0,68 W — sept heures sur une batterie de 10 000 mAh</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout energie">
+    <div class="callout-title">🌿 La batterie n'est pas un accessoire</div>
+    <p class="noindent">Alimenter la carte par une batterie externe plutôt que par l'ordinateur
+    supprime la dernière voie de couplage avec le réseau — celle qui subsiste malgré l'isolement,
+    par la capacité du bloc d'alimentation. Sur les enregistrements longs, le gain est net et
+    mesurable. Il se trouve que cette pratique rejoint ce que recommandent, pour d'autres raisons,
+    ceux qui travaillent aux arbres en forêt : venir avec son énergie, ne rien brancher au lieu.
+    Les deux lectures se rejoignent sans qu'il soit besoin de les confondre.</p>
+  </div>
+</section>

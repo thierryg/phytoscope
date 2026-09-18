@@ -1,0 +1,79 @@
+================================================================================
+  PhytoScope — Licence MIT
+================================================================================
+
+Copyright © 2026 Bretagne Namasté
+https://bretagne-namaste.com — contact@bretagne-namaste.com
+
+Par la présente, une autorisation est accordée, à titre gracieux, à toute
+personne obtenant une copie de ce logiciel et des fichiers de documentation
+associés (le « Logiciel »), de commercialiser le Logiciel sans restriction,
+notamment les droits d'utiliser, de copier, de modifier, de fusionner, de
+publier, de distribuer, de sous-licencier et / ou de vendre des copies du
+Logiciel, ainsi que d'autoriser les personnes auxquelles le Logiciel est
+fourni à le faire, sous réserve des conditions suivantes :
+
+L'avis de droit d'auteur ci-dessus et le présent avis d'autorisation doivent
+être inclus dans toutes copies ou parties substantielles du Logiciel.
+
+LE LOGICIEL EST FOURNI « TEL QUEL », SANS GARANTIE D'AUCUNE SORTE, EXPLICITE
+OU IMPLICITE, NOTAMMENT SANS GARANTIE DE QUALITÉ MARCHANDE, D'ADÉQUATION À UN
+USAGE PARTICULIER ET D'ABSENCE DE CONTREFAÇON. EN AUCUN CAS, LES AUTEURS OU
+TITULAIRES DU DROIT D'AUTEUR NE SERONT RESPONSABLES DE TOUT DOMMAGE,
+RÉCLAMATION OU AUTRE RESPONSABILITÉ, QUE CE SOIT DANS LE CADRE D'UN CONTRAT,
+D'UN DÉLIT OU AUTRE, EN PROVENANCE DE, CONSÉCUTIF À OU EN RELATION AVEC LE
+LOGICIEL OU SON UTILISATION, OU AVEC D'AUTRES ÉLÉMENTS DU LOGICIEL.
+
+--------------------------------------------------------------------------------
+  Version anglaise de référence (MIT License)
+--------------------------------------------------------------------------------
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+  Licences des composants utilisés
+================================================================================
+
+Le Logiciel n'inclut aucun code tiers, mais s'appuie à l'exécution sur les
+bibliothèques suivantes, qui restent la propriété de leurs auteurs :
+
+  NumPy .............. licence BSD 3 clauses
+  PySide6 / Qt 6 ..... licence LGPL v3 (Qt for Python, The Qt Company)
+  pyqtgraph .......... licence MIT
+  sounddevice ........ licence MIT (s'appuie sur PortAudio, licence MIT)
+  pyserial ........... licence BSD 3 clauses
+  python-rtmidi ...... licence MIT (s'appuie sur RtMidi, licence MIT modifiée)
+
+L'usage de PySide6 sous LGPL impose, en cas de redistribution d'un exécutable
+lié statiquement, de permettre le remplacement de la bibliothèque Qt. Le
+Logiciel étant diffusé sous forme de sources Python, cette obligation est
+satisfaite de fait.
+
+================================================================================
+  Matériel
+================================================================================
+
+Les schémas, la nomenclature et le dessin du circuit imprimé de la carte
+PhytoSense One sont publiés sous licence CERN-OHL-P v2 (permissive), dans le
+document compagnon « La Carte PhytoSense ». Le micrologiciel de la carte est
+sous licence MIT, comme le présent Logiciel.
+
+Les marques Music of the Plants, PlantWave, Plants Play, Scion et Biotron
+appartiennent à leurs détenteurs respectifs. Ce logiciel n'est ni sponsorisé,
+ni affilié, ni rémunéré par aucun fabricant.

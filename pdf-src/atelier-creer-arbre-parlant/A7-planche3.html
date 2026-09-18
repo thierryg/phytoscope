@@ -1,0 +1,106 @@
+<section class="pagebreak">
+<h2 id="p3" data-toc="chapter">Planche 3 — Le nœud environnemental</h2>
+
+<p class="lettrine noindent">Sans contexte, le signal d'un arbre ne veut rien
+dire. Une variation d'impédance à midi en juillet et la même variation à
+quatre heures du matin en novembre n'ont pas le même sens. Le nœud
+environnemental n'est donc pas un accessoire : c'est ce qui rend le signal
+principal interprétable.</p>
+
+<section class="planche-page"><figure class="planche" id="fig-3"><img src="assets/svg/sch-bus-capteurs-esp32.svg" alt="Nœud environnemental ESP32"/><figcaption><span class="fig-n">PLANCHE 3</span> — bus I²C partagé, bus 1-Wire, entrée analogique et comptage d'impulsions avec anti-rebond matériel.</figcaption></figure></section>
+
+<h3 id="p3-bus" data-toc="sub">Quatre familles de liaison, quatre logiques</h3>
+
+<p>Le <strong>bus I²C</strong> porte les capteurs intelligents : température,
+humidité, pression, lumière, CO₂. Chacun répond à une adresse propre, deux fils
+suffisent pour tous. La contrainte est la longueur : au-delà d'un mètre environ,
+la capacité du câble arrondit les fronts et le bus devient instable. On descend
+alors les résistances de tirage à 2,2 kΩ, ou l'on renonce à l'I²C.</p>
+
+<p>Le <strong>1-Wire</strong> accepte au contraire plusieurs dizaines de mètres.
+C'est lui qui va chercher les températures loin du boîtier : l'air sous abri, le
+sol à dix centimètres, le tronc lui-même. Chaque DS18B20 porte une adresse
+gravée sur 64 bits, ce qui permet d'en mettre plusieurs sur le même fil sans
+ambiguïté — à condition de noter quelle adresse correspond à quel emplacement,
+faute de quoi l'ordre change au premier remplacement.</p>
+
+<p>L'<strong>entrée analogique</strong> reçoit la sonde capacitive d'humidité du
+sol. Le <strong>comptage d'impulsions</strong> reçoit l'anémomètre et le
+pluviomètre.</p>
+
+<div class="callout limite">
+  <div class="callout-title">L'anti-rebond doit être matériel</div>
+  <p class="noindent">Un contact à lame souple rebondit pendant une à cinq
+  millisecondes. Une bascule de pluviomètre produit alors trois ou quatre
+  interruptions au lieu d'une, et la pluie est surestimée d'autant. Le réseau
+  R4-C2 (10 kΩ × 100 nF, soit 1 ms de constante de temps) résout le problème
+  avant qu'il n'atteigne le logiciel. Un anti-rebond purement logiciel oblige à
+  rester éveillé, ce qui ruine le budget d'énergie.</p>
+</div>
+
+<h3 id="p3-lux" data-toc="sub">Lux et µmol : une confusion coûteuse</h3>
+
+<p>Un BH1750 mesure des <strong>lux</strong>, c'est-à-dire un flux lumineux
+pondéré par la sensibilité de l'œil humain, qui culmine dans le vert vers
+555 nm. Or la photosynthèse ne voit pas comme nous : elle compte des
+<strong>photons</strong> entre 400 et 700 nm, et travaille surtout dans le bleu
+et le rouge — précisément là où l'œil est peu sensible. Les deux grandeurs ne
+mesurent pas la même chose.</p>
+
+<p>Sous lumière solaire, et sous elle seulement, un facteur empirique d'environ
+0,0185 permet de passer des lux aux µmol·m⁻²·s⁻¹ : 108 000 lx de plein soleil
+correspondent à environ 2 000 µmol·m⁻²·s⁻¹. Ce facteur est <strong>faux pour
+toute autre source</strong> : sous un éclairage horticole à LED rouge et bleu,
+l'erreur dépasse couramment un facteur trois. Si le rayonnement utile à la
+plante est une variable du projet, il faut un capteur quantique — un Apogee
+SQ-500 ou équivalent, dix fois plus cher, mais qui mesure la bonne grandeur.</p>
+
+<h3 id="p3-bom" data-toc="sub">Nomenclature et alternatives</h3>
+<table class="bom tight-xs"><caption>Nomenclature de la planche 3, avec les alternatives de montée en gamme. Plages et précisions issues des datasheets constructeur ; les écarts de prix d'un facteur dix entre un BH1750 et un SQ-500 correspondent à un écart de nature, pas de qualité — voir la discussion lux / PPFD.</caption><thead><tr><th>Rep.</th><th>Capteur / composant</th><th>Grandeur · plage</th><th>Précision annoncée</th><th>Interface</th><th>≈ €</th></tr></thead><tbody>
+<tr><td>U1</td><td>ESP32-S3 (carte DevKit)</td><td>—</td><td>veille ≈ 13 µA au niveau carte</td><td>Wi-Fi / BLE</td><td>9,00 – 15,00</td></tr>
+<tr><td>—</td><td>Variante ESP32-C6</td><td>—</td><td>veille ≈ 7 µA au niveau puce</td><td>Wi-Fi 6 / Thread</td><td>8,00</td></tr>
+<tr><td>—</td><td>Variante Raspberry Pi Pico 2 W</td><td>—</td><td>RP2350, 520 Ko SRAM</td><td>Wi-Fi / BLE 5.2</td><td>7,00</td></tr>
+<tr><td>A1</td><td>BME280</td><td>T −40…+85 °C · HR 0–100 % · P 300–1100 hPa</td><td>±1,0 °C · ±3 % HR · ±1 hPa</td><td>I²C / SPI</td><td>4,00</td></tr>
+<tr><td>—</td><td>BME680 (ajoute un capteur de gaz)</td><td>idem + COV (indice)</td><td>indice non étalonné, dérive</td><td>I²C / SPI</td><td>12,00</td></tr>
+<tr><td>—</td><td>SHT31 (référence T/HR)</td><td>T −40…+125 °C · HR 0–100 %</td><td>±0,2 °C · ±2 % HR</td><td>I²C</td><td>9,00</td></tr>
+<tr><td>—</td><td>SHT85 (métrologie)</td><td>T −40…+105 °C · HR 0–100 %</td><td>±0,1 °C · ±1,5 % HR</td><td>I²C</td><td>45,00</td></tr>
+<tr><td>A2</td><td>BH1750FVI</td><td>éclairement 1 – 65 535 lx</td><td>±20 % typ.</td><td>I²C</td><td>3,00</td></tr>
+<tr><td>—</td><td>TSL2591 (forte dynamique)</td><td>188 µlx – 88 000 lx</td><td>—</td><td>I²C</td><td>7,00</td></tr>
+<tr><td>—</td><td>Apogée SQ-500 (PAR de référence)</td><td>PPFD 0 – 4 000 µmol m⁻² s⁻¹</td><td>erreur directionnelle ≤ ±5 % à 75°</td><td>analogique 0,01 mV/µmol</td><td>≈ 300,00</td></tr>
+<tr><td>A3</td><td>SCD41</td><td>CO₂ 400 – 5 000 ppm</td><td>±(40 ppm + 5 %)</td><td>I²C</td><td>38,00</td></tr>
+<tr><td>—</td><td>SCD30 (meilleure justesse absolue)</td><td>CO₂ 400 – 10 000 ppm</td><td>±(30 ppm + 3 %)</td><td>I²C</td><td>45,00</td></tr>
+<tr><td>A4–A6</td><td>DS18B20 étanches (×3)</td><td>T −55…+125 °C</td><td>±0,5 °C entre −10 et +85 °C</td><td>1-Wire</td><td>9,00</td></tr>
+<tr><td>A7</td><td>Sonde capacitive d'humidité du sol v2.0</td><td>sortie 0 – 3 V, non étalonnée</td><td>relatif seulement</td><td>analogique</td><td>4,00</td></tr>
+<tr><td>—</td><td>Watermark 200SS (potentiel matriciel)</td><td>0 – 200 kPa</td><td>étalonnage Shock 1998, 10–100 kPa</td><td>résistif (excitation alternative)</td><td>40,00</td></tr>
+<tr><td>—</td><td>TEROS 12 (teneur en eau volumique)</td><td>VWC · T · CE</td><td>±0,03 m³/m³ étalonnage générique</td><td>SDI-12</td><td>≈ 250,00</td></tr>
+<tr><td>R1–R4</td><td>Résistances de tirage et anti-rebond</td><td>4,7 kΩ ×3, 10 kΩ</td><td>1 %</td><td>—</td><td>0,40</td></tr>
+<tr><td>C1, C2</td><td>Anti-rebond et découplage</td><td>100 nF ×2</td><td>X7R</td><td>—</td><td>0,30</td></tr>
+<tr><td>—</td><td>Anémomètre à coupelles à contact ILS</td><td>vent</td><td>selon modèle</td><td>impulsions</td><td>25,00</td></tr>
+<tr><td>—</td><td>Pluviomètre à augets</td><td>0,2 mm par bascule</td><td>±2 % typ.</td><td>impulsions</td><td>30,00</td></tr>
+</tbody></table>
+
+<h3 id="p3-sol" data-toc="sub">Pourquoi les sondes d'humidité résistives sont à proscrire</h3>
+
+<p>Les sondes vendues quelques centimes, à deux broches nues et dorées, mesurent
+la conductivité du sol entre deux électrodes traversées par un courant continu.
+Cette configuration provoque une <strong>électrolyse</strong> : le métal d'une
+électrode se dissout et se dépose sur l'autre. En sol humide et sous tension
+permanente, la destruction est visible en quelques semaines, et la dérive bien
+avant. S'y ajoute une sensibilité majeure à la salinité : un apport d'engrais
+fait chuter la résistance sans qu'une goutte d'eau ait bougé.</p>
+
+<p>Les sondes <strong>capacitives</strong> déplacent le problème : leurs
+électrodes sont noyées dans l'époxy, le courant continu ne circule plus, la
+corrosion disparaît. Elles restent toutefois non étalonnées et sensibles à la
+texture du sol — elles donnent un indice relatif, pas une teneur en eau. Les
+versions v1.2, très répandues, sont dépourvues de régulateur embarqué et leur
+lecture varie avec la tension d'alimentation : on privilégiera les v2.0, et l'on
+alimentera la sonde sous une tension stable.</p>
+
+<p>Au-dessus, deux familles de mesures véritablement quantitatives coexistent :
+le <strong>potentiel matriciel</strong>, qui exprime l'effort que la plante doit
+fournir pour extraire l'eau, mesuré par un Watermark 200SS ou un tensiomètre ; et
+la <strong>teneur en eau volumique</strong>, mesurée par réflectométrie
+temporelle. Pour un arbre, c'est le potentiel matriciel qui est
+physiologiquement pertinent : c'est lui que l'arbre « ressent ».</p>
+</section>

@@ -1,0 +1,128 @@
+<section class="pagebreak">
+<h2 id="p5" data-toc="chapter">Planche 5 — Le flux de sève</h2>
+
+<p class="lettrine noindent">De toutes les grandeurs mesurables sur un arbre,
+le flux de sève est la plus proche de ce qu'un profane appellerait « ce que
+l'arbre est en train de faire ». C'est aussi la plus invasive : elle exige de
+percer l'aubier.</p>
+
+<section class="planche-page"><figure class="planche" id="fig-5"><img src="assets/svg/sch-granier-tdp.svg" alt="Sonde de flux de sève par dissipation thermique"/><figcaption><span class="fig-n">PLANCHE 5</span> — méthode Granier : aiguille chauffée à puissance constante et aiguille de référence, couple thermoélectrique différentiel, numérisation 24 bits.</figcaption></figure></section>
+
+<h3 id="p5-principe" data-toc="sub">Le principe</h3>
+
+<p>Deux aiguilles sont implantées dans l'aubier sur la même verticale, à quarante
+millimètres d'écart. Celle du haut contient une résistance chauffée à puissance
+constante — environ 0,2 W. Celle du bas ne chauffe pas et sert de référence. Un
+couple thermoélectrique différentiel mesure l'écart de température entre les
+deux.</p>
+
+<p>Quand la sève ne monte pas, la chaleur ne s'évacue que par conduction et
+l'écart est maximal. Quand la sève monte, elle emporte la chaleur et l'écart
+diminue. Granier a établi en 1985 une relation empirique entre cet écart et la
+densité de flux :</p>
+
+<p class="center"><i>K</i> = (ΔT<sub>max</sub> − ΔT) / ΔT<br/>
+<i>u</i> = 118,99·10⁻⁶ · <i>K</i><sup>1,231</sup>&nbsp;&nbsp;[m³ m⁻² s⁻¹]</p>
+
+<div class="callout limite">
+  <div class="callout-title">Le facteur 100 qui fausse une implémentation sur deux</div>
+  <p class="noindent">Le coefficient dépend entièrement du système d'unités
+  retenu, et les quatre écritures suivantes, toutes présentes dans la
+  littérature, sont strictement équivalentes :</p>
+  <table class="tight" style="margin:.6em 0">
+  <thead><tr><th>Écriture</th><th>Unité de u</th></tr></thead>
+  <tbody>
+  <tr><td>u = 4,284 · K<sup>1,231</sup></td><td>L·dm⁻²·h⁻¹, soit dm/h</td></tr>
+  <tr><td>u = 0,0119 · K<sup>1,231</sup></td><td>cm³·cm⁻²·s⁻¹, soit <b>cm/s</b></td></tr>
+  <tr><td>u = 119·10⁻⁶ · K<sup>1,231</sup></td><td>m³·m⁻²·s⁻¹, soit <b>m/s</b></td></tr>
+  <tr><td>u = 0,119 · K<sup>1,231</sup></td><td>kg·m⁻²·s⁻¹ (× masse volumique)</td></tr>
+  </tbody></table>
+  <p>Confondre les deux écritures du milieu introduit un <strong>facteur
+  100</strong>. C'est l'erreur d'implémentation la plus fréquente de toute la
+  méthode. L'exposant exact est 1,231 ; la valeur 1,23 est un arrondi. Enfin,
+  u est une <strong>vitesse de filtration</strong> — un volume par unité de
+  surface d'aubier conducteur — et non la vitesse réelle de la sève dans les
+  vaisseaux, qui est plus élevée.</p>
+</div>
+
+<p>où ΔT<sub>max</sub> est l'écart relevé en fin de nuit, lorsque le flux est
+supposé nul. Cette hypothèse est elle-même une source d'erreur : par nuit chaude
+et sèche, la transpiration nocturne ne s'annule pas, et l'on sous-estime alors
+ΔT<sub>max</sub>, donc tout le reste de la journée.</p>
+
+<div class="callout limite">
+  <div class="callout-title">Un indice, pas un débit</div>
+  <p class="noindent">L'étalonnage d'origine de Granier a été établi sur un
+  petit nombre d'espèces. La littérature ultérieure documente des
+  sous-estimations massives : −60 % sur noisetier contre potomètre de précision
+  (<i>Sensors</i> 19:2419, 2019) ; −69 % sur <i>Pinus tabuliformis</i> faute de
+  calibration d'espèce ; −37 % sur l'usage d'eau d'un peuplement de conifères
+  (Peters et al., <i>New Phytologist</i>, 2018) ; jusqu'à −50 % lorsque la sonde
+  déborde de l'aubier conducteur (Clearwater et al., 1999). Une méta-analyse de
+  290 expériences de calibration (Flo et al., <i>Agric. For. Meteorol.</i>, 2019)
+  conclut que les méthodes à dissipation ont la plus faible exactitude et le plus
+  fort biais proportionnel, mais une bonne linéarité et une bonne précision :
+  elles conviennent au flux <i>relatif</i>, pas au flux absolu. Sans
+  recalibration sur l'espèce étudiée, <strong>ce montage ne donne pas un débit
+  absolu</strong>. Il donne un indice relatif, parfaitement utilisable pour
+  suivre une dynamique jour/nuit ou un stress hydrique sur un même arbre, mais
+  qu'il serait malhonnête de convertir en litres par jour.</p>
+</div>
+
+<div class="callout limite">
+  <div class="callout-title">L'artefact qu'on ne voit jamais venir</div>
+  <p class="noindent">Un tronc n'est pas isotherme. Do et Rocheteau ont mesuré
+  en 2002 des <strong>gradients thermiques naturels de 0,3 à 3,5 °C</strong>
+  entre deux points distants de huit à dix centimètres — positifs la nuit,
+  négatifs le jour — capables d'induire des erreurs de flux dépassant 100 %.
+  L'écart utile de la mesure étant du même ordre, l'artefact est indiscernable
+  du signal. Le remède validé est le <strong>chauffage cyclique</strong> :
+  45 minutes allumé, 15 minutes éteint. La phase froide donne le gradient
+  naturel seul, qu'on soustrait ensuite. Elle divise en outre la consommation
+  par quatre — dans une station solaire, c'est un double bénéfice.</p>
+</div>
+
+<h3 id="p5-metro" data-toc="sub">La contrainte métrologique</h3>
+
+<p>L'écart utile va de zéro à une dizaine de kelvins, et il faut le résoudre au
+centième de kelvin. Un couple cuivre-constantan produit environ 40 µV par
+kelvin : il faut donc distinguer 0,4 µV. Aucun convertisseur intégré à un
+microcontrôleur ne sait faire cela. D'où le choix d'un convertisseur 24 bits
+muni d'un amplificateur à gain programmable ×128, et d'une référence de tension
+stable en température — car une dérive de la référence se lit exactement comme
+une variation de flux.</p>
+
+<p>Les autres méthodes thermiques répondent à d'autres besoins. La
+<strong>méthode du rapport de chaleur</strong> (heat ratio method) envoie une
+impulsion brève au lieu d'un chauffage continu et mesure la dissymétrie de
+propagation de part et d'autre de la source : elle sait mesurer les flux très
+lents et surtout les <strong>flux inverses</strong>, invisibles à la méthode
+Granier, et elle consomme beaucoup moins. C'est celle qu'emploient les
+instruments d'ICT International, et c'est aussi celle retenue par le TreeTalker,
+qui envoie une impulsion de six secondes une fois par heure.</p>
+
+<h3 id="p5-bom" data-toc="sub">Nomenclature</h3>
+<table class="bom tight-xs"><caption>Nomenclature indicative d'une sonde de dissipation thermique auto-construite. À comparer aux instruments du commerce : un TreeTalker®Water est annoncé à 210 € en version LoRa par le tarif public 2026 de Nature 4.0, et les SFM1x d'ICT International ou les Dynagage de Dynamax ne sont vendus que sur devis. La littérature (Davis et al., 2012) documente des capteurs auto-construits donnant des estimations acceptables pour une fraction du coût des instruments commerciaux — le procédé Granier étant tombé dans le domaine public.</caption><thead><tr><th>Rep.</th><th>Élément</th><th>Détail</th><th>≈ €</th></tr></thead><tbody>
+<tr><td>—</td><td>Tube inox 316L</td><td>Ø ext. 2 mm, paroi 0,2 mm, longueur 20 mm ×2</td><td>6,00</td></tr>
+<tr><td>R_ch</td><td>Fil résistif constantan</td><td>≈ 25 Ω bobinés sur l'aiguille amont</td><td>3,00</td></tr>
+<tr><td>—</td><td>Couple thermoélectrique cuivre / constantan</td><td>type T, fil 0,08 mm</td><td>9,00</td></tr>
+<tr><td>—</td><td>Résine époxy thermiquement conductrice</td><td>remplissage des aiguilles</td><td>8,00</td></tr>
+<tr><td>U1</td><td>Convertisseur ΔΣ 24 bits</td><td>TI ADS1220, PGA ×128, réf. interne</td><td>8,00</td></tr>
+<tr><td>—</td><td>Référence de tension de précision</td><td>LM4040 2,048 V</td><td>1,50</td></tr>
+<tr><td>—</td><td>Isolation thermique du site de mesure</td><td>mousse réfléchissante + écran</td><td>6,00</td></tr>
+<tr><td>—</td><td>Mèche et guide de perçage</td><td>Ø 2 mm, butée de profondeur</td><td>12,00</td></tr>
+<tr><td></td><td><b>Total sonde bricolée, les deux aiguilles</b></td><td></td><td><b>≈ 54 €</b></td></tr>
+</tbody></table>
+
+<div class="callout limite">
+  <div class="callout-title">Percer un arbre</div>
+  <p class="noindent">Deux trous de deux millimètres dans l'aubier d'un arbre
+  adulte sain se compartimentent normalement. Mais chaque perforation est une
+  porte d'entrée pour les champignons de carie, et le bois ne cicatrise pas : il
+  cloisonne. On limitera donc le nombre de sondes, on les espacera
+  verticalement, on désinfectera le matériel entre deux arbres, et l'on
+  s'abstiendra sur un sujet déjà affaibli, sur un arbre remarquable ou sur un
+  jeune sujet. Sur un arbre de moins de quinze centimètres de diamètre, la
+  méthode est de toute façon inapplicable.</p>
+</div>
+</section>

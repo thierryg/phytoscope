@@ -1,0 +1,116 @@
+<section class="chapter">
+  <h2 id="c6-conversion" data-toc="chapter">La conversion et la base de temps</h2>
+
+  <p class="chapo">Convertir n'est pas numériser : c'est décider, pour chaque instant, quelle
+  valeur représente le monde. Deux choix gouvernent tout — l'architecture du convertisseur et
+  l'origine de son horloge.</p>
+
+  <h3 id="c6-deltasigma" data-toc="sub">Pourquoi un delta-sigma, et pas autre chose</h3>
+
+  <p>Trois familles de convertisseurs se disputent l'instrumentation. Le tableau ci-dessous les
+  compare sur ce qui nous importe : la résolution effective dans une bande très étroite et très
+  basse.</p>
+
+  <table class="tbl-sci tight">
+    <thead><tr><th>Architecture</th><th>Résolution effective</th><th>Bande</th><th>Points forts</th><th>Pourquoi écartée, ou retenue</th></tr></thead>
+    <tbody>
+      <tr><td>Approximations successives<br/><span class="small">SAR, 16 bits</span></td>
+        <td>14 à 15 bits</td><td>DC – 500 kHz</td><td>Latence nulle, multiplexage facile</td>
+        <td>Écartée : exige un filtre anti-repliement raide, et son bruit de quantification est
+        blanc, donc présent en totalité dans notre bande étroite.</td></tr>
+      <tr><td>Double rampe<br/><span class="small">intégrateur</span></td>
+        <td>18 à 22 bits</td><td>DC – 10 Hz</td><td>Réjection naturelle du réseau</td>
+        <td>Écartée : trop lente pour saisir la forme d'un potentiel d'action, et une seule voie.</td></tr>
+      <tr><td><strong>Delta-sigma</strong><br/><span class="small">Δ-Σ, 24 bits</span></td>
+        <td><strong>21 à 22 bits</strong></td><td>DC – 4 kHz</td>
+        <td>Filtre anti-repliement intégré, mise en forme du bruit, voies simultanées</td>
+        <td><strong>Retenue.</strong> Le suréchantillonnage repousse le bruit de quantification
+        hors bande, et le filtre numérique interne fait l'essentiel du travail.</td></tr>
+    </tbody>
+  </table>
+
+  <p>Le composant retenu, l'ADS131M04, offre quatre voies <strong>échantillonnées
+  simultanément</strong> — et non multiplexées. La distinction est capitale : deux voies
+  multiplexées présentent un décalage temporel entre elles, ce qui interdit toute mesure de
+  propagation. Or mesurer la vitesse de propagation d'un potentiel d'action le long d'une tige est
+  l'une des rares expériences qui distinguent nettement un signal physiologique d'un artefact.</p>
+
+  <div class="chiffre">
+    <div class="val">106 dB</div>
+    <div class="txt">Le rapport signal sur bruit du convertisseur à 250 échantillons par seconde,
+    soit environ 17,3 bits effectifs. Rapporté à la pleine échelle de ±1,2 V, cela fait un plancher
+    de 6 µV — bien au-dessus de notre objectif d'entrée, et c'est précisément pourquoi le gain
+    programmable existe : à ×200, ce plancher tombe à 30 nV, loin sous le bruit de l'étage
+    d'entrée.</div>
+  </div>
+
+  <h3 id="c6-reference" data-toc="sub">La référence de tension fixe l'échelle du monde</h3>
+
+  <p>Un convertisseur ne mesure pas des volts : il mesure un rapport entre la tension d'entrée et
+  sa référence. Toute erreur sur la référence devient une erreur d'échelle sur la mesure.
+  L'ADR4525 retenue offre 0,02 % d'exactitude initiale et 2 ppm/°C de dérive : sur une pièce qui
+  varie de dix degrés, l'échelle bouge de vingt parties par million — trois ordres de grandeur sous
+  le bruit. La question est close, et ne se reposera pas.</p>
+
+  <h3 id="c6-horloge" data-toc="sub">La base de temps : le point que tout le monde néglige</h3>
+
+  <p>Voici le défaut le plus répandu, et le plus grave, des montages de bio-signal amateurs :
+  <strong>ils datent leurs échantillons avec l'horloge de l'ordinateur</strong>. Or cette horloge
+  saute. Elle saute quand le système se synchronise sur un serveur de temps, quand la machine sort
+  de veille, quand l'heure d'été arrive, quand une mise à jour redémarre un service. Sur une
+  séance de huit heures, il est courant d'observer plusieurs sauts de plusieurs centaines de
+  millisecondes — et rien dans le fichier ne permet de savoir qu'ils ont eu lieu.</p>
+
+  <p>La carte procède autrement, et la règle tient en une phrase : <strong>le numéro d'échantillon
+  fait foi</strong>. Un oscillateur compensé en température à un ppm cadence le convertisseur ; un
+  compteur soixante-quatre bits numérote chaque échantillon depuis la mise sous tension. Ce numéro
+  est la seule référence temporelle qui compte. L'heure du monde n'est qu'une étiquette, apposée
+  une fois au début, puis ajustée par une régression affine réestimée toutes les dix secondes.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/carte-horodatage.svg" alt="Les deux horloges et leur ajustement"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Les deux horloges. Celle de la carte est
+    régulière mais ignore l'heure du monde ; celle de l'ordinateur connaît l'heure du monde mais
+    saute. L'ajustement affine, consigné dans le fichier, permet de passer de l'une à l'autre sans
+    jamais corriger les données elles-mêmes.</figcaption>
+  </figure>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Ce que cela change concrètement</div>
+    <p class="noindent">Deux cartes enregistrant la même plante, sur deux ordinateurs différents,
+    produisent des fichiers superposables à la milliseconde après recalage sur leurs compteurs
+    respectifs. Avec des horodatages système, l'écart atteint couramment plusieurs centaines de
+    millisecondes et dérive au cours de la séance. Pour mesurer une vitesse de propagation de
+    quelques millimètres par seconde sur vingt centimètres de tige, cette différence décide entre
+    une mesure et une illusion.</p>
+  </div>
+
+  <h3 id="c6-echantillonnage" data-toc="sub">Le module d'échantillonnage du logiciel</h3>
+
+  <p>La carte livre un flux continu. Le logiciel y ajoute un module d'échantillonnage qui permet
+  d'en extraire ce qu'on veut analyser : blocs de taille fixe, décimation, moyennage, fenêtre
+  d'apodisation, et déclenchement sur seuil avec pré-déclenchement — exactement les commandes d'un
+  oscilloscope numérique. Ce module est décrit en partie V ; il est mentionné ici parce que son
+  existence conditionne le choix de la fréquence d'échantillonnage brute.</p>
+
+  <p>Trois cadences sont prévues, et le logiciel bascule sans interrompre l'acquisition :</p>
+  <ul>
+    <li><strong>250 Hz</strong> par défaut. Couvre tout ce qui est physiologique, produit
+    900 000 échantillons par heure et par voie, soit 2,6 Mo par heure en vingt-quatre bits.</li>
+    <li><strong>1 kHz</strong> en mode oscilloscope, pour observer la forme exacte d'un front.</li>
+    <li><strong>32 kHz</strong> en écoute directe, lorsqu'on veut transposer le signal dans le
+    domaine audible sans passer par la sonification — usage rare mais spectaculaire.</li>
+  </ul>
+
+  <div class="loupe">
+    <div class="l-h">Le gain de la décimation, et sa limite</div>
+    <p class="noindent">Moyenner <i>N</i> échantillons successifs divise la bande par <i>N</i> et
+    améliore le rapport signal sur bruit d'un facteur √<i>N</i> — <strong>à condition que le bruit
+    soit blanc</strong>. Dès qu'on descend sous quelques hertz, le bruit en 1/f domine et ce gain
+    s'évanouit. C'est exactement ce que révèle la variance d'Allan, que le logiciel calcule : elle
+    montre la durée d'intégration au-delà de laquelle moyenner davantage <em>dégrade</em> la
+    mesure. Sur la carte, ce point se situe entre trente et cent secondes selon l'électrode.
+    Au-delà, il faut changer de stratégie — c'est-à-dire mesurer la dérive plutôt que lutter
+    contre elle.</p>
+  </div>
+</section>

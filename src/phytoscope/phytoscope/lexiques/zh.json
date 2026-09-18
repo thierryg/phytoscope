@@ -1,0 +1,75 @@
+{
+  "nom": "中文 — 沉思语域",
+  "langue": "zh",
+  "auteur": "Bretagne Namasté",
+  "note": "Dictionnaire d'exemple. Le modifier est l'usage normal, pas une entorse : les mots doivent être ceux de celui qui écoute.",
+  "grammaire": "contemplative",
+  "registres": {
+    "sujet": [
+      "我",
+      "有什么",
+      "汁液",
+      "树干",
+      "叶子"
+    ],
+    "verbe_montee": [
+      "微颤",
+      "苏醒",
+      "上升",
+      "跃起",
+      "迸发"
+    ],
+    "verbe_descente": [
+      "平静下来",
+      "回落",
+      "退去",
+      "安歇",
+      "隐没"
+    ],
+    "intensite": [
+      "几乎不",
+      "轻轻地",
+      "明显地",
+      "强烈地",
+      "以我全部的木质"
+    ],
+    "tempo": [
+      "又一次",
+      "再一次",
+      "过了一会儿",
+      "过了很久",
+      "在很长的沉默之后"
+    ],
+    "couleur": [
+      "沉闷",
+      "低沉",
+      "宽厚",
+      "清亮",
+      "尖锐"
+    ],
+    "liaison": [
+      "而",
+      "然后",
+      "于是",
+      "同时",
+      "——"
+    ]
+  },
+  "gabarits": {
+    "minimale": [
+      "{verbe}"
+    ],
+    "telegraphique": [
+      "{intensite}{verbe}"
+    ],
+    "contemplative": [
+      "{sujet}{intensite}{verbe}",
+      "{tempo}，{sujet}{intensite}{verbe}",
+      "{sujet}{intensite}{verbe}，{couleur}"
+    ],
+    "descriptive": [
+      "{tempo}，{sujet}{intensite}{verbe}，{couleur}",
+      "{sujet}{intensite}{verbe}{liaison}{couleur}"
+    ]
+  }
+}

@@ -1,0 +1,727 @@
+Revision WB 11.04.2023 - FRANCESE
+
+
+
+
+INSTRUCTION MANUAL                        MANUEL D'INSTRUCTION
+MUSIC OF THE PLANTS                       MUSIQUE DES PLANTES
+Bamboo (V.8.2)                            Bamboo (V.8.2)
+
+
+“Our aim is the uniﬁca7on of the Mother   "Notre objec7f est l'uniﬁca7on de la
+Worlds of Plants and Humans Beings.”      Terre-Mère des Plantes et des Êtres
+                                          Humains.
+We believe that plants are conscious living    Nous pensons que les plantes sont des
+beings with a collec7ve intelligence.          êtres vivants conscients dotés d'une
+                                               intelligence collec7ve.
+If we start to look at plants as acPve         Si nous commençons à considérer les
+conscious beings, we become more aware         plantes comme des êtres conscients
+or their subtle behavior and strategies. The   acPfs, nous devenons plus conscients de
+apex roots have an electrical acPvity that     leur comportement et de leurs
+could be very similar to our “brain.”          stratégies subPles. Les apex racinaires
+Many scienPsts have found that plants are      ont une acPvité électrique qui pourrait
+                                               être très similaire à notre "cerveau".
+not just able to ‘smell’ chemical substances
+                                               De nombreux scienPﬁques ont
+and see’ the light emi]ed by their             découvert que les plantes ne sont pas
+surrounding plants but they can even ‘hear     seulement capables de "senPr" des
+sounds’ emi]ed by themselves and other         substances chimiques et de "voir" la
+plants.                                        lumière émise par les plantes
+Since the 1970’s, the Damanhur FederaPon       environnantes, mais qu'elles peuvent
+                                               même "entendre des sons" émis par
+of CommuniPes in Italy has been
+                                               elles-mêmes et par d'autres plantes.
+researching communicaPon with plants. This     Depuis les années 1970, la FédéraPon
+device deciphers the electrical impulses of    des communautés Damanhur en Italie
+the plant and translates it into music.        mène des recherches sur la
+Plants respond in very sophisPcated ways to    communicaPon avec les plantes. Cet
+both physical and intellectual sPmuli. The     appareil déchiﬀre les impulsions
+electrical pulse streams of each organism      électriques de la plante et les traduit en
+                                               musique.
+are unique, with each plant manifesPng its
+                                               Les plantes réagissent de manière très
+own individual biological ‘signature sound.’   sophisPquée aux sPmuli physiques et
+Moreover, we have found that plants            intellectuels. Les ﬂux d'impulsions
+demonstrate that they can learn to interact    électriques de chaque organisme sont
+with humans. Aber the subject plant realizes   uniques, chaque plante manifestant sa
+that the sounds emi]ed by this Music of the    propre "signature sonore" biologique.
+                                               En outre, nous avons constaté que les
+Plants device are a consequence of their
+                                               plantes démontrent qu'elles peuvent
+electrical acPvity, they learn to modulate     apprendre à interagir avec les humains.
+their energy to change the sounds.             Après avoir compris que les sons émis
+The more experience the plant has with         par l'appareil Music of the Plants sont
+“playing music,” the be]er able they are to    une conséquence de leur acPvité
+modulate their sounds to interact with         électrique, les plantes apprennent à
+humans and create a real form of               moduler leur énergie pour modiﬁer les
+                                               sons.
+communicaPon.
+                                               Plus la plante a l'habitude de "jouer de
+                                               la musique", plus elle est capable de
+Welcome to the growing community               moduler ses sons pour interagir avec les
+dedicated to exploring the intelligence of     humains et créer une véritable forme de
+the plant world.                               communicaPon.
+
+                                               Bienvenue dans la communauté
+                                               grandissante qui se consacre à
+                                               l'explora7on de l'intelligence du monde
+                                               végétal.
+A USB Port                                                      A Port USB
+B Audio OUT Earphones                                           B SorPe audio écouteurs
+C Plant INPUT                                                   C Entrée végétale
+D SDHC-card                                                     D Carte SDHC
+E Display                                                       E Écran
+F ON/OFF                                                        F ON/OFF
+G Charging-LED red-green                                        G LED de charge rouge-vert
+H status-LEDs blue-red-green                                    H LED d'état bleu-rouge-vert
+I BACK (Center)                                                 I ARRIÈRE (Centre)
+J DirecPonal Arrows RIGHT/LEFT                                  J Flèches direcPonnelles DROITE/
+K DirecPonal Arrows UP/DOWN                                     GAUCHE
+L Internal Speaker                                              K Flèches direcPonnelles HAUT/BAS
+                                                                L Haut-parleur interne
+PRINCIPAL PARTS                                                 PARTIES PRINCIPALES
+A: Micro-USB Port - This port has three functions:              A : Port Micro-USB - Ce port a trois fonctions :
+                                                                1) Recharge de la batterie interne - et se
+1) Recharging the Internal Battery - connect to a USB-          connecter à un adaptateur de charge USB.
+charging adapter.                                               2) Sortie MIDI vers l'ordinateur
+2) MIDI output to computer                                      - connectez le câble USB à un ordinateur
+- connect the USB cable to a computer                           3) Sortie de données vers un PC (Windows
+3) Data output to PC (Windows only). Use the enclosed USB       uniquement). Utilisez le câble USB fourni et
+cable and connect the Bamboo to a PC. For this function, you    connectez le Bamboo à un PC. Pour cette fonction,
+will need the Bamboo Control Software to be installed on your   vous aurez besoin que le logiciel Bamboo Control
+PC.                                                             Software soit installé sur votre PC.
+                                                                Lien vers logiciel Bamboo Control Sobware
+
+B: Audio Out - This port has 2 functions:                       B: Sor7e Audio Ce port a deux fonctions:
+1) Connection to an external speaker -                          1) Connexion à un haut-parleur externe -
+When an external speaker is connected or the earphones are      Lorsqu'un haut-parleur externe est connecté ou que
+plugged in, the internal speaker is disabled.                   les écouteurs sont branchés, le haut-parleur interne
+Save the music as a music file on your smartphone by            est désactivé.
+purchasing a smartphone cable at our online shop:               Enregistrez la musique en tant que fichier musical sur
+www.MusicOfThePlants.com                                        votre smartphone en achetant un câble pour
+2) MIDI output to a MIDI interface -                            smartphone dans notre boutique en ligne :
+Connect the special (Micro-USB — 5pin DIN) cable to a MIDI      Lien vers câble pour smartphone
+interface, like a synthesizer or mixer.                         2) Sor7e MIDI vers une interface MIDI
+                                                                Connectez le câble spécial (Micro-USB - 5pin DIN)
+                                                                à une interface MIDI, comme un synthéPseur ou
+                                                                une table de mixage.
+                                                                Lien vers câble MIDI pour Bamboo
+
+C: Plant INPUT - 3.5mm stereo-jack socket for the sensor        C : Entrée de la plante - prise jack stéréo 3,5 mm
+cable which connects the electrodes to the plant:               pour le câble du capteur qui relie les électrodes à la
+Spring Clip - to be clipped onto a leaf                         plante :
+Metal Probe - to be inserted into the soil                      Clip à ressort - à fixer sur une feuille
+                                                                Sonde métallique - à insérer dans le sol
+                                                                Lien vers câble capteur pour Bamboo
+
+D: SDHC-card - you can record data from a plant to an SDHC-     D : Carte SDHC - vous pouvez enregistrer les
+card. The SDHC-card is inserted here.                           données d'une plante sur une carte SDHC. La
+                                                                carte SDHC est insérée ici.
+                                                                Lien vers carte SDHC
+
+E Display – Displays the menu and status                        E Aﬃchage - Aﬃche le menu et les informaPons
+informaPon.                                                     sur le statut.
+
+F ON/OFF – Power Switch                                         F ON/OFF - Interrupteur de marche
+
+G Charging LED – RED: charging in progress                      G LED de charge - ROUGE= charge en cours
+Green : fully charged                                           VERT= charge complète
+H: Status-LED 1 –Blue (Flashing):the sensor cable is not         H : LED statut 1 -
+inserted                                                         BLEU (clignotant) = le câble du capteur n'est pas
+Blue (Fixed):cable is inserted but there is no signal from the   inséré
+plant                                                            BLEU (ﬁxe) = le câble est inséré mais il n'y a pas
+    Status-LED 2 – Red: looking for the plant’s signal           de signal de la plante.
+Green:playing music                                              LED statut 2 -
+                                                                 ROUGE = recherche le signal de la plante
+                                                                 VERT= joue de la musique
+I BACK – Touching in the middle between the four                 I RETOUR - En appuyant à tout moment au milieu
+direcPonal arrows at any Pme will return you to the next         des quatre ﬂèches direcPonnelles, vous revenez
+higher level of the menu                                         au niveau le plus élevé du menu.
+
+J K: Directional Arrows – On the Bamboo there are four           J K : Flèches direc7onnelles - Sur le Bamboo, il y
+directional arrows used to set various parameters.               a quatre ﬂèches direcPonnelles uPlisées pour
+• UP scroll UP –> previous menu item                             régler diﬀérents paramètres.
+• DOWN scroll DOWN –> next menu item                             ̖déﬁlement vers le HAUT -> élément de menu
+• LEFT horizontal scroll –> select left or smaller value         précédent.
+• RIGHT horizontal scroll –> select right or higher value        ▼déﬁlement vers le BAS -> élément de menu
+                                                                 suivant.
+                                                                 ◀ Déﬁlement vers la GAUCHE -> sélecPon
+                                                                 horizontale de la valeur à gauche ou plus pePte.
+                                                                 ▶ Déﬁlement vers la DROITE -> sélecPon
+                                                                 horizontale de la valeur à droite ou plus grande.
+
+L: Internal Speaker – The internal speaker is enabled, unless    L : Haut-parleur interne - Le haut-parleur interne
+an external speaker is connected via a 3.5mm stereo plug.        est acPvé, sauf si un haut-parleur externe est
+                                                                 connecté via une ﬁche stéréo de 3,5 mm.
+
+CONNECTION TO A PLANT OR TREE                                    CONNEXION À UNE PLANTE OU UN ARBRE
+Connect the electrodes to a plant or tree as follows:            Connectez les électrodes à une plante ou à un
+                                                                 arbre comme suit :
+·Insert the metal probe into the soil near the roots of a plant
+or at the base of a tree. Be sure to pour some water around       -Insérez la sonde métallique dans le sol près des
+the metal probe to increase conductivity.                         racines d'une plante ou au pied d'un arbre.
+                                                                  Veillez à verser un peu d'eau autour de la sonde
+·Moisten the surface of a leaf and connect the spring clip to métallique pour augmenter la conducPvité.
+it. If the signal is not stable, to Increase connectivity between
+the leaf and the clip you can purchase conductivity gel at our -Humidiﬁez la surface d'une feuille et connectez-
+online shop:                                                      y la pince à ressort. Si le signal n'est pas stable,
+www.MusicOfThePlants.com                                          pour augmenter la connecPvité entre la feuille et
+                                                                  la pince, vous pouvez acheter du gel de
+                                                                  conducPvité dans notre bouPque en ligne :
+                                                                  Lien vers le gel de conductivité
+·Once the two electrodes are connected as above, insert the      Une fois les deux électrodes connectées comme
+3.5mm stereo plug into the Plant INPUT C on the device.          indiqué ci-dessus, insérez la ﬁche stéréo de 3,5
+                                                                 mm dans l'entrée Plant INPUT C de l’appareil.
+IF THE MUSIC DOES NOT PLAY                                             SI LA MUSIQUE NE JOUE PAS
+If the Bamboo M does not play, please check the following:             Si le Bamboo M ne joue pas, veuillez vériﬁer les
+                                                                       points suivants :
+1.Music of the Plants is a technology that gives voice to plants.      1. la musique des plantes est une technologie qui
+As with human beings, sometimes plants do not wish to speak.           donne la parole aux plantes. Comme pour les
+When this happens, its signal strength falls to a sub-audible          êtres humains, il arrive que les plantes ne
+level.                                                                 souhaitent pas "parler". Dans ce cas, la force du
+                                                                       signal tombe à un niveau sub-audible.
+A plant’s behavior depends on a number of factors, i.e. ambient
+light, water availability, temperature, soil fertility, and so on.     Le comportement d'une plante dépend d'un
+Other factors which affect the plant’s “music” are the plant’s         certain nombre de facteurs, tels que la lumière
+current health, if it is blooming, leaf fall, etc. Human factors       ambiante, la disponibilité de l'eau, la
+which affect the plants are our thoughts, intentions, emotions,        température, la ferPlité du sol, etc. D'autres
+and touch, among others.                                               facteurs qui aﬀectent la "musique" de la plante
+                                                                       sont son état de santé actuel, la ﬂoraison, la
+                                                                       chute des feuilles, etc. Les facteurs humains qui
+                                                                       aﬀectent les plantes sont, entre autres, nos
+                                                                       pensées, nos intenPons, nos émoPons et notre
+                                                                       toucher. Elles sembleraient réellement
+                                                                       connectées à nos ondes cérébrales.
+2.Please be sure to start each music session by moistening the         2. Veillez à commencer chaque séance de
+leaf under the metal clip. In addition, please pour some water         musique en humidiﬁant la feuille sous la pince
+into the soil on top of the roots where you insert the metal           métallique. De plus, versez un peu d'eau dans le
+probe. Water helps to improve the electrical conductivity              sol, au-dessus des racines, à l'endroit où vous
+between the plant and the device.                                      insérez la sonde métallique. L'eau contribue à
+                                                                       améliorer la conducPvité électrique entre la
+                                                                       plante et l'appareil.
+3.Plants whose leaves are thick and shiny (such as camellias) or       3) Les plantes dont les feuilles sont épaisses et
+have hard leaves (such as succulents or cactus’) prevents the          brillantes (comme les camélias) ou dures (comme
+clear transmission of electrical signals. Choose plants with thin      les succulentes ou les cactus) empêchent la
+and soft leaves. Please be careful that the cable does not put         transmission claire des signaux électriques.
+too much weight on the branch.                                         Choisissez des plantes aux feuilles ﬁnes et
+                                                                       souples. Veillez à ce que le câble ne pèse pas
+                                                                       trop sur la branche.
+4.The music played from clones (plants which are genetically           4. La musique jouée par des clones (plantes
+identical) is less consistent than the music produced from non-        généPquement idenPques) est moins homogène
+genetically altered plants of the same species. Likewise, wild         que la musique produite par des plantes non
+plants perform better than flowers purchased from a florist.           modiﬁées généPquement de la même espèce.
+                                                                       De même, les plantes sauvages sont plus
+                                                                       performantes que les ﬂeurs achetées chez un
+                                                                       ﬂeuriste.
+5.Tap water in many cities is chlorinated to kill bacteria, and        5 L'eau du robinet dans de nombreuses villes est
+often has traces of other chemicals which will negatively affect       chlorée pour tuer les bactéries et conPent
+a plant’s health and vitality.                                         souvent des traces d'autres produits chimiques
+In addition, when a plant is in a small restrictive plastic pot, or    qui aﬀectent négaPvement la santé et la vitalité
+there is too much activity in the room, this can stress the plant,     d'une plante.
+leading to subdued or no activity.                                     En outre, lorsqu'une plante se trouve dans un
+                                                                       pePt pot en plasPque restricPf ou qu'il y a trop
+                                                                       d'acPvité dans la pièce, cela peut stresser la
+                                                                       plante et entraîner une acPvité réduite ou
+                                                                       inexistante. Les racines ont besoin d’échange
+                                                                       d’air, donc préférez un pot en terre.
+6.Our thoughts and feelings, as well as our behavior and               6. Nos pensées et nos senPments, ainsi que notre
+attitude, will influence the plants activity level. If you find that   comportement et notre aÄtude, inﬂuencent le
+your plants are not responding, try communicating your sincere         niveau d'acPvité des plantes. Si vous constatez
+desire to interact with your plant.                                    que vos plantes ne réagissent pas, essayez de leur
+                                                                       communiquer votre désir sincère d'interagir avec
+                                                                       elles et soyez paPents sans éme]re une pression
+                                                                       à vouloir obtenir un résultat.
+NAVIGATING THE MENU                                         NAVIGATION DANS LE MENU
+On the Bamboo, there are four direcPons arrows Sur le Bamboo, il y a quatre ﬂèches de
+                                                            direcPon ̖▼ ◀ ▶
+° UP-DOWN for seÄng various parameters                      ° HAUT-BAS pour le réglage de divers
+° LEFT-RIGHT                                                paramètres
+° CENTER : Back Bu]on                                       ° GAUCHE-DROITE
+                                                            ° CENTRE : Touche Retour
+Aber starPng the device, the status informaPon
+appears on the display.                                     Après le démarrage de l'appareil, les
+                                                            informaPons sur le statut apparaissent
+                                                            sur l'écran.
+The ba]ery status at the top right of the display.          L'état de la ba]erie s'aﬃche en haut à droite
+The active profile is displayed in the top leb-hand corner (in de l'écran.
+this case Proﬁle 5). The middle line shows the operaPng        Le proﬁl acPf est aﬃché dans le coin
+condiPon: such as music playing, no signal, bad signal, or
+                                                               supérieur gauche (dans ce cas, le proﬁl 5).
+waiting for signal.
+                                                            La ligne du milieu indique le statut de
+                                                            connexion : musique en cours, pas de signal,
+                                                            mauvais signal ou en a]ente de signal.
+                                                            En touchant les ﬂèches direcPonnelles HAUT
+By touching the UP and DOWN direcPonal                      et BAS, vous pouvez faire déﬁler le menu
+arrows you can scroll through the Main menu                 principal et les sous-menus.
+and the Sub menus.
+                                                            En touchant les ﬂèches direcPonnelles
+By touching the LEFT and RIGHT direcPonal                   GAUCHE et DROITE, vous pouvez eﬀectuer
+arrows you can make a selecPon or change the                une sélecPon ou modiﬁer la valeur à un
+value to a higher or lower level.                           niveau plus élevé ou plus bas.
+
+                                                            REMARQUE : La valeur que vous voyez est
+PLEASE NOTE: The value you see is automaPcally automaPquement enregistrée comme votre
+saved as your preference.                      préférence.
+
+Without touching the direcPonal arrows for 30 seconds the   Si vous ne touchez pas les ﬂèches
+background-light of the display will switch oﬀ to save      direcPonnelles pendant 30 secondes,
+power.                                                      l'éclairage de fond de l'écran s'éteint pour
+                                                            économiser de l'énergie.
+When you touch the direcPonal arrows again, the
+background-light will automaPcally turn back on.
+                                                            Lorsque vous touchez à nouveau les ﬂèches
+                                                            direcPonnelles, le rétro-éclairage se rallume
+                                                            automaPquement.
+MENU – TABLE OF CONTENT                                  MENU - TABLE DES MATIÈRES
+1. Volume:                                               . 1. Volume :
+   The volume can be adjusted by pressing the RIGHT or   Le volume peut être réglé en appuyant sur les
+   LEFT arrows when you are not in a speciﬁc menu.       ﬂèches DROITE ou GAUCHE lorsque vous n'êtes
+                                                         pas dans un menu spéciﬁque.
+
+2. Music Proﬁles:                                        2. Proﬁls musicaux :
+   Preset music proﬁles: P1 to P12                       Proﬁls musicaux prédéﬁnis : P1 à P12
+   All 12 preset musical proﬁles can be customized.      Les 12 proﬁls musicaux prédéﬁnis peuvent être
+                                                         personnalisés.
+
+3. Device Sensi7vity op7ons:                             3. Op7ons de sensibilité de l'appareil :
+   Automa7cally adjusts Manually adjusted from           Ajustement automa7que Ajustement manuel de
+   slightly sensi7ve to very sensi7ve (1 to 7)           peu sensible à très sensible (1 à 7)
+
+
+4. Tempo (musical notes played per minute): 30,          4. Tempo (notes de musique jouées par minute)
+45, 60,120, 180,240. 360                                 : 30, 45, 60,120, 180,240. 360
+
+5 Sound: (Bamboo M version only)                         5 Son : (version Bamboo M uniquement)
+Instrument                                               • Instrument
+Root Note                                                • Note de base
+Scale                                                    • Échelle
+Note Spacing                                             • Espacement des notes
+Chord                                                    • Accord
+Base Frequency                                           • Fréquence de base
+Mystery                                                  • Mystère
+Reverb                                                   • RéverbéraPon
+Chorus                                                   • Chorus
+SpaPal                                                   • SpaPal
+Proﬁle Save                                              • Proﬁl Enregistrer
+
+Back to Main Menu                                        • Retour au menu principal
+6 Record                                                 6 Enregistrement
+Record SeÄng                                             •   Réglage de l'enregistrement
+To Record                                                •   Pour enregistrer
+Recordings                                               •   Enregistrements
+Play Record Number                                       •   Lecture Numéro d'enregistrement
+Format SDHC card                                         •   Formatage de la carte SDHC
+
+Back to Main Menu                                        • Retour au menu principal
+7. SeÄngs                                                7. Réglages
+Output Mode                                              •   Mode de sorPe
+Language                                                 •   Langue
+Version                                                  •   Version
+Factory Reset                                            •   RéiniPalisaPon d'usine
+Upgrade                                                  •   Mise à jour
+
+Back to Main Menu                                        • Retour au menu principal
+FUNCTION DESCRIPTION                                             DESCRIPTION DE LA FONCTION
+1. Volume:                                                       1. Volume :
+The volume can be adjusted by pressing the                       Le volume peut être réglé en appuyant
+RIGHT or LEFT arrows when you are not in a                       sur les ﬂèches DROITE ou GAUCHE
+speciﬁc menu.                                                    lorsque vous n'êtes pas dans un menu
+                                                                 spéciﬁque.
+2. Proﬁles:                                                      2. Proﬁls :
+A proﬁle is a pre-deﬁned set of sound                            Un proﬁl est un ensemble prédéﬁni de
+parameters, which includes a musical                             paramètres sonores, qui comprend un
+instrument, a speciﬁc musical scale, and a base                  instrument de musique, une gamme
+frequency.                                                       musicale spéciﬁque et une fréquence de
+All changes made in the sound-menu are                           base.
+temporarily stored in the short-term memory                      Toutes les modiﬁcaPons apportées au
+unPl saved to one of the proﬁles.                                menu sonore sont temporairement
+                                                                 stockées dans la mémoire à court terme
+                                                                 jusqu'à ce qu'elles soient enregistrées
+                                                                 dans l'un des proﬁls.
+3. Device SensiPvity:                                            3. Sensibilité de l'appareil :
+The sensiPvity parameter controls the                            Le paramètre de sensibilité contrôle
+ampliﬁcaPon of the plant's signal.                               l'ampliﬁcaPon du signal de la plante.
+When set on automaPc, it automaPcally adjusts                    Lorsqu'il est réglé sur automaPque, il
+to the strength or weakness of the plant's signal.               s'adapte automaPquement à la force ou
+It works seamlessly in the background to give                    à la faiblesse du signal de la plante. Il
+you the ideal output level.                                      foncPonne de manière transparente en
+For research purposes, we recommend that you                     arrière-plan pour vous donner le niveau
+select the manual sensiPvity opPon. You will be                  de sorPe idéal.
+able to closely monitor the plant's actual signal                À des ﬁns de recherche, nous vous
+strength and its relaPonship to various inputs.                  recommandons de sélecPonner l'opPon
+You will ﬁnd in most cases there is no audible                   de sensibilité manuelle. Vous pourrez
+diﬀerence between various sensiPvity seÄngs.                     ainsi surveiller de près l'intensité réelle
+This simply means that the signal is already clear               du signal de la plante et sa relaPon avec
+and strong.                                                      les diﬀérentes entrées.
+                                                                 Dans la plupart des cas, vous constaterez
+                                                                 qu'il n'y a pas de diﬀérence audible
+                                                                 entre les diﬀérents réglages de
+                                                                 sensibilité. Cela signiﬁe simplement que
+                                                                 le signal est déjà clair et fort.
+4. Notes per Minute:                                             4. Notes par minute :
+                                                                 La plante est le musicien et décide de la
+The plant is the musician and decides the speed of the           vitesse de la musique composée. Toutefois,
+composed music. However, this function allows the listener
+                                                                 ce]e foncPon permet à l'auditeur d'adapter
+to tune the music to their current mood or activity. For
+example, if you would like to meditate or practice yoga, you     la musique à son humeur ou à son acPvité
+can set this function to a lower speed. Or, conversely, you      du moment. Par exemple, si vous souhaitez
+can set a higher speed if you would like to be more active.      méditer ou faire du yoga, vous pouvez régler
+Please Note: this is only a suggestion given to the plant, and   ce]e foncPon sur une vitesse plus faible.
+the plant may override this suggestion.
+                                                                 Ou, à l'inverse, vous pouvez régler une
+                                                                 vitesse plus élevée si vous souhaitez être
+                                                                 plus acPf. Remarque : il s'agit uniquement
+                                                                 d'une suggesPon donnée à la plante, et la
+                                                                 plante peut passer outre ce]e suggesPon.
+Sound                                              Son
+Enter the Sub-Menu for the Sound seÄngs. In        Entrez dans le sous-menu des réglages de
+this Sub-Menu you will ﬁnd all available Sound     son. Dans ce sous-menu, vous trouverez
+seÄngs, like instruments, scales, eﬀects, and      tous les paramètres sonores disponibles, tels
+more                                               que les instruments, les échelles, les eﬀets,
+Instrument: Choose an instrument from the list     etc.
+(128 instruments)                                  • Instrument : Choisissez un instrument
+                                                     dans la liste (128 instruments)
+Root Note : Choose the Root Note for the Scale :
+C, C#, D, D#, E, F, F#, G, G#, A, A#, B          • Root Note : Choisissez la note de base de
+                                                     la gamme :
+Scale: Choose a scale from the following list :    C, C#, D, D#, E, F, F#, G, G#, A, A#, B
+ChromaPc, Major, Minor, Harmonic Minor,
+Pentatonic, Blues, Dorian, Phrygian, Lydian,      • Scale (Gamme) : Choisissez une gamme
+Healing, Japanese Folk, Chinese, Damanhurian,       dans la liste suivante : ChromaPque,
+NaPve American, Indian, Arabic, Persian             majeure, mineure, mineure harmonique,
+                                                    pentatonique, blues, dorienne,
+Note per minute: Choose the maximum notes           phrygienne, lydienne, guérisseuse,
+per minutes you would like for your plant to play   folklorique japonaise, chinoise,
+                                                    damanhurienne, amérindienne, indienne,
+Chord: Choose how the notes should be played:       arabe, persane.
+1 note/3 notes/ triad.
+                                                   • Note par minute : Choisissez le nombre
+Base Frequency: Choose 440Hz, 432Hz or               maximum de notes par minute que vous
+426.7Hz as the base frequency.                       souhaitez que votre plante joue.
+
+Mystery: It gives a sense of suspense to the       • Accord : Choisissez comment les notes
+music. Choose the mystery-level of the music         doivent être jouées : 1 note/3 notes/
+(0-7).                                               triade.
+
+Reverb/ Chorus/ SpaPal: Choose the eﬀect           • Fréquence de base : Choisissez 440 Hz,
+intensity (0-15).                                    432 Hz ou 426,7 Hz comme fréquence de
+                                                     base.
+Proﬁle Save: This FuncPon saves the temporarily
+stored values to the last used proﬁle (P1-P12). If • Mystère : il donne un senPment de
+you would like to change a proﬁle, do it in the      suspense à la musique. Choisissez le
+following way:                                       niveau de mystère de la musique (0-7).
+     1. Choose the proﬁle you would like to
+        change (P1-P12).                           • Reverb/ Chorus/ Spa7al : Choisissez
+     2. Go to the SOUND-menu and change the          l'intensité de l'eﬀet (0-15).
+        parameters.
+     3. Save these temporarily stored values in • Proﬁle Save : Ce]e foncPon permet de
+        that proﬁle.                                 sauvegarder les valeurs temporairement
+                                                     enregistrées dans le dernier proﬁl uPlisé
+                                                     (P1-P12). Si vous souhaitez modiﬁer un
+                                                     proﬁl, procédez comme suit :
+                                                   1. Choisissez le proﬁl que vous souhaitez
+                                                   modiﬁer (P1-P12).
+                                                   2. Allez dans le menu SOUND et modiﬁez les
+                                                   paramètres.
+                                                   3. Sauvegardez ces valeurs temporairement
+                                                   stockées dans ce proﬁl.
+6 RECORD                                                          6 RECORD
+It is now possible to record the data from a plant to an SDHC- Il est désormais possible d'enregistrer les
+card. You can save and listen to up to 99 recordings.          données d'une installaPon sur une carte SDHC.
+                                                               Vous pouvez sauvegarder et écouter jusqu'à 99
+If you would like to use this function, please insert an       enregistrements.
+SDHC-card in the slot D BEFORE you start the Bamboo.           Si vous souhaitez uPliser ce]e foncPon, veuillez
+The device can only initialize the SDHC-card at start up.      insérer une carte SDHC dans le slot D AVANT de
+If the Bamboo recognizes the SDHC-card, you will see an        démarrer le Bamboo. L'appareil ne peut iniPaliser
+SDHC-card icon in the bottom right-hand corner of the          la carte SDHC qu'au démarrage.
+display as shown below:                                        Si le Bamboo reconnaît la carte SDHC, vous verrez
+                                                               une icône de carte SDHC dans le coin inférieur
+(SD) When this icon appears, an SDHC-card has been             droit de l'écran, comme indiqué ci-dessous :
+inserted and is ready to receive data.
+(E) When this icon appears, an unsupported card has            (SD) Lorsque ce]e icône apparaît, une carte SDHC
+been inserted, or an error has occurred during                 a été insérée et est prête à recevoir des données.
+initialization.                                                (E) Lorsque ce]e icône apparaît, cela signiﬁe
+                                                               qu'une carte non prise en charge a été insérée ou
+Enter the Sub-menu for the SDHC-card settings.                 qu'une erreur s'est produite pendant
+In this Sub-menu you will find all available functions which   l'iniPalisaPon.
+work with the SDHC-card.
+                                                               Accédez au sous-menu des réglages de la carte
+                                                               SDHC.
+                                                               Dans ce sous-menu, vous trouverez toutes les
+                                                               foncPons disponibles qui foncPonnent avec la
+                                                               carte SDHC.
+
+
+Record Settings:     You can pre-set the recording-duration.      Paramètres d'enregistrement : Vous pouvez
+Pre-set durations are: 1min, 3min, 5min, 10min, 15min, or         prédéﬁnir la durée d'enregistrement. Les durées
+manual.                                                           prédéﬁnies sont les suivantes : 1min, 3min, 5min,
+                                                                  10min, 15min ou manuelle.
+To Record:          To make a recording
+                                                                  Pour enregistrer : Pour eﬀectuer un
+For pre-set durations the recording stops automatically.          enregistrement
+For the manual option (non-pre-set duration recordings) you       Pour les durées prédéﬁnies, l'enregistrement
+can terminate the recording here.                                 s'arrête automaPquement.
+                                                                  Pour l'opPon manuelle (enregistrements d'une
+                                                                  durée non prédéﬁnie), vous pouvez me]re ﬁn à
+Recordings:         See a list of the saved recordings, and
+                                                                  l'enregistrement ici.
+select anyone of them to play.
+                                                                  Enregistrements : Voir la liste des
+                                                                  enregistrements sauvegardés et sélecPonner l'un
+                                                                  d'entre eux pour le lire.
+Track #: (Play Recording Number):         Start playing or stop   Track # : (Numéro de lecture de
+the selected recording                                            l'enregistrement) : Démarrer la lecture ou arrêter
+                                                                  l'enregistrement sélecPonné
+Format SDHC:        Format the SDHC-card.                         Format SDHC : Formater la carte SDHC.
+Supported cards: ONLY "standard" micro SDHC-cards                 Cartes prises en charge :    SEULES les cartes
+(4GB-32GB) can be used.                                           micro SDHC "standard" (4GB-32GB) peuvent être
+                                                                  uPlisées.
+·Basic SD-cards are NOT supported.                                -Les cartes SD de base ne sont pas prises en
+                                                                  charge.
+·SDHC UHS-1 cards usually referred to as“ULTRA” are also
+NOT supported.                                                    -Les cartes SDHC UHS-1 généralement appelées
+                                                                  "ULTRA" ne sont pas non plus prises en charge.
+PLEASE NOTE:                                                        VEUILLEZ NOTER QUE
+
+1.The data file recorded on the SDHC-card can ONLY be               1.Le ﬁchier de données enregistré sur la carte
+played on the Bamboo M, or with the Bamboo Control                  SDHC peut UNIQUEMENT être lu sur le Bamboo
+Software.It is NOT a standard mp3 or wav audio file which           M, ou avec le logiciel Bamboo Control. Il ne s'agit
+can be read or listened to on any other device, such as a           PAS d'un ﬁchier audio mp3 ou wav standard qui
+laptop or smartphone.                                               peut être lu ou écouté sur tout autre appareil, tel
+                                                                    qu'un ordinateur portable ou un smartphone.
+2. All saved recordings are deleted when reformatting!
+                                                                    2. Tous les enregistrements sauvegardés sont
+3. Compatible SDHC-cards can be purchased from our                  supprimés lors du reformatage !
+online store:
+                                                                    3. Des cartes SDHC compaPbles peuvent être
+4. If you would prefer, you can record the music directly to        achetées dans notre bouPque en ligne :
+your smartphone using a smartphone cable, which can also            Lien vers carte SDHC
+be purchased from our online store.
+MusicOfThePlants.com                                                4. Si vous préférez, vous pouvez enregistrer la
+                                                                    musique directement sur votre smartphone à
+                                                                    l'aide d'un câble pour smartphone, également
+                                                                    disponible dans notre bouPque en ligne.
+                                                                    Lien vers câble pour smartphone
+
+
+
+
+7 SETTINGS                                                          7 PARAMÈTRES
+Enter the Sub-menu SeÄngs. In this Sub-menu                         Entrez dans le sous-menu Paramètres. Dans ce
+you will ﬁnd all general seÄngs                                     sous-menu, vous trouverez tous les paramètres
+                                                                    généraux
+
+Output-Mode:Choose an Audio OUT output mode                         Mode de sor7e : Choisir un mode de sorPe Audio
+                                                                    OUT
+1.   Audio Speaker: The Bamboo’s internal speaker is
+     enabled, unless an external speaker is plugged into the        1.Haut-parleur audio : Le haut-parleur interne du
+     Audio OUT socket.                                              Bamboo est acPvé, à moins qu'un haut-parleur
+                                                                    externe ne soit branché sur la prise Audio OUT.
+2.   MIDI-USB → PC (MAC): The Bamboo can supply a MIDI
+     signal from the Micro-USB port to either a PC or a MAC         2.MIDI-USB → PC (MAC) : Le Bamboo peut
+     computer.                                                      fournir un signal MIDI à parPr du port Micro-USB
+                                                                    vers un ordinateur PC ou MAC.
+3.   MIDl-jack > Synth: The Bamboo can supply a MIDI signal
+     from the Audio OUT socket to a MIDI interface like a           3. MIDl-jack > Synth : Le Bamboo peut fournir un
+     synthesizer or mixer via the specialty MIDl-jack cable (can    signal MIDI à parPr de la prise Audio OUT vers
+     be purchased from our online store).                           une interface MIDI telle qu'un synthéPseur ou
+                                                                    une table de mixage via le câble MIDl-jack
+4.   Record Audio: When a jack cable is plugged into the            spécialisé (disponible dans notre bouPque en
+     Audio OUT socket you can listen to music from both the         ligne). Lien vers câble MIDI pour Bamboo
+     internal speaker and to an external device. This function is
+     particularly handy when using our “Smartphone” cable.          4. Enregistrer Audio : Lorsqu'un câble jack est
+     You can listen to the music and record it at the same time.    branché sur la prise Audio OUT, vous pouvez
+                                                                    écouter de la musique à la fois sur le haut-parleur
+                                                                    interne et sur un appareil externe. Ce]e foncPon
+                                                                    est parPculièrement praPque lorsque vous
+                                                                    uPlisez notre câble "Smartphone". Vous pouvez
+                                                                    écouter la musique et l'enregistrer en même
+                                                                    temps. Lien vers câble pour smartphone
+Language : Choose one of the following                        Langue : Choisissez l'une des langues
+languages:                                                    suivantes :
+English                                                       • Anglais
+Italian                                                       • Italien
+French                                                        • Français
+German                                                        • Allemand
+Spanish                                                       • Espagnol
+Chinese                                                       • Chinois
+Japanese                                                      • Japonais
+Russian                                                       • Russe
+
+
+Version: Shows the version of the device, and the device's    Version : Aﬃche la version de l'appareil et
+serial number.                                                son numéro de série.
+Factory Reset: You can return to the factory default sound    Réini7alisa7on d'usine : Vous pouvez
+settings for the profiles (P1- P12).                          revenir aux réglages sonores par défaut des
+                                                              proﬁls (P1- P12).
+PLEASE NOTE:        This will delete all of your changes !
+                                                              REMARQUE : ce]e opéraPon eﬀace toutes
+                                                              vos modiﬁcaPons !
+Upgrades: Upgrade your device here by entering the            Mises à niveau :
+upgrade code you will receive by email, after purchase from   Pour les Versions antérieures à 2022.
+our online store.                                             Me]ez votre appareil à niveau ici en
+                                                              saisissant le code de mise à niveau que vous
+                                                              recevrez par courrier électronique après
+                                                              l'achat dans notre bouPque en ligne.
+USING THE MIDI-SIGNAL OUTPUT                                         UTILISATION DE LA SORTIE DU SIGNAL
+                                                                     MIDI
+You can use the MIDI signal to compose music with the help of        Vous pouvez uPliser le signal MIDI pour composer
+your favorite professional music software. The Bamboo M has          de la musique à l'aide de votre logiciel de
+2 different options:                                                 musique professionnel préféré. Le Bamboo M
+                                                                     dispose de 2 opPons diﬀérentes :
+1.   Use the Bamboo M’s MIDI signal to connect directly to           1. U7lisez le signal MIDI de la Bamboo M pour
+     your computer (PC or MAC).                                      vous connecter directement à votre ordinateur
+                                                                     (PC ou MAC).
+You can supply the MIDI signal directly to your computer by
+using the USB cable (Micro-USB - USB plug) supplied with the         Vous pouvez fournir le signal MIDI directement à
+Bamboo.                                                              votre ordinateur en uPlisant le câble USB (Micro-
+                                                                     USB - prise USB) fourni avec le Bamboo.
+Plug the Micro-USB cable end into your Bamboo’s "USB port"
+                                                                     Branchez l'extrémité du câble Micro-USB dans le
+From the menu go to SETTINGS                                         "port USB" de votre Bamboo.
+Select OUTPUT MODE and Then select MIDI-USB → PC or                  Dans le menu, allez dans PARAMÈTRES
+Mac                                                                  SélecPonnez OUTPUT MODE, puis MIDI-USB →
+                                                                     PC ou Mac.
+
+2.   Use the custom MIDI-jack cable (which needs to be               2. U7lisez le câble MIDI-jack personnalisé (qui
+     purchased separately* ) to connect your Bamboo M to a           doit être acheté séparément* ) pour connecter
+     MIDI interface.                                                 votre Bamboo M à une interface MIDI.
+
+You can supply the MIDI signal directly to a MIDI interface like a   Vous pouvez fournir le signal MIDI directement à
+synthesizer or mixer via a MIDl-jack cable*.                         une interface MIDI telle qu'un synthéPseur ou
+                                                                     une table de mixage via un câble MIDl-jack*.
+Plug the MIDI-jack cable into your Bamboo M’s Audio OUT
+socket.                                                              Branchez le câble MIDI-jack dans la prise Audio
+                                                                     OUT de votre Bamboo M.
+From the menu go to SETTINGS
+Select OUTPUT MODE and Then select MIDl-jack > Synth                 Dans le menu, allez dans PARAMÈTRES
+                                                                     SélecPonnez OUTPUT MODE, puis MIDl-jack >
+* The custom MIDI-jack cable can be purchased at our online          Synth.
+store: www.musicOfThePlants.com
+                                                                     * Le câble MIDI-jack personnalisé peut être
+                                                                       acheté dans notre bouPque en ligne :
+                                                                       Lien vers câble MIDI-jack
+
+
+USING THE BAMBOO CONTROL SOFTWARE                                    UTILISATION DU LOGICIEL DE
+                                                                     CONTRÔLE BAMBOO
+Bamboo Control Software is a revolutionary new software              Bamboo Control SoÄware est un nouveau logiciel
+(currently available for Windows PC only) which allows you to        révoluPonnaire (actuellement disponible
+VIEW your plant’s electrical signal in real time. Researchers will   uniquement pour PC Windows) qui vous permet
+find this option particularly helpful when studying plant            de VIEWER le signal électrique de votre plante en
+                                                                     temps réel. Les chercheurs trouveront ce]e
+behavior.
+                                                                     opPon parPculièrement uPle pour étudier le
+                                                                     comportement des plantes.
+This software opens up a new era in plant research for
+                                                                     Ce logiciel ouvre une nouvelle ère dans la
+scientific laboratories as well as for people who are passionate
+                                                                     recherche sur les plantes pour les laboratoires
+about their plants and have been seeking a deeper
+                                                                     scienPﬁques ainsi que pour les personnes qui
+connection. It comes with a detailed instruction manual.
+                                                                     sont passionnées par leurs plantes et qui ont
+                                                                     cherché à établir une connexion plus profonde. Il
+Bamboo Control Software can be purchased from our online
+                                                                     est accompagné d'un manuel d'instrucPons
+store.
+                                                                     détaillé.
+www.MusicOfThePlants.com
+                                                                     Le logiciel Bamboo Control peut être acheté dans
+                                                                     notre bouPque en ligne.
+                                                                     Lien vers logiciel Bamboo Control Sobware
+RECHARGING THE BATTERY                                        RECHARGEMENT DE LA BATTERIE
+
+The battery usage time is about 5 hours.                      La durée d'uPlisaPon de la ba]erie est d'environ
+                                                              5 heures.
+If you press the ON/OFF button F and the device does not      Si vous appuyez sur le bouton ON/OFF F et que
+start, it means that the device needs to be recharged or      l'appareil ne démarre pas, cela signiﬁe qu'il doit
+connected to a power source before using.                     être rechargé ou connecté à une source
+                                                              d'alimentaPon avant d'être uPlisé.
+To recharge, connect the supplied USB-charging cable to an AC-
+DC adapter and the other end to the Bamboo’s USB port A .      Pour recharger l'appareil, connectez le câble de
+Alternatively, you can connect it to a computer or an external recharge USB fourni à un adaptateur CA/CC et
+powerbank.                                                     l'autre extrémité au port USB A du Bamboo. Vous
+                                                               pouvez également le connecter à un ordinateur
+                                                               ou à un bloc d'alimentaPon externe.
+Please recharge when the battery Indicator indicates a low
+                                                               Veuillez recharger la ba]erie lorsque l'indicateur
+power level. The RED LED charging light G is on when the AC-   de ba]erie indique un faible niveau de charge. Le
+DC adapter is correctly connected to a suitable power source.  voyant de charge rouge G s'allume lorsque
+The RED LED charging light turns GREEN when the battery is     l'adaptateur AC-DC est correctement connecté à
+fully charged.                                                 une source d'alimentaPon appropriée. Le voyant
+                                                               de charge LED ROUGE devient VERT lorsque la
+PLEASE NOTE: To increase your battery’s lifetime, please       ba]erie est complètement chargée.
+fully charge it at least once every 6 months.
+                                                              REMARQUE : pour augmenter la durée de vie de
+                                                              votre ba]erie, veuillez la recharger
+                                                              complètement au moins une fois tous les 6 mois.
+WARRANTY                                                        GARANTIE
+The seller guarantees the absence of ﬂaws and defects and       Le vendeur garanPt l'absence de défauts et de
+nonconformity of this product at the Pme of purchase, and       non-conformité de ce produit au moment de
+for the duraPon provided for by the laws of the country in      l'achat, et pour la durée prévue par les lois du
+which the purchaser resides. If your product is found to be     pays dans lequel réside l'acheteur.       Si votre
+defecPve due to the materials used or due to the way it         produit s'avère défectueux en raison des
+was manufactured, during the period covered by this             matériaux uPlisés ou de la façon dont il a été
+warranty, Streampath s.r.l. guarantees free repair or free      fabriqué, pendant la période couverte par ce]e
+replacement of the product, if proof of purchase date is        garanPe, Streampath s.r.l. garanPt la réparaPon
+provided by presenPng a valid receipt.                          gratuite ou le remplacement gratuit du produit, si
+                                                                la preuve de la date d'achat est fournie par la
+                                                                présentaPon d'un Pcket de caisse valide.
+For any defects that may occur in the ﬁrst six months from
+the date of purchase of the product, Streampath s.r.l. will     Pour les défauts qui pourraient se produire dans
+carry out at its own expense the veriﬁcaPon of the nature       les six premiers mois à parPr de la date d'achat
+of the defect.                                                  du produit, Streampath s.r.l. eﬀectuera à ses frais
+Subsequently, in the sole case in which the malfuncPon          la vériﬁcaPon de la nature du défaut.
+does not depend on a conformity defect, Streampath s.r.l.       Par la suite, dans le seul cas où le
+may request reimbursement of the cost - reasonably and          dysfoncPonnement ne dépend pas d'un défaut de
+previously indicated - that Streampath s.r.l. has incurred by   conformité, Streampath s.r.l. pourra demander le
+said veriﬁcaPon.                                                remboursement des frais - raisonnablement et
+                                                                préalablement indiqués - que Streampath s.r.l. a
+                                                                encourus par ladite vériﬁcaPon.
+If a conformity defect is found, Streampath s.r.l. will carry
+out the repair or replacement of the product within 30          Si un défaut de conformité est constaté,
+days of the request and without charge to the consumer.         Streampath s.r.l. eﬀectuera la réparaPon ou le
+                                                                remplacement du produit dans les 30 jours
+This warranty is not applicable in the following cases:         suivant la demande et sans frais pour le
+                                                                consommateur.
+•Improper use of the product
+                                                                Ce]e garanPe n'est pas applicable dans les cas
+                                                                suivants :
+•Damage resulPng from repairs or modiﬁcaPons carried
+                                                                -UPlisaPon impropre du produit
+out by unauthorized personnel
+                                                                -dommages résultant de réparaPons ou de
+•Damage caused by extraneous objects or substances
+                                                                modiﬁcaPons eﬀectuées par du personnel non
+                                                                autorisé
+•Damage caused by the use of unauthorized accessories
+                                                                -dommages causés par des objets ou des
+•Flaws, defects and damage caused by natural or                 substances étrangères
+atmospheric events
+                                                                -dommages causés par des objets ou des
+                                                                substances étrangères -dommages causés par
+This warranty does not apply to accessories.                    l'uPlisaPon d'accessoires non autorisés
+
+                                                           -Défauts, défauts et dommages causés par des
+For the ba]ery, given the average life cycle of this       événements naturels ou atmosphériques.
+component, the warranty period for manufacturing defects   Ce]e garanPe ne s'applique pas aux accessoires.
+is 12 months from the date of purchase. This warranty does Pour la ba]erie, compte tenu du cycle de vie
+not cover normal wear and tear in condiPons that           moyen de ce composant, la période de garanPe
+jeopardize the correct funcPoning of the ba]ery itself (i.e.
+                                                           pour les défauts de fabricaPon est de 12 mois à
+use at high temperature, overload, etc.).                  compter de la date d'achat. Ce]e garanPe ne
+                                                           couvre pas l'usure normale dans des condiPons
+This warranty is valid only for the original purchaser and qui comprome]ent le bon foncPonnement de la
+cannot be transferred. All repairs and replaced components ba]erie elle-même (c'est-à-dire l'uPlisaPon à
+will be covered by a limited warranty. This warranty will  haute température, la surcharge, etc.)
+expire on the same date as the original warranty.
+                                                           Ce]e garanPe n'est valable que pour l'acheteur
+                                                           iniPal et ne peut être transférée. Toutes les
+                                                           réparaPons et tous les composants remplacés
+                                                           seront couverts par une garanPe limitée. Ce]e
+                                                           garanPe expirera à la même date que la garanPe
+                                                           originale.
+

@@ -1,0 +1,80 @@
+<section class="chapter">
+  <h2 id="c9-plateformes" data-toc="chapter">Choisir sa plateforme</h2>
+  <p class="chapo">Le critère décisif n'est pas la puissance, ni même la consommation de la puce : c'est la consommation de la <em>carte</em>, régulateur et interface série compris.</p>
+
+  <table>
+    <thead><tr><th>Plateforme</th><th>Veille profonde<br/><span class="small">au niveau carte</span></th><th>Radio</th><th>Remarque</th></tr></thead>
+    <tbody>
+      <tr><td><strong>ESP32-S3</strong></td><td>≈ 13,4 µA</td><td>Wi-Fi, Bluetooth</td><td>Bon compromis ; large écosystème</td></tr>
+      <tr><td><strong>ESP32-C6</strong></td><td>≈ 16,9 µA</td><td>Wi-Fi 6, Thread, Zigbee</td><td>Plus récent</td></tr>
+      <tr><td><strong>Raspberry Pi Pico 2 W</strong></td><td>Variable selon la carte</td><td>Wi-Fi</td><td>Excellent pour la mesure analogique</td></tr>
+      <tr><td><strong>Arduino MKR WAN 1310</strong></td><td>≈ 104 µA</td><td><strong>LoRaWAN intégré</strong></td><td>Plus gourmand, mais radio longue portée native</td></tr>
+    </tbody>
+    <caption>Les chiffres de veille sont donnés <strong>au niveau de la carte</strong>, non de la puce. Le SoC d'un ESP32-S3 descend vers 7 µA ; ce sont le régulateur de tension et l'interface USB-série qui consomment le reste.</caption>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La leçon à retenir de ce tableau</div>
+    <p>La différence entre 7 µA (la puce) et 13,4 µA (la carte) est presque un facteur deux, et elle ne vient pas du microcontrôleur. Sur une carte de développement grand public, elle peut être bien pire : certaines dépassent le milliampère en veille à cause d'une simple diode de protection ou d'une LED d'alimentation.</p>
+    <p><strong>Mesurez la consommation de votre carte réelle</strong>, en veille, avec un multimètre en série. C'est une mesure de dix minutes qui vous évitera de découvrir en décembre que votre budget énergétique était faux d'un ordre de grandeur.</p>
+  </div>
+
+  <div class="callout caution">
+    <div class="callout-title">⚠️ Une plateforme à ne plus choisir</div>
+    <p>Les modules de la gamme LoPy/Pycom, longtemps recommandés pour les projets LoRaWAN, sont <strong>discontinués</strong> — les dernières commandes datent de mi-2022 et le fabricant a été racheté. Les tutoriels qui les recommandent encore sont périmés. Vérifiez la disponibilité avant de suivre un tutoriel, quelle que soit sa qualité apparente.</p>
+  </div>
+
+  <h3 id="c9-budget" data-toc="sub">Le budget énergétique, calculé</h3>
+
+  <figure class="full">
+    <img src="assets/svg/tt-network-power.svg" alt="Topologie radio et budget énergétique"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Topologie et budget. Le dimensionnement se fait sur la <em>marge</em> — dix jours sans soleil — et non sur la moyenne annuelle.</figcaption>
+  </figure>
+
+  <div class="loupe">
+    <div class="l-h">Un relevé au quart d'heure, chiffré</div>
+    <p>Consommation par cycle de réveil, mesure et émission : environ <strong>61,5 mA·s</strong>.</p>
+    <p>Sur 96 cycles par jour : <strong>1,64 mA·h par jour</strong>.</p>
+    <p>Avec une cellule LiFePO₄ de 6 000 mA·h : <strong>plus de dix ans sans soleil</strong>, en théorie.</p>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La capacité n'est jamais la contrainte</div>
+    <p>Ce calcul surprend, et il est juste. Un nœud de capteurs correctement conçu consomme si peu qu'une batterie modeste suffirait à des années.</p>
+    <p><strong>Ce qui tue réellement les stations</strong>, dans l'ordre :</p>
+    <ol>
+      <li>La <strong>consommation résiduelle des cartes de développement</strong> — LED, régulateurs, puces USB. Un milliampère permanent vide 6 000 mA·h en huit mois.</li>
+      <li>La <strong>charge sous 0 °C</strong>. Charger une cellule lithium en dessous de zéro provoque un <strong>dépôt de lithium métallique irréversible</strong> qui détruit la batterie et peut être dangereux. Un contrôleur de charge avec coupure basse température est <strong>obligatoire</strong>, pas optionnel.</li>
+      <li>L'<strong>étanchéité</strong>, qui n'a rien à voir avec l'énergie mais arrive avant tout le reste.</li>
+    </ol>
+  </div>
+
+
+  <div class="duo">
+    <figure class="photo"><img src="assets/img/p/electronique-panneau-solaire-12.jpg" alt="Panneau solaire. Le dimensionnement se fait sur le mois le plus défavorable, jamais sur "/><figcaption><span class="fig-n">Fig. ##.</span> Panneau solaire. Le dimensionnement se fait sur le mois le plus défavorable, jamais sur la moyenne annuelle.<span class="credit">Ground mounted solar panels.gk — Grendelkhan, CC BY-SA 4.0.</span></figcaption></figure>
+    <figure class="photo"><img src="assets/img/p/electronique-lora-antenne-mat-14.jpg" alt="Antenne LoRaWAN sur mât. Plusieurs kilomètres de portée pour une consommation d'émission"/><figcaption><span class="fig-n">Fig. ##.</span> Antenne LoRaWAN sur mât. Plusieurs kilomètres de portée pour une consommation d'émission dix à cent fois moindre que le Wi-Fi.<span class="credit">2021-04-24-LoRaWAN-Mast-Sylt — Fabian Horst, CC BY 4.0.</span></figcaption></figure>
+  </div>
+
+  <h3 id="c9-lora" data-toc="sub">La radio longue portée et sa contrainte cachée</h3>
+
+  <p>Le LoRaWAN offre une portée de plusieurs kilomètres pour une consommation d'émission dix à cent fois inférieure au Wi-Fi, sans dépendre d'une borne à proximité de l'arbre. C'est le choix naturel.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Le débit, et ce qu'il impose</div>
+    <p>La réglementation européenne impose un <strong>rapport cyclique de 1 %</strong> en bande 868 MHz. Le réseau communautaire le plus répandu ajoute une politique d'usage équitable de <strong>30 secondes d'émission par jour</strong> et <strong>10 messages descendants</strong>.</p>
+    <p>En pratique : environ <strong>100 messages courts par jour</strong> — soit exactement un relevé au quart d'heure, et rien de plus.</p>
+    <p><strong>Conséquence architecturale majeure.</strong> Il est impossible d'envoyer une forme d'onde, un signal brut, ou même une série échantillonnée finement. <strong>Tout le traitement doit avoir lieu dans le nœud</strong> : c'est lui qui calcule les descripteurs — valeur courante, pente, variance, comptage d'événements — et n'émet que ceux-là.</p>
+    <p>Cette contrainte n'est pas un handicap : elle vous oblige à décider explicitement ce que vous mesurez, ce qui est exactement la discipline que ce manuel recommande par ailleurs.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Les chiffres de veille comptent <strong>au niveau carte</strong> : le régulateur et l'interface USB dominent, pas le SoC.</li>
+      <li>Mesurez la consommation réelle de votre carte au multimètre : dix minutes bien employées.</li>
+      <li>Un relevé au quart d'heure consomme ≈ 1,64 mA·h/jour : la capacité n'est jamais la contrainte.</li>
+      <li>Ce qui tue les stations : consommation résiduelle, <strong>charge sous 0 °C</strong>, étanchéité.</li>
+      <li>LoRaWAN : ≈ 100 messages courts par jour. <strong>Tout le traitement doit être dans le nœud.</strong></li>
+    </ul>
+  </div>
+</section>
