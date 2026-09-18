@@ -49,7 +49,7 @@ from commun import (  # noqa: E402
     GABARITS, GRIS, LOGICIEL, PYTHONS_COUVERTS, RACINE_SORTIE, VERT, Identite,
     appliquer_les_arguments, arguments_communs, bien, copier_le_logiciel,
     dire, dossier_sortie, ecrire, ecrire_les_documents, ecrire_les_empreintes,
-    etape, executer, icone_svg, lisible, remplir, telecharger_les_roues,
+    etape, executer, echec, icone_svg, lisible, remplir, telecharger_les_roues,
     JAUNE)
 
 

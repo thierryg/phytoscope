@@ -52,8 +52,8 @@ from commun import (  # noqa: E402
     GABARITS, GRIS, JAUNE, LOGICIEL, echec, PYTHONS_COUVERTS, RACINE_SORTIE, VERT, Identite,
     appliquer_les_arguments, arguments_communs, bien, copier_le_logiciel,
     dire, dossier_sortie, ecrire, ecrire_les_documents, ecrire_les_empreintes,
-    etape, executer, icone_svg, lisible, remplir, taille_ko,
-    telecharger_les_roues)
+    etape, executer, icone_svg, lisible, remplir, souci, taille_ko,
+    telecharger_les_roues, PYTHON_AUTONOME, _python_autonome)
 
 
 def construire_deb(id_: Identite, embarquer: bool) -> Optional[str]:
@@ -152,6 +152,28 @@ def construire_run(id_: Identite, embarquer: bool = False) -> Optional[str]:
         etape("copie du logiciel")
         copier_le_logiciel(contenu)
         ecrire(os.path.join(contenu, "phytoscope.svg"), icone_svg())
+
+        #  L'interpréteur voyage avec l'installateur. Sans lui, le .run ne
+        #  pouvait qu'échouer sur une machine nue en disant « installez
+        #  python3 » — ce qui n'est pas « prêt après l'installation », et ce
+        #  qui exige des privilèges que le projet s'interdit (C-55).
+        #
+        #  Ce sont des binaires RELOGEABLES : ils se déplient dans
+        #  ~/.local/opt et fonctionnent sans être installés. L'installateur ne
+        #  s'en sert QUE si aucun Python du système ne convient, et efface le
+        #  double dans le cas contraire.
+        etape(f"Python autonome {PYTHON_AUTONOME} (installation sur machine nue)")
+        if not _python_autonome(os.path.join(contenu, "python"), "linux"):
+            souci("l'installateur exigera un Python déjà présent")
+
+        #  Les libellés de l'installateur, dans les onze langues. Ils sont
+        #  extraits AVANT la décompression complète (`extraire_un langues`),
+        #  parce que la langue est la première question posée — avant la
+        #  licence, qui sera lue dans la langue choisie.
+        etape("libellés de l'installateur (11 langues)")
+        import langues as _langues
+        _fichiers = _langues.ecrire_shell(os.path.join(contenu, "langues"))
+        dire(f"      {len(_fichiers)} catalogues", GRIS)
 
         if embarquer:
             etape("roues Linux (installation hors ligne)")

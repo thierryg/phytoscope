@@ -162,6 +162,58 @@ ui_licence() {
 }
 
 # --- dossier de destination ------------------------------------------------
+#  Le choix de la langue, en liste. C'est la premiere fenetre que l'on voit :
+#  elle doit donc se passer de toute chaine traduite pour son propre cadre -
+#  le titre et l'invite lui sont passes, deja traduits en francais, et les
+#  noms de langues s'ecrivent dans leur propre langue, ce qui les rend
+#  lisibles quelle que soit celle du systeme.
+#
+#  Rend le code retenu, ou "" si l'on a annule : l'appelant retombe alors sur
+#  le menu numerote, qui fonctionne partout.
+ui_langue() {
+    titre="$1"
+    invite="$2"
+    case "$INTERFACE" in
+        graphique)
+            case "$OUTIL_GUI" in
+                zenity)
+                    lignes=""
+                    for c in $LANGUES_CODES; do
+                        eval "nom=\$LANGUE_NOM_$c"
+                        lignes="$lignes $c $nom"
+                    done
+                    # shellcheck disable=SC2086
+                    zenity --list --title="$titre" --text="$invite" \
+                        --column="code" --column="langue" --hide-column=1 \
+                        --print-column=1 --height=420 --width=420 \
+                        $lignes 2>/dev/null || echo "" ;;
+                kdialog)
+                    args=""
+                    for c in $LANGUES_CODES; do
+                        eval "nom=\$LANGUE_NOM_$c"
+                        marque="off"
+                        [ "$c" = "fr" ] && marque="on"
+                        args="$args $c $nom $marque"
+                    done
+                    # shellcheck disable=SC2086
+                    kdialog --title "$titre" --radiolist "$invite" $args \
+                        2>/dev/null || echo "" ;;
+                *) echo "" ;;
+            esac ;;
+        tui)
+            args=""
+            for c in $LANGUES_CODES; do
+                eval "nom=\$LANGUE_NOM_$c"
+                args="$args $c $nom"
+            done
+            # shellcheck disable=SC2086
+            $OUTIL_TUI --title "$titre" --menu "$invite" 20 60 11 $args \
+                3>&1 1>&2 2>&3 || echo "" ;;
+        *)  echo "" ;;
+    esac
+}
+
+
 ui_dossier() {
     defaut="$1"
     case "$INTERFACE" in

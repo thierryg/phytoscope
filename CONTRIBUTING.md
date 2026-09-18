@@ -106,8 +106,8 @@ make verifier      # rouvre et contrôle tout ce qui a été produit
 
 # Micrologiciel
 cd src/firmware
-./build.sh --deps  # SDK + chaîne ARM dans $HOME, sans sudo
-./build.sh         # → phytosense.uf2
+./_make_.sh --deps # SDK + chaîne ARM dans $HOME, sans sudo
+./build.sh         # compile ET range le livrable
 ```
 
 ## Proposer une modification

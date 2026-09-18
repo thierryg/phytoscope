@@ -76,7 +76,7 @@ ne se voit qu'ailleurs.
 
 ## Micrologiciel (outil de développement)
 
-`src/src/firmware/build.sh` est **bash strict, Linux
+`src/firmware/_make_.sh` est **bash strict, Linux
 x86-64 seulement** : URL de la chaîne ARM codée en `x86_64` (`:22,61`) — échoue
 sur Apple Silicon et sur Raspberry Pi ; chemin de programmation
 `/media/$USER/RP2350/` (`:118`) propre à Debian/Ubuntu (Fedora monte sous

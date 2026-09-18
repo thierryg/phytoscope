@@ -60,20 +60,23 @@ from typing import List, Optional
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import macos_pkg  # noqa: E402
+import platform  # noqa: E402
+
 from commun import (  # noqa: E402
     GABARITS, GRIS, LOGICIEL, PYTHONS_MACOS, RACINE_SORTIE, VERT, Identite,
     appliquer_les_arguments, arguments_communs, bien, copier_le_logiciel,
     dire, dossier_sortie, echec, ecrire, ecrire_les_documents,
     ecrire_les_empreintes, etape, fabriquer_icone, icone_svg, lisible,
     remplir, souci, telecharger_les_roues, _zipper,
-    JAUNE)
+    JAUNE, PYTHON_AUTONOME, _python_autonome, cible_pbs)
 
 IDENTIFIANT = "com.bretagne-namaste.phytoscope"
 
 
 def construire_macos(id_: Identite, embarquer: bool = False,
                      faire_zip: bool = True,
-                     faire_pkg: bool = True) -> List[str]:
+                     faire_pkg: bool = True,
+                     arch_python: str = "") -> List[str]:
     """Un paquet .app unique, pour Intel et Apple Silicon.
 
     Un seul paquet, et non deux : Qt n'est publié pour macOS qu'en
@@ -92,6 +95,26 @@ def construire_macos(id_: Identite, embarquer: bool = False,
 
         etape("logiciel")
         copier_le_logiciel(os.path.join(ressources, "app"))
+
+        #  L'interpréteur voyage avec l'application. Sans lui, le lanceur ne
+        #  pouvait que s'arrêter en disant « brew install python » : une
+        #  application qui exige d'abord un gestionnaire de paquets tiers
+        #  n'est pas « prête après l'installation ». Et Homebrew est
+        #  précisément ce qu'il faut éviter — son interpréteur ne voit pas les
+        #  bibliothèques du système.
+        #
+        #  Ce sont des binaires RELOGEABLES : ils fonctionnent depuis le
+        #  paquet, sans être installés et sans privilèges (C-55).
+        #
+        #  Une réserve, dite franchement : python-build-standalone ne publie
+        #  pas d'« universal2 ». On livre donc l'architecture demandée — celle
+        #  de la machine qui fabrique par défaut. Un paquet fabriqué sur Intel
+        #  n'apportera pas d'interpréteur utilisable sur Apple Silicon, et le
+        #  lanceur retombera alors sur python.org ou sur celui d'Apple.
+        arch = arch_python or platform.machine().lower()
+        etape(f"Python autonome {PYTHON_AUTONOME} ({cible_pbs('macos', arch) or arch})")
+        if not _python_autonome(os.path.join(ressources, "python"), "macos", arch):
+            souci("l'application exigera un Python déjà présent")
 
         if embarquer:
             #  Qt pèse à lui seul 450 Mo en « universal2 ». Un paquet de
@@ -268,6 +291,10 @@ def main(argv: Optional[List[str]] = None) -> int:
                    help="seulement l'archive du paquet .app")
     p.add_argument("--pkg", action="store_true",
                    help="seulement l'installateur .pkg")
+    p.add_argument("--arch", default="", metavar="ARCH",
+                   choices=["", "x86_64", "arm64"],
+                   help="architecture de l'interpréteur embarqué "
+                        "(x86_64 ou arm64 ; par défaut celle de cette machine)")
     p.add_argument("--hors-ligne", action="store_true",
                    help="embarquer les bibliothèques (Qt pèse 450 Mo en "
                         "« universal2 ») pour une installation sans connexion")
@@ -277,7 +304,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     dire(f"\n  PhytoScope {id_.version}-{id_.release} — macOS (Intel et Apple Silicon)", VERT)
     produits = [x for x in construire_macos(id_, args.hors_ligne,
                             faire_zip=_tout(args) or args.zip,
-                            faire_pkg=_tout(args) or args.pkg) if x]
+                            faire_pkg=_tout(args) or args.pkg,
+                            arch_python=args.arch) if x]
     if produits:
         ecrire_les_empreintes(id_)
         ecrire_les_documents(id_)

@@ -218,3 +218,53 @@ def demander_oui_non(question: str, defaut: bool = True) -> bool:
     if not reponse:
         return defaut
     return reponse[0] in ("o", "y", "1")
+
+# ---------------------------------------------------------------------------
+#  Bannière
+# ---------------------------------------------------------------------------
+#  Pourquoi une bannière, et pourquoi celle-ci.
+#
+#  Le logiciel écrit son bilan de démarrage sur un terminal qui contient
+#  souvent déjà autre chose — la sortie d'une compilation, un `make`, un
+#  autre essai. La bannière sépare franchement « ce qui précède » de « ce que
+#  PhytoScope raconte », et donne la version sans qu'on la cherche : c'est le
+#  premier renseignement que demande tout signalement d'anomalie.
+#
+#  Elle est en ASCII pur, sans dessin Unicode : un terminal Windows en cp850,
+#  un `ssh` vers un Raspberry Pi, un journal redirigé dans un fichier la
+#  rendent tous à l'identique. Les caractères de cadre de l'ancien bilan
+#  (« ─ ») restent ailleurs : eux sont décoratifs, la bannière est lue.
+_LETTRES = r"""
+ ____  _           _        ____
+|  _ \| |__  _   _| |_ ___ / ___|  ___ ___  _ __   ___
+| |_) | '_ \| | | | __/ _ \\___ \ / __/ _ \| '_ \ / _ \
+|  __/| | | | |_| | || (_) |___) | (_| (_) | |_) |  __/
+|_|   |_| |_|\__, |\__\___/|____/ \___\___/| .__/ \___|
+             |___/                         |_|
+"""
+
+
+def banniere(version: str = "", sous_titre: str = "") -> str:
+    """La bannière, prête à imprimer, version et sous-titre compris.
+
+    `version` est mise en évidence à droite du dessin ; `sous_titre` tient
+    sur la ligne suivante, en discret. Les deux sont facultatifs — un
+    terminal très étroit reçoit alors le dessin seul.
+    """
+    lignes = [l for l in _LETTRES.strip("\n").split("\n")]
+    largeur = max(len(l) for l in lignes)
+    sortie = ["", *[info("  " + l) for l in lignes]]
+
+    pied = []
+    if version:
+        pied.append(alerte(f"v{version}" if not version.startswith("v") else version))
+    if sous_titre:
+        pied.append(discret(sous_titre))
+    if pied:
+        #  Aligné sur la fin du dessin, pour que l'œil descende en diagonale
+        #  du « e » de Scope vers la version.
+        marge = " " * max(largeur - 22, 2)
+        sortie.append("  " + marge + "   ".join(pied))
+    sortie.append("")
+    return "\n".join(sortie)
+

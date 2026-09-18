@@ -240,3 +240,127 @@ class TestPremierLancement:
         s.ui.language = "ja"
         s.save(chemin)
         assert Settings.load(chemin).ui.language == "ja"
+
+
+class TestLangueAlInstallation:
+    """La langue choisie à l'installation, et sa persistance.
+
+    Les installateurs posent la question au tout début et écrivent le choix
+    dans les réglages, que le logiciel relit. Ces tests couvrent le maillon
+    qui les relie — `tools/ecrire_langue.py` — et le catalogue de libellés
+    des installateurs.
+    """
+
+    def _outil(self):
+        import importlib.util
+        chemin = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__))), "tools", "ecrire_langue.py")
+        spec = importlib.util.spec_from_file_location("ecrire_langue", chemin)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module
+
+    def test_ecrit_la_langue(self, tmp_path):
+        outil = self._outil()
+        cible = tmp_path / "reglages.json"
+        assert outil.ecrire("ja", str(cible)) == 0
+        assert json.loads(cible.read_text(encoding="utf-8"))["ui"]["language"] == "ja"
+
+    def test_fusionne_sans_effacer(self, tmp_path):
+        """Une réinstallation ne doit changer que la langue.
+
+        C'est la raison d'être de cet outil : bricoler un JSON à coups de sed
+        dans trois installateurs écrirait tôt ou tard par-dessus les réglages
+        de qui s'en sert.
+        """
+        outil = self._outil()
+        cible = tmp_path / "reglages.json"
+        cible.write_text(json.dumps({
+            "ui": {"theme": "nuit", "language": "fr"},
+            "audio_out": {"volume": 0.8},
+        }), encoding="utf-8")
+        assert outil.ecrire("ko", str(cible)) == 0
+        d = json.loads(cible.read_text(encoding="utf-8"))
+        assert d["ui"]["language"] == "ko"
+        assert d["ui"]["theme"] == "nuit"          # conservé
+        assert d["audio_out"]["volume"] == 0.8     # conservé
+
+    def test_refuse_un_code_inconnu(self, tmp_path):
+        outil = self._outil()
+        cible = tmp_path / "reglages.json"
+        assert outil.ecrire("klingon", str(cible)) == 2
+        assert not cible.exists()
+
+    def test_un_fichier_illisible_ne_bloque_pas(self, tmp_path):
+        """Mieux vaut des réglages neufs qu'un refus d'écrire la langue."""
+        outil = self._outil()
+        cible = tmp_path / "reglages.json"
+        cible.write_text("ceci n'est pas du json", encoding="utf-8")
+        assert outil.ecrire("ar", str(cible)) == 0
+        assert json.loads(cible.read_text(encoding="utf-8"))["ui"]["language"] == "ar"
+
+    def test_les_codes_acceptes_sont_ceux_du_logiciel(self):
+        """Une langue livrée mais refusée par l'outil serait inatteignable."""
+        outil = self._outil()
+        livrees = {c for c, *_ in i18n.langues_disponibles()}
+        assert livrees <= set(outil.LANGUES), (
+            f"langues livrées mais refusées : {livrees - set(outil.LANGUES)}")
+
+    def test_le_champ_premier_lancement_ne_sechrit_pas(self, tmp_path, monkeypatch):
+        """Il observe le démarrage, il ne se règle pas.
+
+        L'écrire ferait croire, au lancement suivant, que c'est encore le
+        premier — et la question de la langue reviendrait sans fin.
+        """
+        monkeypatch.setenv("XDG_CONFIG_HOME", str(tmp_path))
+        from phytoscope.config import Settings
+        premier = Settings.load()
+        assert premier.premier_lancement is True
+        premier.save()
+        ecrit = json.loads((tmp_path / "phytoscope" / "reglages.json")
+                           .read_text(encoding="utf-8"))
+        assert "premier_lancement" not in ecrit
+        assert Settings.load().premier_lancement is False
+
+
+class TestCatalogueDesInstallateurs:
+    """Le catalogue des libellés d'installateur, dans les onze langues."""
+
+    def _catalogue(self):
+        #  tests/ → src/phytoscope/ → src/ → la racine du dépôt.
+        racine = os.path.dirname(os.path.dirname(os.path.dirname(
+            os.path.dirname(os.path.abspath(__file__)))))
+        chemin = os.path.join(racine, "packaging", "langues",
+                              "installateur.json")
+        if not os.path.exists(chemin):
+            pytest.skip("catalogue des installateurs absent de cette copie")
+        with open(chemin, encoding="utf-8") as f:
+            return json.load(f)
+
+    def test_toutes_les_langues_sont_traduites(self):
+        d = self._catalogue()
+        codes = [l["code"] for l in d["_langues"]]
+        for cle, traductions in d["libelles"].items():
+            manquantes = [c for c in codes if not traductions.get(c)]
+            assert not manquantes, f"{cle} : absent en {', '.join(manquantes)}"
+
+    def test_les_champs_survivent_a_la_traduction(self):
+        """Un {champ} perdu produirait un texte tronqué à l'affichage."""
+        import re
+        d = self._catalogue()
+        champs = re.compile(r"\{(\w+)\}")
+        for cle, traductions in d["libelles"].items():
+            reference = set(champs.findall(traductions["fr"]))
+            for code, texte in traductions.items():
+                assert set(champs.findall(texte)) == reference, (
+                    f"{cle} [{code}] : champs {set(champs.findall(texte))} "
+                    f"au lieu de {reference}")
+
+    def test_les_langues_sont_celles_du_logiciel(self):
+        """L'installateur et le logiciel doivent offrir les mêmes langues."""
+        d = self._catalogue()
+        installateur = {l["code"] for l in d["_langues"]}
+        logiciel = {c for c, *_ in i18n.langues_disponibles()}
+        assert logiciel <= installateur, (
+            f"langues du logiciel absentes de l'installateur : "
+            f"{logiciel - installateur}")

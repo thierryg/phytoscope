@@ -119,7 +119,7 @@ mais un usage — et peut être discuté.
 | **C-52** | Isolement galvanique entre l'étage de mesure et l'hôte ; la garde et le blindage sont documentés. |
 | **C-53** | Le matériel est publié sous **CERN-OHL-P v2**, le logiciel et le micrologiciel sous **MIT**. |
 | **C-54** | Chaque document, chaque planche et la carte elle-même portent **l'auteur et l'adresse du site** — un plan anonyme dès la deuxième photocopie est un plan perdu. |
-| **C-55** | La construction du micrologiciel ne demande **aucun privilège administrateur** : `build.sh --deps` installe SDK et chaîne ARM dans le dossier personnel. |
+| **C-55** | La construction du micrologiciel ne demande **aucun privilège administrateur** : `_make_.sh --deps` installe SDK et chaîne ARM dans le dossier personnel. |
 
 ## 7. Documents
 

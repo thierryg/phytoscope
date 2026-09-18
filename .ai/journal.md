@@ -682,3 +682,483 @@ par document et son `inject_includes()` se replie sur `commun/`.
   Qt. Ce n'est pas une régression, c'est le mode portable.
 - Le journal n'a pas été réécrit pour les nouveaux chemins : il consigne ce
   qui était vrai au moment de chaque entrée.
+
+---
+
+## 2026-09-18 (soirée) — Interpréteurs, installateurs, bytecode, bannière
+
+**Agent :** Claude Code (Opus 5) · **Déclencheur :** `./run.py` échouait sur
+`libGL.so.1` alors que `libgl1` était installé.
+
+### Le défaut, et ce qu'il cachait
+
+`./run.py` porte `#!/usr/bin/env python3`. Sur cette machine, le `PATH` donne
+d'abord **Homebrew** : un interpréteur sous `/home/linuxbrew` avec son propre
+chargeur dynamique, qui ne lit pas `/lib/x86_64-linux-gnu`. Qt, pyqtgraph et
+sounddevice s'y installent puis échouent à l'exécution sur des bibliothèques
+**présentes**.
+
+Le bilan de démarrage aggravait les choses : il concluait « `libGL.so.1` est
+introuvable » et conseillait `sudo apt install libgl1` — un paquet déjà
+installé. `sonder_bibliotheque()` savait démêler « présente mais sa
+dépendance manque », mais pas « présente et illisible par cet interpréteur ».
+
+**Fait :**
+- `core/preflight.py` : `presente_sur_le_systeme()` interroge `ldconfig`, qui
+  répond pour le système et non pour nous ; `interpreteur_etranger()` nomme
+  Homebrew, Nix ou conda. `analyser_import_casse()` rend un quatrième
+  élément et **ne propose plus aucun paquet** quand la bibliothèque est là.
+- `run.py` : se relance avec un interpréteur convenable — le venv du projet,
+  puis `/usr/bin/python3` —, **jamais** Homebrew, Nix ni conda. Un jeton
+  d'environnement empêche la boucle.
+- La relance est **silencieuse**. Elle écrivait trois lignes sur la sortie
+  d'erreur à chaque lancement ; elle laisse maintenant une trace que la
+  checklist rapporte, une fois, au bon endroit.
+- `core/console.py` : `banniere()` — ASCII pur, rendue à l'identique par un
+  terminal Windows en cp850, un `ssh`, un journal redirigé. Elle donne la
+  version sans qu'on la cherche, premier renseignement de tout signalement.
+- « bilan de démarrage » devient « **checklist** », partout.
+
+### Installateurs : prêts après l'installation, sur les trois systèmes
+
+Windows embarquait déjà l'interpréteur. Les autres non : le `.run` s'arrêtait
+en disant « installez python3 », et le lanceur macOS conseillait
+`brew install python` — précisément ce qu'il faut éviter.
+
+**Fait :**
+- `packaging/commun.py` : `_python_autonome()` récupère CPython **relogeable**
+  (python-build-standalone, les binaires qu'utilise `uv`), pendant de
+  `_python_embarquable()` pour Windows. Il se déplie dans n'importe quel
+  dossier, sans root et sans toucher au système (`C-55`).
+- `.run` : 590 ko → **28,4 Mo**. Il cherche d'abord un Python du système —
+  Homebrew écarté —, déplie le sien s'il n'en trouve pas, et **efface le
+  double** dans le cas contraire.
+- macOS : l'interpréteur voyage dans `Resources/python`. Le `.zip` passe de
+  700 ko à 18,7 Mo, le `.pkg` de 624 ko à 17,3 Mo. Réserve dite franchement :
+  python-build-standalone ne publie pas d'`universal2`, on livre donc
+  l'architecture demandée (`--arch`), celle de la machine par défaut.
+- **Sous-dépendances système** : le `.deb` déclarait 8 bibliothèques, il en
+  déclare 20 (les `libxcb-*` et `libdbus` que le logiciel réclamait lui-même
+  manquaient) ; le `.rpm` n'en déclarait **aucune** et en déclare 11. Le
+  `.run` ne peut pas les installer sans privilèges — `libGL` doit
+  correspondre au pilote graphique : il les **détecte et les nomme
+  précisément**, et `--avec-dependances-systeme` les installe sur demande
+  explicite.
+
+### Cache de bytecode, après installation
+
+Sans lui, Python recompile à chaque démarrage les modules dont le dossier
+n'est pas inscriptible — `/usr/share`, `/Applications`, `Program Files` — et
+jette le résultat.
+
+- `.deb` (`postinst`), `.rpm` (`%post`), `.run` : `compileall` du logiciel et
+  du venv ; `prerm` et `%postun` emportent le cache, que ni dpkg ni rpm ne
+  connaissent.
+- Windows : l'installateur `.exe` le construit ; le `.msi` et l'archive
+  portable n'ont pas cette occasion, le lanceur s'en charge au premier
+  démarrage, avec un témoin.
+- macOS : dans l'environnement de l'utilisateur, avec `PYTHONPYCACHEPREFIX`
+  puisque le `.app` est en lecture seule.
+
+### Deux plantages latents, trouvés par ruff et corrigés
+
+1. **`core/usbdiag.py:415`** — `if mode != "wb"` testait un nom disparu d'une
+   refonte : démarrer une capture de trames levait `NameError`, dans les
+   trois formats. Le mode mise au point était cassé, et **aucun test ne
+   démarrait de capture**. Quatre tests l'ont fermé.
+2. **`packaging/construire_fedora.py:59`** — `echec` n'était pas importé : la
+   fabrique du `.rpm` plantait au lieu de diagnostiquer proprement, sur le
+   chemin exact qu'emprunte qui n'a pas `rpmbuild`.
+
+### Vérifié
+
+| Contrôle | Résultat |
+|---|---|
+| `make test` | **266 passés** (4 nouveaux), 2 ignorés |
+| `ruff --select E9,F821,F822,F823,F811` sur tout le dépôt | **All checks passed** |
+| `./run.py` sur un PATH Homebrew | se relance sur le venv, interface chargée |
+| `.run` installé pour de vrai (`HOME` jetable) | venv créé, **67 + 1515 `.pyc`**, logiciel démarré |
+| Python embarqué du `.run` | 3.11.9, `venv`/`ssl`/`sqlite3`, crée un venv |
+| `make debian` / `fedora` / `macos` | `.deb` 369 ko, `.rpm` 609 ko, `.pkg` 17,3 Mo |
+| `tools/entetes.py --verifier` | 260 fichiers, tous à jour |
+
+### Attention
+
+- **La CI que j'avais écrite aurait échoué au premier `push`** : elle lançait
+  `ruff check` en bloquant sur un dépôt qui compte **1050 avertissements de
+  style** hérités d'un code écrit pour Python 3.9. Le `Makefile` du projet,
+  lui, préfixe `-` : ruff y est consultatif. La CI suit désormais cette
+  posture — bloquante sur les plantages (`E9`, `F82x`, `F811`), informative
+  sur le reste, avec le compte affiché à chaque passage. L'intention est
+  écrite dans `pyproject.toml`.
+- Les paquets Windows pèsent 178 à 275 Mo : ils embarquent l'interpréteur et
+  Qt. Ce n'est pas une régression.
+- **Rien n'est commité** depuis le dépôt initial : ces modifications sont dans
+  l'arbre de travail.
+
+---
+
+## 2026-09-18 (nuit) — Mises à jour des bibliothèques, et la langue aux onze voix
+
+**Agent :** Claude Code (Opus 5) · **Demande :** deux choses, dans cet ordre —
+vérifier les mises à jour des dépendances Python depuis l'interface Qt ; puis
+faire choisir la langue au tout début de l'installation, l'enregistrer, et la
+faire reprendre par PhytoScope.
+
+### 1. « Aide → Mises à jour des bibliothèques… »
+
+**Fait :**
+- `core/maj_dependances.py` — interroge PyPI, compare, classe les écarts en
+  *correctif*, *mineure*, *majeure*. **Aucune dépendance ajoutée** (`C-40`) :
+  `urllib` de la bibliothèque standard, et un comparateur de versions écrit
+  ici plutôt que `packaging`.
+- `ui/maj_dialog.py` — l'interrogation dans un fil séparé (huit requêtes à
+  six secondes feraient quarante-huit secondes de fenêtre figée), rien coché
+  d'avance, et la sortie de `pip` qui défile ligne à ligne. L'installation
+  passe par `preflight.installer()`, qui sait déjà choisir entre le venv,
+  `--user` et le gestionnaire du système.
+- La liste des dépendances vient de `preflight.REQUIREMENTS`, **seule
+  source** : la redire l'aurait fait diverger au prochain ajout. Un test le
+  vérifie.
+
+**Un défaut, dans mon propre comparateur, trouvé par ses tests :**
+ramasser tous les nombres de « 3.0.0rc1 » donne `(3, 0, 0, 1)`, qui se
+compare **après** `(3, 0, 0)` — et une pré-diffusion passait pour plus
+récente que la version qu'elle annonce. La chaîne est maintenant coupée au
+premier caractère non numérique, et l'ordre couvre
+`dev < alpha < beta < rc < (rien) < post`. Quinze cas en test.
+
+### 2. La langue, demandée au tout début
+
+**On demande, on ne devine pas** : `C-31` interdit la détection automatique de
+la locale, et l'interdiction vaut pour les installateurs. Une machine dont
+l'environnement dit `fr_FR` peut être celle d'un atelier où l'on travaille en
+anglais.
+
+**Fait :**
+- `packaging/langues/installateur.json` — **51 libellés × 11 langues = 561
+  traductions**, une seule source.
+- `packaging/langues.py` — deux sorties depuis cette source, parce que les
+  deux installateurs ne parlent pas le même langage : des **variables shell**
+  pour le `.run` (un `/bin/sh` n'a pas d'analyseur JSON, et en bricoler un à
+  coups de `sed` casserait sur la première apostrophe), un bloc
+  **`LangString`** pour NSIS. `--verifier` contrôle que chaque `{champ}`
+  survit à la traduction.
+- `.run` : la langue est la **première question**, avant la licence — qui est
+  donc lue dans la langue retenue. Menu numéroté en mode texte (aucun outil à
+  installer, fonctionne à travers un `ssh`), liste `zenity`/`kdialog`/
+  `whiptail` sinon. `--langue ja` pour une installation sans surveillance.
+- NSIS : **onze langues** compilées au lieu de deux, boîte
+  `MUI_LANGDLL_DISPLAY` avant la première page, choix mémorisé sous `HKCU`.
+- macOS : liste `osascript` à la **première ouverture** — un `.pkg` s'installe
+  sans rien demander, c'est ce qu'on attend de lui.
+- `.deb` et `.rpm` : `apt` et `dnf` n'interrogent pas. La question se pose donc
+  au **premier démarrage du logiciel**, par `ui/langue_dialog.py`. Chaque
+  langue y est écrite **dans sa propre écriture** — un lecteur coréen
+  reconnaît « 한국어 », pas « coréen ».
+- `tools/ecrire_langue.py` — le maillon commun aux trois installateurs. Il
+  **fusionne** : une réinstallation ne change que la langue. Écriture atomique
+  par fichier provisoire puis `os.replace`.
+- `config.py` : `Settings.premier_lancement`, vrai quand aucun fichier de
+  réglages n'existait. Il **n'est pas écrit** dans le fichier — c'est une
+  observation du démarrage, pas un réglage —, sans quoi la question
+  reviendrait sans fin. Un test le vérifie.
+
+### Aussi, dans le même passage
+
+- **Élévation de droits** : `pkexec`, `kdesu` ou `gksu` quand l'installateur
+  vient d'un bureau — une fenêtre d'authentification est alors la seule chose
+  correcte, un `sudo` attendrait un mot de passe sur un terminal que personne
+  ne regarde —, `sudo` en mode texte. Aucun disponible : la commande exacte
+  est affichée.
+- **`.github/workflows/sbom.yml`** : la nomenclature logicielle se régénère
+  dès qu'une modification touche `src/phytoscope/`, et se reverse sur `main`.
+  La comparaison **ignore l'horodatage**, sans quoi il y aurait une révision
+  par jour. Sur une demande de fusion, elle signale sans écrire.
+- **`ruff` dans la CI** : bloquant sur `E9`, `F82x`, `F811` — les plantages —,
+  informatif sur les mille avertissements de style hérités de Python 3.9.
+  L'intention est écrite dans `pyproject.toml` avec son pourquoi.
+- **Bannière ASCII** et **checklist** affichées au lancement par défaut, avec
+  les contrôles avant vol. Le doublon de bannière qui dormait dans
+  `__main__.py` — et dont le premier trait avait perdu un caractère — est
+  remplacé par `core/console.banniere()`, seule source.
+- **`INSTALL.md`** (494 lignes) décrit chaque installateur étape par étape.
+
+### Deux tests que mon rangement avait rendus muets
+
+`test_le_sdk_livre_un_exemple_qui_se_charge` et
+`test_les_identifiants_usb_suivent_le_micrologiciel` cherchaient le SDK et le
+micrologiciel à leurs anciens emplacements (`sdk/`, `sources/firmware-…/`).
+Ils **s'ignoraient silencieusement** depuis le déplacement vers `src/sdk/` et
+`src/firmware/` — c'est-à-dire qu'ils ne vérifiaient plus rien, sans le dire.
+Chemins corrigés ; ils passent, donc les identifiants USB correspondent
+toujours au micrologiciel et l'exemple du SDK se charge toujours.
+
+### Vérifié
+
+| Contrôle | Résultat |
+|---|---|
+| `make test` | **306 passés, 0 ignoré** (+40 depuis ce matin) |
+| `ruff --select E9,F821,F822,F823,F811` | *All checks passed* |
+| Couverture des traductions du logiciel | **11 langues à 100 %** (888 libellés) |
+| Catalogue des installateurs | 51 × 11 = **561 traductions**, champs préservés |
+| `packaging/langues.py --verifier` | toutes présentes et cohérentes |
+| Fenêtre des mises à jour | 8 lignes, numpy 2.2.6 → 2.5.3 détecté et coché |
+| Fenêtre de langue au premier démarrage | 11 langues, chacune dans son écriture |
+| `.run --langue ja` | `[ok] 言語：日本語` — catalogue japonais chargé |
+| `tools/ecrire_langue.py` | écrit, fusionne, refuse un code inconnu, survit à un JSON cassé |
+| `tools/entetes.py --verifier` | 265 fichiers, tous à jour |
+
+### Attention
+
+- **Le disque a été saturé pendant la séance** : l'installation d'essai du
+  `.run` en japonais a échoué sur `No space left on device` après avoir
+  affiché la langue — le mécanisme est donc prouvé, la fin de la chaîne (venv,
+  bibliothèques, écriture des réglages) reste à voir sur une installation
+  complète. Mes fabrications répétées en sont la cause ; `build/paquets/`
+  compte neuf fabrications empilées.
+- *(Réserve levée le même soir.)* `make tout` a finalement abouti : **9
+  paquets signés, 0 échec**, empreintes SHA-256 conformes. `makensis` compile
+  bien les onze langues — la trace le montre : `+ LangDLL::LangDialog`,
+  `MUI_LANGDLL_REGISTRY_VALUENAME = Langue`, `!insertmacro: CodeLangue`,
+  `ExecToLog … ecrire_langue.py "$R0"`, puis
+  « Generating language tables... Done! ». Ce qui reste non vu, faute de
+  machine Windows ici, c'est la boîte **à l'écran** : la fabrication est
+  vérifiée, l'affichage ne peut pas l'être.
+- Rien n'est commité depuis le dépôt initial.
+
+---
+
+## 2026-09-18 (nuit, suite) — Le certificat, PACKAGING.md, la nomenclature du projet, le micrologiciel en livrable
+
+**Agent :** Claude Code (Opus 5) · **Demandes :** un script pour (re)créer les
+certificats dans `certificat/` ; un `PACKAGING.md` ; proposer de recréer les
+certificats s'ils manquent à l'empaquetage ; un script de nomenclature
+couvrant `src/phytoscope/` **et** `src/firmware/` ; le micrologiciel dans les
+livrables de la CI.
+
+### Une découverte d'abord : rien ne remplissait `certificat/`
+
+Ce dossier avait été rempli **à la main**. `signature.py --deposer` déposait,
+lui, une copie à la **racine du dépôt** — précisément le doublon que le
+rangement du matin avait écarté. Personne ne savait donc laquelle était à
+jour.
+
+**Fait :**
+- `packaging/certificat.py` — point d'entrée unique. La cryptographie reste
+  dans `signature.py` (aucune recopie) ; ce script s'occupe de ce qu'elle ne
+  faisait pas : remplir `certificat/` — certificat public commenté, `.crt`,
+  clé en 0600, et une notice **générée** qui porte l'empreinte.
+  `--etat`, `--creer`, `--deposer`, `--refaire`, `--verifier`.
+- `signature.py` : `CERTIFICAT_PROJET` vise `certificat/`, plus la racine.
+- `--verifier` compare **ce qu'openssl lit**, et non les fichiers octet par
+  octet : le `.pem` porte un en-tête commenté que le `.crt` n'a pas, et
+  comparer les octets signalerait un écart qui n'existe pas.
+- Quatre cibles : `make certificat`, `certificat-etat`,
+  `certificat-verifier`, `certificat-refait`.
+
+**`--refaire` demande de taper `REMPLACER` en entier, et refuse sans
+terminal.** Remplacer une clé de signature n'est pas une chose qu'on fait par
+défaut : cela rompt le lien avec tout ce qui a été signé.
+
+### La proposition quand le certificat manque
+
+`signature.py --signer` **créait la clé d'autorité**. Il **propose**
+désormais, par `certificat.proposer_si_absent()` : sur une machine
+d'intégration continue, une clé créée en silence serait une clé éphémère
+qu'on croirait permanente, et les paquets porteraient une signature
+invérifiable ailleurs. Sans terminal, il affiche la commande et s'arrête.
+
+### `PACKAGING.md` (560 lignes)
+
+Comment produire un paquet précis ou tous, ce qu'il faut avoir, le
+certificat, les durées et les tailles réelles, la vérification, les deux
+nomenclatures, la publication, et ce qu'il faut faire quand ça échoue — y
+compris le piège du fichier `control` Debian, qui n'admet aucun commentaire.
+
+### `tools/sbom.py` — la nomenclature du **projet**
+
+Il existait `src/phytoscope/tools/sbom.py`, qui recense les bibliothèques
+Python et qui est livré dans les paquets. Il reste. Le nouveau répond à une
+autre question — « de quoi est fait le projet ? » — et couvre donc le
+micrologiciel : Pico SDK, TinyUSB, chaîne ARM, picotool.
+
+- La partie logiciel est **demandée** à l'outil existant ; la redire l'aurait
+  fait diverger.
+- Les versions du micrologiciel sont **lues** dans `src/firmware/build.sh` et
+  `CMakeLists.txt`. Écrites à la main dans un tableau, elles auraient
+  vieilli en silence — six tests le protègent.
+- Le compilateur ARM et `picotool` portent `scope: excluded` : ils
+  **construisent** le produit, ils n'y sont pas embarqués. La distinction
+  compte pour qui lit ce document afin de savoir si une faille le concerne.
+- `--verifier` ignore l'horodatage et le numéro de série, sinon il y aurait
+  une révision par jour sans qu'un composant ait bougé.
+
+### Le micrologiciel devient un livrable
+
+**Il ne se compilait plus.** Le rangement du matin avait laissé dans
+`src/firmware/build/` un cache CMake qui retient le **chemin absolu** des
+sources et pointait encore sur `sources/firmware-phytosense/phytosense-fw/`.
+`cmake` refusait de continuer.
+
+- Cache écarté ; le micrologiciel se recompile — `phytosense.uf2`, 80 ko.
+- **`build.sh` détecte désormais un cache périmé et le jette**, plutôt que de
+  laisser chacun retrouver que la réponse est toujours la même. Vérifié en
+  falsifiant `CMAKE_HOME_DIRECTORY`.
+- `paquets.yml` : un job `micrologiciel` compile le `.uf2` à chaque passage,
+  contrôle qu'il ne s'est pas effondré (seuil à 32 ko), calcule ses
+  empreintes et le joint aux artéfacts. Le Pico SDK est mis en cache d'un
+  passage à l'autre.
+- `diffusion.yml` : le `.uf2` est publié avec la version sous
+  `phytosense-<version>.uf2`, et sa **provenance est attestée** comme celle
+  des paquets — un binaire de micrologiciel trouvé quelque part ne dit pas
+  d'où il vient.
+- `sbom.yml` se déclenche aussi sur `src/firmware/**` et régénère les deux
+  nomenclatures.
+
+### Vérifié
+
+| Contrôle | Résultat |
+|---|---|
+| `make test` | **317 passés, 0 ignoré** |
+| `ruff --select E9,F821,F822,F823,F811` | *All checks passed* |
+| `tools/sbom.py --verifier` | à jour, 15 composants |
+| `certificat.py --verifier` | les deux copies concordent |
+| `langues.py --verifier` | 561 traductions cohérentes |
+| `tools/entetes.py --verifier` | 267 fichiers |
+| `src/firmware/build.sh` | `phytosense.uf2` 80 ko, `.elf` 764 ko |
+| Cache CMake falsifié | détecté et jeté |
+| YAML des 7 workflows | tous analysables |
+
+### Attention — une faute de ma part, réparée
+
+En éprouvant la création du certificat, **j'ai cru que `--creer`
+interrogeait** — c'est `--refaire` qui interroge. Il a donc créé deux
+nouvelles paires de clés, et mon `mv` de restauration a échoué parce que la
+destination existait désormais.
+
+**La clé d'origine était intacte** et a été remise en place. Vérifié à trois
+niveaux : empreinte identique
+(`57:3D:90:32:…:31:F0`), correspondance clé privée / certificat par
+`openssl`, et **les neuf signatures de la fabrication de 20h44 valident
+contre le certificat restauré**. Rien n'est perdu.
+
+Restent deux magasins parasites, à supprimer :
+
+```bash
+rm -rf ~/.local/share/phytoscope-signature.parasite-a-supprimer \
+       ~/.local/share/phytoscope-signature.essai2
+```
+
+Et `.ecarte/firmware-build-cache-perime` (27 Mo), le cache CMake écarté.
+
+---
+
+## 2026-09-18 (nuit, fin) — Le micrologiciel a sa chaîne complète
+
+**Agent :** Claude Code (Opus 5) · **Demandes :** renommer
+`src/firmware/build.sh` en `_make_.sh` ; écrire un nouveau `build.sh` qui
+automatise la construction et range le livrable dans `build/paquets/` ; mettre
+le README à jour ; nettoyer les anciennes fabrications.
+
+**Fait :**
+- `src/firmware/_make_.sh` — l'ancien script, inchangé dans son travail :
+  il **compile**, et rien de plus. C'est ce qu'on veut pendant la mise au
+  point, quand on compile vingt fois d'affilée.
+- `src/firmware/build.sh` — l'enveloppe : elle appelle `_make_.sh`, puis
+  **range le livrable** dans `build/paquets/<version>-<horodatage>/Firmware/`,
+  nommé avec sa version, avec ses empreintes et une notice de programmation.
+  Options : `--deps`, `--propre`, `--sortie`, `--sans-installer` ; tout ce
+  qu'elle ne reconnaît pas est passé à `_make_.sh`.
+- Elle suit `PHYTOSCOPE_SORTIE` : lancée par la fabrique de paquets, le
+  micrologiciel se range dans **la même fabrication** que les `.deb` et les
+  `.msi`, même lancé séparément.
+- L'identité de la notice est lue dans `AUTEURS`, seule source — les jetons
+  `@EDITEUR@` d'un gabarit n'auraient pas été substitués, ce script n'en
+  étant pas un.
+- `src/firmware/README.md` : la section 3 documente les deux scripts et le
+  piège du cache CMake ; la section 6 les liste.
+
+### Une affirmation périmée, corrigée
+
+Le README affirmait, section 8, que ces sources « **n'ont pas été compilées
+ici** ». C'était vrai quand la phrase a été écrite ; ce n'est plus vrai — le
+micrologiciel compile, produit 80 ko de `.uf2` pour 44 776 octets de code, et
+l'intégration continue le compile à chaque passage. La contrainte `C-3` dit
+de vérifier avant d'affirmer ; la section dit maintenant ce qui est vrai, et
+distingue **ce qui compile** de **ce qui est éprouvé** : aucune carte n'a été
+branchée, et cela reste écrit noir sur blanc.
+
+### Attention — deux fautes de ma part dans cette séance
+
+**1. Le lien « dernier » pointait dans le vide.** Mon `build.sh` posait le
+lien même avec `--sortie /tmp/essai`, où `basename` donne un nom relatif qui
+n'existe pas dans `build/paquets/`. Corrigé : le lien n'est posé que si la
+sortie est bien dans `build/paquets/`. Vérifié.
+
+**2. J'ai supprimé plus que je n'avais annoncé.** En nettoyant
+`build/paquets/`, j'avais annoncé conserver `1.5.1-20260918-2044` — la seule
+fabrication complète et signée. **Elle a été supprimée avec les autres.** La
+logique shell, rejouée isolément, se comporte correctement ; je n'ai pas
+d'explication vérifiée de l'écart, et je ne lui en invente pas.
+
+Ce qui est perdu : **les paquets et leurs signatures**, tous régénérables par
+`make tout` en une vingtaine de minutes — relancé aussitôt.
+
+Ce qui est intact, vérifié : les **10 PDF** de `build/` (105 Mo), la **clé de
+signature** (empreinte `57:3D:90:32:…`), `certificat/`, le micrologiciel
+compilé, et **toutes les sources**.
+
+La leçon, pour la prochaine fois : ne pas enchaîner un relevé et une
+suppression dans deux commandes séparées en se fiant au relevé de la
+première. Lister, puis **supprimer nommément** ce qui a été listé.
+
+### Vérifié
+
+| Contrôle | Résultat |
+|---|---|
+| `make test` | **317 passés, 0 ignoré** |
+| `./build.sh` | livrable rangé, 5 fichiers, notice comprise |
+| `./build.sh --sortie /tmp/…` | ne touche pas au lien « dernier » |
+| Cache CMake falsifié | détecté et jeté par `_make_.sh` |
+| `tools/sbom.py` | lit `SDK_VERSION` dans `_make_.sh` — 2.3.1 |
+| YAML des 7 workflows | tous analysables |
+| `tools/entetes.py --verifier` | à jour |
+
+### Un défaut grave, trouvé juste avant de conclure
+
+En relevant l'état de l'index, **6 449 fichiers y étaient** qui n'avaient rien
+à y faire : les cinq ouvrages sous droits de `sources/ebooks/`, les articles
+payants, les notices constructeurs, les brevets, 817 Mo d'archives tierces, et
+tout `.ecarte/`.
+
+**Cause :** la section 2 du `.gitignore` — celle qui écarte « ce que nous
+n'avons pas le droit de rediffuser » — **avait entièrement disparu**, onze
+règles, au cours d'une de mes réécritures par script. Le fichier était passé
+de 472 à 429 lignes sans que rien ne le signale : `.gitignore` ne désindexe
+pas ce qui l'est déjà, et `git add -A` avait fait le reste.
+
+Le dépôt est **public**. Rien n'avait été poussé — le seul commit est
+antérieur —, mais un livre ou une clé publiés ne se dépublient pas.
+
+**Fait :**
+- `.gitignore` restauré depuis le commit (472 lignes), après avoir vérifié par
+  `diff` qu'il n'y avait **que des pertes** depuis, aucun ajout à sauver ;
+- une exception ajoutée pour `/sbom.cdx.json`, que ma règle `/sbom*.json`
+  — écrite pour les rapports de CI — excluait par ricochet ;
+- les 6 449 fichiers désindexés (`git rm --cached`), tous restés sur le
+  disque ;
+- index vérifié fichier par fichier : **0 fichier ignoré n'est suivi**,
+  et les neuf fichiers publics qui *doivent* l'être le sont.
+
+**Et surtout : 20 tests neufs**, `TestGitignoreProtegeLeDepotPublic`, qui
+vérifient chacune des quatorze règles et chacune des cinq exceptions, plus la
+présence des sections par langage et par système. **Un `.gitignore` est du
+code : il se teste.** Le défaut ne peut plus revenir en silence.
+
+| Contrôle | Résultat |
+|---|---|
+| `make test` | **344 passés, 0 ignoré** |
+| Fichiers ignorés mais suivis | **0** |
+| Index | 942 fichiers, 162 Mo |
+| Ouvrages sous droits, clé privée, `.ecarte/` | tous exclus, vérifiés un par un |
