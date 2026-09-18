@@ -1,0 +1,98 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/carte-tiers.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 520" width="980" height="520">
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+ <marker id="ahk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
+   markerHeight="5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#23302C"/></marker>
+ <marker id="ahc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#A8552E"/></marker>
+ <pattern id="hatch" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#E0C073" stroke-width="2.4"/></pattern>
+ <pattern id="hatchb" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
+</defs>
+<rect width="980" height="520" fill="#FFFFFF"/>
+<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Où se situe cette carte</text>
+<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Trois niveaux d'instrument, trois usages, trois budgets</text>
+<rect x="40" y="96" width="288" height="340" rx="8" fill="#EDF5F0" stroke="#3F7D5A" stroke-width="1.8"/>
+<rect x="40" y="96" width="288" height="34" rx="8" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.8"/>
+<text x="184" y="118" font-family="Lato, sans-serif" font-size="18.81" fill="#fff" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">NIVEAU 1</text>
+<text x="184" y="158" font-family="Cormorant Garamond, serif" font-size="24.89" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Oscillateur NE555</text>
+<text x="184" y="182" font-family="DejaVu Sans Mono, monospace" font-size="21.02" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">25 – 40 €</text>
+<text x="64" y="216" font-family="Lato, sans-serif" font-size="22.13" fill="#3F7D5A" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
+<text x="80" y="216" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">mesure : une période</text>
+<text x="64" y="242" font-family="Lato, sans-serif" font-size="22.13" fill="#3F7D5A" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
+<text x="80" y="242" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">sortie : MIDI</text>
+<text x="64" y="268" font-family="Lato, sans-serif" font-size="22.13" fill="#3F7D5A" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
+<text x="80" y="268" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">aucun étalonnage</text>
+<text x="64" y="294" font-family="Lato, sans-serif" font-size="22.13" fill="#3F7D5A" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
+<text x="80" y="294" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">idéal pour comprendre</text>
+<line x1="64" y1="340" x2="304" y2="340" stroke="#3F7D5A" stroke-width="1.0" stroke-linecap="round"/>
+<text x="184" y="362" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">décrit dans</text>
+<text x="184" y="382" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">La Musique des Plantes</text>
+<text x="184" y="397" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">partie X</text>
+<rect x="346" y="96" width="288" height="340" rx="8" fill="#EEF3FA" stroke="#2F5E86" stroke-width="1.8"/>
+<rect x="346" y="96" width="288" height="34" rx="8" fill="#2F5E86" stroke="#2F5E86" stroke-width="1.8"/>
+<text x="490" y="118" font-family="Lato, sans-serif" font-size="18.81" fill="#fff" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">NIVEAU 2</text>
+<text x="490" y="158" font-family="Cormorant Garamond, serif" font-size="24.89" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">INA333 + ADS1115</text>
+<text x="490" y="182" font-family="DejaVu Sans Mono, monospace" font-size="21.02" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">60 – 120 €</text>
+<text x="370" y="216" font-family="Lato, sans-serif" font-size="22.13" fill="#2F5E86" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
+<text x="386" y="216" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">mesure : une tension</text>
+<text x="370" y="242" font-family="Lato, sans-serif" font-size="22.13" fill="#2F5E86" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
+<text x="386" y="242" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">16 bits, 860 éch./s</text>
+<text x="370" y="268" font-family="Lato, sans-serif" font-size="22.13" fill="#2F5E86" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
+<text x="386" y="268" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">étalonnage relatif</text>
+<text x="370" y="294" font-family="Lato, sans-serif" font-size="22.13" fill="#2F5E86" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
+<text x="386" y="294" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">idéal pour l'atelier</text>
+<line x1="370" y1="340" x2="610" y2="340" stroke="#2F5E86" stroke-width="1.0" stroke-linecap="round"/>
+<text x="490" y="362" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">décrit dans</text>
+<text x="490" y="382" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Créer un Arbre Parlant</text>
+<text x="490" y="397" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">planche 2</text>
+<rect x="652" y="96" width="288" height="340" rx="8" fill="#FBF5E6" stroke="#B08528" stroke-width="1.8"/>
+<rect x="652" y="96" width="288" height="34" rx="8" fill="#B08528" stroke="#B08528" stroke-width="1.8"/>
+<text x="796" y="118" font-family="Lato, sans-serif" font-size="18.81" fill="#fff" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">NIVEAU 3</text>
+<text x="796" y="158" font-family="Cormorant Garamond, serif" font-size="24.89" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">PhytoSense One</text>
+<text x="796" y="182" font-family="DejaVu Sans Mono, monospace" font-size="21.02" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">180 – 240 €</text>
+<text x="676" y="216" font-family="Lato, sans-serif" font-size="22.13" fill="#B08528" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
+<text x="692" y="216" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">mesure : volts et ohms</text>
+<text x="676" y="242" font-family="Lato, sans-serif" font-size="22.13" fill="#B08528" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
+<text x="692" y="242" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">24 bits, isolée, datée</text>
+<text x="676" y="268" font-family="Lato, sans-serif" font-size="22.13" fill="#B08528" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
+<text x="692" y="268" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">étalonnage absolu</text>
+<text x="676" y="294" font-family="Lato, sans-serif" font-size="22.13" fill="#B08528" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
+<text x="692" y="294" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">idéal pour publier</text>
+<line x1="676" y1="340" x2="916" y2="340" stroke="#B08528" stroke-width="1.0" stroke-linecap="round"/>
+<text x="796" y="362" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">décrit dans</text>
+<text x="796" y="382" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Le présent document</text>
+<text x="490" y="470" font-family="Lato, sans-serif" font-size="18.25" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Les trois montages partagent les mêmes électrodes et le même logiciel : on monte d'un niveau sans rien jeter.</text>
+<text x="28" y="512" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
+<text x="952" y="512" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
+</svg>

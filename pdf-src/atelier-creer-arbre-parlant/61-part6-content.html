@@ -1,0 +1,178 @@
+<section class="chapter">
+  <h2 id="c12-sonifier" data-toc="chapter">Sonifier honnêtement</h2>
+  <p class="chapo">Le mapping doit être déclaré. C'est la seule règle, et elle suffit à tout changer.</p>
+
+  <p class="lettrine noindent">Une sonification est un affichage de données par le son. Pour mériter ce nom, elle doit être <strong>systématique, objective et reproductible</strong> : mêmes données, même son, et le système doit être applicable à un autre jeu de données. Cette définition n'est pas une exigence de puriste, c'est celle de la communauté scientifique du domaine.</p>
+
+  <figure class="full">
+    <img src="assets/svg/tt-sonification-modes.svg" alt="Les trois modes de sonification"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Trois modes possibles. Pour un signal végétal échantillonné lentement, seul le mapping paramétrique est praticable — l'audification exige un signal rapide.</figcaption>
+  </figure>
+
+  <h3 id="c12-declarer" data-toc="sub">Déclarer le mapping</h3>
+
+  <p>Concrètement, cela signifie publier un tableau. Le programme n° 5 de l'annexe montre comment l'inscrire directement dans le code, de sorte que le fichier de sortie <strong>porte sa propre documentation</strong>.</p>
+
+  <div class="code">
+    <div class="code-h">Exemple de déclaration de mapping</div>
+<pre># MAPPING DÉCLARÉ — v1.2, 2026-09-17
+# Toute modification incrémente la version et est datée.
+#
+# grandeur          plage d'entrée        → paramètre       plage de sortie
+# ---------------------------------------------------------------------------
+# humidite_sol      0.10 – 0.35 m3/m3     → hauteur          do3 – do5, linéaire
+# temperature_air   -5 – 35 degC          → timbre           filtre 200 – 4000 Hz
+# flux_seve         0 – 40 cm/h           → densite          0.2 – 8 evenements/s
+# vent              0 – 60 km/h           → bruit            0 – 0.3 amplitude
+# bioelectrique     residu apres regression sur T, HR, vent
+#                   ±3 sigma              → bourdon          ±1 demi-ton, CONTINU
+#
+# VOIE DE CONTROLE : la meme chaine appliquee a un bruit blanc de meme
+# variance est publiee sous le nom controle_bruit.wav
+</pre>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Les cinq règles d'une sonification défendable</div>
+    <ol>
+      <li><strong>Publier la fonction de transfert.</strong> Le tableau ci-dessus, versionné et daté.</li>
+      <li><strong>Garder une voie non quantifiée.</strong> La quantification sur gamme rend consonant et détruit l'information fine. Conservez au moins un bourdon continu, sans arrondi : l'oreille entend la justesse et l'écart en même temps.</li>
+      <li><strong>Sonifier aussi les voies de contexte.</strong> Si la température pilote un timbre, l'auditeur <em>entend</em> qu'une variation coïncide avec un réchauffement. L'artefact devient audible.</li>
+      <li><strong>Faire entendre le silence.</strong> Donnée manquante ou capteur hors plage : silence franc ou signal de défaut. Jamais d'interpolation. Un dispositif qui ne se tait jamais ne dit rien.</li>
+      <li><strong>Publier la sonification du bruit.</strong> La même chaîne appliquée à du bruit blanc de même variance. C'est l'équivalent sonore du contrôle négatif — et le public juge lui-même.</li>
+    </ol>
+    <p>Ces cinq règles n'appauvrissent pas l'œuvre : elles ajoutent des voies, du silence et un point de comparaison.</p>
+  </div>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Le piège de la quantification</div>
+    <p>Quantifier sur une gamme pentatonique garantit qu'aucune combinaison de notes ne sera dissonante. C'est très efficace — et c'est aussi ce qui rend le résultat agréable <em>exactement dans la mesure où l'information a été écrasée</em>.</p>
+    <p>Si votre signal varie de 10 %, mais que la quantification le ramène à la même note, l'auditeur n'entend aucune variation. Vous avez produit de la musique en supprimant les données. C'est légitime en art ; c'est trompeur si vous le présentez comme une écoute de la plante.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Une sonification doit être systématique, objective et reproductible.</li>
+      <li>Déclarer le mapping dans le code, versionné et daté.</li>
+      <li>Cinq règles : fonction de transfert, voie non quantifiée, contexte sonifié, silence audible, bruit publié.</li>
+      <li>La quantification sur gamme rend agréable en écrasant l'information.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c13-voix" data-toc="chapter">La chaîne de parole en local</h2>
+  <p class="chapo">Reconnaissance vocale, modèle de langage, synthèse : tout tourne sur une machine à quelques centaines d'euros. Avec des contraintes précises qu'il vaut mieux connaître avant d'acheter.</p>
+
+  <h3 id="c13-tts" data-toc="sub">La synthèse vocale</h3>
+
+  <table>
+    <thead><tr><th>Moteur</th><th>Licence</th><th>Voix françaises</th><th>Remarque</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Piper 1</strong></td><td>Code <strong>GPLv3</strong>, poids MIT</td><td><strong>6 voix réelles</strong>, aucune en qualité <em>high</em></td><td>Le choix de référence. Attention : le dépôt historique est <strong>archivé</strong> depuis fin 2025 ; c'est le nouveau dépôt qu'il faut suivre</td></tr>
+      <tr><td><strong>Kokoro</strong></td><td>Permissive</td><td><strong>Une seule</strong>, issue du même corpus que la voix Piper recommandée</td><td>Pas une alternative de timbre : c'est la même source</td></tr>
+      <tr><td><strong>Coqui TTS</strong></td><td>Variable par modèle</td><td>Deux modèles exploitables commercialement</td><td>Vérifier modèle par modèle</td></tr>
+      <tr><td><s>XTTS v2</s></td><td colspan="3"><strong>Juridiquement hors-jeu</strong> — voir l'encadré ci-dessous</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout caution">
+    <div class="callout-title">⚠️ Un piège de licence à connaître absolument</div>
+    <p>La licence publique de modèle qui couvre XTTS v2 s'applique explicitement <strong>aux fichiers audio produits</strong>, et exclut toute activité génératrice de revenus — <em>« y compris les projets directement financés par des subventions publiques »</em>.</p>
+    <p>Autrement dit : une installation dans un parc municipal, financée par une subvention culturelle, tombe sous l'exclusion. Ce n'est pas une zone grise, c'est écrit.</p>
+    <p><strong>Vérifiez la licence des <em>poids</em> autant que celle du code.</strong> Beaucoup de projets ont un code permissif et des modèles restreints, et c'est le modèle qui produit votre sortie.</p>
+  </div>
+
+  <h3 id="c13-llm" data-toc="sub">Le modèle de langage local</h3>
+
+  <p>Voici les performances réellement mesurées, en quantification 4 bits, sur les machines qu'un atelier peut se permettre.</p>
+
+  <table>
+    <thead><tr><th>Machine</th><th>Modèle</th><th>Débit</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="3"><strong>Raspberry Pi 5, 8 Go</strong></td><td>3 milliards de paramètres</td><td><strong>4,6 jetons/s</strong> (13,9 W)</td><td>Utilisable</td></tr>
+      <tr><td>8 milliards</td><td>2,0 jetons/s</td><td>Trop lent pour un dialogue</td></tr>
+      <tr><td>13 milliards</td><td>échec</td><td>Mémoire insuffisante</td></tr>
+      <tr><td><strong>Raspberry Pi 5, 16 Go</strong></td><td>14 milliards</td><td>1,2 jetons/s</td><td>Inutilisable en interaction</td></tr>
+      <tr><td><strong>Raspberry Pi 4</strong></td><td>3 milliards</td><td>1,6 jetons/s</td><td><strong>Hors sujet</strong></td></tr>
+      <tr><td rowspan="2"><strong>Mini-PC x86 économique</strong></td><td>3 milliards</td><td><strong>9,1 jetons/s</strong></td><td><strong>Confortable</strong></td></tr>
+      <tr><td>8 milliards</td><td>3,9 jetons/s</td><td>Acceptable</td></tr>
+    </tbody>
+    <caption>Une réponse de trois phrases représente environ 60 jetons. À 4,6 jetons/s, comptez 13 secondes — trop pour un dialogue fluide. À 9 jetons/s, 7 secondes : c'est jouable avec une phrase d'attente.</caption>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La zone confortable</div>
+    <p><strong>De 0,6 à 4 milliards de paramètres, soit 5 à 12 jetons par seconde.</strong> C'est la plage où un dialogue reste fluide sur du matériel raisonnable.</p>
+    <p>Et pour notre usage, c'est amplement suffisant : nous ne demandons pas au modèle de raisonner, mais de <strong>mettre en phrases une poignée de nombres sous contrainte stricte</strong>. Un petit modèle bien contraint fait cela aussi bien qu'un grand — et il hallucine moins, parce qu'on lui laisse moins de latitude.</p>
+  </div>
+
+  <div class="callout caution">
+    <div class="callout-title">⚠️ Licences des modèles : une vérification à faire</div>
+    <p>Les familles de modèles ouverts n'ont pas toutes la même licence, et cela change d'une version à l'autre au sein d'une même famille.</p>
+    <p>Un exemple concret : dans une famille populaire, la version 2.5 à 3 milliards de paramètres est sous une licence <em>de recherche</em>, alors que la version 3 de la même famille est intégralement sous Apache-2.0. Deux modèles au nom presque identique, deux régimes juridiques opposés.</p>
+    <p>De même, au sein d'une autre famille, une version récente est passée en Apache-2.0 tandis que la précédente reste sous licence non commerciale.</p>
+    <p><strong>Lisez la licence du modèle précis que vous téléchargez</strong>, à la date où vous le téléchargez. C'est trois minutes, et cela évite de devoir tout refaire au moment de publier.</p>
+  </div>
+
+  <h3 id="c13-invite" data-toc="sub">L'invite contrainte</h3>
+
+  <figure class="full">
+    <img src="assets/svg/tt-prompt.svg" alt="Anatomie d'une invite capteurs vers parole"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Les quatre blocs d'une invite. Un seul contient de l'information venue de l'arbre. Le bloc « contraintes » est celui qui sépare un dispositif honnête d'une fable — et c'est celui qu'on omet le plus souvent.</figcaption>
+  </figure>
+
+  <div class="code">
+    <div class="code-h">Gabarit d'invite — version contrainte</div>
+<pre>ROLE
+Tu decris l'etat d'un arbre a partir de releves de capteurs.
+Tu parles a la premiere personne, sobrement, sans lyrisme.
+
+DONNEES DU MOMENT  (horodatees, seule source autorisee)
+  temperature de l'air   : 14,2 degC   (-1,8 degC en 3 h)
+  humidite relative      : 81 %        (+6 pts en 3 h)
+  humidite du sol        : 0,19 m3/m3  (seuil bas de la station : 0,22)
+  lumiere                : 340 umol/m2/s
+  vent                   : 18 km/h
+
+CONTRAINTES  (imperatives)
+  1. Trois phrases au maximum.
+  2. Ne mentionne QUE les grandeurs listees ci-dessus.
+  3. Cite le chiffre chaque fois que tu evoques une grandeur.
+  4. N'exprime AUCUNE emotion, aucun souvenir, aucun desir.
+  5. Si une donnee manque, dis « je n'ai pas cette mesure »
+     au lieu de combler.
+  6. N'invente aucun voisinage, aucune histoire, aucun passe.
+
+SORTIE ATTENDUE
+  Un constat, pas une confidence.</pre>
+  </div>
+
+  <p>Sortie typique : <em>« Le sol autour de mes racines est à 0,19, sous le seuil bas de 0,22. L'air a perdu 1,8 degré en trois heures et l'humidité a monté de six points. »</em></p>
+
+  <p>C'est moins beau que ce que produirait une invite libre. C'est <strong>vérifiable mot à mot</strong>, et c'est la seule sortie que vous pourrez défendre.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La troisième voie</div>
+    <p>Vous n'êtes pas obligé de choisir. <strong>Gardez les deux, en les séparant explicitement.</strong></p>
+    <p>Une voix énonce le constat contraint. Une autre voix, annoncée comme telle, propose une évocation libre. Le public entend les deux et sait laquelle est quoi. Personne n'est trompé, et rien n'est perdu — vous gagnez même une tension dramatique que le dispositif original n'avait pas.</p>
+  </div>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Un chiffre que nous ne donnons pas</div>
+    <p>Le facteur temps réel de la synthèse vocale sur nano-ordinateur — c'est-à-dire combien de secondes de calcul pour une seconde de parole — circule largement, mais <strong>aucune source primaire reproductible n'a pu être trouvée</strong> lors de la préparation de ce manuel. Les valeurs disponibles proviennent de billets de blog non reproductibles.</p>
+    <p>Mesurez-le vous-même sur votre matériel, avec votre voix : c'est une manipulation de cinq minutes, et c'est la seule valeur qui vous concerne.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Piper 1 : six voix françaises réelles ; le dépôt historique est archivé, suivre le nouveau.</li>
+      <li>Vérifier la licence des <strong>poids</strong> autant que celle du code : certaines couvrent l'audio produit.</li>
+      <li>Zone confortable : 0,6 à 4 milliards de paramètres, soit 5 à 12 jetons/s. Un Pi 4 est hors sujet.</li>
+      <li>Les licences varient d'une version à l'autre au sein d'une même famille de modèles.</li>
+      <li>L'invite contrainte impose que chaque phrase soit reliée à un chiffre. La troisième voie garde les deux registres, séparés.</li>
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,74 @@
+name: versioning
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  pre-release:
+    name: "Pre Release"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Сheckout Repo
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
+
+      - name: Get previous tag
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+      
+      - name: Calculate new tag
+        id: newtag
+        run: |
+          if [ "${{ steps.previoustag.outputs.tag }}" == "" ]; then
+            echo "TAG_NAME=v0.0.0" | awk -F. -v OFS=. '{$NF += 1 ; print}' >> "$GITHUB_OUTPUT"
+          else
+            echo "TAG_NAME=${{ steps.previoustag.outputs.tag }}" | awk -F. -v OFS=. '{$NF += 1 ; print}' >> "$GITHUB_OUTPUT"
+          fi
+          
+
+      - name: Create clean tag
+        id: clean_tag
+        run: |
+          echo ${{ steps.newtag.outputs.TAG_NAME }}
+          TAG_NAME=${{ steps.newtag.outputs.TAG_NAME }}
+          CLEAN_TAG=${TAG_NAME#v}
+          echo ${CLEAN_TAG}
+          echo "CLEAN_TAG=${CLEAN_TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Check tag
+        run: echo "${{ steps.clean_tag.outputs.CLEAN_TAG }}"
+        
+      - uses: winterjung/split@v2
+        id: split
+        with:
+          msg: "${{ steps.clean_tag.outputs.CLEAN_TAG }}"
+          separator: '.'
+          maxsplit: 3
+          
+      - name: "Build Firmware"
+        run: |
+          make release MAJOR_VERSION=${{ steps.split.outputs._0 }} \
+          MINOR_VERSION=${{ steps.split.outputs._1 }} \
+          PATCH_VERSION=${{ steps.split.outputs._2 }}
+        
+      - name: "Rename Firmware"
+        run: cp output/*.uf2 ${{ github.event.repository.name }}_${{ steps.newtag.outputs.TAG_NAME }}.uf2
+
+      - name: "Build & test"
+        run: |
+          echo "done!"
+          
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "${{ steps.newtag.outputs.TAG_NAME }}"
+          title: "Release ${{ steps.newtag.outputs.TAG_NAME }}"
+          prerelease: true
+          files: |
+            *.uf2
+      
+      
+  

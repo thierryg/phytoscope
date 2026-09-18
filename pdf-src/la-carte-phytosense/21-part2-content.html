@@ -1,0 +1,149 @@
+<section class="chapter">
+  <h2 id="c3-electrometre" data-toc="chapter">L'étage d'entrée électrométrique</h2>
+
+  <p class="chapo">Mesurer une tension sans prélever de courant : c'est toute l'ambition de cet
+  étage, et elle exige de renoncer à presque tous les réflexes de l'électronique ordinaire.</p>
+
+  <p class="lettrine noindent">Reprenons le problème posé au chapitre premier. La source — le
+  végétal vu entre deux électrodes — présente une impédance qui peut atteindre deux gigaohms. Si
+  l'amplificateur prélève ne serait-ce qu'un nanoampère, la chute de tension vaut deux volts : la
+  mesure ne signifie plus rien. Il faut descendre de cinq ordres de grandeur, jusqu'aux
+  femtoampères.</p>
+
+  <h3 id="c3-choix" data-toc="sub">Le composant, et pourquoi il n'y a pas d'alternative</h3>
+
+  <p>Trois familles d'amplificateurs prétendent à ce domaine. Le tableau ci-dessous les compare
+  sur les seuls critères qui comptent ici.</p>
+
+  <table class="tbl-sci tight">
+    <thead><tr><th>Composant</th><th>Courant d'entrée</th><th>Bruit à 0,1 Hz</th><th>Dérive</th><th>Prix</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>TL072, LM358<br/><span class="small">bipolaire courant</span></td>
+        <td>30 à 200 nA</td><td>&gt; 5 µV</td><td>10 µV/°C</td><td>0,30 €</td>
+        <td>Hors de question : mille fois trop de courant.</td></tr>
+      <tr><td>OPA2140, AD8610<br/><span class="small">JFET</span></td>
+        <td>1 à 10 pA</td><td>0,8 µV</td><td>1 µV/°C</td><td>4 €</td>
+        <td>Convient jusqu'à cent mégohms. Au-delà, l'erreur devient visible.</td></tr>
+      <tr><td>LMP7721<br/><span class="small">électromètre</span></td>
+        <td>3 fA <span class="small">typ.</span> / 20 fA <span class="small">max</span></td>
+        <td>1,2 µV</td><td>4 µV/°C</td><td>6 €</td>
+        <td>Excellent courant, mais pas de garde intégrée et dérive élevée.</td></tr>
+      <tr><td><strong>ADA4530-1</strong><br/><span class="small">électromètre à garde</span></td>
+        <td><strong>±20 fA max</strong></td><td><strong>0,42 µV</strong></td><td>0,2 µV/°C</td>
+        <td>14 €</td>
+        <td><strong>Retenu.</strong> Le seul à intégrer le tampon de garde, ce qui divise par
+        dix la difficulté du circuit imprimé.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Choix de conception — payer quatorze euros pour un seul composant</div>
+    <p class="noindent">C'est le poste le plus cher de la carte, et le seul qu'il ne faut pas
+    discuter. Sans lui, il faut réaliser soi-même la garde, ce qui suppose un second
+    amplificateur, un tracé impeccable et une vérification au picoampèremètre — matériel que
+    personne n'a chez soi. Avec lui, le fabricant a déjà fait ce travail et le garantit. Quatorze
+    euros contre une semaine d'incertitude : le calcul est vite fait.</p>
+  </div>
+
+  <h3 id="c3-garde" data-toc="sub">La garde : le concept qui rend la chose possible</h3>
+
+  <p>Un courant de vingt femtoampères est mille fois plus faible que ce que laisse fuir un circuit
+  imprimé ordinaire. Le vernis, la résine de flux, l'humidité de l'air forment entre les pistes des
+  résistances de l'ordre de dix à cent gigaohms : sous cinq volts, cela fait des centaines de
+  picoampères. L'amplificateur le plus parfait du monde ne sert alors à rien.</p>
+
+  <p>La garde résout cela par une idée simple et radicale : <strong>on entoure la piste d'entrée
+  d'un conducteur maintenu exactement au même potentiel qu'elle</strong>. S'il n'y a pas de
+  différence de potentiel, il n'y a pas de courant de fuite, quelle que soit la résistance du
+  chemin. La fuite ne disparaît pas : elle est prise en charge par le tampon de garde, qui peut
+  fournir des milliampères sans broncher.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/carte-pcb.svg" alt="Empilage, implantation et détail de la garde"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> À droite, le détail de la garde : l'anneau
+    entoure la pastille d'entrée sur les quatre couches, et le vernis est épargné dans cette zone.
+    Un film de vernis humide conduit assez pour ruiner la mesure — c'est la cause numéro un des
+    premières séries ratées.</figcaption>
+  </figure>
+
+  <div class="loupe">
+    <div class="l-h">Trois règles de garde, à ne jamais enfreindre</div>
+    <p class="noindent"><strong>1.</strong> L'anneau entoure complètement l'entrée, sur toutes les
+    couches, y compris sous le boîtier. <strong>2.</strong> Le vernis épargné est obligatoire :
+    l'espace entre l'entrée et la garde doit être nu, pour être nettoyable à l'alcool.
+    <strong>3.</strong> La garde sort du circuit imprimé et remonte jusqu'à l'électrode, par le
+    blindage du câble : une garde qui s'arrête au connecteur laisse deux mètres de câble non
+    gardés, et le câble est bien plus fuyant que le circuit.</p>
+  </div>
+
+  <h3 id="c3-schema" data-toc="sub">Le schéma, ligne à ligne</h3>
+
+  <p>La feuille 1 du dossier de schémas donne l'étage complet. Reprenons-la élément par élément,
+  car chaque valeur y est le résultat d'un compromis explicite.</p>
+
+  <section class="planche-page"><figure class="planche" id="pl-fe-z">
+    <img src="assets/svg/carte-fe-z.svg" alt="Schéma de l'étage d'entrée électrométrique FE-Z"/>
+    <figcaption><span class="fig-n">PLANCHE ##</span> — Carte fille FE-Z : étage d'entrée
+    électrométrique, tampon de garde et contre-réaction de mode commun. Feuille 1 sur 6,
+    révision B.</figcaption>
+  </figure></section>
+
+  <p><strong>R1, dix kilohms.</strong> Résistance série de protection. Elle limite le courant en
+  cas de décharge électrostatique sur l'électrode et, associée à C1, forme un filtre passe-bas à
+  cent soixante kilohertz qui empêche les radiofréquences de venir se redresser dans
+  l'amplificateur. Sa valeur est un compromis : plus grande, elle protège mieux mais ajoute du
+  bruit thermique (13 nV/√Hz à 10 kΩ, soit déjà le tiers du bruit de l'amplificateur) ; plus
+  petite, elle ne protège plus.</p>
+
+  <p><strong>D1, un double BAV199.</strong> Écrêtage vers les deux rails. Le choix de ce composant
+  précis n'est pas anodin : sa fuite inverse est inférieure au picoampère, contre plusieurs
+  nanoampères pour une diode de signal ordinaire. Une 1N4148 à cet endroit ruinerait tout.</p>
+
+  <p><strong>R2, un gigaohm.</strong> Polarisation. Une entrée électrométrique parfaitement
+  flottante dérive jusqu'à la saturation en quelques minutes, car même vingt femtoampères finissent
+  par charger la capacité d'entrée. Un gigaohm fournit le chemin de retour sans charger
+  significativement une source de cent mégohms (erreur de 10 %) — c'est le compromis assumé, et
+  la raison pour laquelle la carte FE-B existe pour les mesures d'impédance vraiment élevées.</p>
+
+  <p><strong>U1A en suiveur.</strong> Gain unité. On n'amplifie pas ici : on convertit une source
+  de deux gigaohms en une source de quelques ohms, ce qui est exactement le rôle d'un étage
+  d'entrée. L'amplification viendra plus loin, où elle ne coûte plus rien.</p>
+
+  <p><strong>U1B, le tampon de garde.</strong> Il recopie le potentiel d'entrée et pilote l'anneau,
+  le blindage du câble et le plan de garde. Sa sortie peut débiter vingt milliampères : les fuites
+  qu'il absorbe sont pour lui insignifiantes.</p>
+
+  <h3 id="c3-drl" data-toc="sub">La contre-réaction de mode commun</h3>
+
+  <p>Il reste, après l'isolement galvanique, un mode commun résiduel : le végétal capte du
+  cinquante hertz, et la carte flotte avec lui, mais pas parfaitement — les capacités parasites de
+  la barrière forment un diviseur. La parade est empruntée à l'électrocardiographie, où elle porte
+  le nom de <em>driven right leg</em> : on mesure le mode commun, on l'amplifie, on l'inverse, et
+  on le réinjecte dans le sujet par une troisième électrode.</p>
+
+  <p>Sur le schéma, U2A intègre le signal d'entrée à travers R7 et C7, puis le réinjecte sur
+  l'électrode de référence par R9. La boucle ainsi formée réduit le mode commun d'un facteur égal
+  au gain de boucle — environ quarante décibels à cinquante hertz avec les valeurs retenues.</p>
+
+  <div class="callout caution">
+    <div class="callout-title">⚠️ R9 n'est pas une résistance ordinaire</div>
+    <p class="noindent">Les vingt-deux kilohms de R9 sont une <strong>limitation de sécurité</strong>,
+    pas un choix de gain. Ils garantissent que, quoi qu'il arrive dans l'électronique, le courant
+    injecté dans le sujet reste inférieur à deux cent vingt microampères sous cinq volts. Cette
+    valeur est reprise de la norme applicable aux appareils électromédicaux. Elle est
+    surdimensionnée pour une plante ; elle devient indispensable dès qu'un être humain est dans la
+    boucle, et le chapitre 34 de l'ouvrage principal explique pourquoi on ne transige jamais
+    là-dessus.</p>
+  </div>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Mesures relevées sur prototype</div>
+    <p class="noindent">Entrée court-circuitée par une résistance de 1 GΩ, boîtier fermé,
+    alimentation sur batterie : bruit de <strong>0,61 µV efficace</strong> sur la bande
+    0,01 – 10 Hz, dérive de <strong>0,18 µV/°C</strong>, courant d'entrée mesuré par la méthode de
+    la capacité de charge à <strong>14 fA</strong>. Réjection du mode commun à 50 Hz, contre-réaction
+    active : <strong>118 dB</strong>. Ces quatre nombres sont ceux qu'il faut retrouver à la
+    recette (partie IV) ; s'ils ne sortent pas, le montage a un défaut précis, et le chapitre de
+    dépannage indique lequel.</p>
+  </div>
+</section>

@@ -1,0 +1,371 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/pcb-couches.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 830" width="1360" height="830">
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+ <marker id="ahk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
+   markerHeight="5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#23302C"/></marker>
+ <marker id="ahc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#A8552E"/></marker>
+ <pattern id="hatch" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#E0C073" stroke-width="2.4"/></pattern>
+ <pattern id="hatchb" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
+</defs>
+<rect width="1360" height="830" fill="#FFFFFF"/>
+<rect x="26" y="26" width="1308" height="778" rx="0" fill="none" stroke="#23302C" stroke-width="1.8"/>
+<rect x="42" y="42" width="1276" height="746" rx="0" fill="none" stroke="#D9D9C6" stroke-width="1.0"/>
+<line x1="201.5" y1="26" x2="201.5" y2="42" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="201.5" y1="788" x2="201.5" y2="804" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="361.0" y1="26" x2="361.0" y2="42" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="361.0" y1="788" x2="361.0" y2="804" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="520.5" y1="26" x2="520.5" y2="42" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="520.5" y1="788" x2="520.5" y2="804" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="680.0" y1="26" x2="680.0" y2="42" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="680.0" y1="788" x2="680.0" y2="804" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="839.5" y1="26" x2="839.5" y2="42" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="839.5" y1="788" x2="839.5" y2="804" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="999.0" y1="26" x2="999.0" y2="42" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="999.0" y1="788" x2="999.0" y2="804" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1158.5" y1="26" x2="1158.5" y2="42" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1158.5" y1="788" x2="1158.5" y2="804" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<text x="121.75" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">1</text>
+<text x="121.75" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">1</text>
+<text x="281.25" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">2</text>
+<text x="281.25" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">2</text>
+<text x="440.75" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">3</text>
+<text x="440.75" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">3</text>
+<text x="600.25" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">4</text>
+<text x="600.25" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">4</text>
+<text x="759.75" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">5</text>
+<text x="759.75" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">5</text>
+<text x="919.25" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">6</text>
+<text x="919.25" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">6</text>
+<text x="1078.75" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">7</text>
+<text x="1078.75" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">7</text>
+<text x="1238.25" y="38" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">8</text>
+<text x="1238.25" y="800" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">8</text>
+<line x1="26" y1="228.5" x2="42" y2="228.5" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1318" y1="228.5" x2="1334" y2="228.5" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="26" y1="415.0" x2="42" y2="415.0" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1318" y1="415.0" x2="1334" y2="415.0" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="26" y1="601.5" x2="42" y2="601.5" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1318" y1="601.5" x2="1334" y2="601.5" stroke="#D9D9C6" stroke-width="1.0" stroke-linecap="round"/>
+<text x="34" y="139.25" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">A</text>
+<text x="1326" y="139.25" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">A</text>
+<text x="34" y="325.75" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">B</text>
+<text x="1326" y="325.75" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">B</text>
+<text x="34" y="512.25" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">C</text>
+<text x="1326" y="512.25" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">C</text>
+<text x="34" y="698.75" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">D</text>
+<text x="1326" y="698.75" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">D</text>
+<rect x="916" y="650" width="402" height="138" rx="0" fill="#FDFCF7" stroke="#23302C" stroke-width="1.6"/>
+<line x1="916" y1="690" x2="1318" y2="690" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="916" y1="742" x2="1318" y2="742" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1165.24" y1="690" x2="1165.24" y2="742" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1040.62" y1="742" x2="1040.62" y2="788" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
+<line x1="1241.62" y1="742" x2="1241.62" y2="788" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
+<text x="1117.0" y="677" font-family="Cormorant Garamond, serif" font-size="20.37" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Routage — quatre couches</text>
+<text x="1040.62" y="708" font-family="Lato, sans-serif" font-size="16.75" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">PhytoSense One</text>
+<text x="1040.62" y="722" font-family="Cormorant Garamond, serif" font-size="14.48" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
+<text x="1040.62" y="735" font-family="DejaVu Sans Mono, monospace" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
+<text x="1241.62" y="710" font-family="Lato, sans-serif" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Circuit imprimé</text>
+<text x="1241.62" y="726" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">CERN-OHL-P v2</text>
+<text x="1241.62" y="737" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">diffusion libre</text>
+<text x="978.31" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">FEUILLE</text>
+<text x="978.31" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">1/3</text>
+<text x="1102.93" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">RÉVISION</text>
+<text x="1102.93" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">B</text>
+<text x="1203.43" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">DATE</text>
+<text x="1203.43" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2026-09</text>
+<text x="1279.81" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">ÉCHELLE</text>
+<text x="1279.81" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">—</text>
+<text x="90" y="74" font-family="Cormorant Garamond, serif" font-size="18.56" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">PhytoSense One — circuit imprimé 100 × 60 mm, FR4 1,6 mm, cuivre 35 µm</text>
+<text x="70" y="116" font-family="Lato, sans-serif" font-size="15.84" fill="#B03A2E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Couche 1 — signaux analogiques</text>
+<text x="470" y="116" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">côté composants</text>
+<rect x="70.0" y="130.0" width="400.0" height="240.0" rx="4" fill="#F7F9F7" stroke="#0E2A22" stroke-width="2.0"/>
+<line x1="294.0" y1="132.0" x2="294.0" y2="368.0" stroke="#A8552E" stroke-width="2.0" stroke-linecap="round" stroke-dasharray="8 5"/>
+<circle cx="86.0" cy="146.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="86.0" cy="146.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<circle cx="454.0" cy="146.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="454.0" cy="146.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<circle cx="86.0" cy="354.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="86.0" cy="354.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<circle cx="454.0" cy="354.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="454.0" cy="354.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<rect x="82.0" y="162.0" width="124.0" height="144.0" rx="0" fill="none" stroke="#B08528" stroke-width="1.8" stroke-dasharray="5 3"/>
+<rect x="70.0" y="154.0" width="48.0" height="48.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="94.0" y="182.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">J1</text>
+<rect x="70.0" y="226.0" width="48.0" height="48.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="94.0" y="254.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">J2</text>
+<rect x="162.0" y="174.0" width="24.0" height="24.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="174.0" y="190.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U1</text>
+<rect x="151.6" y="222.8" width="12.8" height="6.4" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="171.6" y="222.8" width="12.8" height="6.4" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="154.0" y="237.4" width="8.0" height="5.2" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="214.0" y="170.0" width="16.0" height="136.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="260.0" y="177.2" width="20.0" height="17.6" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="260.0" y="217.2" width="20.0" height="17.6" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="260.0" y="249.2" width="20.0" height="17.6" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="310.0" y="178.0" width="16.0" height="16.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="306.0" y="206.0" width="24.0" height="24.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="318.0" y="222.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U10</text>
+<rect x="310.0" y="252.0" width="16.0" height="12.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="344.0" y="251.6" width="20.0" height="12.8" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="162.0" y="294.0" width="56.0" height="40.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="190.0" y="318.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">T1</text>
+<rect x="140.0" y="310.0" width="20.0" height="16.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="254.0" y="308.0" width="16.0" height="12.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="254.0" y="332.0" width="16.0" height="12.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="302.0" y="298.8" width="32.0" height="30.4" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="318.0" y="318.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U24</text>
+<rect x="370.0" y="182.0" width="40.0" height="40.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="390.0" y="206.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U30</text>
+<rect x="380.0" y="250.0" width="20.0" height="16.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="431.6" y="253.0" width="12.8" height="10.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="424.0" y="195.2" width="36.0" height="29.6" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="442.0" y="214.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">J20</text>
+<rect x="430.0" y="294.0" width="24.0" height="24.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="442.0" y="310.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">J21</text>
+<rect x="416.0" y="302.0" width="12.0" height="8.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<path d="M 118.0,178.0 L 158.0,178.0 L 158.0,186.0 L 174.0,186.0" fill="none" stroke="#B03A2E" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 118.0,250.0 L 150.0,250.0 L 150.0,210.0 L 174.0,198.0" fill="none" stroke="#B03A2E" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 198.0,186.0 L 214.0,186.0 L 214.0,178.0 L 222.0,178.0" fill="none" stroke="#B03A2E" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 198.0,198.0 L 214.0,198.0 L 214.0,210.0 L 222.0,210.0" fill="none" stroke="#B03A2E" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 238.0,186.0 L 254.0,186.0 L 254.0,194.0 L 270.0,194.0" fill="none" stroke="#B03A2E" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 238.0,226.0 L 254.0,226.0 L 254.0,234.0 L 270.0,234.0" fill="none" stroke="#B03A2E" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 290.0,194.0 L 302.0,194.0 L 302.0,190.0 L 318.0,190.0" fill="none" stroke="#B03A2E" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 290.0,234.0 L 302.0,234.0 L 302.0,226.0 L 318.0,226.0" fill="none" stroke="#B03A2E" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 334.0,190.0 L 342.0,190.0 L 342.0,218.0 L 342.0,226.0" fill="none" stroke="#B03A2E" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 334.0,266.0 L 346.0,266.0 L 346.0,262.0 L 354.0,262.0" fill="none" stroke="#B03A2E" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 158.0,230.0 L 178.0,230.0" fill="none" stroke="#B03A2E" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 166.0,238.0 L 166.0,226.0" fill="none" stroke="#B03A2E" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<circle cx="214.0" cy="178.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="214.0" cy="210.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="254.0" cy="194.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="302.0" cy="190.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="342.0" cy="226.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="374.0" cy="242.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="374.0" cy="218.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="422.0" cy="262.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="278.0" cy="306.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="302.0" cy="210.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="294.0" cy="250.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="362.0" cy="234.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="430.0" cy="218.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="150.0" cy="210.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="206.0" cy="226.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="346.0" cy="262.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<text x="110.0" y="358.8" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0.6">PHYTOSENSE ONE</text>
+<text x="110.0" y="363.0" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0.5">BRETAGNE NAMASTÉ</text>
+<text x="430.0" y="358.8" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
+<text x="430.0" y="363.0" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">RÉV. B · CERN-OHL-P v2</text>
+<text x="600" y="116" font-family="Lato, sans-serif" font-size="15.84" fill="#1E6F50" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Couche 2 — plan de masse (fendu)</text>
+<text x="1000" y="116" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">référence unique</text>
+<rect x="600.0" y="130.0" width="400.0" height="240.0" rx="4" fill="#F7F9F7" stroke="#0E2A22" stroke-width="2.0"/>
+<line x1="824.0" y1="132.0" x2="824.0" y2="368.0" stroke="#A8552E" stroke-width="2.0" stroke-linecap="round" stroke-dasharray="8 5"/>
+<circle cx="616.0" cy="146.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="616.0" cy="146.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<circle cx="984.0" cy="146.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="984.0" cy="146.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<circle cx="616.0" cy="354.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="616.0" cy="354.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<circle cx="984.0" cy="354.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="984.0" cy="354.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<rect x="612.0" y="162.0" width="124.0" height="144.0" rx="0" fill="none" stroke="#B08528" stroke-width="1.8" stroke-dasharray="5 3"/>
+<path d="M 680.0,162.0 L 680.0,290.0" fill="none" stroke="#1E6F50" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 736.0,162.0 L 736.0,290.0" fill="none" stroke="#1E6F50" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 808.0,290.0 L 808.0,306.0" fill="none" stroke="#1E6F50" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<circle cx="744.0" cy="178.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="744.0" cy="210.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="784.0" cy="194.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="832.0" cy="190.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="872.0" cy="226.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="904.0" cy="242.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="904.0" cy="218.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="952.0" cy="262.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="808.0" cy="306.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="832.0" cy="210.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="824.0" cy="250.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="892.0" cy="234.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="960.0" cy="218.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="680.0" cy="210.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="736.0" cy="226.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="876.0" cy="262.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<text x="640.0" y="358.8" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0.6">PHYTOSENSE ONE</text>
+<text x="640.0" y="363.0" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0.5">BRETAGNE NAMASTÉ</text>
+<text x="960.0" y="358.8" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
+<text x="960.0" y="363.0" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">RÉV. B · CERN-OHL-P v2</text>
+<text x="70" y="396" font-family="Lato, sans-serif" font-size="15.84" fill="#2F5E86" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Couche 3 — alimentations</text>
+<text x="470" y="396" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">±5 V, 3,3 V, 5 V</text>
+<rect x="70.0" y="410.0" width="400.0" height="240.0" rx="4" fill="#F7F9F7" stroke="#0E2A22" stroke-width="2.0"/>
+<line x1="294.0" y1="412.0" x2="294.0" y2="648.0" stroke="#A8552E" stroke-width="2.0" stroke-linecap="round" stroke-dasharray="8 5"/>
+<circle cx="86.0" cy="426.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="86.0" cy="426.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<circle cx="454.0" cy="426.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="454.0" cy="426.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<circle cx="86.0" cy="634.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="86.0" cy="634.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<circle cx="454.0" cy="634.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="454.0" cy="634.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<rect x="82.0" y="442.0" width="124.0" height="144.0" rx="0" fill="none" stroke="#B08528" stroke-width="1.8" stroke-dasharray="5 3"/>
+<path d="M 278.0,598.0 L 302.0,598.0 L 302.0,490.0 L 310.0,490.0" fill="none" stroke="#2F5E86" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 278.0,622.0 L 294.0,622.0 L 294.0,530.0 L 310.0,530.0" fill="none" stroke="#2F5E86" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 170.0,602.0 L 182.0,602.0" fill="none" stroke="#2F5E86" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 170.0,614.0 L 182.0,614.0" fill="none" stroke="#2F5E86" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 246.0,598.0 L 262.0,598.0" fill="none" stroke="#2F5E86" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 246.0,614.0 L 262.0,614.0" fill="none" stroke="#2F5E86" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 350.0,602.0 L 374.0,602.0 L 374.0,522.0 L 390.0,522.0" fill="none" stroke="#2F5E86" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 454.0,506.0 L 454.0,474.0 L 414.0,474.0 L 414.0,482.0" fill="none" stroke="#2F5E86" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<circle cx="214.0" cy="458.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="214.0" cy="490.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="254.0" cy="474.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="302.0" cy="470.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="342.0" cy="506.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="374.0" cy="522.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="374.0" cy="498.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="422.0" cy="542.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="278.0" cy="586.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="302.0" cy="490.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="294.0" cy="530.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="362.0" cy="514.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="430.0" cy="498.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="150.0" cy="490.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="206.0" cy="506.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="346.0" cy="542.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<text x="110.0" y="638.8" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0.6">PHYTOSENSE ONE</text>
+<text x="110.0" y="643.0" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0.5">BRETAGNE NAMASTÉ</text>
+<text x="430.0" y="638.8" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
+<text x="430.0" y="643.0" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">RÉV. B · CERN-OHL-P v2</text>
+<text x="600" y="396" font-family="Lato, sans-serif" font-size="15.84" fill="#8A6A1F" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Couche 4 — signaux numériques</text>
+<text x="1000" y="396" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">côté soudure</text>
+<rect x="600.0" y="410.0" width="400.0" height="240.0" rx="4" fill="#F7F9F7" stroke="#0E2A22" stroke-width="2.0"/>
+<line x1="824.0" y1="412.0" x2="824.0" y2="648.0" stroke="#A8552E" stroke-width="2.0" stroke-linecap="round" stroke-dasharray="8 5"/>
+<circle cx="616.0" cy="426.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="616.0" cy="426.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<circle cx="984.0" cy="426.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="984.0" cy="426.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<circle cx="616.0" cy="634.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="616.0" cy="634.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<circle cx="984.0" cy="634.0" r="6.4" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="984.0" cy="634.0" r="3.2" fill="#6B7A72" stroke="#6B7A72" stroke-width="0.8"/>
+<rect x="612.0" y="442.0" width="124.0" height="144.0" rx="0" fill="none" stroke="#B08528" stroke-width="1.8" stroke-dasharray="5 3"/>
+<rect x="600.0" y="434.0" width="48.0" height="48.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="624.0" y="462.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">J1</text>
+<rect x="600.0" y="506.0" width="48.0" height="48.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="624.0" y="534.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">J2</text>
+<rect x="692.0" y="454.0" width="24.0" height="24.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="704.0" y="470.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U1</text>
+<rect x="681.6" y="502.8" width="12.8" height="6.4" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="701.6" y="502.8" width="12.8" height="6.4" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="684.0" y="517.4" width="8.0" height="5.2" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="744.0" y="450.0" width="16.0" height="136.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="790.0" y="457.2" width="20.0" height="17.6" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="790.0" y="497.2" width="20.0" height="17.6" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="790.0" y="529.2" width="20.0" height="17.6" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="840.0" y="458.0" width="16.0" height="16.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="836.0" y="486.0" width="24.0" height="24.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="848.0" y="502.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U10</text>
+<rect x="840.0" y="532.0" width="16.0" height="12.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="874.0" y="531.6" width="20.0" height="12.8" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="692.0" y="574.0" width="56.0" height="40.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="720.0" y="598.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">T1</text>
+<rect x="670.0" y="590.0" width="20.0" height="16.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="784.0" y="588.0" width="16.0" height="12.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="784.0" y="612.0" width="16.0" height="12.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="832.0" y="578.8" width="32.0" height="30.4" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="848.0" y="598.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U24</text>
+<rect x="900.0" y="462.0" width="40.0" height="40.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="920.0" y="486.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U30</text>
+<rect x="910.0" y="530.0" width="20.0" height="16.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="961.6" y="533.0" width="12.8" height="10.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<rect x="954.0" y="475.2" width="36.0" height="29.6" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="972.0" y="494.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">J20</text>
+<rect x="960.0" y="574.0" width="24.0" height="24.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<text x="972.0" y="590.0" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">J21</text>
+<rect x="946.0" y="582.0" width="12.0" height="8.0" rx="1.5" fill="#E8EDEA" stroke="#6B7A72" stroke-width="1.0"/>
+<path d="M 880.0,594.0 L 904.0,594.0 L 904.0,498.0 L 920.0,498.0" fill="none" stroke="#8A6A1F" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 880.0,606.0 L 896.0,606.0 L 896.0,506.0 L 920.0,506.0" fill="none" stroke="#8A6A1F" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 880.0,618.0 L 892.0,618.0 L 892.0,514.0 L 920.0,514.0" fill="none" stroke="#8A6A1F" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 940.0,498.0 L 960.0,498.0 L 960.0,494.0 L 972.0,494.0" fill="none" stroke="#8A6A1F" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 940.0,506.0 L 956.0,506.0 L 956.0,506.0 L 972.0,506.0" fill="none" stroke="#8A6A1F" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 940.0,530.0 L 952.0,530.0 L 952.0,542.0 L 920.0,542.0" fill="none" stroke="#8A6A1F" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 940.0,546.0 L 960.0,546.0 L 960.0,542.0 L 968.0,542.0" fill="none" stroke="#8A6A1F" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 940.0,554.0 L 952.0,554.0 L 952.0,590.0 L 972.0,590.0" fill="none" stroke="#8A6A1F" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M 864.0,610.0 L 872.0,610.0" fill="none" stroke="#8A6A1F" stroke-width="2.2" stroke-linecap="square" stroke-linejoin="round"/>
+<circle cx="744.0" cy="458.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="744.0" cy="490.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="784.0" cy="474.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="832.0" cy="470.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="872.0" cy="506.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="904.0" cy="522.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="904.0" cy="498.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="952.0" cy="542.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="808.0" cy="586.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="832.0" cy="490.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="824.0" cy="530.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="892.0" cy="514.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="960.0" cy="498.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="680.0" cy="490.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="736.0" cy="506.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<circle cx="876.0" cy="542.0" r="2.2" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<text x="640.0" y="638.8" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0.6">PHYTOSENSE ONE</text>
+<text x="640.0" y="643.0" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0.5">BRETAGNE NAMASTÉ</text>
+<text x="960.0" y="638.8" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
+<text x="960.0" y="643.0" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">RÉV. B · CERN-OHL-P v2</text>
+<rect x="1030" y="130" width="260" height="380" rx="5" fill="#FBFBF7" stroke="#D9D9C6" stroke-width="1.0"/>
+<text x="1160" y="150" font-family="Lato, sans-serif" font-size="14.94" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.4">LÉGENDE</text>
+<line x1="1044" y1="174" x2="1074" y2="174" stroke="#B03A2E" stroke-width="2.4" stroke-linecap="round"/>
+<text x="1082" y="178" font-family="Lato, sans-serif" font-size="13.13" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">piste couche 1</text>
+<line x1="1044" y1="196" x2="1074" y2="196" stroke="#1E6F50" stroke-width="2.4" stroke-linecap="round"/>
+<text x="1082" y="200" font-family="Lato, sans-serif" font-size="13.13" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">piste couche 2</text>
+<line x1="1044" y1="218" x2="1074" y2="218" stroke="#2F5E86" stroke-width="2.4" stroke-linecap="round"/>
+<text x="1082" y="222" font-family="Lato, sans-serif" font-size="13.13" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">piste couche 3</text>
+<line x1="1044" y1="240" x2="1074" y2="240" stroke="#8A6A1F" stroke-width="2.4" stroke-linecap="round"/>
+<text x="1082" y="244" font-family="Lato, sans-serif" font-size="13.13" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">piste couche 4</text>
+<line x1="1044" y1="262" x2="1074" y2="262" stroke="#A8552E" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="8 5"/>
+<text x="1082" y="266" font-family="Lato, sans-serif" font-size="13.13" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">fente du plan de masse</text>
+<line x1="1044" y1="284" x2="1074" y2="284" stroke="#B08528" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="8 5"/>
+<text x="1082" y="288" font-family="Lato, sans-serif" font-size="13.13" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">anneau de garde</text>
+<circle cx="1059" cy="316" r="5" fill="#fff" stroke="#0E2A22" stroke-width="1.0"/>
+<text x="1082" y="320" font-family="Lato, sans-serif" font-size="13.13" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">via traversant 0,3 mm</text>
+<circle cx="1059" cy="338" r="6" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<text x="1082" y="342" font-family="Lato, sans-serif" font-size="13.13" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">fixation M3</text>
+<text x="1044" y="372" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Échelle 1 : 2,5</text>
+<text x="1044" y="387" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0"></text>
+<text x="1044" y="402" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">La fente du plan de masse</text>
+<text x="1044" y="417" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">sépare la masse analogique</text>
+<text x="1044" y="432" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">flottante de la masse USB.</text>
+<text x="1044" y="447" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Aucune piste ne la franchit :</text>
+<text x="1044" y="462" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">seuls le transformateur T1 et</text>
+<text x="1044" y="477" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">les isolateurs U24 la traversent,</text>
+<text x="1044" y="492" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">et ils la traversent dans l'air.</text>
+<text x="500" y="770" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Les quatre couches sont représentées vues de dessus (couche 4 non miroitée) — c'est la convention des fichiers Gerber fournis.</text>
+</svg>

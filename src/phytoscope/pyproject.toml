@@ -1,0 +1,75 @@
+#  ==========================================================================
+#  PhytoScope — attribution — src/phytoscope/pyproject.toml
+#
+#  Version  : 1.5.1
+#  Date     : 2026-09-18
+#  Éditeur  : Bretagne Namasté
+#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Site     : https://bretagne-namaste.com
+#  Contact  : contact@bretagne-namaste.com
+#  Licence  : MIT — voir LICENCE.txt
+#
+#  SPDX-License-Identifier: MIT
+#  fin de l'attribution
+#  ==========================================================================
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phytoscope"
+#  La version vit dans `phytoscope/version.py`, seule source de vérité, et
+#  `tools/release.py` est le seul à l'écrire. La déclarer ici aussi la faisait
+#  dériver : elle est restée à 1.0.0 pendant cinq versions.
+dynamic = ["version"]
+description = "Écoute, mesure et enregistrement des signaux végétaux"
+readme = "README.txt"
+requires-python = ">=3.9"
+license = { file = "LICENCE.txt" }
+authors = [{ name = "Bretagne Namasté", email = "contact@bretagne-namaste.com" }]
+keywords = ["plante", "biosignal", "sonification", "electrophysiologie",
+            "oscilloscope", "MIDI"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: X11 Applications :: Qt",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: French",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = ["numpy>=1.24", "PySide6>=6.5"]
+
+[tool.setuptools.dynamic]
+version = { attr = "phytoscope.version.VERSION" }
+
+[project.optional-dependencies]
+complet = ["pyqtgraph>=0.13", "sounddevice>=0.4.6", "pyserial>=3.5",
+           "python-rtmidi>=1.5", "pyttsx3>=2.90"]
+dev = ["pytest>=7.0", "pytest-cov>=4.0", "ruff>=0.1"]
+
+[project.urls]
+"Site" = "https://bretagne-namaste.com"
+"Contact" = "mailto:contact@bretagne-namaste.com"
+
+[project.gui-scripts]
+phytoscope = "phytoscope.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["phytoscope*"]
+
+#  Les données qui doivent suivre le logiciel partout où il s'installe : le
+#  numéro de version, les catalogues de traduction et les dictionnaires du
+#  mode vocal. Sans cette déclaration, une roue les laisserait derrière elle.
+[tool.setuptools.package-data]
+phytoscope = ["VERSION", "AUTEURS", "langues/*.json", "lexiques/*.json"]
+
+[tool.ruff]
+line-length = 90
+target-version = "py39"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,37 @@
+# ===========================================================================
+#  PhytoScope — qui publie, qui a écrit, où l'on écrit.
+#
+#  Ce fichier est la SEULE source de ces renseignements. Le logiciel le lit
+#  pour la fenêtre « À propos », la fabrique de paquets pour estampiller le
+#  .deb, le .rpm, le .msi et le .pkg, et la génération du certificat pour en
+#  remplir le sujet X.509. Les modifier ici les modifie partout.
+#
+#  Il vit DANS le paquet Python, à côté de VERSION, pour la même raison : un
+#  logiciel installé n'emporte pas le dépôt, et l'attribution doit le suivre
+#  partout où il va.
+#
+#  Format : « clé = valeur », une par ligne. Les lignes vides et celles
+#  commençant par « # » sont ignorées.
+# ===========================================================================
+
+# --- Qui publie -------------------------------------------------------------
+editeur = Bretagne Namasté
+site = https://bretagne-namaste.com
+contact = contact@bretagne-namaste.com
+
+# --- Qui a écrit ------------------------------------------------------------
+auteur = Thierry GAYET
+courriel = Thierry.Gayet@gmail.com
+telephone = +33 (0)6 63 84 95 89
+
+# --- Droits -----------------------------------------------------------------
+licence = MIT
+droits = © 2026 Bretagne Namasté — Thierry GAYET
+
+# --- Pour le sujet du certificat X.509 --------------------------------------
+# Code ISO du pays (deux lettres), région et ville. Ils n'apparaissent que
+# dans le certificat de signature ; corrigez-les si besoin, rien d'autre n'en
+# dépend.
+pays = FR
+region = Bretagne
+ville = 

@@ -1,0 +1,105 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/carte-pcb.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 660" width="980" height="660">
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+ <marker id="ahk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
+   markerHeight="5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#23302C"/></marker>
+ <marker id="ahc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#A8552E"/></marker>
+ <pattern id="hatch" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#E0C073" stroke-width="2.4"/></pattern>
+ <pattern id="hatchb" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
+</defs>
+<rect width="980" height="660" fill="#FFFFFF"/>
+<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Implantation et empilage du circuit imprimé</text>
+<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Quatre couches, deux plans de masse, un anneau de garde</text>
+<text x="60" y="96" font-family="Lato, sans-serif" font-size="20.47" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.4">EMPILAGE</text>
+<rect x="60" y="108" width="360" height="18" rx="0" fill="#D9C08A" stroke="#23302C" stroke-width="1.1"/>
+<text x="430" y="121.0" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Couche 1 — signaux analogiques</text>
+<rect x="60" y="126" width="360" height="16" rx="0" fill="#F0EEE4" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="430" y="138" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">prépreg 0,2 mm</text>
+<rect x="60" y="142" width="360" height="26" rx="0" fill="#8FA79A" stroke="#23302C" stroke-width="1.1"/>
+<text x="430" y="159.0" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Couche 2 — plan de masse AGND / DGND (fendu)</text>
+<rect x="60" y="168" width="360" height="16" rx="0" fill="#F0EEE4" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="430" y="180" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">âme FR4 1,0 mm</text>
+<rect x="60" y="184" width="360" height="22" rx="0" fill="#B9C6BF" stroke="#23302C" stroke-width="1.1"/>
+<text x="430" y="199.0" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Couche 3 — alimentations</text>
+<rect x="60" y="206" width="360" height="16" rx="0" fill="#F0EEE4" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="430" y="218" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">prépreg 0,2 mm</text>
+<rect x="60" y="222" width="360" height="18" rx="0" fill="#D9C08A" stroke="#23302C" stroke-width="1.1"/>
+<text x="430" y="235.0" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Couche 4 — signaux numériques, blindage</text>
+<text x="60" y="262" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Épaisseur totale 1,6 mm · cuivre 35 µm · FR4 Tg 150</text>
+<text x="60" y="282" font-family="Lato, sans-serif" font-size="20.47" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.4">IMPLANTATION (vue de dessus, 100 × 60 mm)</text>
+<rect x="60" y="306" width="620" height="300" rx="10" fill="#F7F9F7" stroke="#3F7D5A" stroke-width="2.0"/>
+<circle cx="76" cy="322" r="6" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="664" cy="322" r="6" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="76" cy="590" r="6" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<circle cx="664" cy="590" r="6" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
+<rect x="76" y="330" width="150" height="130" rx="5" fill="#EDF5F0" stroke="#3F7D5A" stroke-width="1.4"/>
+<text x="151.0" y="391.0" font-family="Lato, sans-serif" font-size="18.25" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Entrées</text>
+<text x="151.0" y="406.0" font-family="Lato, sans-serif" font-size="18.25" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">et garde</text>
+<rect x="240" y="330" width="150" height="130" rx="5" fill="#FBF5E6" stroke="#B08528" stroke-width="1.4"/>
+<text x="315.0" y="391.0" font-family="Lato, sans-serif" font-size="18.25" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Carte fille</text>
+<text x="315.0" y="406.0" font-family="Lato, sans-serif" font-size="18.25" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">(mezzanine)</text>
+<rect x="404" y="330" width="120" height="130" rx="5" fill="#EDF5F0" stroke="#3F7D5A" stroke-width="1.4"/>
+<text x="464.0" y="391.0" font-family="Lato, sans-serif" font-size="18.25" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Gain et</text>
+<text x="464.0" y="406.0" font-family="Lato, sans-serif" font-size="18.25" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">filtre</text>
+<rect x="538" y="330" width="126" height="130" rx="5" fill="#EDF5F0" stroke="#3F7D5A" stroke-width="1.4"/>
+<text x="601.0" y="391.0" font-family="Lato, sans-serif" font-size="18.25" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">CAN et</text>
+<text x="601.0" y="406.0" font-family="Lato, sans-serif" font-size="18.25" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">référence</text>
+<rect x="76" y="480" width="250" height="110" rx="5" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.4"/>
+<text x="201.0" y="531.0" font-family="Lato, sans-serif" font-size="18.25" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Alimentations isolées</text>
+<rect x="340" y="480" width="150" height="110" rx="5" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.4"/>
+<text x="415.0" y="531.0" font-family="Lato, sans-serif" font-size="18.25" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Isolateurs</text>
+<rect x="504" y="480" width="160" height="110" rx="5" fill="#EEF3FA" stroke="#2F5E86" stroke-width="1.4"/>
+<text x="584.0" y="531.0" font-family="Lato, sans-serif" font-size="18.25" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">RP2350 · USB-C</text>
+<line x1="495" y1="470" x2="495" y2="600" stroke="#A8552E" stroke-width="2.0" stroke-linecap="round" stroke-dasharray="10 6"/>
+<text x="495" y="612" font-family="Lato, sans-serif" font-size="16.59" fill="#A8552E" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">fente du plan de masse — la barrière</text>
+<rect x="68" y="322" width="166" height="146" rx="0" fill="none" stroke="#B08528" stroke-width="2.4" stroke-dasharray="6 4"/>
+<text x="330" y="302" font-family="Lato, sans-serif" font-size="16.04" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">anneau de garde sur les 4 couches</text>
+<text x="710" y="282" font-family="Lato, sans-serif" font-size="20.47" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.4">DÉTAIL DE LA GARDE</text>
+<rect x="710" y="320" width="220" height="170" rx="6" fill="#FFFFFF" stroke="#D9D9C6" stroke-width="1.2"/>
+<circle cx="820" cy="405" r="10" fill="#3F7D5A" stroke="#0E2A22" stroke-width="1.2"/>
+<text x="820" y="382" font-family="Lato, sans-serif" font-size="16.04" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">pastille d'entrée</text>
+<circle cx="820" cy="405" r="34" fill="none" stroke="#B08528" stroke-width="2.2"/>
+<circle cx="820" cy="405" r="44" fill="none" stroke="#B08528" stroke-width="2.2"/>
+<text x="820" y="468" font-family="Lato, sans-serif" font-size="16.04" fill="#B08528" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">anneau de garde au même</text>
+<text x="820" y="482" font-family="Lato, sans-serif" font-size="16.04" fill="#B08528" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">potentiel que l'entrée</text>
+<rect x="710" y="500" width="220" height="138" rx="5" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.1"/>
+<text x="724" y="528" font-family="Lato, sans-serif" font-size="19.08" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">RÈGLE</text>
+<text x="724" y="552" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Le vernis épargné sous</text>
+<text x="724" y="574" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">l'entrée : un courant de</text>
+<text x="724" y="596" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">fuite de surface de 1 pA</text>
+<text x="724" y="618" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">suffit à ruiner la mesure.</text>
+<text x="28" y="652" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
+<text x="952" y="652" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
+</svg>

@@ -1,0 +1,88 @@
+# ===========================================================================
+#  PhytoScope — comment git doit traiter chaque type de fichier
+# ===========================================================================
+
+# --- Par défaut : git décide, et normalise les fins de ligne en LF ----------
+*               text=auto eol=lf
+
+# --- Ce qui doit garder des fins de ligne Windows ---------------------------
+#  NSIS et cmd.exe ne lisent pas un script en LF. Ces fichiers sortent donc
+#  du dépôt en CRLF, sur tous les systèmes.
+*.bat           text eol=crlf
+*.cmd           text eol=crlf
+*.nsi           text eol=crlf
+*.nsh           text eol=crlf
+*.ps1           text eol=crlf
+
+# --- Ce qui doit rester en LF quoi qu'il arrive -----------------------------
+#  Un script shell en CRLF échoue avec « bad interpreter: no such file ».
+*.sh            text eol=lf
+Makefile        text eol=lf
+*.mk            text eol=lf
+*.py            text eol=lf
+configure       text eol=lf
+
+# --- Binaire : ne jamais convertir, ne jamais fusionner ---------------------
+*.pdf           binary
+*.png           binary
+*.jpg           binary
+*.jpeg          binary
+*.gif           binary
+*.webp          binary
+*.ico           binary
+*.icns          binary
+*.ttf           binary
+*.otf           binary
+*.woff          binary
+*.woff2         binary
+*.zip           binary
+*.gz            binary
+*.xz            binary
+*.bz2           binary
+*.7z            binary
+*.uf2           binary
+*.elf           binary
+*.bin           binary
+*.hex           binary
+*.wav           binary
+*.flac          binary
+*.mp3           binary
+*.ogg           binary
+*.sf2           binary
+*.p7s           binary
+*.der           binary
+*.p12           binary
+
+# --- Certificats : du texte, mais qu'on ne fusionne pas ---------------------
+*.pem           text eol=lf -merge
+*.crt           text eol=lf -merge
+
+# --- Fichiers générés : ne pas les compter dans les statistiques de langage,
+#     ne pas les afficher dans les diff par défaut (C-45 : jamais édités
+#     à la main, donc leur diff n'apprend rien).
+pdf-src/assets/svg/*.svg        linguistic-documentation -diff linguist-generated=true
+pdf-src/_*.html                 -diff linguist-generated=true
+pdf-src/parts/A0b-codes.html    -diff linguist-generated=true
+pdf-src/parts/A1-glossaire.html -diff linguist-generated=true
+pdf-src/parts/A3-index.html     -diff linguist-generated=true
+pdf-src/parts-carte/_*.html     -diff linguist-generated=true
+src/phytoscope/sbom.cdx.json -diff linguist-generated=true
+
+# --- Code tiers : hors des statistiques de langage du dépôt -----------------
+#  Sans cela, GitHub annonce que le projet est écrit en C par Playtronica.
+sources/**                  linguist-vendored=true
+sources/reverse/**              linguist-documentation=true
+
+# --- Textes de licence : reconnus, mais pas comptés comme du code -----------
+LICENSES/**                 linguist-documentation=true
+LICENSE                     linguist-documentation=true
+
+# --- Ce qui ne doit pas partir dans une archive « git archive » -------------
+.github/            export-ignore
+.ai/                export-ignore
+.gitattributes      export-ignore
+.gitignore          export-ignore
+.editorconfig       export-ignore
+.pre-commit-config.yaml export-ignore
+CLAUDE.md           export-ignore
+AGENTS.md           export-ignore

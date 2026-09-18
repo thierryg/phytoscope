@@ -1,0 +1,58 @@
+{
+  "nom": "Bahasa Indonesia — laras kontemplatif",
+  "langue": "id",
+  "auteur": "Bretagne Namasté",
+  "note": "Dictionnaire d'exemple. Le modifier est l'usage normal, pas une entorse : les mots doivent être ceux de celui qui écoute.",
+  "grammaire": "contemplative",
+  "registres": {
+    "sujet": [
+      "aku",
+      "sesuatu",
+      "getah",
+      "batang",
+      "daun"
+    ],
+    "verbe_montee": [
+      "bergetar",
+      "terjaga",
+      "naik",
+      "melonjak",
+      "memancar"
+    ],
+    "verbe_descente": [
+      "menenang",
+      "menurun",
+      "menarik diri",
+      "beristirahat",
+      "memudar"
+    ],
+    "intensite": [
+      "nyaris tak",
+      "perlahan",
+      "jelas",
+      "kuat",
+      "dengan seluruh kayuku"
+    ],
+    "tempo": [
+      "lagi",
+      "sekali lagi",
+      "setelah sejenak",
+      "setelah lama",
+      "setelah sunyi yang panjang"
+    ],
+    "couleur": [
+      "redam",
+      "rendah",
+      "penuh",
+      "jernih",
+      "tinggi"
+    ],
+    "liaison": [
+      "dan",
+      "lalu",
+      "maka",
+      "sementara",
+      "—"
+    ]
+  }
+}

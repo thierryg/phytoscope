@@ -1,0 +1,87 @@
+<!-- ====================== AVERTISSEMENT ====================== -->
+<section class="frontpage notice">
+  <h2 id="avertissement">Avertissement, et mode d'emploi de cet ouvrage</h2>
+
+  <p class="lettrine noindent">Ce hors-série prolonge <em>La Musique des Plantes</em> sur le
+  seul terrain que l'ouvrage principal ne pouvait pas couvrir sans doubler de volume : la
+  conception d'un instrument de mesure digne de ce nom. Il s'adresse à qui a déjà construit le
+  montage à NE555 du chapitre 35, l'a fait fonctionner, et s'est heurté au mur que rencontre
+  tout le monde à ce moment-là — <strong>on entend quelque chose, mais on ne sait pas quoi</strong>.</p>
+
+  <h3 id="a-qui">À qui il s'adresse</h3>
+  <p>Il faut savoir souder du composant monté en surface, lire un schéma, et ne pas être effrayé
+  par une ligne de commande. Il n'est pas nécessaire d'être électronicien : chaque choix est
+  justifié, chaque formule est posée, et les erreurs classiques sont signalées avant qu'on les
+  commette. En revanche, ce n'est pas un ouvrage d'initiation : celui-là existe déjà, c'est la
+  partie X de <em>La Musique des Plantes</em>.</p>
+
+  <h3 id="ce-qui-est-promis">Ce qui est promis, et ce qui ne l'est pas</h3>
+  <div class="callout key">
+    <div class="callout-title">✦ Ce que la carte apporte</div>
+    <p class="noindent">Une mesure en volts et en ohms, datée à l'échantillon près, isolée du
+    secteur, reproductible d'une séance à l'autre et d'une machine à l'autre. Un plancher de bruit
+    de l'ordre du microvolt, une impédance d'entrée de dix millions de mégohms, et un fichier que
+    vous pourrez rouvrir dans dix ans.</p>
+  </div>
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Ce qu'elle n'apporte pas</div>
+    <p class="noindent">Aucune interprétation. Une carte qui mesure mieux ne rend pas la plante
+    plus bavarde : elle rend seulement vos affirmations défendables. Si vous cherchez un appareil
+    qui vous dise ce que la plante ressent, aucun instrument décrit ici — ni aucun instrument du
+    commerce — ne le fera. Ce que vous gagnerez, c'est le droit de dire « voici ce que j'ai
+    mesuré, voici comment, voici l'incertitude ».</p>
+  </div>
+
+  <h3 id="organisation">Comment il est organisé</h3>
+  <p>Six parties, qui suivent l'ordre dans lequel on conçoit réellement un instrument.</p>
+  <ul class="steps">
+    <li><strong>Le cahier des charges et l'architecture.</strong> Ce qu'on veut mesurer, avec
+    quelle incertitude, et l'organisation générale qui en découle.</li>
+    <li><strong>Le conditionnement analogique.</strong> L'étage d'entrée électrométrique, la
+    garde, le pont à détection synchrone, le gain programmable, le filtrage et le budget de bruit.</li>
+    <li><strong>Le numérique et la liaison.</strong> Le convertisseur, l'isolement galvanique, le
+    microcontrôleur, et pourquoi la carte se déclare comme une carte son.</li>
+    <li><strong>La réalisation.</strong> Le circuit imprimé quatre couches, la nomenclature, le
+    montage, la recette et le dépannage.</li>
+    <li><strong>Le logiciel.</strong> Le choix du langage et de la boîte à outils graphique —
+    question posée franchement et tranchée avec ses raisons —, l'architecture, et l'usage.</li>
+    <li><strong>La pratique.</strong> Protocoles, comparaison honnête avec les appareils du
+    commerce, et ce qu'on a le droit d'en dire.</li>
+  </ul>
+  <p>Trois annexes sont également publiées <strong>en fascicules séparés</strong>, parce qu'on ne
+  lit pas un schéma comme on lit un chapitre : le dossier de schémas, la nomenclature avec les
+  accessoires, et le dossier de circuit imprimé. On les imprime, on les pose sur l'établi, on les
+  tache.</p>
+
+  <div class="securite">
+    <div class="s-h">Sécurité — à lire avant de brancher quoi que ce soit</div>
+    <p class="noindent">La carte fonctionne <strong>sur le 5 V de l'USB, sur une batterie, ou sur un
+    bloc d'alimentation externe de 7 à 24 V</strong> — jamais sur autre chose. Elle ne comporte
+    aucune partie raccordée directement au secteur : l'isolement du réseau est assuré par le bloc
+    externe, qui doit être un modèle marqué CE, à double isolation, et à très basse tension de
+    sécurité. Son étage d'entrée est
+    isolé galvaniquement du reste : c'est ce qui permet de la relier à une plante sans créer de
+    boucle de masse, et ce qui interdit à un défaut de l'ordinateur d'atteindre le végétal.</p>
+    <p>Trois règles ne souffrent aucune exception. <strong>Ne jamais</strong> relier cet appareil à
+    une personne sans respecter le chapitre 34 de l'ouvrage principal. <strong>Ne jamais</strong>
+    raccorder un oscilloscope relié à la terre sur un montage connecté à un être vivant.
+    <strong>Ne jamais</strong> alimenter la partie analogique depuis une source non isolée pendant
+    qu'une électrode est en place.</p>
+  </div>
+
+  <h3 id="conventions">Conventions typographiques</h3>
+  <p>Les quatre encadrés de l'ouvrage principal sont conservés : <strong>🔬 point scientifique</strong>
+  pour ce qui est mesuré et publié, <strong>🌿 regard énergétique</strong> pour la lecture
+  traditionnelle présentée comme telle, <strong>⚠️ limites</strong> pour ce que les données ne
+  permettent pas de conclure, <strong>✨ expérience</strong> pour l'invitation à pratiquer. S'y
+  ajoutent ici les encadrés <strong>✦ choix de conception</strong>, qui expliquent pourquoi telle
+  solution a été retenue plutôt que telle autre — car c'est de cela qu'est faite l'électronique.</p>
+
+  <p class="copyright">Les valeurs numériques citées proviennent des notices des fabricants
+  (Analog Devices, Texas Instruments, Raspberry Pi, Würth, Vishay), de mesures réalisées sur
+  prototype, ou de la littérature ouverte. Les prix sont indicatifs, relevés en septembre 2026
+  chez un distributeur européen, hors taxes, pour de petites quantités. Les marques
+  <em>Music of the Plants</em>, <em>PlantWave</em>, <em>Plants Play</em>, <em>Scion</em> et
+  <em>Biotron</em> appartiennent à leurs détenteurs ; cet ouvrage n'est ni sponsorisé, ni affilié,
+  ni rémunéré par aucun fabricant, et ne comporte aucun lien commissionné.</p>
+</section>

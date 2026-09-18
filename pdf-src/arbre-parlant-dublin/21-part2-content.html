@@ -1,0 +1,186 @@
+<section class="chapter">
+  <h2 id="c5-capteurs" data-toc="chapter">Les dix capteurs : documenté, déduit, inconnu</h2>
+  <p class="chapo">Le projet annonce « dix capteurs ». Trois listes différentes ont été publiées, et elles ne coïncident pas. Aucune référence de matériel n'a jamais été communiquée. Voici ce que l'on peut malgré tout établir.</p>
+
+  <p class="lettrine noindent">Commençons par la seule chose stable : le <strong>nombre</strong>. Toutes les sources anglophones parlent de « dix capteurs » ou « plus de dix capteurs ». C'est un ordre de grandeur crédible pour une installation temporaire, et il correspond à ce qu'on peut raisonnablement alimenter et lire sur un nœud unique.</p>
+
+  <p>Au-delà, les choses se compliquent. Les communiqués de la campagne londonienne, le reportage irlandais et la couverture de l'activation texane donnent trois listes qui se recoupent partiellement sans jamais coïncider.</p>
+
+  <table class="tight">
+    <thead><tr><th>Grandeur</th><th>Liste A<br/><span class="small">Londres</span></th><th>Liste B<br/><span class="small">Dublin, RTÉ</span></th><th>Liste C<br/><span class="small">Austin</span></th></tr></thead>
+    <tbody>
+      <tr><td>Signaux bioélectriques</td><td>✓</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Humidité du sol</td><td>✓</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Température de l'air</td><td>✓</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Humidité de l'air</td><td>✓</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Vitesse du vent</td><td>✓</td><td>—</td><td>✓</td></tr>
+      <tr><td>pH du sol</td><td>—</td><td>✓</td><td>—</td></tr>
+      <tr><td>Ensoleillement / lumière</td><td>—</td><td>✓</td><td>—</td></tr>
+      <tr><td>Qualité de l'air</td><td>—</td><td>✓</td><td>—</td></tr>
+      <tr><td>Heure du jour</td><td>—</td><td>✓</td><td>—</td></tr>
+    </tbody>
+    <caption>Aucune des trois listes n'atteint dix entrées. L'écart peut s'expliquer par des configurations réellement différentes d'une ville à l'autre, par des simplifications rédactionnelles, ou par les deux. Il n'existe aucune liste canonique.</caption>
+  </table>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Trois capteurs souvent attribués à tort</div>
+    <p>Le <strong>dendromètre</strong> (mesure du gonflement du tronc), le <strong>capteur de flux de sève</strong> et un capteur de <strong>CO₂</strong> spécifique sont fréquemment cités dans les commentaires et reprises du projet. <strong>Aucune source ne les mentionne.</strong> Seule « qualité de l'air » figure dans la liste de RTÉ, sans précision de polluant.</p>
+    <p>Nous les traitons dans ce livre parce qu'ils sont techniquement pertinents pour un arbre instrumenté — et c'est précisément pourquoi il faut dire clairement qu'ils ne font pas partie du dossier factuel de ce projet-ci.</p>
+  </div>
+
+  <h3 id="c5-bioelectrique" data-toc="sub">Le cas des « signaux bioélectriques »</h3>
+
+  <p>C'est le capteur le plus intéressant, et celui sur lequel on en sait le moins. Toutes les listes le mentionnent ; aucune ne dit comment il est mis en œuvre. Nous ne savons ni le type d'électrode, ni son emplacement, ni sa profondeur, ni s'il existe une électrode de référence, ni la bande passante retenue, ni le gain, ni la résolution du convertisseur.</p>
+
+  <p>Cette lacune n'est pas anodine : de tous les capteurs de la liste, c'est le seul dont la mise en œuvre est <strong>véritablement difficile</strong>. Mesurer une température ou une humidité est une opération résolue depuis des décennies ; mesurer un potentiel bioélectrique sur un arbre sur pied, en extérieur, sans cage de Faraday, est un problème ouvert dont la littérature scientifique montre l'ampleur.</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique — ce que dit la littérature sur la mesure in situ</div>
+    <p><strong>Hao, Li &amp; Hao (2021)</strong>, <em>Journal of Experimental Botany</em> 72(4), p. 1321-1335, mesurent le potentiel électrique du xylème sur <em>Populus hopeiensis</em>. Protocole précis : électrodes d'acier inoxydable de <strong>30 mm de long et 4 mm de diamètre</strong>, insérées à <strong>50 cm de hauteur</strong>, pénétrant de <strong>5 mm dans le xylème</strong>, avec une électrode de masse enterrée entre 20 et 80 cm.</p>
+    <p>Amplitudes relevées : <strong>plusieurs centaines de millivolts en saison de végétation, atteignant parfois 1 V</strong> ; seulement quelques dizaines de millivolts en fin d'automne et en hiver. Rythmicité journalière et annuelle nettes.</p>
+    <p>Le point crucial est leur interprétation : les auteurs attribuent ces variations au <strong>nombre d'ions accumulés à la surface de l'électrode</strong> en fonction de la disponibilité en eau du xylème — c'est-à-dire à l'<em>interface</em> de mesure autant qu'au tissu mesuré.</p>
+  </div>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique — la disparition hivernale du signal</div>
+    <p><strong>Gibert, Le Mouël, Lambs, Nicollin &amp; Perrier (2006)</strong>, <em>Plant Science</em> 171(5), p. 572-584, mesurent sur <em>Populus nigra</em> avec des tiges d'acier inoxydable référencées à une électrode impolarisable Pb/PbCl₂. Ils observent de nettes variations journalières en été — <strong>qui disparaissent après la chute des feuilles</strong>.</p>
+    <p>C'est un résultat de contrôle remarquable, et une leçon pour tout praticien : si le « signal » de votre arbre s'évanouit quand l'arbre cesse de transpirer, vous ne mesuriez probablement pas de la signalisation, mais un <strong>potentiel d'écoulement</strong> — un phénomène électrocinétique produit par le mouvement de la sève à travers une matrice chargée. C'est réel, mesurable, physiologiquement informatif. Ce n'est pas un message.</p>
+  </div>
+
+  <h3 id="c5-plausible" data-toc="sub">Une implémentation plausible, clairement étiquetée comme telle</h3>
+
+  <p>Puisque rien n'est publié, nous ne pouvons pas décrire le dispositif réel. Nous pouvons en revanche décrire une implémentation <strong>plausible</strong> — c'est-à-dire ce qu'un ingénieur compétent, disposant d'un budget de campagne et de quelques semaines, monterait aujourd'hui. Cette reconstitution sert de squelette au volume III.</p>
+
+  <div class="callout caution">
+    <div class="callout-title">✦ Statut de ce qui suit</div>
+    <p>Le tableau ci-dessous relève entièrement de l'<strong>hypothèse d'ingénierie</strong>, troisième barreau de l'échelle épistémique. Il ne décrit pas le dispositif de Droga5, dont nous ne savons rien. Il décrit ce qui serait techniquement raisonnable. Aucune ligne ne doit être citée comme une caractéristique du projet réel.</p>
+  </div>
+
+  <table class="tight">
+    <thead><tr><th>Grandeur</th><th>Principe</th><th>Famille de composants</th><th>Difficulté</th></tr></thead>
+    <tbody>
+      <tr><td>T° et humidité de l'air</td><td>Capacitif + résistance de platine</td><td>Capteur numérique I²C de qualité métrologique, sous abri ventilé</td><td>Faible</td></tr>
+      <tr><td>Pression atmosphérique</td><td>Membrane piézorésistive</td><td>Capteur barométrique I²C intégré</td><td>Faible</td></tr>
+      <tr><td>Humidité du sol</td><td><strong>Capacitif</strong> — jamais résistif</td><td>Sonde capacitive enrobée, ou TDR pour la précision</td><td>Moyenne <span class="small">(étalonnage par type de sol)</span></td></tr>
+      <tr><td>Température du sol</td><td>Thermistance numérique 1-Wire</td><td>Sonde étanche à deux profondeurs</td><td>Faible</td></tr>
+      <tr><td>pH du sol</td><td>Électrode de verre</td><td>Sonde pH industrielle + amplificateur haute impédance</td><td><strong>Élevée</strong> <span class="small">(dérive, étalonnage fréquent)</span></td></tr>
+      <tr><td>Lumière</td><td>Photodiode avec filtre spectral</td><td>Luxmètre I²C, ou capteur quantique PAR si l'on veut du µmol·m⁻²·s⁻¹</td><td>Faible à moyenne</td></tr>
+      <tr><td>Qualité de l'air</td><td>NDIR pour le CO₂, diffusion laser pour les particules</td><td>Modules capteurs environnementaux à sortie numérique</td><td>Moyenne</td></tr>
+      <tr><td>Vent</td><td>Coupelles ou ultrasons</td><td>Anémomètre à impulsions ou à sortie série</td><td>Faible</td></tr>
+      <tr><td><strong>Bioélectrique</strong></td><td>Potentiométrie différentielle haute impédance</td><td>Électrodes impolarisables → amplificateur d'instrumentation → convertisseur 16-24 bits</td><td><strong>Très élevée</strong> <span class="small">(voir chapitre 11)</span></td></tr>
+    </tbody>
+    <caption>Huit capteurs sur neuf relèvent de l'instrumentation environnementale courante. Le neuvième concentre à lui seul toute la difficulté — et c'est celui qui porte toute la charge symbolique du projet.</caption>
+  </table>
+
+  <figure class="full">
+    <img src="assets/svg/tt-sensor-map.svg" alt="Carte des capteurs positionnés sur un arbre instrumenté"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Implantation d'une instrumentation d'arbre complète. Les huit familles de mesure convergent vers un nœud d'acquisition unique. Le plan détaillé, avec distances et règles de pose, figure au chapitre 24 (fig. 7.2).</figcaption>
+  </figure>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>« Dix capteurs » annoncés ; trois listes publiées, aucune ne coïncide, aucune n'atteint dix.</li>
+      <li>Aucun fabricant, modèle ou référence n'a jamais été communiqué.</li>
+      <li>Dendromètre, flux de sève et CO₂ sont attribués à tort : aucune source ne les mentionne.</li>
+      <li>Sur arbre sur pied, le potentiel mesuré atteint plusieurs centaines de mV en été et s'effondre en hiver.</li>
+      <li>La disparition du signal après la chute des feuilles oriente vers un potentiel d'écoulement, non vers de la signalisation.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c6-architecture" data-toc="chapter">L'architecture reconstituée</h2>
+  <p class="chapo">Un Mac Mini, une batterie, aucun serveur distant : ce choix technique, apparemment anecdotique, est le plus intéressant du projet — et le plus reproductible.</p>
+
+  <p class="lettrine noindent">Sur l'architecture, nous disposons d'un peu plus que sur les capteurs, parce que le concepteur en a parlé en entretien. Trois éléments sont documentés par des sources concordantes, et ils suffisent à dessiner une structure.</p>
+
+  <table>
+    <thead><tr><th>Élément documenté</th><th>Source</th><th>Confiance</th></tr></thead>
+    <tbody>
+      <tr><td>Un modèle de langage convertit les données de capteurs en langage humain</td><td>RTÉ, Marketing Beat, LBB</td><td><strong>Haute</strong></td></tr>
+      <tr><td>Le modèle est exécuté <strong>localement, hors ligne</strong>, sans serveur distant</td><td>LBB, Muse by Clios</td><td><strong>Haute</strong></td></tr>
+      <tr><td>Le matériel est un <strong>Mac Mini M4</strong>, alimenté par batterie</td><td>LBB, repris par Telangana Today</td><td>Moyenne-haute</td></tr>
+      <tr><td>Chaîne complète : reconnaissance vocale → modèle → synthèse vocale</td><td>LBB, RTÉ</td><td><strong>Haute</strong></td></tr>
+      <tr><td>Le modèle est « open source »</td><td>LBB</td><td>Moyenne — <strong>jamais nommé</strong></td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c6-local" data-toc="sub">Pourquoi l'exécution locale est le choix remarquable</h3>
+
+  <p>Dans le contexte de 2025, brancher une installation sur une interface distante de fournisseur aurait été infiniment plus simple. Le choix de faire tourner le modèle sur place, sur une machine de bureau alimentée par batterie, mérite qu'on s'y arrête, parce qu'il a quatre conséquences que tout praticien devrait connaître.</p>
+
+  <ul>
+    <li><strong>Aucune latence réseau.</strong> Dans un dialogue vocal, une seconde d'attente supplémentaire détruit l'illusion de conversation. En local, la chaîne complète peut tenir sous la seconde et demie.</li>
+    <li><strong>Aucune dépendance à la couverture réseau.</strong> Un parc urbain n'a pas forcément de connexion fiable, et une installation qui tombe en panne parce que la 4G sature est une installation ratée.</li>
+    <li><strong>Aucune donnée ne sort du site.</strong> Les voix des visiteurs sont captées par un microphone ; les faire transiter par un service distant poserait un problème réel de protection des données. Le traitement local le règle radicalement.</li>
+    <li><strong>Empreinte énergétique maîtrisée et affichable.</strong> Pour une campagne dont le sujet est l'écologie, faire tourner l'inférence sur une machine de vingt watts plutôt que dans un centre de données est cohérent avec le propos.</li>
+  </ul>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La bonne nouvelle pour le praticien</div>
+    <p>Ce choix d'architecture est <strong>intégralement reproductible avec des logiciels libres</strong>, et c'est le seul aspect du projet dont on puisse dire cela. Un modèle de langage de taille moyenne, un moteur de reconnaissance vocale et un moteur de synthèse vocale tournent aujourd'hui, en local, sur une machine à quelques centaines d'euros. Le volume III en détaille le montage complet.</p>
+    <p>Autrement dit : la partie du dispositif qui semblait la plus inaccessible — « l'IA » — est la plus facile à refaire. Ce sont les capteurs, et surtout le capteur bioélectrique, qui posent les vrais problèmes.</p>
+  </div>
+
+  <figure class="full">
+    <img src="assets/svg/tt-architecture.svg" alt="Architecture en quatre étages : captation, transport, traitement, restitution"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Architecture générique d'un arbre parlant. Dans le dispositif de 2025, les étages 2 et 3 sont fortement compressés : le nœud de captation et la machine d'inférence sont au pied de l'arbre, et rien ne sort du site.</figcaption>
+  </figure>
+
+  <h3 id="c6-boucle" data-toc="sub">La boucle de dialogue, seconde par seconde</h3>
+
+  <p>Reconstituons le cycle complet, de la question posée par un visiteur à la réponse entendue. Les durées indiquées sont des ordres de grandeur typiques pour une chaîne locale de 2025 ; elles relèvent de l'estimation d'ingénierie.</p>
+
+  <div class="schema">
+    <div class="sch-h">Cycle de dialogue — chaîne locale</div>
+<pre>
+  t = 0 s     Le visiteur parle.
+              → microphone directionnel, détection d'activité vocale
+
+  t ≈ 0,3 s   Fin de parole détectée (silence > 300 ms)
+
+  t ≈ 0,3 s   RECONNAISSANCE VOCALE (locale)
+              audio → texte                                    ~0,4 s
+
+  t ≈ 0,7 s   CONSTRUCTION DE L'INVITE
+              rôle + contraintes + question + DERNIERS RELEVÉS
+              ↑ c'est ici, et seulement ici, que l'arbre entre
+                dans la boucle : une poignée de nombres,
+                insérés dans un gabarit de texte             < 0,01 s
+
+  t ≈ 0,7 s   INFÉRENCE DU MODÈLE DE LANGAGE (locale)
+              invite → réponse, ~60 jetons                   ~0,8 s
+
+  t ≈ 1,5 s   SYNTHÈSE VOCALE (locale)
+              texte → audio                                  ~0,3 s
+
+  t ≈ 1,8 s   Le haut-parleur restitue la réponse.
+
+  ──────────────────────────────────────────────────────────────
+  Temps total de boucle : ≈ 1,8 s — sous le seuil qui romprait
+  le sentiment de conversation.
+
+  Part du cycle où les données de l'arbre interviennent :
+  une insertion de texte de moins de 10 millisecondes.
+</pre>
+    <figcaption>Le schéma rend visible une disproportion : l'arbre occupe moins d'un demi pour cent du temps de calcul de sa propre parole. Tout le reste est de la machinerie linguistique.</figcaption>
+  </div>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Ce que ce schéma n'établit pas</div>
+    <p>La durée d'une opération ne mesure pas son importance. Un seul nombre inséré au bon endroit peut déterminer entièrement le sens d'une phrase — et c'est précisément ce qu'une invite bien contrainte cherche à obtenir.</p>
+    <p>Le schéma n'est donc pas un argument contre le dispositif. Il indique simplement <em>où regarder</em> : la question « qu'est-ce qui vient de l'arbre&nbsp;? » se joue entièrement dans la construction de l'invite, pas dans la puissance du modèle. C'est l'objet du chapitre 13.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Chaîne documentée : reconnaissance vocale → modèle de langage → synthèse vocale, le tout <strong>en local</strong>.</li>
+      <li>Matériel rapporté : un Mac Mini M4 sur batterie. Modèle de langage jamais nommé.</li>
+      <li>L'exécution locale résout la latence, la couverture réseau, la protection des données et l'empreinte énergétique.</li>
+      <li>C'est la partie la plus facilement reproductible du projet, entièrement réalisable en logiciel libre.</li>
+      <li>Les données de l'arbre n'occupent qu'une fraction infime du cycle : tout se joue dans la construction de l'invite.</li>
+    </ul>
+  </div>
+</section>

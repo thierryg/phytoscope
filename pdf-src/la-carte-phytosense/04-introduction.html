@@ -1,0 +1,155 @@
+<!-- ====================== INTRODUCTION ====================== -->
+<section class="chapter pagebreak">
+  <h2 id="introduction" data-toc="chapter">Introduction — pourquoi une carte de plus</h2>
+
+  <p class="chapo">Il existe déjà des appareils qui font chanter les plantes. Ils sont beaux, ils
+  fonctionnent, et certains sont excellents. Alors pourquoi en concevoir un autre ? Parce
+  qu'aucun d'eux ne répond à la seule question qui compte quand on veut passer de l'émerveillement
+  à la connaissance : <em>combien de microvolts, à quel instant, avec quelle incertitude ?</em></p>
+
+  <p class="lettrine noindent">Posons la situation telle qu'elle se présente réellement. Vous avez
+  monté le circuit à NE555 de la partie X. Il marche. Une plante posée sur la table produit des
+  notes, et ces notes changent quand vous l'arrosez. Vous montrez cela à un ami, qui s'émerveille,
+  puis demande : « et si tu ne touchais rien, ça ferait quoi ? » Vous ne touchez rien. Ça fait
+  autre chose. Vous ne savez pas dire pourquoi.</p>
+
+  <p>C'est à cet instant précis que naît le besoin d'un instrument. Non par goût de la technique,
+  mais parce que la question de votre ami est la bonne, et qu'y répondre demande de savoir
+  distinguer ce qui vient de la plante de ce qui vient de l'électrode, du câble, de la température
+  de la pièce, de la lampe qui s'allume dans le couloir et du réseau électrique de tout le
+  quartier. Un montage à trois euros ne permet pas cette distinction. Une carte à deux cents euros,
+  bien conçue, la permet.</p>
+
+  <h3 id="intro-trois-niveaux" data-toc="sub">Trois niveaux d'instrument</h3>
+
+  <p>La collection à laquelle appartient ce hors-série décrit maintenant trois montages, qui ne
+  s'opposent pas : ils se succèdent. Le premier apprend, le deuxième documente, le troisième
+  mesure. On ne saute pas d'étape sans le regretter.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/carte-tiers.svg" alt="Comparaison des trois niveaux d'instrument"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Les trois niveaux d'instrument décrits dans la
+    collection. Ils partagent les mêmes électrodes et le même logiciel : monter d'un niveau ne
+    demande de jeter ni le montage précédent, ni l'expérience acquise avec lui.</figcaption>
+  </figure>
+
+  <p>Le niveau 1 — l'oscillateur à NE555 — mesure une période. C'est un appareil honnête tant
+  qu'on ne lui demande rien d'autre : il transforme une impédance en fréquence, et cette
+  transformation est monotone, ce qui suffit à faire de la musique. Mais la période n'est pas une
+  grandeur physique de la plante ; elle dépend autant des capacités parasites du câble que de
+  l'état du tissu végétal. Deux montages identiques donnent deux musiques différentes, et personne
+  ne peut dire lequel a raison, parce que la question n'a pas de sens.</p>
+
+  <p>Le niveau 2 — un amplificateur d'instrumentation suivi d'un convertisseur seize bits, décrit
+  dans <em>Créer un Arbre Parlant</em> — mesure une tension. C'est un vrai progrès : la grandeur
+  a une unité, on peut la tracer, la comparer, l'archiver. Ce niveau suffit à la quasi-totalité
+  des ateliers, et il coûte trois fois moins cher que ce qui suit. Ses limites apparaissent
+  ailleurs : la dérive de l'électrode se confond avec le signal, le réseau électrique s'invite
+  dans la mesure, et l'horodatage vient de l'ordinateur, donc saute quand celui-ci se synchronise.</p>
+
+  <p>Le niveau 3 — la carte décrite ici — mesure une tension <em>et</em> une impédance, avec une
+  référence de temps propre, une isolation galvanique, et un étalonnage interne vérifiable. Ce
+  n'est pas une question de luxe : c'est la différence entre « j'ai observé une variation » et
+  « j'ai observé une variation de 340 microvolts, à 14 h 22 min 07,412 s, avec un bruit de fond de
+  0,8 microvolt efficace, sur une électrode dont l'impédance de contact valait 142 kilohms ».</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 L'écart qui change tout</div>
+    <p class="noindent">Un facteur mille sépare les deux extrémités de cette échelle. Le montage
+    à NE555 discrimine des variations d'environ un pour cent de l'impédance de contact, soit
+    quelques kilohms sur une centaine ; la carte décrite ici discrimine un microvolt sur une
+    dynamique de cinq volts, soit deux parties par million. Ce n'est pas la même activité
+    intellectuelle : dans un cas on écoute, dans l'autre on mesure — et l'on peut alors écouter en
+    sachant ce qu'on écoute.</p>
+  </div>
+
+  <h3 id="intro-quatre-obstacles" data-toc="sub">Les quatre obstacles, et ce qu'on leur oppose</h3>
+
+  <p>Toute la conception qui suit répond à quatre difficultés, et à elles seules. Les nommer
+  maintenant évite de se perdre dans les pages techniques.</p>
+
+  <table class="compare tight">
+    <thead><tr><th>L'obstacle</th><th>Ce qu'il produit</th><th>La réponse retenue</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>L'impédance de la source est colossale</strong><br/>
+        <span class="small">de 100 kΩ à 2 GΩ selon la plante et le contact</span></td>
+        <td>Un amplificateur ordinaire charge la source et mesure sa propre entrée plutôt que le
+        végétal. Un courant d'entrée d'un nanoampère dans un gigaohm produit un volt d'erreur.</td>
+        <td>Un amplificateur électrométrique à moins de vingt femtoampères, entouré d'un
+        <strong>anneau de garde actif</strong> qui annule les fuites de surface du circuit
+        imprimé.</td>
+      </tr>
+      <tr>
+        <td><strong>Le signal utile est minuscule et très lent</strong><br/>
+        <span class="small">de 1 µV à 50 mV, entre 1 mHz et 10 Hz</span></td>
+        <td>Le bruit en 1/f des amplificateurs, qui croît quand la fréquence baisse, noie
+        exactement la bande qui nous intéresse. La dérive thermique fait le reste.</td>
+        <td>Des amplificateurs à découpage interne (dérive nulle), un budget de bruit calculé
+        étage par étage, et pour la mesure d'impédance une <strong>excitation alternative avec
+        détection synchrone</strong>, qui déplace la mesure hors de la zone bruyante.</td>
+      </tr>
+      <tr>
+        <td><strong>Le réseau électrique est partout</strong><br/>
+        <span class="small">50 Hz, ses harmoniques, et les boucles de masse</span></td>
+        <td>Un couplage capacitif de quelques picofarads suffit à injecter des millivolts. Une
+        boucle de masse entre l'ordinateur et la plante transforme le montage en antenne.</td>
+        <td>Une <strong>barrière d'isolement galvanique complète</strong> — le seul lien avec
+        l'ordinateur est un transformateur et trois picofarads de couplage —, une garde, un
+        blindage piloté, et une contre-réaction de mode commun.</td>
+      </tr>
+      <tr>
+        <td><strong>Le temps de l'ordinateur n'est pas fiable</strong><br/>
+        <span class="small">synchronisation réseau, mise en veille, changement d'heure</span></td>
+        <td>Une séance de huit heures présente des trous et des sauts invisibles. Deux séances
+        enregistrées sur deux machines ne se superposent pas.</td>
+        <td>Un <strong>oscillateur compensé en température</strong> sur la carte, un compteur
+        d'échantillons qui fait foi, et un ajustement affine entre ce compteur et l'heure du
+        monde, réestimé en permanence et consigné dans le fichier.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="intro-usb" data-toc="sub">Le choix qui surprend : la carte se déclare carte son</h3>
+
+  <p>Un dernier point mérite d'être annoncé dès l'introduction, parce qu'il structure tout le
+  reste. Pour transmettre ses mesures, la carte n'utilise ni pilote propriétaire, ni protocole
+  maison, ni application dédiée : <strong>elle se déclare auprès du système d'exploitation comme
+  un périphérique audio en classe 2</strong>. Windows, macOS et les distributions Linux la voient
+  donc comme une carte son à quatre entrées, en vingt-quatre bits, et savent la lire sans qu'on
+  installe quoi que ce soit.</p>
+
+  <p>Ce n'est pas un détournement : le flux de mesure est un flux d'échantillons régulièrement
+  espacés, ce qui est précisément la définition d'un flux audio. Le bénéfice est considérable.
+  N'importe quel logiciel audio — Audacity, Ardour, Reaper, un enregistreur de poche — peut
+  enregistrer la carte. Le logiciel fourni avec l'ouvrage n'est plus une obligation, seulement une
+  commodité. Et le jour où ce logiciel ne sera plus maintenu, la carte continuera de fonctionner :
+  c'est la seule forme de pérennité qui vaille.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Choix de conception — la classe audio plutôt qu'un pilote</div>
+    <p class="noindent">Un port série virtuel accompagne malgré tout le flux audio, mais il ne
+    transporte aucune mesure : seulement le dialogue de contrôle — identification, gain, gamme,
+    auto-test, marqueurs. Cette séparation entre <em>ce qui coule</em> et <em>ce qui se règle</em>
+    est le principe d'organisation de toute la carte, et on le retrouvera dans le logiciel.</p>
+  </div>
+
+  <h3 id="intro-lire" data-toc="sub">Comment lire la suite</h3>
+
+  <p>Si vous voulez d'abord comprendre, lisez dans l'ordre. Si vous voulez d'abord construire,
+  allez directement à la partie IV, munissez-vous du fascicule de nomenclature, et revenez aux
+  parties II et III quand une valeur vous surprendra — elle vous surprendra. Si vous n'avez pas
+  l'intention de souder mais voulez le logiciel, la partie V se lit seule : le programme fonctionne
+  avec un montage à NE555, avec une carte du commerce, avec n'importe quelle entrée audio, et même
+  sans aucun matériel, grâce à un générateur interne dont le signal est statistiquement crédible.</p>
+
+  <div class="callout interieur">
+    <div class="callout-title">✨ Une remarque avant de commencer</div>
+    <p class="noindent">Construire cet instrument prend une quinzaine d'heures, réparties sur
+    quelques soirées. Pendant ces quinze heures, vous n'écouterez aucune plante. C'est normal, et
+    c'est même utile : l'attention que demande un montage soigné est de la même famille que celle
+    que demande l'observation d'un être vivant. On apprend à ralentir, à vérifier, à douter d'une
+    mesure trop belle. Le jour où la carte fonctionne, cette patience-là est acquise — et elle
+    servira bien plus que la carte elle-même.</p>
+  </div>
+</section>

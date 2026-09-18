@@ -1,0 +1,97 @@
+<section class="chapter">
+  <h2 id="c5-arbre" data-toc="chapter">Les capteurs propres à l'arbre</h2>
+  <p class="chapo">Flux de sève, dendrométrie, acoustique. Trois mesures qui portent réellement sur la physiologie de l'arbre — et dont une seule est accessible en atelier.</p>
+
+  <h3 id="c5-sapflow" data-toc="sub">Le flux de sève par dissipation thermique</h3>
+
+  <p class="lettrine noindent">C'est la mesure la plus rentable de tout ce manuel : un principe simple, un matériel modeste, et des données <strong>directement interprétables</strong> sans aucune couche d'interprétation.</p>
+
+  <figure class="full">
+    <img src="assets/svg/tt-sap-flow.svg" alt="Principe de la méthode de dissipation thermique"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> La méthode de Granier. Deux sondes dans l'aubier, distantes d'une dizaine de centimètres ; l'amont est chauffée, l'aval sert de référence. La sève qui monte refroidit la sonde chauffée.</figcaption>
+  </figure>
+
+  <div class="loupe">
+    <div class="l-h">Les quatre grandeurs</div>
+    <table class="tight">
+      <tbody>
+        <tr><td><strong>ΔT</strong></td><td>Écart de température entre les deux sondes</td></tr>
+        <tr><td><strong>ΔT<sub>m</sub></strong></td><td>Écart maximal, mesuré de nuit à flux quasi nul</td></tr>
+        <tr><td><strong>K = (ΔT<sub>m</sub> − ΔT) / ΔT</strong></td><td>Indice de flux, sans dimension</td></tr>
+        <tr><td><strong>u = 0,0119 · K<sup>1,231</sup></strong></td><td>Densité de flux, en cm·h⁻¹</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout caution">
+    <div class="callout-title">⚠️ Le facteur cent — l'erreur la plus fréquente</div>
+    <p>Le coefficient de Granier s'écrit de <strong>quatre façons</strong> selon l'unité visée, et les quatre circulent dans la littérature :</p>
+    <table class="tight">
+      <tbody>
+        <tr><td><code>u = 119·10⁻⁶ · K<sup>1,231</sup></code></td><td>→ m·s⁻¹</td></tr>
+        <tr><td><code>u = 0,0119 · K<sup>1,231</sup></code></td><td>→ cm·h⁻¹</td></tr>
+        <tr><td><code>u = 4,284 · K<sup>1,231</sup></code></td><td>→ dm·h⁻¹</td></tr>
+        <tr><td><code>u = 0,119 · K<sup>1,231</sup></code></td><td>→ kg·m⁻²·s⁻¹</td></tr>
+      </tbody>
+    </table>
+    <p><strong>L'exposant, lui, vaut 1,231 dans tous les cas.</strong> Vérifiez l'unité avant de comparer vos résultats à une publication, sous peine d'un facteur cent.</p>
+  </div>
+
+  <h3 id="c5-biais" data-toc="sub">Les biais documentés, et ce qu'il faut en conclure</h3>
+
+  <p>La méthode est ancienne, largement employée, et ses défauts sont bien caractérisés. Il faut les connaître <em>avant</em> d'interpréter ses propres données.</p>
+
+  <table>
+    <thead><tr><th>Biais</th><th>Ampleur mesurée</th></tr></thead>
+    <tbody>
+      <tr><td>Sous-estimation sur noisetier</td><td><strong>−60 %</strong></td></tr>
+      <tr><td>Sous-estimation sur <em>Pinus tabuliformis</em></td><td><strong>−69 %</strong></td></tr>
+      <tr><td>Sous-estimation en peuplement de conifères</td><td><strong>−37 %</strong></td></tr>
+      <tr><td>Sonde débordant de l'aubier dans le duramen</td><td>jusqu'à <strong>−50 %</strong></td></tr>
+    </tbody>
+    <caption>Une méta-analyse portant sur <strong>290 calibrations</strong> conclut que la dissipation thermique présente la plus faible exactitude et le plus fort biais proportionnel de toutes les méthodes — mais une <strong>bonne linéarité</strong>.</caption>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Ce qu'il faut en conclure, précisément</div>
+    <p>Sans calibration sur votre espèce, vous ne mesurez <strong>pas un débit absolu</strong>. La bonne linéarité signifie en revanche que vous mesurez correctement un <strong>flux relatif</strong> : les rythmes, les réponses, les seuils, les comparaisons d'un jour à l'autre sont valides.</p>
+    <p>C'est amplement suffisant pour tout ce que ce manuel propose. <strong>Déclarez-le ainsi</strong> — « flux relatif, non calibré par espèce » — et votre donnée devient publiable. Prétendez à un débit absolu, et elle devient contestable.</p>
+  </div>
+
+  <div class="callout caution">
+    <div class="callout-title">⚠️ Le piège thermique, et sa parade</div>
+    <p>Un tronc présente des <strong>gradients thermiques naturels de 0,3 à 3,5 °C sur huit à dix centimètres</strong> — c'est-à-dire exactement l'écartement des deux sondes. Ces gradients, dus au rayonnement solaire asymétrique, induisent des erreurs de flux <strong>supérieures à 100 %</strong>.</p>
+    <p><strong>Parade validée : le chauffage cyclique.</strong> Environ 45 minutes de chauffage suivies de 15 minutes à l'arrêt. Pendant la phase d'arrêt, on mesure le gradient naturel seul, et on le soustrait. Bénéfice secondaire considérable : la consommation est divisée par quatre, ce qui change tout pour une installation solaire.</p>
+  </div>
+
+  <p>Une précision bibliographique, puisqu'on la rencontre souvent : la « correction de Lu et al. » n'existe pas comme <strong>formule unique</strong>. La référence ainsi désignée est une <em>revue</em> de la méthode, sans identifiant numérique, et non une équation de correction. Méfiez-vous des sources qui la citent comme un facteur à appliquer.</p>
+
+  <h3 id="c5-dendro" data-toc="sub">Dendrométrie</h3>
+
+  <p>Un dendromètre mesure les variations de diamètre du tronc au micromètre. Le signal est superbe : contraction diurne sous l'effet de la transpiration, regonflement nocturne, et croissance nette sur la saison superposée à ce cycle.</p>
+
+  <p>Les instruments professionnels atteignent une résolution de l'ordre de 0,4 µm. En atelier, un capteur de déplacement linéaire à faible coût monté sur un cadre en invar donne des résultats exploitables pour le cycle journalier, mais pas pour la croissance nette — la dilatation thermique du support masque le signal.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Le problème du support</div>
+    <p>Un dendromètre mesure la distance entre le tronc et un point de référence. Si ce point de référence est fixé au tronc lui-même, il bouge avec lui ; s'il est fixé ailleurs, il faut que le support ne se dilate pas.</p>
+    <p>D'où l'usage d'alliages à très faible coefficient de dilatation dans les instruments professionnels. Un cadre en aluminium introduit une dérive thermique du même ordre que le signal recherché — encore une fois corrélée au cycle journalier.</p>
+  </div>
+
+  <h3 id="c5-acoustique" data-toc="sub">Acoustique : pourquoi ce n'est pas pour l'atelier</h3>
+
+  <p>Détecter les émissions ultrasonores de cavitation exige une bande passante de 20 à 200 kHz, donc un microphone spécialisé et une acquisition à plusieurs centaines de kilohertz. Le matériel coûte plus cher que tout le reste du dispositif réuni, et le seuil d'amplitude à retenir au champ — 45 dB, pour filtrer les artefacts dus au vent — suppose une chaîne étalonnée.</p>
+
+  <p>Nous mentionnons ce canal pour être complets, et parce qu'il est scientifiquement le plus intéressant. Mais il sort du cadre de ce manuel.</p>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Le flux de sève est la mesure la plus rentable : principe simple, données directement interprétables.</li>
+      <li>Exposant 1,231 dans tous les cas ; <strong>vérifier l'unité</strong>, sous peine d'un facteur cent.</li>
+      <li>Biais documentés jusqu'à −69 % ; bonne linéarité → <strong>flux relatif valide</strong>, à déclarer comme tel.</li>
+      <li>Gradients thermiques du tronc : 0,3 à 3,5 °C, erreurs &gt; 100 %. Parade : chauffage cyclique 45/15 min.</li>
+      <li>Le dendromètre exige un support à très faible dilatation, sinon la dérive masque le signal.</li>
+    </ul>
+  </div>
+</section>

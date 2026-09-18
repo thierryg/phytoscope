@@ -1,0 +1,78 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/protocole-sept.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+</defs>
+<rect width="800" height="500" fill="#FFFFFF"/>
+<text x="400.0" y="30" font-family="Lato, sans-serif" font-size="16.68" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">LE PROTOCOLE D'ÉCOUTE EN SEPT TEMPS</text>
+<circle cx="400" cy="136" r="34" fill="#FBFAF4" stroke="#3F7D5A" stroke-width="1.8"/>
+<circle cx="400" cy="112" r="11" fill="#B08528"/>
+<text x="400.0" y="117.0" font-family="Lato, sans-serif" font-size="12.18" fill="#FFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">1</text>
+<text x="400.0" y="144.0" font-family="Lato, sans-serif" font-size="11.89" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Choisir</text>
+<text x="400.0" y="62.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">la plante et l'heure</text>
+<path d="M400,136 A136,136 0 0 1 506,187" fill="none" stroke="#D9D9C6" stroke-width="1.4"/>
+<circle cx="506" cy="187" r="34" fill="#FBFAF4" stroke="#3F7D5A" stroke-width="1.8"/>
+<circle cx="506" cy="163" r="11" fill="#B08528"/>
+<text x="506.32908161565206" y="168.20538694721225" font-family="Lato, sans-serif" font-size="12.18" fill="#FFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2</text>
+<text x="506.32908161565206" y="195.20538694721225" font-family="Lato, sans-serif" font-size="11.89" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Préparer</text>
+<text x="564.1846113182862" y="141.06714160966598" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">le lieu, le silence</text>
+<path d="M506,187 A136,136 0 0 1 533,302" fill="none" stroke="#D9D9C6" stroke-width="1.4"/>
+<circle cx="533" cy="302" r="34" fill="#FBFAF4" stroke="#3F7D5A" stroke-width="1.8"/>
+<circle cx="533" cy="278" r="11" fill="#B08528"/>
+<text x="532.590196056728" y="283.2628470180588" font-family="Lato, sans-serif" font-size="12.18" fill="#FFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">3</text>
+<text x="532.590196056728" y="310.2628470180588" font-family="Lato, sans-serif" font-size="11.89" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">S'accorder</text>
+<text x="604.734861558183" y="318.72939613082605" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">cohérence, 3 minutes</text>
+<path d="M533,302 A136,136 0 0 1 459,395" fill="none" stroke="#D9D9C6" stroke-width="1.4"/>
+<circle cx="459" cy="395" r="34" fill="#FBFAF4" stroke="#3F7D5A" stroke-width="1.8"/>
+<circle cx="459" cy="371" r="11" fill="#B08528"/>
+<text x="459.0081885199879" y="375.531766034729" font-family="Lato, sans-serif" font-size="12.18" fill="#FFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">4</text>
+<text x="459.0081885199879" y="402.531766034729" font-family="Lato, sans-serif" font-size="11.89" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Demander</text>
+<text x="491.11558521468726" y="461.203462259508" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">consentement intérieur</text>
+<path d="M459,395 A136,136 0 0 1 341,395" fill="none" stroke="#D9D9C6" stroke-width="1.4"/>
+<circle cx="341" cy="395" r="34" fill="#FBFAF4" stroke="#3F7D5A" stroke-width="1.8"/>
+<circle cx="341" cy="371" r="11" fill="#B08528"/>
+<text x="340.9918114800121" y="375.531766034729" font-family="Lato, sans-serif" font-size="12.18" fill="#FFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">5</text>
+<text x="340.9918114800121" y="402.531766034729" font-family="Lato, sans-serif" font-size="11.89" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Poser</text>
+<text x="308.8844147853128" y="461.203462259508" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">les électrodes, sans hâte</text>
+<path d="M341,395 A136,136 0 0 1 267,302" fill="none" stroke="#D9D9C6" stroke-width="1.4"/>
+<circle cx="267" cy="302" r="34" fill="#FBFAF4" stroke="#3F7D5A" stroke-width="1.8"/>
+<circle cx="267" cy="278" r="11" fill="#B08528"/>
+<text x="267.409803943272" y="283.2628470180587" font-family="Lato, sans-serif" font-size="12.18" fill="#FFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">6</text>
+<text x="267.409803943272" y="310.2628470180587" font-family="Lato, sans-serif" font-size="11.89" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Écouter</text>
+<text x="195.26513844181702" y="318.729396130826" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">20 minutes sans toucher</text>
+<path d="M267,302 A136,136 0 0 1 294,187" fill="none" stroke="#D9D9C6" stroke-width="1.4"/>
+<circle cx="294" cy="187" r="34" fill="#FBFAF4" stroke="#3F7D5A" stroke-width="1.8"/>
+<circle cx="294" cy="163" r="11" fill="#B08528"/>
+<text x="293.67091838434794" y="168.20538694721228" font-family="Lato, sans-serif" font-size="12.18" fill="#FFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">7</text>
+<text x="293.67091838434794" y="195.20538694721228" font-family="Lato, sans-serif" font-size="11.89" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Consigner</text>
+<text x="235.81538868171373" y="141.06714160966598" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">le journal, puis remercier</text>
+<path d="M294,187 A136,136 0 0 1 400,136" fill="none" stroke="#D9D9C6" stroke-width="1.4"/>
+<circle cx="400" cy="272" r="50" fill="#0E2A22"/>
+<text x="400" y="268" font-family="Lato, sans-serif" font-size="14.5" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">ÉCOUTE</text>
+<text x="400" y="284" font-family="Lato, sans-serif" font-size="11.6" fill="#FBF9F1" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">45 – 60 min</text>
+</svg>

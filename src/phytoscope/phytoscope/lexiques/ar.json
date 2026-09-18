@@ -1,0 +1,75 @@
+{
+  "nom": "العربية — سجل تأملي",
+  "langue": "ar",
+  "auteur": "Bretagne Namasté",
+  "note": "Dictionnaire d'exemple. Le modifier est l'usage normal, pas une entorse : les mots doivent être ceux de celui qui écoute.",
+  "grammaire": "contemplative",
+  "registres": {
+    "sujet": [
+      "أنا",
+      "شيء ما",
+      "النسغ",
+      "الجذع",
+      "الورقة"
+    ],
+    "verbe_montee": [
+      "أرتعش",
+      "أستيقظ",
+      "أصعد",
+      "أندفع",
+      "أتدفّق"
+    ],
+    "verbe_descente": [
+      "أهدأ",
+      "أنزل",
+      "أنسحب",
+      "أستريح",
+      "أتلاشى"
+    ],
+    "intensite": [
+      "بالكاد",
+      "برفق",
+      "بوضوح",
+      "بقوة",
+      "بكل خشبي"
+    ],
+    "tempo": [
+      "مرة أخرى",
+      "من جديد",
+      "بعد حين",
+      "بعد وقت طويل",
+      "بعد صمت طويل جدًا"
+    ],
+    "couleur": [
+      "مكتوم",
+      "خفيض",
+      "واسع",
+      "صافٍ",
+      "حاد"
+    ],
+    "liaison": [
+      "و",
+      "ثم",
+      "عندئذ",
+      "بينما",
+      "—"
+    ]
+  },
+  "gabarits": {
+    "minimale": [
+      "{verbe}"
+    ],
+    "telegraphique": [
+      "{verbe} {intensite}"
+    ],
+    "contemplative": [
+      "{sujet} {verbe} {intensite}",
+      "{tempo}، {sujet} {verbe} {intensite}",
+      "{sujet} {verbe} {intensite}، {couleur}"
+    ],
+    "descriptive": [
+      "{tempo}، {sujet} {verbe} {intensite}، {couleur}",
+      "{sujet} {verbe} {intensite} {liaison} {couleur}"
+    ]
+  }
+}

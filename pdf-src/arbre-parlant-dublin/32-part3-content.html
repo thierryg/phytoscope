@@ -1,0 +1,113 @@
+<section class="chapter">
+  <h2 id="c10-signal-donnee" data-toc="chapter" data-run="Du signal à la donnée">Du signal à la donnée : les cinq trahisons de la chaîne</h2>
+  <p class="chapo">Entre le tissu vivant et le nombre affiché, cinq opérations transforment l'information. Chacune est nécessaire. Chacune perd ou ajoute quelque chose. Les connaître, c'est savoir ce qu'on tient dans la main.</p>
+
+  <p class="lettrine noindent">Le mot « mesure » suggère un prélèvement neutre, comme si l'on cueillait une valeur déjà présente dans le monde. La réalité est tout autre : une mesure est une <strong>construction</strong>, le produit d'une chaîne d'opérations physiques dont chacune impose sa marque. Ce chapitre suit cette chaîne, maillon par maillon.</p>
+
+  <figure class="full">
+    <img src="assets/svg/tt-acquisition-chain.svg" alt="Chaîne d'acquisition bioélectrique en cinq étages"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> La chaîne d'acquisition bioélectrique. Sous chaque étage, l'allure du signal. Remarquez que le bruit est maximal au tout début — c'est-à-dire là où le signal est le plus faible et le plus fragile.</figcaption>
+  </figure>
+
+  <h4>1. L'interface électrode / tissu</h4>
+  <p>C'est le maillon le plus négligé et le plus décisif. Ce que vous mesurez n'est jamais « le tissu » : c'est <strong>la somme de trois impédances en série</strong>, dont une seule est biologique. Les deux impédances d'interface — métal contre bois, métal contre sol — sont plus instables que le signal recherché.</p>
+
+  <p>Elles dérivent avec l'humidité du contact, la pression d'appui, l'oxydation du métal et la température. Sur une électrode d'acier nue, la dérive des premières heures dépasse couramment la totalité du signal utile. C'est pourquoi la littérature sérieuse emploie des <strong>électrodes impolarisables</strong> — Pb/PbCl₂ chez Gibert et al. (2006), Ag/AgCl ailleurs — et pourquoi Hao et al. (2021) attribuent explicitement une part de leur signal à l'accumulation ionique <em>à la surface de l'électrode</em>.</p>
+
+  <h4>2. L'amplification</h4>
+  <p>Le signal est minuscule et sa source a une impédance énorme — de l'ordre du mégaohm à la dizaine de mégaohms. Il faut donc un amplificateur d'instrumentation à très haute impédance d'entrée, placé <strong>au plus près de l'électrode</strong>. Toute longueur de câble avant l'amplificateur est une antenne, et ce qu'elle capte n'est pas l'arbre.</p>
+
+  <h4>3. Le filtrage</h4>
+  <p>Ici commence la véritable perte d'information, et elle est irréversible. Filtrer, c'est décider de ce qui est du signal et de ce qui est du bruit — une décision prise par l'ingénieur, en amont, souvent sans que l'utilisateur final en soit informé. Un filtre passe-bas à 10 Hz supprime tout ce qui est plus rapide. Si un phénomène biologique intéressant se produisait à 30 Hz, il n'existera jamais dans vos données, et rien dans vos données ne vous indiquera son absence.</p>
+
+  <h4>4. La conversion analogique-numérique</h4>
+  <p>Le continu devient discret. Deux décisions, toutes deux invisibles ensuite : la <strong>résolution</strong> (la plus petite variation représentable) et la <strong>fréquence d'échantillonnage</strong>. Une fréquence trop basse replie les composantes rapides dans la bande utile — c'est le repliement de spectre, qui fabrique des rythmes qui n'existent pas. Un signal parasite à 50 Hz mal filtré, échantillonné à 1 Hz, produit une oscillation lente parfaitement crédible.</p>
+
+  <h4>5. L'agrégation</h4>
+  <p>Enfin, on moyenne. Une valeur toutes les quinze minutes, c'est la moyenne de neuf cents secondes réduite à un nombre. Toute la structure fine a disparu. Cette étape est obligatoire — une liaison radio longue portée ne transporte que quelques dizaines d'octets — mais elle signifie que <strong>le modèle de langage, en bout de chaîne, ne verra jamais le signal</strong>. Il verra un résumé de résumé.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La question à poser à tout dispositif</div>
+    <p>Devant n'importe quel appareil qui prétend traduire une plante, posez ces cinq questions dans l'ordre : <em>Quelles électrodes, et sont-elles polarisables&nbsp;? Où est le gain&nbsp;? Quelle bande passante, et qui l'a choisie&nbsp;? Quelle résolution et quelle fréquence d'échantillonnage&nbsp;? Quelle agrégation avant l'étage suivant&nbsp;?</em></p>
+    <p>Un fabricant qui ne peut répondre à ces cinq questions ne vend pas un instrument de mesure. Il vend un instrument de musique à contrôleur biologique — ce qui est parfaitement respectable, à condition de le dire.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Une mesure est une construction, pas un prélèvement.</li>
+      <li>L'impédance d'interface est plus instable que le signal recherché : d'où les électrodes impolarisables.</li>
+      <li>Le gain doit être au plus près de l'électrode ; tout câble en amont est une antenne.</li>
+      <li>Le filtrage est une décision irréversible, prise par l'ingénieur, invisible dans les données.</li>
+      <li>L'agrégation fait que le modèle de langage ne voit jamais le signal, mais un résumé de résumé.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c11-artefacts" data-toc="chapter">Le catalogue des artefacts de terrain</h2>
+  <p class="chapo">Un signal propre en laboratoire devient, en extérieur, une somme dont la part biologique est minoritaire. Voici les contaminants, classés par ordre d'importance décroissante — et la façon de les reconnaître.</p>
+
+  <p class="lettrine noindent">Ce chapitre est le plus utile du livre pour quiconque voudra mesurer quoi que ce soit sur un arbre. Apprenez-le : il vous évitera des années de fausses certitudes, et il vous permettra d'évaluer instantanément la crédibilité de tout dispositif qu'on vous présentera.</p>
+  <div class="duo">
+    <figure class="photo"><img src="assets/img/p/electronique-oscilloscope-08.jpg" alt="Un oscilloscope. Le premier réflexe devant un signal inconnu : le regarder, avant de l'i"/><figcaption><span class="fig-n">Fig. ##.</span> Un oscilloscope. Le premier réflexe devant un signal inconnu : le regarder, avant de l'interpréter.<span class="credit">Digital Oscilloscope — Mikasa2025, CC BY 4.0.</span></figcaption></figure>
+    <figure class="photo"><img src="assets/img/p/electronique-abri-stevenson-10.jpg" alt="Abri météorologique ventilé. Sans lui, une sonde de température mesure le rayonnement so"/><figcaption><span class="fig-n">Fig. ##.</span> Abri météorologique ventilé. Sans lui, une sonde de température mesure le rayonnement solaire, non l'air.<span class="credit">Stevenson screen for South Shields Weather Station - geograph.org.uk - 2937031 — peter robinson, CC BY-SA 2.0.</span></figcaption></figure>
+  </div>
+
+
+  <figure class="full">
+    <img src="assets/svg/tt-noise.svg" alt="Tracé contaminé et cinq causes d'artefact"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> En pointillé vert, le signal physiologique supposé. En bleu, ce qui est réellement enregistré. L'écart entre les deux n'est pas du bruit aléatoire : il est structuré, rythmé, et parfaitement crédible en tant que « réponse ».</figcaption>
+  </figure>
+
+  <h3 id="c11-catalogue" data-toc="sub">Les sept contaminants</h3>
+
+  <table>
+    <thead><tr><th>Artefact</th><th>Mécanisme</th><th>Comment le reconnaître</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Dérive d'électrode</strong></td><td>Polarisation et oxydation du contact métal/tissu</td><td>Dérive monotone sur les premières heures, puis lente sur des jours. Disparaît si l'on change d'électrode.</td></tr>
+      <tr><td><strong>2. Potentiel d'écoulement</strong></td><td>Le mouvement de sève dans une matrice chargée génère un potentiel électrocinétique</td><td><strong>Disparaît après la chute des feuilles</strong> (Gibert et al., 2006). Corrélé au flux de sève, pas aux événements.</td></tr>
+      <tr><td><strong>3. Blessure d'insertion</strong></td><td>L'électrode enfoncée provoque elle-même une réponse et une cicatrisation</td><td>Les premières heures ou jours de série sont inexploitables. À jeter systématiquement.</td></tr>
+      <tr><td><strong>4. Dérive thermique</strong></td><td>Le gain de l'amplificateur et la résistance du tissu varient avec la température</td><td>Corrélation quasi parfaite avec la température ambiante. Se lit comme un « rythme circadien ».</td></tr>
+      <tr><td><strong>5. Humidité de surface</strong></td><td>Rosée, pluie, brouillard : le film d'eau court-circuite le trajet à travers le tissu</td><td>Sauts brusques à l'aube et après la pluie. Corrélé à l'humidité relative, pas à la physiologie.</td></tr>
+      <tr><td><strong>6. Mouvement</strong></td><td>Vent, promeneur, vibration : micro-déplacement de l'électrode</td><td>Événements de grande amplitude, brefs, corrélés à l'anémomètre. Les plus faciles à prendre pour des « réactions ».</td></tr>
+      <tr><td><strong>7. Couplage électromagnétique</strong></td><td>50 Hz rayonné par le réseau, les lampadaires, et le corps de l'opérateur</td><td>Sans filtre, se replie dans la bande utile. S'aggrave quand on s'approche : l'opérateur devient antenne.</td></tr>
+    </tbody>
+    <caption>Le septième est le plus pernicieux en contexte de démonstration publique : le signal « réagit » quand quelqu'un s'approche de l'arbre. Ce n'est pas l'arbre qui réagit à la personne, c'est l'électrode qui réagit au corps de la personne.</caption>
+  </table>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique — mesurer hors cage de Faraday</div>
+    <p>La difficulté de mesurer une électrophysiologie végétale en dehors d'un environnement blindé est un problème de recherche à part entière. La référence à connaître est <strong>Tran, Dutoit, Najdenovska, Wallbridge, Plummer, Mazza, Raileanu &amp; Camps (2019)</strong>, « Electrophysiological assessment of plant status outside a Faraday cage using supervised machine learning », <em>Scientific Reports</em> 9:17073.</p>
+    <p>Ces auteurs ont conçu un capteur destiné à la production sous serre, <strong>sans cage de Faraday</strong>, capable de détecter une modification de l'activité bioélectrique sous stress hydrique ainsi qu'un rythme nycthéméral, avec classification automatique supervisée du statut physiologique.</p>
+    <p>Le point à retenir est double. D'abord : <strong>c'est faisable</strong> — l'entreprise n'est pas vaine. Ensuite : il a fallu une équipe de huit chercheurs, un capteur dédié et de l'apprentissage supervisé pour y parvenir de façon défendable. Ce n'est pas un montage de week-end, et tout dispositif qui prétend le faire sans ces précautions doit être regardé avec attention.</p>
+  </div>
+
+  <h3 id="c11-regle" data-toc="sub">La règle des voies parallèles</h3>
+
+  <p>Il existe un remède, et un seul, à cette situation. Il ne consiste pas à supprimer les artefacts — c'est impossible — mais à les <strong>rendre identifiables</strong>, en enregistrant en parallèle les grandeurs qui les causent.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La règle des voies parallèles</div>
+    <p><strong>Toute voie bioélectrique doit être accompagnée, au minimum, de quatre voies de contexte :</strong> température de l'air, humidité relative, vitesse du vent, et une mesure de l'état hydrique (humidité du sol ou flux de sève).</p>
+    <p>Sans elles, vous ne pouvez jamais distinguer une variation physiologique d'une dérive thermo-hygrométrique. Avec elles, vous le pouvez souvent — en régressant le signal sur les voies de contexte et en n'examinant que le résidu.</p>
+    <p>Corollaire pratique : un dispositif qui mesure <em>uniquement</em> le bioélectrique est, par construction, incapable de savoir ce qu'il mesure. C'est le cas de la quasi-totalité des appareils grand public de « musique des plantes ».</p>
+  </div>
+
+  <div class="callout interieur">
+    <div class="callout-title">✨ Expérience intérieure</div>
+    <p>Il y a quelque chose de vertigineux à réaliser qu'un tracé « vivant », expressif, qui semble répondre à votre présence, peut n'être que votre propre corps couplé capacitivement à une électrode. La première fois qu'on en fait l'expérience — en s'approchant et en s'éloignant d'un montage, et en voyant la courbe suivre docilement — est un moment d'humilité qui vaut tous les raisonnements.</p>
+    <p>Ce livre vous encourage à provoquer ce moment, au chapitre 25. Non pour vous décourager, mais parce qu'après l'avoir vécu, vous ne regarderez plus jamais un tracé de la même façon — et c'est exactement la disposition d'esprit dont on a besoin pour travailler honnêtement dans ce domaine.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Sept artefacts dominent : dérive d'électrode, potentiel d'écoulement, blessure d'insertion, dérive thermique, humidité de surface, mouvement, couplage 50 Hz.</li>
+      <li>Le couplage capacitif du corps de l'opérateur fait « réagir » l'arbre à l'approche d'un visiteur.</li>
+      <li>Mesurer hors cage de Faraday est faisable mais difficile (Tran et al., <em>Scientific Reports</em> 2019).</li>
+      <li><strong>Règle des voies parallèles</strong> : toute voie bioélectrique exige au moins quatre voies de contexte.</li>
+      <li>Un dispositif qui ne mesure que le bioélectrique ne peut pas savoir ce qu'il mesure.</li>
+    </ul>
+  </div>
+</section>

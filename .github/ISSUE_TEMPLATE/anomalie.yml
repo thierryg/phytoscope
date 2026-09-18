@@ -1,0 +1,100 @@
+name: Anomalie
+description: Quelque chose ne fonctionne pas comme annoncé
+labels: [anomalie]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de prendre le temps. Une anomalie qu'on sait reproduire est
+        déjà à moitié corrigée ; une anomalie qu'on ne sait pas reproduire
+        coûte des heures pour rien.
+
+        **S'il s'agit d'une faille de sécurité, fermez ce formulaire** et
+        lisez `SECURITY.md`.
+
+  - type: textarea
+    id: attendu-observe
+    attributes:
+      label: Ce que vous attendiez, et ce qui s'est passé
+      placeholder: |
+        J'attendais : …
+        Il s'est passé : …
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduire
+    attributes:
+      label: Comment le reproduire
+      description: La suite d'actions la plus courte qui le fait apparaître.
+      placeholder: |
+        1. …
+        2. …
+        3. …
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: '`phytoscope --version`, ou le contenu de src/phytoscope/phytoscope/VERSION'
+      placeholder: '1.5.1'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: systeme
+    attributes:
+      label: Système
+      options:
+        - Debian / Ubuntu / Mint
+        - Fedora / RHEL / Rocky
+        - Autre Linux
+        - Windows 10
+        - Windows 11
+        - macOS
+    validations:
+      required: true
+
+  - type: input
+    id: python
+    attributes:
+      label: Version de Python
+      description: '`python3 --version`'
+      placeholder: '3.12.3'
+
+  - type: dropdown
+    id: partie
+    attributes:
+      label: Quelle partie du projet
+      options:
+        - Le logiciel (src/phytoscope)
+        - Le micrologiciel (src/firmware)
+        - La trousse de modules (src/sdk)
+        - La fabrique de paquets (packaging)
+        - Les publications PDF (pdf, build_*.py)
+        - Le matériel (hardware)
+        - Je ne sais pas
+    validations:
+      required: true
+
+  - type: textarea
+    id: journal
+    attributes:
+      label: Journal ou message d'erreur
+      description: >
+        Collez la trace complète. Le journal du logiciel se trouve par
+        « make doctor », qui en donne le chemin.
+      render: text
+
+  - type: checkboxes
+    id: prealables
+    attributes:
+      label: Vérifications
+      options:
+        - label: J'ai lancé `make doctor` et lu ce qu'il signale
+        - label: J'ai cherché si le ticket existait déjà
+        - label: >
+            Ce n'est pas le fait qu'un certificat auto-signé déclenche
+            SmartScreen ou Gatekeeper — c'est attendu, voir packaging/README.md

@@ -1,0 +1,355 @@
+<section class="chapter">
+  <h2 id="c11-chaine" data-toc="chapter">La chaîne complète, étape par étape</h2>
+  <p class="chapo">Tous les dispositifs du marché, du plus artisanal au plus sophistiqué, suivent la même chaîne à neuf maillons. Les connaître, c'est pouvoir diagnostiquer n'importe quelle panne et comprendre n'importe quelle spécification.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/pipeline.svg" alt="Chaîne en dix blocs, de la plante au son" style="width:100%"/>
+    <figcaption><span class="fig-n">Fig. 3.1.</span> La chaîne canonique. Les trois premiers maillons sont analogiques et fragiles ; les trois derniers sont purement logiciels et donc entièrement à votre main.</figcaption>
+  </figure>
+
+  <h3 id="c11-capteur" data-toc="sub">Maillon 1 — Le couple d'électrodes</h3>
+
+  <p>C'est le maillon le plus négligé et le plus déterminant. Une électrode n'est pas un simple bout de métal : c'est une <strong>interface électrochimique</strong> où des électrons (dans le métal) doivent devenir des ions (dans le tissu). Cette conversion produit toujours une tension parasite — le <em>potentiel de demi-pile</em> — qui dérive avec la température, l'humidité et l'oxydation.</p>
+
+  <table>
+    <thead><tr><th>Matériau</th><th>Potentiel de demi-pile</th><th>Dérive</th><th>Toxicité pour le végétal</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>Argent / chlorure d'argent (Ag/AgCl)</td><td>Très stable</td><td>Faible</td><td>Nulle à court terme</td><td><strong>Idéal</strong> (référence médicale)</td></tr>
+      <tr><td>Acier inoxydable 316L</td><td>Moyen</td><td>Modérée</td><td>Nulle</td><td><strong>Excellent compromis</strong></td></tr>
+      <tr><td>Or, plaqué or</td><td>Très stable</td><td>Très faible</td><td>Nulle</td><td>Excellent, coûteux</td></tr>
+      <tr><td>Cuivre nu</td><td>Instable</td><td>Forte</td><td><strong>Réelle</strong> — ions Cu²⁺ phytotoxiques</td><td>À proscrire au contact prolongé</td></tr>
+      <tr><td>Laiton, zinc</td><td>Instable</td><td>Forte</td><td>Réelle</td><td>À proscrire</td></tr>
+      <tr><td>Aluminium</td><td>Instable (couche d'oxyde)</td><td>Très forte</td><td>Réelle en sol acide</td><td>À proscrire</td></tr>
+    </tbody>
+    <caption>Choix du métal d'électrode. Les pinces crocodile bon marché sont en acier zingué ou en laiton : c'est la première chose à remplacer sur un montage DIY.</caption>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Idée clé</div>
+    <p>Trois paramètres gouvernent la qualité de contact, dans cet ordre d'importance : <strong>la surface</strong> (plus elle est grande, plus l'impédance d'interface est faible et stable) ; <strong>l'humidité</strong> du contact ; <strong>la constance de la pression</strong>. Une pince qui serre trop écrase les cellules et provoque une lésion ; une pince qui serre trop peu bouge. La solution professionnelle est le <em>patch adhésif à surface conductrice large</em>, exactement comme en électrocardiographie.</p>
+  </div>
+
+  <h3 id="c11-excitation" data-toc="sub">Maillon 2 — Le signal d'excitation</h3>
+
+  <p>Point capital, souvent mal compris : <strong>ces dispositifs ne se contentent pas d'écouter, ils émettent</strong>. Pour mesurer une résistance, il faut y faire passer un courant. Les deux familles de conception diffèrent précisément ici.</p>
+
+  <table class="compare">
+    <thead><tr><th>Famille « pont » (Damanhur U1)</th><th>Famille « oscillateur » (MIDI Sprout, PlantWave)</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Courant continu très faible issu d'une chaîne de diodes fournissant environ 4&nbsp;V au point milieu.</td>
+        <td>Signal alternatif d'environ 1&nbsp;kHz, tension d'alimentation 3,3&nbsp;V ou 5&nbsp;V.</td>
+      </tr>
+      <tr>
+        <td>Mesure directe d'un déséquilibre de tension, de l'ordre du microvolt au millivolt.</td>
+        <td>Mesure indirecte : la résistance modifie la <em>période</em> de l'oscillateur.</td>
+      </tr>
+      <tr>
+        <td>Sensible à la dérive continue ; exige un rééquilibrage automatique.</td>
+        <td>Insensible à la dérive continue, mais sensible aux capacités parasites.</td>
+      </tr>
+      <tr>
+        <td>Polarisation possible des électrodes à long terme.</td>
+        <td>L'alternatif limite fortement la polarisation.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Limites et interprétation</div>
+    <p>Puisque l'appareil injecte un courant, il modifie très légèrement l'état électrique du tissu qu'il mesure. Les ordres de grandeur sont rassurants — de l'ordre du microampère, soit mille fois moins que ce qui produirait un effet physiologique détectable — mais l'objection de principe demeure : <strong>il n'existe pas de mesure purement passive</strong>. Quiconque affirme « écouter la plante sans rien lui faire » ignore le fonctionnement de son propre appareil.</p>
+  </div>
+
+  <h3 id="c11-amplification" data-toc="sub">Maillons 3 et 4 — Amplification et filtrage</h3>
+
+  <p>Un signal de quarante microvolts issu d'une source de plusieurs mégohms, au milieu d'un environnement saturé de perturbations à 50&nbsp;Hz, constitue un cas d'école d'électronique de mesure. La solution canonique est l'<strong>amplificateur d'instrumentation</strong> : trois amplificateurs opérationnels montés de sorte que le gain s'applique à la <em>différence</em> entre deux entrées, tandis que ce qui est commun aux deux — typiquement le bruit du secteur, capté identiquement par les deux fils — est rejeté.</p>
+
+  <div class="schema light">
+    <div class="sch-h">Amplificateur d'instrumentation — topologie à trois amplificateurs</div>
+<pre>
+     V+ ──┬──▶│＋＼
+          │   │ A1 ├──┬──── R3 ──┐
+          │ ┌▶│－／  │            │      ┌─────┐
+          │ │        │            └─────▶│－＼  │
+          │ Rg       │                   │ A3 ├──▶ SORTIE
+          │ │        │            ┌─────▶│＋／  │
+          │ └▶│＋＼  │            │      └─────┘
+     V− ──┴──▶│ A2 ├──┴──── R4 ──┘         │
+              │－／                         └── R6 ── masse (ou Vref)
+
+   A1, A2 : étage d'entrée à gain, impédance d'entrée ≈ 10^12 Ω
+            → ne « chargent » pas le tissu végétal
+   A3     : étage différentiel — soustrait et fixe le gain final
+
+   GAIN TOTAL   G = (1 + 2·R1/Rg) × (R5/R3)
+                    └── étage 1 ──┘   └ étage 2 ┘
+
+   Pourquoi cette topologie et pas un simple ampli différentiel ?
+   Parce que le TAUX DE RÉJECTION DE MODE COMMUN (CMRR) ne dépend
+   QUE de l'appariement des résistances de l'étage A3. L'étage
+   d'entrée peut donc porter tout le gain avec UNE seule résistance
+   Rg non critique, sans dégrader le CMRR.
+</pre>
+    <figcaption>Le CMRR est le chiffre clé d'un montage de bio-mesure : c'est lui qui fait qu'un signal de quelques dizaines de microvolts survit dans une pièce où le secteur induit plusieurs volts en mode commun.</figcaption>
+  </div>
+
+  <h4>Le CMRR dépend de la tolérance des résistances — et de rien d'autre</h4>
+
+  <p>C'est le point que la plupart des montages amateurs ratent. Quel que soit l'amplificateur choisi, le taux de réjection de mode commun d'un étage différentiel est <strong>plafonné par l'appariement de ses quatre résistances</strong>. La formule du pire cas est simple :</p>
+
+  <div class="code">
+    <div class="code-h">CMRR limité par les résistances</div>
+<pre>              1 + G
+  CMRR_min = ─────────        G = gain de l'étage différentiel
+               4 · t          t = tolérance relative des résistances
+
+  Exemple à gain unité (G = 1) :
+
+     t = 5 %      (carbone)        → CMRR =   10      soit  20 dB
+     t = 1 %      (couche métal)   → CMRR =   50      soit  34 dB
+     t = 0,1 %    (couche métal)   → CMRR =  500      soit  54 dB
+     t = 0,01 %   (réseau apparié) → CMRR = 5000      soit  74 dB
+
+  Exemple, avec 40 µV de signal utile et 1 V de mode commun à 50 Hz :
+     20 dB → 100 mV de résidu   →  2500 fois le signal. INUTILISABLE.
+     54 dB →   2 mV de résidu   →    50 fois le signal. Insuffisant.
+     74 dB → 200 µV de résidu   →     5 fois le signal. Il faut
+                                      ENCORE un filtre coupe-bande.
+</pre>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Idée clé</div>
+    <p>Pour l'étage différentiel, n'achetez jamais des résistances séparées, même à 0,1 %. Utilisez un <strong>réseau apparié</strong> (<em>matched resistor network</em>) : quatre résistances gravées sur le même substrat, appariées à 0,01 ou 0,05 % et surtout dont les coefficients de température <em>suivent ensemble</em> (2 à 5&nbsp;ppm/°C de dérive relative). Une paire de résistances à 0,1 % mais à 100&nbsp;ppm/°C chacune se désapparie dès que le boîtier chauffe. Références usuelles : LT5400, MAX5491, ou la série Vishay ACAS/ORNA. Coût : quelques euros — et c'est le meilleur euro dépensé du montage.</p>
+    <p>Alternative encore plus simple : un amplificateur d'instrumentation <strong>monolithique</strong>, où les quatre résistances sont déjà intégrées et laser-ajustées en usine. Voir le tableau de choix ci-après.</p>
+  </div>
+
+  <h4>Quel amplificateur opérationnel ? Le critère est le courant de polarisation</h4>
+
+  <p>C'est ici que se joue la réussite ou l'échec du montage, et le raisonnement est contre-intuitif pour qui vient de l'audio.</p>
+
+  <p>La source que vous attaquez a une impédance de l'ordre du mégohm. Or tout amplificateur opérationnel absorbe un <strong>courant de polarisation d'entrée</strong> <em>I</em><sub>b</sub>. Ce courant traverse la résistance de source et y crée une tension d'erreur, tout simplement par la loi d'Ohm :</p>
+
+  <div class="code">
+    <div class="code-h">L'erreur de polarisation, et pourquoi elle disqualifie les amplis audio</div>
+<pre>  V_erreur = I_b × R_source
+
+  Source : R_source = 10 MΩ (trajet dans une feuille)
+  Signal utile recherché : 40 µV
+
+  ┌──────────────┬──────────────┬──────────────┬────────────────┐
+  │ Technologie  │ Exemple      │ I_b typique  │ V_erreur       │
+  ├──────────────┼──────────────┼──────────────┼────────────────┤
+  │ Bipolaire    │ NE5532, µA741│  80 nA       │  0,8 V   ✘✘✘   │
+  │ Bipolaire    │ OP07         │   1 nA       │   10 mV  ✘✘    │
+  │ JFET         │ TL072        │  65 pA       │  650 µV  ✘     │
+  │ JFET soigné  │ OPA2140      │ 0,5 pA       │    5 µV  ✔     │
+  │ CMOS         │ LMC6482      │  20 fA       │  0,2 µV  ✔✔    │
+  │ CMOS         │ TLC2272      │   1 pA       │   10 µV  ✔     │
+  └──────────────┴──────────────┴──────────────┴────────────────┘
+
+  VERDICT : un amplificateur BIPOLAIRE est physiquement incapable
+  de mesurer une plante. Il produit une erreur mille à vingt mille
+  fois plus grande que le signal. Il faut une entrée JFET ou CMOS.
+</pre>
+  </div>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique — le bruit à haute impédance</div>
+    <p>Un second critère, tout aussi éliminatoire, concerne le bruit. Le bruit total ramené à l'entrée combine trois sources indépendantes, qui s'additionnent quadratiquement :</p>
+    <p style="text-align:center;font-family:'DejaVu Sans Mono',monospace;font-size:9.5pt;">e<sub>total</sub> = √( e<sub>n</sub>² + (i<sub>n</sub> · R<sub>s</sub>)² + 4kTR<sub>s</sub> )</p>
+    <p>Le terme <em>e</em><sub>n</sub> est le bruit en tension de l'amplificateur, le terme <em>i</em><sub>n</sub>·R<sub>s</sub> son bruit en courant multiplié par la résistance de source, et 4<em>kTR</em><sub>s</sub> le bruit thermique irréductible de la source elle-même (bruit de Johnson-Nyquist).</p>
+    <p>À 10&nbsp;MΩ, le calcul est édifiant. Le bruit thermique seul vaut déjà <strong>406&nbsp;nV/√Hz</strong> — c'est un plancher physique que rien ne peut franchir. Le bruit en courant d'un amplificateur bipolaire (<em>i</em><sub>n</sub> ≈ 1&nbsp;pA/√Hz) donne 10&nbsp;µV/√Hz, soit vingt-cinq fois ce plancher. Celui d'un CMOS (<em>i</em><sub>n</sub> ≈ 0,5&nbsp;fA/√Hz) donne 5&nbsp;nV/√Hz, soit <em>quatre-vingts fois moins</em> que le plancher thermique : totalement négligeable.</p>
+    <p><strong>Conclusion :</strong> à haute impédance de source, le bruit en <em>tension</em> de l'amplificateur — le chiffre que mettent en avant les fabricants d'amplis audio — n'a aucune importance. Seul compte le bruit en <em>courant</em>. C'est exactement l'inverse des critères de l'audio, et c'est pourquoi un « excellent » NE5532 est ici un mauvais choix.</p>
+  </div>
+
+  <h4>Tableau de choix des amplificateurs</h4>
+
+  <table class="tight">
+    <thead><tr><th>Référence</th><th>Type</th><th>I<sub>b</sub> typ.</th><th>V<sub>os</sub></th><th>Dérive</th><th>Alim.</th><th>Prix</th><th>Usage recommandé</th></tr></thead>
+    <tbody>
+      <tr><td><strong>LMC6482</strong></td><td>CMOS double, rail-à-rail</td><td>20 fA</td><td>110 µV</td><td>1,3 µV/°C</td><td>3 à 15 V</td><td>≈ 3 €</td><td><strong>Le meilleur rapport qualité/prix pour un montage DIY</strong></td></tr>
+      <tr><td><strong>TLC2272</strong></td><td>CMOS double</td><td>1 pA</td><td>300 µV</td><td>2 µV/°C</td><td>4 à 16 V</td><td>≈ 2 €</td><td>Alternative économique, très répandue</td></tr>
+      <tr><td><strong>OPA2140</strong></td><td>JFET double, faible bruit</td><td>0,5 pA</td><td>30 µV</td><td>0,35 µV/°C</td><td>4,5 à 36 V</td><td>≈ 7 €</td><td>Montage soigné, mesure longue durée</td></tr>
+      <tr><td><strong>OPA2333</strong></td><td>CMOS à découpage (zéro dérive)</td><td>70 pA</td><td><strong>10 µV</strong></td><td><strong>0,05 µV/°C</strong></td><td>1,8 à 5,5 V</td><td>≈ 5 €</td><td>Quand la dérive thermique est le problème principal</td></tr>
+      <tr><td><strong>INA333</strong></td><td>Ampli d'instrumentation monolithique</td><td>70 pA</td><td>25 µV</td><td>0,1 µV/°C</td><td>1,8 à 5,5 V</td><td>≈ 8 €</td><td><strong>Solution clés en main</strong> : CMRR 100 dB garanti, une seule résistance de gain</td></tr>
+      <tr><td><strong>AD8220</strong></td><td>Ampli d'instrumentation JFET</td><td>10 pA</td><td>125 µV</td><td>0,4 µV/°C</td><td>4 à 36 V</td><td>≈ 12 €</td><td>Le plus adapté à une source très haute impédance</td></tr>
+      <tr><td><s>TL072</s></td><td>JFET double</td><td>65 pA</td><td><strong>3 mV</strong></td><td>18 µV/°C</td><td>7 à 36 V</td><td>≈ 0,50 €</td><td>Acceptable en dernier étage seulement — jamais en entrée</td></tr>
+      <tr><td><s>NE5532</s></td><td>Bipolaire</td><td><strong>200 nA</strong></td><td>0,5 mV</td><td>5 µV/°C</td><td>6 à 44 V</td><td>≈ 0,80 €</td><td><strong>À proscrire</strong> — erreur de 2 V sur 10 MΩ</td></tr>
+    </tbody>
+    <caption>Choix de l'amplificateur. Pour un premier montage, l'<strong>INA333</strong> ou l'<strong>AD8220</strong> évitent toute la question de l'appariement des résistances ; le <strong>LMC6482</strong> offre le meilleur compromis pour qui monte la topologie à trois amplificateurs à la main.</caption>
+  </table>
+
+  <h4>Valeurs et tolérances des composants passifs</h4>
+
+  <p>Voici la nomenclature complète d'un étage d'entrée de qualité, avec les tolérances qui comptent et celles qui ne comptent pas. C'est la table à consulter avant de commander.</p>
+
+  <table class="tight bom">
+    <thead><tr><th>Repère</th><th>Fonction</th><th>Valeur</th><th>Tolérance requise</th><th>Coef. de temp.</th><th>Technologie imposée</th></tr></thead>
+    <tbody>
+      <tr><td>R<sub>g</sub></td><td>Résistance de gain de l'étage d'entrée</td><td>1 kΩ pour G ≈ 100</td><td><strong>1 %</strong> — non critique pour le CMRR, seulement pour la valeur exacte du gain</td><td>50 ppm/°C</td><td>Couche métallique</td></tr>
+      <tr><td>R<sub>1</sub>, R<sub>2</sub></td><td>Contre-réaction de l'étage d'entrée</td><td>49,9 kΩ</td><td>1 % suffit (paire symétrique)</td><td>50 ppm/°C</td><td>Couche métallique</td></tr>
+      <tr><td>R<sub>3</sub>…R<sub>6</sub></td><td><strong>Réseau de l'étage différentiel</strong></td><td>10 kΩ × 4</td><td><strong>0,01 à 0,05 % en appariement</strong></td><td><strong>&lt; 5 ppm/°C en suivi</strong></td><td><strong>Réseau apparié impératif</strong></td></tr>
+      <tr><td>R<sub>bias</sub></td><td>Retour de polarisation des entrées vers la référence</td><td>10 à 100 MΩ</td><td>10 % — sans importance</td><td>Sans importance</td><td>Couche métallique vernie, jamais carbone</td></tr>
+      <tr><td>R<sub>prot</sub></td><td>Limitation de courant en entrée (protection)</td><td>10 kΩ, 2 exemplaires</td><td>1 %, appariées entre elles</td><td>50 ppm/°C</td><td>Couche métallique</td></tr>
+      <tr><td>R<sub>b</sub></td><td>Référence du pont (si topologie Wheatstone)</td><td>4 MΩ ou 10,1 MΩ<br/><span class="small">(valeurs du brevet Damanhur)</span></td><td>1 % — détermine le point d'équilibre</td><td>25 ppm/°C</td><td>Couche métallique haute valeur</td></tr>
+      <tr><td>R<sub>midi</sub></td><td>Limitation sur la sortie MIDI</td><td><strong>220 Ω</strong> × 2 <span class="small">(norme MIDI)</span></td><td>5 % — sans importance</td><td>Sans importance</td><td>Carbone accepté</td></tr>
+      <tr><td>R<sub>led</sub></td><td>Limitation des témoins lumineux</td><td>220 Ω à 1 kΩ</td><td>5 %</td><td>Sans importance</td><td>Carbone accepté</td></tr>
+      <tr><td>C<sub>filtre</sub></td><td>Filtre passe-bas d'entrée (avec R<sub>prot</sub>)</td><td>10 nF</td><td><strong>2 à 5 %, appariés</strong></td><td>NP0 / C0G obligatoire</td><td>Céramique classe 1 ou film polypropylène</td></tr>
+      <tr><td>C<sub>hp</sub></td><td>Liaison du passe-haut (0,05 Hz)</td><td>1 à 10 µF</td><td>10 %</td><td>Faible fuite exigée</td><td>Film polyester ou polypropylène — <strong>jamais d'électrolytique</strong></td></tr>
+      <tr><td>C<sub>t</sub></td><td>Condensateur de temporisation du NE555</td><td><strong>4,2 nF</strong> <span class="small">(valeur MIDI Sprout)</span></td><td><strong>1 à 2 %</strong> — fixe directement la fréquence</td><td><strong>NP0 / C0G, ± 30 ppm/°C</strong></td><td>Céramique classe 1 impérative</td></tr>
+      <tr><td>C<sub>déc</sub></td><td>Découplage d'alimentation, au plus près de chaque boîtier</td><td>100 nF + 10 µF</td><td>20 % — sans importance</td><td>X7R accepté</td><td>Céramique + tantale ou céramique</td></tr>
+    </tbody>
+    <caption>Nomenclature commentée. Trois lignes seulement exigent de la précision : le réseau différentiel, les condensateurs de filtre appariés, et le condensateur de temporisation. Tout le reste tolère du composant ordinaire.</caption>
+  </table>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Limites et interprétation — les pièges des composants</div>
+    <p><strong>Le condensateur céramique X7R ou Y5V est un piège.</strong> Sa capacité chute de 20 à 80 % sous tension continue (effet de polarisation DC) et dérive de plusieurs pour cent avec la température. Placé comme condensateur de temporisation d'un NE555, il fait dériver la fréquence de base de l'oscillateur au fil de la séance — et vous entendez une « évolution de la plante » qui n'est que le réchauffement de votre boîtier. Exigez du <strong>NP0/C0G</strong>, dont la dérive est de ± 30&nbsp;ppm/°C, soit mille fois moins.</p>
+    <p><strong>La résistance au carbone est un piège.</strong> Au-delà de sa tolérance de 5 %, elle présente un coefficient de température de 250 à 1&nbsp;000&nbsp;ppm/°C et surtout un <em>bruit en excès</em> (bruit de courant en 1/<em>f</em>) qui peut atteindre 1&nbsp;µV par volt et par décade — cent fois plus qu'une couche métallique. Sur un montage où le signal utile se compte en dizaines de microvolts, c'est rédhibitoire.</p>
+    <p><strong>Le circuit imprimé lui-même est un piège.</strong> À 10&nbsp;MΩ de source, la résistance de surface de l'époxy entre deux pistes voisines — quelques centaines de mégohms par temps humide — devient un chemin de fuite significatif. La parade professionnelle est l'<em>anneau de garde</em> : une piste entourant l'entrée haute impédance, portée au même potentiel par un suiveur, de sorte qu'aucune différence de tension n'existe et qu'aucun courant ne fuit. À défaut, nettoyez soigneusement le flux de brasage à l'alcool isopropylique et vernissez la zone d'entrée.</p>
+  </div>
+
+  <h4>Les trois filtres, et leurs valeurs</h4>
+
+  <table>
+    <thead><tr><th>Filtre</th><th>Fréquence</th><th>Rôle</th><th>Valeurs typiques</th><th>Ordre</th></tr></thead>
+    <tbody>
+      <tr><td>Passe-haut d'entrée</td><td>0,01 à 0,05 Hz</td><td>Éliminer la dérive lente de l'interface sans supprimer le signal utile</td><td>R = 3,3 MΩ, C = 1 µF → f<sub>c</sub> = 0,048 Hz</td><td>1 (passif suffit)</td></tr>
+      <tr><td>Coupe-bande (<em>notch</em>)</td><td>50 Hz (60 Hz hors Europe)</td><td>Rejeter le résidu du secteur non éliminé par le CMRR</td><td>Double T : R = 31,8 kΩ, C = 100 nF, R/2 = 15,9 kΩ, 2C = 200 nF</td><td>2, facteur Q réglable</td></tr>
+      <tr><td>Passe-bas anti-repliement</td><td>&lt; f<sub>échantillonnage</sub> / 2</td><td>Empêcher le repliement spectral lors de la numérisation</td><td>Pour f<sub>e</sub> = 100 Hz : R = 16 kΩ, C = 100 nF → f<sub>c</sub> = 100 Hz, ordre 2</td><td>2 (Sallen-Key)</td></tr>
+    </tbody>
+    <caption>Les trois filtres et leurs constantes. La formule commune est f<sub>c</sub> = 1 / (2πRC). Le coupe-bande en double T exige des composants appariés à 1 % pour atteindre une profondeur utile de 40 dB.</caption>
+  </table>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique — la conséquence cachée du passe-haut</div>
+    <p>Le passe-haut est le filtre le plus lourd de conséquences, et personne n'en parle. S'il coupe à 0,05&nbsp;Hz, il élimine tout ce qui est plus lent que vingt secondes — donc <strong>toute l'information circadienne</strong>, celle-là même dont on a vu qu'elle constitue le rythme le mieux établi de l'électrome.</p>
+    <p>Un boîtier qui « chante » en permanence a nécessairement filtré la lenteur. C'est un choix d'ingénieur, pas une propriété de la plante : un appareil de recherche conserve ces basses fréquences et les enregistre, un appareil musical les jette pour éviter une dérive audible. Si vous concevez le vôtre, sachez que <em>ce seul choix de condensateur décide de ce que votre plante aura le droit de dire</em>.</p>
+  </div>
+
+  <h3 id="c11-conversion" data-toc="sub">Maillon 5 — La conversion analogique/numérique</h3>
+
+  <p>Trois nombres définissent un convertisseur, et il suffit de les lire pour situer un appareil.</p>
+
+  <table>
+    <thead><tr><th>Paramètre</th><th>Appareil grand public</th><th>Appareil de recherche</th><th>Ce que cela change</th></tr></thead>
+    <tbody>
+      <tr><td>Résolution</td><td>8 à 10 bits (256 à 1 024 niveaux)</td><td>16 à 24 bits (65 536 à 16,7 millions)</td><td>Finesse des nuances captées</td></tr>
+      <tr><td>Fréquence d'échantillonnage</td><td>10 à 100 Hz</td><td>1 à 10 kHz</td><td>Capacité à saisir un potentiel d'action</td></tr>
+      <tr><td>Plage d'entrée</td><td>0 à 3,3 V après amplification</td><td>± 10 mV en entrée directe</td><td>Besoin ou non d'un préampli</td></tr>
+    </tbody>
+    <caption>Le brevet Damanhur spécifie un convertisseur 8 bits — largement suffisant pour de la musique, notoirement insuffisant pour une caractérisation fine de l'électrome.</caption>
+  </table>
+
+  <h3 id="c11-analyse" data-toc="sub">Maillon 6 — La détection d'événement</h3>
+
+  <p>C'est ici que se joue l'essentiel du caractère musical d'un appareil, et c'est le maillon le moins documenté par les fabricants. Le problème posé est le suivant : le signal numérisé est un flot continu de nombres ; il faut décider <em>quand</em> déclencher une note.</p>
+
+  <p>L'algorithme du <em>MIDI Sprout</em> — publié sous licence libre, donc entièrement vérifiable — résout le problème par une statistique glissante d'une simplicité exemplaire :</p>
+
+  <div class="code">
+    <div class="code-h">Détection de changement — MIDI Sprout, <code>SampleAnalysis.ino</code></div>
+<pre>// 1. on empile 10 mesures de période successives (interruption sur front montant)
+// 2. on écarte la première (volatile), il en reste 9
+// 3. on calcule sur ces 9 valeurs :
+
+     averg  = moyenne des périodes
+     stdevi = écart-type
+     delta  = maximum − minimum
+
+// 4. règle de déclenchement :
+
+     if (delta > stdevi * threshold)   // threshold ≈ 2,3 par défaut
+         { change = 1; }
+
+// 5. si changement, on dérive les paramètres musicaux :
+
+     dur     = 150 + map(delta % 127, 1, 127, 100, 2500);  // durée en ms
+     setnote = map(averg % 127, 1, 127, noteMin, noteMax); // hauteur brute
+     setnote = scaleNote(setnote, scaleSelect, root);      // arrondi sur la gamme
+     setControl(controlNumber, ..., delta % 127, ramp);    // message CC</pre>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Idée clé</div>
+    <p>Lisez attentivement la ligne de déclenchement. Le seuil n'est pas une valeur absolue : c'est un <strong>multiple de l'écart-type courant</strong>. Autrement dit, l'appareil ne réagit pas à une amplitude, il réagit à une <em>rupture de régularité</em>. Une plante très bruitée devra bouger beaucoup pour déclencher ; une plante très calme déclenchera sur des variations minuscules. C'est ce mécanisme, et lui seul, qui donne l'impression que chaque plante a un « tempérament ».</p>
+  </div>
+
+  <h3 id="c11-mapping" data-toc="sub">Maillons 7 et 8 — Le mapping et la gamme</h3>
+
+  <figure class="figframe">
+    <img src="assets/svg/mapping.svg" alt="Trois étapes : fenêtre d'analyse, détection, quantification sur la gamme" style="width:100%"/>
+    <figcaption><span class="fig-n">Fig. 3.2.</span> Du nombre à la note. La troisième étape — la quantification sur une gamme — est une décision purement humaine et entièrement arbitraire.</figcaption>
+  </figure>
+
+  <p>Voici le tableau de correspondance qui résume les choix de mapping usuels. Il vaut pour tous les appareils du marché, à quelques variantes près.</p>
+
+  <table>
+    <thead><tr><th>Grandeur mesurée</th><th>Paramètre musical piloté</th><th>Plage typique</th><th>Effet perçu</th></tr></thead>
+    <tbody>
+      <tr><td>Moyenne des périodes</td><td>Hauteur de la note</td><td>MIDI 36 → 96 (do2 – do7)</td><td>Registre, « voix » de la plante</td></tr>
+      <tr><td>Delta (amplitude du changement)</td><td>Durée de la note</td><td>250 → 2 500 ms</td><td>Respiration, tenue</td></tr>
+      <tr><td>Delta modulo 127</td><td>Valeur de <em>Control Change</em></td><td>0 → 127</td><td>Timbre, ouverture de filtre</td></tr>
+      <tr><td>Fréquence des dépassements de seuil</td><td>Densité rythmique</td><td>0,2 → 4 notes/s</td><td>Agitation ou calme</td></tr>
+      <tr><td>Dérive lente de la moyenne</td><td>Transposition</td><td>± 1 octave</td><td>Climat général de la séance</td></tr>
+      <tr><td>Dérivée du signal</td><td>Modulation d'effet (réverbération, délai)</td><td>0 → 127</td><td>Profondeur, espace</td></tr>
+    </tbody>
+    <caption>Correspondances de mapping usuelles. Ce tableau est la <em>convention</em> du domaine, pas une loi naturelle : chacun de ces choix pourrait être inversé sans que la plante en sache rien.</caption>
+  </table>
+
+  <h4>La question de la gamme</h4>
+
+  <p>La quantification sur une gamme est l'intervention humaine la plus lourde, et la plus discutée du milieu. Un signal biologique brut ne connaît pas les demi-tons : la note « juste » issue de la mesure tombe presque toujours entre deux touches. Trois attitudes existent.</p>
+
+  <ol class="steps">
+    <li><strong>Chromatique intégral.</strong> On conserve les douze demi-tons. Le résultat est fidèle à la mesure, souvent dissonant, et fatigant à l'écoute prolongée. C'est le réglage à utiliser pour toute analyse sérieuse.</li>
+    <li><strong>Gamme diatonique ou pentatonique.</strong> On arrondit chaque note vers le degré le plus proche de la gamme choisie. Le résultat est immédiatement agréable — et il est <em>en partie fabriqué</em>. Une pentatonique ne peut produire de dissonance : la beauté du résultat ne dit alors rien de la plante.</li>
+    <li><strong>Microtonalité.</strong> On abandonne la quantification et on pilote un synthétiseur par la hauteur continue. C'est le plus fidèle et le plus exigeant. Peu d'appareils le permettent nativement ; le passage par un <em>pitch bend</em> MIDI ou par le protocole MPE le rend accessible.</li>
+  </ol>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Limites et interprétation</div>
+    <p>Un test d'honnêteté simple pour toute séance publique : <strong>annoncez la gamme utilisée</strong>. Si vous dites « écoutez, cette plante est apaisée » alors que vous avez verrouillé la sortie sur une pentatonique majeure, vous décrivez votre réglage, pas la plante. Le même signal en chromatique aurait sonné inquiétant. Aucune tromperie n'est nécessaire pour que le public soit trompé : il suffit de ne rien dire.</p>
+  </div>
+
+  <div class="callout energie">
+    <div class="callout-title">🌿 Regard énergétique</div>
+    <p>Beaucoup de praticiens accordent leur chaîne en 432&nbsp;Hz plutôt qu'en 440&nbsp;Hz, considérant ce diapason plus « naturel » ou mieux accordé au vivant. Disons les choses proprement : aucune étude ne montre de différence physiologique entre ces deux diapasons, et l'argument des « fréquences de Schumann » ou du « nombre d'or » ne résiste pas au calcul. En revanche, un diapason plus bas <em>est</em> perceptiblement plus doux, et si ce choix vous aide à vous poser, il a une utilité réelle — sur vous. Faites-le si vous l'aimez. Ne le présentez pas comme une propriété de la plante.</p>
+  </div>
+
+  <h3 id="c11-synthese" data-toc="sub">Maillon 9 — La synthèse sonore</h3>
+
+  <p>Dernière étape, entièrement logicielle et entièrement libre. Le message MIDI ne contient aucun son : il contient une <em>instruction</em>. C'est l'instrument — matériel ou virtuel — qui décide de la couleur.</p>
+
+  <table>
+    <thead><tr><th>Type d'instrument</th><th>Caractère sonore</th><th>Adapté à</th></tr></thead>
+    <tbody>
+      <tr><td>Piano, harpe, kalimba (échantillons)</td><td>Attaque nette, décroissance naturelle</td><td>Séances publiques, premier contact</td></tr>
+      <tr><td>Nappes de synthétiseur, pads</td><td>Attaques lentes, notes fondues</td><td>Méditation, écoute longue</td></tr>
+      <tr><td>Bols, cloches, gongs</td><td>Résonance longue, spectre riche</td><td>Pratiques sonores, rituels</td></tr>
+      <tr><td>Onde sinusoïdale pure</td><td>Aucun caractère ajouté</td><td><strong>Analyse</strong> : on entend le signal, pas l'habillage</td></tr>
+      <tr><td>Instruments percussifs</td><td>Sans tenue, rythme exposé</td><td>Étude de la densité d'événements</td></tr>
+    </tbody>
+    <caption>Le choix de l'instrument transforme radicalement la perception d'un même flux MIDI. Pour comprendre ce que fait votre plante, écoutez-la au moins une fois en sinusoïde nue.</caption>
+  </table>
+
+  <div class="callout interieur">
+    <div class="callout-title">✨ Expérience intérieure</div>
+    <p>Faites cette expérience une fois, et elle vous marquera durablement. Enregistrez dix minutes de MIDI d'une plante. Rejouez ce <em>même</em> fichier trois fois : d'abord avec une nappe de synthétiseur douce, puis avec un piano, puis avec une sinusoïde nue.</p>
+    <p>Vous allez « entendre » trois plantes différentes. L'une sera sereine, la deuxième pensive, la troisième presque clinique. Les données sont rigoureusement identiques. Ce que vous avez entendu, les trois fois, c'est le travail de votre propre esprit qui donne un sens à une séquence de nombres. Cette expérience ne disqualifie pas la pratique — elle vous apprend à savoir où vous vous tenez quand vous écoutez.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Neuf maillons : électrodes, excitation, amplification, filtrage, conversion, détection, mapping, gamme, synthèse.</li>
+      <li>Ag/AgCl ou inox 316L pour les électrodes ; jamais de cuivre nu.</li>
+      <li>L'appareil injecte toujours un courant : aucune mesure n'est passive.</li>
+      <li>Le déclenchement se fait sur une rupture de régularité, non sur une amplitude.</li>
+      <li>La gamme et l'instrument sont des choix humains qui déterminent l'essentiel de ce que l'on entend.</li>
+    </ul>
+  </div>
+
+  <div class="ornament"></div>
+</section>

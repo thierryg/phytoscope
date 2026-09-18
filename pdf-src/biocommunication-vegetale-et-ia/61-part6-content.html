@@ -1,0 +1,122 @@
+<section class="chapter">
+  <h2 id="c14-classification" data-toc="chapter" data-run="L'apprentissage automatique">Ce que l'apprentissage automatique extrait vraiment</h2>
+  <p class="chapo">Avant les modèles de langage, il y a eu les classificateurs. Leurs résultats sont solides, modestes et vérifiables — et ils fixent la borne supérieure de ce qu'un signal végétal contient.</p>
+
+  <p class="lettrine noindent">Voici une façon rigoureuse de poser la question « que contient ce signal&nbsp;? » : <strong>combien d'états distincts un classificateur peut-il discriminer à partir de lui seul&nbsp;?</strong> C'est une mesure opératoire de l'information présente, indépendante de toute interprétation.</p>
+
+  <h3 id="c14-resultats" data-toc="sub">Les résultats établis</h3>
+
+  <table>
+    <thead><tr><th>Travaux</th><th>Signal</th><th>Ce qui est discriminé</th><th>Performance</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Simmi et al. (2020)</strong><br/><span class="small"><em>Bioelectrochemistry</em> 133</span></td><td>Électrome</td><td>Infection fongique</td><td>Détection <strong>avant symptôme visible</strong>, par entropie approchée</td></tr>
+      <tr><td><strong>de Toledo et al. (2024)</strong><br/><span class="small"><em>Plant Signal. Behav.</em> 19(1)</span></td><td>Électrome</td><td>Stress salin</td><td>Jusqu'à <strong>100 % d'exactitude</strong> (machine à vecteurs de support)</td></tr>
+      <tr><td><strong>Tran et al. (2019)</strong><br/><span class="small"><em>Sci. Rep.</em> 9:17073</span></td><td>Électrophysiologie, <strong>hors cage de Faraday</strong></td><td>Stress hydrique, rythme nycthéméral</td><td>Classification supervisée du statut physiologique</td></tr>
+      <tr><td><strong>Khait et al. (2023)</strong><br/><span class="small"><em>Cell</em> 186(7)</span></td><td>Ultrasons 20-150 kHz</td><td>Espèce émettrice, type de stress</td><td>Discrimination établie</td></tr>
+    </tbody>
+    <caption>Quatre travaux, quatre signaux, un même constat : l'information est présente et extractible. C'est le socle solide du domaine.</caption>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Ce que ces résultats fixent</div>
+    <p>Ils fixent une <strong>borne supérieure</strong>. Si le meilleur classificateur entraîné sur un signal parvient à distinguer trois ou quatre états physiologiques, alors ce signal contient <em>au moins</em> cette information — et rien n'autorise à supposer qu'il en contienne beaucoup plus.</p>
+    <p>Un dispositif qui prétend en tirer des énoncés riches, variés, nuancés, sur des sujets que le classificateur ne discrimine pas, produit donc <strong>nécessairement</strong> ce surplus ailleurs que dans le signal. Ce n'est pas un soupçon : c'est une contrainte informationnelle.</p>
+  </div>
+
+  <h3 id="c14-methode" data-toc="sub">Pourquoi ces résultats sont solides</h3>
+
+  <p>Quatre propriétés méthodologiques les distinguent de ce qui circule par ailleurs.</p>
+
+  <ul>
+    <li><strong>Une tâche définie.</strong> « Distinguer une plante en stress salin d'une plante témoin » est une question à laquelle on peut répondre juste ou faux. « Traduire l'état d'une plante » n'en est pas une.</li>
+    <li><strong>Un jeu de test séparé.</strong> La performance est mesurée sur des données que le modèle n'a jamais vues.</li>
+    <li><strong>Une matrice de confusion.</strong> On sait <em>quelles</em> erreurs le modèle commet, ce qui est souvent plus informatif que le taux global.</li>
+    <li><strong>Une condition d'échec.</strong> Un classificateur qui tombe à 50 % sur deux classes équilibrées a échoué, et cela se voit immédiatement.</li>
+  </ul>
+
+  <p>Ces quatre propriétés définissent ce qu'est une affirmation évaluable. Aucune n'est présente dans un dispositif qui produit du texte libre.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Une limite qu'il faut aussi énoncer</div>
+    <p>Un classificateur atteignant 100 % d'exactitude sur un jeu de test ne démontre pas qu'il a « compris » quoi que ce soit. Il peut s'être appuyé sur un artefact corrélé à la condition : l'heure de la journée, la température de la salle, l'ordre de passage des échantillons.</p>
+    <p>C'est le problème du <em>raccourci</em>, bien connu en apprentissage automatique. Le remède est le même que partout dans ce livre : des conditions de contrôle, et des voies de contexte enregistrées en parallèle pour vérifier que le modèle ne s'appuie pas sur elles.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>La question « que contient ce signal&nbsp;? » se mesure par le nombre d'états qu'un classificateur discrimine.</li>
+      <li>Résultats établis : infection fongique avant symptôme, stress salin jusqu'à 100 %, stress hydrique hors cage de Faraday.</li>
+      <li>Ces résultats fixent une <strong>borne supérieure</strong> de l'information présente.</li>
+      <li>Tout énoncé plus riche que ce que le classificateur discrimine est produit ailleurs que dans le signal.</li>
+      <li>Un classificateur très performant peut s'appuyer sur un artefact corrélé : les voies de contexte sont indispensables.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c15-llm" data-toc="chapter">Les modèles de langage sur séries temporelles</h2>
+  <p class="chapo">La technique dominante est d'une simplicité désarmante : coller les chiffres dans un texte. Ses performances ont été mesurées, et le résultat est sévère.</p>
+
+  <p class="lettrine noindent">Depuis 2023, un grand nombre de travaux tentent de faire commenter, prévoir ou annoter des séries temporelles par des modèles de langage. Le domaine est actif, publié, et — c'est heureux — il s'est déjà autoévalué.</p>
+
+  <h3 id="c15-technique" data-toc="sub">La technique, et son plafond</h3>
+
+  <p>La méthode dominante consiste à <strong>insérer les valeurs sous forme de texte dans l'invite</strong>. Les travaux de référence incluent <strong>Nepal et al. (2024)</strong> pour la narration de données de capteurs (arXiv:2411.04691), <em>DailyLLM</em> (arXiv:2507.13737) et <em>SensorLLM</em> (arXiv:2410.10624) pour l'alignement modèle-capteurs.</p>
+
+  <p>Le constat récurrent de ce corpus est sans ambiguïté : la méthode fonctionne mal au-delà de quelques centaines de pas de temps, et les sorties sont fréquemment <strong>génériques, inexactes ou mal ancrées dans les données</strong>.</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique — le résultat d'ablation</div>
+    <p><strong>Tan, M., Merrill, M. A., Gupta, V., Althoff, T. &amp; Hartvigsen, T. (2024)</strong>, « Are Language Models Actually Useful for Time Series Forecasting? », <em>NeurIPS 2024</em> (Spotlight), arXiv:2406.16964.</p>
+    <p>Les auteurs prennent trois méthodes populaires de prévision de séries temporelles fondées sur des modèles de langage, et procèdent à l'<strong>ablation</strong> : ils retirent le modèle, ou le remplacent par une simple couche d'attention.</p>
+    <p><strong>Résultat : les performances ne se dégradent pas — et s'améliorent souvent.</strong> Un baseline trivial, qu'ils nomment PAttn, bat la plupart des architectures à base de modèle de langage.</p>
+    <p>C'est l'un des résultats les plus utiles de ce volume, parce qu'il fournit une <strong>méthode</strong>, et pas seulement un constat. L'ablation est la façon standard de mesurer la contribution d'un composant. Elle s'applique directement à tout dispositif de « traduction » végétale.</p>
+  </div>
+
+  <h3 id="c15-decoder" data-toc="sub">Le décodage sémantique : ce que le meilleur travail établit</h3>
+
+  <p>Il existe un domaine où l'on décode réellement du langage à partir d'un signal biologique continu, et où le travail est fait avec rigueur : la reconstruction sémantique à partir d'enregistrements cérébraux non invasifs.</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique — la référence à connaître</div>
+    <p><strong>Tang, J., LeBel, A., Jain, S. &amp; Huth, A. G. (2023)</strong>, « Semantic reconstruction of continuous language from non-invasive brain recordings », <em>Nature Neuroscience</em> 26, p. 858-866.</p>
+    <p>C'est exactement l'architecture que l'on imagine spontanément : signal continu → espace sémantique → séquences de mots. Mais le point capital est <strong>comment</strong> ils procèdent.</p>
+    <p>Ce n'est <strong>pas</strong> un plus-proche-voisin naïf. Un <strong>modèle de langage sert de prior génératif</strong> : il propose des continuations candidates, et le signal cérébral ne fait que <strong>noter et reclasser</strong> ces candidats.</p>
+    <p><strong>Autrement dit : la grammaire et la fluidité viennent du modèle de langage ; seule la sélection vient du signal.</strong></p>
+    <p>Les auteurs le mesurent explicitement, par des baselines et des tests de permutation. Et ils montrent que le décodage exige la <strong>coopération du sujet</strong> et s'effondre sous contre-mesures mentales — c'est-à-dire qu'ils ont construit les conditions dans lesquelles leur système <em>doit</em> échouer.</p>
+  </div>
+
+  <figure class="full">
+    <img src="assets/svg/tt-embedding.svg" alt="Projection d'un signal dans un espace de mots"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> L'idée séduisante : projeter un signal dans un espace vectoriel de mots et lire les voisins. Le présupposé caché est dans la matrice de projection : elle est apprise sur des couples (mesure, mot) choisis par un humain.</figcaption>
+  </figure>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Le critère de démarcation</div>
+    <p>Tang et al. ont fait ce qu'aucun dispositif de plante parlante n'a fait : <strong>spécifier à l'avance les conditions dans lesquelles leur système produit du non-sens</strong>.</p>
+    <p>C'est le critère. Un dispositif sémantique honnête doit dire quand il échoue. Celui qui ne le dit pas ne peut pas être évalué, donc ne peut rien établir — quelle que soit la beauté de ses sorties.</p>
+  </div>
+
+  <h3 id="c15-inversion" data-toc="sub">Sur l'inversion d'embeddings</h3>
+
+  <p>Un travail connexe mérite mention, parce qu'il est souvent invoqué à tort. <strong>Morris, J. X., Kuleshov, V., Shmatikov, V. &amp; Rush, A. M. (2023)</strong>, <em>Text Embeddings Reveal (Almost) As Much As Text</em> (vec2text), arXiv:2310.06816, montrent qu'un plongement peut être reconverti en texte — via un modèle entraîné à itérer jusqu'à converger sur le point latent cible.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Ce que ce résultat ne dit pas</div>
+    <p>Il prouve que l'inversion est possible <strong>quand le plongement contient réellement le texte</strong> — parce qu'il a été produit à partir de ce texte.</p>
+    <p>Il ne dit <strong>rien</strong> du cas où l'on projette un signal physiologique arbitraire dans cet espace. Dans ce cas, l'espace ne contient pas de texte à retrouver : on y place un point, et on lit les mots qui se trouvent à proximité — mots qui y étaient déjà, mis là par l'entraînement sur du texte humain.</p>
+    <p><strong>Le sens ne sort pas du signal : il y a été mis, puis retrouvé.</strong></p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>La technique dominante — insérer les valeurs en texte dans l'invite — plafonne vite et produit des sorties mal ancrées.</li>
+      <li><strong>Tan et al. (2024)</strong> : retirer le modèle de langage ne dégrade pas les performances, et les améliore souvent.</li>
+      <li><strong>Tang et al. (2023)</strong> : la grammaire vient du modèle, seule la sélection vient du signal.</li>
+      <li>Ils spécifient les conditions d'échec de leur système — critère de démarcation absent partout ailleurs.</li>
+      <li>L'inversion d'un plongement ne fonctionne que si le texte y était : le sens ne sort pas du signal.</li>
+    </ul>
+  </div>
+</section>

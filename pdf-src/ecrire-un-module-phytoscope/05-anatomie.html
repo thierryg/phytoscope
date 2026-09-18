@@ -1,0 +1,93 @@
+<!-- ====================== ANATOMIE ====================== -->
+<section class="chapter pagebreak">
+  <h2 id="anatomie" data-toc="chapter">2. Anatomie d'un module</h2>
+
+  <p class="chapo">Un module est un dossier contenant un fichier
+  <code>module.py</code>, qui déclare une classe héritant de
+  <code>Module</code>. Tout le reste est facultatif.</p>
+
+  <h3 id="anatomie-manifeste" data-toc="sub">Le manifeste, seul élément obligatoire</h3>
+
+  <pre class="code"><code>from phytoscope.api import Capacite, Manifeste, Module
+
+class MonModule(Module):
+    MANIFESTE = Manifeste(
+        nom="mon-module",           # a-z, 0-9, tirets — l'identifiant
+        titre="Mon module",         # ce que l'utilisateur lit
+        version="1.0.0",
+        api="1.0",                  # la version d'interface visée
+        description="Ce que fait ce module.",
+        auteur="Votre nom",
+        licence="MIT",
+        capacites=(Capacite.ANALYSEUR,),
+    )</code></pre>
+
+  <div class="callout important">
+    <h4>Le manifeste est lu sans exécuter votre code</h4>
+    <p>Le logiciel analyse syntaxiquement <code>module.py</code> pour en
+    extraire le manifeste, <em>avant</em> de l'importer. C'est ce qui lui
+    permet de lister les modules présents, d'en désactiver un et de refuser
+    celui qui vise une interface inconnue — sans avoir à exécuter du code pour
+    savoir s'il faut l'exécuter.</p>
+    <p><strong>Conséquence pratique :</strong> écrivez des valeurs littérales.
+    Une valeur calculée — <code>version=lire_version()</code> — ne sera pas
+    lue, et le défaut s'appliquera. Seules les constantes de
+    <code>Capacite</code> font exception, parce qu'elles appartiennent au
+    contrat.</p>
+  </div>
+
+  <h3 id="anatomie-champs" data-toc="sub">Les champs du manifeste</h3>
+
+  <table class="tab">
+    <thead><tr><th>Champ</th><th>Rôle</th><th>Défaut</th></tr></thead>
+    <tbody>
+      <tr><td><code>nom</code></td><td>l'identifiant technique. Sert de clé
+        partout : réglages, dossier, journal.</td><td><em>obligatoire</em></td></tr>
+      <tr><td><code>titre</code></td><td>ce qui s'affiche</td><td>le nom</td></tr>
+      <tr><td><code>version</code></td><td>la vôtre, en sémantique</td><td>0.1.0</td></tr>
+      <tr><td><code>api</code></td><td>la version d'interface visée</td><td>la courante</td></tr>
+      <tr><td><code>capacites</code></td><td>ce que vous fournissez.
+        <strong>Déclaratif</strong> : ce qui n'est pas là n'est pas proposé,
+        même si la méthode existe.</td><td>aucune</td></tr>
+      <tr><td><code>depend_de</code></td><td>les modules à charger avant le
+        vôtre, par leur nom</td><td>aucun</td></tr>
+      <tr><td><code>exige</code></td><td>les bibliothèques Python nécessaires.
+        Vérifiées <em>avant</em> l'import.</td><td>aucune</td></tr>
+      <tr><td><code>description</code>, <code>auteur</code>,
+        <code>licence</code>, <code>site</code></td><td>affichés dans le
+        Diagnostic</td><td>vide</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="anatomie-cycle" data-toc="sub">Le cycle de vie</h3>
+
+  <figure class="figframe">
+    <img src="assets/svg/sdk-cycle.svg" alt="Le cycle de vie d'un module"/>
+    <figcaption>Fig. ## — Les quatre moments de la vie d'un module. Une faute,
+    à n'importe lequel, désactive le module et laisse le logiciel tourner.</figcaption>
+  </figure>
+
+  <ol>
+    <li><code>__init__(contexte)</code> — vous recevez le contexte.
+      <strong>Ne faites rien de long ici</strong> : c'est appelé au démarrage,
+      pour tous les modules, l'un après l'autre.</li>
+    <li><code>installer()</code> — une fois, après le chargement de tous les
+      modules. C'est ici qu'on s'abonne et qu'on prépare ses fichiers.</li>
+    <li>vos capacités sont appelées pendant la séance, à la demande.</li>
+    <li><code>arreter()</code> — une fois, à la fermeture. Fermez ce que vous
+      avez ouvert ; les abonnements sont retirés pour vous.</li>
+  </ol>
+
+  <h3 id="anatomie-reglages" data-toc="sub">Vos réglages</h3>
+
+  <pre class="code"><code>def reglages_par_defaut(self):
+    return {"seuil_uv": 8.0, "montrer_le_detail": True}
+
+# plus tard, dans une capacité :
+seuil = contexte.reglages.get("seuil_uv", 8.0)</code></pre>
+
+  <p>Le logiciel les conserve sous le nom de votre module et vous les rend au
+  démarrage suivant. <strong>N'écrivez jamais vous-même dans le fichier de
+  réglages du logiciel</strong> : il ne vous appartient pas, et sa forme peut
+  changer.</p>
+</section>

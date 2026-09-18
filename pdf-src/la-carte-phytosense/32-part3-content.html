@@ -1,0 +1,140 @@
+<section class="chapter">
+  <h2 id="c7-firmware" data-toc="chapter">Le microcontrôleur et la liaison USB</h2>
+
+  <p class="chapo">Le programme embarqué de cet appareil tient en quinze cents lignes, et c'est
+  volontaire. Tout ce qui peut être fait sur l'ordinateur y est fait : la carte se contente de
+  mesurer, dater, mettre en trame et pousser.</p>
+
+  <h3 id="c7-choix-mcu" data-toc="sub">Le choix du microcontrôleur</h3>
+
+  <p>Quatre candidats sérieux, jugés sur ce dont on a réellement besoin : deux cœurs pour séparer
+  l'acquisition de l'USB, une pile USB de qualité, un outillage libre, et une disponibilité qui ne
+  s'évanouira pas dans deux ans.</p>
+
+  <table class="compare tight">
+    <thead><tr><th>Candidat</th><th>Pour</th><th>Contre</th><th>Décision</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Arduino (AVR)</strong></td>
+        <td>Écosystème immense, familier de tous</td>
+        <td>Un seul cœur à 16 MHz, USB émulé ou déporté, pas de DMA digne de ce nom. Incapable de
+        tenir un flux audio isochrone.</td>
+        <td>Écarté sans hésitation.</td></tr>
+      <tr><td><strong>ESP32-S3</strong></td>
+        <td>Deux cœurs, sans fil intégré, très répandu</td>
+        <td>Le sans-fil est ici un défaut : il rayonne à quelques centimètres de l'étage
+        d'entrée. Consommation instable, ce qui module les alimentations.</td>
+        <td>Écarté — le bruit qu'il injecte annule le travail de la partie II.</td></tr>
+      <tr><td><strong>STM32H5</strong></td>
+        <td>Excellent, périphériques riches, USB de qualité</td>
+        <td>Outillage plus lourd, boîtiers plus fins à souder, prix double, disponibilité
+        capricieuse.</td>
+        <td>Solution de repli documentée en annexe.</td></tr>
+      <tr><td><strong>RP2350</strong></td>
+        <td>Deux cœurs Cortex-M33 à 150 MHz, douze machines d'états programmables, pile USB libre
+        et éprouvée, outillage entièrement ouvert, 1,60 € et disponible partout</td>
+        <td>Pas de convertisseur analogique-numérique de qualité — sans importance, le nôtre est
+        externe.</td>
+        <td><strong>Retenu.</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Choix de conception — la répartition des deux cœurs</div>
+    <p class="noindent">Le cœur 0 ne fait qu'une chose : servir le convertisseur, horodater,
+    remplir un tampon circulaire. Sa boucle est bornée, sans allocation, sans attente. Le cœur 1
+    gère l'USB, le dialogue de contrôle, les capteurs d'ambiance et la sortie MIDI. Aucune donnée
+    n'est partagée autrement que par le tampon circulaire, avec des indices atomiques. Cette
+    séparation stricte est la raison pour laquelle le flux ne présente aucun trou, même lorsque
+    l'ordinateur interroge la carte en pleine acquisition.</p>
+  </div>
+
+  <section class="planche-page"><figure class="planche" id="pl-num">
+    <img src="assets/svg/carte-num.svg" alt="Schéma de la partie numérique et de la liaison USB"/>
+    <figcaption><span class="fig-n">PLANCHE ##</span> — Partie numérique : microcontrôleur,
+    mémoire, prise USB-C avec protection, sortie MIDI et interface homme-machine. Feuille 5 sur 6,
+    révision B.</figcaption>
+  </figure></section>
+
+  <h3 id="c7-uac2" data-toc="sub">La classe audio 2.0, examinée de près</h3>
+
+  <p>La carte se déclare comme un périphérique composite : un périphérique audio d'entrée à quatre
+  voies en vingt-quatre bits, un port série virtuel, et une interface de mise à jour. Les trois
+  cohabitent sur le même câble, et aucun ne demande de pilote sur les systèmes courants depuis
+  Windows 10, macOS 10.6 et n'importe quel noyau Linux récent.</p>
+
+  <p>Trois objections méritent réponse, car elles viennent immanquablement.</p>
+
+  <p><strong>« La classe audio n'est pas faite pour de la mesure. »</strong> Elle est faite pour
+  transporter des échantillons régulièrement espacés avec une horloge maîtresse déclarée, ce qui
+  est exactement notre besoin. Elle transporte d'ailleurs déjà, chez les professionnels du son, des
+  signaux de mesure en vingt-quatre et trente-deux bits.</p>
+
+  <p><strong>« Le système d'exploitation va appliquer des traitements. »</strong> Il le peut, en
+  effet, si l'on passe par le mixeur du système — et c'est un piège réel. Le logiciel fourni ouvre
+  donc le périphérique en mode exclusif quand la plateforme le permet, vérifie la fréquence
+  d'échantillonnage réellement obtenue, et refuse de démarrer si elle ne correspond pas à ce que la
+  carte annonce. Un avertissement explicite s'affiche si un rééchantillonnage est détecté.</p>
+
+  <p><strong>« Et la précision de l'horloge, alors ? »</strong> C'est l'objection sérieuse. En
+  classe audio, l'hôte peut imposer son horloge. La carte se déclare donc en source d'horloge
+  asynchrone : elle impose la sienne, et l'hôte s'adapte. Le compteur d'échantillons transmis sur
+  le port série permet en outre de vérifier, à tout moment, qu'aucun échantillon n'a été perdu —
+  vérification que le logiciel effectue en continu et affiche dans le bandeau d'état.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Ce que la classe audio ne donne pas</div>
+    <p class="noindent">Elle ne transporte pas le numéro d'échantillon : le flux audio est anonyme.
+    C'est pourquoi le port série existe. Toutes les deux cents millisecondes, la carte y émet le
+    compteur courant et l'état complet — gain, gamme, offset, températures. Le logiciel recale
+    alors le flux sur ces balises. Si le port série n'est pas disponible — parce que pyserial n'est
+    pas installé, par exemple —, l'écoute fonctionne toujours, mais l'horodatage retombe au niveau
+    de n'importe quelle carte son. Le logiciel le signale sans ambiguïté dans le bandeau.</p>
+  </div>
+
+  <h3 id="c7-protocole" data-toc="sub">Le dialogue de contrôle, lisible à la main</h3>
+
+  <p>Le port série virtuel accepte des commandes en texte et répond en JSON sur une ligne. Ce choix
+  est délibérément archaïque : n'importe quel terminal permet d'interroger la carte, de la régler
+  et de la dépanner, sans le logiciel, sans bibliothèque, sans documentation. Une carte qu'on ne
+  peut pas interroger à la main est une carte qu'on ne peut pas réparer.</p>
+
+  <div class="term">
+    <div class="t-h">Session de dialogue complète</div>
+<pre><span class="g">$ </span><span class="c">?</span>
+<span class="k">+</span>{"model":"PhytoSense One","serial":"PS1-0042","firmware":"1.0.0",
+  "channels":4,"sample_rate":250.0,"frontend":"FE-Z","frontend_serial":"FEZ-0117",
+  "gains":[1,2,5,10,20,50,100,200],"volts_per_unit":1.0,
+  "calibration_date":"2026-08-21"}
+
+<span class="g">$ </span><span class="c">gain 100</span>
+<span class="k">+</span>{"gain":100,"auto":false,"message":"gain forcé"}
+
+<span class="g">$ </span><span class="c">clock</span>
+<span class="k">+</span>{"n":1842750,"t_s":7371.0,"tcxo_ppm":-0.4,"lost":0}
+
+<span class="g">$ </span><span class="c">mark Ouverture des volets</span>
+<span class="k">+</span>{"n":1842812,"label":"Ouverture des volets"}
+
+<span class="g">$ </span><span class="c">gain auto</span>
+<span class="k">+</span>{"gain":20,"auto":true,"message":"boucle d'auto-échelle rendue"}</pre>
+  </div>
+
+  <h3 id="c7-midi" data-toc="sub">La sortie MIDI directe</h3>
+
+  <p>Une sortie MIDI sur prise jack de trois millimètres et demi, conforme à la norme de 2018,
+  permet d'attaquer directement un synthétiseur matériel, un expandeur ou un module de scène,
+  sans passer par l'interface audio de l'ordinateur. Le micrologiciel embarque pour cela une
+  version réduite du moteur de correspondance — une gamme, un seuil, une densité — réglable par le
+  bouton unique et mémorisée en mémoire flash.</p>
+
+  <div class="callout info">
+    <div class="callout-title">◆ Ce que cette sortie ne permet pas</div>
+    <p class="noindent"><strong>Elle ne rend pas la carte indépendante.</strong> L'ordinateur reste
+    requis : c'est lui qui règle la carte, qui reçoit le flux de mesure, qui enregistre et qui
+    analyse. La sortie MIDI raccourcit seulement le chemin du son — utile quand on joue sur un
+    instrument matériel et qu'on ne veut pas ajouter la latence d'une chaîne audio logicielle, ou
+    quand le portable est posé plus loin et sert uniquement de magnétoscope. Une version réellement
+    autonome supposerait un tout autre appareil, et la partie V explique pourquoi ce n'est pas
+    celui-ci.</p>
+  </div>
+</section>

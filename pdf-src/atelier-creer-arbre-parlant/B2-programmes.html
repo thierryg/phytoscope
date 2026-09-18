@@ -1,0 +1,678 @@
+<section class="pagebreak">
+<h2 id="prog" data-toc="chapter">Les programmes</h2>
+
+<p class="lettrine noindent">Les trois premiers listings sont extraits des
+dépôts téléchargés dans <span class="phon">sources/code/</span> : ils ne sont
+pas recopiés à la main dans ce document mais lus dans les archives au moment où
+le PDF est fabriqué. Ils ne peuvent donc pas diverger du code réel. Les listings
+suivants sont écrits pour cette annexe et placés sous CC0 : reprenez-les sans
+condition.</p>
+
+<h3 id="prog-1" data-toc="sub">Firmware biodata — l'échantillonnage et la détection</h3>
+
+<p>Voici le cœur du MIDI Sprout et de tous ses dérivés. Le premier bloc est la
+routine d'interruption : elle ne fait rien d'autre que noter la durée écoulée
+depuis le front précédent. C'est tout ce que le montage de la planche 1 produit
+comme donnée brute — une suite de périodes.</p>
+
+<div class="code listing"><div class="code-h">Listing 1 — routine d&#x27;interruption et détection de changement · Arduino / C++</div><pre>//interrupt timing sample array
+void sample()
+{
+  if(index &lt; samplesize) {
+    samples[index] = micros() - microseconds;
+    microseconds = samples[index] + microseconds; //rebuild micros() value w/o recalling
+    //micros() is very slow
+    //try a higher precision counter
+    //samples[index] = ((timer0_overflow_count &lt;&lt; 8) + TCNT0) - microseconds;
+    index += 1;
+  }
+}
+
+
+
+void analyzeSample()
+{
+  //eating up memory, one long at a time!
+  unsigned long averg = 0;
+  unsigned long maxim = 0;
+  unsigned long minim = 100000;
+  float stdevi = 0;
+  unsigned long delta = 0;
+  byte change = 0;
+
+  if (index == samplesize) { //array is full
+    unsigned long sampanalysis[analysize];
+    for (byte i=0; i&lt;analysize; i++){ 
+      //skip first element in the array
+      sampanalysis[i] = samples[i+1];  //load analysis table (due to volitle)
+      //manual calculation
+      if(sampanalysis[i] &gt; maxim) { maxim = sampanalysis[i]; }
+      if(sampanalysis[i] &lt; minim) { minim = sampanalysis[i]; }
+      averg += sampanalysis[i];
+      stdevi += sampanalysis[i] * sampanalysis[i];  //prep stdevi
+    }
+
+    //manual calculation
+    averg = averg/analysize;
+    stdevi = sqrt(stdevi / analysize - averg * averg); //calculate stdevu
+    if (stdevi &lt; 1) { stdevi = 1.0; } //min stdevi of 1
+    delta = maxim - minim; 
+    
+    //**********perform change detection 
+    if (delta &gt; (stdevi * threshold)){
+      change = 1;
+    }
+    //*********
+    
+    if(change){// set note and control vector
+       int dur = 150+(map(delta%127,1,127,100,2500)); //length of note
+       int ramp = 3 + (dur%100) ; //control slide rate, min 25 (or 3 ;)
+       int notechannel = random(1,5); //gather a random channel for QY8 mode
+       
+       //set scaling, root key, note
+       int setnote = map(averg%127,1,127,noteMin,noteMax);  //derive note, min and max note
+       setnote = scaleNote(setnote, scale[currScale], root);  //scale the note
+       // setnote = setnote + root; // (apply root?)
+       if(QY8) { setNote(setnote, 100, dur, notechannel); } //set for QY8 mode
+       else { setNote(setnote, 100, dur, channel); }
+  
+       //derive control parameters and set    
+       setControl(controlNumber, controlMessage.value, delta%127, ramp); //set the ramp rate for the control
+     }
+     //reset array for next sample
+    index = 0;
+  }
+}</pre></div><p class="small" style="margin:.3em 0 1.2em">dépôt <span class="phon">electricityforprogress/BiodataSonificationBreadboardKit</span>, licence MIT — archive <span class="phon">sources/code/</span>, extrait à la construction du PDF.</p>
+
+<p>Le second bloc mérite d'être lu attentivement, parce qu'il contient le
+véritable acte d'interprétation. Il calcule l'écart-type des dix dernières
+périodes et déclare un « événement » lorsque l'étendue dépasse cet écart-type
+multiplié par un seuil réglable. La note produite dérive de la <i>moyenne</i>
+des périodes, sa durée de l'<i>étendue</i>.</p>
+
+<div class="callout sci">
+  <div class="callout-title">Où se cache la décision</div>
+  <p class="noindent">Le seuil, réglé par un potentiomètre entre 1,61 et 3,71,
+  détermine à lui seul la densité de notes. Tourné à gauche, la plante « joue »
+  sans arrêt ; tourné à droite, elle se tait. Aucune de ces deux positions n'est
+  plus vraie que l'autre : <strong>l'expressivité perçue est un réglage
+  humain</strong>, pas une propriété du végétal. C'est la ligne la plus
+  importante de tout ce firmware, et c'est celle dont on ne parle jamais dans les
+  démonstrations.</p>
+</div>
+
+<div class="code listing"><div class="code-h">Listing 2 — quantification sur une gamme musicale · Arduino / C++</div><pre>int scaleSearch(int note, int scale[], int scalesize) {
+ for(byte i=1;i&lt;scalesize;i++) {
+  if(note == scale[i]) { return note; }
+  else { if(note &lt; scale[i]) { return scale[i]; } } //highest scale value less than or equal to note
+  //otherwise continue search
+ }
+ //didn&#x27;t find note and didn&#x27;t pass note value, uh oh!
+ return 6;//give arbitrary value rather than fail
+}
+
+
+int scaleNote(int note, int scale[], int root) {
+  //input note mod 12 for scaling, note/12 octave
+  //search array for nearest note, return scaled*octave
+  int scaled = note%12;
+  int octave = note/12;
+  int scalesize = (scale[0]);
+  //search entire array and return closest scaled note
+  scaled = scaleSearch(scaled, scale, scalesize);
+  scaled = (scaled + (12 * octave)) + root; //apply octave and root
+  return scaled;
+}</pre></div><p class="small" style="margin:.3em 0 1.2em">dépôt <span class="phon">electricityforprogress/BiodataSonificationBreadboardKit</span>, licence MIT — archive <span class="phon">sources/code/</span>, extrait à la construction du PDF.</p>
+
+<p>La quantification achève le travail : la valeur mesurée est ramenée de force
+sur les degrés d'une gamme — chromatique, majeure, mineure, « indienne ». Une
+plante ne joue pas juste ; on la fait jouer juste. Le résultat est agréable
+précisément dans la mesure où l'information a été écrasée.</p>
+
+<div class="code listing"><div class="code-h">Listing 3 — génération des messages MIDI (portage ESP32-S3) · Arduino / C++</div><pre>void setNote(int value, int velocity, long duration, int notechannel)
+{
+  //find available note in array (velocity = 0);
+  for(int i=0;i&lt;polyphony;i++){
+    if(!noteArray[i].velocity){
+      //if velocity is 0, replace note in array
+      noteArray[i].type = 0;
+      noteArray[i].value = value;
+      noteArray[i].velocity = velocity;
+      noteArray[i].duration = currentMillis + duration;
+      noteArray[i].channel = notechannel;
+      
+//*************
+      if(serialMIDI) midiSerial(144, channel, value, velocity); //play note
+      if(usbmidi) usbMIDI.sendNoteOn(value,velocity,channel);
+      if(wifiMIDI&amp;&amp;isConnected) MIDI.sendNoteOn(value,velocity,channel);
+      if (bleMIDI) {
+              if (deviceConnected) {
+              // note On
+                midiPacket[2] = (144 | ((notechannel-1) &amp; 0x0F)); //note On with channel
+               // midiPacket[2] = 0x90; // note down, channel 0
+                midiPacket[3] = value; //note
+                midiPacket[4] = velocity;  // velocity
+                pCharacteristic-&gt;setValue(midiPacket, 5); // packet, length in bytes
+                pCharacteristic-&gt;notify();
+              }
+      }
+//        if (debugSerial) { 
+//          Serial.print(&quot;Note &quot;); Serial.print(i); Serial.print(&quot; On: &quot;); 
+//          Serial.print(noteArray[i].value); Serial.print(&quot; Velocity: &quot;); 
+//          Serial.print(velocity);
+//          Serial.println();
+//        }
+
+        //setLED
+        ledFaders[i].Set(ledFaders[i].maxBright,350);
+      
+      break; // exit for loop and continue once new note is placed
+    }
+  }
+}
+
+void setControl(int type, int value, int velocity, long duration)
+{
+  controlMessage.type = type;
+  controlMessage.value = value;
+  controlMessage.velocity = velocity; //MIDI CC value, just reusing functions ;)
+  controlMessage.period = duration;
+  controlMessage.duration = currentMillis + duration; //schedule for update cycle
+//  if(debugSerial) { 
+//    Serial.print(&quot;setControl CC&quot;); Serial.print(controlNumber); Serial.print(&quot; value &quot;); Serial.println(velocity); 
+//  }
+
+}
+
+
+void checkControl()
+{
+  //need to make this a smooth slide transition, using high precision 
+  //distance is current minus goal
+  signed int distance =  controlMessage.velocity - controlMessage.value; 
+  //if still sliding
+  if(distance != 0) {
+    //check timing
+    if(currentMillis&gt;controlMessage.duration) { //and duration expired
+        controlMessage.duration = currentMillis + controlMessage.period; //extend duration
+        //update value
+       if(distance &gt; 0) { controlMessage.value += 1; } else { controlMessage.value -=1; }
+       
+       //send MIDI control message after ramp duration expires, on each increment
+//*************
+      //determine serial, wifi, or ble
+       if(serialMIDI) midiSerial(176, channel, controlMessage.type, controlMessage.value); 
+       if(usbmidi) usbMIDI.sendControlChange(controlNumber,controlMessage.value,channel);
+       if(wifiMIDI&amp;&amp;isConnected) { MIDI.sendControlChange(controlNumber,controlMessage.value,channel); } //AppleMIDI.sendControlChange?
+       if(deviceConnected) {   //bluetooth CC
+                // note On
+          midiPacket[2] = (176 | ((channel-1) &amp; 0x0F)); //CC with base channel ** 
+         // midiPacket[2] = 0x90; // note down, channel 0
+          midiPacket[3] = controlNumber; //cc 80
+          midiPacket[4] = controlMessage.value;
+          pCharacteristic-&gt;setValue(midiPacket, 5); // packet, length in bytes
+          pCharacteristic-&gt;notify();
+        } 
+    }
+  }
+}
+
+void checkNote()
+{
+  for (int i = 0;i&lt;polyphony;i++) {
+    if(noteArray[i].velocity) {
+      if (noteArray[i].duration &lt;= currentMillis) {
+        //send noteOff for all notes with expired duration    
+        if(serialMIDI) midiSerial(144, channel, noteArray[i].value, 0); 
+        if(usbmidi) usbMIDI.sendNoteOn(noteArray[i].value, 0, channel);
+        if(wifiMIDI &amp;&amp; isConnected) MIDI.sendNoteOff(noteArray[i].value, 0, channel);
+        noteArray[i].velocity = 0;
+        ledFaders[i].Set(0,800);//turn off leds fade out
+//        if (debugSerial) { 
+//           Serial.print(&quot;Note &quot;); Serial.print(i); Serial.print(&quot; Off: &quot;); 
+//          Serial.println(noteArray[i].value);
+//        }
+       if (bleMIDI) {
+        if (deviceConnected) {
+        // note On
+          midiPacket[2] = (144 | ((noteArray[i].channel-1) &amp; 0x0F)); //note On with channel
+         // midiPacket[2] = 0x90; // note down, channel 0
+          midiPacket[3] = noteArray[i].value; //note
+          midiPacket[4] = noteArray[i].velocity;  // velocity
+          pCharacteristic-&gt;setValue(midiPacket, 5); // packet, length in bytes
+          pCharacteristic-&gt;notify();
+        }
+       }
+      }
+    }
+  }
+
+}
+
+
+//Control different MIDI output methods - message type, channel, note/number, velcoity/value</pre></div><p class="small" style="margin:.3em 0 1.2em">dépôt <span class="phon">electricityforprogress/BiodataFeather</span>, licence MIT — archive <span class="phon">sources/code/</span>.</p>
+
+<h3 id="prog-2" data-toc="sub">Le nœud environnemental sous ESPHome</h3>
+
+<p>ESPHome décrit le nœud en YAML et fabrique le firmware. L'intérêt, pour un
+atelier, est qu'il n'y a pas de code à déboguer : tout ce qui suit est de la
+configuration, et la veille profonde est gérée par la plateforme.</p>
+
+<div class="code listing"><div class="code-h">Listing 4 — configuration complète d&#x27;un nœud · YAML</div><pre># noeud-arbre.yaml — ESPHome (licence du projet : MIT/GPLv3 composite)
+# Relevé toutes les 15 min puis veille profonde. Adapter substitutions/secrets.
+substitutions:
+  nom: arbre-01
+  intervalle: 15min
+
+esphome:
+  name: ${nom}
+  on_boot:
+    priority: -100
+    then:
+      - delay: 20s            # laisse le temps aux capteurs et à la publication
+      - deep_sleep.enter: veille
+
+esp32:
+  board: esp32-s3-devkitc-1
+  framework: { type: esp-idf }
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_pass
+  fast_connect: true          # évite le balayage complet : ~1 s gagnée par cycle
+
+mqtt:
+  broker: !secret mqtt_host
+  topic_prefix: arbres/${nom}
+
+deep_sleep:
+  id: veille
+  run_duration: 25s
+  sleep_duration: ${intervalle}
+
+i2c:
+  sda: GPIO8
+  scl: GPIO9
+  frequency: 100kHz           # 400 kHz devient instable au-delà d&#x27;un metre de cable
+
+one_wire:
+  - platform: gpio
+    pin: GPIO4
+
+sensor:
+  - platform: bme280_i2c
+    address: 0x76
+    temperature:  { name: &quot;T air&quot;,      accuracy_decimals: 2 }
+    humidity:     { name: &quot;HR air&quot;,     accuracy_decimals: 1 }
+    pressure:     { name: &quot;Pression&quot;,   accuracy_decimals: 1 }
+    update_interval: 10s
+
+  - platform: bh1750
+    name: &quot;Eclairement&quot;
+    address: 0x23
+    update_interval: 10s
+
+  - platform: scd4x
+    address: 0x62
+    co2: { name: &quot;CO2&quot; }
+    update_interval: 10s
+
+  - platform: dallas_temp          # adresses relevees au premier demarrage
+    address: 0x1c0000031edd2a28
+    name: &quot;T sol -10 cm&quot;
+  - platform: dallas_temp
+    address: 0x3b00000320ab5c28
+    name: &quot;T tronc nord&quot;
+
+  - platform: adc                  # sonde capacitive d&#x27;humidite du sol
+    pin: GPIO5
+    name: &quot;Humidite sol (brut)&quot;
+    attenuation: 12db
+    update_interval: 10s
+    filters:
+      - median: { window_size: 9, send_every: 9 }
+      - calibrate_linear:          # A ETALONNER : sec puis immerge, voir listing 5
+          - 2.90 -&gt; 0.0
+          - 1.20 -&gt; 100.0
+      - clamp: { min_value: 0, max_value: 100 }
+    unit_of_measurement: &quot;%&quot;
+
+  - platform: pulse_counter        # pluviometre a augets, 0,2 mm par bascule
+    pin:
+      number: GPIO6
+      mode: { input: true, pullup: true }
+    name: &quot;Pluie&quot;
+    internal_filter: 10ms          # en complement de l&#x27;anti-rebond materiel
+    update_interval: ${intervalle}
+    unit_of_measurement: &quot;mm&quot;
+    filters:
+      - multiply: 0.2
+</pre></div><p class="small" style="margin:.3em 0 1.2em">écrit pour cette annexe · CC0. ESPHome : dépôt <span class="phon">esphome/esphome</span>, licence composite MIT (Python) et GPLv3 (C++).</p>
+
+<h3 id="prog-3" data-toc="sub">La voie électrophysiologique</h3>
+
+<p>Ce listing met en œuvre le point développé à la planche 2 : le rejet du 50 Hz se joue d'abord dans le choix de la cadence d'intégration, pas dans un filtre. Noter aussi que chaque point publié porte un indicateur de qualité — une série sans indicateur de qualité n'est pas défendable.</p><div class="code listing"><div class="code-h">Listing 5 — acquisition ADS1115 avec réjection du secteur · Python</div><pre>#!/usr/bin/env python3
+&quot;&quot;&quot;Acquisition electrophysiologique : ADS1115 -&gt; rejet du 50 Hz -&gt; MQTT.
+
+Le point cle n&#x27;est pas le filtrage mais la CADENCE : en integrant sur une duree
+multiple entiere de 20 ms, la composante a 50 Hz s&#x27;annule par construction.
+L&#x27;ADS1115 a 8 SPS integre sur 125 ms = 6,25 periodes ; a 16 SPS, 3,125.
+On prend donc 8 SPS et on moyenne un nombre entier de fenetres.
+
+Dependances : adafruit-circuitpython-ads1x15, paho-mqtt, numpy
+Licence : CC0 - code d&#x27;exemple, a reprendre sans condition.
+&quot;&quot;&quot;
+import json
+import time
+
+import board
+import busio
+import numpy as np
+import paho.mqtt.client as mqtt
+from adafruit_ads1x15.ads1115 import ADS1115, Mode
+from adafruit_ads1x15.analog_in import AnalogIn
+
+PERIODE_SECTEUR = 1 / 50          # 20 ms
+N_FENETRES = 16                   # 16 x 125 ms = 2 s par point publie
+SEUIL_SATURATION = 0.95           # fraction de pleine echelle
+
+i2c = busio.I2C(board.SCL, board.SDA)
+adc = ADS1115(i2c, address=0x48)
+adc.mode = Mode.CONTINUOUS
+adc.data_rate = 8                 # 8 SPS -&gt; integration sur 125 ms
+adc.gain = 4                      # +/- 1.024 V pleine echelle
+
+voie = AnalogIn(adc, 0)           # AIN0 par rapport a la masse du montage
+
+
+def mesure_bloc(n=N_FENETRES):
+    &quot;&quot;&quot;Renvoie (moyenne_V, ecart_type_V, n_satures).&quot;&quot;&quot;
+    ech, satures = [], 0
+    for _ in range(n):
+        v = voie.voltage
+        if abs(voie.value) &gt; SEUIL_SATURATION * 32767:
+            satures += 1
+        ech.append(v)
+        time.sleep(1 / adc.data_rate)
+    a = np.asarray(ech)
+    return float(a.mean()), float(a.std()), satures
+
+
+def qualite(ecart_type, satures):
+    &quot;&quot;&quot;Un point sans indicateur de qualite est un point indefendable.&quot;&quot;&quot;
+    if satures:
+        return &quot;sature&quot;
+    if ecart_type &gt; 5e-4:         # 0,5 mV d&#x27;agitation : contact ou vent
+        return &quot;bruite&quot;
+    return &quot;ok&quot;
+
+
+def main():
+    cli = mqtt.Client()
+    cli.connect(&quot;localhost&quot;, 1883, 60)
+    cli.loop_start()
+    while True:
+        moy, sd, sat = mesure_bloc()
+        charge = {
+            &quot;t&quot;: time.time(),
+            &quot;v_uV&quot;: round(moy * 1e6, 1),      # microvolts : l&#x27;unite du domaine
+            &quot;sd_uV&quot;: round(sd * 1e6, 1),
+            &quot;qualite&quot;: qualite(sd, sat),
+        }
+        cli.publish(&quot;arbres/arbre-01/electro&quot;, json.dumps(charge), qos=1)
+        time.sleep(1.0)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</pre></div><p class="small" style="margin:.3em 0 1.2em">écrit pour cette annexe · CC0.</p>
+
+<div class="code listing"><div class="code-h">Listing 6 — étalonnage en deux points d&#x27;une sonde de sol · Python</div><pre>#!/usr/bin/env python3
+&quot;&quot;&quot;Etalonnage en deux points d&#x27;une sonde capacitive d&#x27;humidite du sol.
+
+Ce n&#x27;est pas un etalonnage metrologique : la sonde capacitive repond a la
+permittivite du milieu, qui depend de la texture du sol autant que de l&#x27;eau.
+Deux points donnent un INDICE 0-100 reproductible sur UN sol donne, rien de
+plus. Toute comparaison entre deux sols est illegitime.
+
+Licence : CC0.
+&quot;&quot;&quot;
+import json
+import statistics
+import time
+
+import board
+import busio
+from adafruit_ads1x15.ads1115 import ADS1115
+from adafruit_ads1x15.analog_in import AnalogIn
+
+i2c = busio.I2C(board.SCL, board.SDA)
+voie = AnalogIn(ADS1115(i2c), 0)
+
+
+def point(libelle, n=60):
+    input(f&quot;\n&gt;&gt;&gt; {libelle}, puis Entree…&quot;)
+    print(&quot;    acquisition 60 s&quot;, end=&quot;&quot;, flush=True)
+    ech = []
+    for i in range(n):
+        ech.append(voie.voltage)
+        time.sleep(1)
+        if i % 10 == 0:
+            print(&quot;.&quot;, end=&quot;&quot;, flush=True)
+    moy, sd = statistics.mean(ech), statistics.pstdev(ech)
+    print(f&quot;\n    {moy:.4f} V  (ecart-type {sd:.4f} V)&quot;)
+    if sd &gt; 0.01:
+        print(&quot;    ! dispersion elevee : contact instable ou sonde mal enfouie&quot;)
+    return moy, sd
+
+
+sec, sd_sec = point(&quot;Sonde a l&#x27;air libre, SECHE et propre&quot;)
+eau, sd_eau = point(&quot;Sonde immergee dans l&#x27;eau jusqu&#x27;au trait de garde&quot;)
+
+if sec &lt;= eau:
+    raise SystemExit(&quot;Incoherent : la tension doit BAISSER quand l&#x27;humidite monte.&quot;)
+
+etalon = {
+    &quot;date&quot;: time.strftime(&quot;%Y-%m-%dT%H:%M:%S&quot;),
+    &quot;v_sec&quot;: round(sec, 4), &quot;v_eau&quot;: round(eau, 4),
+    &quot;sd_sec&quot;: round(sd_sec, 4), &quot;sd_eau&quot;: round(sd_eau, 4),
+    &quot;formule&quot;: &quot;indice = 100 * (v_sec - v) / (v_sec - v_eau)&quot;,
+    &quot;portee&quot;: &quot;valable pour CE sol et CETTE sonde uniquement&quot;,
+}
+print(json.dumps(etalon, indent=2, ensure_ascii=False))
+open(&quot;etalonnage-sol.json&quot;, &quot;w&quot;).write(json.dumps(etalon, indent=2, ensure_ascii=False))
+</pre></div><p class="small" style="margin:.3em 0 1.2em">écrit pour cette annexe · CC0.</p>
+
+<h3 id="prog-4" data-toc="sub">La réduction du flux de sève</h3>
+
+<div class="code listing"><div class="code-h">Listing 7 — équation de Granier appliquée à une série · Python</div><pre>#!/usr/bin/env python3
+&quot;&quot;&quot;Reduction Granier : de l&#x27;ecart de temperature a la densite de flux de seve.
+
+u = 118,99e-6 * K^1,231   avec  K = (dT_max - dT) / dT      [m3 m-2 s-1]
+Granier A. (1985), Ann. For. Sci. 42(2), DOI 10.1051/forest:19850204
+
+dT_max est estime sur une fenetre glissante de plusieurs jours, en prenant le
+maximum nocturne. C&#x27;est l&#x27;hypothese faible de la methode : par nuit chaude et
+seche la transpiration nocturne n&#x27;est pas nulle et dT_max est sous-estime.
+
+Licence : CC0.
+&quot;&quot;&quot;
+import numpy as np
+import pandas as pd
+
+A, B = 118.99e-6, 1.231           # coefficients de Granier, unites SI
+
+
+def dt_max_glissant(dt, index, jours=7, debut_nuit=0, fin_nuit=5):
+    &quot;&quot;&quot;Maximum nocturne sur une fenetre glissante, reindexe sur toute la serie.&quot;&quot;&quot;
+    s = pd.Series(dt, index=index)
+    nuit = s.between_time(f&quot;{debut_nuit:02d}:00&quot;, f&quot;{fin_nuit:02d}:00&quot;)
+    quotidien = nuit.resample(&quot;1D&quot;).max()
+    lisse = quotidien.rolling(jours, center=True, min_periods=1).max()
+    return lisse.reindex(s.index, method=&quot;nearest&quot;)
+
+
+def densite_de_flux(dt, index, **kw):
+    &quot;&quot;&quot;Renvoie u en m3 m-2 s-1, et NaN la ou la mesure n&#x27;a pas de sens.&quot;&quot;&quot;
+    dtm = dt_max_glissant(dt, index, **kw)
+    dt = np.asarray(dt, dtype=float)
+    dtm = np.asarray(dtm, dtype=float)
+
+    with np.errstate(divide=&quot;ignore&quot;, invalid=&quot;ignore&quot;):
+        k = (dtm - dt) / dt
+    k = np.where(dt &lt;= 0.05, np.nan, k)      # chauffage coupe ou sonde arrachee
+    k = np.where(k &lt; 0, 0.0, k)              # dT &gt; dT_max : bruit, pas flux inverse
+    return A * np.power(k, B)
+
+
+def flux_sur_section(u, aire_aubier_m2):
+    &quot;&quot;&quot;Debit en litres par heure, une fois l&#x27;aire d&#x27;aubier connue.
+
+    ATTENTION : cette conversion suppose le profil radial uniforme, ce qui est
+    faux. Sans recalibration par espece, ne publier que u, jamais des litres.
+    &quot;&quot;&quot;
+    return u * aire_aubier_m2 * 3600 * 1000
+</pre></div><p class="small" style="margin:.3em 0 1.2em">écrit pour cette annexe · CC0. Coefficients d’après Granier (1985), <i>Ann. For. Sci.</i> 42(2), DOI 10.1051/forest:19850204.</p>
+
+<h3 id="prog-5" data-toc="sub">Sonification : le mapping doit être déclaré</h3>
+
+<div class="code listing"><div class="code-h">Listing 8 — pont MQTT vers OSC, table de correspondance explicite · Python</div><pre>#!/usr/bin/env python3
+&quot;&quot;&quot;Pont sonification : MQTT -&gt; OSC -&gt; SuperCollider.
+
+La regle de conception tient en une phrase : le mapping doit etre DECLARE,
+REPRODUCTIBLE et INVERSIBLE. Si l&#x27;on ne peut pas retrouver la donnee a partir
+du son, ce n&#x27;est pas de la sonification, c&#x27;est de l&#x27;illustration sonore.
+Cf. Hermann T. (2008), Taxonomy and definitions for sonification and auditory
+display, ICAD 2008.
+
+Dependances : paho-mqtt, python-osc (The Unlicense)
+Licence : CC0.
+&quot;&quot;&quot;
+import json
+
+import paho.mqtt.client as mqtt
+from pythonosc.udp_client import SimpleUDPClient
+
+osc = SimpleUDPClient(&quot;127.0.0.1&quot;, 57120)      # port d&#x27;ecoute de sclang
+
+# --- Le mapping, en un seul endroit, explicite et documente ------------------
+# Chaque entree : (topic, champ, domaine_donnee, domaine_sonore, adresse OSC)
+MAPPING = [
+    (&quot;arbres/+/electro&quot;, &quot;v_uV&quot;,    (-2000.0, 2000.0), (48, 84),   &quot;/arbre/hauteur&quot;),
+    (&quot;arbres/+/seve&quot;,    &quot;u&quot;,       (0.0, 2.5e-4),     (0.0, 1.0), &quot;/arbre/densite&quot;),
+    (&quot;arbres/+/env&quot;,     &quot;hr_sol&quot;,  (0.0, 100.0),      (0.2, 1.0), &quot;/arbre/timbre&quot;),
+    (&quot;arbres/+/env&quot;,     &quot;lux&quot;,     (0.0, 100000.0),   (0.0, 1.0), &quot;/arbre/brillance&quot;),
+]
+
+
+def echelle(x, source, cible, borner=True):
+    (a, b), (c, d) = source, cible
+    if b == a:
+        return c
+    y = c + (x - a) * (d - c) / (b - a)
+    return min(max(y, min(c, d)), max(c, d)) if borner else y
+
+
+def sur_message(_client, _userdata, msg):
+    charge = json.loads(msg.payload)
+    if charge.get(&quot;qualite&quot;) == &quot;sature&quot;:
+        return                       # on ne sonifie pas un artefact connu
+    for motif, champ, dom, son, adresse in MAPPING:
+        if champ not in charge or not mqtt.topic_matches_sub(motif, msg.topic):
+            continue
+        osc.send_message(adresse, float(echelle(charge[champ], dom, son)))
+
+
+cli = mqtt.Client()
+cli.on_message = sur_message
+cli.connect(&quot;localhost&quot;, 1883, 60)
+for motif, *_ in MAPPING:
+    cli.subscribe(motif)
+cli.loop_forever()
+</pre></div><p class="small" style="margin:.3em 0 1.2em">écrit pour cette annexe · CC0. python-osc : dépôt <span class="phon">attwad/python-osc</span>, The Unlicense.</p>
+
+<div class="code listing"><div class="code-h">Listing 9 — synthétiseur SuperCollider recevant l&#x27;OSC · SuperCollider</div><pre>// arbre.scd — SuperCollider (GPLv3). Recoit l&#x27;OSC du listing 5.
+// Une voix continue dont la hauteur suit le potentiel et le timbre l&#x27;humidite.
+// Le silence est signifiant : pas de donnee valide -&gt; pas de son.
+
+s.waitForBoot({
+    SynthDef(\arbre, { |freq = 110, densite = 0.3, timbre = 0.5,
+                        brillance = 0.4, amp = 0.15, porte = 1|
+        var exc, corps, env;
+        // Excitation : bruit filtre, densite pilotee par le flux de seve
+        exc = Dust.ar(densite.linexp(0, 1, 1, 400)) * 0.6
+              + PinkNoise.ar(0.08 * densite);
+        // Corps resonant : le tronc comme filtre en peigne
+        corps = Klank.ar(
+            `[ Array.geom(6, freq, 1.51),
+               Array.fill(6, { |i| 1 / (i + 1) }),
+               Array.fill(6, { |i| timbre.linlin(0, 1, 0.6, 4.0) / (i + 1) }) ],
+            exc);
+        corps = LPF.ar(corps, brillance.linexp(0, 1, 400, 9000));
+        env = EnvGen.kr(Env.asr(4, 1, 6), porte, doneAction: 2);
+        Out.ar(0, Pan2.ar(corps * env * amp, 0));
+    }).add;
+
+    s.sync;
+    ~voix = Synth(\arbre);
+
+    // Lissage : les donnees arrivent toutes les 2 s, l&#x27;oreille veut du continu.
+    OSCdef(\hauteur, { |m|
+        ~voix.set(\freq, m[1].midicps);
+    }, &quot;/arbre/hauteur&quot;);
+
+    OSCdef(\densite,   { |m| ~voix.set(\densite,   m[1]) }, &quot;/arbre/densite&quot;);
+    OSCdef(\timbre,    { |m| ~voix.set(\timbre,    m[1]) }, &quot;/arbre/timbre&quot;);
+    OSCdef(\brillance, { |m| ~voix.set(\brillance, m[1]) }, &quot;/arbre/brillance&quot;);
+});
+</pre></div><p class="small" style="margin:.3em 0 1.2em">écrit pour cette annexe · CC0. SuperCollider : dépôt <span class="phon">supercollider/supercollider</span>, GPLv3.</p>
+
+<h3 id="prog-6" data-toc="sub">Parole : modèle de langue local et synthèse vocale</h3>
+
+<p>Le prompt fait ici office de garde-fou : il interdit au modèle d'attribuer une intention à l'arbre et l'oblige à signaler les données manquantes. C'est le seul endroit de toute la chaîne où l'on peut empêcher le dispositif de mentir avec aplomb.</p><div class="code listing"><div class="code-h">Listing 10 — de la base de données à la voix · Bash</div><pre>#!/usr/bin/env bash
+# parole.sh — de la mesure au son : LLM local (Ollama) puis synthese (Piper).
+# Piper 1 : depot OHF-Voice/piper1-gpl, code GPLv3, poids MIT, voix francaises
+# issues du corpus SIWIS (CC-BY 4.0). Ollama : MIT. Qwen3 : Apache-2.0.
+set -euo pipefail
+
+VOIX=&quot;${VOIX:-$HOME/voix/fr_FR-siwis-medium.onnx}&quot;   # + le .onnx.json a cote
+MODELE=&quot;${MODELE:-qwen3:1.7b}&quot;                       # 1,28 Go en Q4_K_M
+
+# 1. Les mesures des dernieres 24 h, deja reduites, en JSON compact.
+mesures=$(curl -sS --get &#x27;http://localhost:8086/api/v2/query&#x27;   --data-urlencode &quot;org=arbres&quot;   --data-urlencode &#x27;q=from(bucket:&quot;arbre&quot;) |&gt; range(start:-24h)
+                     |&gt; aggregateWindow(every:1h, fn:mean)&#x27; )
+
+# 2. On CONTRAINT le modele : il commente des chiffres, il ne les invente pas.
+#    Le prompt est aussi un garde-fou deontologique : pas de premiere personne
+#    attribuee a l&#x27;arbre sans que le dispositif soit explicite.
+lu=$(ollama run &quot;$MODELE&quot; &lt;&lt;EOF
+Tu commentes des mesures faites sur un arbre instrumente.
+Regles absolues :
+- n&#x27;ecris QUE ce que les chiffres montrent ; aucune emotion, aucune intention ;
+- si une valeur manque ou est marquee &quot;bruite&quot;, dis-le explicitement ;
+- trois phrases maximum, en francais, sans metaphore ;
+- termine par l&#x27;heure du dernier releve.
+Donnees : $mesures
+EOF
+)
+
+echo &quot;$lu&quot;
+
+# 3. Synthese locale. Sur Raspberry Pi 5, mesurer soi-meme le facteur temps
+#    reel : aucun chiffre officiel n&#x27;est publie par le projet Piper.
+printf &#x27;%s&#x27; &quot;$lu&quot; | piper --model &quot;$VOIX&quot; --output_file /tmp/arbre.wav
+aplay -q /tmp/arbre.wav
+</pre></div><p class="small" style="margin:.3em 0 1.2em">écrit pour cette annexe · CC0.</p>
+
+<div class="callout limite">
+  <div class="callout-title">Deux chiffres à mesurer soi-même</div>
+  <p class="noindent">Le projet Piper ne publie <strong>aucun</strong> facteur
+  temps réel officiel pour Raspberry Pi : les valeurs qui circulent viennent de
+  blogs non reproductibles et sont à écarter. Mesurez sur votre cible, avec
+  trois longueurs de phrase. Côté modèle de langue, les mesures publiées par
+  Jeff Geerling donnent sur Raspberry Pi 5 environ 4,6 jetons par seconde pour
+  un modèle 3 milliards de paramètres en Q4_K_M, et 2,0 pour un 8 milliards —
+  ce dernier étant à la limite de l'utilisable. La zone confortable se situe
+  entre 0,6 et 4 milliards de paramètres.</p>
+</div>
+</section>

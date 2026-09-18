@@ -1,0 +1,111 @@
+<section class="chapter">
+  <h2 id="c15-protocoles" data-toc="chapter">Quatre protocoles qui exploitent réellement la carte</h2>
+
+  <p class="chapo">Une carte qui mesure mieux ne sert à rien si l'on continue d'enregistrer comme
+  avant. Voici quatre protocoles que le niveau 3 rend possibles, et qui ne l'étaient pas aux
+  niveaux inférieurs.</p>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Protocole 1 · une soirée</div>
+      <div class="pr-t">Caractériser sa propre chaîne avant de caractériser une plante</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta"><span><b>Durée</b> 90 min</span><span><b>Matériel</b> carte, résistance 100 MΩ</span>
+      <span><b>Produit</b> une fiche de recette remplie</span></div>
+      <p><strong>Pourquoi.</strong> Toute mesure ultérieure sera comparée à ce plancher. Sans lui,
+      vous ne saurez jamais si une variation est un signal ou du bruit.</p>
+      <ol>
+        <li>Remplacer la plante par une résistance de 100 MΩ, boîtier fermé, alimentation sur
+        batterie.</li>
+        <li>Enregistrer trente minutes sans rien toucher, dans la pièce où vous travaillerez.</li>
+        <li>Dans l'onglet Traceur : <span class="phon">plot densite with lines</span>, puis
+        <span class="phon">set logscale xy</span>. Relever le plancher entre 1 et 10 Hz.</li>
+        <li>Tracer la variance d'Allan : <span class="phon">plot allan</span>. Relever la durée
+        d'intégration optimale — c'est la durée maximale sur laquelle il est utile de moyenner.</li>
+        <li>Exporter le rapport de mesure et le coller dans le carnet.</li>
+      </ol>
+      <p><strong>Ce qu'on apprend.</strong> Votre plancher réel, qui sera sans doute deux à trois
+      fois supérieur à celui de la fiche technique — parce que votre pièce, votre câble et votre
+      table existent. C'est ce nombre-là qui compte.</p>
+    </div>
+  </div>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Protocole 2 · une journée</div>
+      <div class="pr-t">Le témoin permanent : deux voies, dont une qui ne mesure rien</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta"><span><b>Durée</b> 8 à 24 h</span><span><b>Matériel</b> deux cartes filles</span>
+      <span><b>Produit</b> le droit d'affirmer quelque chose</span></div>
+      <p><strong>Pourquoi.</strong> C'est le protocole le plus important de tout l'ouvrage, et le
+      moins pratiqué. La voie A mesure la plante ; la voie B mesure une résistance de 100 MΩ placée
+      à côté, dans les mêmes conditions, avec le même câble.</p>
+      <ol>
+        <li>Installer les deux voies, laisser stabiliser trente minutes, lancer l'enregistrement.</li>
+        <li>Vivre normalement : allumer, éteindre, parler, sortir.</li>
+        <li>Au dépouillement, superposer les deux voies. Tout ce qui apparaît sur les
+        <em>deux</em> vient de l'environnement — température, réseau, vibrations, opérateur.</li>
+        <li>Ce qui n'apparaît que sur la voie A mérite d'être regardé.</li>
+      </ol>
+      <p><strong>Ce qu'on apprend.</strong> En général : que soixante à quatre-vingts pour cent de
+      ce qu'on prenait pour des réactions figure aussi sur le témoin. C'est décevant les premières
+      fois, et c'est exactement ce qui sépare une observation d'une impression.</p>
+    </div>
+  </div>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Protocole 3 · une semaine</div>
+      <div class="pr-t">Mesurer une vitesse de propagation</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta"><span><b>Durée</b> 3 séances</span><span><b>Matériel</b> deux voies, tige de 20 cm</span>
+      <span><b>Produit</b> une vitesse, en mm/s</span></div>
+      <p><strong>Pourquoi.</strong> C'est l'une des rares mesures qui distingue sans ambiguïté un
+      phénomène physiologique d'un artefact : un artefact électrique arrive partout en même temps,
+      un potentiel d'action se propage à quelques millimètres par seconde. Elle exige un
+      échantillonnage simultané des deux voies — ce que seul le niveau 3 permet.</p>
+      <ol>
+        <li>Deux électrodes espacées de quinze à vingt centimètres sur la même tige, référence
+        commune au substrat.</li>
+        <li>Stimulation reproductible et documentée : une goutte d'eau froide sur une feuille
+        distante, marquée d'un appui sur le bouton.</li>
+        <li>Échantillonnage à 1 kHz, mode déclenché sur la voie proche, pré-déclenchement 20 %.</li>
+        <li>Mesurer le décalage entre les deux fronts, diviser la distance par ce décalage.</li>
+        <li>Répéter dix fois, à une heure d'intervalle. Une vitesse crédible est reproductible à
+        trente pour cent près.</li>
+      </ol>
+      <p><strong>Ce qu'on attend.</strong> Entre 1 et 20 mm/s selon l'espèce et la température.
+      Un décalage nul, ou inférieur à la milliseconde, signale un couplage électrique et non une
+      propagation : la manipulation est à recommencer.</p>
+    </div>
+  </div>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Protocole 4 · un mois</div>
+      <div class="pr-t">Le rythme circadien, et comment ne pas se tromper</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta"><span><b>Durée</b> 30 jours</span><span><b>Matériel</b> carte + ambiance + batterie</span>
+      <span><b>Produit</b> un périodogramme honnête</span></div>
+      <p><strong>Pourquoi.</strong> C'est l'expérience la plus séduisante et la plus piégeuse du
+      domaine. Une dérive thermique quotidienne ressemble à s'y méprendre à un rythme circadien.</p>
+      <ol>
+        <li>Enregistrer en continu, avec les capteurs d'ambiance actifs, la voie témoin active.</li>
+        <li>Alimenter sur batterie, remplacée chaque jour à heure fixe — l'événement est marqué.</li>
+        <li>Au dépouillement, tracer le périodogramme du signal <em>et</em> celui de la
+        température. S'ils présentent le même pic à vingt-quatre heures, on ne peut rien conclure.</li>
+        <li>Pour trancher : passer en obscurité constante et température régulée pendant la
+        deuxième semaine. Un rythme endogène persiste avec une période légèrement différente de
+        vingt-quatre heures ; un artefact thermique disparaît.</li>
+      </ol>
+      <p><strong>Ce qu'on apprend.</strong> Le plus souvent, que la période observée est
+      exactement de vingt-quatre heures, ce qui trahit l'environnement plutôt que la plante — les
+      rythmes endogènes ont typiquement des périodes de 23 à 26 heures. C'est une leçon d'humilité
+      utile, et elle n'est accessible qu'avec un instrument qui mesure aussi son ambiance.</p>
+    </div>
+  </div>
+</section>

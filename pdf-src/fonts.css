@@ -1,0 +1,46 @@
+/*
+ *  ==========================================================================
+ *  PhytoScope — attribution — pdf-src/fonts.css
+ *
+ *  Version  : 1.5.1
+ *  Date     : 2026-09-18
+ *  Éditeur  : Bretagne Namasté
+ *  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+ *  Site     : https://bretagne-namaste.com
+ *  Contact  : contact@bretagne-namaste.com
+ *  Licence  : MIT — voir LICENCE.txt
+ *
+ *  SPDX-License-Identifier: MIT
+ *  fin de l'attribution
+ *  ==========================================================================
+ */
+
+/* ============================================================
+   POLICES — Lumière Intérieure et Langage de Lumière
+   ============================================================ */
+
+/* Cinzel — titres de couverture & ouvertures de partie (capitales gravées) */
+@font-face { font-family:"Cinzel"; font-weight:400; font-style:normal;
+  src:url("assets/fonts/Cinzel-400.ttf") format("truetype"); }
+@font-face { font-family:"Cinzel"; font-weight:600; font-style:normal;
+  src:url("assets/fonts/Cinzel-600.ttf") format("truetype"); }
+@font-face { font-family:"Cinzel"; font-weight:700; font-style:normal;
+  src:url("assets/fonts/Cinzel-700.ttf") format("truetype"); }
+@font-face { font-family:"Cinzel Decorative"; font-weight:700; font-style:normal;
+  src:url("assets/fonts/CinzelDecorative-700.ttf") format("truetype"); }
+
+/* Cormorant Garamond — titres courants, citations, capitales élégantes */
+@font-face { font-family:"Cormorant Garamond"; font-weight:400; font-style:normal;
+  src:url("assets/fonts/CormorantGaramond-400.ttf") format("truetype"); }
+@font-face { font-family:"Cormorant Garamond"; font-weight:500; font-style:normal;
+  src:url("assets/fonts/CormorantGaramond-500.ttf") format("truetype"); }
+@font-face { font-family:"Cormorant Garamond"; font-weight:600; font-style:normal;
+  src:url("assets/fonts/CormorantGaramond-600.ttf") format("truetype"); }
+@font-face { font-family:"Cormorant Garamond"; font-weight:700; font-style:normal;
+  src:url("assets/fonts/CormorantGaramond-700.ttf") format("truetype"); }
+@font-face { font-family:"Cormorant Garamond"; font-weight:400; font-style:italic;
+  src:url("assets/fonts/CormorantGaramond-Italic-400.ttf") format("truetype"); }
+@font-face { font-family:"Cormorant Garamond"; font-weight:500; font-style:italic;
+  src:url("assets/fonts/CormorantGaramond-Italic-500.ttf") format("truetype"); }
+
+/* Lato — corps de texte (installé sur le système via fontconfig) */

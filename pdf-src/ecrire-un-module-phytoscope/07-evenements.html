@@ -1,0 +1,61 @@
+<section class="chapter pagebreak">
+  <h2 id="evenements" data-toc="chapter">4. Les événements</h2>
+
+  <p class="chapo">Un module n'interroge pas le logiciel en boucle : il dit ce
+  qui l'intéresse, et l'hôte l'appelle. C'est le seul moyen d'avoir des modules
+  qui ne coûtent rien quand il ne se passe rien.</p>
+
+  <pre class="code"><code>from phytoscope.api import EVENEMENT_DETECTE
+
+def installer(self):
+    self.contexte.abonner(EVENEMENT_DETECTE, self._sur_evenement)
+
+def _sur_evenement(self, instant_s, amplitude_v):
+    self._compte += 1</code></pre>
+
+  <h3 id="evenements-liste" data-toc="sub">Ce qu'on peut écouter</h3>
+
+  <table class="tab">
+    <thead><tr><th>Constante</th><th>Le rappel reçoit</th></tr></thead>
+    <tbody>
+      <tr><td><code>MESURE_DEMARREE</code></td><td><code>(etat)</code></td></tr>
+      <tr><td><code>MESURE_ARRETEE</code></td><td><code>(etat)</code></td></tr>
+      <tr><td><code>SOURCE_CHANGEE</code></td><td><code>(nom)</code></td></tr>
+      <tr><td><code>EVENEMENT_DETECTE</code></td><td><code>(instant_s, amplitude_v)</code></td></tr>
+      <tr><td><code>NOTE_JOUEE</code></td><td><code>(hauteur_midi, velocite)</code></td></tr>
+      <tr><td><code>ENONCE_PRODUIT</code></td><td><code>(texte)</code></td></tr>
+      <tr><td><code>SEANCE_COMMENCEE</code></td><td><code>(dossier)</code></td></tr>
+      <tr><td><code>SEANCE_TERMINEE</code></td><td><code>(dossier)</code></td></tr>
+      <tr><td><code>ECHANTILLON_CAPTURE</code></td><td><code>(chemin)</code></td></tr>
+      <tr><td><code>REGLAGES_MODIFIES</code></td><td><em>rien</em></td></tr>
+      <tr><td><code>ALERTE_DISQUE</code></td><td><code>(megaoctets_restants)</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="evenements-garanties" data-toc="sub">Ce que l'hôte garantit</h3>
+
+  <div class="callout important">
+    <h4>Les rappels viennent du fil de l'interface</h4>
+    <p>Jamais du fil d'acquisition. Un module qui met trente millisecondes à
+    répondre ralentit l'affichage ; il ne fait pas tomber un échantillon.</p>
+    <p>Ce n'est pas une permission d'être lent. Trente millisecondes à chaque
+    événement, sur une plante active, se voient à l'écran.</p>
+  </div>
+
+  <p><strong>Un rappel qui lève est désabonné sur-le-champ</strong>, et
+  l'incident inscrit au journal avec le nom du module. C'est délibéré : laisser
+  branché un abonné fautif reviendrait à inscrire la même trace toutes les
+  secondes, et à rendre illisible le journal — celui-là même dont on a besoin
+  pour comprendre la panne.</p>
+
+  <p>Si votre module « cesse de réagir » après quelques minutes, regardez le
+  journal : vous y trouverez la faute, et l'heure à laquelle il a été
+  débranché.</p>
+
+  <h3 id="evenements-futur" data-toc="sub">S'abonner à ce qui n'existe pas encore</h3>
+
+  <p>Ce n'est pas une erreur : le rappel ne sera simplement jamais appelé.
+  C'est voulu. Une version ultérieure peut publier de nouveaux événements sans
+  que les modules anciens aient à changer, et un module peut profiter d'un
+  événement récent tout en restant chargeable sur une version plus ancienne.</p>
+</section>

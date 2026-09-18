@@ -1,0 +1,102 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/pcb-empilage.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" width="980" height="640">
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+ <marker id="ahk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
+   markerHeight="5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#23302C"/></marker>
+ <marker id="ahc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#A8552E"/></marker>
+ <pattern id="hatch" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#E0C073" stroke-width="2.4"/></pattern>
+ <pattern id="hatchb" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
+</defs>
+<rect width="980" height="640" fill="#FFFFFF"/>
+<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Empilage, impédances et perçages</text>
+<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Quatre couches sur FR4 1,6 mm — ce que le fabricant doit savoir</text>
+<rect x="60" y="100" width="420" height="20" rx="0" fill="#D9C08A" stroke="#23302C" stroke-width="1.0"/>
+<text x="492" y="114.0" font-family="Lato, sans-serif" font-size="18.25" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Couche 1 — signaux analogiques</text>
+<text x="474" y="114.0" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">35 µm</text>
+<rect x="60" y="120" width="420" height="14" rx="0" fill="#F0EEE4" stroke="#23302C" stroke-width="1.0"/>
+<text x="492" y="131.0" font-family="Lato, sans-serif" font-size="18.25" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Prépreg 7628 ×1</text>
+<text x="474" y="131.0" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">0,20 mm</text>
+<rect x="60" y="134" width="420" height="24" rx="0" fill="#8FA79A" stroke="#23302C" stroke-width="1.0"/>
+<text x="492" y="150.0" font-family="Lato, sans-serif" font-size="18.25" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Couche 2 — masse AGND / DGND (fendue)</text>
+<text x="474" y="150.0" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">35 µm</text>
+<rect x="60" y="158" width="420" height="30" rx="0" fill="#E6E2D2" stroke="#23302C" stroke-width="1.0"/>
+<text x="492" y="177.0" font-family="Lato, sans-serif" font-size="18.25" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Âme FR4 Tg150</text>
+<text x="474" y="177.0" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">1,00 mm</text>
+<rect x="60" y="188" width="420" height="22" rx="0" fill="#B9C6BF" stroke="#23302C" stroke-width="1.0"/>
+<text x="492" y="203.0" font-family="Lato, sans-serif" font-size="18.25" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Couche 3 — alimentations</text>
+<text x="474" y="203.0" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">35 µm</text>
+<rect x="60" y="210" width="420" height="14" rx="0" fill="#F0EEE4" stroke="#23302C" stroke-width="1.0"/>
+<text x="492" y="221.0" font-family="Lato, sans-serif" font-size="18.25" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Prépreg 7628 ×1</text>
+<text x="474" y="221.0" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">0,20 mm</text>
+<rect x="60" y="224" width="420" height="20" rx="0" fill="#D9C08A" stroke="#23302C" stroke-width="1.0"/>
+<text x="492" y="238.0" font-family="Lato, sans-serif" font-size="18.25" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Couche 4 — numérique et blindage</text>
+<text x="474" y="238.0" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">35 µm</text>
+<text x="270" y="266" font-family="Lato, sans-serif" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">épaisseur totale 1,60 mm ± 10 %</text>
+<text x="60" y="288" font-family="Lato, sans-serif" font-size="19.91" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.2">RÈGLES DE FABRICATION</text>
+<rect x="60" y="300" width="860" height="22" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="0.8"/>
+<text x="72" y="315" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Largeur de piste minimale</text>
+<text x="908" y="315" font-family="Lato, sans-serif" font-size="17.7" fill="#3F7D5A" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">0,20 mm (8 mil)</text>
+<rect x="60" y="326" width="860" height="22" rx="3" fill="#FAFBFA" stroke="#D9D9C6" stroke-width="0.8"/>
+<text x="72" y="341" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Isolement minimal</text>
+<text x="908" y="341" font-family="Lato, sans-serif" font-size="17.7" fill="#3F7D5A" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">0,20 mm — 0,60 mm de part et d'autre de la fente</text>
+<rect x="60" y="352" width="860" height="22" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="0.8"/>
+<text x="72" y="367" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Via traversant</text>
+<text x="908" y="367" font-family="Lato, sans-serif" font-size="17.7" fill="#3F7D5A" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">percé 0,30 mm, pastille 0,60 mm</text>
+<rect x="60" y="378" width="860" height="22" rx="3" fill="#FAFBFA" stroke="#D9D9C6" stroke-width="0.8"/>
+<text x="72" y="393" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Via de masse sous les boîtiers</text>
+<text x="908" y="393" font-family="Lato, sans-serif" font-size="17.7" fill="#3F7D5A" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">matrice de 1,2 mm</text>
+<rect x="60" y="404" width="860" height="22" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="0.8"/>
+<text x="72" y="419" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Impédance différentielle USB</text>
+<text x="908" y="419" font-family="Lato, sans-serif" font-size="17.7" fill="#3F7D5A" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">90 Ω ± 10 % (couche 4 sur couche 3)</text>
+<rect x="60" y="430" width="860" height="22" rx="3" fill="#FAFBFA" stroke="#D9D9C6" stroke-width="0.8"/>
+<text x="72" y="445" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Impédance de l'horloge du CAN</text>
+<text x="908" y="445" font-family="Lato, sans-serif" font-size="17.7" fill="#3F7D5A" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">50 Ω asymétrique</text>
+<rect x="60" y="456" width="860" height="22" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="0.8"/>
+<text x="72" y="471" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Finition</text>
+<text x="908" y="471" font-family="Lato, sans-serif" font-size="17.7" fill="#3F7D5A" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">ENIG — obligatoire sous les entrées électrométriques</text>
+<rect x="60" y="482" width="860" height="22" rx="3" fill="#FAFBFA" stroke="#D9D9C6" stroke-width="0.8"/>
+<text x="72" y="497" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Vernis épargné</text>
+<text x="908" y="497" font-family="Lato, sans-serif" font-size="17.7" fill="#3F7D5A" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">sous J1, J2 et l'anneau de garde</text>
+<rect x="60" y="508" width="860" height="22" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="0.8"/>
+<text x="72" y="523" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Classe IPC</text>
+<text x="908" y="523" font-family="Lato, sans-serif" font-size="17.7" fill="#3F7D5A" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">2 (fabrication courante, aucun surcoût)</text>
+<rect x="60" y="550" width="860" height="116" rx="5" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.1"/>
+<text x="74" y="578" font-family="Lato, sans-serif" font-size="19.08" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">LE POINT QUI FAIT ÉCHOUER LES PREMIÈRES SÉRIES</text>
+<text x="74" y="602" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Le vernis épargné sous les entrées n'est pas un détail esthétique : un film</text>
+<text x="74" y="624" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">de vernis humide conduit assez pour ruiner une mesure à 10¹⁵ Ω. C'est la</text>
+<text x="74" y="646" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">première chose à vérifier quand une voie dérive sans raison apparente.</text>
+<text x="28" y="632" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
+<text x="952" y="632" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
+</svg>

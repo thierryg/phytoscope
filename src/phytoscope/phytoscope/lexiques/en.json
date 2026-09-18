@@ -1,0 +1,58 @@
+{
+  "nom": "English — contemplative register",
+  "langue": "en",
+  "auteur": "Bretagne Namasté",
+  "note": "Dictionnaire d'exemple. Le modifier est l'usage normal, pas une entorse : les mots doivent être ceux de celui qui écoute.",
+  "grammaire": "contemplative",
+  "registres": {
+    "sujet": [
+      "I",
+      "something",
+      "the sap",
+      "the trunk",
+      "the leaf"
+    ],
+    "verbe_montee": [
+      "stir",
+      "wake",
+      "rise",
+      "surge",
+      "burst out"
+    ],
+    "verbe_descente": [
+      "settle",
+      "sink back",
+      "withdraw",
+      "rest",
+      "fade away"
+    ],
+    "intensite": [
+      "barely",
+      "gently",
+      "clearly",
+      "strongly",
+      "with all my wood"
+    ],
+    "tempo": [
+      "again",
+      "once more",
+      "after a while",
+      "after a long while",
+      "after a very long silence"
+    ],
+    "couleur": [
+      "muffled",
+      "low",
+      "full",
+      "clear",
+      "high"
+    ],
+    "liaison": [
+      "and",
+      "then",
+      "so",
+      "while",
+      "—"
+    ]
+  }
+}

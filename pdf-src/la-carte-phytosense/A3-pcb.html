@@ -1,0 +1,39 @@
+<section class="chapter">
+  <h2 id="ann-pcb" data-toc="chapter">Annexe C — Circuit imprimé</h2>
+
+  <p class="chapo">Quatre couches, cent par soixante millimètres, douze euros pièce. Le fascicule
+  séparé contient les planches au format paysage et le dossier de fabrication complet.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/pcb-empilage.svg" alt="Empilage et règles de fabrication"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Empilage, impédances contrôlées et règles de
+    percement — ce que le fabricant doit savoir, et rien de plus.</figcaption>
+  </figure>
+
+  <h3 id="ann-pcb-fichiers" data-toc="sub">Le dossier de fabrication</h3>
+  <table class="tight">
+    <thead><tr><th>Fichier</th><th>Contenu</th></tr></thead>
+    <tbody>
+      <tr><td><span class="phon">phytosense-F_Cu.gbr</span> … <span class="phon">B_Cu.gbr</span></td>
+        <td>Les quatre couches de cuivre</td></tr>
+      <tr><td><span class="phon">phytosense-F_Mask.gbr</span>, <span class="phon">B_Mask.gbr</span></td>
+        <td>Vernis épargné — <strong>contient la zone d'entrée dégagée</strong></td></tr>
+      <tr><td><span class="phon">phytosense-F_Silkscreen.gbr</span>, <span class="phon">B_Silkscreen.gbr</span></td>
+        <td>Sérigraphie</td></tr>
+      <tr><td><span class="phon">phytosense-Edge_Cuts.gbr</span></td><td>Contour de la carte</td></tr>
+      <tr><td><span class="phon">phytosense.drl</span></td><td>Percements, traversants uniquement</td></tr>
+      <tr><td><span class="phon">phytosense-top-pos.csv</span></td>
+        <td>Positions des composants, pour le placement automatique</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La seule option non standard à demander</div>
+    <p class="noindent">Le vernis épargné sous les entrées. Il figure dans les fichiers, mais
+    certains fabricants « corrigent » automatiquement les ouvertures de vernis qu'ils jugent
+    anormales. Il faut donc l'écrire dans la commande, en toutes lettres : <em>ne pas modifier les
+    ouvertures de masque, y compris les grandes zones</em>. Une carte livrée avec du vernis sous
+    l'entrée présente un courant de fuite cent fois supérieur à la spécification, et rien ne le
+    signale avant la recette.</p>
+  </div>
+</section>

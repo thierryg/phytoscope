@@ -1,0 +1,58 @@
+{
+  "nom": "Français — registre contemplatif",
+  "langue": "fr",
+  "auteur": "Bretagne Namasté",
+  "note": "Dictionnaire d'exemple. Le modifier est l'usage normal, pas une entorse : les mots doivent être ceux de celui qui écoute.",
+  "grammaire": "contemplative",
+  "registres": {
+    "sujet": [
+      "je",
+      "quelque chose",
+      "la sève",
+      "le tronc",
+      "la feuille"
+    ],
+    "verbe_montee": [
+      "frémis",
+      "m'éveille",
+      "monte",
+      "m'élance",
+      "jaillis"
+    ],
+    "verbe_descente": [
+      "m'apaise",
+      "redescends",
+      "me retire",
+      "me repose",
+      "m'efface"
+    ],
+    "intensite": [
+      "à peine",
+      "doucement",
+      "nettement",
+      "fortement",
+      "de tout mon bois"
+    ],
+    "tempo": [
+      "encore",
+      "de nouveau",
+      "après un temps",
+      "après un long temps",
+      "après un très long silence"
+    ],
+    "couleur": [
+      "sourd",
+      "grave",
+      "ample",
+      "clair",
+      "aigu"
+    ],
+    "liaison": [
+      "et",
+      "puis",
+      "alors",
+      "tandis que",
+      "—"
+    ]
+  }
+}

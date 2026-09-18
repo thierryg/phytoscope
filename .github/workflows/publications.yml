@@ -1,0 +1,207 @@
+# ===========================================================================
+#  PhytoScope — fabrication des publications touchées
+# ===========================================================================
+#  Se déclenche sur ce dont un PDF dépend : les sources d'édition
+#  (« pdf-src/ »), la nomenclature (« hardware/ ») qui alimente la BOM du
+#  hors-série, les listings de programmes de l'annexe de codes, et les outils
+#  qui écrivent des fragments.
+#
+#  Elle ne refait PAS les dix publications à chaque fois. Refaire la série
+#  coûte une douzaine de minutes et 84 Mo pour rien quand on a corrigé une
+#  coquille dans le hors-série. « tools/pdf_impactes.py » prend la liste des
+#  fichiers modifiés et rend les commandes à lancer — et rien d'autre.
+#
+#  L'outil est volontairement prudent : un chemin qu'il ne sait pas rattacher
+#  déclenche tout. Se tromper en refaisant trop coûte des minutes ; se
+#  tromper en refaisant trop peu publie un PDF périmé, et cela ne se voit
+#  pas.
+#
+#  Sur « main », et sur demande manuelle, tout est refait : c'est là que la
+#  cohérence de l'ensemble se vérifie.
+# ===========================================================================
+name: Publications
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'pdf-src/**'
+      - 'hardware/**'
+      - 'sources/reverse/**'
+      - 'tools/**'
+      - '.github/workflows/publications.yml'
+  pull_request:
+    paths:
+      - 'pdf-src/**'
+      - 'hardware/**'
+      - 'sources/reverse/**'
+      - 'tools/**'
+  workflow_dispatch:
+    inputs:
+      tout:
+        description: 'Refaire les dix publications, sans regarder les modifications'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publications-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publications:
+    name: Publications touchées
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      #  fetch-depth: 0 — il faut l'historique pour savoir ce qui a changé
+      #  par rapport à la base de la demande de fusion.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      #  WeasyPrint s'appuie sur Pango, Cairo et HarfBuzz : ce sont des
+      #  bibliothèques système, pip ne les apporte pas.
+      - name: Bibliothèques de rendu
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            libpango-1.0-0 libpangoft2-1.0-0 libcairo2 libharfbuzz0b \
+            libfribidi0 libgdk-pixbuf-2.0-0 fonts-dejavu-core poppler-utils
+          python -m pip install --upgrade pip weasyprint pillow
+
+      # ---------------------------------------------------------------------
+      #  Qu'est-ce qui a changé, et qu'est-ce que cela périme ?
+      # ---------------------------------------------------------------------
+      - name: Fichiers modifiés
+        id: modifies
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            base='${{ github.event.pull_request.base.sha }}'
+            git diff --name-only "$base" "${{ github.sha }}" > modifies.txt
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            #  « before » vaut 000… sur une branche neuve : on refait tout.
+            avant='${{ github.event.before }}'
+            if [ -z "$avant" ] || [ "$avant" = "0000000000000000000000000000000000000000" ]; then
+              : > modifies.txt
+              echo 'tout=oui' >> "$GITHUB_OUTPUT"
+            else
+              git diff --name-only "$avant" "${{ github.sha }}" > modifies.txt
+            fi
+          else
+            : > modifies.txt
+            echo 'tout=oui' >> "$GITHUB_OUTPUT"
+          fi
+          echo "── fichiers modifiés"
+          sed 's/^/  · /' modifies.txt || true
+
+      - name: Publications à refaire
+        id: cibles
+        run: |
+          #  Sur main et sur demande manuelle : tout, pour vérifier la
+          #  cohérence de l'ensemble.
+          if [ '${{ github.ref }}' = 'refs/heads/main' ] \
+             || [ '${{ steps.modifies.outputs.tout }}' = 'oui' ] \
+             || [ '${{ inputs.tout }}' = 'true' ]; then
+            echo '  · tout est refait'
+            printf 'python3 pdf-src/assets/svg/gen.py\n' > commandes.sh
+            printf 'python3 pdf-src/assets/svg/gen_carte.py\n' >> commandes.sh
+            printf 'python3 pdf-src/assets/svg/gen_sch.py\n' >> commandes.sh
+            printf 'python3 pdf-src/assets/svg/gen_sdk.py\n' >> commandes.sh
+            printf 'python3 pdf-src/assets/svg/gen_tt.py\n' >> commandes.sh
+            printf 'python3 tools/gen_bom.py\n' >> commandes.sh
+            printf 'python3 tools/gen_code_annex.py\n' >> commandes.sh
+            printf 'python3 pdf-src/build.py\n' >> commandes.sh
+            printf 'python3 pdf-src/build_arbre.py\n' >> commandes.sh
+            printf 'python3 tools/build-annexe.py\n' >> commandes.sh
+            printf 'python3 pdf-src/build_carte.py\n' >> commandes.sh
+            printf 'python3 pdf-src/build_sdk.py\n' >> commandes.sh
+          else
+            python3 tools/pdf_impactes.py - < modifies.txt > commandes.sh
+          fi
+          echo "── à lancer"
+          sed 's/^/  · /' commandes.sh
+          echo "── PDF qui seront réécrits"
+          python3 tools/pdf_impactes.py - < modifies.txt --pdf 2>/dev/null \
+            | sed 's/^/  · /' || true
+          if [ ! -s commandes.sh ]; then
+            echo "rien=oui" >> "$GITHUB_OUTPUT"
+            echo "  · aucune publication touchée — rien à faire"
+          fi
+
+      # ---------------------------------------------------------------------
+      #  Fabriquer, et seulement ce qu'il faut
+      # ---------------------------------------------------------------------
+      - name: Illustrations et fragments, puis les publications touchées
+        if: steps.cibles.outputs.rien != 'oui'
+        run: |
+          set -euo pipefail
+          while IFS= read -r commande; do
+            [ -z "$commande" ] && continue
+            echo "── $commande"
+            eval "$commande"
+          done < commandes.sh
+
+      #  Une illustration qui n'est pas du XML bien formé passe inaperçue à
+      #  l'écran et fait un cadre vide dans le PDF. Le défaut a existé :
+      #  timeline.svg portait un « & » nu, parce que le générateur
+      #  n'échappait pas le texte (journal du 2026-09-18).
+      - name: Toutes les illustrations sont-elles du XML bien formé ?
+        if: steps.cibles.outputs.rien != 'oui'
+        run: python3 tools/verifier_svg.py
+
+      - name: Les en-têtes d'attribution sont-ils à jour ?
+        if: steps.cibles.outputs.rien != 'oui'
+        run: python3 tools/entetes.py --verifier
+
+      #  Le contrôle utile ici n'est pas « ça compile » mais « ça n'a pas
+      #  rétréci » : un fragment mal fermé ne casse pas WeasyPrint, il
+      #  produit un PDF plus court. Les seuils sont volontairement bas : ils
+      #  attrapent l'effondrement, pas la variation d'une page.
+      - name: Aucune publication ne s'est effondrée
+        if: steps.cibles.outputs.rien != 'oui'
+        run: |
+          declare -A seuil=(
+            ['La-Musique-des-Plantes.pdf']=400
+            ['La-Carte-PhytoSense.pdf']=150
+            ['arbre-parlant-dublin-analyse-scientifique.pdf']=150
+            ['biocommunication-vegetale-et-ia.pdf']=120
+            ['atelier-creer-arbre-parlant.pdf']=150
+            ['arbre-parlant-annexe-schemas-bom-programmes.pdf']=40
+            ['Ecrire-un-module-PhytoScope.pdf']=20
+            ['PhytoSense-schemas.pdf']=8
+            ['PhytoSense-bom-accessoires.pdf']=12
+            ['PhytoSense-pcb.pdf']=5
+          )
+          ec=0
+          total=0
+          for f in build/*.pdf; do
+            [ -e "$f" ] || continue
+            nom="${f##*/}"
+            n=$(pdfinfo "$f" | awk '/^Pages/ {print $2}')
+            total=$((total + n))
+            attendu="${seuil[$nom]:-1}"
+            if [ "$n" -lt "$attendu" ]; then
+              printf '%5d p.  %-52s ! attendu ≥ %s\n' "$n" "$nom" "$attendu"
+              ec=1
+            else
+              printf '%5d p.  %-52s OK\n' "$n" "$nom"
+            fi
+          done
+          printf '%5d p.  TOTAL\n' "$total"
+          exit $ec
+
+      - uses: actions/upload-artifact@v4
+        if: steps.cibles.outputs.rien != 'oui'
+        with:
+          name: publications-pdf
+          path: build/*.pdf
+          if-no-files-found: error
+          retention-days: 14

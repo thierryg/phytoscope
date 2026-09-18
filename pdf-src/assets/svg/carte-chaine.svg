@@ -1,0 +1,126 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/carte-chaine.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 600" width="980" height="600">
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+ <marker id="ahk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
+   markerHeight="5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#23302C"/></marker>
+ <marker id="ahc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#A8552E"/></marker>
+ <pattern id="hatch" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#E0C073" stroke-width="2.4"/></pattern>
+ <pattern id="hatchb" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
+</defs>
+<rect width="980" height="600" fill="#FFFFFF"/>
+<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Budget de la chaîne de mesure</text>
+<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Niveau du signal, gain et bruit ramené à l'entrée, étage par étage</text>
+<rect x="40" y="110" width="118" height="74" rx="6" fill="#0E2A22" stroke="#0E2A22" stroke-width="1.7"/>
+<text x="99.0" y="134" font-family="Cormorant Garamond, serif" font-size="21.57" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Source</text>
+<text x="99.0" y="152" font-family="DejaVu Sans Mono, monospace" font-size="17.15" fill="#E0C073" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">plante</text>
+<text x="99.0" y="172" font-family="Lato, sans-serif" font-size="18.81" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">1 µV – 50 mV</text>
+<text x="99.0" y="214" font-family="DejaVu Sans Mono, monospace" font-size="18.81" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">—</text>
+<text x="99.0" y="232" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">—</text>
+<rect x="173" y="110" width="118" height="74" rx="6" fill="#fff" stroke="#3F7D5A" stroke-width="1.7"/>
+<text x="232.0" y="134" font-family="Cormorant Garamond, serif" font-size="21.57" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Électrode</text>
+<text x="232.0" y="152" font-family="DejaVu Sans Mono, monospace" font-size="17.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Ag/AgCl</text>
+<text x="232.0" y="172" font-family="Lato, sans-serif" font-size="18.81" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">×1</text>
+<line x1="157" y1="147" x2="170" y2="147" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
+<text x="232.0" y="214" font-family="DejaVu Sans Mono, monospace" font-size="18.81" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">0,15 µV</text>
+<text x="232.0" y="232" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">bruit 1/f</text>
+<rect x="306" y="110" width="118" height="74" rx="6" fill="#fff" stroke="#3F7D5A" stroke-width="1.7"/>
+<text x="365.0" y="134" font-family="Cormorant Garamond, serif" font-size="21.57" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Entrée</text>
+<text x="365.0" y="152" font-family="DejaVu Sans Mono, monospace" font-size="17.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ADA4530-1</text>
+<text x="365.0" y="172" font-family="Lato, sans-serif" font-size="18.81" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">×1</text>
+<line x1="290" y1="147" x2="303" y2="147" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
+<text x="365.0" y="214" font-family="DejaVu Sans Mono, monospace" font-size="18.81" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">0,42 µV</text>
+<text x="365.0" y="232" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">14 nV/√Hz</text>
+<rect x="439" y="110" width="118" height="74" rx="6" fill="#fff" stroke="#3F7D5A" stroke-width="1.7"/>
+<text x="498.0" y="134" font-family="Cormorant Garamond, serif" font-size="21.57" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">InAmp</text>
+<text x="498.0" y="152" font-family="DejaVu Sans Mono, monospace" font-size="17.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">INA828</text>
+<text x="498.0" y="172" font-family="Lato, sans-serif" font-size="18.81" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">×10</text>
+<line x1="423" y1="147" x2="436" y2="147" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
+<text x="498.0" y="214" font-family="DejaVu Sans Mono, monospace" font-size="18.81" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">0,21 µV</text>
+<text x="498.0" y="232" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">7 nV/√Hz</text>
+<rect x="572" y="110" width="118" height="74" rx="6" fill="#fff" stroke="#3F7D5A" stroke-width="1.7"/>
+<text x="631.0" y="134" font-family="Cormorant Garamond, serif" font-size="21.57" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">PGA</text>
+<text x="631.0" y="152" font-family="DejaVu Sans Mono, monospace" font-size="17.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">OPA2189</text>
+<text x="631.0" y="172" font-family="Lato, sans-serif" font-size="18.81" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">×1…200</text>
+<line x1="556" y1="147" x2="569" y2="147" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
+<text x="631.0" y="214" font-family="DejaVu Sans Mono, monospace" font-size="18.81" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">0,18 µV</text>
+<text x="631.0" y="232" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">5,9 nV/√Hz</text>
+<rect x="705" y="110" width="118" height="74" rx="6" fill="#fff" stroke="#3F7D5A" stroke-width="1.7"/>
+<text x="764.0" y="134" font-family="Cormorant Garamond, serif" font-size="21.57" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Filtre</text>
+<text x="764.0" y="152" font-family="DejaVu Sans Mono, monospace" font-size="17.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Bessel 3</text>
+<text x="764.0" y="172" font-family="Lato, sans-serif" font-size="18.81" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">×1</text>
+<line x1="689" y1="147" x2="702" y2="147" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
+<text x="764.0" y="214" font-family="DejaVu Sans Mono, monospace" font-size="18.81" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">0,09 µV</text>
+<text x="764.0" y="232" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">R 4,7 kΩ</text>
+<rect x="838" y="110" width="118" height="74" rx="6" fill="#fff" stroke="#3F7D5A" stroke-width="1.7"/>
+<text x="897.0" y="134" font-family="Cormorant Garamond, serif" font-size="21.57" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">CAN</text>
+<text x="897.0" y="152" font-family="DejaVu Sans Mono, monospace" font-size="17.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ADS131M04</text>
+<text x="897.0" y="172" font-family="Lato, sans-serif" font-size="18.81" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">24 bits</text>
+<line x1="822" y1="147" x2="835" y2="147" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
+<text x="897.0" y="214" font-family="DejaVu Sans Mono, monospace" font-size="18.81" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">0,31 µV</text>
+<text x="897.0" y="232" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">plancher</text>
+<text x="40" y="214" font-family="Lato, sans-serif" font-size="16.59" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0"></text>
+<line x1="40" y1="245" x2="940" y2="245" stroke="#D9D9C6" stroke-width="1.2" stroke-linecap="round"/>
+<text x="40" y="266" font-family="Lato, sans-serif" font-size="19.36" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">Bruit ramené à l'entrée, bande 0,01 – 10 Hz</text>
+<rect x="60" y="300" width="620" height="190" rx="5" fill="#FAFBFA" stroke="#D9D9C6" stroke-width="1.1"/>
+<rect x="94" y="419.8" width="44" height="40.199999999999996" rx="3" fill="#6FA98A" stroke="#3F7D5A" stroke-width="1.2"/>
+<text x="116" y="413.8" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">0,15</text>
+<text x="116" y="476" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Électrode</text>
+<rect x="190" y="347.44" width="44" height="112.56" rx="3" fill="#6FA98A" stroke="#3F7D5A" stroke-width="1.2"/>
+<text x="212" y="341.44" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">0,42</text>
+<text x="212" y="476" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ADA4530-1</text>
+<rect x="286" y="403.72" width="44" height="56.28" rx="3" fill="#6FA98A" stroke="#3F7D5A" stroke-width="1.2"/>
+<text x="308" y="397.72" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">0,21</text>
+<text x="308" y="476" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">INA828</text>
+<rect x="382" y="411.76" width="44" height="48.239999999999995" rx="3" fill="#6FA98A" stroke="#3F7D5A" stroke-width="1.2"/>
+<text x="404" y="405.76" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">0,18</text>
+<text x="404" y="476" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">OPA2189</text>
+<rect x="478" y="435.88" width="44" height="24.119999999999997" rx="3" fill="#6FA98A" stroke="#3F7D5A" stroke-width="1.2"/>
+<text x="500" y="429.88" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">0,09</text>
+<text x="500" y="476" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Filtre</text>
+<rect x="574" y="376.92" width="44" height="83.08" rx="3" fill="#6FA98A" stroke="#3F7D5A" stroke-width="1.2"/>
+<text x="596" y="370.92" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">0,31</text>
+<text x="596" y="476" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">CAN</text>
+<text x="370.0" y="292" font-family="Lato, sans-serif" font-size="18.81" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Contribution de chaque étage (µV eff.)</text>
+<rect x="706" y="300" width="234" height="190" rx="6" fill="#0E2A22" stroke="#0E2A22" stroke-width="1.4"/>
+<text x="823" y="328" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Somme quadratique</text>
+<text x="823" y="356" font-family="DejaVu Sans Mono, monospace" font-size="22.13" fill="#EAF2EC" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">√(Σ eₙ²)</text>
+<text x="823" y="396" font-family="Cormorant Garamond, serif" font-size="35.96" fill="#fff" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">0,62 µV eff.</text>
+<text x="823" y="424" font-family="Lato, sans-serif" font-size="17.15" fill="#9fb8ab" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">sur 0,01 – 10 Hz</text>
+<line x1="736" y1="440" x2="910" y2="440" stroke="#3F7D5A" stroke-width="1" stroke-linecap="round"/>
+<text x="823" y="462" font-family="Lato, sans-serif" font-size="17.7" fill="#E0C073" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">soit 1 LSB du CAN à ×100</text>
+<text x="823" y="478" font-family="Lato, sans-serif" font-size="17.7" fill="#9fb8ab" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">dynamique utile : 126 dB</text>
+<text x="28" y="592" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
+<text x="952" y="592" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
+</svg>

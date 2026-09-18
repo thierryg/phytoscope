@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<title>Écrire un module pour PhytoScope</title>
+<meta name="author" content="Bretagne Namasté"/>
+<meta name="publisher" content="Bretagne Namasté"/>
+<meta name="copyright" content="© 2026 Bretagne Namasté — https://bretagne-namaste.com"/>
+<meta name="contact" content="contact@bretagne-namaste.com"/>
+<meta name="source" content="https://bretagne-namaste.com"/>
+<meta name="description" content="L'interface de programmation des modules de PhytoScope, le SDK, et ce qu'un module a le droit de faire : les cinq capacités, les événements, les essais sans matériel, et les pièges."/>
+<meta name="keywords" content="PhytoScope, module, greffon, SDK, API, Python, extension, plugin, biosignal, plante"/>
+<meta name="dcterms.created" content="2026-09-17"/>
+<meta name="generator" content="WeasyPrint"/>
+<link rel="stylesheet" href="fonts.css"/>
+<link rel="stylesheet" href="book.css"/>
+<link rel="stylesheet" href="carte.css"/>
+<style>body{ string-set: booktitle "Écrire un module pour PhytoScope"; }</style>
+</head>
+<body>
+<!-- ====================== COUVERTURE ====================== -->
+<section class="cover">
+  <div class="cover-collection">La Musique des Plantes — hors-série développeur</div>
+  <h1 class="cover-title">Écrire un module<br/>pour PhytoScope</h1>
+  <div class="cover-subtitle">L'interface de programmation, le SDK,
+    et ce qu'un module a le droit de faire</div>
+  <div class="cover-rule"></div>
+  <div class="cover-author">Bretagne Namasté — Thierry GAYET</div>
+  <div class="cover-site">bretagne-namaste.com</div>
+</section>
+
+<section class="titlepage pagebreak">
+  <h1>Écrire un module pour PhytoScope</h1>
+  <p class="subtitle">L'interface de programmation, le SDK, et ce qu'un module
+    a le droit de faire</p>
+  <p class="edition">Interface de programmation <strong>version 1.0</strong><br/>
+     Pour PhytoScope 1.5 et suivants</p>
+  <p class="author">Bretagne Namasté — Thierry GAYET<br/>
+     <span class="small">contact@bretagne-namaste.com ·
+     Thierry.Gayet@gmail.com</span></p>
+  <p class="licence">Le logiciel, le SDK et ce document sont publiés sous
+     licence MIT.<br/>
+     Le code des exemples est à recopier sans condition.</p>
+</section>
+
+<section class="notice pagebreak">
+  <h2 id="notice" data-toc="chapter">Avant de commencer</h2>
+
+  <p class="chapo">Ce document s'adresse à quelqu'un qui sait programmer en
+  Python et qui veut ajouter quelque chose à PhytoScope : une analyse, une
+  représentation, une sonification, un format d'export, une source de mesure.
+  Il ne suppose aucune connaissance du code du logiciel — c'est même tout
+  l'objet de l'interface décrite ici.</p>
+
+  <div class="callout">
+    <h4>Ce que vous n'aurez pas à faire</h4>
+    <p>Lire le moteur. Comprendre comment l'acquisition est ordonnancée.
+    Savoir ce qu'est un <code>EngineState</code>. Un module reçoit une surface
+    étroite et documentée, et c'est délibérément tout ce qu'il reçoit.</p>
+  </div>
+
+  <h3 id="notice-promesse" data-toc="sub">Ce que nous promettons</h3>
+
+  <p>L'interface porte un numéro de version, en numérotation sémantique.
+  Tant que le chiffre majeur ne change pas, <strong>un module écrit
+  aujourd'hui fonctionnera</strong> : nous pouvons ajouter, nous ne pouvons
+  pas retirer. Si le jour vient où il faut rompre cette promesse, le numéro
+  majeur changera, le logiciel refusera de charger les modules anciens en le
+  disant clairement, et ce document expliquera la migration.</p>
+
+  <p>Nous promettons aussi que <strong>votre module ne fera jamais tomber le
+  logiciel</strong>. Une faute, où qu'elle survienne, désactive votre module et
+  l'inscrit au journal ; la séance continue. C'est autant pour vous que pour
+  l'utilisateur : on écrit plus librement quand on sait qu'une étourderie ne
+  coûtera pas huit heures de mesure à quelqu'un.</p>
+
+  <h3 id="notice-limite" data-toc="sub">Ce que nous ne promettons pas</h3>
+
+  <p>Ce n'est pas un bac à sable. Votre module s'exécute dans le même
+  processus, avec les mêmes droits que le logiciel : il peut écrire où il veut
+  et lire ce qu'il veut. Nous n'avons ni les moyens ni l'intention de l'en
+  empêcher — Python ne s'y prête pas, et un bac à sable mal fait donne une
+  confiance qu'il ne mérite pas.</p>
+
+  <p>Ce que nous faisons à la place est plus honnête : nous disons clairement
+  ce qu'un module <em>doit</em> faire, nous rendons ce chemin facile, et nous
+  isolons les fautes. Un module qui écrit ailleurs que chez lui n'est pas
+  bloqué ; il est mal élevé, et cela se saura.</p>
+</section>
+
+<section class="toc pagebreak">
+  <h2 id="sommaire">Sommaire</h2>
+  <ul>
+<li><a class="tl" href="#notice"><span class="t">Avant de commencer</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#notice-promesse"><span class="t">Ce que nous promettons</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#notice-limite"><span class="t">Ce que nous ne promettons pas</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#premier"><span class="t">1. Un premier module, en dix minutes</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#premier-creer"><span class="t">Créer le squelette</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#premier-eprouver"><span class="t">L'éprouver, sans rien lancer</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#premier-installer"><span class="t">L'installer</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#premier-rien"><span class="t">Si rien n'apparaît</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#anatomie"><span class="t">2. Anatomie d'un module</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#anatomie-manifeste"><span class="t">Le manifeste, seul élément obligatoire</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#anatomie-champs"><span class="t">Les champs du manifeste</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#anatomie-cycle"><span class="t">Le cycle de vie</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#anatomie-reglages"><span class="t">Vos réglages</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#capacites"><span class="t">3. Les cinq capacités</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#cap-analyseur"><span class="t">Analyseur — calculer des grandeurs</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#cap-descripteur"><span class="t">Descripteur — produire une courbe</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#cap-sonificateur"><span class="t">Sonificateur — faire des notes</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#cap-exportateur"><span class="t">Exportateur — un autre format</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#cap-source"><span class="t">Source — un flux de mesure</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#cap-tableau"><span class="t">En résumé</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#evenements"><span class="t">4. Les événements</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#evenements-liste"><span class="t">Ce qu'on peut écouter</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#evenements-garanties"><span class="t">Ce que l'hôte garantit</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#evenements-futur"><span class="t">S'abonner à ce qui n'existe pas encore</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#pieges"><span class="t">5. Les pièges</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-manifeste"><span class="t">Le manifeste doit être littéral</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-lever"><span class="t">Ne jamais lever pour dire « rien à signaler »</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-gabarit"><span class="t">Les libellés avec un nombre sont des gabarits</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-texte"><span class="t">Le champ « texte » ne porte que des unités</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-brut"><span class="t">Ne pas filtrer avant de mesurer le bruit</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-ecrire"><span class="t">N'écrire que chez soi</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-import"><span class="t">N'importer que depuis phytoscope.api</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-resume"><span class="t">En un tableau</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#fin"><span class="t">6. Pour aller plus loin</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#fin-lire"><span class="t">Lire les modules livrés</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#fin-sdk"><span class="t">Le SDK</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#fin-manque"><span class="t">Si quelque chose vous manque</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#fin-contact"><span class="t">Écrire</span><span class="leader"></span></a></li>
+</ul>
+</section>
+
+<!-- ====================== PREMIER MODULE ====================== -->
+<section class="chapter pagebreak">
+  <h2 id="premier" data-toc="chapter">1. Un premier module, en dix minutes</h2>
+
+  <p class="chapo">Commençons par le faire, on expliquera ensuite. À la fin de
+  ce chapitre, trois lignes de votre cru s'afficheront dans l'onglet
+  Multimètre du logiciel.</p>
+
+  <h3 id="premier-creer" data-toc="sub">Créer le squelette</h3>
+
+  <p class="lettrine noindent">Le SDK est livré avec le code source, dans le
+  dossier <code>sdk/</code>. Il contient un outil qui crée un module complet :</p>
+
+  <pre class="code"><code>python3 src/sdk/outils/nouveau_module.py mon-premier-module</code></pre>
+
+  <p>Trois fichiers apparaissent :</p>
+
+  <table class="tab">
+    <thead><tr><th>Fichier</th><th>Ce qu'il contient</th></tr></thead>
+    <tbody>
+      <tr><td><code>module.py</code></td><td>le squelette, avec une capacité
+        d'analyse qui fonctionne déjà</td></tr>
+      <tr><td><code>test_mon_premier_module.py</code></td><td>des essais qui
+        passent, et qu'on étend</td></tr>
+      <tr><td><code>README.md</code></td><td>comment l'installer, et ce qui
+        reste à faire</td></tr>
+    </tbody>
+  </table>
+
+  <p>L'intérêt de cet outil n'est pas de taper moins. C'est que
+  <strong>le squelette produit est déjà correct</strong> : le manifeste est
+  valide, les essais passent, et les pièges décrits plus loin sont déjà évités.
+  On part d'un module qui marche, et l'on remplace ce qu'on veut.</p>
+
+  <h3 id="premier-eprouver" data-toc="sub">L'éprouver, sans rien lancer</h3>
+
+  <pre class="code"><code>python3 -m pytest mon-premier-module/ -v</code></pre>
+
+  <p>Cinq essais passent. Remarquez ce qu'ils <em>n'exigent pas</em> : ni le
+  logiciel lancé, ni une carte branchée, ni une plante sur le bureau. Les
+  essais fabriquent un signal plausible et un faux contexte, puis appellent
+  votre code. C'est ce qui permet de développer un module dans le train.</p>
+
+  <div class="callout">
+    <h4>Le faux contexte</h4>
+    <p>Il est fourni avec les essais, et vous le recopierez. Il implémente ce
+    dont votre module se sert, et rien d'autre. Si un essai échoue parce
+    qu'une méthode y manque, c'est le signe que vous employez une partie de
+    l'interface qu'il faudra aussi éprouver — ce qui est une bonne nouvelle,
+    pas un ennui.</p>
+  </div>
+
+  <h3 id="premier-installer" data-toc="sub">L'installer</h3>
+
+  <pre class="code"><code># Linux
+cp -r mon-premier-module ~/.config/phytoscope/modules/
+
+# macOS
+cp -r mon-premier-module ~/Library/Application\ Support/PhytoScope/modules/
+
+# Windows
+xcopy /E mon-premier-module %APPDATA%\PhytoScope\modules\mon-premier-module\</code></pre>
+
+  <p>Relancez PhytoScope. Votre module apparaît à deux endroits :
+  dans l'onglet <strong>Multimètre → Grandeurs scientifiques</strong>, où ses
+  valeurs s'affichent parmi celles des modules livrés ; et dans l'onglet
+  <strong>Diagnostic → Modules</strong>, qui liste ce qui est chargé.</p>
+
+  <h3 id="premier-rien" data-toc="sub">Si rien n'apparaît</h3>
+
+  <p>Allez au Diagnostic. La page Modules dit en une phrase ce qui s'est
+  passé. C'est la page qu'on regarde <em>en premier</em>, avant de douter de
+  soi :</p>
+
+  <table class="tab">
+    <thead><tr><th>Ce qui s'affiche</th><th>Ce que cela signifie</th></tr></thead>
+    <tbody>
+      <tr><td><code>incompatible</code> — vise l'API 2.0</td>
+          <td>votre manifeste annonce une version d'interface que ce logiciel
+          ne connaît pas. Corrigez <code>api=</code>.</td></tr>
+      <tr><td><code>incompatible</code> — bibliothèque absente</td>
+          <td>vous avez déclaré <code>exige=("scipy",)</code> et scipy n'est
+          pas installé. La commande à taper est donnée.</td></tr>
+      <tr><td><code>en_faute</code> — TypeError au chargement</td>
+          <td>votre code a levé. La trace complète est dans le journal
+          (<kbd>Ctrl+L</kbd>).</td></tr>
+      <tr><td><code>desactive</code></td>
+          <td>l'utilisateur l'a désactivé dans les réglages.</td></tr>
+      <tr><td>absent de la liste</td>
+          <td>le dossier n'est pas au bon endroit, ou il ne contient pas de
+          fichier <code>module.py</code>.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ====================== ANATOMIE ====================== -->
+<section class="chapter pagebreak">
+  <h2 id="anatomie" data-toc="chapter">2. Anatomie d'un module</h2>
+
+  <p class="chapo">Un module est un dossier contenant un fichier
+  <code>module.py</code>, qui déclare une classe héritant de
+  <code>Module</code>. Tout le reste est facultatif.</p>
+
+  <h3 id="anatomie-manifeste" data-toc="sub">Le manifeste, seul élément obligatoire</h3>
+
+  <pre class="code"><code>from phytoscope.api import Capacite, Manifeste, Module
+
+class MonModule(Module):
+    MANIFESTE = Manifeste(
+        nom="mon-module",           # a-z, 0-9, tirets — l'identifiant
+        titre="Mon module",         # ce que l'utilisateur lit
+        version="1.0.0",
+        api="1.0",                  # la version d'interface visée
+        description="Ce que fait ce module.",
+        auteur="Votre nom",
+        licence="MIT",
+        capacites=(Capacite.ANALYSEUR,),
+    )</code></pre>
+
+  <div class="callout important">
+    <h4>Le manifeste est lu sans exécuter votre code</h4>
+    <p>Le logiciel analyse syntaxiquement <code>module.py</code> pour en
+    extraire le manifeste, <em>avant</em> de l'importer. C'est ce qui lui
+    permet de lister les modules présents, d'en désactiver un et de refuser
+    celui qui vise une interface inconnue — sans avoir à exécuter du code pour
+    savoir s'il faut l'exécuter.</p>
+    <p><strong>Conséquence pratique :</strong> écrivez des valeurs littérales.
+    Une valeur calculée — <code>version=lire_version()</code> — ne sera pas
+    lue, et le défaut s'appliquera. Seules les constantes de
+    <code>Capacite</code> font exception, parce qu'elles appartiennent au
+    contrat.</p>
+  </div>
+
+  <h3 id="anatomie-champs" data-toc="sub">Les champs du manifeste</h3>
+
+  <table class="tab">
+    <thead><tr><th>Champ</th><th>Rôle</th><th>Défaut</th></tr></thead>
+    <tbody>
+      <tr><td><code>nom</code></td><td>l'identifiant technique. Sert de clé
+        partout : réglages, dossier, journal.</td><td><em>obligatoire</em></td></tr>
+      <tr><td><code>titre</code></td><td>ce qui s'affiche</td><td>le nom</td></tr>
+      <tr><td><code>version</code></td><td>la vôtre, en sémantique</td><td>0.1.0</td></tr>
+      <tr><td><code>api</code></td><td>la version d'interface visée</td><td>la courante</td></tr>
+      <tr><td><code>capacites</code></td><td>ce que vous fournissez.
+        <strong>Déclaratif</strong> : ce qui n'est pas là n'est pas proposé,
+        même si la méthode existe.</td><td>aucune</td></tr>
+      <tr><td><code>depend_de</code></td><td>les modules à charger avant le
+        vôtre, par leur nom</td><td>aucun</td></tr>
+      <tr><td><code>exige</code></td><td>les bibliothèques Python nécessaires.
+        Vérifiées <em>avant</em> l'import.</td><td>aucune</td></tr>
+      <tr><td><code>description</code>, <code>auteur</code>,
+        <code>licence</code>, <code>site</code></td><td>affichés dans le
+        Diagnostic</td><td>vide</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="anatomie-cycle" data-toc="sub">Le cycle de vie</h3>
+
+  <figure class="figframe">
+    <img src="assets/svg/sdk-cycle.svg" alt="Le cycle de vie d'un module"/>
+    <figcaption>Fig. ## — Les quatre moments de la vie d'un module. Une faute,
+    à n'importe lequel, désactive le module et laisse le logiciel tourner.</figcaption>
+  </figure>
+
+  <ol>
+    <li><code>__init__(contexte)</code> — vous recevez le contexte.
+      <strong>Ne faites rien de long ici</strong> : c'est appelé au démarrage,
+      pour tous les modules, l'un après l'autre.</li>
+    <li><code>installer()</code> — une fois, après le chargement de tous les
+      modules. C'est ici qu'on s'abonne et qu'on prépare ses fichiers.</li>
+    <li>vos capacités sont appelées pendant la séance, à la demande.</li>
+    <li><code>arreter()</code> — une fois, à la fermeture. Fermez ce que vous
+      avez ouvert ; les abonnements sont retirés pour vous.</li>
+  </ol>
+
+  <h3 id="anatomie-reglages" data-toc="sub">Vos réglages</h3>
+
+  <pre class="code"><code>def reglages_par_defaut(self):
+    return {"seuil_uv": 8.0, "montrer_le_detail": True}
+
+# plus tard, dans une capacité :
+seuil = contexte.reglages.get("seuil_uv", 8.0)</code></pre>
+
+  <p>Le logiciel les conserve sous le nom de votre module et vous les rend au
+  démarrage suivant. <strong>N'écrivez jamais vous-même dans le fichier de
+  réglages du logiciel</strong> : il ne vous appartient pas, et sa forme peut
+  changer.</p>
+</section>
+
+<!-- ====================== LES CINQ CAPACITÉS ====================== -->
+<section class="chapter pagebreak">
+  <h2 id="capacites" data-toc="chapter">3. Les cinq capacités</h2>
+
+  <p class="chapo">Une capacité est ce que votre module sait faire. Vous en
+  déclarez une, plusieurs, ou aucune — un module qui ne fait quelque chose
+  qu'à l'installation et à l'arrêt est parfaitement légitime.</p>
+
+  <h3 id="cap-analyseur" data-toc="sub">Analyseur — calculer des grandeurs</h3>
+
+  <p>Appelé par l'onglet Multimètre, toutes les deux secondes, et
+  <em>seulement quand la page est visible</em>. Vous recevez une fenêtre de
+  signal et rendez des nombres.</p>
+
+  <pre class="code"><code>class MonAnalyse(Module, Analyseur):
+    FENETRE_S = 60.0        # combien de secondes vous voulez
+    SIGNAL_BRUT = True      # avant réjecteur et passe-bas
+
+    def analyser(self, x, fs, contexte):
+        return [Grandeur(
+            cle="mon-indicateur",
+            libelle="Mon indicateur",
+            valeur=float(np.std(x)),
+            texte=f"{np.std(x) * 1e6:.2f} µV",
+            sens="Ce que ce nombre dit, et ce qu'il ne dit pas.",
+        )]</code></pre>
+
+  <div class="callout important">
+    <h4>Brut ou traité : le choix compte</h4>
+    <p><code>SIGNAL_BRUT = True</code> donne le signal <em>avant</em> le
+    réjecteur de réseau et le passe-bas. C'est ce qu'il faut pour toute mesure
+    de bruit : <strong>filtrer avant de mesurer le bruit revient à mesurer son
+    propre filtre</strong>. Le réjecteur effacerait le résidu de secteur qu'on
+    cherche justement à voir, et le passe-bas à 40 Hz effacerait la bande où
+    se lit le bruit thermique.</p>
+    <p><code>False</code> donne le signal traité, celui qu'on voit à l'écran.
+    C'est ce qu'il faut pour analyser l'<em>activité</em> plutôt que la chaîne
+    de mesure.</p>
+  </div>
+
+  <h3 id="cap-descripteur" data-toc="sub">Descripteur — produire une courbe</h3>
+
+  <p>Appelé à la demande de l'utilisateur, dans l'onglet Descripteurs. Ce
+  n'est pas un chemin critique : un calcul d'une seconde est acceptable.</p>
+
+  <pre class="code"><code>def decrire(self, x, fs, contexte):
+    t = np.arange(x.size) / fs
+    return [Trace(
+        x=t, y=x * 1e6,
+        titre="Ma représentation",
+        x_libelle="temps (s)", y_libelle="µV",
+        avertissement="Ce que cette représentation suppose.",
+    )]</code></pre>
+
+  <h3 id="cap-sonificateur" data-toc="sub">Sonificateur — faire des notes</h3>
+
+  <p>Appelé pour chaque événement détecté. <strong>Soyez rapide</strong> :
+  vous êtes dans la boucle de rendu musical. Rendre une liste vide signifie
+  « pas de note pour cette valeur », ce qui est une réponse légitime.</p>
+
+  <pre class="code"><code>def sonifier(self, valeur_v, contexte):
+    gamme = (0, 2, 4, 5, 7, 9, 11)          # diatonique
+    rang = int(abs(valeur_v) * 1e6) % len(gamme)
+    return [NoteProposee(hauteur_midi=60 + gamme[rang],
+                         velocite=70, duree_s=0.4,
+                         origine_v=valeur_v)]</code></pre>
+
+  <p>Le champ <code>origine_v</code> n'est pas décoratif : il conserve la
+  valeur mesurée qui a produit la note. Une sonification dont on ne peut plus
+  remonter à la mesure n'est plus une mesure.</p>
+
+  <h3 id="cap-exportateur" data-toc="sub">Exportateur — un autre format</h3>
+
+  <pre class="code"><code>FORMAT = "Mon format"        # ce qui s'affiche dans la liste
+EXTENSION = ".xyz"
+
+def exporter(self, seance, cible, contexte):
+    # `seance` est le dossier de la séance — LISEZ-Y, n'y écrivez pas.
+    # `cible` est le fichier à produire — c'est le seul endroit où écrire.
+    return True</code></pre>
+
+  <h3 id="cap-source" data-toc="sub">Source — un flux de mesure</h3>
+
+  <p>La plus délicate : elle s'exécute sur le chemin des données. Le logiciel
+  vous isole autant qu'il peut, mais <strong>il ne peut pas vous isoler du
+  temps que vous prenez</strong>. Une source lente fait tomber des
+  échantillons, et cela ne se rattrape pas.</p>
+
+  <pre class="code"><code>LIBELLE = "Ma carte"
+
+def ouvrir(self, contexte): ...   # rend vrai si c'est ouvert
+def lire(self): ...               # un bloc en volts, ou None
+def fermer(self): ...</code></pre>
+
+  <h3 id="cap-tableau" data-toc="sub">En résumé</h3>
+
+  <table class="tab">
+    <thead><tr><th>Capacité</th><th>Appelée</th><th>Contrainte de temps</th></tr></thead>
+    <tbody>
+      <tr><td>Analyseur</td><td>toutes les 2 s, page visible</td>
+          <td>quelques dizaines de ms</td></tr>
+      <tr><td>Descripteur</td><td>à la demande</td><td>une seconde passe</td></tr>
+      <tr><td>Sonificateur</td><td>à chaque événement</td>
+          <td><strong>très court</strong></td></tr>
+      <tr><td>Exportateur</td><td>à la demande</td><td>aucune</td></tr>
+      <tr><td>Source</td><td>en continu</td>
+          <td><strong>critique</strong></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="chapter pagebreak">
+  <h2 id="evenements" data-toc="chapter">4. Les événements</h2>
+
+  <p class="chapo">Un module n'interroge pas le logiciel en boucle : il dit ce
+  qui l'intéresse, et l'hôte l'appelle. C'est le seul moyen d'avoir des modules
+  qui ne coûtent rien quand il ne se passe rien.</p>
+
+  <pre class="code"><code>from phytoscope.api import EVENEMENT_DETECTE
+
+def installer(self):
+    self.contexte.abonner(EVENEMENT_DETECTE, self._sur_evenement)
+
+def _sur_evenement(self, instant_s, amplitude_v):
+    self._compte += 1</code></pre>
+
+  <h3 id="evenements-liste" data-toc="sub">Ce qu'on peut écouter</h3>
+
+  <table class="tab">
+    <thead><tr><th>Constante</th><th>Le rappel reçoit</th></tr></thead>
+    <tbody>
+      <tr><td><code>MESURE_DEMARREE</code></td><td><code>(etat)</code></td></tr>
+      <tr><td><code>MESURE_ARRETEE</code></td><td><code>(etat)</code></td></tr>
+      <tr><td><code>SOURCE_CHANGEE</code></td><td><code>(nom)</code></td></tr>
+      <tr><td><code>EVENEMENT_DETECTE</code></td><td><code>(instant_s, amplitude_v)</code></td></tr>
+      <tr><td><code>NOTE_JOUEE</code></td><td><code>(hauteur_midi, velocite)</code></td></tr>
+      <tr><td><code>ENONCE_PRODUIT</code></td><td><code>(texte)</code></td></tr>
+      <tr><td><code>SEANCE_COMMENCEE</code></td><td><code>(dossier)</code></td></tr>
+      <tr><td><code>SEANCE_TERMINEE</code></td><td><code>(dossier)</code></td></tr>
+      <tr><td><code>ECHANTILLON_CAPTURE</code></td><td><code>(chemin)</code></td></tr>
+      <tr><td><code>REGLAGES_MODIFIES</code></td><td><em>rien</em></td></tr>
+      <tr><td><code>ALERTE_DISQUE</code></td><td><code>(megaoctets_restants)</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="evenements-garanties" data-toc="sub">Ce que l'hôte garantit</h3>
+
+  <div class="callout important">
+    <h4>Les rappels viennent du fil de l'interface</h4>
+    <p>Jamais du fil d'acquisition. Un module qui met trente millisecondes à
+    répondre ralentit l'affichage ; il ne fait pas tomber un échantillon.</p>
+    <p>Ce n'est pas une permission d'être lent. Trente millisecondes à chaque
+    événement, sur une plante active, se voient à l'écran.</p>
+  </div>
+
+  <p><strong>Un rappel qui lève est désabonné sur-le-champ</strong>, et
+  l'incident inscrit au journal avec le nom du module. C'est délibéré : laisser
+  branché un abonné fautif reviendrait à inscrire la même trace toutes les
+  secondes, et à rendre illisible le journal — celui-là même dont on a besoin
+  pour comprendre la panne.</p>
+
+  <p>Si votre module « cesse de réagir » après quelques minutes, regardez le
+  journal : vous y trouverez la faute, et l'heure à laquelle il a été
+  débranché.</p>
+
+  <h3 id="evenements-futur" data-toc="sub">S'abonner à ce qui n'existe pas encore</h3>
+
+  <p>Ce n'est pas une erreur : le rappel ne sera simplement jamais appelé.
+  C'est voulu. Une version ultérieure peut publier de nouveaux événements sans
+  que les modules anciens aient à changer, et un module peut profiter d'un
+  événement récent tout en restant chargeable sur une version plus ancienne.</p>
+</section>
+
+<section class="chapter pagebreak">
+  <h2 id="pieges" data-toc="chapter">5. Les pièges</h2>
+
+  <p class="chapo">Ce qui coûte une soirée quand on l'ignore. Ils sont tous
+  réels : chacun a été rencontré en écrivant les modules livrés avec le
+  logiciel.</p>
+
+  <h3 id="piege-manifeste" data-toc="sub">Le manifeste doit être littéral</h3>
+
+  <pre class="code"><code># NON — ne sera pas lu, le défaut s'appliquera
+MANIFESTE = Manifeste(nom="mon-module", version=lire_ma_version())
+
+# NON — pareil, même avec une constante du module
+VERSION = "1.0.0"
+MANIFESTE = Manifeste(nom="mon-module", version=VERSION)
+
+# OUI
+MANIFESTE = Manifeste(nom="mon-module", version="1.0.0")</code></pre>
+
+  <p>Le logiciel analyse syntaxiquement votre fichier pour en extraire le
+  manifeste, <em>avant</em> de l'importer. Exécuter un module pour savoir s'il
+  faut l'exécuter serait absurde.</p>
+
+  <h3 id="piege-lever" data-toc="sub">Ne jamais lever pour dire « rien à signaler »</h3>
+
+  <pre class="code"><code># NON — désactive votre module pour toute la séance
+if x.size == 0:
+    raise ValueError("pas de signal")
+
+# OUI
+if x.size == 0:
+    return []</code></pre>
+
+  <h3 id="piege-gabarit" data-toc="sub">Les libellés avec un nombre sont des gabarits</h3>
+
+  <pre class="code"><code># NON — cette phrase ne peut entrer dans aucun catalogue de traduction
+Grandeur(libelle=f"Écart d'Allan à {tau} s", ...)
+
+# OUI
+Grandeur(libelle="Écart d'Allan à {tau} s", params={"tau": f"{tau:g}"}, ...)</code></pre>
+
+  <p>L'interface traduit <strong>d'abord</strong>, remplit ensuite. Un libellé
+  où le nombre est déjà incrusté restera en français dans les dix autres
+  langues.</p>
+
+  <h3 id="piege-texte" data-toc="sub">Le champ « texte » ne porte que des unités</h3>
+
+  <pre class="code"><code>texte="+37.2 dB"                        # OUI — les symboles sont internationaux
+texte="+37.2 dB au-dessus du plancher"  # NON — restera en français partout</code></pre>
+
+  <p>Ce piège est d'autant plus facile qu'il ne se voit pas depuis une
+  interface française.</p>
+
+  <h3 id="piege-brut" data-toc="sub">Ne pas filtrer avant de mesurer le bruit</h3>
+
+  <p>Le signal traité a traversé le réjecteur de réseau et le passe-bas à
+  40 Hz. Mesurer le bruit dessus revient à <strong>mesurer son propre
+  filtre</strong>. Employez <code>SIGNAL_BRUT = True</code>.</p>
+
+  <h3 id="piege-ecrire" data-toc="sub">N'écrire que chez soi</h3>
+
+  <pre class="code"><code>chemin = os.path.join(self.contexte.dossier(), "mon-fichier.txt")</code></pre>
+
+  <p>Rien ne vous en empêche techniquement. Mais un module qui salit le dossier
+  des séances sera désinstallé, et à juste titre.</p>
+
+  <h3 id="piege-import" data-toc="sub">N'importer que depuis phytoscope.api</h3>
+
+  <pre class="code"><code># NON — cassera sans préavis, et nous ne le saurons même pas
+from phytoscope.core.engine import Engine
+
+# OUI
+from phytoscope.api import Analyseur, Grandeur, Manifeste, Module</code></pre>
+
+  <p>Le moteur change à chaque version. <code>phytoscope.api</code> ne change
+  pas tant que le majeur ne change pas. Si quelque chose vous manque dans
+  l'interface, <strong>dites-le</strong> : c'est ainsi qu'elle s'enrichira.</p>
+
+  <h3 id="piege-resume" data-toc="sub">En un tableau</h3>
+
+  <table class="tab">
+    <thead><tr><th>Le piège</th><th>Le symptôme</th><th>La règle</th></tr></thead>
+    <tbody>
+      <tr><td>manifeste calculé</td><td>les défauts s'appliquent</td><td>des littéraux</td></tr>
+      <tr><td>exception pour « rien »</td><td>module désactivé</td><td>rendre <code>[]</code></td></tr>
+      <tr><td><code>__init__</code> long</td><td>démarrage lent</td><td><code>installer()</code></td></tr>
+      <tr><td>libellé non gabarit</td><td>intraduisible</td><td><code>{param}</code> + <code>params</code></td></tr>
+      <tr><td>mots dans <code>texte</code></td><td>français partout</td><td>symboles seulement</td></tr>
+      <tr><td>signal traité pour le bruit</td><td>on mesure son filtre</td><td><code>SIGNAL_BRUT</code></td></tr>
+      <tr><td>écrire ailleurs</td><td>module désinstallé</td><td><code>contexte.dossier()</code></td></tr>
+      <tr><td>rappel long</td><td>affichage saccadé</td><td>noter, calculer ailleurs</td></tr>
+      <tr><td>import hors API</td><td>casse à la mise à jour</td><td><code>phytoscope.api</code></td></tr>
+      <tr><td><code>sens</code> absent</td><td>l'interface vous dénonce</td><td>toujours l'écrire</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="chapter pagebreak">
+  <h2 id="fin" data-toc="chapter">6. Pour aller plus loin</h2>
+
+  <h3 id="fin-lire" data-toc="sub">Lire les modules livrés</h3>
+
+  <p>Ils passent par la même interface que les vôtres — aucun privilège, aucun
+  raccourci. C'est ce qui garantit que cette interface suffit réellement, et
+  cela a une conséquence agréable : <strong>pour savoir comment écrire un
+  module, il suffit d'en lire un</strong>.</p>
+
+  <table class="tab">
+    <thead><tr><th>Module</th><th>Ce qu'il montre</th></tr></thead>
+    <tbody>
+      <tr><td><code>grandeurs-scientifiques</code></td>
+          <td>un analyseur qui calcule beaucoup, et explique chaque nombre</td></tr>
+      <tr><td><code>descripteurs-avances</code></td>
+          <td>six représentations, avec leurs avertissements</td></tr>
+      <tr><td><code>empreinte-montage</code></td>
+          <td>un module qui conserve un état sur le disque</td></tr>
+      <tr><td><code>export-csv</code></td>
+          <td>le plus court exemple complet — soixante lignes</td></tr>
+    </tbody>
+  </table>
+
+  <p>Ils vivent dans <code>src/phytoscope/phytoscope/modules/</code>.</p>
+
+  <h3 id="fin-sdk" data-toc="sub">Le SDK</h3>
+
+  <p>Dans <code>sdk/</code>, avec le code source :</p>
+
+  <ul>
+    <li><code>docs/</code> — cette documentation, en sept parties, au format
+      Markdown ;</li>
+    <li><code>bonjour-monde/</code> — un exemple complet avec ses essais ;</li>
+    <li><code>outils/nouveau_module.py</code> — crée un module qui fonctionne
+      déjà.</li>
+  </ul>
+
+  <h3 id="fin-manque" data-toc="sub">Si quelque chose vous manque</h3>
+
+  <p>Dites-le. L'interface a été écrite en essayant d'anticiper, et
+  l'anticipation se trompe toujours un peu. Une capacité qui manque, un
+  événement qu'on n'a pas prévu, une donnée qu'on ne vous donne pas : ce sont
+  les demandes qui font avancer une interface, et elles sont plus utiles que
+  les compliments.</p>
+
+  <p>En revanche, nous ne l'enrichirons pas au coup par coup. Une capacité
+  ajoutée est une capacité à tenir dix ans ; nous préférons attendre qu'une
+  même demande revienne de trois côtés plutôt que de l'ajouter la première
+  fois, et d'avoir à la porter ensuite.</p>
+
+  <div class="callout">
+    <h4>Ce que nous ne ferons pas</h4>
+    <p><strong>Un bac à sable.</strong> Python ne s'y prête pas, et un bac à
+    sable mal fait donne une confiance qu'il ne mérite pas. Nous préférons dire
+    clairement ce qu'un module doit faire, rendre ce chemin facile, et isoler
+    les fautes.</p>
+    <p><strong>Un rechargement à chaud.</strong> Recharger un module dont des
+    objets sont déjà référencés ailleurs laisse deux versions en mémoire et
+    produit des bogues qu'on ne sait pas lire. Un redémarrage coûte trois
+    secondes.</p>
+  </div>
+
+  <h3 id="fin-contact" data-toc="sub">Écrire</h3>
+
+  <p>Bretagne Namasté — Thierry GAYET<br/>
+  <code>contact@bretagne-namaste.com</code> ·
+  <code>Thierry.Gayet@gmail.com</code><br/>
+  <a href="https://bretagne-namaste.com">bretagne-namaste.com</a></p>
+
+  <p class="small">Le logiciel, le SDK et ce document sont publiés sous licence
+  MIT. Le code des exemples est à recopier sans condition.</p>
+</section>
+
+</body>
+</html>

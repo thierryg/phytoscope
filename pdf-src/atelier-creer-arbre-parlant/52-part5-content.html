@@ -1,0 +1,89 @@
+<section class="chapter">
+  <h2 id="c11-etalonnage" data-toc="chapter">Étalonner, ou renoncer à conclure</h2>
+  <p class="chapo">Une valeur sans incertitude connue n'est pas une mesure. Voici comment étalonner chaque voie, et combien de temps cela prend réellement.</p>
+
+  <p class="lettrine noindent">L'étalonnage est le poste que personne ne budgète et qui consomme l'essentiel du temps. Comptez, pour une installation extérieure, environ <strong>une heure de mise au point par capteur et par semaine du premier mois</strong>. Si votre planning ne le prévoit pas, votre installation produira des données ; elles seront simplement fausses, et rien ne vous le dira.</p>
+
+  <h3 id="c11-sol" data-toc="sub">Étalonner une sonde d'humidité du sol</h3>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Protocole</div>
+      <div class="pr-t">Étalonnage gravimétrique</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta">
+        <span><b>Durée</b> une demi-journée + 24 h de séchage</span>
+        <span><b>Matériel</b> balance au gramme, étuve ou four</span>
+      </div>
+      <h4>Principe</h4>
+      <p>On compare la lecture du capteur à la teneur en eau réelle, déterminée par pesée avant et après séchage complet. C'est la méthode de référence, et elle est à la portée de n'importe quelle cuisine.</p>
+      <h4>Marche à suivre</h4>
+      <ol>
+        <li>Prélever un volume connu du <strong>sol réel du site</strong> — pas du terreau du commerce. Le type de sol conditionne entièrement la courbe.</li>
+        <li>Préparer cinq à sept échantillons, de très sec à saturé, en ajoutant des quantités d'eau croissantes et en laissant s'équilibrer une heure.</li>
+        <li>Pour chaque échantillon : insérer la sonde, attendre la stabilisation, <strong>noter la valeur brute du convertisseur</strong>.</li>
+        <li>Peser l'échantillon humide, puis le sécher à 105 °C jusqu'à masse constante — environ 24 h — et peser à nouveau.</li>
+        <li>Teneur volumique = (masse humide − masse sèche) / volume de l'échantillon.</li>
+        <li>Ajuster une courbe sur les couples (valeur brute, teneur). Un polynôme de degré 2 suffit presque toujours.</li>
+      </ol>
+      <div class="pr-obs">
+        <p><strong>Ce que vous découvrirez.</strong> La relation n'est pas linéaire, et elle diffère nettement d'un sol à l'autre. Un capteur étalonné sur du terreau donnera des valeurs fausses de plusieurs points en sol argileux.</p>
+      </div>
+      <div class="pr-warn">
+        <p><strong>Réétalonnage.</strong> Une fois par an au minimum, et après tout déplacement de la sonde. Consignez chaque étalonnage avec sa date : c'est ce qui permettra de recalculer une série passée.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 id="c11-thermique" data-toc="sub">Étalonner les sondes de température entre elles</h3>
+
+  <p>Pour la méthode de flux de sève, l'<strong>écart</strong> entre deux sondes porte toute l'information. Une différence systématique de 0,2 °C entre les deux capteurs produit un flux fantôme permanent.</p>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Protocole</div>
+      <div class="pr-t">Appariement des sondes</div>
+    </div>
+    <div class="pr-body">
+      <ol>
+        <li>Placer les deux sondes <strong>dans le même bain</strong> — un thermos d'eau tiède qui se refroidit lentement convient parfaitement, et balaie une plage de températures.</li>
+        <li>Enregistrer les deux voies pendant plusieurs heures, chauffage <strong>éteint</strong>.</li>
+        <li>Tracer l'écart en fonction de la température moyenne. Cet écart est votre <strong>offset</strong>, éventuellement dépendant de la température.</li>
+        <li>Le soustraire systématiquement dans le programme de réduction.</li>
+      </ol>
+      <div class="pr-obs">
+        <p>Cet appariement est <strong>obligatoire</strong>. Sans lui, votre ΔT est faux d'une quantité qui, sur des écarts typiques de quelques degrés, peut représenter plusieurs dizaines de pour cent du signal.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 id="c11-bio" data-toc="sub">Étalonner la voie bioélectrique</h3>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Ce qu'on peut étalonner, et ce qu'on ne peut pas</div>
+    <p><strong>On peut étalonner la chaîne électronique.</strong> Injectez une tension connue à l'entrée — un diviseur résistif à haute impédance sur une pile de référence — et vérifiez le gain, la linéarité et le bruit de fond. Cela se fait en une heure et doit être refait après tout changement.</p>
+    <p><strong>On ne peut pas étalonner la mesure biologique.</strong> Il n'existe pas d'« étalon de potentiel bioélectrique végétal » : l'impédance de source varie d'un arbre à l'autre, d'une saison à l'autre, d'un point à l'autre du même tronc.</p>
+    <p><strong>Conséquence</strong> : votre voie bioélectrique produit des <strong>variations relatives</strong>, jamais une grandeur absolue comparable à une publication. Déclarez-le ainsi, et votre donnée reste honnête.</p>
+  </div>
+
+  <h3 id="c11-reference" data-toc="sub">La voie de référence permanente</h3>
+
+  <div class="callout key">
+    <div class="callout-title">✦ L'astuce qui sauve les séries longues</div>
+    <p>Consacrez une entrée de votre convertisseur à une <strong>résistance étalon fixe</strong>, à la place d'un capteur. Elle ne mesure rien de biologique — c'est précisément l'intérêt.</p>
+    <p>Sur six mois, sa valeur enregistrée devrait être parfaitement constante. Toute variation de cette voie est une <strong>dérive de votre électronique</strong> : de la référence de tension, du gain, ou de la température interne du boîtier.</p>
+    <p>Vous obtenez ainsi, gratuitement et en continu, une mesure de votre propre dérive instrumentale — qu'il suffit ensuite de soustraire. C'est la différence entre une série longue exploitable et une série longue douteuse.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Compter une heure de mise au point par capteur et par semaine du premier mois.</li>
+      <li>Étalonnage gravimétrique du sol avec le <strong>sol réel du site</strong> : la courbe dépend du type de sol.</li>
+      <li>Apparier les deux sondes de flux de sève dans un même bain, chauffage éteint : obligatoire.</li>
+      <li>La chaîne électronique s'étalonne ; la mesure biologique non. Déclarer « variations relatives ».</li>
+      <li>Consacrer une voie à une <strong>résistance étalon</strong> : elle mesure en continu votre propre dérive.</li>
+    </ul>
+  </div>
+</section>

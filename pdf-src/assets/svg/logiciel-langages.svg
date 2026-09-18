@@ -1,0 +1,246 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/logiciel-langages.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 660" width="980" height="660">
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+ <marker id="ahk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
+   markerHeight="5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#23302C"/></marker>
+ <marker id="ahc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5"
+   markerHeight="5.5" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#A8552E"/></marker>
+ <pattern id="hatch" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#E0C073" stroke-width="2.4"/></pattern>
+ <pattern id="hatchb" width="7" height="7" patternTransform="rotate(45)"
+   patternUnits="userSpaceOnUse">
+   <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
+</defs>
+<rect width="980" height="660" fill="#FFFFFF"/>
+<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Quel langage pour ce logiciel ?</text>
+<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Notes attribuées pour CE cahier des charges — pas dans l'absolu</text>
+<text x="391.0" y="106" font-family="Lato, sans-serif" font-size="18.25" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Python 3</text>
+<text x="513.0" y="106" font-family="Lato, sans-serif" font-size="18.25" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">C++</text>
+<text x="635.0" y="106" font-family="Lato, sans-serif" font-size="18.25" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Rust</text>
+<text x="757.0" y="106" font-family="Lato, sans-serif" font-size="18.25" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Go</text>
+<text x="879.0" y="106" font-family="Lato, sans-serif" font-size="18.25" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">TypeScript</text>
+<text x="879.0" y="120" font-family="Lato, sans-serif" font-size="18.25" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">(Electron)</text>
+<rect x="40" y="146" width="900" height="50" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="56" y="176" font-family="Lato, sans-serif" font-size="18.25" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Vitesse de développement</text>
+<circle cx="354.0" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="364.92" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="375.84000000000003" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="386.76" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="397.68" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="476.0" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="486.92" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="497.84000000000003" cy="172" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="508.76" cy="172" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="519.6800000000001" cy="172" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="598.0" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="608.92" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="619.84" cy="172" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="630.76" cy="172" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="641.6800000000001" cy="172" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="720.0" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="730.92" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="741.84" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="752.76" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="763.6800000000001" cy="172" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="842.0" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="852.92" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="863.84" cy="172" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="874.76" cy="172" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="885.6800000000001" cy="172" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<rect x="40" y="204" width="900" height="50" rx="3" fill="#FAFBFA" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="56" y="234" font-family="Lato, sans-serif" font-size="18.25" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Écosystème traitement du signal</text>
+<circle cx="354.0" cy="230" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="364.92" cy="230" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="375.84000000000003" cy="230" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="386.76" cy="230" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="397.68" cy="230" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="476.0" cy="230" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="486.92" cy="230" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="497.84000000000003" cy="230" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="508.76" cy="230" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="519.6800000000001" cy="230" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="598.0" cy="230" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="608.92" cy="230" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="619.84" cy="230" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="630.76" cy="230" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="641.6800000000001" cy="230" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="720.0" cy="230" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="730.92" cy="230" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="741.84" cy="230" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="752.76" cy="230" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="763.6800000000001" cy="230" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="842.0" cy="230" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="852.92" cy="230" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="863.84" cy="230" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="874.76" cy="230" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="885.6800000000001" cy="230" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<rect x="40" y="262" width="900" height="50" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="56" y="292" font-family="Lato, sans-serif" font-size="18.25" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Qualité des graphiques temps réel</text>
+<circle cx="354.0" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="364.92" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="375.84000000000003" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="386.76" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="397.68" cy="288" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="476.0" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="486.92" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="497.84000000000003" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="508.76" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="519.6800000000001" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="598.0" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="608.92" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="619.84" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="630.76" cy="288" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="641.6800000000001" cy="288" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="720.0" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="730.92" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="741.84" cy="288" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="752.76" cy="288" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="763.6800000000001" cy="288" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="842.0" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="852.92" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="863.84" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="874.76" cy="288" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="885.6800000000001" cy="288" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<rect x="40" y="320" width="900" height="50" rx="3" fill="#FAFBFA" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="56" y="350" font-family="Lato, sans-serif" font-size="18.25" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Facilité d'installation (3 OS)</text>
+<circle cx="354.0" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="364.92" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="375.84000000000003" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="386.76" cy="346" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="397.68" cy="346" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="476.0" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="486.92" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="497.84000000000003" cy="346" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="508.76" cy="346" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="519.6800000000001" cy="346" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="598.0" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="608.92" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="619.84" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="630.76" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="641.6800000000001" cy="346" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="720.0" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="730.92" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="741.84" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="752.76" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="763.6800000000001" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="842.0" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="852.92" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="863.84" cy="346" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="874.76" cy="346" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="885.6800000000001" cy="346" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<rect x="40" y="378" width="900" height="50" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="56" y="408" font-family="Lato, sans-serif" font-size="18.25" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Accès audio et MIDI</text>
+<circle cx="354.0" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="364.92" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="375.84000000000003" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="386.76" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="397.68" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="476.0" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="486.92" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="497.84000000000003" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="508.76" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="519.6800000000001" cy="404" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="598.0" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="608.92" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="619.84" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="630.76" cy="404" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="641.6800000000001" cy="404" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="720.0" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="730.92" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="741.84" cy="404" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="752.76" cy="404" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="763.6800000000001" cy="404" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="842.0" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="852.92" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="863.84" cy="404" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="874.76" cy="404" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="885.6800000000001" cy="404" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<rect x="40" y="436" width="900" height="50" rx="3" fill="#FAFBFA" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="56" y="466" font-family="Lato, sans-serif" font-size="18.25" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Contributions d'un amateur</text>
+<circle cx="354.0" cy="462" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="364.92" cy="462" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="375.84000000000003" cy="462" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="386.76" cy="462" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="397.68" cy="462" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="476.0" cy="462" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="486.92" cy="462" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="497.84000000000003" cy="462" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="508.76" cy="462" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="519.6800000000001" cy="462" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="598.0" cy="462" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="608.92" cy="462" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="619.84" cy="462" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="630.76" cy="462" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="641.6800000000001" cy="462" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="720.0" cy="462" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="730.92" cy="462" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="741.84" cy="462" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="752.76" cy="462" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="763.6800000000001" cy="462" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="842.0" cy="462" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="852.92" cy="462" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="863.84" cy="462" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="874.76" cy="462" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="885.6800000000001" cy="462" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<rect x="40" y="494" width="900" height="50" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="0.9"/>
+<text x="56" y="524" font-family="Lato, sans-serif" font-size="18.25" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Empreinte mémoire</text>
+<circle cx="354.0" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="364.92" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="375.84000000000003" cy="520" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="386.76" cy="520" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="397.68" cy="520" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="476.0" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="486.92" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="497.84000000000003" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="508.76" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="519.6800000000001" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="598.0" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="608.92" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="619.84" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="630.76" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="641.6800000000001" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="720.0" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="730.92" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="741.84" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="752.76" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="763.6800000000001" cy="520" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="842.0" cy="520" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="852.92" cy="520" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="863.84" cy="520" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="874.76" cy="520" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<circle cx="885.6800000000001" cy="520" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
+<rect x="40" y="558" width="900" height="76" rx="6" fill="#F7F0DC" stroke="#B08528" stroke-width="1.4"/>
+<text x="60" y="584" font-family="Lato, sans-serif" font-size="19.36" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.2">VERDICT</text>
+<text x="60" y="606" font-family="Lato, sans-serif" font-size="18.25" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Python 3 pour l'application, un cœur en C dans le microcontrôleur, et NumPy pour les boucles chaudes.</text>
+<text x="60" y="622" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Rust devient le bon choix le jour où la carte doit fonctionner sans ordinateur.</text>
+<text x="28" y="652" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
+<text x="952" y="652" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
+</svg>

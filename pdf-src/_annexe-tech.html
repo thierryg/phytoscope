@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<title>L'Arbre qui Parle — Annexe technique</title>
+<meta name="author" content="Ateliers BN"/>
+<meta name="description" content="Schémas électroniques commentés, nomenclatures et listings de programmes pour la construction d'un arbre instrumenté."/>
+<meta name="dcterms.created" content="2026-09-17"/>
+<link rel="stylesheet" href="fonts.css"/>
+<link rel="stylesheet" href="book.css"/>
+<style>
+body{ string-set: booktitle "Annexe technique"; }
+/* Les planches sont larges : chacune occupe une page paysage entière, sinon
+   les annotations tombent sous le seuil de lisibilité à l'impression. */
+@page planche{
+  size: 240mm 170mm;
+  margin: 13mm 14mm 12mm 14mm;
+  @top-left{ content:none; } @top-right{ content:none; }
+  @bottom-left{ content:none; } @bottom-right{ content:none; }
+  @bottom-center{ content: counter(page);
+    font-family:"Cormorant Garamond", serif; font-size:10pt;
+    color: var(--nuit); padding-bottom:4mm; }
+}
+section.planche-page{ page: planche; break-before:page; }
+section.planche-page + *{ break-before:page; }
+figure.planche{ margin:0; }
+figure.planche{ text-align:center; }
+/* la hauteur est la contrainte : 145 mm utiles moins la légende, sinon la
+   figure déborde et WeasyPrint ajoute une page paysage vide */
+figure.planche img{ max-width:100%; max-height:130mm; width:auto; height:auto;
+  border:1px solid var(--trait); border-radius:2mm; }
+figure.planche figcaption{ margin-top:3mm; font-size:9pt; text-align:left; }
+table.bom{ font-size:7.8pt; }
+table.bom th{ font-size:6.6pt; padding:1.6mm 1.6mm; }
+table.bom td{ padding:1.5mm 1.6mm; }
+table.bom td:nth-child(2){ font-size:7.6pt; }
+.tot td{ background:var(--or-pl) !important; font-weight:700; }
+/* book.css met break-inside:avoid sur TOUS les tableaux : pour les longues
+   nomenclatures c'est intenable (une table de 21 lignes laisse une page vide).
+   On autorise la coupure, ligne par ligne, avec répétition de l'en-tête. */
+table.tight-xs, table.tight, table.bom{ break-inside:auto; }
+table.tight-xs thead, table.tight thead, table.bom thead{
+  display:table-header-group; }
+table.tight-xs tr, table.tight tr, table.bom tr{ break-inside:avoid; }
+h4{ break-after:avoid; }
+</style>
+</head>
+<body>
+<section class="cover">
+  <div class="kicker">Ateliers BN · Manuel d'atelier</div>
+  <h1>L'Arbre<br/>qui Parle</h1>
+  <div class="title-rule"></div>
+  <p class="subtitle">Annexe technique — schémas électroniques,<br/>nomenclatures et programmes</p>
+  <div class="cover-foot">
+    <p class="small" style="color:#E0C073">Cinq planches commentées · six nomenclatures ·
+    dix listings · soixante-sept dépôts téléchargés et vérifiés</p>
+  </div>
+</section>
+<section class="titlepage frontpage">
+  <h1>Annexe technique</h1>
+  <p class="sub">Schémas, nomenclatures et programmes<br/>pour un arbre instrumenté</p>
+  <p class="imprint">Ateliers BN — 17 septembre 2026</p>
+</section>
+<section class="frontpage">
+<h2 id="notice" data-toc="chapter">Comment lire cette annexe</h2>
+
+<p class="lettrine noindent">Cette annexe est le complément matériel du manuel
+d'atelier. Elle ne raconte rien : elle donne des schémas que l'on peut câbler,
+des nomenclatures que l'on peut commander et des programmes que l'on peut
+téléverser. Tout ce qui s'y trouve a été vérifié à une source primaire —
+datasheet du constructeur, dépôt public, ou relevé direct d'un fichier de
+conception.</p>
+
+<div class="callout sci">
+  <div class="callout-title">Trois statuts, jamais confondus</div>
+  <ul>
+    <li><strong>Relevé</strong> — le schéma reproduit un circuit existant dont le
+    fichier de conception a été téléchargé et analysé. C'est le cas de la
+    planche 1, dont le netlist a été extrait du fichier Eagle
+    <span class="phon">GalvShield_005.sch</span>.</li>
+    <li><strong>Schéma d'application</strong> — le montage est composé à partir
+    des schémas types publiés dans les datasheets des composants cités. Il est
+    électriquement correct mais n'a pas été prototypé dans le cadre de cette
+    annexe.</li>
+    <li><strong>Non vérifié</strong> — signalé comme tel, en toutes lettres.</li>
+  </ul>
+</div>
+
+<h3 id="notice-prix" data-toc="sub">Sur les prix</h3>
+<p>Les prix sont des ordres de grandeur en euros TTC, relevés chez des
+distributeurs généralistes (Mouser, Digi-Key, Farnell) ou chez les revendeurs
+maker usuels. Ils servent à dimensionner un budget d'atelier, pas à établir un
+devis. Les composants passifs sont donnés au prix unitaire, alors qu'ils
+s'achètent par lots de cent : le coût réel d'un atelier est donc plus bas que la
+somme des lignes, et le poste dominant est toujours le même — le boîtier, le
+câble et la batterie, jamais les puces.</p>
+
+<h3 id="notice-secu" data-toc="sub">Sécurité et déontologie arboricole</h3>
+<div class="callout limite">
+  <div class="callout-title">Avant toute pose sur un arbre vivant</div>
+  <ul>
+    <li>Ne jamais <strong>ceinturer</strong> le tronc avec un lien fermé : la
+    croissance secondaire l'incruste et finit par étrangler le liber. Tout
+    collier doit être ré-ouvert au moins une fois par an.</li>
+    <li>Ne jamais visser profondément : on ouvre une porte aux champignons de
+    carie. Une sonde de flux de sève perce déjà le bois — c'est une blessure
+    assumée, à limiter en nombre et à espacer verticalement.</li>
+    <li>Sangles plates de 40 mm minimum, jamais de câble ni de fil de fer, avec
+    une garniture de feutre entre la sangle et l'écorce.</li>
+    <li>Aucune alimentation secteur au pied de l'arbre : basse tension isolée
+    uniquement, et batterie en boîtier ventilé.</li>
+  </ul>
+</div>
+</section>
+<section class="toc frontpage">
+<h1 id="sommaire">Sommaire</h1>
+<p class="toc-sub">Annexe technique</p>
+<ul>
+<li><a class="tl" href="#notice"><span class="t">Comment lire cette annexe</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#notice-prix"><span class="t">Sur les prix</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#notice-secu"><span class="t">Sécurité et déontologie arboricole</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#p1"><span class="t">Planche 1 — Le front-end biodata à LMC555</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p1-fonc"><span class="t">Comment ça marche</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p1-bom"><span class="t">Nomenclature</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#p2"><span class="t">Planche 2 — La voie d'électrophysiologie</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p2-imp"><span class="t">Pourquoi l'impédance commande tout</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p2-ref"><span class="t">Référence, garde et masse</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p2-50hz"><span class="t">Le 50 Hz et l'isolation</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p2-bom"><span class="t">Nomenclature</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#p3"><span class="t">Planche 3 — Le nœud environnemental</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p3-bus"><span class="t">Quatre familles de liaison, quatre logiques</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p3-lux"><span class="t">Lux et µmol : une confusion coûteuse</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p3-bom"><span class="t">Nomenclature et alternatives</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p3-sol"><span class="t">Pourquoi les sondes d'humidité résistives sont à proscrire</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#p4"><span class="t">Planche 4 — Énergie et survie en extérieur</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p4-budget"><span class="t">Le budget d'énergie, ligne à ligne</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p4-liaison"><span class="t">Choisir la liaison</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p4-boitier"><span class="t">Le boîtier : condensation et presse-étoupes</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p4-bom"><span class="t">Nomenclature</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#p5"><span class="t">Planche 5 — Le flux de sève</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p5-principe"><span class="t">Le principe</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p5-metro"><span class="t">La contrainte métrologique</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#p5-bom"><span class="t">Nomenclature</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#bomg"><span class="t">Nomenclature d'ensemble et budgets</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#bomg-outils"><span class="t">Outillage minimal de l'atelier</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#prog"><span class="t">Les programmes</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#prog-1"><span class="t">Firmware biodata — l'échantillonnage et la détection</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#prog-2"><span class="t">Le nœud environnemental sous ESPHome</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#prog-3"><span class="t">La voie électrophysiologique</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#prog-4"><span class="t">La réduction du flux de sève</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#prog-5"><span class="t">Sonification : le mapping doit être déclaré</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#prog-6"><span class="t">Parole : modèle de langue local et synthèse vocale</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#inv"><span class="t">Ce qui a été téléchargé, et sous quelle licence</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#inv-mcu"><span class="t">Les firmwares de microcontrôleur, cible par cible</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#inv-stack"><span class="t">La chaîne logicielle complète</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#inv-nonverif"><span class="t">Ce qui n'a pas pu être vérifié</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#colophon"><span class="t">Colophon</span><span class="leader"></span></a></li>
+</ul>
+</section>
+<section>
+<h2 id="p1" data-toc="chapter">Planche 1 — Le front-end biodata à LMC555</h2>
+
+<p class="lettrine noindent">C'est le circuit le plus copié de tout le domaine :
+on le retrouve, à peu de chose près identique, dans le MIDI Sprout de Data
+Garden, dans le Biotron de Playtronica et dans la quasi-totalité des projets
+« plante musicale » publiés sur GitHub. Le schéma ci-dessous n'est pas une
+reconstitution : il a été relevé sur le fichier de conception Eagle
+<span class="phon">GalvShield_005.sch</span> du dépôt
+<span class="phon">electricityforprogress/BiodataSonificationBreadboardKit</span>,
+en analysant le netlist du fichier XML.</p>
+
+<section class="planche-page"><figure class="planche" id="fig-1"><img src="assets/svg/sch-biodata-555.svg" alt="Front-end biodata à LMC555"/><figcaption><span class="fig-n">PLANCHE 1</span> — capteur de conductance à oscillateur astable. Relevé du netlist <i>GalvShield_005.sch</i> (Eagle), dépôt electricityforprogress, licence MIT.</figcaption></figure></section>
+
+<h3 id="p1-fonc" data-toc="sub">Comment ça marche</h3>
+
+<p>Un LMC555 monté en <strong>multivibrateur astable</strong> oscille en
+chargeant puis déchargeant un condensateur à travers deux résistances. Dans le
+montage classique, ces deux résistances sont des composants. Ici, la seconde
+a été remplacée par <strong>le végétal lui-même</strong>.</p>
+
+<p>Le courant part du +5 V, traverse R2 (100 kΩ), ressort par la broche 7
+(décharge) vers l'électrode A, traverse le tissu de la feuille jusqu'à
+l'électrode B, et vient charger C1 (4,7 nF). Quand la tension sur C1 atteint
+deux tiers de l'alimentation, le comparateur interne bascule, la broche 7 est
+mise à la masse et C1 se décharge à travers le même chemin. Quand la tension
+retombe au tiers de l'alimentation, le cycle recommence.</p>
+
+<div class="loupe">
+  <div class="l-h">La fréquence est une mesure d'impédance</div>
+  <p class="noindent">La période dépend de la résistance vue entre les deux
+  électrodes :</p>
+  <p class="center"><i>f</i> ≈ 1,44 / ( (R2 + 2·R<sub>plante</sub>) · C1 )</p>
+  <p>Pour C1 = 4,7 nF et R2 = 100 kΩ, une feuille turgescente à 300 kΩ donne
+  environ 480 Hz, tandis qu'un tissu sec à 5 MΩ tombe vers 29 Hz. La plage
+  utile couvre donc plus d'une décade — c'est confortable, et c'est ce qui rend
+  le montage aussi robuste pédagogiquement.</p>
+</div>
+
+<p>La sortie (broche 3) est un signal carré. Le microcontrôleur ne mesure pas
+une tension : il compte le temps entre deux fronts montants, sur une entrée
+d'interruption. Le reste — seuil, gamme musicale, canal MIDI — est du logiciel,
+et se règle avec le potentiomètre R9 et le bouton S1.</p>
+
+<p>Deux sorties coexistent. La sortie MIDI est une boucle de courant sur embase
+DIN-5 : la broche 5 reçoit directement la ligne TX du microcontrôleur, la
+broche 4 est tirée au +5 V par R1. La sortie CV/audio est le signal MLI de la
+broche D11, débarrassé de sa porteuse par le réseau C3-R10-R11 avant de partir
+vers un jack 3,5 mm.</p>
+
+<div class="callout limite">
+  <div class="callout-title">Ce que ce montage ne mesure pas</div>
+  <p class="noindent">Il faut le dire clairement, parce que l'essentiel du
+  discours commercial autour de ces appareils repose sur l'ambiguïté inverse :
+  <strong>ce circuit n'écoute pas la plante, il l'interroge</strong>. Il injecte
+  un courant et mesure l'impédance de surface qui en résulte. C'est l'exact
+  analogue de la réponse électrodermale mesurée sur la peau humaine — et,
+  comme elle, cette impédance dépend au moins autant de l'humidité de l'air, de
+  la qualité du contact et de la température que de l'état physiologique du
+  sujet. Ce n'est pas une raison de s'en priver : c'est une raison de ne pas lui
+  faire dire ce qu'elle ne dit pas.</p>
+</div>
+
+<h3 id="p1-bom" data-toc="sub">Nomenclature</h3>
+<table class="bom tight-xs"><caption>Nomenclature de la planche 1. Les références fabricant, les repères et les valeurs proviennent du fichier <i>Arduino Shield Biodata Sonification — Parts.csv</i> publié avec le dépôt ; les prix en euros sont des ordres de grandeur 2026, convertis et arrondis.</caption><thead><tr><th>Rep.</th><th>Composant</th><th>Valeur</th><th>Référence fabricant</th><th>Boîtier</th><th>≈ €</th></tr></thead><tbody>
+<tr><td>U1</td><td>Temporisateur CMOS</td><td>—</td><td>Texas Instruments <b>LMC555CN</b></td><td>DIP-8</td><td>1,10</td></tr>
+<tr><td>—</td><td>Support de circuit</td><td>8 broches</td><td>Assmann A 08-LC-TT</td><td>DIP-8</td><td>0,15</td></tr>
+<tr><td>R2</td><td>Résistance</td><td>100 kΩ 1 %</td><td>Stackpole RNMF14FTC100K</td><td>axial 1/4 W</td><td>0,10</td></tr>
+<tr><td>R1, R3–R8</td><td>Résistances (×7)</td><td>220 Ω</td><td>Stackpole RNMF14FTC220R</td><td>axial 1/4 W</td><td>0,70</td></tr>
+<tr><td>R9</td><td>Potentiomètre linéaire</td><td>10 kΩ</td><td>Bourns PTV09A-4020F-B103</td><td>6 mm</td><td>0,85</td></tr>
+<tr><td>R10</td><td>Résistance</td><td>3,9 kΩ</td><td>Stackpole RNMF14FTC3K90</td><td>axial</td><td>0,10</td></tr>
+<tr><td>R11</td><td>Résistance</td><td>1 kΩ</td><td>Stackpole RNMF14FTC1K00</td><td>axial</td><td>0,10</td></tr>
+<tr><td>C1</td><td>Condensateur film</td><td>4,7 nF</td><td>KEMET C315C472K1R5TA</td><td>pas 5 mm</td><td>0,25</td></tr>
+<tr><td>C2</td><td>Chimique</td><td>47 µF / 25 V</td><td>KEMET ESH476M025AC3AA</td><td>radial</td><td>0,18</td></tr>
+<tr><td>C3</td><td>Chimique</td><td>1 µF / 50 V</td><td>KEMET ESH105M050AC3AA</td><td>radial</td><td>0,18</td></tr>
+<tr><td>C4</td><td>Découplage</td><td>100 nF</td><td>KEMET C320C104K5R5TA</td><td>pas 5 mm</td><td>0,22</td></tr>
+<tr><td>S1</td><td>Bouton tactile</td><td>—</td><td>Omron B3F-1000</td><td>6 mm</td><td>0,35</td></tr>
+<tr><td>LED1–6</td><td>LED 5 mm</td><td>R/J/V/B/W</td><td>Lite-On LTL2H3KEK et suivantes</td><td>5 mm</td><td>3,40</td></tr>
+<tr><td>MIDI</td><td>Embase DIN 5 broches</td><td>—</td><td>CUI SDS-50J</td><td>traversante</td><td>1,05</td></tr>
+<tr><td>X1, X2</td><td>Jacks stéréo 3,5 mm (×2)</td><td>—</td><td>CUI SJ1-3523N</td><td>traversante</td><td>1,50</td></tr>
+<tr><td>—</td><td>Électrodes adhésives</td><td>TENS</td><td>pastilles + cordons à pression</td><td>—</td><td>6,00</td></tr>
+<tr><td>—</td><td>Carte Arduino Uno (ou compatible)</td><td>—</td><td>ATmega328P</td><td>—</td><td>12,00 – 25,00</td></tr>
+<tr><td>—</td><td>Plaque d'essai + fils</td><td>830 points</td><td>—</td><td>—</td><td>6,00</td></tr>
+<tr class="tot"><td></td><td><b>Total indicatif, hors carte Arduino</b></td><td></td><td></td><td></td><td><b>≈ 22 €</b></td></tr>
+</tbody></table>
+
+<div class="practice">
+  <div class="p-h">Pièges de montage</div>
+  <ul>
+    <li><strong>Utiliser un LMC555, pas un NE555 bipolaire.</strong> La version
+    CMOS a un courant d'entrée de l'ordre du picoampère ; la version bipolaire
+    tire des microampères et fausse complètement la mesure sur une source de
+    plusieurs mégohms.</li>
+    <li><strong>Électrodes : la pression est une variable.</strong> Deux pinces
+    serrées différemment donnent deux signaux différents. Les pastilles
+    adhésives de type TENS sont préférables aux pinces crocodiles.</li>
+    <li><strong>Laisser stabiliser dix minutes</strong> après la pose : le gel
+    des électrodes met ce temps à mouiller la surface, et toute mesure faite
+    avant enregistre la dérive du contact, pas la plante.</li>
+  </ul>
+</div>
+</section>
+<section class="pagebreak">
+<h2 id="p2" data-toc="chapter">Planche 2 — La voie d'électrophysiologie</h2>
+
+<p class="lettrine noindent">Ici, contrairement à la planche 1, on n'injecte
+rien. On écoute une différence de potentiel qui existe déjà dans l'arbre, de
+l'ordre de quelques millivolts, sur une source dont l'impédance se compte en
+mégohms voire en gigohms. Tout le schéma découle de cette seule contrainte.</p>
+
+<section class="planche-page"><figure class="planche" id="fig-2"><img src="assets/svg/sch-electrophysio-ina333.svg" alt="Voie d&#x27;électrophysiologie extracellulaire"/><figcaption><span class="fig-n">PLANCHE 2</span> — électrodes → amplificateur d'instrumentation → convertisseur ΔΣ → liaison I²C isolée. Schéma d'application d'après les datasheets TI INA333, TI ADS1115 et ADI ADuM1251.</figcaption></figure></section>
+
+<h3 id="p2-imp" data-toc="sub">Pourquoi l'impédance commande tout</h3>
+
+<p>Une électrode plantée dans l'aubier voit une source dont l'impédance
+équivalente se situe couramment entre 1 et 50 MΩ. Tout étage qui prélève du
+courant sur cette source crée une chute de tension parasite. C'est pourquoi le
+choix de l'amplificateur ne se fait pas sur son gain — n'importe quel montage
+sait amplifier — mais sur son <strong>courant de polarisation d'entrée</strong>.</p>
+
+<p>L'INA333 tire 200 picoampères. Sur 10 MΩ, cela produit une erreur de 2 mV.
+L'AD620, excellent par ailleurs, tire 1 nanoampère : 10 mV d'erreur sur la même
+source, soit davantage que le signal recherché. Un amplificateur opérationnel
+bipolaire ordinaire tirerait cent fois plus encore. Le critère de sélection est
+donc unique, et il n'est pas négociable.</p>
+
+<div class="callout limite">
+  <div class="callout-title">L'erreur la plus fréquente</div>
+  <p class="noindent">Brancher l'électrode directement sur l'entrée de
+  l'ADS1115, sous prétexte qu'il possède un amplificateur à gain programmable.
+  Cet étage est à capacités commutées : il présente 6 MΩ en mode commun au gain
+  ×1, et seulement 710 kΩ au gain ×16. Face à un tissu de 10 MΩ, on ne mesure
+  plus un potentiel mais le rapport de division entre le tissu et le
+  convertisseur — c'est-à-dire la qualité du contact de l'électrode, qui dérive
+  de son côté. Le montage « marche », produit des courbes, et ne mesure rien.</p>
+</div>
+
+<div class="callout key">
+  <div class="callout-title">Au-delà de 10 MΩ, l'INA333 ne suffit plus</div>
+  <p class="noindent">Le tableau ci-dessous donne l'erreur de tension
+  <i>I</i><sub>bias</sub> × <i>R</i><sub>source</sub> pour les composants
+  usuels. Le signal recherché valant 1 à 50 mV, la lecture est sans appel.</p>
+  <table class="tight" style="margin:.6em 0">
+  <thead><tr><th>Composant</th><th>I<sub>bias</sub> max</th><th>sur 1 MΩ</th>
+  <th>sur 100 MΩ</th><th>sur 1 GΩ</th></tr></thead>
+  <tbody>
+  <tr><td>INA333</td><td>200 pA</td><td>0,2 mV</td><td>20 mV</td><td>200 mV</td></tr>
+  <tr><td>AD8232</td><td>200 pA</td><td>0,2 mV</td><td>20 mV</td><td>200 mV</td></tr>
+  <tr><td>AD8221 (grade BR)</td><td>0,4 nA</td><td>0,4 mV</td><td>40 mV</td><td>400 mV</td></tr>
+  <tr><td>INA128 (pire cas)</td><td>5 nA</td><td>5 mV</td><td>500 mV</td><td>saturé</td></tr>
+  <tr><td>INA826</td><td>65 nA</td><td>65 mV</td><td>saturé</td><td>saturé</td></tr>
+  </tbody></table>
+  <p>L'INA826 est le piège : son impédance d'entrée annoncée de 20 GΩ est
+  excellente, mais son courant de polarisation est cinq cents fois pire que
+  celui de l'INA333. <strong>Impédance d'entrée et courant de polarisation sont
+  deux paramètres indépendants, et c'est le second qui décide.</strong></p>
+  <p>Conséquence : au-delà d'une dizaine de mégohms de source — écorce sèche,
+  contact vieillissant — il faut interposer un <strong>suiveur à entrée
+  électromètre</strong> au plus près de l'électrode (LMP7721, ADA4530-1,
+  OPA129 : courants de polarisation en femtoampères), puis attaquer l'INA333
+  avec sa sortie basse impédance. C'est l'architecture obligatoire pour du
+  potentiel de surface en continu, et elle est presque toujours absente des
+  projets amateurs.</p>
+</div>
+
+<h3 id="p2-ref" data-toc="sub">Référence, garde et masse</h3>
+
+<p>Le signal est unipolaire à la sortie de l'amplificateur : il faut donc le
+recentrer. Le diviseur R4/R5 fixe la broche REF à la moitié de l'alimentation,
+ce qui place le zéro du signal au milieu de la plage du convertisseur et permet
+de voir les excursions dans les deux sens.</p>
+
+<p>Cette même tension sert de <strong>garde active</strong> : le blindage des
+câbles d'entrée n'est pas relié à la masse mais à REF. Le blindage suit alors le
+potentiel du signal, la capacité parasite du câble ne se charge plus, et la
+bande passante ne s'effondre pas malgré la résistance de source élevée. C'est le
+même principe que la « driven right leg » des électrocardiographes.</p>
+
+<p>L'électrode de référence a deux fonctions, souvent confondues. La première
+est d'<strong>offrir un chemin de retour au courant de polarisation</strong> :
+un amplificateur d'instrumentation dont les deux entrées flottent ne mesure
+rien, ses entrées dérivant hors de la plage de mode commun. Sans électrode de
+référence, le montage ne fonctionne pas, quelle que soit la qualité de
+l'amplificateur. La seconde est de fixer un potentiel de comparaison.</p>
+
+<p>Ces deux fonctions n'appellent pas le même emplacement. Une référence
+<strong>dans le sol</strong> offre une impédance faible et une grande surface,
+mais son potentiel de jonction sol/racine dérive avec la pluie et la
+température : bonne pour le retour de courant, médiocre comme référence de
+potentiel. Une référence <strong>dans le tronc</strong>, à cinquante centimètres
+au moins des électrodes de mesure, baigne dans la même chimie : son potentiel de
+jonction est comparable à celui des électrodes de mesure et se soustrait donc au
+premier ordre. C'est le meilleur compromis, au prix d'une blessure
+supplémentaire. Le dispositif employé par Gibert et ses collègues sur un
+peuplier en 2006 utilisait, lui, une électrode plomb / chlorure de plomb
+enterrée à 80 cm.</p>
+
+<p>Dans tous les cas l'électrode doit être <strong>non polarisable</strong>. Un
+piquet d'acier est une électrode polarisable : il se comporte en condensateur de
+double couche, développe des potentiels galvaniques avec le milieu et dérive de
+plusieurs millivolts par jour par corrosion et variation de sa couche d'oxyde.
+L'acier reste acceptable pour un signal rapide en couplage alternatif ; il est
+inutilisable pour un potentiel lent suivi sur plusieurs jours.</p>
+
+<div class="callout key">
+  <div class="callout-title">Le compromis qui résout presque tout</div>
+  <p class="noindent">Le problème dominant en mesure longue durée n'est pas le
+  bruit : c'est la <strong>dérive du potentiel de demi-pile</strong> des
+  électrodes, qui apparaît en différentiel et se confond avec un signal
+  biologique lent. Si le projet ne cherche que des <i>événements</i> — réponse à
+  une blessure, à un choc thermique, à l'arrosage — un couplage alternatif à
+  0,05 Hz élimine le problème d'un seul coup. C'est précisément ce que fait
+  l'AD8232 avec son passe-haut intégré à deux pôles, explicitement conçu pour
+  supprimer les artefacts de mouvement et le potentiel de demi-pile. Pour un
+  arbre parlant, c'est très probablement le bon choix — à condition d'assumer
+  qu'on renonce alors aux dérives lentes, c'est-à-dire à la saisonnalité.</p>
+  <p>Deux précautions gratuites : prendre les deux électrodes de mesure dans le
+  <strong>même lot et le même modèle</strong>, pour que leurs dérives se
+  soustraient ; et interposer un pont de gel <strong>KCl</strong> — les mobilités
+  du potassium et du chlorure étant quasi identiques, le potentiel de jonction
+  y est minimal. C'est exactement ce que fait le gel d'une électrode ECG
+  jetable.</p>
+</div>
+
+<h3 id="p2-50hz" data-toc="sub">Le 50 Hz et l'isolation</h3>
+
+<p>Un arbre instrumenté est une antenne de plusieurs mètres au milieu d'un champ
+électrique à 50 Hz. Trois lignes de défense se cumulent, dans cet ordre :</p>
+<ol>
+  <li><strong>Le mode commun.</strong> Les deux électrodes captent le secteur
+  presque à l'identique ; l'amplificateur d'instrumentation, qui ne répond qu'à
+  la différence, en élimine l'essentiel — d'où l'importance de câbles de même
+  longueur et de même cheminement.</li>
+  <li><strong>L'intégration.</strong> En échantillonnant sur une durée multiple
+  entière de 20 ms, la moyenne du secteur est rigoureusement nulle. À 8
+  échantillons par seconde, l'ADS1115 intègre sur 125 ms, soit très exactement
+  six périodes et quart — on préférera un réglage à 8 SPS ou 16 SPS.</li>
+  <li><strong>Le filtre réjecteur numérique</strong>, en dernier recours, sur ce
+  qui reste.</li>
+</ol>
+
+<p>L'isolateur ADuM1251 ne sert pas à protéger l'humain : sous 3,3 V il n'y a
+rien à protéger. Il coupe la <strong>boucle de masse</strong>. Sans lui, la masse
+du montage rejoint la terre du réseau par l'alimentation de la passerelle, et le
+secteur revient dans la mesure par ce chemin, en contournant toutes les
+précautions prises en amont.</p>
+
+<h3 id="p2-bom" data-toc="sub">Nomenclature</h3>
+<table class="bom tight-xs"><caption>Nomenclature de la planche 2. Les deux postes dominants sont les électrodes non polarisables et l'isolation galvanique — c'est-à-dire précisément les deux éléments que l'on est tenté de supprimer, et dont la suppression ruine la mesure.</caption><thead><tr><th>Rep.</th><th>Composant</th><th>Caractéristique déterminante</th><th>Référence</th><th>≈ €</th></tr></thead><tbody>
+<tr><td>U1</td><td>Ampli d'instrumentation</td><td>I<sub>bias</sub> 200 pA typ., 0,05 µV/°C</td><td>TI <b>INA333AIDGKR</b></td><td>6,50</td></tr>
+<tr><td>—</td><td>Variante plus bruyante mais courante</td><td>I<sub>bias</sub> 1 nA, bruit 9 nV/√Hz</td><td>ADI AD8221 / AD620</td><td>9,00</td></tr>
+<tr><td>U2</td><td>Convertisseur ΔΣ 16 bits</td><td>4 voies, PGA ×1…×16, I²C, 860 SPS</td><td>TI <b>ADS1115IDGSR</b></td><td>5,40</td></tr>
+<tr><td>—</td><td>Variante 24 bits pour signaux lents</td><td>PGA ×128, réf. interne</td><td>TI ADS1220 / ADS1256</td><td>8,00 – 14,00</td></tr>
+<tr><td>U3</td><td>Isolateur I²C</td><td>barrière 2,5 kV, alimentation isolée à part</td><td>ADI <b>ADuM1251ARZ</b></td><td>6,80</td></tr>
+<tr><td>—</td><td>Convertisseur DC-DC isolé</td><td>1 W, 3,3 V → 3,3 V isolé</td><td>Recom R1SE-3.33.3S</td><td>5,90</td></tr>
+<tr><td>R1, R2</td><td>Limitation d'entrée</td><td>10 kΩ 0,1 %, métal</td><td>Vishay MMA0204</td><td>0,60</td></tr>
+<tr><td>R_G</td><td>Gain</td><td>1 kΩ 0,1 % → G = 101</td><td>Vishay MMA0204</td><td>0,30</td></tr>
+<tr><td>R4, R5</td><td>Référence à mi-alimentation</td><td>100 kΩ 0,1 % appairées</td><td>Vishay</td><td>0,60</td></tr>
+<tr><td>R3</td><td>Anti-repliement</td><td>16 kΩ avec C3 → f<sub>c</sub> ≈ 100 Hz</td><td>—</td><td>0,10</td></tr>
+<tr><td>C1, C2</td><td>Filtrage RF d'entrée</td><td>1 nF C0G</td><td>KEMET</td><td>0,40</td></tr>
+<tr><td>C3</td><td>Anti-repliement</td><td>100 nF C0G</td><td>KEMET</td><td>0,25</td></tr>
+<tr><td>E1, E2</td><td>Pastilles Ag/AgCl (×2)</td><td>non polarisables : interface réversible, dérive faible</td><td>A-M Systems <b>550015</b> (Ø 2 × 4 mm), 36 $ pièce</td><td>68,00</td></tr>
+<tr><td>—</td><td>Variante économique</td><td>aiguilles inox 316L Ø 1 mm</td><td>quincaillerie</td><td>2,00</td></tr>
+<tr><td>REF</td><td>Électrode de référence de sol</td><td>Pb/PbCl₂ ou Cu/CuSO₄</td><td>électrode de potentiel spontané</td><td>45,00</td></tr>
+<tr><td>—</td><td>Câble blindé par paire</td><td>faible triboélectricité, PTFE</td><td>au mètre</td><td>4,00/m</td></tr>
+<tr class="tot"><td></td><td><b>Total voie complète, électrodes de laboratoire</b></td><td></td><td></td><td><b>≈ 115 – 180 €</b></td></tr>
+</tbody></table>
+</section>
+<section class="pagebreak">
+<h2 id="p3" data-toc="chapter">Planche 3 — Le nœud environnemental</h2>
+
+<p class="lettrine noindent">Sans contexte, le signal d'un arbre ne veut rien
+dire. Une variation d'impédance à midi en juillet et la même variation à
+quatre heures du matin en novembre n'ont pas le même sens. Le nœud
+environnemental n'est donc pas un accessoire : c'est ce qui rend le signal
+principal interprétable.</p>
+
+<section class="planche-page"><figure class="planche" id="fig-3"><img src="assets/svg/sch-bus-capteurs-esp32.svg" alt="Nœud environnemental ESP32"/><figcaption><span class="fig-n">PLANCHE 3</span> — bus I²C partagé, bus 1-Wire, entrée analogique et comptage d'impulsions avec anti-rebond matériel.</figcaption></figure></section>
+
+<h3 id="p3-bus" data-toc="sub">Quatre familles de liaison, quatre logiques</h3>
+
+<p>Le <strong>bus I²C</strong> porte les capteurs intelligents : température,
+humidité, pression, lumière, CO₂. Chacun répond à une adresse propre, deux fils
+suffisent pour tous. La contrainte est la longueur : au-delà d'un mètre environ,
+la capacité du câble arrondit les fronts et le bus devient instable. On descend
+alors les résistances de tirage à 2,2 kΩ, ou l'on renonce à l'I²C.</p>
+
+<p>Le <strong>1-Wire</strong> accepte au contraire plusieurs dizaines de mètres.
+C'est lui qui va chercher les températures loin du boîtier : l'air sous abri, le
+sol à dix centimètres, le tronc lui-même. Chaque DS18B20 porte une adresse
+gravée sur 64 bits, ce qui permet d'en mettre plusieurs sur le même fil sans
+ambiguïté — à condition de noter quelle adresse correspond à quel emplacement,
+faute de quoi l'ordre change au premier remplacement.</p>
+
+<p>L'<strong>entrée analogique</strong> reçoit la sonde capacitive d'humidité du
+sol. Le <strong>comptage d'impulsions</strong> reçoit l'anémomètre et le
+pluviomètre.</p>
+
+<div class="callout limite">
+  <div class="callout-title">L'anti-rebond doit être matériel</div>
+  <p class="noindent">Un contact à lame souple rebondit pendant une à cinq
+  millisecondes. Une bascule de pluviomètre produit alors trois ou quatre
+  interruptions au lieu d'une, et la pluie est surestimée d'autant. Le réseau
+  R4-C2 (10 kΩ × 100 nF, soit 1 ms de constante de temps) résout le problème
+  avant qu'il n'atteigne le logiciel. Un anti-rebond purement logiciel oblige à
+  rester éveillé, ce qui ruine le budget d'énergie.</p>
+</div>
+
+<h3 id="p3-lux" data-toc="sub">Lux et µmol : une confusion coûteuse</h3>
+
+<p>Un BH1750 mesure des <strong>lux</strong>, c'est-à-dire un flux lumineux
+pondéré par la sensibilité de l'œil humain, qui culmine dans le vert vers
+555 nm. Or la photosynthèse ne voit pas comme nous : elle compte des
+<strong>photons</strong> entre 400 et 700 nm, et travaille surtout dans le bleu
+et le rouge — précisément là où l'œil est peu sensible. Les deux grandeurs ne
+mesurent pas la même chose.</p>
+
+<p>Sous lumière solaire, et sous elle seulement, un facteur empirique d'environ
+0,0185 permet de passer des lux aux µmol·m⁻²·s⁻¹ : 108 000 lx de plein soleil
+correspondent à environ 2 000 µmol·m⁻²·s⁻¹. Ce facteur est <strong>faux pour
+toute autre source</strong> : sous un éclairage horticole à LED rouge et bleu,
+l'erreur dépasse couramment un facteur trois. Si le rayonnement utile à la
+plante est une variable du projet, il faut un capteur quantique — un Apogee
+SQ-500 ou équivalent, dix fois plus cher, mais qui mesure la bonne grandeur.</p>
+
+<h3 id="p3-bom" data-toc="sub">Nomenclature et alternatives</h3>
+<table class="bom tight-xs"><caption>Nomenclature de la planche 3, avec les alternatives de montée en gamme. Plages et précisions issues des datasheets constructeur ; les écarts de prix d'un facteur dix entre un BH1750 et un SQ-500 correspondent à un écart de nature, pas de qualité — voir la discussion lux / PPFD.</caption><thead><tr><th>Rep.</th><th>Capteur / composant</th><th>Grandeur · plage</th><th>Précision annoncée</th><th>Interface</th><th>≈ €</th></tr></thead><tbody>
+<tr><td>U1</td><td>ESP32-S3 (carte DevKit)</td><td>—</td><td>veille ≈ 13 µA au niveau carte</td><td>Wi-Fi / BLE</td><td>9,00 – 15,00</td></tr>
+<tr><td>—</td><td>Variante ESP32-C6</td><td>—</td><td>veille ≈ 7 µA au niveau puce</td><td>Wi-Fi 6 / Thread</td><td>8,00</td></tr>
+<tr><td>—</td><td>Variante Raspberry Pi Pico 2 W</td><td>—</td><td>RP2350, 520 Ko SRAM</td><td>Wi-Fi / BLE 5.2</td><td>7,00</td></tr>
+<tr><td>A1</td><td>BME280</td><td>T −40…+85 °C · HR 0–100 % · P 300–1100 hPa</td><td>±1,0 °C · ±3 % HR · ±1 hPa</td><td>I²C / SPI</td><td>4,00</td></tr>
+<tr><td>—</td><td>BME680 (ajoute un capteur de gaz)</td><td>idem + COV (indice)</td><td>indice non étalonné, dérive</td><td>I²C / SPI</td><td>12,00</td></tr>
+<tr><td>—</td><td>SHT31 (référence T/HR)</td><td>T −40…+125 °C · HR 0–100 %</td><td>±0,2 °C · ±2 % HR</td><td>I²C</td><td>9,00</td></tr>
+<tr><td>—</td><td>SHT85 (métrologie)</td><td>T −40…+105 °C · HR 0–100 %</td><td>±0,1 °C · ±1,5 % HR</td><td>I²C</td><td>45,00</td></tr>
+<tr><td>A2</td><td>BH1750FVI</td><td>éclairement 1 – 65 535 lx</td><td>±20 % typ.</td><td>I²C</td><td>3,00</td></tr>
+<tr><td>—</td><td>TSL2591 (forte dynamique)</td><td>188 µlx – 88 000 lx</td><td>—</td><td>I²C</td><td>7,00</td></tr>
+<tr><td>—</td><td>Apogée SQ-500 (PAR de référence)</td><td>PPFD 0 – 4 000 µmol m⁻² s⁻¹</td><td>erreur directionnelle ≤ ±5 % à 75°</td><td>analogique 0,01 mV/µmol</td><td>≈ 300,00</td></tr>
+<tr><td>A3</td><td>SCD41</td><td>CO₂ 400 – 5 000 ppm</td><td>±(40 ppm + 5 %)</td><td>I²C</td><td>38,00</td></tr>
+<tr><td>—</td><td>SCD30 (meilleure justesse absolue)</td><td>CO₂ 400 – 10 000 ppm</td><td>±(30 ppm + 3 %)</td><td>I²C</td><td>45,00</td></tr>
+<tr><td>A4–A6</td><td>DS18B20 étanches (×3)</td><td>T −55…+125 °C</td><td>±0,5 °C entre −10 et +85 °C</td><td>1-Wire</td><td>9,00</td></tr>
+<tr><td>A7</td><td>Sonde capacitive d'humidité du sol v2.0</td><td>sortie 0 – 3 V, non étalonnée</td><td>relatif seulement</td><td>analogique</td><td>4,00</td></tr>
+<tr><td>—</td><td>Watermark 200SS (potentiel matriciel)</td><td>0 – 200 kPa</td><td>étalonnage Shock 1998, 10–100 kPa</td><td>résistif (excitation alternative)</td><td>40,00</td></tr>
+<tr><td>—</td><td>TEROS 12 (teneur en eau volumique)</td><td>VWC · T · CE</td><td>±0,03 m³/m³ étalonnage générique</td><td>SDI-12</td><td>≈ 250,00</td></tr>
+<tr><td>R1–R4</td><td>Résistances de tirage et anti-rebond</td><td>4,7 kΩ ×3, 10 kΩ</td><td>1 %</td><td>—</td><td>0,40</td></tr>
+<tr><td>C1, C2</td><td>Anti-rebond et découplage</td><td>100 nF ×2</td><td>X7R</td><td>—</td><td>0,30</td></tr>
+<tr><td>—</td><td>Anémomètre à coupelles à contact ILS</td><td>vent</td><td>selon modèle</td><td>impulsions</td><td>25,00</td></tr>
+<tr><td>—</td><td>Pluviomètre à augets</td><td>0,2 mm par bascule</td><td>±2 % typ.</td><td>impulsions</td><td>30,00</td></tr>
+</tbody></table>
+
+<h3 id="p3-sol" data-toc="sub">Pourquoi les sondes d'humidité résistives sont à proscrire</h3>
+
+<p>Les sondes vendues quelques centimes, à deux broches nues et dorées, mesurent
+la conductivité du sol entre deux électrodes traversées par un courant continu.
+Cette configuration provoque une <strong>électrolyse</strong> : le métal d'une
+électrode se dissout et se dépose sur l'autre. En sol humide et sous tension
+permanente, la destruction est visible en quelques semaines, et la dérive bien
+avant. S'y ajoute une sensibilité majeure à la salinité : un apport d'engrais
+fait chuter la résistance sans qu'une goutte d'eau ait bougé.</p>
+
+<p>Les sondes <strong>capacitives</strong> déplacent le problème : leurs
+électrodes sont noyées dans l'époxy, le courant continu ne circule plus, la
+corrosion disparaît. Elles restent toutefois non étalonnées et sensibles à la
+texture du sol — elles donnent un indice relatif, pas une teneur en eau. Les
+versions v1.2, très répandues, sont dépourvues de régulateur embarqué et leur
+lecture varie avec la tension d'alimentation : on privilégiera les v2.0, et l'on
+alimentera la sonde sous une tension stable.</p>
+
+<p>Au-dessus, deux familles de mesures véritablement quantitatives coexistent :
+le <strong>potentiel matriciel</strong>, qui exprime l'effort que la plante doit
+fournir pour extraire l'eau, mesuré par un Watermark 200SS ou un tensiomètre ; et
+la <strong>teneur en eau volumique</strong>, mesurée par réflectométrie
+temporelle. Pour un arbre, c'est le potentiel matriciel qui est
+physiologiquement pertinent : c'est lui que l'arbre « ressent ».</p>
+</section>
+<section class="pagebreak">
+<h2 id="p4" data-toc="chapter">Planche 4 — Énergie et survie en extérieur</h2>
+
+<p class="lettrine noindent">Une station qui s'arrête en novembre n'a pas
+mesuré une année : elle a mesuré un été. L'autonomie n'est pas un raffinement,
+c'est la condition de l'existence même d'une série temporelle.</p>
+
+<section class="planche-page"><figure class="planche" id="fig-4"><img src="assets/svg/sch-alim-solaire.svg" alt="Alimentation solaire LiFePO₄"/><figcaption><span class="fig-n">PLANCHE 4</span> — chaîne panneau → MPPT → accumulateur → régulateur, avec budget d'énergie.</figcaption></figure></section>
+
+<h3 id="p4-budget" data-toc="sub">Le budget d'énergie, ligne à ligne</h3>
+
+<p>Le calcul se fait toujours sur un cycle complet, pas sur une consommation
+moyenne. Pour un relevé toutes les quinze minutes avec émission LoRa :</p>
+
+<table class="tight">
+<thead><tr><th>Phase</th><th>Courant</th><th>Durée</th><th>Charge</th></tr></thead>
+<tbody>
+<tr><td>Veille profonde</td><td>15 µA</td><td>899 s</td><td>13,5 mA·s</td></tr>
+<tr><td>Réveil, stabilisation et mesures</td><td>40 mA</td><td>0,9 s</td><td>36,0 mA·s</td></tr>
+<tr><td>Émission LoRa</td><td>120 mA</td><td>0,1 s</td><td>12,0 mA·s</td></tr>
+<tr class="tot"><td><b>Par cycle</b></td><td></td><td>900 s</td><td><b>61,5 mA·s</b></td></tr>
+</tbody>
+</table>
+
+<p>Soit 0,0171 mA·h par cycle, 1,64 mA·h par jour, environ 600 mA·h par an. Une
+cellule de 6 000 mA·h tiendrait donc près de dix ans sans le moindre apport
+solaire. Ce résultat, contre-intuitif, a une conséquence pratique nette :
+<strong>dans une station bien conçue, la capacité n'est jamais la contrainte.</strong>
+Ce qui tue les stations, c'est la consommation résiduelle des cartes de
+développement — un régulateur à faible rendement ou une puce USB-série qui
+continue de tirer dix milliampères pendant la veille suffit à multiplier le
+budget par mille.</p>
+
+<div class="callout limite">
+  <div class="callout-title">La charge sous zéro degré</div>
+  <p class="noindent">Toutes les chimies au lithium, LiFePO₄ comprise,
+  interdisent la charge sous 0 °C : le lithium se dépose alors sous forme
+  métallique sur l'anode, de façon irréversible, et la capacité s'effondre en
+  quelques cycles. C'est l'avarie numéro un des stations hivernales, et elle est
+  silencieuse. La parade tient en trois euros : un DS18B20 collé contre la
+  cellule et un verrouillage logiciel de la charge.</p>
+</div>
+
+<h3 id="p4-liaison" data-toc="sub">Choisir la liaison</h3>
+
+<table class="tight">
+<thead><tr><th>Liaison</th><th>Portée réaliste</th><th>Débit utile</th>
+<th>Contrainte</th><th>Abonnement</th></tr></thead>
+<tbody>
+<tr><td>Wi-Fi</td><td>30 – 80 m</td><td>élevé</td>
+<td>consommation d'association élevée</td><td>—</td></tr>
+<tr><td>LoRaWAN (TTN)</td><td>2 – 15 km</td><td>quelques octets</td>
+<td>1 % de rapport cyclique en EU868 ; sur le réseau communautaire TTN,
+politique d'usage équitable de 30 s d'émission par jour et 10 messages
+descendants</td><td>gratuit</td></tr>
+<tr><td>NB-IoT / LTE-M</td><td>couverture opérateur</td><td>quelques ko</td>
+<td>dépend d'un opérateur, carte SIM</td><td>≈ 10 – 30 €/an</td></tr>
+<tr><td>Maillage LoRa (Meshtastic)</td><td>quelques km, relayé</td><td>faible</td>
+<td>pas d'infrastructure, mais pas de garantie</td><td>—</td></tr>
+</tbody>
+</table>
+
+<p>La politique d'usage équitable de TTN est plus contraignante qu'il n'y
+paraît : trente secondes d'émission par jour, à un facteur d'étalement moyen,
+autorisent environ une centaine de messages courts — soit très exactement le
+rythme d'un relevé au quart d'heure. Il n'y a pas de marge pour transmettre une
+forme d'onde. <strong>Le traitement doit donc avoir lieu dans le nœud</strong>,
+et c'est le résumé statistique, non le signal brut, qui voyage.</p>
+
+<h3 id="p4-boitier" data-toc="sub">Le boîtier : condensation et presse-étoupes</h3>
+
+<p>Un boîtier IP67 parfaitement étanche est une machine à fabriquer de l'eau. Le
+jour, l'air intérieur se dilate ; la nuit, il se contracte et aspire de l'air
+humide par le moindre défaut ; au matin, la vapeur condense sur l'électronique
+froide. Le cycle se répète et l'eau s'accumule.</p>
+
+<p>La solution n'est pas de mieux étancher mais de <strong>ventiler
+sélectivement</strong> : un évent à membrane ePTFE laisse passer les molécules
+de gaz et de vapeur, bloque l'eau liquide et les poussières, et supprime la
+différence de pression qui aspirait l'air humide. Les câbles, eux, entrent par
+des presse-étoupes à joint, toujours <strong>par le dessous</strong>, avec une
+boucle d'égouttement en amont pour que l'eau ruisselant le long du câble tombe
+avant d'atteindre l'entrée.</p>
+
+<h3 id="p4-bom" data-toc="sub">Nomenclature</h3>
+<table class="bom tight-xs"><caption>Nomenclature de la planche 4. L'évent à membrane et l'abri météorologique sont les deux lignes que l'on supprime le plus volontiers, et les deux dont l'absence se paie en données inutilisables.</caption><thead><tr><th>Rep.</th><th>Composant</th><th>Caractéristique</th><th>Référence indicative</th><th>≈ €</th></tr></thead><tbody>
+<tr><td>PV</td><td>Panneau solaire</td><td>6 V / 5 W, verre trempé</td><td>générique cadre alu</td><td>18,00</td></tr>
+<tr><td>D1</td><td>Diode Schottky anti-retour</td><td>40 V / 3 A, V<sub>f</sub> 0,5 V</td><td>SS34</td><td>0,20</td></tr>
+<tr><td>U1</td><td>Chargeur MPPT 1 cellule</td><td>point de puissance par pont résistif</td><td>CN3791 (module)</td><td>6,00</td></tr>
+<tr><td>BT1</td><td>Accumulateur LiFePO₄</td><td>3,2 V · 6 000 mA·h · −20…+60 °C</td><td>cellule 32700 + support</td><td>14,00</td></tr>
+<tr><td>U2</td><td>Convertisseur abaisseur-élévateur</td><td>3,3 V, η > 90 %, arrêt commandé</td><td>TI TPS63020</td><td>7,50</td></tr>
+<tr><td>—</td><td>Sonde de température de batterie</td><td>verrouillage de charge < 0 °C</td><td>DS18B20</td><td>3,00</td></tr>
+<tr><td>F1</td><td>Fusible réarmable</td><td>PTC 1 A</td><td>MF-R110</td><td>0,40</td></tr>
+<tr><td>—</td><td>Boîtier étanche</td><td>IP65/IP67, ABS, presse-étoupes</td><td>160 × 110 × 90 mm</td><td>16,00</td></tr>
+<tr><td>—</td><td>Évent à membrane ePTFE</td><td>équilibrage de pression, anti-condensation</td><td>Gore Protective Vent (vissant)</td><td>7,00</td></tr>
+<tr><td>—</td><td>Presse-étoupes M12 à joint</td><td>×4</td><td>nylon IP68</td><td>4,00</td></tr>
+<tr><td>—</td><td>Abri météorologique à persiennes</td><td>erreur radiative réduite</td><td>type Stevenson, 7 coupelles</td><td>35,00</td></tr>
+<tr class="tot"><td></td><td><b>Total chaîne d'énergie et protection</b></td><td></td><td></td><td><b>≈ 111 €</b></td></tr>
+</tbody></table>
+</section>
+<section class="pagebreak">
+<h2 id="p5" data-toc="chapter">Planche 5 — Le flux de sève</h2>
+
+<p class="lettrine noindent">De toutes les grandeurs mesurables sur un arbre,
+le flux de sève est la plus proche de ce qu'un profane appellerait « ce que
+l'arbre est en train de faire ». C'est aussi la plus invasive : elle exige de
+percer l'aubier.</p>
+
+<section class="planche-page"><figure class="planche" id="fig-5"><img src="assets/svg/sch-granier-tdp.svg" alt="Sonde de flux de sève par dissipation thermique"/><figcaption><span class="fig-n">PLANCHE 5</span> — méthode Granier : aiguille chauffée à puissance constante et aiguille de référence, couple thermoélectrique différentiel, numérisation 24 bits.</figcaption></figure></section>
+
+<h3 id="p5-principe" data-toc="sub">Le principe</h3>
+
+<p>Deux aiguilles sont implantées dans l'aubier sur la même verticale, à quarante
+millimètres d'écart. Celle du haut contient une résistance chauffée à puissance
+constante — environ 0,2 W. Celle du bas ne chauffe pas et sert de référence. Un
+couple thermoélectrique différentiel mesure l'écart de température entre les
+deux.</p>
+
+<p>Quand la sève ne monte pas, la chaleur ne s'évacue que par conduction et
+l'écart est maximal. Quand la sève monte, elle emporte la chaleur et l'écart
+diminue. Granier a établi en 1985 une relation empirique entre cet écart et la
+densité de flux :</p>
+
+<p class="center"><i>K</i> = (ΔT<sub>max</sub> − ΔT) / ΔT<br/>
+<i>u</i> = 118,99·10⁻⁶ · <i>K</i><sup>1,231</sup>&nbsp;&nbsp;[m³ m⁻² s⁻¹]</p>
+
+<div class="callout limite">
+  <div class="callout-title">Le facteur 100 qui fausse une implémentation sur deux</div>
+  <p class="noindent">Le coefficient dépend entièrement du système d'unités
+  retenu, et les quatre écritures suivantes, toutes présentes dans la
+  littérature, sont strictement équivalentes :</p>
+  <table class="tight" style="margin:.6em 0">
+  <thead><tr><th>Écriture</th><th>Unité de u</th></tr></thead>
+  <tbody>
+  <tr><td>u = 4,284 · K<sup>1,231</sup></td><td>L·dm⁻²·h⁻¹, soit dm/h</td></tr>
+  <tr><td>u = 0,0119 · K<sup>1,231</sup></td><td>cm³·cm⁻²·s⁻¹, soit <b>cm/s</b></td></tr>
+  <tr><td>u = 119·10⁻⁶ · K<sup>1,231</sup></td><td>m³·m⁻²·s⁻¹, soit <b>m/s</b></td></tr>
+  <tr><td>u = 0,119 · K<sup>1,231</sup></td><td>kg·m⁻²·s⁻¹ (× masse volumique)</td></tr>
+  </tbody></table>
+  <p>Confondre les deux écritures du milieu introduit un <strong>facteur
+  100</strong>. C'est l'erreur d'implémentation la plus fréquente de toute la
+  méthode. L'exposant exact est 1,231 ; la valeur 1,23 est un arrondi. Enfin,
+  u est une <strong>vitesse de filtration</strong> — un volume par unité de
+  surface d'aubier conducteur — et non la vitesse réelle de la sève dans les
+  vaisseaux, qui est plus élevée.</p>
+</div>
+
+<p>où ΔT<sub>max</sub> est l'écart relevé en fin de nuit, lorsque le flux est
+supposé nul. Cette hypothèse est elle-même une source d'erreur : par nuit chaude
+et sèche, la transpiration nocturne ne s'annule pas, et l'on sous-estime alors
+ΔT<sub>max</sub>, donc tout le reste de la journée.</p>
+
+<div class="callout limite">
+  <div class="callout-title">Un indice, pas un débit</div>
+  <p class="noindent">L'étalonnage d'origine de Granier a été établi sur un
+  petit nombre d'espèces. La littérature ultérieure documente des
+  sous-estimations massives : −60 % sur noisetier contre potomètre de précision
+  (<i>Sensors</i> 19:2419, 2019) ; −69 % sur <i>Pinus tabuliformis</i> faute de
+  calibration d'espèce ; −37 % sur l'usage d'eau d'un peuplement de conifères
+  (Peters et al., <i>New Phytologist</i>, 2018) ; jusqu'à −50 % lorsque la sonde
+  déborde de l'aubier conducteur (Clearwater et al., 1999). Une méta-analyse de
+  290 expériences de calibration (Flo et al., <i>Agric. For. Meteorol.</i>, 2019)
+  conclut que les méthodes à dissipation ont la plus faible exactitude et le plus
+  fort biais proportionnel, mais une bonne linéarité et une bonne précision :
+  elles conviennent au flux <i>relatif</i>, pas au flux absolu. Sans
+  recalibration sur l'espèce étudiée, <strong>ce montage ne donne pas un débit
+  absolu</strong>. Il donne un indice relatif, parfaitement utilisable pour
+  suivre une dynamique jour/nuit ou un stress hydrique sur un même arbre, mais
+  qu'il serait malhonnête de convertir en litres par jour.</p>
+</div>
+
+<div class="callout limite">
+  <div class="callout-title">L'artefact qu'on ne voit jamais venir</div>
+  <p class="noindent">Un tronc n'est pas isotherme. Do et Rocheteau ont mesuré
+  en 2002 des <strong>gradients thermiques naturels de 0,3 à 3,5 °C</strong>
+  entre deux points distants de huit à dix centimètres — positifs la nuit,
+  négatifs le jour — capables d'induire des erreurs de flux dépassant 100 %.
+  L'écart utile de la mesure étant du même ordre, l'artefact est indiscernable
+  du signal. Le remède validé est le <strong>chauffage cyclique</strong> :
+  45 minutes allumé, 15 minutes éteint. La phase froide donne le gradient
+  naturel seul, qu'on soustrait ensuite. Elle divise en outre la consommation
+  par quatre — dans une station solaire, c'est un double bénéfice.</p>
+</div>
+
+<h3 id="p5-metro" data-toc="sub">La contrainte métrologique</h3>
+
+<p>L'écart utile va de zéro à une dizaine de kelvins, et il faut le résoudre au
+centième de kelvin. Un couple cuivre-constantan produit environ 40 µV par
+kelvin : il faut donc distinguer 0,4 µV. Aucun convertisseur intégré à un
+microcontrôleur ne sait faire cela. D'où le choix d'un convertisseur 24 bits
+muni d'un amplificateur à gain programmable ×128, et d'une référence de tension
+stable en température — car une dérive de la référence se lit exactement comme
+une variation de flux.</p>
+
+<p>Les autres méthodes thermiques répondent à d'autres besoins. La
+<strong>méthode du rapport de chaleur</strong> (heat ratio method) envoie une
+impulsion brève au lieu d'un chauffage continu et mesure la dissymétrie de
+propagation de part et d'autre de la source : elle sait mesurer les flux très
+lents et surtout les <strong>flux inverses</strong>, invisibles à la méthode
+Granier, et elle consomme beaucoup moins. C'est celle qu'emploient les
+instruments d'ICT International, et c'est aussi celle retenue par le TreeTalker,
+qui envoie une impulsion de six secondes une fois par heure.</p>
+
+<h3 id="p5-bom" data-toc="sub">Nomenclature</h3>
+<table class="bom tight-xs"><caption>Nomenclature indicative d'une sonde de dissipation thermique auto-construite. À comparer aux instruments du commerce : un TreeTalker®Water est annoncé à 210 € en version LoRa par le tarif public 2026 de Nature 4.0, et les SFM1x d'ICT International ou les Dynagage de Dynamax ne sont vendus que sur devis. La littérature (Davis et al., 2012) documente des capteurs auto-construits donnant des estimations acceptables pour une fraction du coût des instruments commerciaux — le procédé Granier étant tombé dans le domaine public.</caption><thead><tr><th>Rep.</th><th>Élément</th><th>Détail</th><th>≈ €</th></tr></thead><tbody>
+<tr><td>—</td><td>Tube inox 316L</td><td>Ø ext. 2 mm, paroi 0,2 mm, longueur 20 mm ×2</td><td>6,00</td></tr>
+<tr><td>R_ch</td><td>Fil résistif constantan</td><td>≈ 25 Ω bobinés sur l'aiguille amont</td><td>3,00</td></tr>
+<tr><td>—</td><td>Couple thermoélectrique cuivre / constantan</td><td>type T, fil 0,08 mm</td><td>9,00</td></tr>
+<tr><td>—</td><td>Résine époxy thermiquement conductrice</td><td>remplissage des aiguilles</td><td>8,00</td></tr>
+<tr><td>U1</td><td>Convertisseur ΔΣ 24 bits</td><td>TI ADS1220, PGA ×128, réf. interne</td><td>8,00</td></tr>
+<tr><td>—</td><td>Référence de tension de précision</td><td>LM4040 2,048 V</td><td>1,50</td></tr>
+<tr><td>—</td><td>Isolation thermique du site de mesure</td><td>mousse réfléchissante + écran</td><td>6,00</td></tr>
+<tr><td>—</td><td>Mèche et guide de perçage</td><td>Ø 2 mm, butée de profondeur</td><td>12,00</td></tr>
+<tr><td></td><td><b>Total sonde bricolée, les deux aiguilles</b></td><td></td><td><b>≈ 54 €</b></td></tr>
+</tbody></table>
+
+<div class="callout limite">
+  <div class="callout-title">Percer un arbre</div>
+  <p class="noindent">Deux trous de deux millimètres dans l'aubier d'un arbre
+  adulte sain se compartimentent normalement. Mais chaque perforation est une
+  porte d'entrée pour les champignons de carie, et le bois ne cicatrise pas : il
+  cloisonne. On limitera donc le nombre de sondes, on les espacera
+  verticalement, on désinfectera le matériel entre deux arbres, et l'on
+  s'abstiendra sur un sujet déjà affaibli, sur un arbre remarquable ou sur un
+  jeune sujet. Sur un arbre de moins de quinze centimètres de diamètre, la
+  méthode est de toute façon inapplicable.</p>
+</div>
+</section>
+<section class="pagebreak">
+<h2 id="bomg" data-toc="chapter">Nomenclature d'ensemble et budgets</h2>
+
+<p class="lettrine noindent">Les nomenclatures précédentes se lisent planche par
+planche. Celle-ci se lit projet par projet : elle répond à la seule question que
+pose réellement un porteur d'atelier, qui est de savoir ce qu'il obtient pour ce
+qu'il dépense.</p>
+
+<table class="compare tight"><caption>Quatre configurations d'atelier, du plus démonstratif au plus métrologique. La colonne du milieu est la plus importante du document.</caption><thead><tr><th>Configuration</th><th>Ce qu'elle mesure</th><th>Ce qu'elle ne mesure pas</th><th>Budget</th></tr></thead><tbody>
+<tr><td><b>A — Atelier découverte</b><br/><span class='small'>planche 1 seule</span></td><td>Impédance de surface d'une feuille, convertie en MIDI. Un micro-contrôleur, une plante, un synthétiseur.</td><td>Rien de physiologique au sens strict. Aucune donnée conservable.</td><td><b>≈ 45 €</b><br/><span class='small'>avec la carte Arduino</span></td></tr>
+<tr><td><b>B — Station environnementale</b><br/><span class='small'>planches 3 et 4</span></td><td>Température de l'air, du sol et du tronc, humidité, pression, lumière, CO₂, pluie, vent. Séries horodatées sur plusieurs années.</td><td>L'état interne de l'arbre. On mesure son environnement, pas lui.</td><td><b>≈ 230 €</b></td></tr>
+<tr><td><b>C — Station physiologique</b><br/><span class='small'>B + planche 5</span></td><td>Tout ce qui précède, plus la dynamique du flux de sève et donc la transpiration relative.</td><td>Un débit absolu, sans recalibration par espèce.</td><td><b>≈ 290 €</b></td></tr>
+<tr><td><b>D — Chaîne complète</b><br/><span class='small'>B + C + planche 2</span></td><td>Tout ce qui précède, plus le potentiel électrique extracellulaire, correctement amplifié et isolé.</td><td>Une interprétation. Le signal existe ; sa signification reste à construire.</td><td><b>≈ 420 €</b><br/><span class='small'>électrodes de laboratoire : +120 €</span></td></tr>
+</tbody></table>
+
+<h3 id="bomg-outils" data-toc="sub">Outillage minimal de l'atelier</h3>
+<table class="tight">
+<thead><tr><th>Outil</th><th>Usage</th><th>≈ €</th></tr></thead>
+<tbody>
+<tr><td>Fer à souder à température régulée, panne fine</td><td>tout</td><td>45,00</td></tr>
+<tr><td>Multimètre avec mesure de capacité</td><td>vérification des valeurs, continuité</td><td>35,00</td></tr>
+<tr><td>Oscilloscope d'entrée de gamme ou analyseur logique USB</td>
+<td>indispensable pour voir le signal du LMC555 et déboguer l'I²C</td><td>25,00 – 120,00</td></tr>
+<tr><td>Pince à dénuder, pince coupante, troisième main</td><td>montage</td><td>25,00</td></tr>
+<tr><td>Alimentation de laboratoire réglable</td><td>caractérisation, mise au point</td><td>60,00</td></tr>
+<tr><td>Sonde de température de référence étalonnée</td>
+<td>vérifier les capteurs les uns contre les autres avant la pose</td><td>30,00</td></tr>
+</tbody>
+</table>
+
+<div class="callout key">
+  <div class="callout-title">La dépense qu'on oublie toujours</div>
+  <p class="noindent">Ce n'est ni un capteur ni une carte : c'est le
+  <strong>temps de maintenance</strong>. Une station extérieure demande une
+  visite par trimestre — nettoyage de l'abri, vérification des presse-étoupes,
+  contrôle de la dérive, ré-ouverture des sangles, relevé de la batterie. Une
+  station qu'on ne visite pas produit des données qu'on ne pourra pas défendre,
+  parce que personne ne saura dire à partir de quelle date le capteur s'était
+  rempli d'eau.</p>
+</div>
+</section>
+<section class="pagebreak">
+<h2 id="prog" data-toc="chapter">Les programmes</h2>
+
+<p class="lettrine noindent">Les trois premiers listings sont extraits des
+dépôts téléchargés dans <span class="phon">sources/code/</span> : ils ne sont
+pas recopiés à la main dans ce document mais lus dans les archives au moment où
+le PDF est fabriqué. Ils ne peuvent donc pas diverger du code réel. Les listings
+suivants sont écrits pour cette annexe et placés sous CC0 : reprenez-les sans
+condition.</p>
+
+<h3 id="prog-1" data-toc="sub">Firmware biodata — l'échantillonnage et la détection</h3>
+
+<p>Voici le cœur du MIDI Sprout et de tous ses dérivés. Le premier bloc est la
+routine d'interruption : elle ne fait rien d'autre que noter la durée écoulée
+depuis le front précédent. C'est tout ce que le montage de la planche 1 produit
+comme donnée brute — une suite de périodes.</p>
+
+<div class="code listing"><div class="code-h">Listing 1 — routine d&#x27;interruption et détection de changement · Arduino / C++</div><pre>//interrupt timing sample array
+void sample()
+{
+  if(index &lt; samplesize) {
+    samples[index] = micros() - microseconds;
+    microseconds = samples[index] + microseconds; //rebuild micros() value w/o recalling
+    //micros() is very slow
+    //try a higher precision counter
+    //samples[index] = ((timer0_overflow_count &lt;&lt; 8) + TCNT0) - microseconds;
+    index += 1;
+  }
+}
+
+
+
+void analyzeSample()
+{
+  //eating up memory, one long at a time!
+  unsigned long averg = 0;
+  unsigned long maxim = 0;
+  unsigned long minim = 100000;
+  float stdevi = 0;
+  unsigned long delta = 0;
+  byte change = 0;
+
+  if (index == samplesize) { //array is full
+    unsigned long sampanalysis[analysize];
+    for (byte i=0; i&lt;analysize; i++){ 
+      //skip first element in the array
+      sampanalysis[i] = samples[i+1];  //load analysis table (due to volitle)
+      //manual calculation
+      if(sampanalysis[i] &gt; maxim) { maxim = sampanalysis[i]; }
+      if(sampanalysis[i] &lt; minim) { minim = sampanalysis[i]; }
+      averg += sampanalysis[i];
+      stdevi += sampanalysis[i] * sampanalysis[i];  //prep stdevi
+    }
+
+    //manual calculation
+    averg = averg/analysize;
+    stdevi = sqrt(stdevi / analysize - averg * averg); //calculate stdevu
+    if (stdevi &lt; 1) { stdevi = 1.0; } //min stdevi of 1
+    delta = maxim - minim; 
+    
+    //**********perform change detection 
+    if (delta &gt; (stdevi * threshold)){
+      change = 1;
+    }
+    //*********
+    
+    if(change){// set note and control vector
+       int dur = 150+(map(delta%127,1,127,100,2500)); //length of note
+       int ramp = 3 + (dur%100) ; //control slide rate, min 25 (or 3 ;)
+       int notechannel = random(1,5); //gather a random channel for QY8 mode
+       
+       //set scaling, root key, note
+       int setnote = map(averg%127,1,127,noteMin,noteMax);  //derive note, min and max note
+       setnote = scaleNote(setnote, scale[currScale], root);  //scale the note
+       // setnote = setnote + root; // (apply root?)
+       if(QY8) { setNote(setnote, 100, dur, notechannel); } //set for QY8 mode
+       else { setNote(setnote, 100, dur, channel); }
+  
+       //derive control parameters and set    
+       setControl(controlNumber, controlMessage.value, delta%127, ramp); //set the ramp rate for the control
+     }
+     //reset array for next sample
+    index = 0;
+  }
+}</pre></div><p class="small" style="margin:.3em 0 1.2em">dépôt <span class="phon">electricityforprogress/BiodataSonificationBreadboardKit</span>, licence MIT — archive <span class="phon">sources/code/</span>, extrait à la construction du PDF.</p>
+
+<p>Le second bloc mérite d'être lu attentivement, parce qu'il contient le
+véritable acte d'interprétation. Il calcule l'écart-type des dix dernières
+périodes et déclare un « événement » lorsque l'étendue dépasse cet écart-type
+multiplié par un seuil réglable. La note produite dérive de la <i>moyenne</i>
+des périodes, sa durée de l'<i>étendue</i>.</p>
+
+<div class="callout sci">
+  <div class="callout-title">Où se cache la décision</div>
+  <p class="noindent">Le seuil, réglé par un potentiomètre entre 1,61 et 3,71,
+  détermine à lui seul la densité de notes. Tourné à gauche, la plante « joue »
+  sans arrêt ; tourné à droite, elle se tait. Aucune de ces deux positions n'est
+  plus vraie que l'autre : <strong>l'expressivité perçue est un réglage
+  humain</strong>, pas une propriété du végétal. C'est la ligne la plus
+  importante de tout ce firmware, et c'est celle dont on ne parle jamais dans les
+  démonstrations.</p>
+</div>
+
+<div class="code listing"><div class="code-h">Listing 2 — quantification sur une gamme musicale · Arduino / C++</div><pre>int scaleSearch(int note, int scale[], int scalesize) {
+ for(byte i=1;i&lt;scalesize;i++) {
+  if(note == scale[i]) { return note; }
+  else { if(note &lt; scale[i]) { return scale[i]; } } //highest scale value less than or equal to note
+  //otherwise continue search
+ }
+ //didn&#x27;t find note and didn&#x27;t pass note value, uh oh!
+ return 6;//give arbitrary value rather than fail
+}
+
+
+int scaleNote(int note, int scale[], int root) {
+  //input note mod 12 for scaling, note/12 octave
+  //search array for nearest note, return scaled*octave
+  int scaled = note%12;
+  int octave = note/12;
+  int scalesize = (scale[0]);
+  //search entire array and return closest scaled note
+  scaled = scaleSearch(scaled, scale, scalesize);
+  scaled = (scaled + (12 * octave)) + root; //apply octave and root
+  return scaled;
+}</pre></div><p class="small" style="margin:.3em 0 1.2em">dépôt <span class="phon">electricityforprogress/BiodataSonificationBreadboardKit</span>, licence MIT — archive <span class="phon">sources/code/</span>, extrait à la construction du PDF.</p>
+
+<p>La quantification achève le travail : la valeur mesurée est ramenée de force
+sur les degrés d'une gamme — chromatique, majeure, mineure, « indienne ». Une
+plante ne joue pas juste ; on la fait jouer juste. Le résultat est agréable
+précisément dans la mesure où l'information a été écrasée.</p>
+
+<div class="code listing"><div class="code-h">Listing 3 — génération des messages MIDI (portage ESP32-S3) · Arduino / C++</div><pre>void setNote(int value, int velocity, long duration, int notechannel)
+{
+  //find available note in array (velocity = 0);
+  for(int i=0;i&lt;polyphony;i++){
+    if(!noteArray[i].velocity){
+      //if velocity is 0, replace note in array
+      noteArray[i].type = 0;
+      noteArray[i].value = value;
+      noteArray[i].velocity = velocity;
+      noteArray[i].duration = currentMillis + duration;
+      noteArray[i].channel = notechannel;
+      
+//*************
+      if(serialMIDI) midiSerial(144, channel, value, velocity); //play note
+      if(usbmidi) usbMIDI.sendNoteOn(value,velocity,channel);
+      if(wifiMIDI&amp;&amp;isConnected) MIDI.sendNoteOn(value,velocity,channel);
+      if (bleMIDI) {
+              if (deviceConnected) {
+              // note On
+                midiPacket[2] = (144 | ((notechannel-1) &amp; 0x0F)); //note On with channel
+               // midiPacket[2] = 0x90; // note down, channel 0
+                midiPacket[3] = value; //note
+                midiPacket[4] = velocity;  // velocity
+                pCharacteristic-&gt;setValue(midiPacket, 5); // packet, length in bytes
+                pCharacteristic-&gt;notify();
+              }
+      }
+//        if (debugSerial) { 
+//          Serial.print(&quot;Note &quot;); Serial.print(i); Serial.print(&quot; On: &quot;); 
+//          Serial.print(noteArray[i].value); Serial.print(&quot; Velocity: &quot;); 
+//          Serial.print(velocity);
+//          Serial.println();
+//        }
+
+        //setLED
+        ledFaders[i].Set(ledFaders[i].maxBright,350);
+      
+      break; // exit for loop and continue once new note is placed
+    }
+  }
+}
+
+void setControl(int type, int value, int velocity, long duration)
+{
+  controlMessage.type = type;
+  controlMessage.value = value;
+  controlMessage.velocity = velocity; //MIDI CC value, just reusing functions ;)
+  controlMessage.period = duration;
+  controlMessage.duration = currentMillis + duration; //schedule for update cycle
+//  if(debugSerial) { 
+//    Serial.print(&quot;setControl CC&quot;); Serial.print(controlNumber); Serial.print(&quot; value &quot;); Serial.println(velocity); 
+//  }
+
+}
+
+
+void checkControl()
+{
+  //need to make this a smooth slide transition, using high precision 
+  //distance is current minus goal
+  signed int distance =  controlMessage.velocity - controlMessage.value; 
+  //if still sliding
+  if(distance != 0) {
+    //check timing
+    if(currentMillis&gt;controlMessage.duration) { //and duration expired
+        controlMessage.duration = currentMillis + controlMessage.period; //extend duration
+        //update value
+       if(distance &gt; 0) { controlMessage.value += 1; } else { controlMessage.value -=1; }
+       
+       //send MIDI control message after ramp duration expires, on each increment
+//*************
+      //determine serial, wifi, or ble
+       if(serialMIDI) midiSerial(176, channel, controlMessage.type, controlMessage.value); 
+       if(usbmidi) usbMIDI.sendControlChange(controlNumber,controlMessage.value,channel);
+       if(wifiMIDI&amp;&amp;isConnected) { MIDI.sendControlChange(controlNumber,controlMessage.value,channel); } //AppleMIDI.sendControlChange?
+       if(deviceConnected) {   //bluetooth CC
+                // note On
+          midiPacket[2] = (176 | ((channel-1) &amp; 0x0F)); //CC with base channel ** 
+         // midiPacket[2] = 0x90; // note down, channel 0
+          midiPacket[3] = controlNumber; //cc 80
+          midiPacket[4] = controlMessage.value;
+          pCharacteristic-&gt;setValue(midiPacket, 5); // packet, length in bytes
+          pCharacteristic-&gt;notify();
+        } 
+    }
+  }
+}
+
+void checkNote()
+{
+  for (int i = 0;i&lt;polyphony;i++) {
+    if(noteArray[i].velocity) {
+      if (noteArray[i].duration &lt;= currentMillis) {
+        //send noteOff for all notes with expired duration    
+        if(serialMIDI) midiSerial(144, channel, noteArray[i].value, 0); 
+        if(usbmidi) usbMIDI.sendNoteOn(noteArray[i].value, 0, channel);
+        if(wifiMIDI &amp;&amp; isConnected) MIDI.sendNoteOff(noteArray[i].value, 0, channel);
+        noteArray[i].velocity = 0;
+        ledFaders[i].Set(0,800);//turn off leds fade out
+//        if (debugSerial) { 
+//           Serial.print(&quot;Note &quot;); Serial.print(i); Serial.print(&quot; Off: &quot;); 
+//          Serial.println(noteArray[i].value);
+//        }
+       if (bleMIDI) {
+        if (deviceConnected) {
+        // note On
+          midiPacket[2] = (144 | ((noteArray[i].channel-1) &amp; 0x0F)); //note On with channel
+         // midiPacket[2] = 0x90; // note down, channel 0
+          midiPacket[3] = noteArray[i].value; //note
+          midiPacket[4] = noteArray[i].velocity;  // velocity
+          pCharacteristic-&gt;setValue(midiPacket, 5); // packet, length in bytes
+          pCharacteristic-&gt;notify();
+        }
+       }
+      }
+    }
+  }
+
+}
+
+
+//Control different MIDI output methods - message type, channel, note/number, velcoity/value</pre></div><p class="small" style="margin:.3em 0 1.2em">dépôt <span class="phon">electricityforprogress/BiodataFeather</span>, licence MIT — archive <span class="phon">sources/code/</span>.</p>
+
+<h3 id="prog-2" data-toc="sub">Le nœud environnemental sous ESPHome</h3>
+
+<p>ESPHome décrit le nœud en YAML et fabrique le firmware. L'intérêt, pour un
+atelier, est qu'il n'y a pas de code à déboguer : tout ce qui suit est de la
+configuration, et la veille profonde est gérée par la plateforme.</p>
+
+<div class="code listing"><div class="code-h">Listing 4 — configuration complète d&#x27;un nœud · YAML</div><pre># noeud-arbre.yaml — ESPHome (licence du projet : MIT/GPLv3 composite)
+# Relevé toutes les 15 min puis veille profonde. Adapter substitutions/secrets.
+substitutions:
+  nom: arbre-01
+  intervalle: 15min
+
+esphome:
+  name: ${nom}
+  on_boot:
+    priority: -100
+    then:
+      - delay: 20s            # laisse le temps aux capteurs et à la publication
+      - deep_sleep.enter: veille
+
+esp32:
+  board: esp32-s3-devkitc-1
+  framework: { type: esp-idf }
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_pass
+  fast_connect: true          # évite le balayage complet : ~1 s gagnée par cycle
+
+mqtt:
+  broker: !secret mqtt_host
+  topic_prefix: arbres/${nom}
+
+deep_sleep:
+  id: veille
+  run_duration: 25s
+  sleep_duration: ${intervalle}
+
+i2c:
+  sda: GPIO8
+  scl: GPIO9
+  frequency: 100kHz           # 400 kHz devient instable au-delà d&#x27;un metre de cable
+
+one_wire:
+  - platform: gpio
+    pin: GPIO4
+
+sensor:
+  - platform: bme280_i2c
+    address: 0x76
+    temperature:  { name: &quot;T air&quot;,      accuracy_decimals: 2 }
+    humidity:     { name: &quot;HR air&quot;,     accuracy_decimals: 1 }
+    pressure:     { name: &quot;Pression&quot;,   accuracy_decimals: 1 }
+    update_interval: 10s
+
+  - platform: bh1750
+    name: &quot;Eclairement&quot;
+    address: 0x23
+    update_interval: 10s
+
+  - platform: scd4x
+    address: 0x62
+    co2: { name: &quot;CO2&quot; }
+    update_interval: 10s
+
+  - platform: dallas_temp          # adresses relevees au premier demarrage
+    address: 0x1c0000031edd2a28
+    name: &quot;T sol -10 cm&quot;
+  - platform: dallas_temp
+    address: 0x3b00000320ab5c28
+    name: &quot;T tronc nord&quot;
+
+  - platform: adc                  # sonde capacitive d&#x27;humidite du sol
+    pin: GPIO5
+    name: &quot;Humidite sol (brut)&quot;
+    attenuation: 12db
+    update_interval: 10s
+    filters:
+      - median: { window_size: 9, send_every: 9 }
+      - calibrate_linear:          # A ETALONNER : sec puis immerge, voir listing 5
+          - 2.90 -&gt; 0.0
+          - 1.20 -&gt; 100.0
+      - clamp: { min_value: 0, max_value: 100 }
+    unit_of_measurement: &quot;%&quot;
+
+  - platform: pulse_counter        # pluviometre a augets, 0,2 mm par bascule
+    pin:
+      number: GPIO6
+      mode: { input: true, pullup: true }
+    name: &quot;Pluie&quot;
+    internal_filter: 10ms          # en complement de l&#x27;anti-rebond materiel
+    update_interval: ${intervalle}
+    unit_of_measurement: &quot;mm&quot;
+    filters:
+      - multiply: 0.2
+</pre></div><p class="small" style="margin:.3em 0 1.2em">écrit pour cette annexe · CC0. ESPHome : dépôt <span class="phon">esphome/esphome</span>, licence composite MIT (Python) et GPLv3 (C++).</p>
+
+<h3 id="prog-3" data-toc="sub">La voie électrophysiologique</h3>
+
+<p>Ce listing met en œuvre le point développé à la planche 2 : le rejet du 50 Hz se joue d'abord dans le choix de la cadence d'intégration, pas dans un filtre. Noter aussi que chaque point publié porte un indicateur de qualité — une série sans indicateur de qualité n'est pas défendable.</p><div class="code listing"><div class="code-h">Listing 5 — acquisition ADS1115 avec réjection du secteur · Python</div><pre>#!/usr/bin/env python3
+&quot;&quot;&quot;Acquisition electrophysiologique : ADS1115 -&gt; rejet du 50 Hz -&gt; MQTT.
+
+Le point cle n&#x27;est pas le filtrage mais la CADENCE : en integrant sur une duree
+multiple entiere de 20 ms, la composante a 50 Hz s&#x27;annule par construction.
+L&#x27;ADS1115 a 8 SPS integre sur 125 ms = 6,25 periodes ; a 16 SPS, 3,125.
+On prend donc 8 SPS et on moyenne un nombre entier de fenetres.
+
+Dependances : adafruit-circuitpython-ads1x15, paho-mqtt, numpy
+Licence : CC0 - code d&#x27;exemple, a reprendre sans condition.
+&quot;&quot;&quot;
+import json
+import time
+
+import board
+import busio
+import numpy as np
+import paho.mqtt.client as mqtt
+from adafruit_ads1x15.ads1115 import ADS1115, Mode
+from adafruit_ads1x15.analog_in import AnalogIn
+
+PERIODE_SECTEUR = 1 / 50          # 20 ms
+N_FENETRES = 16                   # 16 x 125 ms = 2 s par point publie
+SEUIL_SATURATION = 0.95           # fraction de pleine echelle
+
+i2c = busio.I2C(board.SCL, board.SDA)
+adc = ADS1115(i2c, address=0x48)
+adc.mode = Mode.CONTINUOUS
+adc.data_rate = 8                 # 8 SPS -&gt; integration sur 125 ms
+adc.gain = 4                      # +/- 1.024 V pleine echelle
+
+voie = AnalogIn(adc, 0)           # AIN0 par rapport a la masse du montage
+
+
+def mesure_bloc(n=N_FENETRES):
+    &quot;&quot;&quot;Renvoie (moyenne_V, ecart_type_V, n_satures).&quot;&quot;&quot;
+    ech, satures = [], 0
+    for _ in range(n):
+        v = voie.voltage
+        if abs(voie.value) &gt; SEUIL_SATURATION * 32767:
+            satures += 1
+        ech.append(v)
+        time.sleep(1 / adc.data_rate)
+    a = np.asarray(ech)
+    return float(a.mean()), float(a.std()), satures
+
+
+def qualite(ecart_type, satures):
+    &quot;&quot;&quot;Un point sans indicateur de qualite est un point indefendable.&quot;&quot;&quot;
+    if satures:
+        return &quot;sature&quot;
+    if ecart_type &gt; 5e-4:         # 0,5 mV d&#x27;agitation : contact ou vent
+        return &quot;bruite&quot;
+    return &quot;ok&quot;
+
+
+def main():
+    cli = mqtt.Client()
+    cli.connect(&quot;localhost&quot;, 1883, 60)
+    cli.loop_start()
+    while True:
+        moy, sd, sat = mesure_bloc()
+        charge = {
+            &quot;t&quot;: time.time(),
+            &quot;v_uV&quot;: round(moy * 1e6, 1),      # microvolts : l&#x27;unite du domaine
+            &quot;sd_uV&quot;: round(sd * 1e6, 1),
+            &quot;qualite&quot;: qualite(sd, sat),
+        }
+        cli.publish(&quot;arbres/arbre-01/electro&quot;, json.dumps(charge), qos=1)
+        time.sleep(1.0)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</pre></div><p class="small" style="margin:.3em 0 1.2em">écrit pour cette annexe · CC0.</p>
+
+<div class="code listing"><div class="code-h">Listing 6 — étalonnage en deux points d&#x27;une sonde de sol · Python</div><pre>#!/usr/bin/env python3
+&quot;&quot;&quot;Etalonnage en deux points d&#x27;une sonde capacitive d&#x27;humidite du sol.
+
+Ce n&#x27;est pas un etalonnage metrologique : la sonde capacitive repond a la
+permittivite du milieu, qui depend de la texture du sol autant que de l&#x27;eau.
+Deux points donnent un INDICE 0-100 reproductible sur UN sol donne, rien de
+plus. Toute comparaison entre deux sols est illegitime.
+
+Licence : CC0.
+&quot;&quot;&quot;
+import json
+import statistics
+import time
+
+import board
+import busio
+from adafruit_ads1x15.ads1115 import ADS1115
+from adafruit_ads1x15.analog_in import AnalogIn
+
+i2c = busio.I2C(board.SCL, board.SDA)
+voie = AnalogIn(ADS1115(i2c), 0)
+
+
+def point(libelle, n=60):
+    input(f&quot;\n&gt;&gt;&gt; {libelle}, puis Entree…&quot;)
+    print(&quot;    acquisition 60 s&quot;, end=&quot;&quot;, flush=True)
+    ech = []
+    for i in range(n):
+        ech.append(voie.voltage)
+        time.sleep(1)
+        if i % 10 == 0:
+            print(&quot;.&quot;, end=&quot;&quot;, flush=True)
+    moy, sd = statistics.mean(ech), statistics.pstdev(ech)
+    print(f&quot;\n    {moy:.4f} V  (ecart-type {sd:.4f} V)&quot;)
+    if sd &gt; 0.01:
+        print(&quot;    ! dispersion elevee : contact instable ou sonde mal enfouie&quot;)
+    return moy, sd
+
+
+sec, sd_sec = point(&quot;Sonde a l&#x27;air libre, SECHE et propre&quot;)
+eau, sd_eau = point(&quot;Sonde immergee dans l&#x27;eau jusqu&#x27;au trait de garde&quot;)
+
+if sec &lt;= eau:
+    raise SystemExit(&quot;Incoherent : la tension doit BAISSER quand l&#x27;humidite monte.&quot;)
+
+etalon = {
+    &quot;date&quot;: time.strftime(&quot;%Y-%m-%dT%H:%M:%S&quot;),
+    &quot;v_sec&quot;: round(sec, 4), &quot;v_eau&quot;: round(eau, 4),
+    &quot;sd_sec&quot;: round(sd_sec, 4), &quot;sd_eau&quot;: round(sd_eau, 4),
+    &quot;formule&quot;: &quot;indice = 100 * (v_sec - v) / (v_sec - v_eau)&quot;,
+    &quot;portee&quot;: &quot;valable pour CE sol et CETTE sonde uniquement&quot;,
+}
+print(json.dumps(etalon, indent=2, ensure_ascii=False))
+open(&quot;etalonnage-sol.json&quot;, &quot;w&quot;).write(json.dumps(etalon, indent=2, ensure_ascii=False))
+</pre></div><p class="small" style="margin:.3em 0 1.2em">écrit pour cette annexe · CC0.</p>
+
+<h3 id="prog-4" data-toc="sub">La réduction du flux de sève</h3>
+
+<div class="code listing"><div class="code-h">Listing 7 — équation de Granier appliquée à une série · Python</div><pre>#!/usr/bin/env python3
+&quot;&quot;&quot;Reduction Granier : de l&#x27;ecart de temperature a la densite de flux de seve.
+
+u = 118,99e-6 * K^1,231   avec  K = (dT_max - dT) / dT      [m3 m-2 s-1]
+Granier A. (1985), Ann. For. Sci. 42(2), DOI 10.1051/forest:19850204
+
+dT_max est estime sur une fenetre glissante de plusieurs jours, en prenant le
+maximum nocturne. C&#x27;est l&#x27;hypothese faible de la methode : par nuit chaude et
+seche la transpiration nocturne n&#x27;est pas nulle et dT_max est sous-estime.
+
+Licence : CC0.
+&quot;&quot;&quot;
+import numpy as np
+import pandas as pd
+
+A, B = 118.99e-6, 1.231           # coefficients de Granier, unites SI
+
+
+def dt_max_glissant(dt, index, jours=7, debut_nuit=0, fin_nuit=5):
+    &quot;&quot;&quot;Maximum nocturne sur une fenetre glissante, reindexe sur toute la serie.&quot;&quot;&quot;
+    s = pd.Series(dt, index=index)
+    nuit = s.between_time(f&quot;{debut_nuit:02d}:00&quot;, f&quot;{fin_nuit:02d}:00&quot;)
+    quotidien = nuit.resample(&quot;1D&quot;).max()
+    lisse = quotidien.rolling(jours, center=True, min_periods=1).max()
+    return lisse.reindex(s.index, method=&quot;nearest&quot;)
+
+
+def densite_de_flux(dt, index, **kw):
+    &quot;&quot;&quot;Renvoie u en m3 m-2 s-1, et NaN la ou la mesure n&#x27;a pas de sens.&quot;&quot;&quot;
+    dtm = dt_max_glissant(dt, index, **kw)
+    dt = np.asarray(dt, dtype=float)
+    dtm = np.asarray(dtm, dtype=float)
+
+    with np.errstate(divide=&quot;ignore&quot;, invalid=&quot;ignore&quot;):
+        k = (dtm - dt) / dt
+    k = np.where(dt &lt;= 0.05, np.nan, k)      # chauffage coupe ou sonde arrachee
+    k = np.where(k &lt; 0, 0.0, k)              # dT &gt; dT_max : bruit, pas flux inverse
+    return A * np.power(k, B)
+
+
+def flux_sur_section(u, aire_aubier_m2):
+    &quot;&quot;&quot;Debit en litres par heure, une fois l&#x27;aire d&#x27;aubier connue.
+
+    ATTENTION : cette conversion suppose le profil radial uniforme, ce qui est
+    faux. Sans recalibration par espece, ne publier que u, jamais des litres.
+    &quot;&quot;&quot;
+    return u * aire_aubier_m2 * 3600 * 1000
+</pre></div><p class="small" style="margin:.3em 0 1.2em">écrit pour cette annexe · CC0. Coefficients d’après Granier (1985), <i>Ann. For. Sci.</i> 42(2), DOI 10.1051/forest:19850204.</p>
+
+<h3 id="prog-5" data-toc="sub">Sonification : le mapping doit être déclaré</h3>
+
+<div class="code listing"><div class="code-h">Listing 8 — pont MQTT vers OSC, table de correspondance explicite · Python</div><pre>#!/usr/bin/env python3
+&quot;&quot;&quot;Pont sonification : MQTT -&gt; OSC -&gt; SuperCollider.
+
+La regle de conception tient en une phrase : le mapping doit etre DECLARE,
+REPRODUCTIBLE et INVERSIBLE. Si l&#x27;on ne peut pas retrouver la donnee a partir
+du son, ce n&#x27;est pas de la sonification, c&#x27;est de l&#x27;illustration sonore.
+Cf. Hermann T. (2008), Taxonomy and definitions for sonification and auditory
+display, ICAD 2008.
+
+Dependances : paho-mqtt, python-osc (The Unlicense)
+Licence : CC0.
+&quot;&quot;&quot;
+import json
+
+import paho.mqtt.client as mqtt
+from pythonosc.udp_client import SimpleUDPClient
+
+osc = SimpleUDPClient(&quot;127.0.0.1&quot;, 57120)      # port d&#x27;ecoute de sclang
+
+# --- Le mapping, en un seul endroit, explicite et documente ------------------
+# Chaque entree : (topic, champ, domaine_donnee, domaine_sonore, adresse OSC)
+MAPPING = [
+    (&quot;arbres/+/electro&quot;, &quot;v_uV&quot;,    (-2000.0, 2000.0), (48, 84),   &quot;/arbre/hauteur&quot;),
+    (&quot;arbres/+/seve&quot;,    &quot;u&quot;,       (0.0, 2.5e-4),     (0.0, 1.0), &quot;/arbre/densite&quot;),
+    (&quot;arbres/+/env&quot;,     &quot;hr_sol&quot;,  (0.0, 100.0),      (0.2, 1.0), &quot;/arbre/timbre&quot;),
+    (&quot;arbres/+/env&quot;,     &quot;lux&quot;,     (0.0, 100000.0),   (0.0, 1.0), &quot;/arbre/brillance&quot;),
+]
+
+
+def echelle(x, source, cible, borner=True):
+    (a, b), (c, d) = source, cible
+    if b == a:
+        return c
+    y = c + (x - a) * (d - c) / (b - a)
+    return min(max(y, min(c, d)), max(c, d)) if borner else y
+
+
+def sur_message(_client, _userdata, msg):
+    charge = json.loads(msg.payload)
+    if charge.get(&quot;qualite&quot;) == &quot;sature&quot;:
+        return                       # on ne sonifie pas un artefact connu
+    for motif, champ, dom, son, adresse in MAPPING:
+        if champ not in charge or not mqtt.topic_matches_sub(motif, msg.topic):
+            continue
+        osc.send_message(adresse, float(echelle(charge[champ], dom, son)))
+
+
+cli = mqtt.Client()
+cli.on_message = sur_message
+cli.connect(&quot;localhost&quot;, 1883, 60)
+for motif, *_ in MAPPING:
+    cli.subscribe(motif)
+cli.loop_forever()
+</pre></div><p class="small" style="margin:.3em 0 1.2em">écrit pour cette annexe · CC0. python-osc : dépôt <span class="phon">attwad/python-osc</span>, The Unlicense.</p>
+
+<div class="code listing"><div class="code-h">Listing 9 — synthétiseur SuperCollider recevant l&#x27;OSC · SuperCollider</div><pre>// arbre.scd — SuperCollider (GPLv3). Recoit l&#x27;OSC du listing 5.
+// Une voix continue dont la hauteur suit le potentiel et le timbre l&#x27;humidite.
+// Le silence est signifiant : pas de donnee valide -&gt; pas de son.
+
+s.waitForBoot({
+    SynthDef(\arbre, { |freq = 110, densite = 0.3, timbre = 0.5,
+                        brillance = 0.4, amp = 0.15, porte = 1|
+        var exc, corps, env;
+        // Excitation : bruit filtre, densite pilotee par le flux de seve
+        exc = Dust.ar(densite.linexp(0, 1, 1, 400)) * 0.6
+              + PinkNoise.ar(0.08 * densite);
+        // Corps resonant : le tronc comme filtre en peigne
+        corps = Klank.ar(
+            `[ Array.geom(6, freq, 1.51),
+               Array.fill(6, { |i| 1 / (i + 1) }),
+               Array.fill(6, { |i| timbre.linlin(0, 1, 0.6, 4.0) / (i + 1) }) ],
+            exc);
+        corps = LPF.ar(corps, brillance.linexp(0, 1, 400, 9000));
+        env = EnvGen.kr(Env.asr(4, 1, 6), porte, doneAction: 2);
+        Out.ar(0, Pan2.ar(corps * env * amp, 0));
+    }).add;
+
+    s.sync;
+    ~voix = Synth(\arbre);
+
+    // Lissage : les donnees arrivent toutes les 2 s, l&#x27;oreille veut du continu.
+    OSCdef(\hauteur, { |m|
+        ~voix.set(\freq, m[1].midicps);
+    }, &quot;/arbre/hauteur&quot;);
+
+    OSCdef(\densite,   { |m| ~voix.set(\densite,   m[1]) }, &quot;/arbre/densite&quot;);
+    OSCdef(\timbre,    { |m| ~voix.set(\timbre,    m[1]) }, &quot;/arbre/timbre&quot;);
+    OSCdef(\brillance, { |m| ~voix.set(\brillance, m[1]) }, &quot;/arbre/brillance&quot;);
+});
+</pre></div><p class="small" style="margin:.3em 0 1.2em">écrit pour cette annexe · CC0. SuperCollider : dépôt <span class="phon">supercollider/supercollider</span>, GPLv3.</p>
+
+<h3 id="prog-6" data-toc="sub">Parole : modèle de langue local et synthèse vocale</h3>
+
+<p>Le prompt fait ici office de garde-fou : il interdit au modèle d'attribuer une intention à l'arbre et l'oblige à signaler les données manquantes. C'est le seul endroit de toute la chaîne où l'on peut empêcher le dispositif de mentir avec aplomb.</p><div class="code listing"><div class="code-h">Listing 10 — de la base de données à la voix · Bash</div><pre>#!/usr/bin/env bash
+# parole.sh — de la mesure au son : LLM local (Ollama) puis synthese (Piper).
+# Piper 1 : depot OHF-Voice/piper1-gpl, code GPLv3, poids MIT, voix francaises
+# issues du corpus SIWIS (CC-BY 4.0). Ollama : MIT. Qwen3 : Apache-2.0.
+set -euo pipefail
+
+VOIX=&quot;${VOIX:-$HOME/voix/fr_FR-siwis-medium.onnx}&quot;   # + le .onnx.json a cote
+MODELE=&quot;${MODELE:-qwen3:1.7b}&quot;                       # 1,28 Go en Q4_K_M
+
+# 1. Les mesures des dernieres 24 h, deja reduites, en JSON compact.
+mesures=$(curl -sS --get &#x27;http://localhost:8086/api/v2/query&#x27;   --data-urlencode &quot;org=arbres&quot;   --data-urlencode &#x27;q=from(bucket:&quot;arbre&quot;) |&gt; range(start:-24h)
+                     |&gt; aggregateWindow(every:1h, fn:mean)&#x27; )
+
+# 2. On CONTRAINT le modele : il commente des chiffres, il ne les invente pas.
+#    Le prompt est aussi un garde-fou deontologique : pas de premiere personne
+#    attribuee a l&#x27;arbre sans que le dispositif soit explicite.
+lu=$(ollama run &quot;$MODELE&quot; &lt;&lt;EOF
+Tu commentes des mesures faites sur un arbre instrumente.
+Regles absolues :
+- n&#x27;ecris QUE ce que les chiffres montrent ; aucune emotion, aucune intention ;
+- si une valeur manque ou est marquee &quot;bruite&quot;, dis-le explicitement ;
+- trois phrases maximum, en francais, sans metaphore ;
+- termine par l&#x27;heure du dernier releve.
+Donnees : $mesures
+EOF
+)
+
+echo &quot;$lu&quot;
+
+# 3. Synthese locale. Sur Raspberry Pi 5, mesurer soi-meme le facteur temps
+#    reel : aucun chiffre officiel n&#x27;est publie par le projet Piper.
+printf &#x27;%s&#x27; &quot;$lu&quot; | piper --model &quot;$VOIX&quot; --output_file /tmp/arbre.wav
+aplay -q /tmp/arbre.wav
+</pre></div><p class="small" style="margin:.3em 0 1.2em">écrit pour cette annexe · CC0.</p>
+
+<div class="callout limite">
+  <div class="callout-title">Deux chiffres à mesurer soi-même</div>
+  <p class="noindent">Le projet Piper ne publie <strong>aucun</strong> facteur
+  temps réel officiel pour Raspberry Pi : les valeurs qui circulent viennent de
+  blogs non reproductibles et sont à écarter. Mesurez sur votre cible, avec
+  trois longueurs de phrase. Côté modèle de langue, les mesures publiées par
+  Jeff Geerling donnent sur Raspberry Pi 5 environ 4,6 jetons par seconde pour
+  un modèle 3 milliards de paramètres en Q4_K_M, et 2,0 pour un 8 milliards —
+  ce dernier étant à la limite de l'utilisable. La zone confortable se situe
+  entre 0,6 et 4 milliards de paramètres.</p>
+</div>
+</section>
+<section class="pagebreak">
+<h2 id="inv" data-toc="chapter">Ce qui a été téléchargé, et sous quelle licence</h2>
+
+<p class="lettrine noindent">Toutes les archives listées ci-dessous se trouvent
+dans <span class="phon">sources/code/</span>. Elles ont été récupérées depuis
+les dépôts publics correspondants ; les licences indiquées « à vérifier » n'ont
+pas pu être confirmées par lecture d'un fichier LICENSE et doivent l'être avant
+tout usage autre que privé.</p>
+
+<table class="tight"><caption>Archives présentes dans sources/code/. L'absence de fichier de licence ne vaut pas permission : en droit d'auteur, un dépôt sans licence est « tous droits réservés » par défaut, même publié publiquement.</caption><thead><tr><th>Dépôt</th><th>Licence</th><th>Contenu</th></tr></thead><tbody>
+<tr><td><span class="phon">electricityforprogress/MIDIsprout</span></td><td>MIT</td><td>Firmware, schémas Eagle, gerbers et BOM du MIDI Sprout d'origine. Figé depuis 2021.</td></tr>
+<tr><td><span class="phon">electricityforprogress/BiodataSonificationBreadboardKit</span></td><td>aucune licence déclarée</td><td>Version pédagogique sur plaque d'essai : c'est d'elle que provient le netlist de la planche 1 et la nomenclature. <b>Statut juridique à clarifier avant tout usage public.</b></td></tr>
+<tr><td><span class="phon">electricityforprogress/BiodataFeather</span></td><td>MIT</td><td>Portage ESP32 / ESP32-S3 avec MIDI BLE et RTP-MIDI. La version à reprendre aujourd'hui.</td></tr>
+<tr><td><span class="phon">electricityforprogress/Organon</span></td><td>non spécifiée</td><td>Déclinaison Eurorack : sorties CV et gate.</td></tr>
+<tr><td><span class="phon">leetronics/midi-biodata</span></td><td>MIT (matériel et firmware) · CC0 (boîtier)</td><td>Réimplémentation industrialisée sous KiCad, USB-C et sortie CV.</td></tr>
+<tr><td><span class="phon">Playtronica/biotron-firmware</span></td><td>GPL-3.0</td><td>Firmware RP2040 du Biotron commercial. Un rare cas de produit vendu dont le firmware est réellement ouvert.</td></tr>
+<tr><td><span class="phon">Lessnullvoid/Pulsum-Plantae</span></td><td>à vérifier</td><td>Installation de Leslie García : amplificateur galvanique à LM324, cartes Fritzing, gerbers et application openFrameworks.</td></tr>
+<tr><td><span class="phon">OPEnSLab-OSU/SapFlowMeterOld</span></td><td>à vérifier</td><td>Capteur de flux de sève par dissipation thermique, open source, OPEnS Lab, Oregon State University.</td></tr>
+<tr><td><span class="phon">james-trayford/strauss</span></td><td>Apache-2.0 (dépôt) / MIT (PyPI) — <b>divergence non résolue</b></td><td>Bibliothèque de sonification scientifique la plus complète et la seule réellement maintenue. Publiée dans JOSS, DOI 10.21105/joss.07875.</td></tr>
+<tr><td><span class="phon">spacetelescope/astronify</span></td><td>BSD 3-Clause</td><td>Sonification de séries temporelles, Space Telescope Science Institute. Maintenance lente.</td></tr>
+<tr><td><span class="phon">lockepatton/sonipy</span></td><td>MIT</td><td>Nuages de points vers blips perceptuellement uniformes. <b>Aucune release depuis 2020 : à considérer comme abandonné.</b></td></tr>
+<tr><td><span class="phon">klaemsch/plant-sonification</span></td><td>à vérifier</td><td>Projet de sonification végétale (archive présente dans le dossier).</td></tr>
+<tr><td><span class="phon">RominaSR/SonicPlants</span></td><td>à vérifier</td><td>Projet de sonification végétale (archive présente dans le dossier).</td></tr>
+<tr><td><span class="phon">ettorhake/BioDataToMidiToDigitakt</span></td><td>à vérifier</td><td>Adaptation du biodata vers un séquenceur Elektron Digitakt.</td></tr>
+<tr><td><span class="phon">electricityforprogress/BiodataWifi</span></td><td>à vérifier</td><td>Variante ESP8266 + Circuit Playground : le seul portage Wi-Fi de la première génération.</td></tr>
+<tr><td><span class="phon">electricityforprogress/ListeningStation</span></td><td>à vérifier</td><td>Station d'écoute audio sur Adafruit Feather.</td></tr>
+<tr><td><span class="phon">ChubbyLobsters/Electrophysiology-and-Biorobotics</span></td><td>à vérifier</td><td>Électrophysiologie et biorobotique.</td></tr>
+</tbody></table>
+
+<h3 id="inv-mcu" data-toc="sub">Les firmwares de microcontrôleur, cible par cible</h3>
+
+<p>La question se pose en atelier : que peut-on téléverser, et sur quoi ?
+Voici l’état exact de ce qui est présent dans
+<span class="phon">sources/code/</span>.</p>
+
+<table class="tight"><caption>Douze firmwares réellement présents. Les deux familles qui comptent pour un atelier sont l’ATmega328P — le plus simple à comprendre et à déboguer, sans pile réseau — et l’ESP32-S3, qui apporte le MIDI sans fil et la veille profonde. Le nœud environnemental des planches 3 et 4 ne demande, lui, aucun firmware écrit à la main : ESPHome le fabrique depuis le YAML du listing 4.</caption><thead><tr><th>Firmware</th><th>Cible</th><th>Sorties</th><th>Licence</th><th>État</th></tr></thead><tbody>
+<tr><td><span class='phon'>MIDI_Psychogalv_328p_v021</span></td><td><b>ATmega328P</b></td><td>MIDI DIN-5 · CV par MLI</td><td>MIT</td><td>l’original, figé 2021</td></tr>
+<tr><td><span class='phon'>BiodataSonification_026_kit</span></td><td><b>ATmega328P</b></td><td>MIDI · CV · 6 LED · menu EEPROM</td><td><b>aucune</b></td><td>version d’atelier, la mieux commentée</td></tr>
+<tr><td><span class='phon'>MIDI_Psychogalv_328p_13-37.org</span></td><td><b>ATmega328P</b></td><td>MIDI · CV sur jack TRS</td><td>MIT</td><td>portage leetronics, USB-C</td></tr>
+<tr><td><span class='phon'>BiodataSonification_Digitakt_v027</span></td><td><b>ATmega328P</b></td><td>MIDI vers séquenceur Elektron</td><td>à vérifier</td><td>adaptation tierce</td></tr>
+<tr><td><span class='phon'>BiodataModular_002</span></td><td>ATmega32u4 (Pro Micro)</td><td>3 paires CV/Gate · MIDI · MCP4728</td><td>non spécifiée</td><td>déclinaison Eurorack</td></tr>
+<tr><td><span class='phon'>Biodata_Feather_ESP32Wifi_04</span></td><td><b>ESP32</b></td><td>RTP-MIDI sur Wi-Fi (AppleMIDI)</td><td>MIT</td><td>première version réseau</td></tr>
+<tr><td><span class='phon'>Biodata_Feather_ESP32_05</span></td><td><b>ESP32</b></td><td>BLE MIDI · MIDI série</td><td>MIT</td><td>version BLE</td></tr>
+<tr><td><span class='phon'>Biodata_Feather_ESP32_07</span></td><td><b>ESP32-S3</b></td><td>BLE MIDI · RTP-MIDI · MIDI série</td><td>MIT</td><td><b>la plus récente — à reprendre</b></td></tr>
+<tr><td><span class='phon'>BiodataWifi_006</span></td><td>ESP8266 + CircuitPlayground</td><td>Wi-Fi · sortie sonore</td><td>à vérifier</td><td>variante historique</td></tr>
+<tr><td><span class='phon'>pulsumSensorRead</span></td><td>Arduino (LM324 externe)</td><td>série vers Pure Data / openFrameworks</td><td>à vérifier</td><td>Pulsu(m) Plantae, Leslie García</td></tr>
+<tr><td><span class='phon'>main.c</span> (PLSDK)</td><td><b>RP2040</b> (Pico SDK)</td><td>USB-MIDI · capteur de lumière</td><td>GPL-3.0</td><td>Biotron, Playtronica</td></tr>
+<tr><td><span class='phon'>SapFlowMeter</span></td><td>SAMD21 (Feather M0)</td><td>carte SD · dissipation thermique</td><td>à vérifier</td><td>OPEnS Lab, Oregon State University</td></tr>
+</tbody></table>
+
+<h3 id="inv-stack" data-toc="sub">La chaîne logicielle complète</h3>
+
+<p>Les 50 dépôts ci-dessous ont été téléchargés en archives source —
+sans historique git — par <span class="phon">tools/fetch-software.py</span>,
+qui relève la licence <strong>en lisant le fichier de licence réellement
+présent dans chaque archive</strong> plutôt qu’en se fiant à une page web.
+Total : 701 Mo dans <span class="phon">sources/software/</span>.
+Aucun dépôt manquant.</p>
+
+<h4>Bibliothèques microcontrôleur</h4><table class="tight-xs"><caption>21 dépôts, 20 Mo.</caption><thead><tr><th>Dépôt</th><th>Licence lue dans l’archive</th><th>Mo</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><span class="phon">adafruit/Adafruit_ADS1X15</span></td><td>BSD</td><td>0</td><td>ADS1115/ADS1015 — convertisseur de la planche 2</td></tr>
+<tr><td><span class="phon">adafruit/Adafruit_BME280_Library</span></td><td>BSD</td><td>0</td><td>BME280 — T/HR/pression, planche 3</td></tr>
+<tr><td><span class="phon">adafruit/Adafruit_BusIO</span></td><td>MIT</td><td>0</td><td>couche I²C/SPI commune aux bibliothèques Adafruit</td></tr>
+<tr><td><span class="phon">adafruit/Adafruit_Sensor</span></td><td>Apache-2.0</td><td>0</td><td>interface de capteur unifiée Adafruit</td></tr>
+<tr><td><span class="phon">adafruit/Adafruit_TSL2591_Library</span></td><td>BSD</td><td>0</td><td>TSL2591 — luxmètre à forte dynamique</td></tr>
+<tr><td><span class="phon">claws/BH1750</span></td><td>MIT</td><td>0</td><td>BH1750 — éclairement, planche 3</td></tr>
+<tr><td><span class="phon">PaulStoffregen/OneWire</span></td><td>MIT</td><td>0</td><td>bus 1-Wire — planche 3</td></tr>
+<tr><td><span class="phon">milesburton/Arduino-Temperature-Control-Library</span></td><td>MIT</td><td>0</td><td>DS18B20 — sondes de température</td></tr>
+<tr><td><span class="phon">Sensirion/arduino-i2c-scd4x</span></td><td>BSD</td><td>3</td><td>SCD40/SCD41 — CO₂</td></tr>
+<tr><td><span class="phon">Sensirion/arduino-core</span></td><td>BSD</td><td>0</td><td>socle commun des bibliothèques Sensirion</td></tr>
+<tr><td><span class="phon">Sensirion/arduino-i2c-sht4x</span></td><td>BSD</td><td>2</td><td>SHT4x — T/HR de précision</td></tr>
+<tr><td><span class="phon">FortySevenEffects/arduino_midi_library</span></td><td>MIT</td><td>0</td><td>MIDI série — sortie DIN-5 de la planche 1</td></tr>
+<tr><td><span class="phon">lathoub/Arduino-AppleMIDI-Library</span></td><td>CC BY-SA 4.0 ⚠</td><td>0</td><td>RTP-MIDI sur Wi-Fi — utilisé par BiodataFeather</td></tr>
+<tr><td><span class="phon">lathoub/Arduino-BLE-MIDI</span></td><td>MIT</td><td>0</td><td>MIDI sur Bluetooth LE — utilisé par BiodataFeather</td></tr>
+<tr><td><span class="phon">thomasfredericks/Bounce2</span></td><td>MIT</td><td>0</td><td>anti-rebond logiciel — dépendance du firmware biodata</td></tr>
+<tr><td><span class="phon">jgillick/arduino-LEDFader</span></td><td>MIT</td><td>0</td><td>gestion des LED sans delay() — dépendance du firmware biodata</td></tr>
+<tr><td><span class="phon">thijse/Arduino-EEPROMEx</span></td><td>LGPL-2.1</td><td>0</td><td>EEPROMex — dépendance du firmware MIDI Sprout</td></tr>
+<tr><td><span class="phon">sparkfun/AD8232_Heart_Rate_Monitor</span></td><td>matériel CC BY-SA 3.0 · code Beerware</td><td>1</td><td>exemples AD8232 — front-end ECG applicable à la planche 2</td></tr>
+<tr><td><span class="phon">mcci-catena/arduino-lmic</span></td><td>MIT</td><td>4</td><td>pile LoRaWAN de référence pour nœud sur batterie</td></tr>
+<tr><td><span class="phon">TheThingsNetwork/arduino-device-lib</span></td><td>MIT</td><td>3</td><td>bibliothèque The Things Network</td></tr>
+<tr><td><span class="phon">jgromes/RadioLib</span></td><td>MIT</td><td>5</td><td>pile radio universelle (LoRa, SX126x/SX127x)</td></tr>
+</tbody></table>
+<h4>Firmware</h4><table class="tight-xs"><caption>5 dépôts, 82 Mo.</caption><thead><tr><th>Dépôt</th><th>Licence lue dans l’archive</th><th>Mo</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><span class="phon">esphome/esphome</span></td><td>GPL-?</td><td>11</td><td>firmware ESP décrit en YAML — listing 4 de l'annexe</td></tr>
+<tr><td><span class="phon">arendst/Tasmota</span></td><td>GPL-3.0</td><td>57</td><td>firmware ESP alternatif</td></tr>
+<tr><td><span class="phon">meshtastic/firmware</span></td><td>GPL-3.0</td><td>5</td><td>maillage LoRa hors couverture</td></tr>
+<tr><td><span class="phon">kizniche/Mycodo</span></td><td>GPL-3.0</td><td>7</td><td>acquisition et régulation sur Raspberry Pi</td></tr>
+<tr><td><span class="phon">farmOS/farmOS</span></td><td>GPL-2.0 ou GPL-? (double licence)</td><td>1</td><td>couche métier agricole (Drupal)</td></tr>
+</tbody></table>
+<h4>Ingestion et stockage</h4><table class="tight-xs"><caption>5 dépôts, 37 Mo.</caption><thead><tr><th>Dépôt</th><th>Licence lue dans l’archive</th><th>Mo</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><span class="phon">eclipse-mosquitto/mosquitto</span></td><td>EPL-2.0</td><td>4</td><td>courtier MQTT</td></tr>
+<tr><td><span class="phon">influxdata/telegraf</span></td><td>MIT</td><td>8</td><td>agent de collecte</td></tr>
+<tr><td><span class="phon">influxdata/influxdb</span></td><td>MIT ou Apache-2.0 (double licence)</td><td>6</td><td>base de séries temporelles (Core : MIT/Apache-2.0)</td></tr>
+<tr><td><span class="phon">timescale/timescaledb</span></td><td>Apache-2.0</td><td>10</td><td>extension PostgreSQL séries temporelles</td></tr>
+<tr><td><span class="phon">node-red/node-red</span></td><td>Apache-2.0</td><td>10</td><td>orchestration par flux</td></tr>
+</tbody></table>
+<h4>Visualisation</h4><table class="tight-xs"><caption>2 dépôts, 102 Mo.</caption><thead><tr><th>Dépôt</th><th>Licence lue dans l’archive</th><th>Mo</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><span class="phon">grafana/grafana</span></td><td><b>AGPL-3.0</b></td><td>61</td><td>tableaux de bord — ATTENTION AGPL-3.0</td></tr>
+<tr><td><span class="phon">home-assistant/core</span></td><td>Apache-2.0</td><td>42</td><td>supervision locale</td></tr>
+</tbody></table>
+<h4>Sonification et audio</h4><table class="tight-xs"><caption>10 dépôts, 282 Mo.</caption><thead><tr><th>Dépôt</th><th>Licence lue dans l’archive</th><th>Mo</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><span class="phon">supercollider/supercollider</span></td><td>GPL-3.0</td><td>20</td><td>moteur de synthèse — listing 9</td></tr>
+<tr><td><span class="phon">pure-data/pure-data</span></td><td>BSD</td><td>15</td><td>patch temps réel (Pd vanilla)</td></tr>
+<tr><td><span class="phon">sonic-pi-net/sonic-pi</span></td><td>MIT</td><td>131</td><td>live coding pédagogique</td></tr>
+<tr><td><span class="phon">ccrma/chuck</span></td><td>GPL-2.0 ou MIT (double licence)</td><td>22</td><td>langage audio strongly-timed</td></tr>
+<tr><td><span class="phon">csound/csound</span></td><td>LGPL-2.1</td><td>28</td><td>moteur de synthèse historique</td></tr>
+<tr><td><span class="phon">attwad/python-osc</span></td><td>Unlicense</td><td>0</td><td>pont Python → OSC — listing 8</td></tr>
+<tr><td><span class="phon">mido/mido</span></td><td>MIT</td><td>0</td><td>MIDI en Python</td></tr>
+<tr><td><span class="phon">FluidSynth/fluidsynth</span></td><td>LGPL-2.1</td><td>2</td><td>MIDI → audio (SoundFont)</td></tr>
+<tr><td><span class="phon">BelaPlatform/Bela</span></td><td>LGPL-3.0</td><td>62</td><td>capteurs à la fréquence audio, latence ultra-faible</td></tr>
+<tr><td><span class="phon">uzu/tidal</span></td><td>GPL-3.0</td><td>2</td><td>TidalCycles — langage de motifs (migré sur Codeberg)</td></tr>
+</tbody></table>
+<h4>Synthèse vocale</h4><table class="tight-xs"><caption>5 dépôts, 116 Mo.</caption><thead><tr><th>Dépôt</th><th>Licence lue dans l’archive</th><th>Mo</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><span class="phon">OHF-Voice/piper1-gpl</span></td><td>GPL-3.0</td><td>24</td><td>Piper 1 — synthèse vocale locale, GPLv3</td></tr>
+<tr><td><span class="phon">rhasspy/piper</span></td><td>MIT</td><td>24</td><td>Piper historique — ARCHIVÉ, conservé pour référence</td></tr>
+<tr><td><span class="phon">idiap/coqui-ai-TTS</span></td><td>MPL-2.0</td><td>21</td><td>fork maintenu de Coqui TTS</td></tr>
+<tr><td><span class="phon">espeak-ng/espeak-ng</span></td><td>GPL-3.0 ou MIT ou BSD ou Apache-2.0 (double licence)</td><td>21</td><td>synthèse à formants, très légère</td></tr>
+<tr><td><span class="phon">hexgrad/kokoro</span></td><td>Apache-2.0</td><td>25</td><td>Kokoro — Apache-2.0 code et poids</td></tr>
+</tbody></table>
+<h4>Modèles de langue locaux</h4><table class="tight-xs"><caption>2 dépôts, 63 Mo.</caption><thead><tr><th>Dépôt</th><th>Licence lue dans l’archive</th><th>Mo</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><span class="phon">ggml-org/llama.cpp</span></td><td>MIT</td><td>37</td><td>moteur d'inférence sur processeur</td></tr>
+<tr><td><span class="phon">ollama/ollama</span></td><td>MIT</td><td>26</td><td>surcouche de gestion de modèles</td></tr>
+</tbody></table>
+
+<div class="callout limite">
+  <div class="callout-title">Trois pièges de licence, par ordre de gravité</div>
+  <ol>
+    <li><strong>XTTS v2</strong> est publié sous <i>Coqui Public Model
+    License</i>, qui n'autorise que l'usage non commercial et couvre
+    explicitement <strong>les fichiers audio produits</strong>. Une billetterie
+    ou une subvention fléchée suffit à sortir du périmètre. À écarter pour toute
+    installation publique financée.</li>
+    <li><strong>Grafana</strong> est passé d'Apache-2.0 à AGPLv3 en avril 2021 :
+    si vous exposez un tableau de bord modifié sur le réseau, l'AGPL vous oblige
+    à en publier les sources.</li>
+    <li><strong>Les dépôts biodata sans licence</strong> — notamment le kit sur
+    plaque d'essai, pourtant le plus étoilé — ne sont pas réutilisables tels
+    quels dans un atelier payant ou une publication.</li>
+    <li><strong>Arduino-AppleMIDI-Library est sous CC BY-SA 4.0</strong>, une
+    licence à partage à l'identique conçue pour des œuvres, pas pour du code, et
+    dont la clause de réciprocité est mal définie sur un logiciel. Or c'est une
+    dépendance directe du firmware BiodataFeather en mode RTP-MIDI. À signaler
+    si le firmware est redistribué.</li>
+  </ol>
+</div>
+
+<h3 id="inv-nonverif" data-toc="sub">Ce qui n'a pas pu être vérifié</h3>
+<ul>
+  <li>Le facteur temps réel de Piper sur Raspberry Pi : <strong>aucune source
+  primaire n'existe</strong>. Toutes les valeurs qui circulent proviennent de
+  blogs non reproductibles.</li>
+  <li>La divergence de licence de <span class="phon">strauss</span> entre le
+  dépôt (Apache-2.0) et PyPI (MIT) n'est pas résolue.</li>
+  <li>Les prix des instruments de flux de sève d'ICT International et de Dynamax
+  ne sont pas publics : vente sur devis uniquement.</li>
+  <li>Les schémas des planches 2 à 5 sont des schémas d'application composés
+  d'après les datasheets ; ils n'ont pas été prototypés dans le cadre de cette
+  annexe.</li>
+  <li>Les licences marquées « à vérifier » dans le tableau des archives.</li>
+  <li>Quatre licences de bibliothèques n'étaient pas lisibles par automate et
+  ont été relevées à la main : TSL2591 (BSD, en-tête de source), OneWire (MIT,
+  en-tête de source), AppleMIDI (CC BY-SA 4.0, LICENSE.md), AD8232 SparkFun
+  (matériel CC BY-SA 3.0, code Beerware). Le détecteur automatique s'est par
+  ailleurs trompé deux fois avant correction — le préambule de la GPL v2 cite
+  la LGPL, et le texte de la MPL 2.0 cite la GPL : toute lecture de licence par
+  mot-clé doit se limiter à l'en-tête.</li>
+  <li><span class="phon">electricityforprogress/Biodata_Manuel</span> :
+  <strong>n'a pas pu être téléchargé</strong> (ni branche <i>main</i> ni
+  <i>master</i>).</li>
+</ul>
+</section>
+<section class="frontpage pagebreak">
+<h2 id="colophon" data-toc="chapter">Colophon</h2>
+<p class="noindent">Annexe technique de la série <i>L'Arbre qui Parle</i>,
+Ateliers BN, 17 septembre 2026.</p>
+<p>Les cinq planches ont été produites par le générateur
+<span class="phon">pdf-src/assets/svg/gen_sch.py</span>, de façon déterministe.
+Les listings 1 à 3 sont extraits des archives de
+<span class="phon">sources/code/</span> à la construction du document, par
+<span class="phon">tools/gen-annexe-parts.py</span> : ils sont donc
+nécessairement conformes au code téléchargé. Les listings 4 à 10 sont placés
+sous CC0.</p>
+<p>Composition : WeasyPrint, charte <span class="phon">pdf-src/book.css</span>.
+Reconstruction complète du document :</p>
+<div class="code"><pre>python3 pdf-src/assets/svg/gen_sch.py
+python3 tools/gen-annexe-parts.py
+python3 tools/build-annexe.py</pre></div>
+<p class="small">Les marques et références de composants citées appartiennent à
+leurs détenteurs respectifs et ne sont mentionnées qu'à titre d'identification
+technique.</p>
+</section>
+</body>
+</html>

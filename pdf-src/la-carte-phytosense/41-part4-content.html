@@ -1,0 +1,113 @@
+<section class="chapter">
+  <h2 id="c8-pcb" data-toc="chapter">Le circuit imprimé</h2>
+
+  <p class="chapo">À ce niveau de performance, le circuit imprimé n'est plus un support : c'est un
+  composant. Il fixe le courant de fuite, la réjection du mode commun et l'immunité au réseau —
+  trois grandeurs qu'aucun choix de composant ne rattrape.</p>
+
+  <h3 id="c8-quatre" data-toc="sub">Pourquoi quatre couches et pas deux</h3>
+
+  <p>Deux couches coûteraient quatre euros de moins par carte. Elles imposeraient trois
+  renoncements : pas de plan de masse continu, donc une réjection du mode commun dégradée d'une
+  vingtaine de décibels ; pas de plan de garde sous l'entrée, donc un courant de fuite multiplié
+  par dix ; et pas de séparation nette entre le retour des alimentations et celui des signaux,
+  donc une ronflette impossible à éliminer.</p>
+
+  <p>Quatre euros contre vingt décibels : la question ne se pose pas. L'empilage retenu est
+  classique et sans surprise pour un fabricant, ce qui garantit un prix de série courante.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/pcb-empilage.svg" alt="Empilage du circuit imprimé et règles de fabrication"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Empilage et règles de fabrication. Aucune
+    exigence hors norme : classe IPC 2, percements de trois dixièmes, finition ENIG. Le seul point
+    inhabituel est le vernis épargné sous les entrées, que tout fabricant accepte sans surcoût
+    lorsqu'on le demande explicitement.</figcaption>
+  </figure>
+
+  <h3 id="c8-plan" data-toc="sub">Le plan de masse fendu, et la règle qui va avec</h3>
+
+  <p>La couche 2 porte un plan de masse continu, <strong>interrompu par une fente d'un millimètre
+  et demi</strong> qui sépare la masse analogique flottante de la masse USB. Cette fente se
+  poursuit à l'identique sur les quatre couches.</p>
+
+  <p>La règle qui l'accompagne est absolue et ne souffre aucune exception :
+  <strong>aucune piste ne franchit la fente</strong>. Une seule piste qui la traverserait
+  rétablirait le couplage et annulerait l'isolement — tout en laissant la carte parfaitement
+  fonctionnelle, ce qui rend l'erreur d'autant plus difficile à détecter. Seuls le transformateur
+  et les isolateurs enjambent la fente, et ils l'enjambent par construction, leur boîtier étant
+  conçu pour cela.</p>
+
+  <section class="planche-page"><figure class="planche" id="pl-pcb-couches">
+    <img src="assets/svg/pcb-couches.svg" alt="Routage des quatre couches"/>
+    <figcaption><span class="fig-n">PLANCHE ##</span> — Routage des quatre couches, vues de dessus.
+    La fente du plan de masse traverse la carte de haut en bas, à cinquante-six millimètres du bord
+    gauche.</figcaption>
+  </figure></section>
+
+  <section class="planche-page"><figure class="planche" id="pl-pcb-implantation">
+    <img src="assets/svg/pcb-implantation.svg" alt="Implantation et sérigraphie"/>
+    <figcaption><span class="fig-n">PLANCHE ##</span> — Implantation et sérigraphie. Les quatre
+    zones fonctionnelles sont physiquement séparées : ce n'est pas une commodité de lecture, c'est
+    ce qui garantit que les courants de retour ne se mélangent pas.</figcaption>
+  </figure></section>
+
+  <h3 id="c8-regles" data-toc="sub">Les huit règles de tracé, par ordre d'importance</h3>
+
+  <ul class="steps">
+    <li><strong>L'anneau de garde entoure l'entrée sur les quatre couches</strong>, y compris sous
+    le boîtier de l'amplificateur. Il est relié à la broche de garde par le chemin le plus court.</li>
+    <li><strong>Le vernis est épargné</strong> dans la zone d'entrée, entre l'anneau et la pastille.
+    Cette zone doit pouvoir être nettoyée à l'alcool après soudure.</li>
+    <li><strong>Aucune piste ne franchit la fente</strong> du plan de masse. Vérification visuelle
+    obligatoire avant d'envoyer les fichiers.</li>
+    <li><strong>Les retours de courant suivent leurs signaux.</strong> Chaque piste rapide a son
+    plan de masse immédiatement sous elle, sans découpe interposée.</li>
+    <li><strong>Les condensateurs de découplage touchent leurs broches.</strong> Un millimètre de
+    piste ajoute une inductance qui annule leur effet aux fréquences où ils servent.</li>
+    <li><strong>Le convertisseur et sa référence forment un îlot</strong>, avec son propre point
+    de raccordement à la masse analogique — une étoile locale, pas un maillage.</li>
+    <li><strong>L'oscillateur est entouré de vias de masse</strong> et éloigné de l'étage d'entrée
+    d'au moins quinze millimètres.</li>
+    <li><strong>Les pistes d'entrée sont courtes et droites</strong>, sans via, sans changement de
+    couche : chaque via est un puits de fuite supplémentaire.</li>
+  </ul>
+
+  <div class="callout caution">
+    <div class="callout-title">⚠️ Le flux de soudure est un conducteur</div>
+    <p class="noindent">Un résidu de flux entre l'entrée et la garde présente une résistance de
+    l'ordre du gigaohm — c'est-à-dire exactement l'ordre de grandeur que nous cherchons à mesurer.
+    Le nettoyage à l'alcool isopropylique à 99 %, suivi d'un séchage complet, n'est donc pas une
+    finition : c'est une étape de fabrication. Une carte non nettoyée présente un courant de fuite
+    cent fois supérieur à la spécification, et ce défaut se traduit par une dérive lente
+    inexplicable — le symptôme le plus déroutant qui soit.</p>
+  </div>
+
+  <h3 id="c8-fabrication" data-toc="sub">Commander les cartes</h3>
+
+  <p>Les fichiers Gerber, le fichier de percement et le fichier de placement sont produits par le
+  logiciel de conception et publiés avec l'ouvrage. Les paramètres à indiquer au fabricant tiennent
+  en sept lignes, reproduites ci-dessous ; elles correspondent toutes à des options courantes.</p>
+
+  <table class="tight">
+    <thead><tr><th>Paramètre</th><th>Valeur à demander</th><th>Pourquoi</th></tr></thead>
+    <tbody>
+      <tr><td>Couches</td><td>4</td><td>plan de masse et plan de garde</td></tr>
+      <tr><td>Dimensions</td><td>100 × 60 mm</td><td>tient dans un boîtier standard</td></tr>
+      <tr><td>Épaisseur</td><td>1,6 mm</td><td>rigidité, connecteurs standards</td></tr>
+      <tr><td>Cuivre</td><td>35 µm (1 oz) sur toutes les couches</td><td>suffisant, moins cher</td></tr>
+      <tr><td>Finition</td><td><strong>ENIG</strong> (or chimique sur nickel)</td>
+        <td>indispensable : l'étamage à chaud laisse des résidus ioniques qui conduisent</td></tr>
+      <tr><td>Vernis épargné</td><td>zone d'entrée, selon le fichier fourni</td>
+        <td>la règle numéro deux</td></tr>
+      <tr><td>Sérigraphie</td><td>blanche, deux faces</td><td>repères de montage et d'usage</td></tr>
+    </tbody>
+  </table>
+
+  <div class="chiffre">
+    <div class="val">12 €</div>
+    <div class="txt">Le prix unitaire d'une carte quatre couches en ENIG avec vernis épargné, pour
+    une commande de cinq exemplaires, chez un fabricant asiatique courant, port compris, en
+    septembre 2026. Le minimum de commande étant de cinq, prévoyez d'en avoir quatre d'avance —
+    ce qui est une bonne chose, car la première sera sacrifiée aux essais.</div>
+  </div>
+</section>

@@ -1,0 +1,171 @@
+<section class="pagebreak">
+<h2 id="inv" data-toc="chapter">Ce qui a été téléchargé, et sous quelle licence</h2>
+
+<p class="lettrine noindent">Toutes les archives listées ci-dessous se trouvent
+dans <span class="phon">sources/code/</span>. Elles ont été récupérées depuis
+les dépôts publics correspondants ; les licences indiquées « à vérifier » n'ont
+pas pu être confirmées par lecture d'un fichier LICENSE et doivent l'être avant
+tout usage autre que privé.</p>
+
+<table class="tight"><caption>Archives présentes dans sources/code/. L'absence de fichier de licence ne vaut pas permission : en droit d'auteur, un dépôt sans licence est « tous droits réservés » par défaut, même publié publiquement.</caption><thead><tr><th>Dépôt</th><th>Licence</th><th>Contenu</th></tr></thead><tbody>
+<tr><td><span class="phon">electricityforprogress/MIDIsprout</span></td><td>MIT</td><td>Firmware, schémas Eagle, gerbers et BOM du MIDI Sprout d'origine. Figé depuis 2021.</td></tr>
+<tr><td><span class="phon">electricityforprogress/BiodataSonificationBreadboardKit</span></td><td>aucune licence déclarée</td><td>Version pédagogique sur plaque d'essai : c'est d'elle que provient le netlist de la planche 1 et la nomenclature. <b>Statut juridique à clarifier avant tout usage public.</b></td></tr>
+<tr><td><span class="phon">electricityforprogress/BiodataFeather</span></td><td>MIT</td><td>Portage ESP32 / ESP32-S3 avec MIDI BLE et RTP-MIDI. La version à reprendre aujourd'hui.</td></tr>
+<tr><td><span class="phon">electricityforprogress/Organon</span></td><td>non spécifiée</td><td>Déclinaison Eurorack : sorties CV et gate.</td></tr>
+<tr><td><span class="phon">leetronics/midi-biodata</span></td><td>MIT (matériel et firmware) · CC0 (boîtier)</td><td>Réimplémentation industrialisée sous KiCad, USB-C et sortie CV.</td></tr>
+<tr><td><span class="phon">Playtronica/biotron-firmware</span></td><td>GPL-3.0</td><td>Firmware RP2040 du Biotron commercial. Un rare cas de produit vendu dont le firmware est réellement ouvert.</td></tr>
+<tr><td><span class="phon">Lessnullvoid/Pulsum-Plantae</span></td><td>à vérifier</td><td>Installation de Leslie García : amplificateur galvanique à LM324, cartes Fritzing, gerbers et application openFrameworks.</td></tr>
+<tr><td><span class="phon">OPEnSLab-OSU/SapFlowMeterOld</span></td><td>à vérifier</td><td>Capteur de flux de sève par dissipation thermique, open source, OPEnS Lab, Oregon State University.</td></tr>
+<tr><td><span class="phon">james-trayford/strauss</span></td><td>Apache-2.0 (dépôt) / MIT (PyPI) — <b>divergence non résolue</b></td><td>Bibliothèque de sonification scientifique la plus complète et la seule réellement maintenue. Publiée dans JOSS, DOI 10.21105/joss.07875.</td></tr>
+<tr><td><span class="phon">spacetelescope/astronify</span></td><td>BSD 3-Clause</td><td>Sonification de séries temporelles, Space Telescope Science Institute. Maintenance lente.</td></tr>
+<tr><td><span class="phon">lockepatton/sonipy</span></td><td>MIT</td><td>Nuages de points vers blips perceptuellement uniformes. <b>Aucune release depuis 2020 : à considérer comme abandonné.</b></td></tr>
+<tr><td><span class="phon">klaemsch/plant-sonification</span></td><td>à vérifier</td><td>Projet de sonification végétale (archive présente dans le dossier).</td></tr>
+<tr><td><span class="phon">RominaSR/SonicPlants</span></td><td>à vérifier</td><td>Projet de sonification végétale (archive présente dans le dossier).</td></tr>
+<tr><td><span class="phon">ettorhake/BioDataToMidiToDigitakt</span></td><td>à vérifier</td><td>Adaptation du biodata vers un séquenceur Elektron Digitakt.</td></tr>
+<tr><td><span class="phon">electricityforprogress/BiodataWifi</span></td><td>à vérifier</td><td>Variante ESP8266 + Circuit Playground : le seul portage Wi-Fi de la première génération.</td></tr>
+<tr><td><span class="phon">electricityforprogress/ListeningStation</span></td><td>à vérifier</td><td>Station d'écoute audio sur Adafruit Feather.</td></tr>
+<tr><td><span class="phon">ChubbyLobsters/Electrophysiology-and-Biorobotics</span></td><td>à vérifier</td><td>Électrophysiologie et biorobotique.</td></tr>
+</tbody></table>
+
+<h3 id="inv-mcu" data-toc="sub">Les firmwares de microcontrôleur, cible par cible</h3>
+
+<p>La question se pose en atelier : que peut-on téléverser, et sur quoi ?
+Voici l’état exact de ce qui est présent dans
+<span class="phon">sources/code/</span>.</p>
+
+<table class="tight"><caption>Douze firmwares réellement présents. Les deux familles qui comptent pour un atelier sont l’ATmega328P — le plus simple à comprendre et à déboguer, sans pile réseau — et l’ESP32-S3, qui apporte le MIDI sans fil et la veille profonde. Le nœud environnemental des planches 3 et 4 ne demande, lui, aucun firmware écrit à la main : ESPHome le fabrique depuis le YAML du listing 4.</caption><thead><tr><th>Firmware</th><th>Cible</th><th>Sorties</th><th>Licence</th><th>État</th></tr></thead><tbody>
+<tr><td><span class='phon'>MIDI_Psychogalv_328p_v021</span></td><td><b>ATmega328P</b></td><td>MIDI DIN-5 · CV par MLI</td><td>MIT</td><td>l’original, figé 2021</td></tr>
+<tr><td><span class='phon'>BiodataSonification_026_kit</span></td><td><b>ATmega328P</b></td><td>MIDI · CV · 6 LED · menu EEPROM</td><td><b>aucune</b></td><td>version d’atelier, la mieux commentée</td></tr>
+<tr><td><span class='phon'>MIDI_Psychogalv_328p_13-37.org</span></td><td><b>ATmega328P</b></td><td>MIDI · CV sur jack TRS</td><td>MIT</td><td>portage leetronics, USB-C</td></tr>
+<tr><td><span class='phon'>BiodataSonification_Digitakt_v027</span></td><td><b>ATmega328P</b></td><td>MIDI vers séquenceur Elektron</td><td>à vérifier</td><td>adaptation tierce</td></tr>
+<tr><td><span class='phon'>BiodataModular_002</span></td><td>ATmega32u4 (Pro Micro)</td><td>3 paires CV/Gate · MIDI · MCP4728</td><td>non spécifiée</td><td>déclinaison Eurorack</td></tr>
+<tr><td><span class='phon'>Biodata_Feather_ESP32Wifi_04</span></td><td><b>ESP32</b></td><td>RTP-MIDI sur Wi-Fi (AppleMIDI)</td><td>MIT</td><td>première version réseau</td></tr>
+<tr><td><span class='phon'>Biodata_Feather_ESP32_05</span></td><td><b>ESP32</b></td><td>BLE MIDI · MIDI série</td><td>MIT</td><td>version BLE</td></tr>
+<tr><td><span class='phon'>Biodata_Feather_ESP32_07</span></td><td><b>ESP32-S3</b></td><td>BLE MIDI · RTP-MIDI · MIDI série</td><td>MIT</td><td><b>la plus récente — à reprendre</b></td></tr>
+<tr><td><span class='phon'>BiodataWifi_006</span></td><td>ESP8266 + CircuitPlayground</td><td>Wi-Fi · sortie sonore</td><td>à vérifier</td><td>variante historique</td></tr>
+<tr><td><span class='phon'>pulsumSensorRead</span></td><td>Arduino (LM324 externe)</td><td>série vers Pure Data / openFrameworks</td><td>à vérifier</td><td>Pulsu(m) Plantae, Leslie García</td></tr>
+<tr><td><span class='phon'>main.c</span> (PLSDK)</td><td><b>RP2040</b> (Pico SDK)</td><td>USB-MIDI · capteur de lumière</td><td>GPL-3.0</td><td>Biotron, Playtronica</td></tr>
+<tr><td><span class='phon'>SapFlowMeter</span></td><td>SAMD21 (Feather M0)</td><td>carte SD · dissipation thermique</td><td>à vérifier</td><td>OPEnS Lab, Oregon State University</td></tr>
+</tbody></table>
+
+<h3 id="inv-stack" data-toc="sub">La chaîne logicielle complète</h3>
+
+<p>Les 50 dépôts ci-dessous ont été téléchargés en archives source —
+sans historique git — par <span class="phon">tools/fetch-software.py</span>,
+qui relève la licence <strong>en lisant le fichier de licence réellement
+présent dans chaque archive</strong> plutôt qu’en se fiant à une page web.
+Total : 701 Mo dans <span class="phon">sources/software/</span>.
+Aucun dépôt manquant.</p>
+
+<h4>Bibliothèques microcontrôleur</h4><table class="tight-xs"><caption>21 dépôts, 20 Mo.</caption><thead><tr><th>Dépôt</th><th>Licence lue dans l’archive</th><th>Mo</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><span class="phon">adafruit/Adafruit_ADS1X15</span></td><td>BSD</td><td>0</td><td>ADS1115/ADS1015 — convertisseur de la planche 2</td></tr>
+<tr><td><span class="phon">adafruit/Adafruit_BME280_Library</span></td><td>BSD</td><td>0</td><td>BME280 — T/HR/pression, planche 3</td></tr>
+<tr><td><span class="phon">adafruit/Adafruit_BusIO</span></td><td>MIT</td><td>0</td><td>couche I²C/SPI commune aux bibliothèques Adafruit</td></tr>
+<tr><td><span class="phon">adafruit/Adafruit_Sensor</span></td><td>Apache-2.0</td><td>0</td><td>interface de capteur unifiée Adafruit</td></tr>
+<tr><td><span class="phon">adafruit/Adafruit_TSL2591_Library</span></td><td>BSD</td><td>0</td><td>TSL2591 — luxmètre à forte dynamique</td></tr>
+<tr><td><span class="phon">claws/BH1750</span></td><td>MIT</td><td>0</td><td>BH1750 — éclairement, planche 3</td></tr>
+<tr><td><span class="phon">PaulStoffregen/OneWire</span></td><td>MIT</td><td>0</td><td>bus 1-Wire — planche 3</td></tr>
+<tr><td><span class="phon">milesburton/Arduino-Temperature-Control-Library</span></td><td>MIT</td><td>0</td><td>DS18B20 — sondes de température</td></tr>
+<tr><td><span class="phon">Sensirion/arduino-i2c-scd4x</span></td><td>BSD</td><td>3</td><td>SCD40/SCD41 — CO₂</td></tr>
+<tr><td><span class="phon">Sensirion/arduino-core</span></td><td>BSD</td><td>0</td><td>socle commun des bibliothèques Sensirion</td></tr>
+<tr><td><span class="phon">Sensirion/arduino-i2c-sht4x</span></td><td>BSD</td><td>2</td><td>SHT4x — T/HR de précision</td></tr>
+<tr><td><span class="phon">FortySevenEffects/arduino_midi_library</span></td><td>MIT</td><td>0</td><td>MIDI série — sortie DIN-5 de la planche 1</td></tr>
+<tr><td><span class="phon">lathoub/Arduino-AppleMIDI-Library</span></td><td>CC BY-SA 4.0 ⚠</td><td>0</td><td>RTP-MIDI sur Wi-Fi — utilisé par BiodataFeather</td></tr>
+<tr><td><span class="phon">lathoub/Arduino-BLE-MIDI</span></td><td>MIT</td><td>0</td><td>MIDI sur Bluetooth LE — utilisé par BiodataFeather</td></tr>
+<tr><td><span class="phon">thomasfredericks/Bounce2</span></td><td>MIT</td><td>0</td><td>anti-rebond logiciel — dépendance du firmware biodata</td></tr>
+<tr><td><span class="phon">jgillick/arduino-LEDFader</span></td><td>MIT</td><td>0</td><td>gestion des LED sans delay() — dépendance du firmware biodata</td></tr>
+<tr><td><span class="phon">thijse/Arduino-EEPROMEx</span></td><td>LGPL-2.1</td><td>0</td><td>EEPROMex — dépendance du firmware MIDI Sprout</td></tr>
+<tr><td><span class="phon">sparkfun/AD8232_Heart_Rate_Monitor</span></td><td>matériel CC BY-SA 3.0 · code Beerware</td><td>1</td><td>exemples AD8232 — front-end ECG applicable à la planche 2</td></tr>
+<tr><td><span class="phon">mcci-catena/arduino-lmic</span></td><td>MIT</td><td>4</td><td>pile LoRaWAN de référence pour nœud sur batterie</td></tr>
+<tr><td><span class="phon">TheThingsNetwork/arduino-device-lib</span></td><td>MIT</td><td>3</td><td>bibliothèque The Things Network</td></tr>
+<tr><td><span class="phon">jgromes/RadioLib</span></td><td>MIT</td><td>5</td><td>pile radio universelle (LoRa, SX126x/SX127x)</td></tr>
+</tbody></table>
+<h4>Firmware</h4><table class="tight-xs"><caption>5 dépôts, 82 Mo.</caption><thead><tr><th>Dépôt</th><th>Licence lue dans l’archive</th><th>Mo</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><span class="phon">esphome/esphome</span></td><td>GPL-?</td><td>11</td><td>firmware ESP décrit en YAML — listing 4 de l'annexe</td></tr>
+<tr><td><span class="phon">arendst/Tasmota</span></td><td>GPL-3.0</td><td>57</td><td>firmware ESP alternatif</td></tr>
+<tr><td><span class="phon">meshtastic/firmware</span></td><td>GPL-3.0</td><td>5</td><td>maillage LoRa hors couverture</td></tr>
+<tr><td><span class="phon">kizniche/Mycodo</span></td><td>GPL-3.0</td><td>7</td><td>acquisition et régulation sur Raspberry Pi</td></tr>
+<tr><td><span class="phon">farmOS/farmOS</span></td><td>GPL-2.0 ou GPL-? (double licence)</td><td>1</td><td>couche métier agricole (Drupal)</td></tr>
+</tbody></table>
+<h4>Ingestion et stockage</h4><table class="tight-xs"><caption>5 dépôts, 37 Mo.</caption><thead><tr><th>Dépôt</th><th>Licence lue dans l’archive</th><th>Mo</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><span class="phon">eclipse-mosquitto/mosquitto</span></td><td>EPL-2.0</td><td>4</td><td>courtier MQTT</td></tr>
+<tr><td><span class="phon">influxdata/telegraf</span></td><td>MIT</td><td>8</td><td>agent de collecte</td></tr>
+<tr><td><span class="phon">influxdata/influxdb</span></td><td>MIT ou Apache-2.0 (double licence)</td><td>6</td><td>base de séries temporelles (Core : MIT/Apache-2.0)</td></tr>
+<tr><td><span class="phon">timescale/timescaledb</span></td><td>Apache-2.0</td><td>10</td><td>extension PostgreSQL séries temporelles</td></tr>
+<tr><td><span class="phon">node-red/node-red</span></td><td>Apache-2.0</td><td>10</td><td>orchestration par flux</td></tr>
+</tbody></table>
+<h4>Visualisation</h4><table class="tight-xs"><caption>2 dépôts, 102 Mo.</caption><thead><tr><th>Dépôt</th><th>Licence lue dans l’archive</th><th>Mo</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><span class="phon">grafana/grafana</span></td><td><b>AGPL-3.0</b></td><td>61</td><td>tableaux de bord — ATTENTION AGPL-3.0</td></tr>
+<tr><td><span class="phon">home-assistant/core</span></td><td>Apache-2.0</td><td>42</td><td>supervision locale</td></tr>
+</tbody></table>
+<h4>Sonification et audio</h4><table class="tight-xs"><caption>10 dépôts, 282 Mo.</caption><thead><tr><th>Dépôt</th><th>Licence lue dans l’archive</th><th>Mo</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><span class="phon">supercollider/supercollider</span></td><td>GPL-3.0</td><td>20</td><td>moteur de synthèse — listing 9</td></tr>
+<tr><td><span class="phon">pure-data/pure-data</span></td><td>BSD</td><td>15</td><td>patch temps réel (Pd vanilla)</td></tr>
+<tr><td><span class="phon">sonic-pi-net/sonic-pi</span></td><td>MIT</td><td>131</td><td>live coding pédagogique</td></tr>
+<tr><td><span class="phon">ccrma/chuck</span></td><td>GPL-2.0 ou MIT (double licence)</td><td>22</td><td>langage audio strongly-timed</td></tr>
+<tr><td><span class="phon">csound/csound</span></td><td>LGPL-2.1</td><td>28</td><td>moteur de synthèse historique</td></tr>
+<tr><td><span class="phon">attwad/python-osc</span></td><td>Unlicense</td><td>0</td><td>pont Python → OSC — listing 8</td></tr>
+<tr><td><span class="phon">mido/mido</span></td><td>MIT</td><td>0</td><td>MIDI en Python</td></tr>
+<tr><td><span class="phon">FluidSynth/fluidsynth</span></td><td>LGPL-2.1</td><td>2</td><td>MIDI → audio (SoundFont)</td></tr>
+<tr><td><span class="phon">BelaPlatform/Bela</span></td><td>LGPL-3.0</td><td>62</td><td>capteurs à la fréquence audio, latence ultra-faible</td></tr>
+<tr><td><span class="phon">uzu/tidal</span></td><td>GPL-3.0</td><td>2</td><td>TidalCycles — langage de motifs (migré sur Codeberg)</td></tr>
+</tbody></table>
+<h4>Synthèse vocale</h4><table class="tight-xs"><caption>5 dépôts, 116 Mo.</caption><thead><tr><th>Dépôt</th><th>Licence lue dans l’archive</th><th>Mo</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><span class="phon">OHF-Voice/piper1-gpl</span></td><td>GPL-3.0</td><td>24</td><td>Piper 1 — synthèse vocale locale, GPLv3</td></tr>
+<tr><td><span class="phon">rhasspy/piper</span></td><td>MIT</td><td>24</td><td>Piper historique — ARCHIVÉ, conservé pour référence</td></tr>
+<tr><td><span class="phon">idiap/coqui-ai-TTS</span></td><td>MPL-2.0</td><td>21</td><td>fork maintenu de Coqui TTS</td></tr>
+<tr><td><span class="phon">espeak-ng/espeak-ng</span></td><td>GPL-3.0 ou MIT ou BSD ou Apache-2.0 (double licence)</td><td>21</td><td>synthèse à formants, très légère</td></tr>
+<tr><td><span class="phon">hexgrad/kokoro</span></td><td>Apache-2.0</td><td>25</td><td>Kokoro — Apache-2.0 code et poids</td></tr>
+</tbody></table>
+<h4>Modèles de langue locaux</h4><table class="tight-xs"><caption>2 dépôts, 63 Mo.</caption><thead><tr><th>Dépôt</th><th>Licence lue dans l’archive</th><th>Mo</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><span class="phon">ggml-org/llama.cpp</span></td><td>MIT</td><td>37</td><td>moteur d'inférence sur processeur</td></tr>
+<tr><td><span class="phon">ollama/ollama</span></td><td>MIT</td><td>26</td><td>surcouche de gestion de modèles</td></tr>
+</tbody></table>
+
+<div class="callout limite">
+  <div class="callout-title">Trois pièges de licence, par ordre de gravité</div>
+  <ol>
+    <li><strong>XTTS v2</strong> est publié sous <i>Coqui Public Model
+    License</i>, qui n'autorise que l'usage non commercial et couvre
+    explicitement <strong>les fichiers audio produits</strong>. Une billetterie
+    ou une subvention fléchée suffit à sortir du périmètre. À écarter pour toute
+    installation publique financée.</li>
+    <li><strong>Grafana</strong> est passé d'Apache-2.0 à AGPLv3 en avril 2021 :
+    si vous exposez un tableau de bord modifié sur le réseau, l'AGPL vous oblige
+    à en publier les sources.</li>
+    <li><strong>Les dépôts biodata sans licence</strong> — notamment le kit sur
+    plaque d'essai, pourtant le plus étoilé — ne sont pas réutilisables tels
+    quels dans un atelier payant ou une publication.</li>
+    <li><strong>Arduino-AppleMIDI-Library est sous CC BY-SA 4.0</strong>, une
+    licence à partage à l'identique conçue pour des œuvres, pas pour du code, et
+    dont la clause de réciprocité est mal définie sur un logiciel. Or c'est une
+    dépendance directe du firmware BiodataFeather en mode RTP-MIDI. À signaler
+    si le firmware est redistribué.</li>
+  </ol>
+</div>
+
+<h3 id="inv-nonverif" data-toc="sub">Ce qui n'a pas pu être vérifié</h3>
+<ul>
+  <li>Le facteur temps réel de Piper sur Raspberry Pi : <strong>aucune source
+  primaire n'existe</strong>. Toutes les valeurs qui circulent proviennent de
+  blogs non reproductibles.</li>
+  <li>La divergence de licence de <span class="phon">strauss</span> entre le
+  dépôt (Apache-2.0) et PyPI (MIT) n'est pas résolue.</li>
+  <li>Les prix des instruments de flux de sève d'ICT International et de Dynamax
+  ne sont pas publics : vente sur devis uniquement.</li>
+  <li>Les schémas des planches 2 à 5 sont des schémas d'application composés
+  d'après les datasheets ; ils n'ont pas été prototypés dans le cadre de cette
+  annexe.</li>
+  <li>Les licences marquées « à vérifier » dans le tableau des archives.</li>
+  <li>Quatre licences de bibliothèques n'étaient pas lisibles par automate et
+  ont été relevées à la main : TSL2591 (BSD, en-tête de source), OneWire (MIT,
+  en-tête de source), AppleMIDI (CC BY-SA 4.0, LICENSE.md), AD8232 SparkFun
+  (matériel CC BY-SA 3.0, code Beerware). Le détecteur automatique s'est par
+  ailleurs trompé deux fois avant correction — le préambule de la GPL v2 cite
+  la LGPL, et le texte de la MPL 2.0 cite la GPL : toute lecture de licence par
+  mot-clé doit se limiter à l'en-tête.</li>
+  <li><span class="phon">electricityforprogress/Biodata_Manuel</span> :
+  <strong>n'a pas pu être téléchargé</strong> (ni branche <i>main</i> ni
+  <i>master</i>).</li>
+</ul>
+</section>

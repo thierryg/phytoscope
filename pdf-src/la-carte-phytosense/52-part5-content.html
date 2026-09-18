@@ -1,0 +1,162 @@
+<section class="chapter">
+  <h2 id="c13-archi-logicielle" data-toc="chapter">L'architecture du logiciel</h2>
+
+  <p class="chapo">Trois fils d'exécution, deux files d'attente, et une règle : l'interface ne
+  calcule rien. C'est ce qui permet à l'acquisition de tenir huit heures pendant qu'on manipule
+  l'affichage.</p>
+
+  <figure class="figframe">
+    <img src="assets/svg/logiciel-archi.svg" alt="Architecture du logiciel PhytoScope"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Les trois fils et leurs échanges. Le fil
+    d'acquisition ne fait que lire et horodater ; le fil de traitement filtre, mesure et sonifie ;
+    l'interface lit un instantané publié par le moteur, à sa propre cadence.</figcaption>
+  </figure>
+
+  <h3 id="c13-regle" data-toc="sub">La règle qui structure tout</h3>
+
+  <p>Un logiciel de mesure échoue presque toujours de la même façon : l'affichage ralentit, et
+  l'acquisition perd des échantillons. La parade tient en une discipline, appliquée sans
+  exception : <strong>aucun composant lent ne se trouve sur le chemin des données</strong>.</p>
+
+  <p>Concrètement, la source pousse ses blocs dans une file bornée. Si la file déborde — parce que
+  le traitement a pris du retard —, c'est <em>le plus ancien bloc qui est jeté</em>, pas le plus
+  récent, et le compteur de pertes s'incrémente. Jeter plutôt que bloquer : un affichage en retard
+  ne doit jamais faire décrocher la mesure, et une perte doit être comptée plutôt que cachée.</p>
+
+  <h3 id="c13-audio" data-toc="sub">Le rendu audio anticipé</h3>
+
+  <p>Le rappel audio pose un problème propre à Python : il partage le verrou global de
+  l'interpréteur avec l'interface graphique. Un rafraîchissement de courbe un peu long suffit alors
+  à faire manquer une échéance, ce que la couche audio signale par des coupures audibles.</p>
+
+  <p>La parade est celle des moteurs audio professionnels : <strong>le rappel ne calcule rien</strong>.
+  Un fil de rendu remplit en avance un tampon circulaire d'une demi-seconde ; le rappel se contente
+  d'y copier de la mémoire, opération qui libère le verrou et ne peut pas dépasser son échéance.
+  La latence ajoutée est de quelques centaines de millisecondes — sans la moindre conséquence
+  lorsqu'on sonifie une plante, dont les événements durent plusieurs secondes.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Choix de conception — la latence comme monnaie d'échange</div>
+    <p class="noindent">Dans un instrument de musique, la latence est l'ennemi : au-delà de dix
+    millisecondes, l'instrumentiste la ressent. Ici, personne ne joue : la plante ne réagit pas à
+    la note qu'elle a produite dans la demi-seconde. On peut donc échanger de la latence contre de
+    la robustesse, et c'est un échange très favorable. Savoir quelles contraintes on n'a
+    <em>pas</em> est aussi important que connaître celles qu'on a.</p>
+  </div>
+
+  <h3 id="c13-modules" data-toc="sub">L'organisation du code</h3>
+
+  <table class="tight">
+    <thead><tr><th>Module</th><th>Rôle</th><th>Ce qu'il ne fait pas</th></tr></thead>
+    <tbody>
+      <tr><td><span class="phon">core/sources.py</span></td>
+        <td>Quatre sources interchangeables : classe audio, port série, fichier, générateur
+        interne</td>
+        <td>Aucun traitement : les blocs sortent tels qu'ils sont entrés, convertis en volts</td></tr>
+      <tr><td><span class="phon">core/dsp.py</span></td>
+        <td>Filtres biquadratiques, ligne de base, statistiques glissantes, détection
+        d'événements, densité spectrale</td>
+        <td>Aucune dépendance à SciPy : les coefficients sont calculés à la main</td></tr>
+      <tr><td><span class="phon">core/sampling.py</span></td>
+        <td>Module d'échantillonnage : blocs, décimation, moyennage, fenêtres, déclenchement</td>
+        <td>Ne modifie jamais le flux principal : il en dérive une copie</td></tr>
+      <tr><td><span class="phon">core/analysis.py</span></td>
+        <td>Grandeurs scientifiques : densité en V/√Hz, variance d'Allan, autocorrélation,
+        statistique des événements, test de normalité</td>
+        <td>N'interprète rien : chaque fonction renvoie aussi de quoi relativiser son résultat</td></tr>
+      <tr><td><span class="phon">core/engine.py</span></td>
+        <td>Orchestration : fils, files, état partagé, enregistrement</td>
+        <td>Ne connaît rien de Qt — le moteur fonctionne sans interface</td></tr>
+      <tr><td><span class="phon">core/usbdiag.py</span></td>
+        <td>Inventaire USB par identifiants, surveillance du lien, capture des trames</td>
+        <td>N'exige aucune dépendance : quatre sources d'information, toutes facultatives</td></tr>
+      <tr><td><span class="phon">core/preflight.py</span></td>
+        <td>Contrôles avant vol : distingue paquet absent, paquet cassé et environnement verrouillé</td>
+        <td>N'installe rien sans accord explicite</td></tr>
+      <tr><td><span class="phon">core/features.py</span></td>
+        <td>Descripteurs avancés : FFT, ondelettes de Morlet, MFCC, prédiction linéaire, cepstre</td>
+        <td>Aucune dépendance à SciPy non plus ; les constantes de la parole sont transposées,
+        jamais recopiées</td></tr>
+      <tr><td><span class="phon">music/*</span></td>
+        <td>Gammes, diapasons, profils, timbres, synthèse, correspondance, sortie MIDI,
+        dictionnaire lexical et synthèse vocale</td>
+        <td>Aucune règle implicite : chaque correspondance est affichée et consignée</td></tr>
+      <tr><td><span class="phon">ui/*</span></td>
+        <td>Dix onglets, thèmes, écran d'accueil, fenêtres de diagnostic</td>
+        <td>Aucun calcul : l'interface lit un instantané, à sa propre cadence</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c13-motifs" data-toc="sub">Les motifs de conception employés, et pourquoi</h3>
+
+  <p>Quatre motifs classiques structurent le code. Les nommer n'est pas de la coquetterie : c'est
+  ce qui permet à quelqu'un d'autre de s'y retrouver.</p>
+
+  <ul>
+    <li><strong>Stratégie</strong> pour les sources : quatre implémentations derrière une même
+    interface, ce qui rend le reste du logiciel indifférent à la provenance du signal. C'est ce
+    qui permet de déboguer la sonification dans le train, sans plante ni carte.</li>
+    <li><strong>Observateur</strong> pour les événements et les notes : le moteur publie, les
+    consommateurs s'abonnent. L'enregistreur, l'affichage et la sortie MIDI sont trois abonnés
+    indépendants, dont la défaillance de l'un n'affecte pas les autres.</li>
+    <li><strong>Commande</strong> pour le traceur : chaque instruction est un objet exécutable
+    enregistré dans une table, ce qui rend l'ajout d'une commande trivial et l'historique gratuit.</li>
+    <li><strong>Objet-valeur</strong> pour les rapports : un contrôle avant vol, un diagnostic USB,
+    un rapport d'auto-test sont des objets immuables, qui savent se rendre en console <em>et</em>
+    en fenêtre. Le même résultat, deux affichages, aucune duplication de logique.</li>
+  </ul>
+
+  <h3 id="c13-erreurs" data-toc="sub">La gestion des erreurs, en quatre règles</h3>
+
+  <p>Un logiciel d'instrument se juge à son comportement quand quelque chose manque. Quatre règles
+  sont appliquées sans exception.</p>
+
+  <ul class="steps">
+    <li><strong>Une exception ne disparaît jamais.</strong> Elle est traitée, journalisée ou
+    remontée — jamais avalée silencieusement.</li>
+    <li><strong>Le fil d'acquisition ne meurt pas.</strong> Les appels aux consommateurs sont
+    protégés : une erreur d'affichage ou de disque n'interrompt pas la mesure.</li>
+    <li><strong>Les messages s'adressent à l'utilisateur.</strong> Chaque erreur porte un message
+    en français, une cause technique et, quand c'est possible, un remède exécutable.</li>
+    <li><strong>Les codes de sortie sont stables</strong>, documentés, et permettent de scripter le
+    mode sans interface.</li>
+  </ul>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Un exemple réel de diagnostic, et ce qu'il évite</div>
+    <p class="noindent">Cas rencontré pendant le développement : PySide6 correctement installé,
+    mais l'interface refusait de démarrer. Le message naïf aurait été « dépendance manquante :
+    PySide6 » — et l'utilisateur aurait réinstallé en boucle un paquet déjà présent. Le contrôle
+    avant vol distingue les deux cas : il constate que le module existe, tente son chargement,
+    analyse l'erreur du chargeur dynamique, <strong>suit la chaîne des dépendances</strong> (car le
+    système nomme souvent la mauvaise bibliothèque), identifie le paquet système réellement
+    manquant, et affiche la commande exacte pour la distribution détectée. Deux heures de
+    développement ; des dizaines d'heures épargnées à ceux qui installeront.</p>
+  </div>
+
+  <div class="term">
+    <div class="t-h">Contrôle avant vol — sortie réelle</div>
+<pre><span class="g">$ </span><span class="c">phytoscope --check</span>
+
+  Ubuntu 22.04.5 LTS — famille debian
+
+  <span class="k">Contrôles avant vol</span>
+
+  [✓] Python 3.10.12           environnement virtuel (.venv)
+  [✓] numpy                    2.2.6   traitement du signal
+  [✓] PySide6                  6.11.2  interface graphique Qt 6
+  [!] pyqtgraph                installé mais inutilisable : libGL.so.1
+  [!] sounddevice              installé mais inutilisable : libportaudio.so.2
+  [✓] serial                   3.5     contrôle de la carte
+  [✓] rtmidi                   1.5.8   sortie MIDI
+
+  ┌────────────────────────────────────────────────────────────┐
+  │ Bibliothèques système manquantes                           │
+  ├────────────────────────────────────────────────────────────┤
+  │ Des paquets Python sont installés mais ne peuvent pas être │
+  │ chargés : il leur manque une bibliothèque du système.      │
+  │                                                            │
+  │ sudo apt install libgl1 libportaudio2 libxcb-cursor0       │
+  └────────────────────────────────────────────────────────────┘</pre>
+  </div>
+</section>

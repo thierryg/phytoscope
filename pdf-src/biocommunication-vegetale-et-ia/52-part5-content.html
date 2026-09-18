@@ -1,0 +1,80 @@
+<section class="chapter">
+  <h2 id="c13-honnete" data-toc="chapter">À quoi ressemblerait une sonification honnête</h2>
+  <p class="chapo">Le critique qui ne propose rien est à moitié utile. Voici, concrètement, comment sonifier un signal végétal de façon défendable — sans rien perdre de la beauté du résultat.</p>
+
+  <p class="lettrine noindent">Les chapitres précédents ont posé un critère exigeant. Il serait déloyal de s'arrêter là : la question pratique est de savoir si l'on peut le satisfaire <em>tout en produisant quelque chose d'écoutable</em>. La réponse est oui, et les éléments de solution existent déjà.</p>
+
+  <h3 id="c13-cinq-regles" data-toc="sub">Cinq règles de conception</h3>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Conception</div>
+      <div class="pr-t">Les cinq règles d'une sonification défendable</div>
+    </div>
+    <div class="pr-body">
+      <h4>1. Publier la fonction de transfert</h4>
+      <p>Un tableau, une formule, ou quelques lignes de code : « l'humidité du sol entre 0,10 et 0,35 m³/m³ pilote la hauteur entre do3 et do5, linéairement ». C'est tout. Cette publication rend la sonification reproductible, donc conforme au critère ICAD.</p>
+
+      <h4>2. Réserver une voie non quantifiée</h4>
+      <p>La quantification sur une gamme rend le résultat consonant — et détruit l'information fine. La solution n'est pas d'y renoncer, mais de <strong>conserver au moins une voie continue</strong> : un bourdon dont la hauteur suit exactement la grandeur, sans arrondi. L'oreille entend la justesse et l'écart en même temps.</p>
+
+      <h4>3. Sonifier aussi les voies de contexte</h4>
+      <p>Si la température pilote un timbre et l'humidité une réverbération, l'auditeur <em>entend</em> quand une variation du signal principal coïncide avec une variation thermique. L'artefact devient audible au lieu d'être invisible.</p>
+
+      <h4>4. Faire entendre le silence</h4>
+      <p>Quand une donnée manque ou qu'un capteur est hors plage, produire un silence franc ou un signal de défaut explicite — jamais une interpolation. Un dispositif qui ne se tait jamais ne dit rien.</p>
+
+      <h4>5. Publier la sonification du bruit</h4>
+      <p>Diffuser, à côté de l'œuvre, la même chaîne appliquée à du bruit blanc de même amplitude. C'est l'équivalent sonore du « pot sans plante ». Le public entend lui-même la différence — ou son absence.</p>
+
+      <div class="pr-obs">
+        <p><strong>Le gain.</strong> Ces cinq règles n'appauvrissent pas le résultat : elles ajoutent des voies, du silence et un point de comparaison. Elles rendent l'œuvre <em>plus</em> riche, et accessoirement inattaquable.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 id="c13-isomorphe" data-toc="sub">Le modèle à suivre : un mapping isomorphe</h3>
+
+  <p>Il existe un exemple de sonification biologique qui satisfait les trois critères — isomorphe, inversible, falsifiable — et il vaut d'être connu.</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique — la sonification des protéines</div>
+    <p><strong>Qin, Z. &amp; Buehler, M. J. (2019)</strong>, <em>Extreme Mechanics Letters</em> 29:100460 ; <strong>Yu, C.-H., Qin, Z., Martin-Martinez, F. J. &amp; Buehler, M. J. (2019)</strong>, <em>ACS Nano</em> 13(7) ; <strong>Yu, C.-H. &amp; Buehler, M. J. (2020)</strong>, <em>APL Bioengineering</em> 4(1):016108.</p>
+    <p><strong>Méthode</strong> : les <strong>modes normaux de vibration</strong> des vingt acides aminés sont calculés par chimie quantique, puis <strong>transposés</strong> dans le spectre audible par équivalence transpositionnelle — les rapports de fréquences sont conservés. Chaque acide aminé devient un <strong>accord</strong>, pas une note arbitraire. La structure tridimensionnelle module durée, tempo et densité.</p>
+    <p><strong>Pourquoi cela satisfait les trois critères :</strong></p>
+    <ul>
+      <li><strong>Isomorphe</strong> — une structure physique mesurable est préservée.</li>
+      <li><strong>Inversible</strong> — on remonte de la musique à la séquence, puis au repliement prédit.</li>
+      <li><strong>Falsifiable</strong> — les protéines générées par cette voie sont testées par modélisation moléculaire.</li>
+    </ul>
+  </div>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Deux précisions pour éviter une erreur répandue</div>
+    <p><strong>Premièrement</strong> : Buehler emploie effectivement les mots « langage » et « vocabulaire » à propos des protéines, mais au sens des <em>modèles de langage protéiques</em>, où une séquence d'acides aminés est traitée comme un langage formel. <strong>Aucun de ses travaux ne convertit des données biologiques en mots de langue naturelle prononcés.</strong></p>
+    <p><strong>Deuxièmement</strong> : la recherche documentaire menée pour ce volume n'a trouvé <strong>aucune sonification établie de l'ADN ou des protéines vers des phonèmes</strong> produisant de la parole intelligible. C'est un résultat négatif, affirmé comme tel : nous ne citerons donc aucune source sur ce point.</p>
+  </div>
+
+  <h3 id="c13-adn" data-toc="sub">Un second modèle : la sonification de l'ADN</h3>
+
+  <p><strong>Temple, M. D. (2017)</strong>, <em>BMC Bioinformatics</em> 18:221 ; et <strong>Temple, M. D. (2021)</strong>, <em>BMC Research Notes</em> 14:273. Ces travaux mappent nucléotides, paires ou <strong>codons</strong> vers 4, 16, 64 ou 20 notes.</p>
+
+  <p>Ce qui les rend défendables : le mapping est <strong>structurellement motivé</strong>. La granularité du codon est la granularité fonctionnelle réelle du génome — trois bases codent un acide aminé. Et l'usage revendiqué est la <strong>détection de motifs</strong> par l'oreille, notamment de cadres de lecture ouverts : un objectif vérifiable, non la production de sens.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La leçon transposable au végétal</div>
+    <p>Dans les deux cas, ce qui rend la sonification défendable n'est pas la modestie des prétentions : c'est que <strong>la structure du mapping est dictée par la structure de l'objet</strong>.</p>
+    <p>Appliqué à un signal végétal, cela donne une orientation claire. Ne cherchez pas à mapper « l'état de la plante » sur « une émotion ». Cherchez ce qui, dans le signal, a une <strong>structure propre</strong> — une périodicité, un spectre, un rapport entre voies — et faites porter le mapping là-dessus. Le rythme circadien, par exemple, est une structure réelle : la sonifier en tant que telle est honnête et parfaitement audible.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Cinq règles : publier la fonction de transfert, garder une voie non quantifiée, sonifier le contexte, faire entendre le silence, publier le bruit.</li>
+      <li>Ces règles enrichissent l'œuvre au lieu de l'appauvrir.</li>
+      <li>La sonification des protéines (Buehler) satisfait les trois critères : isomorphe, inversible, falsifiable.</li>
+      <li>Buehler ne convertit jamais des données biologiques en mots prononcés — ne pas le lui attribuer.</li>
+      <li>Règle générale : faire porter le mapping sur une <strong>structure propre du signal</strong>, non sur une interprétation.</li>
+    </ul>
+  </div>
+</section>

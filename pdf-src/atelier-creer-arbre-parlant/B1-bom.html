@@ -1,0 +1,41 @@
+<section class="pagebreak">
+<h2 id="bomg" data-toc="chapter">Nomenclature d'ensemble et budgets</h2>
+
+<p class="lettrine noindent">Les nomenclatures précédentes se lisent planche par
+planche. Celle-ci se lit projet par projet : elle répond à la seule question que
+pose réellement un porteur d'atelier, qui est de savoir ce qu'il obtient pour ce
+qu'il dépense.</p>
+
+<table class="compare tight"><caption>Quatre configurations d'atelier, du plus démonstratif au plus métrologique. La colonne du milieu est la plus importante du document.</caption><thead><tr><th>Configuration</th><th>Ce qu'elle mesure</th><th>Ce qu'elle ne mesure pas</th><th>Budget</th></tr></thead><tbody>
+<tr><td><b>A — Atelier découverte</b><br/><span class='small'>planche 1 seule</span></td><td>Impédance de surface d'une feuille, convertie en MIDI. Un micro-contrôleur, une plante, un synthétiseur.</td><td>Rien de physiologique au sens strict. Aucune donnée conservable.</td><td><b>≈ 45 €</b><br/><span class='small'>avec la carte Arduino</span></td></tr>
+<tr><td><b>B — Station environnementale</b><br/><span class='small'>planches 3 et 4</span></td><td>Température de l'air, du sol et du tronc, humidité, pression, lumière, CO₂, pluie, vent. Séries horodatées sur plusieurs années.</td><td>L'état interne de l'arbre. On mesure son environnement, pas lui.</td><td><b>≈ 230 €</b></td></tr>
+<tr><td><b>C — Station physiologique</b><br/><span class='small'>B + planche 5</span></td><td>Tout ce qui précède, plus la dynamique du flux de sève et donc la transpiration relative.</td><td>Un débit absolu, sans recalibration par espèce.</td><td><b>≈ 290 €</b></td></tr>
+<tr><td><b>D — Chaîne complète</b><br/><span class='small'>B + C + planche 2</span></td><td>Tout ce qui précède, plus le potentiel électrique extracellulaire, correctement amplifié et isolé.</td><td>Une interprétation. Le signal existe ; sa signification reste à construire.</td><td><b>≈ 420 €</b><br/><span class='small'>électrodes de laboratoire : +120 €</span></td></tr>
+</tbody></table>
+
+<h3 id="bomg-outils" data-toc="sub">Outillage minimal de l'atelier</h3>
+<table class="tight">
+<thead><tr><th>Outil</th><th>Usage</th><th>≈ €</th></tr></thead>
+<tbody>
+<tr><td>Fer à souder à température régulée, panne fine</td><td>tout</td><td>45,00</td></tr>
+<tr><td>Multimètre avec mesure de capacité</td><td>vérification des valeurs, continuité</td><td>35,00</td></tr>
+<tr><td>Oscilloscope d'entrée de gamme ou analyseur logique USB</td>
+<td>indispensable pour voir le signal du LMC555 et déboguer l'I²C</td><td>25,00 – 120,00</td></tr>
+<tr><td>Pince à dénuder, pince coupante, troisième main</td><td>montage</td><td>25,00</td></tr>
+<tr><td>Alimentation de laboratoire réglable</td><td>caractérisation, mise au point</td><td>60,00</td></tr>
+<tr><td>Sonde de température de référence étalonnée</td>
+<td>vérifier les capteurs les uns contre les autres avant la pose</td><td>30,00</td></tr>
+</tbody>
+</table>
+
+<div class="callout key">
+  <div class="callout-title">La dépense qu'on oublie toujours</div>
+  <p class="noindent">Ce n'est ni un capteur ni une carte : c'est le
+  <strong>temps de maintenance</strong>. Une station extérieure demande une
+  visite par trimestre — nettoyage de l'abri, vérification des presse-étoupes,
+  contrôle de la dérive, ré-ouverture des sangles, relevé de la batterie. Une
+  station qu'on ne visite pas produit des données qu'on ne pourra pas défendre,
+  parce que personne ne saura dire à partir de quelle date le capteur s'était
+  rempli d'eau.</p>
+</div>
+</section>

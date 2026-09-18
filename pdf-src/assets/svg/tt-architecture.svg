@@ -1,0 +1,105 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/tt-architecture.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 560" width="920" height="560">
+
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+</defs>
+<rect width="920" height="560" fill="#FBF9F1"/>
+<text x="460" y="34" font-family="Cormorant Garamond, serif" font-size="18.12" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="3">ARCHITECTURE D'UN ARBRE PARLANT</text>
+<rect x="44" y="72" width="832" height="84" rx="7" fill="none" stroke="#3F7D5A" stroke-width="1.2" stroke-dasharray="5 4" opacity="0.55"/>
+<rect x="54" y="63" width="88.8" height="18" rx="9" fill="#3F7D5A"/>
+<text x="98.4" y="75.5" font-family="Lato, sans-serif" font-size="11.6" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">1 · CAPTATION</text>
+<rect x="70" y="86" width="224" height="56" rx="8" fill="#FFFFFF" stroke="#3F7D5A" stroke-width="1.6"/>
+<text x="182.0" y="103" font-family="Lato, sans-serif" font-size="15.22" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Capteurs</text>
+<text x="182.0" y="118.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">physiques</text>
+<text x="182.0" y="130.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">biologiques</text>
+<line x1="296" y1="114" x2="334" y2="114" stroke="#3F7D5A" stroke-width="2.0" marker-end="url(#ahv)"/>
+<rect x="338" y="86" width="224" height="56" rx="8" fill="#FFFFFF" stroke="#3F7D5A" stroke-width="1.6"/>
+<text x="450.0" y="103" font-family="Lato, sans-serif" font-size="15.22" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Conditionnement</text>
+<text x="450.0" y="118.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">amplification</text>
+<text x="450.0" y="130.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">filtrage 50 Hz</text>
+<line x1="564" y1="114" x2="602" y2="114" stroke="#3F7D5A" stroke-width="2.0" marker-end="url(#ahv)"/>
+<rect x="606" y="86" width="224" height="56" rx="8" fill="#FFFFFF" stroke="#3F7D5A" stroke-width="1.6"/>
+<text x="718.0" y="103" font-family="Lato, sans-serif" font-size="15.22" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Conversion</text>
+<text x="718.0" y="118.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ADC 16-24 bits</text>
+<text x="718.0" y="130.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">horodatage</text>
+<line x1="460" y1="146" x2="460" y2="176" stroke="#6B7A72" stroke-width="2.2" marker-end="url(#ah)"/>
+<rect x="44" y="180" width="832" height="84" rx="7" fill="none" stroke="#2F5E86" stroke-width="1.2" stroke-dasharray="5 4" opacity="0.55"/>
+<rect x="54" y="171" width="88.8" height="18" rx="9" fill="#2F5E86"/>
+<text x="98.4" y="183.5" font-family="Lato, sans-serif" font-size="11.6" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">2 · TRANSPORT</text>
+<rect x="70" y="194" width="224" height="56" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
+<text x="182.0" y="211" font-family="Lato, sans-serif" font-size="15.22" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Nœud MCU</text>
+<text x="182.0" y="226.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ESP32 / RP2040</text>
+<text x="182.0" y="238.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">veille profonde</text>
+<line x1="296" y1="222" x2="334" y2="222" stroke="#2F5E86" stroke-width="2.0" marker-end="url(#ahb)"/>
+<rect x="338" y="194" width="224" height="56" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
+<text x="450.0" y="211" font-family="Lato, sans-serif" font-size="15.22" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Radio</text>
+<text x="450.0" y="226.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">LoRaWAN · Wi-Fi</text>
+<text x="450.0" y="238.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">NB-IoT</text>
+<line x1="564" y1="222" x2="602" y2="222" stroke="#2F5E86" stroke-width="2.0" marker-end="url(#ahb)"/>
+<rect x="606" y="194" width="224" height="56" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
+<text x="718.0" y="211" font-family="Lato, sans-serif" font-size="15.22" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Passerelle</text>
+<text x="718.0" y="226.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">MQTT</text>
+<text x="718.0" y="238.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">file d'attente</text>
+<line x1="460" y1="254" x2="460" y2="284" stroke="#6B7A72" stroke-width="2.2" marker-end="url(#ah)"/>
+<rect x="44" y="288" width="832" height="84" rx="7" fill="none" stroke="#B08528" stroke-width="1.2" stroke-dasharray="5 4" opacity="0.55"/>
+<rect x="54" y="279" width="94.39999999999999" height="18" rx="9" fill="#B08528"/>
+<text x="101.19999999999999" y="291.5" font-family="Lato, sans-serif" font-size="11.6" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">3 · TRAITEMENT</text>
+<rect x="70" y="302" width="224" height="56" rx="8" fill="#FFFFFF" stroke="#B08528" stroke-width="1.6"/>
+<text x="182.0" y="319" font-family="Lato, sans-serif" font-size="15.22" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Base temporelle</text>
+<text x="182.0" y="334.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">InfluxDB</text>
+<text x="182.0" y="346.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">TimescaleDB</text>
+<line x1="296" y1="330" x2="334" y2="330" stroke="#B08528" stroke-width="2.0" marker-end="url(#ah)"/>
+<rect x="338" y="302" width="224" height="56" rx="8" fill="#FFFFFF" stroke="#B08528" stroke-width="1.6"/>
+<text x="450.0" y="319" font-family="Lato, sans-serif" font-size="15.22" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Prétraitement</text>
+<text x="450.0" y="334.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">calibration</text>
+<text x="450.0" y="346.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">détection d'anomalie</text>
+<line x1="564" y1="330" x2="602" y2="330" stroke="#B08528" stroke-width="2.0" marker-end="url(#ah)"/>
+<rect x="606" y="302" width="224" height="56" rx="8" fill="#FFFFFF" stroke="#B08528" stroke-width="1.6"/>
+<text x="718.0" y="319" font-family="Lato, sans-serif" font-size="15.22" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Extraction</text>
+<text x="718.0" y="334.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">descripteurs</text>
+<text x="718.0" y="346.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">fenêtres glissantes</text>
+<line x1="460" y1="362" x2="460" y2="392" stroke="#6B7A72" stroke-width="2.2" marker-end="url(#ah)"/>
+<rect x="44" y="396" width="832" height="84" rx="7" fill="none" stroke="#A8552E" stroke-width="1.2" stroke-dasharray="5 4" opacity="0.55"/>
+<rect x="54" y="387" width="100.0" height="18" rx="9" fill="#A8552E"/>
+<text x="104.0" y="399.5" font-family="Lato, sans-serif" font-size="11.6" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">4 · RESTITUTION</text>
+<rect x="70" y="410" width="224" height="56" rx="8" fill="#FFFFFF" stroke="#A8552E" stroke-width="1.6"/>
+<text x="182.0" y="427" font-family="Lato, sans-serif" font-size="15.22" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Sonification</text>
+<text x="182.0" y="442.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">mapping → MIDI</text>
+<text x="182.0" y="454.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">synthèse</text>
+<line x1="296" y1="438" x2="334" y2="438" stroke="#A8552E" stroke-width="2.0" marker-end="url(#ah)"/>
+<rect x="338" y="410" width="224" height="56" rx="8" fill="#FFFFFF" stroke="#A8552E" stroke-width="1.6"/>
+<text x="450.0" y="427" font-family="Lato, sans-serif" font-size="15.22" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Modèle de langage</text>
+<text x="450.0" y="442.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">descripteurs → texte</text>
+<text x="450.0" y="454.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">gabarit contraint</text>
+<line x1="564" y1="438" x2="602" y2="438" stroke="#A8552E" stroke-width="2.0" marker-end="url(#ah)"/>
+<rect x="606" y="410" width="224" height="56" rx="8" fill="#FFFFFF" stroke="#A8552E" stroke-width="1.6"/>
+<text x="718.0" y="427" font-family="Lato, sans-serif" font-size="15.22" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Interface</text>
+<text x="718.0" y="442.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">web · audio</text>
+<text x="718.0" y="454.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">affichage in situ</text>
+<text x="460" y="540" font-family="Lato, sans-serif" font-size="11.89" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Chaque étage peut être remplacé indépendamment : c'est la condition de la reproductibilité.</text>
+</svg>

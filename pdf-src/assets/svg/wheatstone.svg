@@ -1,0 +1,62 @@
+<!--
+  ==========================================================================
+  PhytoScope — attribution — pdf-src/assets/svg/wheatstone.svg
+
+  Version  : 1.5.1
+  Date     : 2026-09-18
+  Éditeur  : Bretagne Namasté
+  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Site     : https://bretagne-namaste.com
+  Contact  : contact@bretagne-namaste.com
+  Licence  : MIT — voir LICENCE.txt
+
+  SPDX-License-Identifier: MIT
+  fin de l'attribution
+  ==========================================================================
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" width="800" height="480">
+
+<defs>
+ <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#B08528"/></marker>
+ <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#2F5E86"/></marker>
+ <marker id="ahv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+   markerHeight="6" orient="auto-start-reverse">
+   <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
+</defs>
+<rect width="800" height="480" fill="#FFFFFF"/>
+<text x="400.0" y="34" font-family="Lato, sans-serif" font-size="17.4" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">LE PONT DE WHEATSTONE — PRINCIPE DU DISPOSITIF U1</text>
+<line x1="350" y1="148" x2="540" y2="268" stroke="#0E2A22" stroke-width="2.2"/>
+<line x1="540" y1="268" x2="350" y2="388" stroke="#0E2A22" stroke-width="2.2"/>
+<line x1="350" y1="388" x2="160" y2="268" stroke="#0E2A22" stroke-width="2.2"/>
+<line x1="160" y1="268" x2="350" y2="148" stroke="#0E2A22" stroke-width="2.2"/>
+<g transform="translate(445.0,208.0) rotate(32.27564431457763)"><rect x="-28" y="-12" width="56" height="24" rx="3" fill="#FFF" stroke="#2F5E86" stroke-width="2"/></g><text x="492.34737856973436" y="176.09639248227302" font-family="Cormorant Garamond, serif" font-size="15.95" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">R1</text><text x="492.34737856973436" y="194.09639248227302" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">10,1 MΩ</text>
+<g transform="translate(445.0,328.0) rotate(147.72435568542238)"><rect x="-28" y="-12" width="56" height="24" rx="3" fill="#FFF" stroke="#2F5E86" stroke-width="2"/></g><text x="492.34737856973436" y="355.903607517727" font-family="Cormorant Garamond, serif" font-size="15.95" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">R2</text><text x="492.34737856973436" y="373.903607517727" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">4 MΩ</text>
+<g transform="translate(255.0,328.0) rotate(32.27564431457763)"><rect x="-28" y="-12" width="56" height="24" rx="3" fill="#FFF" stroke="#3F7D5A" stroke-width="2"/></g><text x="207.65262143026564" y="355.903607517727" font-family="Cormorant Garamond, serif" font-size="15.95" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Rp</text><text x="207.65262143026564" y="373.903607517727" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">LA PLANTE</text>
+<g transform="translate(255.0,208.0) rotate(147.72435568542238)"><rect x="-28" y="-12" width="56" height="24" rx="3" fill="#FFF" stroke="#2F5E86" stroke-width="2"/></g><text x="207.65262143026564" y="176.09639248227302" font-family="Cormorant Garamond, serif" font-size="15.95" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">R3</text><text x="207.65262143026564" y="194.09639248227302" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">référence</text>
+<circle cx="350" cy="148" r="5" fill="#0E2A22"/>
+<circle cx="350" cy="388" r="5" fill="#0E2A22"/>
+<circle cx="540" cy="268" r="5" fill="#B08528"/>
+<circle cx="160" cy="268" r="5" fill="#B08528"/>
+<line x1="350" y1="148" x2="350" y2="94" stroke="#0E2A22" stroke-width="2.2"/>
+<text x="350" y="84" font-family="Lato, sans-serif" font-size="11.6" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">+4 V — point milieu de la chaîne de diodes</text>
+<line x1="350" y1="388" x2="350" y2="424" stroke="#0E2A22" stroke-width="2.2"/>
+<line x1="333" y1="424" x2="367" y2="424" stroke="#0E2A22" stroke-width="2.6"/>
+<line x1="339" y1="431" x2="361" y2="431" stroke="#0E2A22" stroke-width="2.1"/>
+<line x1="345" y1="438" x2="355" y2="438" stroke="#0E2A22" stroke-width="1.6"/>
+<text x="350" y="458" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">masse</text>
+<line x1="160" y1="268" x2="540" y2="268" stroke="#B08528" stroke-width="2.4" stroke-dasharray="7 4"/>
+<rect x="280" y="242" width="140" height="52" rx="8" fill="#FDF7E6" stroke="#B08528" stroke-width="1.8"/>
+<text x="350" y="264" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Vb − Vc</text>
+<text x="350" y="284" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">tension de déséquilibre</text>
+<line x1="540" y1="268" x2="616" y2="268" stroke="#B08528" stroke-width="2.2" marker-end="url(#ah)"/>
+<rect x="584" y="308" width="148" height="66" rx="7" fill="#F2F7FB" stroke="#2F5E86" stroke-width="1.6"/>
+<text x="658" y="332" font-family="Lato, sans-serif" font-size="13.63" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">AMPLI</text>
+<text x="658" y="350" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">d'instrumentation</text>
+<text x="658" y="366" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">gain total × 25</text>
+<path d="M616,268 L658,308" stroke="#B08528" stroke-width="2"/>
+</svg>

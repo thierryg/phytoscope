@@ -1,0 +1,157 @@
+<section class="chapter">
+  <h2 id="c14-miseenservice" data-toc="chapter">La mise en service, en dix jours</h2>
+  <p class="chapo">Ne faites confiance à aucune donnée du premier mois. Voici comment traverser cette période sans perdre la saison.</p>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Protocole</div>
+      <div class="pr-t">Les dix premiers jours</div>
+    </div>
+    <div class="pr-body">
+      <h4>Jour 1 — Montage à blanc, à l'intérieur</h4>
+      <p>Tout le dispositif assemblé sur une table, alimenté, transmettant. Vérifier chaque voie, chaque unité, chaque horodatage. <strong>Ne posez rien sur un arbre avant que tout fonctionne en intérieur.</strong> Le déverminage en extérieur, sous la pluie, coûte dix fois plus cher.</p>
+
+      <h4>Jour 2 — Étalonnage</h4>
+      <p>Sondes de sol (gravimétrie), appariement des sondes thermiques, gain de la chaîne bioélectrique, voie de référence. Consigner toutes les valeurs.</p>
+
+      <h4>Jour 3 — Essai d'étanchéité</h4>
+      <p>Coffret fermé, arrosoir généreux, pendant dix minutes, tous azimuts. Ouvrir, vérifier. Puis laisser dehors une nuit et rouvrir au matin — la <strong>condensation</strong> est plus insidieuse que la pluie : un boîtier parfaitement étanche fermé par temps chaud et humide condense à l'intérieur. Prévoir un sachet dessiccant et, si possible, une membrane d'équilibrage de pression.</p>
+
+      <h4>Jour 4 — Installation</h4>
+      <p>Pose effective, selon le plan d'implantation. Photographier chaque capteur en place. Dater. Ne rien interpréter.</p>
+
+      <h4>Jours 5 à 7 — Stabilisation</h4>
+      <div class="pr-warn">
+        <p><strong>Les données de cette période sont à jeter.</strong> L'électrode se polarise, le sol se retasse autour des sondes, le boîtier atteint son équilibre thermique. Toute « réaction » observée ici est un artefact d'installation.</p>
+        <p>Marquez explicitement cette plage dans vos données, ne la supprimez pas : elle documente votre propre transitoire, et vous y reviendrez.</p>
+      </div>
+
+      <h4>Jours 8 à 10 — Référence</h4>
+      <p>Trois journées complètes <strong>sans intervenir</strong>. C'est votre témoin. Sans lui, vous n'avez aucun moyen de savoir ce qui est « normal » pour cet arbre, à cette saison, avec ce montage.</p>
+
+      <div class="pr-obs">
+        <p><strong>À la fin du jour 10</strong>, vous devez pouvoir répondre à ces questions : quelle est l'amplitude journalière typique de chaque voie&nbsp;? quel est le niveau de bruit de chacune&nbsp;? quelle voie dérive, et à quelle vitesse&nbsp;? Si vous ne pouvez pas répondre, ne passez pas à la suite.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout caution">
+    <div class="callout-title">⚠️ Les trois pannes du premier hiver</div>
+    <p><strong>1. L'eau.</strong> Elle entre par les presse-étoupes mal serrés, par les câbles qui pendent (l'eau descend le long et entre par le bas), et par condensation. Faites remonter les câbles en boucle avant d'entrer dans le boîtier : l'eau s'égoutte au point bas.</p>
+    <p><strong>2. La batterie sous zéro.</strong> Charger une cellule lithium en dessous de 0 °C la détruit irréversiblement. Un contrôleur de charge avec coupure basse température est obligatoire — et il faut vérifier qu'il coupe réellement, pas seulement qu'il l'annonce.</p>
+    <p><strong>3. Les rongeurs.</strong> Ils coupent les câbles, particulièrement en hiver. Gaine annelée, ou passage en hauteur.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Rien sur l'arbre avant que tout fonctionne en intérieur.</li>
+      <li>La condensation est plus insidieuse que la pluie : sachet dessiccant et membrane d'équilibrage.</li>
+      <li>Jours 5 à 7 : données à jeter, plage à marquer — c'est votre transitoire d'installation.</li>
+      <li>Jours 8 à 10 : trois journées de référence sans intervenir. Sans témoin, rien n'est interprétable.</li>
+      <li>Trois pannes du premier hiver : l'eau, la charge sous zéro, les rongeurs.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c15-controles" data-toc="chapter">Les trois tests de contrôle</h2>
+  <p class="chapo">Sans eux, votre dispositif produit des affirmations invérifiables. Avec eux, il devient défendable — y compris si les résultats vous déplaisent.</p>
+
+  <figure class="full">
+    <img src="assets/svg/tt-control-tests.svg" alt="Les trois tests de contrôle"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Trois tests, trois modes de défaillance ciblés : la source du signal, la contribution du signal, et la liberté d'interprétation a posteriori.</figcaption>
+  </figure>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Test n° 1</div>
+      <div class="pr-t">L'épreuve du vide</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta"><span><b>Durée</b> 2 h</span><span><b>Cible</b> la source du signal</span></div>
+      <h4>Quatre conditions, trente minutes chacune</h4>
+      <ol>
+        <li><strong>Normale</strong> — électrodes en place sur l'arbre.</li>
+        <li><strong>Débranchée</strong> — entrées en l'air.</li>
+        <li><strong>Objet inerte</strong> — électrodes sur une bouteille d'eau à température ambiante, ou sur une résistance de valeur comparable à l'impédance du tissu.</li>
+        <li><strong>Bruit</strong> — signal aléatoire injecté à la place du capteur.</li>
+      </ol>
+      <div class="pr-obs">
+        <p>Consigner pour chaque condition : le nombre d'événements déclenchés, et un échantillon anonymisé de la sortie. Faire juger ces échantillons par <strong>une personne qui ignore les conditions</strong>.</p>
+      </div>
+      <h4>Lecture</h4>
+      <p>Le dispositif <strong>doit produire du non-sens</strong> en conditions 2, 3 et 4. S'il continue de produire de belles phrases ou de la musique agréable, ces sorties ne venaient pas de l'arbre.</p>
+      <p>La condition 3 est la plus importante : c'est l'équivalent exact du contrôle « pot de terre sans plante » qui, dans l'étude de référence en bioacoustique, n'a produit aucun son sur plus de cinq cents heures d'enregistrement.</p>
+      <div class="pr-warn">
+        <p><strong>Piège classique.</strong> Ne jugez pas vous-même vos échantillons en sachant de quelle condition ils viennent. C'est précisément l'erreur que le protocole doit empêcher.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Test n° 2</div>
+      <div class="pr-t">L'ablation</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta"><span><b>Durée</b> 1 h + écoute</span><span><b>Cible</b> la contribution réelle du signal</span></div>
+      <h4>Marche à suivre</h4>
+      <ol>
+        <li>Enregistrer dix minutes de sortie en conditions normales.</li>
+        <li>Remplacer l'entrée capteur par un tirage aléatoire de <strong>même distribution statistique</strong> — même moyenne, même variance, même autocorrélation approximative. Enregistrer dix minutes.</li>
+        <li>Faire écouter les deux extraits, dans un ordre aléatoire, à au moins dix personnes ignorant la manipulation.</li>
+        <li>Une seule question : « lequel des deux vient de la plante&nbsp;? »</li>
+      </ol>
+      <div class="pr-obs">
+        <p><strong>Seuil de décision.</strong> Un taux de bonne réponse proche de 50 % signifie que le signal n'apporte pas d'information perceptible. Pour être significatif au seuil de 5 % avec dix auditeurs, il faut au moins neuf bonnes réponses sur dix.</p>
+      </div>
+      <h4>Pourquoi ce test est fondé</h4>
+      <p>Ce n'est pas une provocation mais la transposition d'un résultat publié : sur trois méthodes populaires de traitement de séries temporelles par modèle de langage, <strong>retirer le modèle ne dégrade pas les performances et les améliore souvent</strong>. L'ablation est la méthode standard pour mesurer la contribution d'un composant.</p>
+    </div>
+  </div>
+
+  <div class="protocole">
+    <div class="pr-band">
+      <div class="pr-kick">Test n° 3</div>
+      <div class="pr-t">Le pré-enregistrement</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-meta"><span><b>Durée</b> 20 min avant chaque séance</span><span><b>Cible</b> la sélection rétrospective</span></div>
+      <h4>Marche à suivre</h4>
+      <ol>
+        <li><strong>Avant</strong> toute séance publique : consigner par écrit et dater le mapping exact, l'invite, les seuils, la fenêtre d'écoute, la durée totale.</li>
+        <li>Écrire aussi ce que vous attendez, et <strong>ce qui vous ferait conclure à un échec</strong>.</li>
+        <li>Mener la séance sans rien modifier.</li>
+        <li><strong>N'éditez rien après coup.</strong> Si vous publiez, publiez la séance entière ou rien.</li>
+      </ol>
+      <div class="pr-obs">
+        <p><strong>La règle qui dérange.</strong> La quatrième est la plus difficile, parce qu'une séance entière est souvent ennuyeuse et que trois minutes bien choisies sont bouleversantes. C'est précisément pour cela que la règle existe.</p>
+        <p>Sur trois heures d'un signal bruité, il existera <em>toujours</em> deux minutes qui semblent répondre à ce qui s'est passé. Ce n'est pas une coïncidence remarquable : c'est une propriété statistique ordinaire des séries longues.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Publier les résultats, même défavorables</div>
+    <p><strong>Un dispositif qui ne publie pas ses conditions d'échec ne publie rien.</strong></p>
+    <p>Et voici le point contre-intuitif : c'est un résultat <em>défavorable</em> publié qui établirait la crédibilité de tout le reste. Un artiste qui écrit « nous avons fait le test du bruit blanc, et huit auditeurs sur dix n'ont pas distingué » devient immédiatement plus crédible que tous ses concurrents — parce qu'il a montré qu'il cherchait vraiment.</p>
+    <p>Ces trois tests ne détruisent pas l'œuvre. Ils la rendent défendable.</p>
+  </div>
+
+  <figure class="full">
+    <img src="assets/svg/tt-protocol-wheel.svg" alt="Protocole d'observation en sept séances"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Le protocole d'observation en sept séances, détaillé au volume I. La sixième — la contre-épreuve sur support inerte — est celle que tout le monde saute, et la seule qui puisse vous détromper.</figcaption>
+  </figure>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li><strong>Épreuve du vide</strong> : quatre conditions, jugement à l'aveugle. Le système doit produire du non-sens.</li>
+      <li><strong>Ablation</strong> : signal remplacé par du hasard de même distribution. 50 % = aucune contribution.</li>
+      <li><strong>Pré-enregistrement</strong> : protocole écrit et daté avant la séance, aucune édition ensuite.</li>
+      <li>Sur trois heures de signal bruité, il existe toujours deux minutes qui « répondent ».</li>
+      <li>Un résultat défavorable publié établit la crédibilité de tout le reste.</li>
+    </ul>
+  </div>
+</section>

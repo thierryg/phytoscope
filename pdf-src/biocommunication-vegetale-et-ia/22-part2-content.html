@@ -1,0 +1,82 @@
+<section class="chapter">
+  <h2 id="c5-electrome" data-toc="chapter">L'électrome : le fond permanent</h2>
+  <p class="chapo">Sous les événements rares, il y a un bruit continu. Depuis 2016, ce bruit a un nom, une méthode d'analyse, et une valeur diagnostique démontrée — c'est le versant scientifique légitime de tout ce domaine.</p>
+
+  <p class="lettrine noindent">Les potentiels d'action sont des <strong>événements</strong> : ils surviennent, se propagent, cessent. Chez la plupart des plantes, ils sont rares. Mais l'activité électrique, elle, ne cesse jamais : la tension entre deux points d'un tissu dérive continuellement, sur des échelles de temps allant de la seconde à la journée.</p>
+
+  <p>Pendant des décennies, cette activité a été traitée comme du bruit — c'est-à-dire jetée. Depuis une dizaine d'années, une communauté de recherche la considère comme un <strong>système dynamique à part entière</strong> et lui a donné un nom : l'<strong>électrome</strong>, par analogie avec le génome et le protéome.</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique — le dossier de l'électrome</div>
+    <p><strong>Souza, G. M., Ferreira, A. S., Saraiva, G. F. &amp; Toledo, G. R. (2017)</strong>, <em>Plant Signaling &amp; Behavior</em> 12(3):e1290040. Les signaux électriques de plantules de soja peuvent être poussés vers un état critique auto-organisé par des stimuli externes. <span class="small">(Attention : cet article est en <em>Plant Signaling &amp; Behavior</em>, et non dans <em>Theoretical and Experimental Plant Physiology</em> comme on le lit parfois.)</span></p>
+    <p><strong>Simmi, F. Z., Dallagnol, L. J., Ferreira, A. S., Pereira, D. R. &amp; Souza, G. M. (2020)</strong>, <em>Bioelectrochemistry</em> 133:107493. Détection d'une <strong>infection fongique avant tout symptôme visible</strong>, par analyse d'entropie approchée de l'électrome.</p>
+    <p><strong>de Toledo, G. R. A., Reissig, G. N., Senko, L. G. S., Pereira, D. R., da Silva, A. F. &amp; Souza, G. M. (2024)</strong>, <em>Plant Signaling &amp; Behavior</em> 19(1):2333144. Classification par apprentissage automatique atteignant jusqu'à <strong>100 % d'exactitude</strong> (machine à vecteurs de support) pour la détection du stress salin ; les changements électriques <strong>précèdent</strong> les altérations visibles de turgescence.</p>
+  </div>
+
+  <h3 id="c5-portee" data-toc="sub">Ce que ce résultat signifie, exactement</h3>
+
+  <p>Prenons la mesure de ce qui est établi, car c'est important et souvent mal compris dans les deux sens.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Ce qui est démontré</div>
+    <p>Une série temporelle de tension, prise entre deux points d'une plante, <strong>contient assez d'information pour qu'un classificateur distingue un état physiologique d'un autre</strong> — stress hydrique, stress salin, infection — <strong>avant</strong> que ces états ne soient visibles.</p>
+    <p>C'est une affirmation forte, et elle est vérifiée. Elle a une conséquence directe : <strong>ces signaux ne sont pas du bruit.</strong> Ils portent de l'information sur l'état de la plante, et cette information est extractible.</p>
+  </div>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Ce qui n'est pas démontré</div>
+    <p>Que cette information soit <em>destinée</em> à quelqu'un. Qu'elle constitue un code. Qu'elle soit modulée intentionnellement. Que la plante en ait un usage communicationnel.</p>
+    <p>Un classificateur qui distingue une plante stressée d'une plante saine fait exactement ce que fait un thermomètre : il lit un état. Personne n'en conclut que la fièvre est un message.</p>
+    <p>Réserve supplémentaire : une partie de ce corpus glisse vers un vocabulaire d'« attention » et de « cognition » végétales. <strong>Les mesures d'électrome sont solides ; leur interprétation cognitive ne fait pas consensus.</strong> Il faut tenir les deux affirmations ensemble.</p>
+  </div>
+
+  <h3 id="c5-terrain" data-toc="sub">Mesurer un électrome hors du laboratoire</h3>
+
+  <p>Toutes les études ci-dessus sont conduites en environnement contrôlé, souvent en cage de Faraday. La question pratique — <em>peut-on faire cela dehors&nbsp;?</em> — a sa référence.</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 Point scientifique — hors cage de Faraday</div>
+    <p><strong>Tran, D., Dutoit, F., Najdenovska, E., Wallbridge, N., Plummer, C., Mazza, M., Raileanu, L. E. &amp; Camps, C. (2019)</strong>, « Electrophysiological assessment of plant status outside a Faraday cage using supervised machine learning », <em>Scientific Reports</em> 9:17073.</p>
+    <p>Capteur conçu pour la production sous serre, <strong>sans blindage</strong>, détectant une modification de l'activité bioélectrique sous stress hydrique ainsi qu'un rythme nycthéméral, avec classification supervisée du statut physiologique.</p>
+    <p><strong>Double conclusion.</strong> C'est faisable — l'entreprise n'est pas vaine. Et il a fallu huit chercheurs, un capteur dédié et de l'apprentissage supervisé pour y parvenir de façon défendable. Tout dispositif qui prétend le faire sans ces précautions mérite un examen attentif.</p>
+  </div>
+
+  <h3 id="c5-arbres" data-toc="sub">Le cas particulier des arbres sur pied</h3>
+
+  <p>Sur un arbre adulte en extérieur, les chiffres changent d'échelle — et les artefacts aussi.</p>
+
+  <table>
+    <thead><tr><th>Étude</th><th>Espèce</th><th>Protocole</th><th>Amplitudes</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Hao, Li &amp; Hao (2021)</strong><br/><span class="small"><em>J. Exp. Bot.</em> 72(4)</span></td><td><em>Populus hopeiensis</em></td><td>Électrodes inox 30 × 4 mm, à 50 cm de haut, 5 mm dans le xylème ; masse enterrée à 20-80 cm</td><td><strong>Plusieurs centaines de mV en saison, parfois 1 V</strong> ; quelques dizaines de mV en hiver</td></tr>
+      <tr><td><strong>Gibert et al. (2006)</strong><br/><span class="small"><em>Plant Science</em> 171(5)</span></td><td><em>Populus nigra</em></td><td>Tiges inox ⌀ 6 mm, 5 mm dans l'aubier, référence impolarisable Pb/PbCl₂</td><td>Variations journalières nettes en été, <strong>disparaissant après la chute des feuilles</strong></td></tr>
+      <tr><td><strong>Gurovich &amp; Hermosilla (2009)</strong><br/><span class="small"><em>J. Plant Physiol.</em> 166(3)</span></td><td>Arbres fruitiers</td><td>Microélectrodes dans le tronc</td><td>Motifs systématiques selon le cycle jour/nuit et la disponibilité en eau</td></tr>
+      <tr><td><strong>Ríos-Rojas et al. (2015)</strong><br/><span class="small"><em>Plant Signal. Behav.</em> 10(2)</span></td><td><em>Persea</em>, <em>Prunus</em></td><td>Télémétrie sans fil</td><td>Arbres stressés : <strong>changements progressifs de pente</strong> ; arbres irrigués : cycles journaliers à pente nulle</td></tr>
+    </tbody>
+    <caption>Les amplitudes sur arbre sont cent fois supérieures à celles mesurées dans le phloème d'une féverole. Ce n'est pas le même phénomène : c'est essentiellement de l'électrocinétique.</caption>
+  </table>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Ce que Hao et al. concluent de leurs propres données</div>
+    <p>Les auteurs attribuent explicitement leurs variations aux <strong>ions accumulés à la surface de l'électrode</strong> en fonction de la disponibilité en eau du xylème — c'est-à-dire à l'<em>interface de mesure</em> autant qu'au tissu mesuré.</p>
+    <p>Et la disparition du signal après la chute des feuilles, chez Gibert et al., pointe dans la même direction : ce qui est mesuré est un <strong>potentiel d'écoulement</strong>, phénomène électrocinétique engendré par le mouvement de la sève à travers une matrice chargée.</p>
+    <p>C'est réel, mesurable et physiologiquement informatif. <strong>Ce n'est pas de la signalisation.</strong> Un praticien qui pose des électrodes sur un tronc doit savoir qu'il mesure d'abord cela.</p>
+  </div>
+
+  <div class="callout interieur">
+    <div class="callout-title">✨ Une remarque pour le praticien</div>
+    <p>Il y a quelque chose de beau, et de rarement souligné, dans ce résultat. Le « signal » d'un arbre, celui qu'on capte effectivement sur un tronc, est en grande partie <strong>le bruit de l'eau qui monte</strong> — trente mètres, sous tension, en silence, tous les jours d'été.</p>
+    <p>Ce n'est pas un message. C'est mieux : c'est le travail lui-même, rendu audible. Un praticien qui écoute cela n'écoute pas une confidence ; il écoute une machine hydraulique vieille de quatre cents millions d'années, en train de fonctionner.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>L'électrome — l'activité électrique continue — porte une information extractible sur l'état physiologique.</li>
+      <li>Classification automatique du stress salin jusqu'à 100 % d'exactitude, <em>avant</em> tout symptôme visible.</li>
+      <li>Mesurable hors cage de Faraday, mais au prix d'un capteur dédié et d'apprentissage supervisé (Tran et al., 2019).</li>
+      <li>Sur arbre sur pied : plusieurs centaines de mV en été, quelques dizaines en hiver ; disparition après la chute des feuilles.</li>
+      <li>Ce qui domine la mesure sur tronc est un <strong>potentiel d'écoulement</strong>, non de la signalisation.</li>
+    </ul>
+  </div>
+</section>
