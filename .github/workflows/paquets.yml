@@ -183,7 +183,13 @@ jobs:
             apt: nsis msitools osslsigncode
           - cible: macos
             nom: macOS / Darwin (.pkg, .zip)
-            apt: xar cpio
+            #  Rien à installer : `macos_pkg.py` écrit le format .pkg de bout
+            #  en bout en Python — XAR, cpio « odc » et BOM —, précisément
+            #  parce que `xar` et `mkbom` ne sont plus disponibles sur Linux.
+            #  Ce champ demandait « xar cpio » : `xar` n'existe dans aucun
+            #  dépôt Ubuntu, et l'installation échouait donc avant même la
+            #  fabrication.
+            apt: ''
     steps:
       - uses: actions/checkout@v4
 
@@ -240,7 +246,7 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
-            dpkg-dev fakeroot rpm nsis msitools osslsigncode xar cpio
+            dpkg-dev fakeroot rpm nsis msitools osslsigncode
           cd packaging && make deps || true
 
       #  Certificat AUTO-SIGNÉ fabriqué ici et jeté avec le coureur. Il sert à
