@@ -46,7 +46,7 @@ jobs:
           fetch-depth: 0
 
       - name: gitleaks
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7  # v2.3.9
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -182,12 +182,26 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: trivy — système de fichiers
-        uses: aquasecurity/trivy-action@0.28.0
+        #  Épinglé par empreinte de commit, et non par étiquette : une
+        #  étiquette se déplace, une empreinte non. C'est aussi ce que
+        #  réclame zizmor (règle « unpinned-uses ») pour une action tierce.
+        #  Le commentaire dit la version lisiblement ; Dependabot met les
+        #  deux à jour ensemble.
+        #
+        #  Cette ligne a déjà échoué une fois : « @0.28.0 » — sans le « v »
+        #  — n'existe pas, et le travail devenait rouge dès « Set up job »,
+        #  AVANT que « continue-on-error » ne puisse s'appliquer. D'où
+        #  l'étape « Chaque action référencée existe » du travail suivant.
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
         with:
           scan-type: fs
           scan-ref: .
           scanners: vuln,secret,misconfig
           severity: CRITICAL,HIGH,MEDIUM
+          #  Sans ceci, « severity » ci-dessus ne s'applique PAS au rapport
+          #  SARIF : l'action y verse toutes les gravités. Le filtre annoncé
+          #  serait alors faux.
+          limit-severities-for-sarif: true
           format: sarif
           output: trivy.sarif
           #  « sources/ » est du code tiers, recopié pour l'ouvrage : ses
@@ -232,15 +246,25 @@ jobs:
           fi
           echo "  · aucune attribution abusive"
 
+      #  Le contrôle a d'abord été écrit « ls "$d"LICENSE* "$d"LICENCE*
+      #  "$d"COPYING* ». C'était faux : `ls` rend un code non nul dès qu'UN
+      #  des motifs ne trouve rien, même si les autres trouvent. Les trois
+      #  projets avaient bien leur licence, et le contrôle les déclarait tous
+      #  les trois manquants. `find` ne se trompe pas là-dessus, et il
+      #  ignore la casse d'un seul coup.
       - name: Chaque projet tiers recopié garde son fichier de licence
         run: |
           manquants=0
           for d in sources/schemas/*/; do
-            if ! ls "$d"LICENSE* "$d"LICENCE* "$d"COPYING* >/dev/null 2>&1; then
+            fichier=$(find "$d" -maxdepth 1 -type f \
+                        \( -iname 'LICENSE*' -o -iname 'LICENCE*' \
+                           -o -iname 'COPYING*' \) -printf '%f\n' \
+                      | sort | head -1)
+            if [ -z "$fichier" ]; then
               echo "! $d — aucun fichier de licence"
               manquants=1
             else
-              echo "  · $d $(ls "$d" | grep -iE '^(licen|copying)' | head -1)"
+              echo "  · $d$fichier"
             fi
           done
           exit $manquants
@@ -279,6 +303,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      #  zizmor lit les workflows ; il ne demande pas à GitHub si les
+      #  actions référencées existent. Deux d'entre elles n'existaient pas —
+      #  voir la docstring de l'outil. Cette étape n'est PAS tolérante :
+      #  c'est la seule du travail qui peut refuser une fusion, parce
+      #  qu'une référence morte rend un contrôle de sécurité silencieux.
+      - name: Chaque action référencée existe, et les tierces sont épinglées
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 tools/verifier_actions.py --epingle
 
       - name: zizmor
         run: |

@@ -556,6 +556,12 @@ Sept workflows, dans `.github/workflows/` :
   Un SBOM faux est pire qu'aucun SBOM.
 - **Les workflows sont eux-mêmes analysés** (`zizmor`) : un workflow qui
   demande `contents: write` là où `read` suffit est une porte ouverte.
+- **Les actions tierces sont épinglées par empreinte de commit**, et leur
+  existence est vérifiée à chaque poussée (`tools/verifier_actions.py`). Une
+  étiquette se déplace ; une empreinte non. Et une référence morte ne fait
+  pas échouer une étape : elle empêche le travail de démarrer, donc un
+  contrôle de sécurité devient silencieux sans rien dire — cela s'est
+  produit avec `trivy-action@0.28.0`, qui s'écrit `v0.28.0`.
 - **La cohérence des licences est un test.** La CI refuse que notre en-tête
   réapparaisse sur du code tiers, et vérifie que chaque projet recopié garde
   son fichier de licence.
@@ -569,6 +575,10 @@ Sept workflows, dans `.github/workflows/` :
 ```bash
 python3 -m pip install --user pre-commit && pre-commit install
 pre-commit run --all-files
+
+# Les actions de la CI existent-elles, et les tierces sont-elles épinglées ?
+# (demande le réseau ; sans réseau, l'outil le dit et n'échoue pas)
+python3 tools/verifier_actions.py --epingle
 ```
 
 `.pre-commit-config.yaml` ajoute aux crochets usuels trois contrôles propres
