@@ -1333,3 +1333,69 @@ Le rapport de trivy lui-même n'a pas pu être exécuté ici — il faut le cour
 de la CI. Ce qui est vérifié, c'est que l'action se résout et que ses
 paramètres existent à la version épinglée ; ce qu'elle trouvera dans l'arbre
 se lira dans l'onglet Security à la prochaine poussée.
+
+---
+
+## 2026-09-19 (suite) — l'outil de contrôle avait le défaut qu'il devait empêcher
+
+Après la poussée de `bceebaf`, j'ai voulu suivre le retour des six workflows
+par l'API GitHub. Elle m'a répondu :
+
+    HTTP Error 403: rate limit exceeded
+
+Soixante appels par heure sans jeton, et `tools/verifier_actions.py` en avait
+déjà consommé seize. Ce mur a révélé un défaut sérieux **dans ce que je
+venais de pousser** :
+
+  · l'outil ne rattrapait que `URLError` et `TimeoutError`. Un `HTTPError
+    403` remontait en trace et faisait sortir en 1 ;
+  · or cette étape est délibérément **non tolérante** — la seule du travail
+    à pouvoir refuser une fusion. Une limite de quota aurait donc bloqué une
+    fusion pour une raison entièrement étrangère aux workflows ;
+  · et en local, seize appels épuisaient le quart du quota horaire de la
+    machine, partagé avec tout le reste.
+
+### Corrigé en supprimant la cause, non en rattrapant l'erreur
+
+Rattraper le 403 aurait rendu le contrôle muet précisément quand on
+travaille beaucoup — le pire moment. `git ls-remote` répond à la même
+question **sans quota, sans jeton et sans compte** : le protocole d'annonce
+des références est public. Un appel par dépôt, quatorze au lieu de seize, et
+rien à réarmer. Le jeton a été retiré de l'étape de CI : il n'a plus d'objet.
+
+### Ce que le changement a fait gagner
+
+`ls-remote` donne toutes les étiquettes d'un coup, là où l'API répondait
+étiquette par étiquette. D'où un contrôle que l'API ne permettait pas : **que
+l'empreinte épinglée soit bien celle de la version annoncée en commentaire.**
+Sans lui, `@abc123… # v2.6.2` peut désigner n'importe quoi.
+
+Éprouvé : en remplaçant `# v0.36.0` par `# v0.28.0` sur une empreinte
+inchangée, l'outil répond
+
+    le commentaire annonce v0.28.0, qui est 915b19bbe73b… et non ed142fd0673e…
+
+— et `915b19bb` est bien le commit de v0.28.0, celui qu'il aurait fallu
+écrire hier. Le contrôle ne se contente pas de refuser : il dit quoi.
+
+Une étiquette annotée s'annonce en deux lignes, la seconde suffixée `^{}` et
+portant l'empreinte du commit : c'est celle qu'on épingle, et celle que
+l'outil compare. Le compte rendu nomme désormais l'étiquette la **plus
+précise** quand plusieurs désignent le même commit — il disait « v2 » pour
+une empreinte épinglée sur v2.3.9, ce qui laissait croire à un flottement.
+
+### Vérifié
+
+| Contrôle | Résultat |
+|---|---|
+| état courant, `--epingle` | code 0 — 16 références sur 14 dépôts |
+| commentaire de version faux | code 1, et l'empreinte attendue est dite |
+| `trivy-action@0.28.0` remise | code 1, introuvable |
+| réseau coupé (mandataire mort) | code 0, message clair |
+| `make test` | 349 passent |
+| `tools/entetes.py --verifier` | 269 fichiers à jour |
+| `ruff` (jeu bloquant) | aucun avertissement |
+| YAML des 7 workflows | valides |
+
+Le retour des workflows de `bceebaf` n'a pas pu être relevé : le quota ne se
+réarme qu'à l'heure suivante. Il se lira dans l'onglet Actions.

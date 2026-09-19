@@ -309,9 +309,12 @@ jobs:
       #  voir la docstring de l'outil. Cette étape n'est PAS tolérante :
       #  c'est la seule du travail qui peut refuser une fusion, parce
       #  qu'une référence morte rend un contrôle de sécurité silencieux.
+      #  Aucun jeton : l'outil interroge les dépôts par `git ls-remote`,
+      #  qui ne consomme pas le quota de l'API. La première version passait
+      #  par api.github.com et a échoué en « 403, limite dépassée » — dans
+      #  une étape non tolérante, un quota aurait bloqué une fusion pour une
+      #  raison étrangère aux workflows.
       - name: Chaque action référencée existe, et les tierces sont épinglées
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
         run: python3 tools/verifier_actions.py --epingle
 
       - name: zizmor
