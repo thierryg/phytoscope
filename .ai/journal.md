@@ -1162,3 +1162,60 @@ code : il se teste.** Le défaut ne peut plus revenir en silence.
 | Fichiers ignorés mais suivis | **0** |
 | Index | 942 fichiers, 162 Mo |
 | Ouvrages sous droits, clé privée, `.ecarte/` | tous exclus, vérifiés un par un |
+
+---
+
+## 2026-09-19 — README principal remis à jour
+
+**Agent :** Claude Code (Opus 5) · **Demande :** mettre à jour le `README.md`
+principal.
+
+Il datait d'avant la moitié du travail de la veille : il annonçait 260 tests,
+ignorait `INSTALL.md`, `PACKAGING.md`, les deux nomenclatures, le choix de la
+langue à l'installation, la fenêtre des mises à jour, les interpréteurs
+embarqués, le cache de bytecode, le septième workflow, et les deux scripts du
+micrologiciel.
+
+**Fait :** réécriture complète — 711 lignes, quatorze sections. Chaque chiffre
+a été **mesuré par une commande** avant d'être écrit (`C-3`), et chaque chemin
+cité a été vérifié : 0 renvoi cassé sur les 29 fichiers et dossiers
+mentionnés, 11 dossiers de publication, 12 générateurs et fabriques.
+
+Ajouté, parce qu'un lecteur les cherche en premier : un § « Installer » en
+tête, avec la ligne de commande par système et la mention que la langue est
+demandée au début ; la bannière et la checklist telles qu'elles s'affichent ;
+les deux scripts du micrologiciel et leur partage de rôle.
+
+### Deux choses trouvées en vérifiant
+
+**1. Le test du `.gitignore` a servi dès le premier jour.** Il a échoué :
+l'exception `!/sbom.cdx.json` avait **de nouveau** disparu du fichier. Je
+l'ai remise, et les 344 tests repassent. C'est exactement ce pour quoi ces
+vingt tests ont été écrits la veille — le défaut se reproduit, et il ne passe
+plus inaperçu.
+
+**2. `make doctor` annonçait « PySide6 absent » alors que le logiciel
+tourne.** Ce n'est pas un défaut : `tools/doctor.py` s'exécute **avec le
+Python du système**, volontairement — « c'est le premier réflexe quand
+quelque chose ne démarre pas », dit sa docstring —, et il affiche
+l'interpréteur inspecté. Le défaut était dans mon README, qui le plaçait
+après `make install-dev` comme s'il rendait compte de l'environnement du
+projet. Formulation corrigée aux deux endroits, et renvoi vers
+`phytoscope --check` pour l'état du venv.
+
+### Vérifié
+
+| Contrôle | Annoncé | Mesuré |
+|---|---:|---:|
+| tests | 344 | **344** |
+| modules Python | 70 | 70 |
+| fragments HTML | 223 | 223 |
+| illustrations | 104 | 104 |
+| workflows | 7 | 7 |
+| fichiers versionnés | 942 | 942 |
+| lignes de `.gitignore` | 475 | 475 |
+| contraintes | 80 | 80 |
+
+Les commandes citées ont été exécutées : `make certificat-etat`,
+`make certificat-verifier`, `tools/verifier_svg.py`, `tools/pdf_impactes.py`,
+`tools/sbom.py --verifier` — toutes passent.

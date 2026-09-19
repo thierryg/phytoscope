@@ -466,6 +466,10 @@ rapports/
 bandit-rapport.json
 pip-audit.json
 /sbom*.json
-#  Le SBOM du logiciel, lui, est un livrable : il reste versionné.
+#  Les DEUX nomenclatures sont des livrables : elles restent versionnées.
+#  Celle du logiciel est livrée dans les paquets ; celle du projet couvre
+#  aussi le micrologiciel (Pico SDK, TinyUSB, chaîne ARM). La règle
+#  ci-dessus ne visait que les rapports produits en intégration continue.
+!/sbom.cdx.json
 !src/phytoscope/sbom.cdx.json
 !sources/software/MANIFESTE.json
