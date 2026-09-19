@@ -561,7 +561,10 @@ Sept workflows, dans `.github/workflows/` :
   étiquette se déplace ; une empreinte non. Et une référence morte ne fait
   pas échouer une étape : elle empêche le travail de démarrer, donc un
   contrôle de sécurité devient silencieux sans rien dire — cela s'est
-  produit avec `trivy-action@0.28.0`, qui s'écrit `v0.28.0`.
+  produit avec `trivy-action@0.28.0`, qui s'écrit `v0.28.0`. Le contrôle
+  vérifie aussi que **le commentaire de version dit la vérité** : `@abc123…
+  # v2.6.2` peut désigner n'importe quoi, et un commentaire faux est pire
+  qu'aucun commentaire.
 - **La cohérence des licences est un test.** La CI refuse que notre en-tête
   réapparaisse sur du code tiers, et vérifie que chaque projet recopié garde
   son fichier de licence.
@@ -577,7 +580,8 @@ python3 -m pip install --user pre-commit && pre-commit install
 pre-commit run --all-files
 
 # Les actions de la CI existent-elles, et les tierces sont-elles épinglées ?
-# (demande le réseau ; sans réseau, l'outil le dit et n'échoue pas)
+# Par « git ls-remote » : aucun quota d'API, aucun jeton. Sans réseau,
+# l'outil le dit et n'échoue pas.
 python3 tools/verifier_actions.py --epingle
 ```
 
