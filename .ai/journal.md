@@ -1219,3 +1219,117 @@ projet. Formulation corrigée aux deux endroits, et renvoi vers
 Les commandes citées ont été exécutées : `make certificat-etat`,
 `make certificat-verifier`, `tools/verifier_svg.py`, `tools/pdf_impactes.py`,
 `tools/sbom.py --verifier` — toutes passent.
+
+---
+
+## 2026-09-19 — deux travaux rouges dans la CI : références d'actions et contrôle de licences
+
+Signalé depuis l'onglet Actions de la publication #4 : « Analyse de
+l'arborescence (trivy) » et « Cohérence des licences » en échec. Deux causes
+sans rapport l'une avec l'autre, toutes deux des défauts que j'avais
+introduits.
+
+### 1. `trivy-action@0.28.0` — une étiquette qui n'existe pas
+
+    Error: Unable to resolve action `aquasecurity/trivy-action@0.28.0`,
+    unable to find version `0.28.0`
+
+Les étiquettes de cette action portent toutes un `v` : il fallait `v0.28.0`.
+
+Ce que ce défaut apprend, et qui vaut plus que la coquille : le travail est
+devenu rouge dès **« Set up job »**, c'est-à-dire **avant** que le
+`continue-on-error: true` de l'étape ne puisse s'appliquer. Une action qui ne
+se résout pas n'est pas une étape qui échoue — c'est un travail qui ne
+démarre pas. Un contrôle de sécurité devient donc silencieux sans que rien ne
+le dise, et la tolérance qu'on croyait avoir posée ne protège de rien.
+
+En vérifiant **les seize** références du dépôt une par une contre l'API
+GitHub, une seconde était morte : `ossf/scorecard-action@v2` — cette action
+n'a pas d'étiquette majeure flottante. Elle n'avait pas encore échoué parce
+que son workflow ne tourne qu'à l'horaire ; elle aurait échoué la nuit
+suivante, sans que personne regarde.
+
+Les quatre actions **tierces** sont désormais épinglées par empreinte de
+commit, la version dite en clair à côté pour que Dependabot et un lecteur
+humain s'y retrouvent :
+
+| Action | Avant | Après |
+|---|---|---|
+| `aquasecurity/trivy-action` | `@0.28.0` — mort | `@ed142fd…` (v0.36.0) |
+| `ossf/scorecard-action` | `@v2` — mort | `@2d11466…` (v2.4.4) |
+| `gitleaks/gitleaks-action` | `@v2` | `@ff98106…` (v2.3.9) |
+| `softprops/action-gh-release` | `@v2` | `@3bb1273…` (v2.6.2) |
+
+Les actions publiées par GitHub (`actions/*`, `github/codeql-action/*`)
+restent suivies par étiquette majeure : leur chaîne d'approvisionnement est
+celle du coureur lui-même.
+
+Les huit paramètres que nous passons à trivy ont été vérifiés dans le
+`action.yaml` **du commit épinglé**, et non supposés : tous présents. Un de
+plus a été ajouté, `limit-severities-for-sarif: true` — sans lui, le
+`severity: CRITICAL,HIGH,MEDIUM` que nous déclarons ne s'applique **pas** au
+rapport SARIF, où l'action verse toutes les gravités. Le filtre annoncé était
+faux.
+
+### 2. Le contrôle de licences accusait à tort
+
+    ! sources/schemas/LEDFader/ — aucun fichier de licence
+    ! sources/schemas/biotron-firmware/ — aucun fichier de licence
+    ! sources/schemas/midisprout/ — aucun fichier de licence
+
+Les trois projets ont bien leur `LICENSE`, et il est versionné. Le contrôle
+était faux :
+
+    ls "$d"LICENSE* "$d"LICENCE* "$d"COPYING*
+
+`ls` rend un code non nul dès qu'**un** des motifs ne trouve rien, même si
+les autres trouvent. `LICENCE*` et `COPYING*` n'existant nulle part, le
+contrôle déclarait les trois manquants — c'est-à-dire qu'il n'a **jamais**
+fonctionné depuis son écriture le 2026-09-18. Réécrit avec `find`, qui ne se
+trompe pas là-dessus et ignore la casse d'un seul coup.
+
+Reproduit avant correction, puis contrôlé dans les deux sens : le cas nominal
+passe (code 0, trois licences nommées), et un projet sans licence est bien
+refusé (code 1) — y compris les variantes `COPYING` et `licence.txt` en
+minuscules, qui sont acceptées.
+
+### Le garde-fou, parce que la coquille ne se voit pas
+
+Ni la relecture, ni `yamllint`, ni `zizmor` ne posent la question : tous trois
+lisent le fichier, aucun ne demande à GitHub si la cible existe. D'où
+`tools/verifier_actions.py`, ajouté au travail « Analyse des workflows » —
+**sans** `continue-on-error`, seule étape de ce travail à pouvoir refuser une
+fusion, puisqu'une référence morte rend un contrôle muet.
+
+Sans réseau, l'outil le dit et sort en 0 : une coupure ne doit pas devenir un
+échec de fabrication. Comportement vérifié à travers un mandataire mort.
+
+Cinq essais complètent l'outil dans la suite (349 au total), sur ce qui se
+vérifie **hors ligne** : action tierce épinglée, version dite en clair à côté
+de l'empreinte, aucune référence sur `main`/`master`/`HEAD`, outil présent et
+lancé par la CI. Les quatre essais qui peuvent échouer ont été éprouvés par
+mutation — désépinglage, empreinte muette, `@main`, retrait de l'étape : les
+quatre échouent comme prévu, et `securite.yml` a été restauré à l'identique.
+
+### Vérifié
+
+| Contrôle | Résultat |
+|---|---|
+| `make test` | **349 passent** (344 + 5) |
+| `tools/entetes.py --verifier` | 269 fichiers, tous à jour |
+| `ruff` (jeu bloquant de la CI) | aucun avertissement |
+| YAML des 7 workflows | tous valides |
+| les 16 références d'actions | toutes résolues |
+| contrôle de licences, cas nominal | code 0 |
+| contrôle de licences, licence absente | code 1 |
+| coupure réseau | code 0, message clair |
+
+`pyyaml`, installé dans le venv le temps de valider les workflows, en a été
+retiré : `requirements.txt` ne le déclare pas.
+
+### Ce qui reste hors de portée
+
+Le rapport de trivy lui-même n'a pas pu être exécuté ici — il faut le coureur
+de la CI. Ce qui est vérifié, c'est que l'action se résout et que ses
+paramètres existent à la version épinglée ; ce qu'elle trouvera dans l'arbre
+se lira dans l'onglet Security à la prochaine poussée.

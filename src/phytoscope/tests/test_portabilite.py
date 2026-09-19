@@ -627,3 +627,107 @@ class TestGitignoreProtegeLeDepotPublic:
             assert repere in contenu, (
                 f"{repere!r} absent — une section du .gitignore a-t-elle "
                 f"disparu ?")
+
+
+class TestReferencesDesActions:
+    """Les `uses:` des workflows : épinglés, et pas des coquilles.
+
+    Ce que ces essais protègent : le 2026-09-19, deux références du dépôt ne
+    désignaient rien. `aquasecurity/trivy-action@0.28.0` — il fallait
+    `v0.28.0` — a fait échouer « Analyse de l'arborescence (trivy) » dès
+    « Set up job », donc **avant** que `continue-on-error: true` ne puisse
+    s'appliquer : une action qui ne se résout pas n'est pas une étape qui
+    échoue, c'est un travail qui ne démarre pas, et le contrôle de sécurité
+    devient silencieux. `ossf/scorecard-action@v2` était morte aussi, mais
+    son workflow ne tourne qu'à l'horaire : elle n'avait pas encore eu
+    l'occasion de le montrer.
+
+    L'existence d'une référence demande le réseau — c'est le travail de
+    `tools/verifier_actions.py`, lancé par la CI. Ce qui se vérifie **hors
+    ligne**, et que ces essais vérifient, c'est la forme : une action tierce
+    épinglée par empreinte de commit, et la version dite en clair à côté.
+    """
+
+    #  Publiées par GitHub : suivies par étiquette majeure, comme partout,
+    #  parce que la chaîne d'approvisionnement est celle du coureur.
+    MAISON = ("actions/", "github/")
+    USES = re.compile(r"^\s*(?:-\s+)?uses:\s*([^\s#]+)")
+    EMPREINTE = re.compile(r"^[0-9a-f]{40}$")
+
+    def _references(self):
+        depot = os.path.dirname(os.path.dirname(RACINE))
+        dossier = os.path.join(depot, ".github", "workflows")
+        if not os.path.isdir(dossier):
+            pytest.skip(".github/workflows absent de cette copie de travail")
+        trouvees = []
+        for nom in sorted(os.listdir(dossier)):
+            if not nom.endswith((".yml", ".yaml")):
+                continue
+            chemin = os.path.join(dossier, nom)
+            with open(chemin, encoding="utf-8") as f:
+                for numero, ligne in enumerate(f, 1):
+                    trouve = self.USES.match(ligne)
+                    if not trouve:
+                        continue
+                    ref = trouve.group(1)
+                    if ref.startswith(("./", "docker://")) or "@" not in ref:
+                        continue
+                    trouvees.append((ref, ligne.rstrip(), nom, numero))
+        assert trouvees, "aucun « uses: » trouvé — la lecture est-elle bonne ?"
+        return trouvees
+
+    def test_l_outil_de_controle_existe(self):
+        depot = os.path.dirname(os.path.dirname(RACINE))
+        chemin = os.path.join(depot, "tools", "verifier_actions.py")
+        assert os.path.exists(chemin), (
+            "tools/verifier_actions.py a disparu — c'est lui qui interroge "
+            "GitHub sur l'existence des références")
+
+    def test_la_ci_lance_l_outil(self):
+        depot = os.path.dirname(os.path.dirname(RACINE))
+        chemin = os.path.join(depot, ".github", "workflows", "securite.yml")
+        if not os.path.exists(chemin):
+            pytest.skip("securite.yml absent de cette copie de travail")
+        contenu = open(chemin, encoding="utf-8").read()
+        assert "tools/verifier_actions.py" in contenu, (
+            "la CI ne lance plus le contrôle des références d'actions")
+
+    def test_les_actions_tierces_sont_epinglees(self):
+        """Une étiquette se déplace sous nos pieds ; une empreinte non."""
+        flottantes = []
+        for ref, _ligne, fichier, numero in self._references():
+            chemin, _, version = ref.partition("@")
+            if chemin.startswith(self.MAISON):
+                continue
+            if not self.EMPREINTE.match(version):
+                flottantes.append(f"{fichier}:{numero} — {ref}")
+        assert not flottantes, (
+            "action(s) tierce(s) non épinglée(s) par empreinte de commit :\n  "
+            + "\n  ".join(flottantes))
+
+    def test_chaque_empreinte_dit_sa_version_en_clair(self):
+        """Une empreinte seule est illisible : le commentaire la traduit.
+
+        Sans « # v0.36.0 » à côté, personne ne sait quelle version tourne, et
+        Dependabot n'a rien à mettre à jour de lisible.
+        """
+        muettes = []
+        for ref, ligne, fichier, numero in self._references():
+            version = ref.partition("@")[2]
+            if not self.EMPREINTE.match(version):
+                continue
+            if not re.search(r"#\s*v?\d+\.\d+", ligne):
+                muettes.append(f"{fichier}:{numero} — {ligne.strip()}")
+        assert not muettes, (
+            "empreinte(s) sans version en commentaire :\n  "
+            + "\n  ".join(muettes))
+
+    def test_aucune_reference_ne_pointe_sur_une_branche_mouvante(self):
+        """`@main` ou `@master` : le code exécuté change sans qu'on décide."""
+        fautives = []
+        for ref, _ligne, fichier, numero in self._references():
+            if ref.partition("@")[2] in ("main", "master", "HEAD"):
+                fautives.append(f"{fichier}:{numero} — {ref}")
+        assert not fautives, (
+            "référence(s) sur une branche mouvante :\n  "
+            + "\n  ".join(fautives))
