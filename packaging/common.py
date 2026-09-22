@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #  ==========================================================================
-#  PhytoScope — attribution — packaging/commun.py
+#  PhytoScope — attribution — packaging/common.py
 #
 #  Version  : 1.5.1
 #  Date     : 2026-09-18
@@ -16,8 +16,8 @@
 
 """Outillage commun aux générateurs de paquets.
 
-Chaque système a son script — `construire_debian.py`, `construire_fedora.py`,
-`construire_windows.py`, `construire_macos.py`, `construire_source.py` — et
+Chaque système a son script — `build_debian.py`, `build_fedora.py`,
+`build_windows.py`, `build_macos.py`, `build_source.py` — et
 tous s'appuient sur ce module. On y trouve ce qui ne dépend d'aucune cible :
 
 * l'**identité** du logiciel, lue à la source dans `phytoscope/version.py` ;
@@ -68,7 +68,7 @@ RACINE_SORTIE = os.path.join(RACINE, "build", "paquets")
 LIEN_DERNIER = os.path.join(RACINE_SORTIE, "dernier")
 
 #  Variable d'environnement qui impose le dossier. C'est par elle que
-#  `construire.py` fait converger toutes les cibles d'une même fabrication
+#  `build.py` fait converger toutes les cibles d'une même fabrication
 #  vers un seul dossier : sans cela, chaque générateur en créerait un nouveau
 #  et les paquets d'une même version se retrouveraient éparpillés.
 VARIABLE_SORTIE = "PHYTOSCOPE_SORTIE"
@@ -298,7 +298,7 @@ class Identite:
         Qt, dont la machine qui empaquette n'a aucun besoin.
 
         :param version: impose la version au lieu de la lire. C'est ainsi que
-            `construire.py` garantit que toutes les cibles d'une fabrication
+            `build.py` garantit que toutes les cibles d'une fabrication
             portent le même numéro, même si le fichier change entre-temps.
         :param release: itération d'empaquetage, « 1 » par défaut.
         """
@@ -636,7 +636,7 @@ def etat_des_outils() -> None:
     #  l'installer sans mot de passe.
     if any(o.nom in ("makensis", "wixl", "osslsigncode") for o in manquants):
         dire("  Sans privilèges et sans toucher au système :", GRIS)
-        dire("      python3 packaging/construire.py --deps\n")
+        dire("      python3 packaging/build.py --deps\n")
         dire("  Sans lui, la cible Windows produit tout de même une archive",
              GRIS)
         dire("  portable (.zip) : elle s'utilise en décompressant, sans "
@@ -646,7 +646,7 @@ def etat_des_outils() -> None:
 def arguments_communs(p: "argparse.ArgumentParser") -> None:
     """Les options que TOUS les générateurs partagent.
 
-    Elles existent pour que `construire.py` puisse imposer la même version et
+    Elles existent pour que `build.py` puisse imposer la même version et
     le même dossier à toutes les cibles d'une fabrication : sans cela, deux
     générateurs lancés à une minute d'intervalle produiraient des paquets dans
     deux dossiers différents, et un changement du fichier VERSION entre les

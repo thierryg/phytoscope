@@ -1,88 +1,112 @@
-# AGENTS.md — mode d'emploi pour un agent (Claude Code, ChatGPT, Gemini, autre)
+# AGENTS.md — how to work in this repository (Claude Code, ChatGPT, Gemini, other)
 
-Ce dépôt est travaillé par des agents et par des humains. Ce fichier est **le
-point d'entrée** : il dit dans quel ordre lire, ce qu'il ne faut pas faire, et
-comment laisser une trace de ce qu'on a fait. Il est court exprès ; tout le reste
-est ailleurs et référencé ici.
+This repository is worked on by agents and by humans. This file is **the entry
+point**: it says what to read and in what order, what not to do, and how to
+leave a trace of what you did. It is deliberately short; everything else lives
+elsewhere and is referenced from here.
 
-## 1. Lire, dans cet ordre
+## 1. Read these, in this order
 
-| Ordre | Fichier | Ce qu'on y trouve |
+| Order | File | What it holds |
 |---|---|---|
-| 1 | `constraints.md` | **Le cahier des charges**, contraintes numérotées `C-1`…`C-64`. Fait autorité. |
-| 2 | `.ai/etat.md` | **Où en est le travail** : ce qui est fait, ce qui reste, ce qui est en cours. |
-| 3 | `.ai/journal.md` | **Ce qui a été fait, quand, et pourquoi** — l'historique complet des interventions. |
-| 4 | `.ai/decisions.md` | Les **décisions de conception** et leurs raisons (format ADR court). |
-| 5 | `packaging/README.md` | **La fabrique de paquets** : cibles, formats, signature, ce qui est vérifié et ce qui ne l'est pas. |
-| 6 | `.ai/portabilite.md` | Le relevé Windows / macOS / Linux : ce qui est corrigé, ce qui reste vrai. |
-| 7 | `README.md` | Le projet vu de l'extérieur : contenu, reconstruction des PDF. |
-| 8 | `src/phytoscope/README.txt` | Le logiciel vu de l'utilisateur. |
+| 1 | `constraints.md` | **The requirements**, as numbered constraints `C-1`…`C-64`. Authoritative. |
+| 2 | `.ai/etat.md` | **Where the work stands**: what is done, what is left, what is in flight. |
+| 3 | `.ai/journal.md` | **What was done, when, and why** — the full log of interventions. |
+| 4 | `.ai/decisions.md` | The **design decisions** and their reasons (short ADR format). |
+| 5 | `packaging/README.md` | **The package factory**: targets, formats, signing, what is verified and what is not. |
+| 6 | `.ai/portabilite.md` | The Windows / macOS / Linux record: what was fixed, what still holds. |
+| 7 | `README.md` | The project from the outside: contents, how to rebuild the PDFs. |
+| 8 | `src/phytoscope/README.txt` | The software from the user's point of view. |
 
-## 2. Règles de travail
+## 2. Working rules
 
-1. **Le français partout** : code, commentaires, docstrings, interface, documents.
-   Typographie française (« guillemets », espaces avant `: ; ! ?`).
-2. **Expliquer le pourquoi.** Un commentaire qui paraphrase le code est à
-   supprimer ; un commentaire qui dit pourquoi le code est ainsi est à garder.
-3. **Vérifier, ne pas supposer.** Toute affirmation chiffrée (pages, tests,
-   couverture, débit) se mesure par une commande avant d'être écrite.
-4. **Ne jamais modifier un fichier généré** (voir `C-45`) : modifier la source
-   et relancer le générateur.
-5. **Tester avant de conclure** : `cd src/phytoscope && make test`
-   (260 tests, sans matériel ni réseau).
-6. **Consigner** : après toute intervention notable, ajouter une entrée datée
-   dans `.ai/journal.md` et mettre `.ai/etat.md` à jour. C'est ce qui permet à
-   l'agent suivant — ou au même, trois semaines plus tard — de reprendre.
+1. **Technical US English everywhere**: code, comments, docstrings, interface,
+   documents, file names, directory names. US spelling (`behavior`,
+   `initialize`, `analyze`), US typography (`"quotes"`, no space before
+   `: ; ! ?`), ISO dates (`2026-09-22`).
 
-## 3. Ce qu'on ne fait pas ici
+   This rule replaced a French-only rule on 2026-09-22, at the owner's
+   request, because a public repository whose code and documentation are in
+   French can only be read by a fraction of its possible contributors. It
+   covers **the agent memory under `.ai/`** as well — journal, decisions,
+   state, portability record — even though the owner writes to us in French.
 
-- ❌ **Écrire dans les réglages de l'utilisateur** (`~/.config/phytoscope/reglages.json`)
-  pendant un essai. Utiliser `XDG_CONFIG_HOME` vers un dossier temporaire.
-  *(Cette règle vient d'un incident réel : voir le journal du 2026-09-18.)*
-- ❌ Lancer le logiciel avec `--lang`, `--simulation`, `--theme` sur la
-  configuration réelle de l'utilisateur.
-- ❌ Ajouter une détection automatique de la locale (`C-31`).
-- ❌ Ajouter une dépendance obligatoire (`C-40`), ou SciPy sous quelque prétexte.
-- ❌ Employer le vocabulaire de la parole sans son avertissement (`C-5`).
-- ❌ `sudo` : tout s'installe dans le dossier personnel (`C-55`). Vaut aussi
-  pour les outils d'empaquetage — `make deps` les déplie dans `~/.local/opt`.
-- ❌ **Copier la clé privée de signature** ailleurs que dans
-  `~/.local/share/phytoscope-signature/` et `certificat/` (`C-2R`).
-- ❌ Laisser croire qu'un certificat auto-signé fait taire SmartScreen ou
-  Gatekeeper (`C-2Q`).
+   What stays French: proper nouns (`Bretagne Namasté`) and the titles of
+   French works cited in the bibliographies. Nothing else.
 
-## 4. Commandes utiles
+   Past entries in `.ai/journal.md` and `CHANGELOG.md` are translated like
+   the rest. Where such an entry names a file that has since been renamed, it
+   is written with the name the file carries **today**, because that is the
+   name a reader can act on; the entry still says what happened, and when.
+
+2. **Explain the why.** A comment that paraphrases the code should be deleted;
+   a comment that says why the code is the way it is should be kept.
+3. **Verify, do not assume.** Every number you write down — pages, tests,
+   coverage, throughput — is measured by a command first.
+4. **Never edit a generated file** (see `C-45`): edit the source and re-run the
+   generator.
+5. **Test before you conclude**: `cd src/phytoscope && make test`
+   (350 tests, no hardware and no network required).
+6. **Record it.** After any substantial change, add a dated entry to
+   `.ai/journal.md` and bring `.ai/etat.md` up to date. That is what lets the
+   next agent — or the same one, three weeks later — pick the work back up.
+
+## 3. What we do not do here
+
+- ❌ **Write to the user's settings** (`~/.config/phytoscope/reglages.json`)
+  during a test. Point `XDG_CONFIG_HOME` at a temporary directory.
+  *(This rule comes from a real incident: see the journal entry for
+  2026-09-18.)*
+- ❌ Run the software with `--lang`, `--simulation`, or `--theme` against the
+  user's real configuration.
+- ❌ Add automatic locale detection (`C-31`).
+- ❌ Add a mandatory dependency (`C-40`), or SciPy under any pretext.
+- ❌ Use the vocabulary of speech without its warning (`C-5`).
+- ❌ `sudo`: everything installs under the home directory (`C-55`). That holds
+  for the packaging tools too — `make deps` unpacks them into `~/.local/opt`.
+- ❌ **Copy the private signing key** anywhere other than
+  `~/.local/share/phytoscope-signature/` and `certificat/` (`C-2R`).
+- ❌ Imply that a self-signed certificate silences SmartScreen or Gatekeeper
+  (`C-2Q`).
+
+## 4. Useful commands
 
 ```bash
-# Logiciel
+# Software
 cd src/phytoscope
-make test                      # 260 tests
-make demo                      # découverte, sans matériel
-.venv/bin/python tools/i18n.py --couverture     # état des traductions
-.venv/bin/python tools/sbom.py --json           # nomenclature logicielle
+make test                      # 350 tests
+make demo                      # a guided look, no hardware needed
+.venv/bin/python tools/i18n.py --couverture     # translation coverage
+.venv/bin/python tools/sbom.py --json           # software bill of materials
 
-# Publications (depuis la racine) — 10 PDF, 1 378 pages
-python3 pdf-src/assets/svg/gen.py         && python3 pdf-src/build.py         # ouvrage, 478 p.
-python3 pdf-src/assets/svg/gen_tt.py      && python3 pdf-src/build_arbre.py   # la série, 573 p.
-python3 pdf-src/assets/svg/gen_sch.py     && python3 pdf-src/build_annexe.py  # annexe, 65 p.
-python3 pdf-src/assets/svg/gen_carte.py   && python3 pdf-src/build_carte.py   # hors-série, 235 p.
-python3 pdf-src/assets/svg/gen_sdk.py     && python3 pdf-src/build_sdk.py     # guide SDK, 27 p.
-python3 tools/verifier_svg.py                    # les 104 illustrations sont-elles bien formées ?
-git diff --name-only | python3 tools/pdf_impactes.py -   # que faut-il refaire ?
+# Publications (from the repository root) — 10 PDFs, 1,378 pages
+python3 pdf-src/assets/svg/gen.py         && python3 pdf-src/build.py         # main book,      478 pp.
+python3 pdf-src/assets/svg/gen_tt.py      && python3 pdf-src/build_arbre.py   # the series,     573 pp.
+python3 pdf-src/assets/svg/gen_sch.py     && python3 pdf-src/build_annexe.py  # the appendix,    65 pp.
+python3 pdf-src/assets/svg/gen_carte.py   && python3 pdf-src/build_carte.py   # the special,    235 pp.
+python3 pdf-src/assets/svg/gen_sdk.py     && python3 pdf-src/build_sdk.py     # the SDK guide,   27 pp.
+python3 tools/verifier_svg.py                    # are the 104 figures well-formed XML?
+git diff --name-only | python3 tools/pdf_impactes.py -   # which PDFs need rebuilding?
 
-# Paquets d'installation (depuis Debian, Ubuntu ou Mint)
+# Translation of the repository — see .ai/rename-plan.json
+python3 tools/verify_translation.py --remaining   # how much French is left, per area
+python3 tools/verify_translation.py --compare .ai/translation-baseline.json \
+        --renames .ai/translation-renames.json    # did any code move? (it must not)
+python3 tools/apply_renames.py --list             # the seven rename stages
+
+# Installer packages (from Debian, Ubuntu, or Mint)
 cd packaging
-make outils        # ce qui manque pour empaqueter
-make deps          # NSIS, msitools, osslsigncode — sans sudo
-make certificat    # une seule fois
-make tout          # .deb .rpm .run .exe .msi .pkg .zip .tar.gz, signés
-make verifier      # rouvre et contrôle tout ce qui a été produit
+make outils        # what is missing in order to package
+make deps          # NSIS, msitools, osslsigncode — without sudo
+make certificat    # once
+make tout          # .deb .rpm .run .exe .msi .pkg .zip .tar.gz, all signed
+make verifier      # reopen and check everything that was produced
 
-# Micrologiciel
+# Firmware
 cd src/firmware
-./_make_.sh --deps             # installe SDK + chaîne ARM dans $HOME, sans sudo
-./_make_.sh                    # → build/phytosense.uf2 — compile seulement
-./build.sh                     # compile ET range le livrable dans build/paquets/
+./_make_.sh --deps             # installs the SDK and the ARM toolchain in $HOME, no sudo
+./_make_.sh                    # -> build/phytosense.uf2 — compiles only
+./build.sh                     # compiles AND files the deliverable under build/paquets/
 ```
 
 ## 5. Où vit quoi
@@ -149,11 +173,11 @@ pdf-src/                    LES SOURCES DES DIX PUBLICATIONS
 hardware/                   nomenclature et accessoires (CSV) — CERN-OHL-P v2
 packaging/                  la fabrique des paquets d'installation
   Makefile                  enchaîne les cibles — « make tout », « make macos »
-  commun.py                 ce qui ne dépend d'aucun système
+  common.py                 ce qui ne dépend d'aucun système
   construire_<os>.py        un générateur par système, autonome
   signature.py              certificat X.509, Authenticode et CMS
-  certificat.py             crée, recrée et dépose le certificat
-  langues.py                les libellés des installateurs, 11 langues
+  certificate.py             crée, recrée et dépose le certificat
+  languages.py                les libellés des installateurs, 11 langues
   macos_pkg.py              le format .pkg, écrit de bout en bout
   gabarits/                 control, .spec, .nsi, .wxs, Info.plist, lanceurs
 tools/                      les outils du dépôt

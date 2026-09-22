@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #  ==========================================================================
-#  PhytoScope — attribution — packaging/construire_windows.py
+#  PhytoScope — attribution — packaging/build_windows.py
 #
 #  Version  : 1.5.1
 #  Date     : 2026-09-18
@@ -44,10 +44,10 @@ machine qui reçoit n'a besoin de rien.
 
 .. code-block:: console
 
-    python3 packaging/construire_windows.py            # les trois
-    python3 packaging/construire_windows.py --msi      # seulement le MSI
+    python3 packaging/build_windows.py            # les trois
+    python3 packaging/build_windows.py --msi      # seulement le MSI
 
-Ce script est autonome : il ne dépend que de `commun.py`, et se lance seul ou
+Ce script est autonome : il ne dépend que de `common.py`, et se lance seul ou
 par le Makefile du même dossier (`make windows`).
 """
 from __future__ import annotations
@@ -63,7 +63,7 @@ from typing import List, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from commun import (  # noqa: E402
+from common import (  # noqa: E402
     ABI_WINDOWS, GABARITS, GRIS, LOGICIEL, PYTHON_WINDOWS, RACINE_SORTIE,
     VERT, Identite, appliquer_les_arguments, arguments_communs, bien,
     copier_le_logiciel, deplier_les_roues, dire, dossier_sortie, echec,
@@ -152,7 +152,7 @@ def construire_windows(id_: Identite, faire_zip: bool = True,
         makensis = trouver_makensis()
         if not makensis:
             souci("makensis absent — pas d'installateur .exe")
-            dire("      make deps   (ou : python3 construire.py --deps)", GRIS)
+            dire("      make deps   (ou : python3 build.py --deps)", GRIS)
             return produits
 
         etape("installateur NSIS")
@@ -182,7 +182,7 @@ def _construire_msi(id_: Identite, charge: str, icone: str,
     wixl = trouver_wixl()
     if not wixl:
         souci("wixl absent — pas de paquet .msi")
-        dire("      make deps   (ou : python3 construire.py --deps)", GRIS)
+        dire("      make deps   (ou : python3 build.py --deps)", GRIS)
         return None
 
     etape("paquet MSI")
@@ -286,7 +286,7 @@ def _tout(args) -> bool:
 
 def main(argv: Optional[List[str]] = None) -> int:
     p = argparse.ArgumentParser(
-        prog="construire_windows.py",
+        prog="build_windows.py",
         description="Fabrique les paquets Windows de PhytoScope.")
     arguments_communs(p)
     p.add_argument("--zip", action="store_true",

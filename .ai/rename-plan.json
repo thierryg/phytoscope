@@ -1,0 +1,308 @@
+{
+  "_about": [
+    "Ordered rename plan for the French-to-English pass.",
+    "Applied by tools/apply_renames.py, stage by stage, each stage verified",
+    "by the test suite and by tools/verify_translation.py.",
+    "A stage is a list of [old path, new path]. Directories move whole."
+  ],
+  "stage-1-packaging-modules": [
+    [
+      "packaging/certificat.py",
+      "packaging/certificate.py"
+    ],
+    [
+      "packaging/commun.py",
+      "packaging/common.py"
+    ],
+    [
+      "packaging/construire.py",
+      "packaging/build.py"
+    ],
+    [
+      "packaging/construire_debian.py",
+      "packaging/build_debian.py"
+    ],
+    [
+      "packaging/construire_fedora.py",
+      "packaging/build_fedora.py"
+    ],
+    [
+      "packaging/construire_macos.py",
+      "packaging/build_macos.py"
+    ],
+    [
+      "packaging/construire_source.py",
+      "packaging/build_source.py"
+    ],
+    [
+      "packaging/construire_windows.py",
+      "packaging/build_windows.py"
+    ],
+    [
+      "packaging/langues.py",
+      "packaging/languages.py"
+    ],
+    [
+      "packaging/verifier.py",
+      "packaging/verify.py"
+    ]
+  ],
+  "stage-2-repository-tools": [
+    [
+      "tools/entetes.py",
+      "tools/headers.py"
+    ],
+    [
+      "tools/gen-annexe-parts.py",
+      "tools/gen-appendix-parts.py"
+    ],
+    [
+      "tools/gen_glossaire.py",
+      "tools/gen_glossary.py"
+    ],
+    [
+      "tools/pdf_impactes.py",
+      "tools/impacted_pdfs.py"
+    ],
+    [
+      "tools/verifier_actions.py",
+      "tools/verify_actions.py"
+    ],
+    [
+      "tools/verifier_svg.py",
+      "tools/verify_svg.py"
+    ]
+  ],
+  "stage-3-software-modules": [
+    [
+      "src/phytoscope/phytoscope/api/contexte.py",
+      "src/phytoscope/phytoscope/api/context.py"
+    ],
+    [
+      "src/phytoscope/phytoscope/api/contrat.py",
+      "src/phytoscope/phytoscope/api/contract.py"
+    ],
+    [
+      "src/phytoscope/phytoscope/api/evenements.py",
+      "src/phytoscope/phytoscope/api/events.py"
+    ],
+    [
+      "src/phytoscope/phytoscope/api/registre.py",
+      "src/phytoscope/phytoscope/api/registry.py"
+    ],
+    [
+      "src/phytoscope/phytoscope/core/empreinte.py",
+      "src/phytoscope/phytoscope/core/fingerprint.py"
+    ],
+    [
+      "src/phytoscope/phytoscope/core/espace.py",
+      "src/phytoscope/phytoscope/core/disk_space.py"
+    ],
+    [
+      "src/phytoscope/phytoscope/core/grandeurs.py",
+      "src/phytoscope/phytoscope/core/quantities.py"
+    ],
+    [
+      "src/phytoscope/phytoscope/core/maj_dependances.py",
+      "src/phytoscope/phytoscope/core/dependency_updates.py"
+    ],
+    [
+      "src/phytoscope/phytoscope/core/noms.py",
+      "src/phytoscope/phytoscope/core/filenames.py"
+    ],
+    [
+      "src/phytoscope/phytoscope/ui/langue_dialog.py",
+      "src/phytoscope/phytoscope/ui/language_dialog.py"
+    ],
+    [
+      "src/phytoscope/phytoscope/ui/maj_dialog.py",
+      "src/phytoscope/phytoscope/ui/updates_dialog.py"
+    ],
+    [
+      "src/phytoscope/phytoscope/ui/polices.py",
+      "src/phytoscope/phytoscope/ui/fonts.py"
+    ],
+    [
+      "src/phytoscope/tools/ecrire_langue.py",
+      "src/phytoscope/tools/write_language.py"
+    ],
+    [
+      "src/phytoscope/tests/test_empreinte.py",
+      "src/phytoscope/tests/test_fingerprint.py"
+    ],
+    [
+      "src/phytoscope/tests/test_grandeurs.py",
+      "src/phytoscope/tests/test_quantities.py"
+    ],
+    [
+      "src/phytoscope/tests/test_portabilite.py",
+      "src/phytoscope/tests/test_portability.py"
+    ]
+  ],
+  "stage-4-sdk-and-publication-scripts": [
+    [
+      "src/sdk/outils/nouveau_module.py",
+      "src/sdk/outils/new_module.py"
+    ],
+    [
+      "src/sdk/bonjour-monde/test_bonjour_monde.py",
+      "src/sdk/bonjour-monde/test_hello_world.py"
+    ],
+    [
+      "pdf-src/build_annexe.py",
+      "pdf-src/build_appendix.py"
+    ],
+    [
+      "pdf-src/build_arbre.py",
+      "pdf-src/build_tree.py"
+    ],
+    [
+      "pdf-src/build_carte.py",
+      "pdf-src/build_board.py"
+    ],
+    [
+      "pdf-src/assets/svg/gen_carte.py",
+      "pdf-src/assets/svg/gen_board.py"
+    ]
+  ],
+  "stage-5-shell-scripts": [
+    [
+      "packaging/gabarits/debian/desinstaller.sh",
+      "packaging/gabarits/debian/uninstall.sh"
+    ],
+    [
+      "packaging/gabarits/debian/icone-bureau.sh",
+      "packaging/gabarits/debian/desktop-icon.sh"
+    ],
+    [
+      "packaging/gabarits/linux/entete.sh",
+      "packaging/gabarits/linux/header.sh"
+    ],
+    [
+      "packaging/gabarits/linux/interface.sh",
+      "packaging/gabarits/linux/frontend.sh"
+    ]
+  ],
+  "stage-6-directories": [
+    [
+      "certificat",
+      "certificate"
+    ],
+    [
+      "packaging/gabarits",
+      "packaging/templates"
+    ],
+    [
+      "packaging/langues",
+      "packaging/languages"
+    ],
+    [
+      "src/phytoscope/phytoscope/langues",
+      "src/phytoscope/phytoscope/languages"
+    ],
+    [
+      "src/phytoscope/phytoscope/lexiques",
+      "src/phytoscope/phytoscope/lexicons"
+    ],
+    [
+      "src/phytoscope/phytoscope/modules/descripteurs-avances",
+      "src/phytoscope/phytoscope/modules/advanced-descriptors"
+    ],
+    [
+      "src/phytoscope/phytoscope/modules/empreinte-montage",
+      "src/phytoscope/phytoscope/modules/rig-fingerprint"
+    ],
+    [
+      "src/phytoscope/phytoscope/modules/grandeurs-scientifiques",
+      "src/phytoscope/phytoscope/modules/scientific-quantities"
+    ],
+    [
+      "src/sdk/bonjour-monde",
+      "src/sdk/hello-world"
+    ],
+    [
+      "src/sdk/outils",
+      "src/sdk/tools"
+    ],
+    [
+      "pdf-src/commun",
+      "pdf-src/common"
+    ],
+    [
+      "pdf-src/assets/img/brevets",
+      "pdf-src/assets/img/patents"
+    ]
+  ],
+  "stage-7-publication-directories": [
+    [
+      "pdf-src/la-musique-des-plantes",
+      "pdf-src/the-music-of-plants"
+    ],
+    [
+      "pdf-src/la-carte-phytosense",
+      "pdf-src/the-phytosense-board"
+    ],
+    [
+      "pdf-src/arbre-parlant-annexe",
+      "pdf-src/talking-tree-appendix"
+    ],
+    [
+      "pdf-src/arbre-parlant-dublin",
+      "pdf-src/talking-tree-dublin"
+    ],
+    [
+      "pdf-src/atelier-creer-arbre-parlant",
+      "pdf-src/workshop-build-a-talking-tree"
+    ],
+    [
+      "pdf-src/biocommunication-vegetale-et-ia",
+      "pdf-src/plant-biocommunication-and-ai"
+    ],
+    [
+      "pdf-src/ecrire-un-module-phytoscope",
+      "pdf-src/writing-a-phytoscope-module"
+    ],
+    [
+      "pdf-src/phytosense-bom-accessoires",
+      "pdf-src/phytosense-bom-accessories"
+    ],
+    [
+      "pdf-src/phytosense-schemas",
+      "pdf-src/phytosense-schematics"
+    ]
+  ],
+  "_makefile-targets": {
+    "_about": [
+      "Not paths, so not applied by tools/apply_renames.py.",
+      "Renamed together with the Makefile prose, in one pass that also",
+      "updates the seven workflows and every document that calls them.",
+      "Counted references at the time of writing: make tout 26,",
+      "make verifier 18, make deps 18, make outils 9, make certificat 9."
+    ],
+    "packaging/Makefile": {
+      "aide": "help",
+      "outils": "tools",
+      "deps": "deps",
+      "tout": "all",
+      "linux": "linux",
+      "micrologiciel": "firmware",
+      "livrables": "deliverables",
+      "hors-ligne": "offline",
+      "certificat": "certificate",
+      "certificat-etat": "certificate-status",
+      "certificat-verifier": "certificate-verify",
+      "certificat-refait": "certificate-recreate",
+      "signer": "sign",
+      "empreinte-certificat": "certificate-fingerprint",
+      "documents": "documents",
+      "verifier": "verify",
+      "empreintes": "checksums",
+      "propre": "clean",
+      "source": "source",
+      "version": "version"
+    },
+    "src/phytoscope/Makefile": {
+      "run-silencieux": "run-quiet"
+    }
+  }
+}

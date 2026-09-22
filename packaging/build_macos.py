@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #  ==========================================================================
-#  PhytoScope — attribution — packaging/construire_macos.py
+#  PhytoScope — attribution — packaging/build_macos.py
 #
 #  Version  : 1.5.1
 #  Date     : 2026-09-18
@@ -41,11 +41,11 @@ l'essentiel serait identique.
 
 .. code-block:: console
 
-    python3 packaging/construire_macos.py                # zip + pkg
-    python3 packaging/construire_macos.py --pkg          # seulement le .pkg
-    python3 packaging/construire_macos.py --hors-ligne   # avec les bibliothèques
+    python3 packaging/build_macos.py                # zip + pkg
+    python3 packaging/build_macos.py --pkg          # seulement le .pkg
+    python3 packaging/build_macos.py --hors-ligne   # avec les bibliothèques
 
-Ce script est autonome : il ne dépend que de `commun.py` et de `macos_pkg.py`,
+Ce script est autonome : il ne dépend que de `common.py` et de `macos_pkg.py`,
 et se lance seul ou par le Makefile du même dossier (`make macos`).
 """
 from __future__ import annotations
@@ -62,7 +62,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import macos_pkg  # noqa: E402
 import platform  # noqa: E402
 
-from commun import (  # noqa: E402
+from common import (  # noqa: E402
     GABARITS, GRIS, LOGICIEL, PYTHONS_MACOS, RACINE_SORTIE, VERT, Identite,
     appliquer_les_arguments, arguments_communs, bien, copier_le_logiciel,
     dire, dossier_sortie, echec, ecrire, ecrire_les_documents,
@@ -284,7 +284,7 @@ def _tout(args) -> bool:
 
 def main(argv: Optional[List[str]] = None) -> int:
     p = argparse.ArgumentParser(
-        prog="construire_macos.py",
+        prog="build_macos.py",
         description="Fabrique les paquets macOS de PhytoScope.")
     arguments_communs(p)
     p.add_argument("--zip", action="store_true",

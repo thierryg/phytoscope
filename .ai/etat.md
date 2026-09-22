@@ -38,7 +38,7 @@ en même temps que `.ai/journal.md`.
 | **Reconstruction sélective** | ne refait que les PDF touchés | `tools/pdf_impactes.py` |
 | **Cohérence des licences** | MIT + CERN-OHL-P v2, code tiers rendu à sa licence | `LICENSES/README.md` |
 | **Mises à jour des bibliothèques** | depuis l'interface, sans rien installer d'office | `ui/maj_dialog.py` |
-| **Langue à l'installation** | 11 langues, demandée au tout début, reprise par le logiciel | `packaging/langues.py` |
+| **Langue à l'installation** | 11 langues, demandée au tout début, reprise par le logiciel | `packaging/languages.py` |
 | **Libellés des installateurs** | 51 × 11 = 561 traductions, source unique | `packaging/langues/installateur.json` |
 | **Interpréteur embarqué** | `.run` 29 Mo, `.pkg` 18 Mo — installable sur machine nue | `commun._python_autonome` |
 | **Cache de bytecode** | construit à l'installation sur les cinq cibles | `INSTALL.md` |
@@ -163,7 +163,7 @@ corrigés — et la fabrique des paquets fonctionne pour les cinq cibles.
 
 - **`AUTEURS` contient un numéro de téléphone personnel.** Le dépôt est
   public et ce fichier part dans chaque paquet. Le code lit le champ avec un
-  défaut vide (`version.py:114`, `packaging/commun.py:290`) : le vider est
+  défaut vide (`version.py:114`, `packaging/common.py:290`) : le vider est
   sans conséquence technique. Décision non prise.
 - **Le premier `git push`.** Le dépôt local est prêt et la télécommande est
   `git@github.com:thierryg/phytoscope.git`, mais rien n'a été poussé : publier

@@ -317,7 +317,7 @@ corrigés. Le détail vit dans `CHANGELOG.txt` ; les décisions dans `D-13` et
   mixage du périphérique. On se replie désormais sur le débit natif avec
   décimation logicielle, sans perdre un échantillon.
 
-**Fait — empaquetage :** `packaging/construire.py` et `packaging/gabarits/`
+**Fait — empaquetage :** `packaging/build.py` et `packaging/gabarits/`
 produisent depuis Debian/Ubuntu/Mint :
 
 | Cible | Fichier | Exige sur la machine cible |
@@ -351,7 +351,7 @@ produisent depuis Debian/Ubuntu/Mint :
 - Qt pour macOS n'existe qu'en `universal2` : deux paquets par architecture
   contenaient 400 Mo identiques. Un seul paquet macOS, donc.
 - **NSIS s'installe sans `sudo`** (`apt-get download` puis `dpkg-deb -x` vers
-  `~/.local/opt`), comme le SDK du micrologiciel : `construire.py --deps`.
+  `~/.local/opt`), comme le SDK du micrologiciel : `build.py --deps`.
 
 ---
 
@@ -370,9 +370,9 @@ un **MSI**, et `wixl` (msitools) sait le faire sous Linux : c'est désormais
 livré (voir `D-20`).
 
 **Fait :**
-- `packaging/` réorganisé : `commun.py` (ce qui ne dépend d'aucun système),
-  un générateur autonome par cible, `construire.py` réduit à un aiguillage,
-  `verifier.py`, et un `Makefile` (`make debian`, `make windows`, `make tout`).
+- `packaging/` réorganisé : `common.py` (ce qui ne dépend d'aucun système),
+  un générateur autonome par cible, `build.py` réduit à un aiguillage,
+  `verify.py`, et un `Makefile` (`make debian`, `make windows`, `make tout`).
 - `packaging/macos_pkg.py` — le format `.pkg` écrit de bout en bout : XAR,
   cpio « odc » et nomenclature BOM, en Python pur, avec relecture de tout ce
   qui est écrit (`D-19`).
@@ -428,7 +428,7 @@ commercial qui ne tourne que sur Windows. Ce qu'il *produit*, un **MSI**, est
 désormais livré (`D-20`).
 
 **Fait :**
-- `packaging/` : `commun.py`, un générateur par système, `verifier.py`,
+- `packaging/` : `common.py`, un générateur par système, `verify.py`,
   `signature.py`, `macos_pkg.py`, un `Makefile`, et `gabarits/` par système.
 - Huit paquets : `.deb`, `.rpm`, `.run`, `.exe`, `.msi`, deux `.zip`, `.pkg`,
   `.tar.gz`, tous signés, tous accompagnés de leur empreinte et de cinq
@@ -516,7 +516,7 @@ donc nulle part dans la Bibliothèque. C'est la dette de ce chantier.
   si un nom paraît. Sept endroits composaient cette ligne eux-mêmes (fenêtre
   « À propos », écran d'accueil, `--version`, SBOM, rapport d'environnement,
   readme des paquets, installateur `.run`) ; ils la demandent désormais.
-- `packaging/commun.py` : `Identite.titre` et `Identite.mention_nom`, plus le
+- `packaging/common.py` : `Identite.titre` et `Identite.mention_nom`, plus le
   jeton `@TITRE_VERSION@` pour les gabarits.
 - Le journal des versions, `CHANGELOG.md`, `packaging/README.md` et le titre de
   l'entrée du 2026-09-18 (nuit) ne le mentionnent plus.
@@ -674,7 +674,7 @@ par document et son `inject_includes()` se replie sur `commun/`.
 - **`AUTEURS` contient un numéro de téléphone personnel**
   (`telephone = +33 …`). Le dépôt est public, et ce fichier part dans chaque
   paquet. Le code lit ce champ avec un défaut vide
-  (`version.py:114`, `commun.py:290`) : le vider est sans conséquence
+  (`version.py:114`, `common.py:290`) : le vider est sans conséquence
   technique. **C'est une décision à prendre, elle n'a pas été prise ici.**
 - `.ecarte/` pèse 762 Mo (l'ancien venv, surtout). Supprimable sans
   conséquence ; laissé en place parce que rien ne devait être détruit.
@@ -726,7 +726,7 @@ en disant « installez python3 », et le lanceur macOS conseillait
 `brew install python` — précisément ce qu'il faut éviter.
 
 **Fait :**
-- `packaging/commun.py` : `_python_autonome()` récupère CPython **relogeable**
+- `packaging/common.py` : `_python_autonome()` récupère CPython **relogeable**
   (python-build-standalone, les binaires qu'utilise `uv`), pendant de
   `_python_embarquable()` pour Windows. Il se déplie dans n'importe quel
   dossier, sans root et sans toucher au système (`C-55`).
@@ -766,7 +766,7 @@ jette le résultat.
    refonte : démarrer une capture de trames levait `NameError`, dans les
    trois formats. Le mode mise au point était cassé, et **aucun test ne
    démarrait de capture**. Quatre tests l'ont fermé.
-2. **`packaging/construire_fedora.py:59`** — `echec` n'était pas importé : la
+2. **`packaging/build_fedora.py:59`** — `echec` n'était pas importé : la
    fabrique du `.rpm` plantait au lieu de diagnostiquer proprement, sur le
    chemin exact qu'emprunte qui n'a pas `rpmbuild`.
 
@@ -838,7 +838,7 @@ anglais.
 **Fait :**
 - `packaging/langues/installateur.json` — **51 libellés × 11 langues = 561
   traductions**, une seule source.
-- `packaging/langues.py` — deux sorties depuis cette source, parce que les
+- `packaging/languages.py` — deux sorties depuis cette source, parce que les
   deux installateurs ne parlent pas le même langage : des **variables shell**
   pour le `.run` (un `/bin/sh` n'a pas d'analyseur JSON, et en bricoler un à
   coups de `sed` casserait sur la première apostrophe), un bloc
@@ -902,7 +902,7 @@ toujours au micrologiciel et l'exemple du SDK se charge toujours.
 | `ruff --select E9,F821,F822,F823,F811` | *All checks passed* |
 | Couverture des traductions du logiciel | **11 langues à 100 %** (888 libellés) |
 | Catalogue des installateurs | 51 × 11 = **561 traductions**, champs préservés |
-| `packaging/langues.py --verifier` | toutes présentes et cohérentes |
+| `packaging/languages.py --verifier` | toutes présentes et cohérentes |
 | Fenêtre des mises à jour | 8 lignes, numpy 2.2.6 → 2.5.3 détecté et coché |
 | Fenêtre de langue au premier démarrage | 11 langues, chacune dans son écriture |
 | `.run --langue ja` | `[ok] 言語：日本語` — catalogue japonais chargé |
@@ -945,7 +945,7 @@ rangement du matin avait écarté. Personne ne savait donc laquelle était à
 jour.
 
 **Fait :**
-- `packaging/certificat.py` — point d'entrée unique. La cryptographie reste
+- `packaging/certificate.py` — point d'entrée unique. La cryptographie reste
   dans `signature.py` (aucune recopie) ; ce script s'occupe de ce qu'elle ne
   faisait pas : remplir `certificat/` — certificat public commenté, `.crt`,
   clé en 0600, et une notice **générée** qui porte l'empreinte.
@@ -1023,8 +1023,8 @@ sources et pointait encore sur `sources/firmware-phytosense/phytosense-fw/`.
 | `make test` | **317 passés, 0 ignoré** |
 | `ruff --select E9,F821,F822,F823,F811` | *All checks passed* |
 | `tools/sbom.py --verifier` | à jour, 15 composants |
-| `certificat.py --verifier` | les deux copies concordent |
-| `langues.py --verifier` | 561 traductions cohérentes |
+| `certificate.py --verifier` | les deux copies concordent |
+| `languages.py --verifier` | 561 traductions cohérentes |
 | `tools/entetes.py --verifier` | 267 fichiers |
 | `src/firmware/build.sh` | `phytosense.uf2` 80 ko, `.elf` 764 ko |
 | Cache CMake falsifié | détecté et jeté |

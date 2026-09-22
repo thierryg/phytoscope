@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #  ==========================================================================
-#  PhytoScope — attribution — packaging/construire_source.py
+#  PhytoScope — attribution — packaging/build_source.py
 #
 #  Version  : 1.5.1
 #  Date     : 2026-09-18
@@ -23,9 +23,9 @@ format de paquet, d'aucune version de système, et reste lisible dans dix ans.
 
 .. code-block:: console
 
-    python3 packaging/construire_source.py
+    python3 packaging/build_source.py
 
-Ce script est autonome : il ne dépend que de `commun.py`, et se lance seul ou
+Ce script est autonome : il ne dépend que de `common.py`, et se lance seul ou
 par le Makefile du même dossier (`make source`).
 """
 from __future__ import annotations
@@ -42,7 +42,7 @@ from typing import List, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from commun import (  # noqa: E402
+from common import (  # noqa: E402
     GRIS, LOGICIEL, RACINE_SORTIE, VERT, Identite, appliquer_les_arguments,
     arguments_communs, bien, copier_le_logiciel, dire, dossier_sortie,
     ecrire_les_documents, ecrire_les_empreintes, lisible,
@@ -73,7 +73,7 @@ def construire_source(id_: Identite) -> Optional[str]:
 
 def main(argv: Optional[List[str]] = None) -> int:
     p = argparse.ArgumentParser(
-        prog="construire_source.py",
+        prog="build_source.py",
         description="Fabrique l'archive source de PhytoScope.")
     arguments_communs(p)
     args = p.parse_args(argv)

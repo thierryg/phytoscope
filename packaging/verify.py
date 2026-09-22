@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #  ==========================================================================
-#  PhytoScope — attribution — packaging/verifier.py
+#  PhytoScope — attribution — packaging/verify.py
 #
 #  Version  : 1.5.1
 #  Date     : 2026-09-18
@@ -38,7 +38,7 @@ Le script le dit plutôt que de le laisser croire.
 
 .. code-block:: console
 
-    python3 packaging/verifier.py        ou    make verifier
+    python3 packaging/verify.py        ou    make verifier
 """
 from __future__ import annotations
 
@@ -52,7 +52,7 @@ from typing import Callable, Dict, List, Optional, Tuple
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import macos_pkg  # noqa: E402
-from commun import (  # noqa: E402
+from common import (  # noqa: E402
     GRIS, JAUNE, RACINE_SORTIE, ROUGE, VERT, Identite, bien, dire, echec,
     environnement_wixl, fabrications, lisible, souci, trouver_wixl)
 
@@ -183,7 +183,7 @@ VERIFICATEURS: List[Tuple[str, Callable]] = [
 def main(argv: Optional[List[str]] = None) -> int:
     import argparse
     p = argparse.ArgumentParser(
-        prog="verifier.py",
+        prog="verify.py",
         description="Rouvre les paquets produits et contrôle leur structure.")
     p.add_argument("dossier", nargs="?", default="",
                    help="la fabrication à vérifier ; par défaut, la plus "

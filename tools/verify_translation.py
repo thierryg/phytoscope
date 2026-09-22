@@ -42,6 +42,24 @@ for every tracked Python file, two fingerprints:
 Afterwards, `--compare` replays the two fingerprints. A file whose code shape
 moved is reported as an error, whatever its diff looks like.
 
+Renames, and why the baseline is re-recorded after each one
+-----------------------------------------------------------
+
+Renaming a module *does* change the code shape, and legitimately so:
+`import commun` becoming `import common` is a change to the tree, not to a
+comment. So a rename stage cannot be verified by this tool, and the baseline
+is re-recorded (`--baseline --force`) once the stage is done.
+
+That leaves a gap — a re-recorded baseline cannot detect a code edit made
+during the same stage — and it is closed by three other things, in this
+order:
+
+  1. the set of files this tool flags must be **exactly** the set of files
+     the stage touched. A file flagged without being touched is the alarm;
+  2. `cd src/phytoscope && make test`;
+  3. one real package built end to end (`cd packaging && make source`),
+     because imports that resolve are not the same as a chain that works.
+
 Renamed files
 -------------
 

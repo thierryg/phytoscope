@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #  ==========================================================================
-#  PhytoScope — attribution — packaging/construire.py
+#  PhytoScope — attribution — packaging/build.py
 #
 #  Version  : 1.5.1
 #  Date     : 2026-09-18
@@ -22,11 +22,11 @@ générateurs qui font le travail. Chaque système a le sien, autonome et
 lançable seul :
 
 ==========================  ===========================================
-`construire_debian.py`      `.deb` — Debian, Ubuntu, Mint
-`construire_fedora.py`      `.rpm` — Fedora, Red Hat, Rocky, AlmaLinux
-`construire_windows.py`     `.zip` portable, `.exe` (NSIS), `.msi` (wixl)
-`construire_macos.py`       `.zip` du paquet `.app`, `.pkg` (installateur)
-`construire_source.py`      `.tar.gz` — tous systèmes
+`build_debian.py`      `.deb` — Debian, Ubuntu, Mint
+`build_fedora.py`      `.rpm` — Fedora, Red Hat, Rocky, AlmaLinux
+`build_windows.py`     `.zip` portable, `.exe` (NSIS), `.msi` (wixl)
+`build_macos.py`       `.zip` du paquet `.app`, `.pkg` (installateur)
+`build_source.py`      `.tar.gz` — tous systèmes
 ==========================  ===========================================
 
 Le `Makefile` du même dossier fait la même chose, en plus court :
@@ -62,10 +62,10 @@ Utilisation
 
 .. code-block:: console
 
-    python3 packaging/construire.py --outils      # ce qui manque, et comment
-    python3 packaging/construire.py --deps        # installe NSIS et msitools
-    python3 packaging/construire.py --tout        # les cinq cibles
-    python3 packaging/construire.py --windows     # une seule
+    python3 packaging/build.py --outils      # ce qui manque, et comment
+    python3 packaging/build.py --deps        # installe NSIS et msitools
+    python3 packaging/build.py --tout        # les cinq cibles
+    python3 packaging/build.py --windows     # une seule
 """
 from __future__ import annotations
 
@@ -77,7 +77,7 @@ from typing import Callable, List, Optional, Tuple
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from commun import (  # noqa: E402
+from common import (  # noqa: E402
     GRIS, RACINE_SORTIE, ROUGE, VERT, VARIABLE_SORTIE, Identite,
     appliquer_les_arguments, arguments_communs, dire, dossier_fabrication,
     echec, ecrire_les_documents, ecrire_les_empreintes, etat_des_outils,
@@ -86,7 +86,7 @@ from commun import (  # noqa: E402
 
 def main(argv: Optional[List[str]] = None) -> int:
     p = argparse.ArgumentParser(
-        prog="construire.py",
+        prog="build.py",
         description="Fabrique les paquets d'installation de PhytoScope, "
                     "depuis Debian, Ubuntu ou Mint.",
         formatter_class=argparse.RawDescriptionHelpFormatter,

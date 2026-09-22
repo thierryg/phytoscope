@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #  ==========================================================================
-#  PhytoScope — attribution — packaging/construire_fedora.py
+#  PhytoScope — attribution — packaging/build_fedora.py
 #
 #  Version  : 1.5.1
 #  Date     : 2026-09-18
@@ -26,9 +26,9 @@ Le paquet est construit par `rpmbuild`, que Debian empaquette sous le nom
 
 .. code-block:: console
 
-    python3 packaging/construire_fedora.py [--hors-ligne]
+    python3 packaging/build_fedora.py [--hors-ligne]
 
-Ce script est autonome : il ne dépend que de `commun.py`, et se lance seul ou
+Ce script est autonome : il ne dépend que de `common.py`, et se lance seul ou
 par le Makefile du même dossier (`make fedora`).
 """
 from __future__ import annotations
@@ -45,7 +45,7 @@ from typing import List, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from commun import (  # noqa: E402
+from common import (  # noqa: E402
     GABARITS, GRIS, LOGICIEL, PYTHONS_COUVERTS, RACINE_SORTIE, VERT, Identite,
     appliquer_les_arguments, arguments_communs, bien, copier_le_logiciel,
     dire, dossier_sortie, ecrire, ecrire_les_documents, ecrire_les_empreintes,
@@ -127,7 +127,7 @@ def construire_rpm(id_: Identite, embarquer: bool) -> Optional[str]:
 
 def main(argv: Optional[List[str]] = None) -> int:
     p = argparse.ArgumentParser(
-        prog="construire_fedora.py",
+        prog="build_fedora.py",
         description="Fabrique le paquet RPM de PhytoScope.")
     arguments_communs(p)
     p.add_argument("--hors-ligne", action="store_true",

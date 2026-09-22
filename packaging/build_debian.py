@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #  ==========================================================================
-#  PhytoScope — attribution — packaging/construire_debian.py
+#  PhytoScope — attribution — packaging/build_debian.py
 #
 #  Version  : 1.5.1
 #  Date     : 2026-09-18
@@ -28,9 +28,9 @@ pour un atelier sans réseau).
 
 .. code-block:: console
 
-    python3 packaging/construire_debian.py [--hors-ligne]
+    python3 packaging/build_debian.py [--hors-ligne]
 
-Ce script est autonome : il ne dépend que de `commun.py`, et se lance seul ou
+Ce script est autonome : il ne dépend que de `common.py`, et se lance seul ou
 par le Makefile du même dossier (`make debian`).
 """
 from __future__ import annotations
@@ -48,7 +48,7 @@ from typing import List, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from commun import (  # noqa: E402
+from common import (  # noqa: E402
     GABARITS, GRIS, JAUNE, LOGICIEL, echec, PYTHONS_COUVERTS, RACINE_SORTIE, VERT, Identite,
     appliquer_les_arguments, arguments_communs, bien, copier_le_logiciel,
     dire, dossier_sortie, ecrire, ecrire_les_documents, ecrire_les_empreintes,
@@ -166,13 +166,13 @@ def construire_run(id_: Identite, embarquer: bool = False) -> Optional[str]:
         if not _python_autonome(os.path.join(contenu, "python"), "linux"):
             souci("l'installateur exigera un Python déjà présent")
 
-        #  Les libellés de l'installateur, dans les onze langues. Ils sont
+        #  Les libellés de l'installateur, dans les onze languages. Ils sont
         #  extraits AVANT la décompression complète (`extraire_un langues`),
         #  parce que la langue est la première question posée — avant la
         #  licence, qui sera lue dans la langue choisie.
         etape("libellés de l'installateur (11 langues)")
-        import langues as _langues
-        _fichiers = _langues.ecrire_shell(os.path.join(contenu, "langues"))
+        import languages as _langues
+        _fichiers = _langues.ecrire_shell(os.path.join(contenu, "languages"))
         dire(f"      {len(_fichiers)} catalogues", GRIS)
 
         if embarquer:
@@ -234,7 +234,7 @@ def construire_run(id_: Identite, embarquer: bool = False) -> Optional[str]:
 
 def main(argv: Optional[List[str]] = None) -> int:
     p = argparse.ArgumentParser(
-        prog="construire_debian.py",
+        prog="build_debian.py",
         description="Fabrique le paquet Debian de PhytoScope.")
     arguments_communs(p)
     p.add_argument("--hors-ligne", action="store_true",

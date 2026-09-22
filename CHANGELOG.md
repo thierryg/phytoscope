@@ -221,7 +221,7 @@ documents, vérifiées après reconstruction (`C-64`).
   Avec `--hors-ligne`, ils embarquent les bibliothèques pour Python 3.9 à 3.13
   et s'installent sans réseau — ce qu'il faut pour un atelier ou une salle de
   classe.
-- **`construire.py --deps` installe NSIS sans `sudo`**, dans `~/.local/opt`,
+- **`build.py --deps` installe NSIS sans `sudo`**, dans `~/.local/opt`,
   comme `build.sh --deps` le fait pour le SDK du micrologiciel.
 - Empreintes SHA-256 de chaque paquet, vérifiables par `sha256sum -c`.
 

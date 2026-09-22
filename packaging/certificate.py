@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #  ==========================================================================
-#  PhytoScope — attribution — packaging/certificat.py
+#  PhytoScope — attribution — packaging/certificate.py
 #
 #  Version  : 1.5.1
 #  Date     : 2026-09-18
@@ -50,11 +50,11 @@ confirmation.
 deux emplacements ci-dessus.
 
 Usage :
-    python3 packaging/certificat.py                 l'état, sans rien changer
-    python3 packaging/certificat.py --creer         créer s'il n'existe pas
-    python3 packaging/certificat.py --deposer       remplir certificat/
-    python3 packaging/certificat.py --refaire       REMPLACER (rompt le lien)
-    python3 packaging/certificat.py --verifier      cohérence des deux copies
+    python3 packaging/certificate.py                 l'état, sans rien changer
+    python3 packaging/certificate.py --creer         créer s'il n'existe pas
+    python3 packaging/certificate.py --deposer       remplir certificat/
+    python3 packaging/certificate.py --refaire       REMPLACER (rompt le lien)
+    python3 packaging/certificate.py --verifier      cohérence des deux copies
 
 Ou par le Makefile :
     make certificat        crée s'il n'existe pas, puis remplit certificat/
@@ -73,7 +73,7 @@ from typing import List, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from commun import (GRIS, JAUNE, RACINE, ROUGE, VERT, Identite,  # noqa: E402
+from common import (GRIS, JAUNE, RACINE, ROUGE, VERT, Identite,  # noqa: E402
                     bien, dire, echec, ecrire, etape, souci)
 import signature  # noqa: E402
 
@@ -117,7 +117,7 @@ def etat() -> bool:
     else:
         dire("")
         souci("aucun certificat : les paquets ne pourront pas être signés")
-        dire("      python3 packaging/certificat.py --creer", GRIS)
+        dire("      python3 packaging/certificate.py --creer", GRIS)
 
     complet = reference and all(os.path.exists(f) for f in (PUBLIC, CRT))
     dire("")
@@ -172,7 +172,7 @@ def deposer(id_: Optional[Identite] = None) -> bool:
     """
     if not signature.certificat_existe():
         echec("aucune copie de référence — rien à déposer")
-        dire("      python3 packaging/certificat.py --creer", GRIS)
+        dire("      python3 packaging/certificate.py --creer", GRIS)
         return False
 
     id_ = id_ or Identite.lire()
@@ -215,7 +215,7 @@ Ce dossier porte la **copie de travail** du certificat qui signe les paquets
 de PhytoScope. La copie de référence, elle, vit dans
 `~/.local/share/phytoscope-signature/` et n'entre jamais dans le dépôt.
 
-> **FICHIER GÉNÉRÉ** par `packaging/certificat.py`. Le modifier à la main
+> **FICHIER GÉNÉRÉ** par `packaging/certificate.py`. Le modifier à la main
 > serait perdu à la prochaine exécution (`C-45`).
 
 ## Ce qu'il y a ici
@@ -257,10 +257,10 @@ Trois filets parce qu'une clé publiée ne se dépublie pas.
 ## Recréer, déposer, vérifier
 
 ```bash
-python3 packaging/certificat.py              # l'état, sans rien changer
-python3 packaging/certificat.py --creer      # créer s'il n'existe pas
-python3 packaging/certificat.py --deposer    # re-remplir ce dossier
-python3 packaging/certificat.py --verifier   # les deux copies concordent ?
+python3 packaging/certificate.py              # l'état, sans rien changer
+python3 packaging/certificate.py --creer      # créer s'il n'existe pas
+python3 packaging/certificate.py --deposer    # re-remplir ce dossier
+python3 packaging/certificate.py --verifier   # les deux copies concordent ?
 ```
 
 **Ne refaites pas le certificat sans raison.** `--refaire` remplace la clé, et
@@ -409,7 +409,7 @@ def proposer_si_absent(sans_question: bool = False) -> bool:
     if sans_question or not sys.stdin.isatty():
         dire("      Pour en créer un :", GRIS)
         dire("          make certificat", GRIS)
-        dire("      ou  python3 packaging/certificat.py --creer", GRIS)
+        dire("      ou  python3 packaging/certificate.py --creer", GRIS)
         dire("")
         return False
 
@@ -433,7 +433,7 @@ def proposer_si_absent(sans_question: bool = False) -> bool:
 # ---------------------------------------------------------------------------
 def main(argv: Optional[List[str]] = None) -> int:
     p = argparse.ArgumentParser(
-        prog="certificat.py",
+        prog="certificate.py",
         description="Crée, recrée et dépose le certificat de signature.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="Sans option : affiche l'état, sans rien changer.")

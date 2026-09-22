@@ -69,7 +69,7 @@ mais un usage — et peut être discuté.
 | **C-2E** | Une **dépendance facultative qui échoue n'empêche pas l'installation du reste** : elle vit dans `requirements-optionnel.txt`, installé séparément. |
 | **C-2F** | Un **nom de fichier est translittéré en ASCII** avant d'atteindre le disque : APFS normalise en NFD, Windows réserve `CON`, `NUL`, `COM1`… et supprime les points finaux. Le nom lisible reste en Unicode dans les métadonnées. |
 | **C-2G** | Le logiciel **ouvre l'entrée audio au débit que le périphérique accepte** et décime en logiciel : CoreAudio et WASAPI refusent 250 Hz. Le rééchantillonnage ne perd aucun échantillon. |
-| **C-2H** | Les **paquets d'installation se fabriquent depuis Debian/Ubuntu/Mint**, d'une seule commande (`packaging/construire.py`), pour les cinq cibles. Aucune machine Windows ni Mac n'est nécessaire. |
+| **C-2H** | Les **paquets d'installation se fabriquent depuis Debian/Ubuntu/Mint**, d'une seule commande (`packaging/build.py`), pour les cinq cibles. Aucune machine Windows ni Mac n'est nécessaire. |
 | **C-2I** | **L'installateur Windows n'exige rien de la machine cible**, Python compris. Les paquets Linux n'exigent que ce que la distribution fournit d'office. |
 | **C-2J** | Aucun paquet n'est signé, et **chacun le dit** : le `LISEZ-MOI` explique l'avertissement du système et comment passer outre. On n'entretient pas l'illusion d'une garantie qu'on ne donne pas. |
 | **C-2K** | Une désinstallation **ne touche jamais aux réglages ni aux séances** de l'utilisateur. Elle retire ce que l'installation a posé, rien de plus. |

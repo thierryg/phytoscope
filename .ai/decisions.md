@@ -164,7 +164,7 @@ même endroit, et un essai interdit qu'une police soit nommée ailleurs (`C-2C`)
 **Contexte :** livrer un logiciel Python à des utilisateurs qui n'ont ni
 Python ni terminal.
 
-**Décision :** un script unique, `packaging/construire.py`, lancé depuis
+**Décision :** un script unique, `packaging/build.py`, lancé depuis
 Debian/Ubuntu/Mint, produit les cinq cibles. Trois mécanismes le permettent :
 `pip download --platform` récupère les roues d'un autre système ; Python publie
 pour Windows une **distribution embarquable** qu'on place dans le paquet ; et
@@ -226,8 +226,8 @@ laisserait derrière elle (`C-2L`).
 devenait difficile à lire, et une erreur dans la partie Windows empêchait de
 travailler sur la partie Debian.
 
-**Décision :** `commun.py` porte ce qui ne dépend d'aucun système ; chaque
-cible a son script, autonome et lançable seul ; `construire.py` n'est plus
+**Décision :** `common.py` porte ce qui ne dépend d'aucun système ; chaque
+cible a son script, autonome et lançable seul ; `build.py` n'est plus
 qu'un aiguillage, et un `Makefile` offre `make debian`, `make windows`,
 `make tout`.
 

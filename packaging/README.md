@@ -152,18 +152,18 @@ d'une sauvegarde ni d'une archive du dossier. Voir `certificat/LISEZ-MOI.md`.
 ```
 packaging/
   Makefile                 enchaîne les cibles — « make tout », « make macos »
-  construire.py            aiguillage : appelle les générateurs dans l'ordre
-  commun.py                ce qui ne dépend d'aucun système
-  verifier.py              rouvre les paquets produits et les contrôle
+  build.py            aiguillage : appelle les générateurs dans l'ordre
+  common.py                ce qui ne dépend d'aucun système
+  verify.py              rouvre les paquets produits et les contrôle
   macos_pkg.py             le format .pkg, écrit de bout en bout
 
   signature.py             certificat X.509, signatures CMS et Authenticode
 
-  construire_debian.py     .deb et l'installateur autonome .run
-  construire_fedora.py     .rpm
-  construire_windows.py    .zip portable, .exe (NSIS), .msi (wixl)
-  construire_macos.py      .zip du .app, .pkg
-  construire_source.py     .tar.gz
+  build_debian.py     .deb et l'installateur autonome .run
+  build_fedora.py     .rpm
+  build_windows.py    .zip portable, .exe (NSIS), .msi (wixl)
+  build_macos.py      .zip du .app, .pkg
+  build_source.py     .tar.gz
 
   gabarits/
     debian/    control, postinst, prerm, lanceur, .desktop
@@ -174,7 +174,7 @@ packaging/
 ```
 
 Chaque générateur est **autonome** : il se lance seul (`python3
-packaging/construire_windows.py --msi`) et ne dépend que de `commun.py`. Une
+packaging/build_windows.py --msi`) et ne dépend que de `common.py`. Une
 panne sur l'un n'emporte pas les autres.
 
 ---
@@ -327,9 +327,9 @@ demande d'oubli.
 Chaque générateur accepte en outre ses propres options :
 
 ```bash
-python3 construire_windows.py --msi         # seulement le MSI
-python3 construire_macos.py   --pkg         # seulement l'installateur
-python3 construire_debian.py  --hors-ligne  # avec les bibliothèques
+python3 build_windows.py --msi         # seulement le MSI
+python3 build_macos.py   --pkg         # seulement l'installateur
+python3 build_debian.py  --hors-ligne  # avec les bibliothèques
 ```
 
 ---

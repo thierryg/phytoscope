@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #  ==========================================================================
-#  PhytoScope — attribution — packaging/langues.py
+#  PhytoScope — attribution — packaging/languages.py
 #
 #  Version  : 1.5.1
 #  Date     : 2026-09-18
@@ -42,9 +42,9 @@ que PhytoScope lit à chaque démarrage. L'installateur et le logiciel parlent
 donc la même langue sans se concerter.
 
 Usage :
-    python3 packaging/langues.py --shell <dossier>   fichiers .sh par langue
-    python3 packaging/langues.py --nsis              bloc LangString
-    python3 packaging/langues.py --verifier          contrôle le catalogue
+    python3 packaging/languages.py --shell <dossier>   fichiers .sh par langue
+    python3 packaging/languages.py --nsis              bloc LangString
+    python3 packaging/languages.py --verifier          contrôle le catalogue
 """
 from __future__ import annotations
 
@@ -148,7 +148,7 @@ def ecrire_shell(dossier: str) -> List[str]:
             "#  Libellés de l'installateur PhytoScope — "
             f"{langue['nom']} ({code}).",
             "#",
-            "#  FICHIER GÉNÉRÉ par packaging/langues.py — ne pas éditer à la",
+            "#  FICHIER GÉNÉRÉ par packaging/languages.py — ne pas éditer à la",
             "#  main (C-45). La source est packaging/langues/installateur.json.",
             f"T_LANGUE_CODE=\"{code}\"",
             f"T_LANGUE_NOM=\"{_echapper_shell(langue['nom'])}\"",
@@ -169,7 +169,7 @@ def ecrire_shell(dossier: str) -> List[str]:
     #  charger un catalogue.
     index = os.path.join(dossier, "index.sh")
     with open(index, "w", encoding="utf-8", newline="\n") as f:
-        f.write("#  FICHIER GÉNÉRÉ par packaging/langues.py — ne pas éditer.\n")
+        f.write("#  FICHIER GÉNÉRÉ par packaging/languages.py — ne pas éditer.\n")
         f.write("#  Les langues offertes, dans l'ordre d'affichage.\n")
         f.write("LANGUES_CODES=\"" + " ".join(l["code"] for l in langues) + "\"\n")
         for l in langues:
@@ -184,7 +184,7 @@ def bloc_nsis() -> str:
     lignes = [
         ";  Libellés de l'installateur, en onze langues.",
         ";",
-        ";  BLOC GÉNÉRÉ par packaging/langues.py — ne pas éditer à la main",
+        ";  BLOC GÉNÉRÉ par packaging/languages.py — ne pas éditer à la main",
         ";  (C-45). La source est packaging/langues/installateur.json.",
         ";",
         ";  NSIS affiche lui-même le choix de la langue au démarrage, par",

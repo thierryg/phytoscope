@@ -4,7 +4,7 @@ Ce dossier porte la **copie de travail** du certificat qui signe les paquets
 de PhytoScope. La copie de référence, elle, vit dans
 `~/.local/share/phytoscope-signature/` et n'entre jamais dans le dépôt.
 
-> **FICHIER GÉNÉRÉ** par `packaging/certificat.py`. Le modifier à la main
+> **FICHIER GÉNÉRÉ** par `packaging/certificate.py`. Le modifier à la main
 > serait perdu à la prochaine exécution (`C-45`).
 
 ## Ce qu'il y a ici
@@ -46,10 +46,10 @@ Trois filets parce qu'une clé publiée ne se dépublie pas.
 ## Recréer, déposer, vérifier
 
 ```bash
-python3 packaging/certificat.py              # l'état, sans rien changer
-python3 packaging/certificat.py --creer      # créer s'il n'existe pas
-python3 packaging/certificat.py --deposer    # re-remplir ce dossier
-python3 packaging/certificat.py --verifier   # les deux copies concordent ?
+python3 packaging/certificate.py              # l'état, sans rien changer
+python3 packaging/certificate.py --creer      # créer s'il n'existe pas
+python3 packaging/certificate.py --deposer    # re-remplir ce dossier
+python3 packaging/certificate.py --verifier   # les deux copies concordent ?
 ```
 
 **Ne refaites pas le certificat sans raison.** `--refaire` remplace la clé, et

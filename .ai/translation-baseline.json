@@ -1,39 +1,39 @@
 {
   "files": {
-    "packaging/certificat.py": {
-      "literals": "e08f3ab30db04db9",
-      "shape": "8fc9fc87d3ad770c"
+    "packaging/build.py": {
+      "literals": "51dc5fc3c86b95b3",
+      "shape": "dc217ff51fc7f5be"
     },
-    "packaging/commun.py": {
-      "literals": "43c416d53a782c35",
+    "packaging/build_debian.py": {
+      "literals": "33d833221e803b76",
+      "shape": "2e25eaa22950af0f"
+    },
+    "packaging/build_fedora.py": {
+      "literals": "567fdb94e80e7e06",
+      "shape": "ec7737ddc59a8dcd"
+    },
+    "packaging/build_macos.py": {
+      "literals": "2f75c91382110a14",
+      "shape": "461d6be50d9558f1"
+    },
+    "packaging/build_source.py": {
+      "literals": "2aa83a79f5c6716e",
+      "shape": "706bf60ebea613cd"
+    },
+    "packaging/build_windows.py": {
+      "literals": "e22fb80273203361",
+      "shape": "267fc543918b4ad1"
+    },
+    "packaging/certificate.py": {
+      "literals": "18906e84d3738798",
+      "shape": "fa4410c772649baf"
+    },
+    "packaging/common.py": {
+      "literals": "9b7d408fbacb3716",
       "shape": "e2eb668a0eb2b71f"
     },
-    "packaging/construire.py": {
-      "literals": "cc4f2310ed498336",
-      "shape": "35d504730fcce92c"
-    },
-    "packaging/construire_debian.py": {
-      "literals": "4688b0d561a7f18e",
-      "shape": "128dadd035ce6c98"
-    },
-    "packaging/construire_fedora.py": {
-      "literals": "3bfcf69df8cf3818",
-      "shape": "01d5b0b6cf43c339"
-    },
-    "packaging/construire_macos.py": {
-      "literals": "ece98d371df915ad",
-      "shape": "994de7cd97b1ddd3"
-    },
-    "packaging/construire_source.py": {
-      "literals": "b92de355dd6e0661",
-      "shape": "2b1895d80b59031b"
-    },
-    "packaging/construire_windows.py": {
-      "literals": "510319f90eb4776a",
-      "shape": "70da9bd41993f711"
-    },
-    "packaging/langues.py": {
-      "literals": "7572212c5caae5ff",
+    "packaging/languages.py": {
+      "literals": "bd14462ce337e5f0",
       "shape": "7176dbb5f1652bbb"
     },
     "packaging/macos_pkg.py": {
@@ -41,12 +41,12 @@
       "shape": "285a853cf2c2d233"
     },
     "packaging/signature.py": {
-      "literals": "a544ea37c5e7a9b1",
-      "shape": "daa2cca04faf2c94"
+      "literals": "2fda9e9858330d8e",
+      "shape": "05b7061c0f6bb688"
     },
-    "packaging/verifier.py": {
-      "literals": "8b260b1ee7449dbe",
-      "shape": "3a558658f11078ad"
+    "packaging/verify.py": {
+      "literals": "35285e202257a03b",
+      "shape": "1ca53196719b0385"
     },
     "pdf-src/assets/svg/gen.py": {
       "literals": "b1a6f364684bea3f",
@@ -413,7 +413,7 @@
       "shape": "747a5755f29e5447"
     },
     "src/phytoscope/tests/test_portabilite.py": {
-      "literals": "90c5818443dc09c4",
+      "literals": "a82a486b1fdbc1ea",
       "shape": "cf55df3cb2298ae9"
     },
     "src/phytoscope/tests/test_samples.py": {
@@ -511,6 +511,10 @@
     "tools/verifier_svg.py": {
       "literals": "5d05282f87121fac",
       "shape": "fc293cf4b2803926"
+    },
+    "tools/verify_translation.py": {
+      "literals": "25377584d03a303e",
+      "shape": "1bea6a8b201a4f0a"
     }
   }
 }

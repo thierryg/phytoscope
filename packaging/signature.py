@@ -80,7 +80,7 @@ from typing import Dict, List, Optional, Tuple
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from commun import (  # noqa: E402
+from common import (  # noqa: E402
     GRIS, JAUNE, ROUGE, VERT, Identite, bien, dire, dossier_fabrication,
     echec, ecrire, etape, executer, lisible, souci, tous_les_paquets)
 
@@ -105,10 +105,10 @@ OSSLSIGNCODE_MAISON = os.path.expanduser("~/.local/opt/osslsigncode")
 #  Dans `certificat/`, et non plus à la racine : le rangement du 2026-09-18 a
 #  donné un dossier à tout ce qui touche au certificat, et en laisser une
 #  copie à la racine en faisait un doublon que personne ne savait à jour.
-#  C'est `packaging/certificat.py` qui remplit ce dossier.
-from commun import RACINE as _RACINE                      # noqa: E402
+#  C'est `packaging/certificate.py` qui remplit ce dossier.
+from common import RACINE as _RACINE                      # noqa: E402
 CERTIFICAT_PROJET = os.path.join(_RACINE, "certificat",
-                                 "phytoscope-certificat.pem")
+                                 "phytoscope-certificate.pem")
 
 
 # ---------------------------------------------------------------------------
@@ -136,7 +136,7 @@ def environnement_ossl() -> Dict[str, str]:
 
 def installer_osslsigncode() -> bool:
     """Déplie osslsigncode dans le dossier personnel, sans privilèges."""
-    from commun import installer_paquets_debian
+    from common import installer_paquets_debian
     return installer_paquets_debian(
         "osslsigncode", OSSLSIGNCODE_MAISON,
         ("osslsigncode", "libcurl4"), trouver_osslsigncode)
@@ -233,7 +233,7 @@ nsComment = "PhytoScope — certificat auto-signe, voir AUTHENTICITE.txt"
 def deposer_dans_le_projet(id_: Optional[Identite] = None) -> str:
     """Recopie le certificat PUBLIC à la racine du projet.
 
-    Seulement le certificat. La clé privée reste dans ~/.local/share, et le
+    Seulement le certificate. La clé privée reste dans ~/.local/share, et le
     fichier déposé ici porte en clair, dans son en-tête, l'empreinte à
     comparer — pour qu'on puisse l'annoncer sans avoir à la recalculer.
     """
@@ -257,7 +257,7 @@ def deposer_dans_le_projet(id_: Optional[Identite] = None) -> str:
         f"#\n"
         f"# Vérifier un paquet :\n"
         f"#     openssl cms -verify -binary -inform DER -in <paquet>.p7s \\\n"
-        f"#         -content <paquet> -certfile phytoscope-certificat.pem \\\n"
+        f"#         -content <paquet> -certfile phytoscope-certificate.pem \\\n"
         f"#         -noverify -out /dev/null\n"
         f"#\n"
         f"# Ce certificat est AUTO-SIGNÉ : il prouve l'intégrité et la\n"
@@ -392,14 +392,14 @@ def signer_tout(id_: Optional[Identite] = None) -> Tuple[int, int]:
     #  Le certificat public voyage avec les paquets : sans lui, la signature
     #  n'est vérifiable par personne. Et dans CHAQUE dossier de système, car
     #  un dossier recopié seul sur un serveur doit rester vérifiable seul.
-    from commun import SYSTEMES
+    from common import SYSTEMES
     base = dossier_fabrication(id_)
     texte = _authenticite(id_)
     dossiers = [base] + [os.path.join(base, sys_) for sys_ in SYSTEMES
                          if os.path.isdir(os.path.join(base, sys_))]
     for dossier in dossiers:
         shutil.copy2(CERTIFICAT,
-                     os.path.join(dossier, "phytoscope-certificat.pem"))
+                     os.path.join(dossier, "phytoscope-certificate.pem"))
         ecrire(os.path.join(dossier, "AUTHENTICITE.txt"), texte)
     return (signes, rates)
 
@@ -411,7 +411,7 @@ def verifier_tout(id_: Optional[Identite] = None) -> Tuple[int, int]:
     """Recontrôle chaque signature — on ne publie pas ce qu'on n'a pas relu."""
     id_ = id_ or Identite.lire()
     base = dossier_fabrication(id_)
-    cert = os.path.join(base, "phytoscope-certificat.pem")
+    cert = os.path.join(base, "phytoscope-certificate.pem")
     if not os.path.exists(cert):
         souci("aucun certificat dans cette fabrication — rien à vérifier")
         return (0, 0)
@@ -449,7 +449,7 @@ def _authenticite(id_: Identite) -> str:
              {id_.telephone}
 
   Tous les paquets de ce dossier sont signés avec le certificat
-  « phytoscope-certificat.pem », livré ici même.
+  « phytoscope-certificate.pem », livré ici même.
 
   Empreinte SHA-256 du certificat :
       {empreinte_certificat() or '(indisponible)'}
@@ -461,7 +461,7 @@ CE QUE LA SIGNATURE PROUVE
 {'-' * 74}
 
   Que le fichier n'a pas changé depuis qu'il a été signé, et qu'il l'a été par
-  la clé correspondant à ce certificat. Deux téléchargements faits à six mois
+  la clé correspondant à ce certificate. Deux téléchargements faits à six mois
   d'intervalle viennent donc bien de la même personne, et personne n'a modifié
   l'archive en route.
 
@@ -490,7 +490,7 @@ VÉRIFIER UNE SIGNATURE
 
       openssl cms -verify -binary -inform DER \\
           -in <paquet>.p7s -content <paquet> \\
-          -certfile phytoscope-certificat.pem -noverify -out /dev/null
+          -certfile phytoscope-certificate.pem -noverify -out /dev/null
 
   « Verification successful » signifie que le fichier est intact et signé par
   cette clé. L'option -noverify écarte la chaîne de confiance, qu'un
@@ -504,7 +504,7 @@ VÉRIFIER UNE SIGNATURE
 
   Voir aussi le certificat lui-même :
 
-      openssl x509 -in phytoscope-certificat.pem -noout -text
+      openssl x509 -in phytoscope-certificate.pem -noout -text
 
 
   {id_.attribution} — licence {id_.licence}
@@ -537,7 +537,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     p.add_argument("--sortie", default="", help=argparse.SUPPRESS)
     args = p.parse_args(argv)
 
-    from commun import VARIABLE_SORTIE, derniere_fabrication
+    from common import VARIABLE_SORTIE, derniere_fabrication
     if args.sortie:
         os.environ[VARIABLE_SORTIE] = os.path.abspath(args.sortie)
     elif not os.environ.get(VARIABLE_SORTIE):
@@ -578,7 +578,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         #  surprise qu'on ne veut pas : sur une machine d'intégration
         #  continue, ce serait une clé éphémère qu'on croirait permanente,
         #  et les paquets porteraient une signature invérifiable ailleurs.
-        import certificat as _certificat
+        import certificate as _certificat
         if not _certificat.proposer_si_absent():
             echec("rien n'a été signé — aucun certificat")
             return 1

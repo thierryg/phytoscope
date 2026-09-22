@@ -124,26 +124,26 @@ version:
 	@echo "$(VERSION)"
 
 outils:
-	@$(PY) "$(ICI)construire.py" --outils
+	@$(PY) "$(ICI)build.py" --outils
 
 deps:
-	@$(PY) "$(ICI)construire.py" --deps
+	@$(PY) "$(ICI)build.py" --deps
 
 # --- une cible par système -------------------------------------------------
 debian:
-	@$(PY) "$(ICI)construire_debian.py" $(IDENT)
+	@$(PY) "$(ICI)build_debian.py" $(IDENT)
 
 fedora:
-	@$(PY) "$(ICI)construire_fedora.py" $(IDENT)
+	@$(PY) "$(ICI)build_fedora.py" $(IDENT)
 
 windows:
-	@$(PY) "$(ICI)construire_windows.py" $(IDENT)
+	@$(PY) "$(ICI)build_windows.py" $(IDENT)
 
 macos:
-	@$(PY) "$(ICI)construire_macos.py" $(IDENT)
+	@$(PY) "$(ICI)build_macos.py" $(IDENT)
 
 source:
-	@$(PY) "$(ICI)construire_source.py" $(IDENT)
+	@$(PY) "$(ICI)build_source.py" $(IDENT)
 
 # --- micrologiciel ---------------------------------------------------------
 #  Volontairement HORS de « tout » : compiler le micrologiciel demande une
@@ -173,33 +173,33 @@ linux: debian fedora
 tout: source linux macos windows certificat signer documents
 	@echo
 	@echo "  Fabrication terminée : $(SORTIE)"
-	@$(PY) "$(ICI)verifier.py" "$(SORTIE)" | tail -n 20
+	@$(PY) "$(ICI)verify.py" "$(SORTIE)" | tail -n 20
 	@echo
 
 hors-ligne:
-	@$(PY) "$(ICI)construire_debian.py" $(IDENT) --hors-ligne
-	@$(PY) "$(ICI)construire_fedora.py" $(IDENT) --hors-ligne
-	@$(PY) "$(ICI)construire_macos.py"  $(IDENT) --hors-ligne
-	@$(PY) "$(ICI)construire_windows.py" $(IDENT)
+	@$(PY) "$(ICI)build_debian.py" $(IDENT) --hors-ligne
+	@$(PY) "$(ICI)build_fedora.py" $(IDENT) --hors-ligne
+	@$(PY) "$(ICI)build_macos.py"  $(IDENT) --hors-ligne
+	@$(PY) "$(ICI)build_windows.py" $(IDENT)
 
 # --- signature -------------------------------------------------------------
 #  Le certificat est AUTO-SIGNÉ : il prouve l'intégrité et la continuité
 #  d'origine, il ne fait taire ni SmartScreen ni Gatekeeper. Voir signature.py.
-#  Le certificat de signature. `certificat.py` est le point d'entrée : il
+#  Le certificat de signature. `certificate.py` est le point d'entrée : il
 #  appelle `signature.py` pour la cryptographie, et remplit `certificat/`.
 certificat:
-	@$(PY) "$(ICI)certificat.py" --creer
+	@$(PY) "$(ICI)certificate.py" --creer
 
 certificat-etat:
-	@$(PY) "$(ICI)certificat.py"
+	@$(PY) "$(ICI)certificate.py"
 
 certificat-verifier:
-	@$(PY) "$(ICI)certificat.py" --verifier
+	@$(PY) "$(ICI)certificate.py" --verifier
 
 #  REMPLACE la clé : rompt le lien avec tout ce qui a déjà été signé.
 #  Demande une confirmation explicite, et refuse sans terminal.
 certificat-refait:
-	@$(PY) "$(ICI)certificat.py" --refaire
+	@$(PY) "$(ICI)certificate.py" --refaire
 
 signer:
 	@$(PY) "$(ICI)signature.py" --signer --sortie "$(SORTIE)"
@@ -217,7 +217,7 @@ documents:
 		print(f'  {n} documents et les empreintes écrits')"
 
 verifier:
-	@$(PY) "$(ICI)verifier.py" $(if $(wildcard $(SORTIE)),"$(SORTIE)",)
+	@$(PY) "$(ICI)verify.py" $(if $(wildcard $(SORTIE)),"$(SORTIE)",)
 	@$(PY) "$(ICI)signature.py" --verifier --sortie "$(SORTIE)" 2>/dev/null || true
 
 empreintes:

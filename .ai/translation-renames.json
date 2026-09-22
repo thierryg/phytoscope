@@ -1,0 +1,12 @@
+{
+  "packaging/certificat.py": "packaging/certificate.py",
+  "packaging/commun.py": "packaging/common.py",
+  "packaging/construire.py": "packaging/build.py",
+  "packaging/construire_debian.py": "packaging/build_debian.py",
+  "packaging/construire_fedora.py": "packaging/build_fedora.py",
+  "packaging/construire_macos.py": "packaging/build_macos.py",
+  "packaging/construire_source.py": "packaging/build_source.py",
+  "packaging/construire_windows.py": "packaging/build_windows.py",
+  "packaging/langues.py": "packaging/languages.py",
+  "packaging/verifier.py": "packaging/verify.py"
+}

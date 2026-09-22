@@ -148,7 +148,7 @@ make certificat-refait
 Cela **remplace la clé** et **rompt le lien** avec tout ce qui a été signé :
 les paquets déjà publiés deviennent invérifiables avec le nouveau certificat.
 La commande demande de taper `REMPLACER` en entier, et refuse s'il n'y a pas
-de terminal. Ajoutez `--oui` à `certificat.py --refaire` seulement si c'est
+de terminal. Ajoutez `--oui` à `certificate.py --refaire` seulement si c'est
 vraiment voulu.
 
 ### Ce que ce certificat prouve, et ce qu'il ne prouve pas
@@ -173,12 +173,12 @@ et n'a jamais prétendu le faire (`C-2Q`).
 ### Par le script, pour les options fines
 
 ```bash
-python3 packaging/construire_debian.py            # .deb et .run
-python3 packaging/construire_fedora.py            # .rpm
-python3 packaging/construire_windows.py --msi     # le .msi seulement
-python3 packaging/construire_macos.py --pkg       # le .pkg seulement
-python3 packaging/construire_macos.py --arch arm64
-python3 packaging/construire_source.py
+python3 packaging/build_debian.py            # .deb et .run
+python3 packaging/build_fedora.py            # .rpm
+python3 packaging/build_windows.py --msi     # le .msi seulement
+python3 packaging/build_macos.py --pkg       # le .pkg seulement
+python3 packaging/build_macos.py --arch arm64
+python3 packaging/build_source.py
 ```
 
 ### Combien de temps, et combien de place
@@ -311,7 +311,7 @@ source → linux → macos → windows → certificat → signer → documents
    `.exe` et le `.msi`, et les empreintes doivent donc être calculées
    **après** elle. `documents` écrit les empreintes ; il vient en dernier.
 
-Puis `make tout` appelle `verifier.py` de lui-même et en affiche le bilan.
+Puis `make tout` appelle `verify.py` de lui-même et en affiche le bilan.
 
 ### Ce que cela produit
 
@@ -496,7 +496,7 @@ make propre                    # vide build/paquets
 ```
 
 Sinon, l'erreur exacte se voit en montant la verbosité — `-V2` dans
-`construire_windows.py` devient `-V4`.
+`build_windows.py` devient `-V4`.
 
 ### « rpmbuild absent »
 
@@ -580,19 +580,19 @@ Après coup
 
 ```
 Makefile               enchaîne les cibles
-commun.py              ce qui ne dépend d'aucun système : identité,
+common.py              ce qui ne dépend d'aucun système : identité,
                        copie du logiciel, roues, interpréteurs embarqués
-construire.py          --outils, --deps
-construire_debian.py   le .deb et l'installateur .run
-construire_fedora.py   le .rpm
-construire_windows.py  le .exe, le .msi, l'archive portable
-construire_macos.py    le .app, le .zip, le .pkg
-construire_source.py   le .tar.gz
+build.py          --outils, --deps
+build_debian.py   le .deb et l'installateur .run
+build_fedora.py   le .rpm
+build_windows.py  le .exe, le .msi, l'archive portable
+build_macos.py    le .app, le .zip, le .pkg
+build_source.py   le .tar.gz
 macos_pkg.py           le format .pkg, écrit de bout en bout
 signature.py           certificat X.509, Authenticode, CMS
-certificat.py          crée, recrée et dépose le certificat
-verifier.py            rouvre et contrôle ce qui a été produit
-langues.py             les libellés des installateurs, 11 langues
+certificate.py          crée, recrée et dépose le certificat
+verify.py            rouvre et contrôle ce qui a été produit
+languages.py             les libellés des installateurs, 11 langues
 langues/               installateur.json — 51 libellés × 11 langues
 gabarits/              control, .spec, .nsi, .wxs, Info.plist, lanceurs
 ```

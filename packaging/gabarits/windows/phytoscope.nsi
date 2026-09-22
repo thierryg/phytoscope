@@ -18,7 +18,7 @@
 ;
 ;  Compilé depuis Debian/Ubuntu/Mint par « makensis », que NSIS fournit aussi
 ;  sous Linux : l'exécutable d'installation se fabrique donc sans machine
-;  Windows. Les jetons @…@ sont remplacés par packaging/construire.py.
+;  Windows. Les jetons @…@ sont remplacés par packaging/build.py.
 ; ===========================================================================
 Unicode true
 SetCompressor /SOLID lzma

@@ -16,7 +16,7 @@
 # ===========================================================================
 #  PhytoScope — gabarit RPM (Fedora, Red Hat, Rocky, AlmaLinux, CentOS)
 #
-#  Construit depuis Debian/Ubuntu/Mint par « packaging/construire.py --rpm ».
+#  Construit depuis Debian/Ubuntu/Mint par « packaging/build.py --rpm ».
 #  Les jetons @…@ sont remplacés par le script ; ce fichier n'est jamais
 #  utilisé tel quel.
 # ===========================================================================

@@ -157,16 +157,16 @@ def test_pas_dappel_reserve_a_unix(interdit):
 def _construire():
     """L'outillage commun de la fabrique, importé sans rien construire.
 
-    C'est `commun.py` et non `construire.py` : le second n'est qu'un
+    C'est `common.py` et non `build.py` : le second n'est qu'un
     aiguillage vers les générateurs de chaque système, tandis que le premier
     porte l'identité du logiciel et les gabarits, qui sont ce qu'on vérifie
     ici.
     """
     import importlib.util
     chemin = os.path.normpath(os.path.join(RACINE, "..", "..", "packaging",
-                                           "commun.py"))
+                                           "common.py"))
     if not os.path.exists(chemin):
-        pytest.skip("packaging/commun.py absent de cette copie de travail")
+        pytest.skip("packaging/common.py absent de cette copie de travail")
     spec = importlib.util.spec_from_file_location("commun", chemin)
     module = importlib.util.module_from_spec(spec)
     #  Inscrire le module AVANT de l'exécuter : `@dataclass` va chercher
@@ -429,12 +429,12 @@ class TestNomenclatureDuProjet:
 
 
 class TestCertificat:
-    """`packaging/certificat.py` — les emplacements et les garde-fous."""
+    """`packaging/certificate.py` — les emplacements et les garde-fous."""
 
     def _module(self):
-        m = _charger(os.path.join("packaging", "certificat.py"))
+        m = _charger(os.path.join("packaging", "certificate.py"))
         if m is None:
-            pytest.skip("packaging/certificat.py absent de cette copie")
+            pytest.skip("packaging/certificate.py absent de cette copie")
         return m
 
     def test_la_cle_de_travail_reste_dans_certificat(self):
