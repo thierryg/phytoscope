@@ -718,13 +718,13 @@ def copier_le_logiciel(vers: str) -> None:
             shutil.copy2(source, cible)
 
     #  `tools/` reste dehors — c'est de l'outillage de développement —, mais
-    #  `ecrire_langue.py` n'en est pas : c'est lui qui inscrit dans les
+    #  `write_language.py` n'en est pas : c'est lui qui inscrit dans les
     #  réglages la langue choisie à l'installation, et les trois
     #  installateurs l'appellent. On le pose à la racine de la charge, au même
     #  endroit pour tous, plutôt que de laisser chacun deviner un chemin.
-    langue = os.path.join(LOGICIEL, "tools", "ecrire_langue.py")
+    langue = os.path.join(LOGICIEL, "tools", "write_language.py")
     if os.path.exists(langue):
-        shutil.copy2(langue, os.path.join(vers, "ecrire_langue.py"))
+        shutil.copy2(langue, os.path.join(vers, "write_language.py"))
 
 
 def remplir(gabarit: str, valeurs: Dict[str, str]) -> str:
@@ -1357,7 +1357,7 @@ def _install(id_: "Identite", systeme: str = "") -> str:
              · « Lancer PhytoScope maintenant ? »
 
       DÉSINSTALLER
-          /Applications/PhytoScope.app/Contents/Resources/desinstaller.sh
+          /Applications/PhytoScope.app/Contents/Resources/uninstall.sh
 
   PAR GLISSER-DÉPOSER
 
@@ -1455,7 +1455,7 @@ TOUTE AUTRE DISTRIBUTION  (installateur autonome)
       ./PhytoScope-{v}-Linux.run -y --no-desktop --no-launch
 
   DÉSINSTALLER   ./PhytoScope-{v}-Linux.run --uninstall
-                 ou ~/.local/opt/phytoscope/desinstaller.sh
+                 ou ~/.local/opt/phytoscope/uninstall.sh
 
   VOS FICHIERS
       Réglages : ~/.config/phytoscope

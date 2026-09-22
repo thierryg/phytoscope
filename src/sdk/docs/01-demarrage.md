@@ -21,7 +21,7 @@ tourne.
 ## Étape 1 — Créer le squelette
 
 ```bash
-python3 src/sdk/outils/nouveau_module.py mon-premier-module
+python3 src/sdk/outils/new_module.py mon-premier-module
 ```
 
 L'outil crée un dossier de trois fichiers :
@@ -39,9 +39,9 @@ Par défaut, l'outil crée un **analyseur** : le plus simple, et celui dont le
 résultat se voit tout de suite. Les autres :
 
 ```bash
-python3 src/sdk/outils/nouveau_module.py mon-module --capacite descripteur
-python3 src/sdk/outils/nouveau_module.py mon-module --capacite sonificateur
-python3 src/sdk/outils/nouveau_module.py mon-module --capacite exportateur
+python3 src/sdk/outils/new_module.py mon-module --capacite descripteur
+python3 src/sdk/outils/new_module.py mon-module --capacite sonificateur
+python3 src/sdk/outils/new_module.py mon-module --capacite exportateur
 ```
 
 | Capacité | Ce qu'elle fait | Où ça s'affiche |
@@ -186,7 +186,7 @@ cp -r mon-premier-module ~/Library/Application\ Support/PhytoScope/modules/
 xcopy /E mon-premier-module %APPDATA%\PhytoScope\modules\mon-premier-module\
 ```
 
-Ou, dès la création : `python3 src/sdk/outils/nouveau_module.py mon-module --installer`
+Ou, dès la création : `python3 src/sdk/outils/new_module.py mon-module --installer`
 
 ---
 

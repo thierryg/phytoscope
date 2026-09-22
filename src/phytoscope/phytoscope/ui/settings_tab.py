@@ -421,23 +421,23 @@ class SettingsTab(QWidget):
         lancer une séance de nuit qu'il faut savoir qu'on n'a la place que pour
         deux heures.
         """
-        from ..core import espace
+        from ..core import disk_space
         chemin = self.ed_dir.text() or self.engine.settings.recording.directory
-        etat = espace.mesurer(chemin)
+        etat = disk_space.mesurer(chemin)
         if not etat.mesure:
             self.lab_disque.setText(t("Répertoire introuvable — il sera créé "
                                       "au premier enregistrement."))
             return
         reglages = self.engine.settings
-        debit = espace.debit_mo_par_heure(reglages)
-        reste = espace.autonomie_heures(etat.libre_mo,
+        debit = disk_space.debit_mo_par_heure(reglages)
+        reste = disk_space.autonomie_heures(etat.libre_mo,
                                         float(self.sp_reserve.value()), debit)
         self.lab_disque.setText(t(
             "{libre} libres sur {total} · {debit:.0f} Mo par heure "
             "d'enregistrement · autonomie {duree}").format(
-                libre=espace.formater_mo(etat.libre_mo),
-                total=espace.formater_mo(etat.total_mo),
-                debit=debit, duree=espace.formater_duree(reste)))
+                libre=disk_space.formater_mo(etat.libre_mo),
+                total=disk_space.formater_mo(etat.total_mo),
+                debit=debit, duree=disk_space.formater_duree(reste)))
 
     # -------------------------------------------------------------- interface
     def _page_ui(self) -> QWidget:

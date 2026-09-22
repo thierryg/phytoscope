@@ -9,13 +9,13 @@ sdk/
   docs/                  la documentation, pas à pas
   bonjour-monde/         l'exemple complet, avec ses essais
   outils/
-    nouveau_module.py    crée un module prêt à l'essai
+    new_module.py    crée un module prêt à l'essai
 ```
 
 ## En trois commandes
 
 ```bash
-python3 src/sdk/outils/nouveau_module.py mon-module     # créer
+python3 src/sdk/outils/new_module.py mon-module     # créer
 python3 -m pytest mon-module/ -v                    # éprouver
 cp -r mon-module ~/.config/phytoscope/modules/      # installer
 ```

@@ -58,7 +58,7 @@ from PySide6.QtWidgets import (QCheckBox, QComboBox, QDialog, QFileDialog,
 
 from ..core import logging_setup as jl
 from ..i18n import t
-from . import polices
+from . import fonts
 
 #  Deux fois par seconde : assez pour voir la ligne s'écrire, assez peu pour
 #  ne rien coûter — on ne lit de toute façon que l'ajout.
@@ -101,7 +101,7 @@ class LogWindow(QDialog):
         # -- où est le fichier ------------------------------------------------
         self.lab_chemin = QLineEdit(jl.log_path() or t("(aucun fichier)"))
         self.lab_chemin.setReadOnly(True)
-        self.lab_chemin.setFont(polices.mono())
+        self.lab_chemin.setFont(fonts.mono())
         self.lab_chemin.setToolTip(
             t("Emplacement du fichier de journal. Sélectionnable : on peut le "
               "copier et le coller dans un terminal ou un courriel."))
@@ -120,7 +120,7 @@ class LogWindow(QDialog):
         self.vue = QPlainTextEdit()
         self.vue.setReadOnly(True)
         self.vue.setLineWrapMode(QPlainTextEdit.NoWrap)
-        self.vue.setFont(polices.mono(9))
+        self.vue.setFont(fonts.mono(9))
         self.vue.setMaximumBlockCount(LIGNES_MAX)
         lay.addWidget(self.vue, 1)
 

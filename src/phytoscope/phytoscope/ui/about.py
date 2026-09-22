@@ -36,7 +36,7 @@ from PySide6.QtWidgets import (QDialog, QDialogButtonBox, QFrame, QHBoxLayout,
 
 from .. import version as V
 from ..i18n import t
-from . import polices
+from . import fonts
 
 
 def _root() -> str:
@@ -226,7 +226,7 @@ class AboutDialog(QDialog):
         lay = QVBoxLayout(w)
         text = QPlainTextEdit(_read("CHANGELOG.txt"))
         text.setReadOnly(True)
-        text.setFont(polices.mono(9))
+        text.setFont(fonts.mono(9))
         lay.addWidget(text)
         return w
 
@@ -236,7 +236,7 @@ class AboutDialog(QDialog):
         lay = QVBoxLayout(w)
         text = QPlainTextEdit(_read(V.LICENSE_FILE))
         text.setReadOnly(True)
-        text.setFont(polices.mono(9))
+        text.setFont(fonts.mono(9))
         lay.addWidget(text)
         return w
 

@@ -41,7 +41,7 @@ from PySide6.QtWidgets import (QDialogButtonBox, QDialog, QHBoxLayout, QLabel,
 from .. import version as V
 from . import theme
 from ..i18n import t
-from . import polices
+from . import fonts
 
 #  Les raccourcis, par groupe : ce qu'on fait pendant une séance d'abord,
 #  le reste ensuite. La colonne de droite dit la fonction, pas le nom du
@@ -231,7 +231,7 @@ class HelpDialog(QDialog):
                 #  traduit `Ctrl` en ⌘, et l'utilisateur chercherait en vain
                 #  une touche « Ctrl » sur son clavier.
                 touche = QLabel(_afficher(touches))
-                touche.setFont(polices.mono(10, gras=True))
+                touche.setFont(fonts.mono(10, gras=True))
                 touche.setFixedWidth(150)
                 touche.setAlignment(Qt.AlignRight | Qt.AlignTop)
                 touche.setStyleSheet(f"color:{self.p['trace']};")

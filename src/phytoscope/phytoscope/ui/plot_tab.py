@@ -71,7 +71,7 @@ from ..core.dsp import decimate
 from ..core.logging_setup import get_logger
 from .widgets import HAVE_PYQTGRAPH, TracePlot
 from ..i18n import t
-from . import polices
+from . import fonts
 
 log = get_logger(__name__)
 
@@ -394,13 +394,13 @@ class PlotTab(QWidget):
         # --- console -------------------------------------------------------
         self.console = QPlainTextEdit()
         self.console.setReadOnly(True)
-        self.console.setFont(polices.mono(8))
+        self.console.setFont(fonts.mono(8))
         self.console.setMaximumHeight(130)
         self.console.setPlainText(
             "Traceur PhytoScope — tapez « help » pour la liste des commandes.\n")
         self.entree = QLineEdit()
         self.entree.setPlaceholderText(t("plot spectre with lines title \"bruit\""))
-        self.entree.setFont(polices.mono(9))
+        self.entree.setFont(fonts.mono(9))
         self.entree.returnPressed.connect(self._commande)
         self._historique: List[str] = []
         self._h_index = 0

@@ -459,7 +459,7 @@ cd .. && python3 tools/sbom.py --ecrire --logiciel-seul
 cd packaging && make livrables && make verifier
 
 # 6. les publications, si elles ont changé
-cd .. && git diff --name-only | python3 tools/pdf_impactes.py -
+cd .. && git diff --name-only | python3 tools/impacted_pdfs.py -
 
 # 7. l'étiquette — c'est elle qui déclenche la diffusion
 git tag -a v1.5.2 -m "PhytoScope 1.5.2"
@@ -520,7 +520,7 @@ n'admet aucun commentaire.** Une ligne commençant par `#` fait échouer
 `dpkg-deb` avec « field name '#' must be followed by colon » — et `make tout`
 continue, produisant les huit autres paquets sans broncher. C'est arrivé le
 2026-09-18 ; `"control"` est depuis dans les exclusions de
-`tools/entetes.py`.
+`tools/headers.py`.
 
 ### « aucun certificat de signature »
 

@@ -82,8 +82,8 @@ def construire_rpm(id_: Identite, embarquer: bool) -> Optional[str]:
         #  `dnf` installent sans interaction, souvent sans session graphique.
         #  Poser la question de l'icône à ce moment-là serait la poser à la
         #  mauvaise personne.
-        for outil, cible in (("icone-bureau.sh", "phytoscope-icone-bureau"),
-                             ("desinstaller.sh", "phytoscope-desinstaller")):
+        for outil, cible in (("desktop-icon.sh", "phytoscope-icone-bureau"),
+                             ("uninstall.sh", "phytoscope-desinstaller")):
             ecrire(os.path.join(racine, "usr", "bin", cible),
                    open(os.path.join(GABARITS, "debian", outil),
                         encoding="utf-8").read(), executable=True)

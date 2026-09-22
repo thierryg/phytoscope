@@ -45,7 +45,7 @@ from ..music.lexicon import (GRAMMAIRES, LEXIQUE_PAR_DEFAUT, Lexique,
                              lexiques_livres)
 from ..music.voice import strategies_disponibles
 from ..i18n import t
-from . import polices
+from . import fonts
 
 log = get_logger(__name__)
 
@@ -254,7 +254,7 @@ class VoiceTab(QWidget):
         self.lab_mots = QLabel("")
         self.lab_mots.setWordWrap(True)
         self.lab_mots.setTextFormat(Qt.RichText)
-        self.lab_mots.setFont(polices.mono(8))
+        self.lab_mots.setFont(fonts.mono(8))
         pm.addWidget(self.lab_mots)
         pm.addStretch(1)
         droite.addTab(page_mots, t("Registres"))

@@ -15,10 +15,10 @@ en même temps que `.ai/journal.md`.
 | Échantillons et relecture | capture `Ctrl+E`, relecture dans le moteur | `core/samples.py` |
 | Dictionnaires du mode vocal | 11, un par langue | `phytoscope/lexiques/` |
 | Micrologiciel RP2350 | compile — `phytosense.uf2`, 80 Ko | `src/firmware/build.sh` |
-| Surveillance du disque | mesure, alerte, clôture propre | `core/espace.py` |
+| Surveillance du disque | mesure, alerte, clôture propre | `core/disk_space.py` |
 | Vumètres | quatre cadrans à balistique | `widgets.VuMetre` |
-| Empreinte de mesure | huit descripteurs + registre des montages | `core/empreinte.py` |
-| Grandeurs scientifiques | quinze, dont la résistance équivalente (majorant) | `core/grandeurs.py` |
+| Empreinte de mesure | huit descripteurs + registre des montages | `core/fingerprint.py` |
+| Grandeurs scientifiques | quinze, dont la résistance équivalente (majorant) | `core/quantities.py` |
 | Fenêtre du journal | direct, chemin, copie, `Ctrl+L` | `ui/log_window.py` |
 | Portabilité | 13 points relevés, 13 corrigés | `.ai/portabilite.md` |
 | Paquets d'installation | .deb, .rpm, .run, .exe, .msi, .pkg, .zip, .tar.gz | `packaging/Makefile` |
@@ -28,23 +28,23 @@ en même temps que `.ai/journal.md`.
 | API des modules | contrat 1.0, cinq capacités, registre isolant | `phytoscope/api/` |
 | Modules intégrés | quatre, par la même API que n'importe qui | `phytoscope/modules/` |
 | SDK | sept chapitres, un exemple, un générateur de module | `src/sdk/` |
-| **Série « L'Arbre qui Parle »** | 3 volumes, 573 p. — fusionnée ce jour | `pdf-src/build_arbre.py` |
-| **Annexe technique de la série** | 65 p. — construite | `pdf-src/build_annexe.py` |
+| **Série « L'Arbre qui Parle »** | 3 volumes, 573 p. — fusionnée ce jour | `pdf-src/build_tree.py` |
+| **Annexe technique de la série** | 65 p. — construite | `pdf-src/build_appendix.py` |
 | **Guide du SDK imprimé** | 27 p. — construit | `pdf-src/build_sdk.py` |
 | **Dix publications** | **1 378 pages**, un dossier de sources par PDF | `pdf-src/` |
 | **Dépôt git public** | arborescence rangée, `.gitignore` en 459 lignes | `phytoscope/` |
 | **Intégration continue** | 6 workflows — analyse, paquets, PDF, sécurité, CodeQL, diffusion | `.github/workflows/` |
-| **Contrôle des illustrations** | 104 SVG, 0 mal formée | `tools/verifier_svg.py` |
-| **Reconstruction sélective** | ne refait que les PDF touchés | `tools/pdf_impactes.py` |
+| **Contrôle des illustrations** | 104 SVG, 0 mal formée | `tools/verify_svg.py` |
+| **Reconstruction sélective** | ne refait que les PDF touchés | `tools/impacted_pdfs.py` |
 | **Cohérence des licences** | MIT + CERN-OHL-P v2, code tiers rendu à sa licence | `LICENSES/README.md` |
-| **Mises à jour des bibliothèques** | depuis l'interface, sans rien installer d'office | `ui/maj_dialog.py` |
+| **Mises à jour des bibliothèques** | depuis l'interface, sans rien installer d'office | `ui/updates_dialog.py` |
 | **Langue à l'installation** | 11 langues, demandée au tout début, reprise par le logiciel | `packaging/languages.py` |
 | **Libellés des installateurs** | 51 × 11 = 561 traductions, source unique | `packaging/langues/installateur.json` |
 | **Interpréteur embarqué** | `.run` 29 Mo, `.pkg` 18 Mo — installable sur machine nue | `commun._python_autonome` |
 | **Cache de bytecode** | construit à l'installation sur les cinq cibles | `INSTALL.md` |
 | **Tests** | **306 au vert, 0 ignoré** | `make test` |
 | Hors-série développeur | 27 p. — construit | `build/Ecrire-un-module-PhytoScope.pdf` |
-| En-têtes d'attribution | 240 fichiers, outil idempotent | `tools/entetes.py` |
+| En-têtes d'attribution | 240 fichiers, outil idempotent | `tools/headers.py` |
 
 ## En cours — ne pas repartir de zéro
 
@@ -108,7 +108,7 @@ corrigés — et la fabrique des paquets fonctionne pour les cinq cibles.
 - ⬜ **`pdf-src/assets/svg/timeline.svg` n'est pas du XML bien formé** : un `&`
   nu, écrit par `pdf-src/assets/svg/gen.py` (ligne 261). WeasyPrint le tolère, un
   lecteur XML strict non. À corriger dans le générateur (`C-45`), donc en
-  régénérant les planches puis en relançant `tools/entetes.py`.
+  régénérant les planches puis en relançant `tools/headers.py`.
 - ⬜ **Le chantier des modules n'a ni entrée de `CHANGELOG.txt`, ni contrainte
   dans `constraints.md`, ni ligne dans `CHANGELOG.md`** : le code et le SDK
   sont là, la trace documentaire manque. Le journal du 2026-09-18 (nuit, fin)
@@ -147,7 +147,7 @@ corrigés — et la fabrique des paquets fonctionne pour les cinq cibles.
   catalogue ne pourrait plus les servir tous. Conditionner le texte, pas
   l'existence de l'entrée.
 - Un outil qui écrit un texte **transformé** doit le reconnaître sous sa forme
-  transformée. `tools/entetes.py` écrit les en-têtes des `.bat` sans accents,
+  transformée. `tools/headers.py` écrit les en-têtes des `.bat` sans accents,
   mais cherchait sa marque **avec** son tiret cadratin : il ne la retrouvait
   jamais et empilait un en-tête par exécution (2026-09-18).
 - Une suppression de bloc de commentaire doit emporter ses **délimiteurs**

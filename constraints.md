@@ -64,7 +64,7 @@ mais un usage — et peut être discuté.
 | **C-29** | Toute écriture de fichier est **atomique ou refermable** : un enregistrement interrompu reste exploitable. |
 | **C-2A** | Le journal est **consultable depuis le logiciel** (`Ctrl+L`) : son emplacement est écrit en toutes lettres, son contenu se complète en direct, et une copie peut être enregistrée où l'on veut — archives de rotation comprises. Aucun terminal n'est nécessaire pour signaler un incident. |
 | **C-2B** | La surveillance d'un fichier est **incrémentale** et s'arrête quand la fenêtre se ferme : on ne relit jamais tout, on ne réveille jamais le disque pour une fenêtre invisible. |
-| **C-2C** | **Rien ne se nomme en dur quand le système peut en décider autrement** : ni police (pile de replis et genre, `ui/polices.py`), ni chemin (`os.path.join`), ni séparateur, ni encodage (`open()` porte toujours `encoding=`). Des essais le vérifient. |
+| **C-2C** | **Rien ne se nomme en dur quand le système peut en décider autrement** : ni police (pile de replis et genre, `ui/fonts.py`), ni chemin (`os.path.join`), ni séparateur, ni encodage (`open()` porte toujours `encoding=`). Des essais le vérifient. |
 | **C-2D** | Les **identifiants USB du logiciel suivent le micrologiciel**, jamais l'inverse. Le couple appartient à la plage libre de pid.codes (`0x1209`) ; un essai lit `usb_descriptors.c` et compare. |
 | **C-2E** | Une **dépendance facultative qui échoue n'empêche pas l'installation du reste** : elle vit dans `requirements-optionnel.txt`, installé séparément. |
 | **C-2F** | Un **nom de fichier est translittéré en ASCII** avant d'atteindre le disque : APFS normalise en NFD, Windows réserve `CON`, `NUL`, `COM1`… et supprime les points finaux. Le nom lisible reste en Unicode dans les métadonnées. |
@@ -126,7 +126,7 @@ mais un usage — et peut être discuté.
 | № | Contrainte |
 |---|---|
 | **C-60** | Les PDF sont **intégralement reproductibles** depuis les sources : fragments HTML + CSS + planches générées par script déterministe. |
-| **C-61** | Les planches sont **dessinées par programme** (`gen.py`, `gen_carte.py`), jamais importées d'un éditeur graphique. |
+| **C-61** | Les planches sont **dessinées par programme** (`gen.py`, `gen_board.py`), jamais importées d'un éditeur graphique. |
 | **C-62** | Sommaire cliquable, signets, en-têtes, pagination et métadonnées PDF complètes (auteur, éditeur, contact, licence). |
 | **C-63** | Toute affirmation technique est **sourcée** : brevet, article à comité de lecture, fiche technique ou code public. |
 | **C-64** | Les compteurs annoncés (pages, chapitres, planches, tests) sont **vérifiés après reconstruction**, jamais estimés. |

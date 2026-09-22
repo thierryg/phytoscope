@@ -69,7 +69,7 @@ class EmpreinteMontage(Module, Analyseur):
 
     def analyser(self, x: np.ndarray, fs: float,
                  contexte: Contexte) -> List[Grandeur]:
-        from phytoscope.core import empreinte as emp
+        from phytoscope.core import fingerprint as emp
 
         if x.size < 64:
             return []
@@ -122,7 +122,7 @@ class EmpreinteMontage(Module, Analyseur):
             return 0.0
 
     def _ressemblances(self, courante, contexte: Contexte) -> List[Grandeur]:
-        from phytoscope.core import empreinte as emp
+        from phytoscope.core import fingerprint as emp
         if self._registre is None:
             self._registre = emp.Registre(self._chemin_registre)
         connus = self._registre.reconnaitre(courante)

@@ -34,7 +34,7 @@ from PySide6.QtWidgets import (QFrame, QHBoxLayout, QLabel, QSizePolicy,
                                QToolButton, QVBoxLayout, QWidget)
 
 from ..i18n import t
-from . import polices
+from . import fonts
 
 try:                                                   # pragma: no cover
     import pyqtgraph as pg
@@ -223,7 +223,7 @@ class TracePlot(QWidget):
         lo, hi = self._y_range
         if hi - lo < 1e-15:
             hi = lo + 1e-15
-        qp.setFont(polices.mono(7.5))
+        qp.setFont(fonts.mono(7.5))
         qp.setPen(QColor(self.p["texte2"]))
         for i in range(4):
             v = hi - (hi - lo) * i / 3
@@ -453,17 +453,17 @@ class VuMetre(QWidget):
         qp.setBrush(Qt.NoBrush)
 
         #  Le titre, la valeur et le fond d'échelle.
-        qp.setFont(polices.texte(7.0))
+        qp.setFont(fonts.texte(7.0))
         qp.setPen(QColor(self.p["texte2"]))
         qp.drawText(QRectF(4, 3, w - 8, 12), Qt.AlignHCenter, self.titre)
 
-        qp.setFont(polices.mono(9.5, gras=True))
+        qp.setFont(fonts.mono(9.5, gras=True))
         qp.setPen(QColor(couleur))
         qp.drawText(QRectF(4, h - 27, w - 8, 15), Qt.AlignHCenter,
                     f"{self._valeur:+.1f} {self.unite}" if self.centre_zero
                     else f"{self._valeur:.2f} {self.unite}")
 
-        qp.setFont(polices.texte(6.2))
+        qp.setFont(fonts.texte(6.2))
         qp.setPen(QColor(self.p["texte2"]))
         borne = self._fond_echelle()
         echelle = f"± {borne}" if self.centre_zero else f"0 – {borne}"
@@ -521,7 +521,7 @@ class Readout(QFrame):
     def set_value(self, text: str, alert: bool = False) -> None:
         self.value.setText(text)
         col = self.p["alerte"] if alert else self.p["trace"]
-        self.value.setStyleSheet(polices.css_mono(26) + f"color:{col};")
+        self.value.setStyleSheet(fonts.css_mono(26) + f"color:{col};")
 
     def set_unit(self, unit: str) -> None:
         self.unit.setText(unit)
@@ -601,7 +601,7 @@ class StatusStrip(QFrame):
             cap.setStyleSheet(f"color:{palette['texte2']};font-size:7pt;"
                               f"letter-spacing:1px;")
             val = QLabel("—")
-            val.setStyleSheet(polices.css_mono() + "font-weight:bold;"
+            val.setStyleSheet(fonts.css_mono() + "font-weight:bold;"
                               + f"color:{palette['texte']};")
             box.addWidget(cap)
             box.addWidget(val)
@@ -617,5 +617,5 @@ class StatusStrip(QFrame):
         colors = {"normal": self.p["texte"], "ok": self.p["trace"],
                   "warn": self.p["or"], "err": self.p["alerte"]}
         lab.setText(text)
-        lab.setStyleSheet(polices.css_mono() + "font-weight:bold;"
+        lab.setStyleSheet(fonts.css_mono() + "font-weight:bold;"
                           + f"color:{colors.get(state, self.p['texte'])};")

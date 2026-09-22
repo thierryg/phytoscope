@@ -57,7 +57,7 @@
     · **Les polices.** « DejaVu Sans Mono » était nommée en dur à vingt et un
       endroits, sans repli. Absente de Windows et de macOS, Qt lui substituait
       souvent une police **proportionnelle** : les colonnes de valeurs mesurées
-      cessaient d'être alignées. Tout passe par `ui/polices.py`, qui déclare une
+      cessaient d'être alignées. Tout passe par `ui/fonts.py`, qui déclare une
       pile (DejaVu, Menlo, Consolas, Liberation, Courier New) et surtout le
       **genre** de la police, de sorte que même un repli inconnu reste à chasse
       fixe. Le même module corrige au passage la taille : macOS compte 72
@@ -99,7 +99,7 @@
       `logging` déversait une trace à chaque message suivant. La rotation est
       désormais tolérante — le journal continue de s'écrire.
 
-    · **Les noms de fichiers.** `core/noms.py` translittère en ASCII, ce qui
+    · **Les noms de fichiers.** `core/filenames.py` translittère en ASCII, ce qui
       règle d'un coup la normalisation NFD d'APFS (un échantillon accentué
       devenait introuvable sur Mac) et les noms réservés de Windows (`CON`,
       `NUL`, `COM1`…), points et espaces finaux compris.
@@ -120,7 +120,7 @@
       `platform_info.py`, rôle « documents ».
 
   Ajouté
-    · `tests/test_portabilite.py` — vingt-trois essais qui vérifient sous Linux
+    · `tests/test_portability.py` — vingt-trois essais qui vérifient sous Linux
       ce qui ne se voit qu'ailleurs : identifiants USB alignés sur le
       micrologiciel (l'essai lit `usb_descriptors.c`), aucun chemin concaténé,
       aucun `open()` sans encodage, aucune police nommée en dur, aucun appel

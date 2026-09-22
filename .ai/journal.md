@@ -19,9 +19,9 @@ du logiciel, horodatage des fichiers, contenu du dépôt.
   40 chapitres, 5 annexes, 28 illustrations vectorielles, 21 planches de brevets
   traduites — produit par `build.py` (WeasyPrint) depuis `src/parts/`.
 - Le hors-série *La Carte PhytoSense* et ses trois fascicules détachables
-  (schémas, nomenclature, circuit imprimé), produits par `build_carte.py`.
+  (schémas, nomenclature, circuit imprimé), produits par `build_board.py`.
 - La carte PhytoSense One : schémas, routage quatre couches, nomenclature
-  chiffrée, planches générées par `src/assets/svg/gen_carte.py`.
+  chiffrée, planches générées par `src/assets/svg/gen_board.py`.
 - Le micrologiciel RP2350 (`sources/firmware-phytosense/phytosense-fw`) :
   ADS131M04 en SPI/DMA, USB classe audio 2.0, protocole de contrôle.
 - **PhytoScope 1.0.0 « Première sève »** : quatre sources d'acquisition,
@@ -107,7 +107,7 @@ premier lancement en français avec `LANG=ko_KR.UTF-8` sur configuration vierge.
   `build.sh [--deps|--propre]` écrit pour rendre la manœuvre reproductible
   (`C-55`). Deux en-têtes manquaient dans `afe.c` (`math.h`, `stdio.h`) :
   corrigés. Produit : `phytosense.uf2`, 80 Ko, cœur ARMv8-M mainline.
-- **Espace disque** (`core/espace.py`) : mesure pendant l'enregistrement,
+- **Espace disque** (`core/disk_space.py`) : mesure pendant l'enregistrement,
   alerte à vingt minutes d'autonomie, clôture propre de la séance avant
   saturation (`C-26`). Le rendu musical écrit 305 Mo par heure — c'est lui qui
   remplit le disque, pas le signal (2,6 Mo/h).
@@ -134,7 +134,7 @@ réserve impossible à satisfaire.
   rendue au retour en direct.
 - **Bibliothèque** refondue en deux pages — Séances et Échantillons — avec
   aperçu, résumé chiffré, capture, renommage, suppression, retour en direct.
-- **Espace disque** (`core/espace.py`) : mesure toutes les cinq secondes,
+- **Espace disque** (`core/disk_space.py`) : mesure toutes les cinq secondes,
   alerte à vingt minutes d'autonomie, clôture propre avant saturation ;
   réserve, seuil et répertoire réglables ; espace restant dans le bandeau.
 - **Fenêtre réductible** : hauteur minimale 1094 → 520 px. Les colonnes de
@@ -192,7 +192,7 @@ ce qui doit rester atteignable va dans un menu.
 - **Quatre vumètres** dans le Multimètre (`widgets.VuMetre`) : balistique de
   150 ms, mémoire de crête, échelle par paliers 1–2–5 inscrite sous le cadran.
   Le nombre donne la valeur, l'aiguille donne le mouvement.
-- **Empreinte de mesure** (`core/empreinte.py`) : huit descripteurs, une
+- **Empreinte de mesure** (`core/fingerprint.py`) : huit descripteurs, une
   distance pondérée, un registre JSON des montages connus, et des phrases de
   qualification plutôt qu'un pourcentage nu. Elle caractérise le **montage**,
   jamais la plante — l'avertissement est permanent dans l'interface et occupe
@@ -226,7 +226,7 @@ qui s'actualise en temps réel en précisant son emplacement et en permettant d'
 faire une copie dans un path précis ».
 
 **Fait :**
-- `phytoscope/core/grandeurs.py` — quinze grandeurs calculées sur une fenêtre de
+- `phytoscope/core/quantities.py` — quinze grandeurs calculées sur une fenêtre de
   120 s, chacune accompagnée de ce qu'elle dit **et de ce qu'elle ne dit pas**.
 - Page « Grandeurs scientifiques » dans le Multimètre (troisième onglet du bas),
   recalculée toutes les deux secondes, et **seulement quand elle est visible**.
@@ -492,10 +492,10 @@ redécouvre pas :
   enregistrés à la fermeture, arrêt ordonné), avec une page **Modules** au
   Diagnostic et une autre aux Réglages ;
 - `sdk/` — sept chapitres (1 586 lignes), un module d'exemple avec ses essais,
-  et `nouveau_module.py` qui en crée un ;
+  et `new_module.py` qui en crée un ;
 - le hors-série développeur, **27 pages** :
   `build/Ecrire-un-module-PhytoScope.pdf`, par `build_sdk.py` — qui emprunte
-  le moule de `build_carte.py` au lieu de le recopier.
+  le moule de `build_board.py` au lieu de le recopier.
 
 **Ce qui n'est pas terminé, et que le SDK promet pourtant :** seules deux des
 cinq capacités sont réellement consommées par l'hôte — `analyseur`
@@ -507,7 +507,7 @@ donc nulle part dans la Bibliothèque. C'est la dette de ce chantier.
 ### 2. Le nom de code retiré
 
 **Fait :**
-- `tools/entetes.py` ne compose plus « 1.5.1 « … » » : un en-tête identifie une
+- `tools/headers.py` ne compose plus « 1.5.1 « … » » : un en-tête identifie une
   révision, et un nom de code ne l'identifie pas. Les **240 en-têtes** du dépôt
   portent `Version  : 1.5.1`.
 - `phytoscope/VERSION` : `nom =` est vide. Le champ reste — le remplir ferait
@@ -521,7 +521,7 @@ donc nulle part dans la Bibliothèque. C'est la dette de ce chantier.
 - Le journal des versions, `CHANGELOG.md`, `packaging/README.md` et le titre de
   l'entrée du 2026-09-18 (nuit) ne le mentionnent plus.
 
-**Corrigé — deux défauts de `tools/entetes.py` découverts en chemin :**
+**Corrigé — deux défauts de `tools/headers.py` découverts en chemin :**
 - **L'outil n'était pas idempotent sur les `.bat` et les `.cmd`.** Il y écrit
   l'en-tête sans accents (une console en cp850 les rendrait illisibles) ; sa
   marque de reconnaissance, elle, gardait son tiret cadratin. Elle n'était donc
@@ -535,7 +535,7 @@ donc nulle part dans la Bibliothèque. C'est la dette de ce chantier.
   `.wxs`). Ils sont ramassés au passage.
 
 **Vérifié :**
-- `python3 tools/entetes.py` : deuxième passe vide — « 240 fichiers examinés,
+- `python3 tools/headers.py` : deuxième passe vide — « 240 fichiers examinés,
   tous déjà à jour ». C'est ce qui manquait pour que l'outil soit sûr.
 - Plus aucune occurrence du nom de code dans le dépôt, hors PDF et paquets
   déjà fabriqués.
@@ -551,7 +551,7 @@ donc nulle part dans la Bibliothèque. C'est la dette de ce chantier.
   antérieur à cette intervention et WeasyPrint le tolère, mais tout lecteur
   XML strict refuse le fichier. À corriger **dans le générateur**, pas dans la
   planche (`C-45`), ce qui impose de régénérer les planches puis de relancer
-  `tools/entetes.py`.
+  `tools/headers.py`.
 
 ---
 
@@ -578,7 +578,7 @@ DevSecOps.
     `table.tight`). La feuille a donc été gardée entière sous
     `pdf-src/arbre.css`, et la série utilise `arbre.css` quand l'ouvrage
     principal garde `book.css`.
-  - `build.py` de la série → `pdf-src/build_arbre.py`, deux lignes ajustées.
+  - `build.py` de la série → `pdf-src/build_tree.py`, deux lignes ajustées.
   - `README.md` de la série → `sources/README-arbre-qui-parle.md`.
   - `fonts.css` — identique hors en-tête.
   - **`gen.py` et `timeline.svg` — le parent avait RÉGRESSÉ.** Le générateur
@@ -603,11 +603,11 @@ du dossier parent. La règle de rangement :
 | `sdk/` | `src/sdk/` | du code |
 | `research/`, `docs/` | `sources/` | de la matière de référence |
 | 5 PDF sous droits à la racine | `sources/ebooks/`, hors dépôt | on n'a pas le droit de les rediffuser |
-| `tools/build-annexe.py` | `pdf-src/build_annexe.py` | c'est une fabrique de PDF |
+| `tools/build-annexe.py` | `pdf-src/build_appendix.py` | c'est une fabrique de PDF |
 | `paquets/`, `__pycache__`, `.venv` | `.ecarte/` | doublons et régénérables, hors dépôt |
 
 Les `pdf-src/parts*/` ont été éclatés en **un dossier par PDF** (10 dossiers
-+ `commun/` pour les tableaux partagés). `build_carte.py` réaffecte `PARTS`
++ `commun/` pour les tableaux partagés). `build_board.py` réaffecte `PARTS`
 par document et son `inject_includes()` se replie sur `commun/`.
 
 ### Fait — le dépôt public
@@ -628,13 +628,13 @@ par document et son `inject_includes()` se replie sur `commun/`.
   `publications.yml` (ne refait **que les PDF touchés**),
   `securite.yml` (7 contrôles), `codeql.yml` (Python et C),
   `scorecard.yml`, `diffusion.yml` (attestation de provenance Sigstore).
-- Deux outils nouveaux : `tools/verifier_svg.py` et
-  `tools/pdf_impactes.py`.
+- Deux outils nouveaux : `tools/verify_svg.py` et
+  `tools/impacted_pdfs.py`.
 
 ### Pourquoi — deux défauts trouvés en chemin, et corrigés
 
 1. **Fausse déclaration de licence sur 32 fichiers tiers.**
-   `tools/entetes.py` avait apposé « © Bretagne Namasté » et
+   `tools/headers.py` avait apposé « © Bretagne Namasté » et
    « SPDX-License-Identifier: MIT » sur LEDFader (MIT © Jeremy Gillick),
    MIDI Sprout (MIT © electricityforprogress) et surtout le micrologiciel
    **Biotron, qui est en GPL-3.0**. Les en-têtes ont été retirés, les
@@ -644,7 +644,7 @@ par document et son `inject_includes()` se replie sur `commun/`.
    Biotron en « MIT (code) » : corrigé en GPL-3.0.
 
 2. **Le `.deb` avait disparu de la fabrication.** En passant
-   `tools/entetes.py --ecrire` sur tout le dépôt, l'en-tête s'est posé sur
+   `tools/headers.py --ecrire` sur tout le dépôt, l'en-tête s'est posé sur
    `packaging/gabarits/debian/control` — **un fichier `control` n'admet aucun
    commentaire**, et `dpkg-deb` refusait le paquet avec
    « field name '#' must be followed by colon ». Rien d'autre ne le signalait :
@@ -659,8 +659,8 @@ par document et son `inject_includes()` se replie sur `commun/`.
 | `cd src/phytoscope && make test` | **260 passés**, 2 ignorés |
 | Les 5 fabriques de PDF | **5 / 5** |
 | Pages produites | **1 378 p. sur 10 PDF — 0 écart** après restructuration |
-| `tools/verifier_svg.py` | **104 illustrations, 0 mal formée** |
-| `tools/entetes.py --verifier` | **260 fichiers, tous à jour** |
+| `tools/verify_svg.py` | **104 illustrations, 0 mal formée** |
+| `tools/headers.py --verifier` | **260 fichiers, tous à jour** |
 | `cd packaging && make tout` | **8 paquets signés, 0 échec** |
 | `cd packaging && make verifier` | empreintes SHA-256 conformes |
 | YAML des 6 workflows | tous analysables |
@@ -780,7 +780,7 @@ jette le résultat.
 | `.run` installé pour de vrai (`HOME` jetable) | venv créé, **67 + 1515 `.pyc`**, logiciel démarré |
 | Python embarqué du `.run` | 3.11.9, `venv`/`ssl`/`sqlite3`, crée un venv |
 | `make debian` / `fedora` / `macos` | `.deb` 369 ko, `.rpm` 609 ko, `.pkg` 17,3 Mo |
-| `tools/entetes.py --verifier` | 260 fichiers, tous à jour |
+| `tools/headers.py --verifier` | 260 fichiers, tous à jour |
 
 ### Attention
 
@@ -808,11 +808,11 @@ faire reprendre par PhytoScope.
 ### 1. « Aide → Mises à jour des bibliothèques… »
 
 **Fait :**
-- `core/maj_dependances.py` — interroge PyPI, compare, classe les écarts en
+- `core/dependency_updates.py` — interroge PyPI, compare, classe les écarts en
   *correctif*, *mineure*, *majeure*. **Aucune dépendance ajoutée** (`C-40`) :
   `urllib` de la bibliothèque standard, et un comparateur de versions écrit
   ici plutôt que `packaging`.
-- `ui/maj_dialog.py` — l'interrogation dans un fil séparé (huit requêtes à
+- `ui/updates_dialog.py` — l'interrogation dans un fil séparé (huit requêtes à
   six secondes feraient quarante-huit secondes de fenêtre figée), rien coché
   d'avance, et la sortie de `pip` qui défile ligne à ligne. L'installation
   passe par `preflight.installer()`, qui sait déjà choisir entre le venv,
@@ -853,10 +853,10 @@ anglais.
 - macOS : liste `osascript` à la **première ouverture** — un `.pkg` s'installe
   sans rien demander, c'est ce qu'on attend de lui.
 - `.deb` et `.rpm` : `apt` et `dnf` n'interrogent pas. La question se pose donc
-  au **premier démarrage du logiciel**, par `ui/langue_dialog.py`. Chaque
+  au **premier démarrage du logiciel**, par `ui/language_dialog.py`. Chaque
   langue y est écrite **dans sa propre écriture** — un lecteur coréen
   reconnaît « 한국어 », pas « coréen ».
-- `tools/ecrire_langue.py` — le maillon commun aux trois installateurs. Il
+- `tools/write_language.py` — le maillon commun aux trois installateurs. Il
   **fusionne** : une réinstallation ne change que la langue. Écriture atomique
   par fichier provisoire puis `os.replace`.
 - `config.py` : `Settings.premier_lancement`, vrai quand aucun fichier de
@@ -906,8 +906,8 @@ toujours au micrologiciel et l'exemple du SDK se charge toujours.
 | Fenêtre des mises à jour | 8 lignes, numpy 2.2.6 → 2.5.3 détecté et coché |
 | Fenêtre de langue au premier démarrage | 11 langues, chacune dans son écriture |
 | `.run --langue ja` | `[ok] 言語：日本語` — catalogue japonais chargé |
-| `tools/ecrire_langue.py` | écrit, fusionne, refuse un code inconnu, survit à un JSON cassé |
-| `tools/entetes.py --verifier` | 265 fichiers, tous à jour |
+| `tools/write_language.py` | écrit, fusionne, refuse un code inconnu, survit à un JSON cassé |
+| `tools/headers.py --verifier` | 265 fichiers, tous à jour |
 
 ### Attention
 
@@ -921,7 +921,7 @@ toujours au micrologiciel et l'exemple du SDK se charge toujours.
   paquets signés, 0 échec**, empreintes SHA-256 conformes. `makensis` compile
   bien les onze langues — la trace le montre : `+ LangDLL::LangDialog`,
   `MUI_LANGDLL_REGISTRY_VALUENAME = Langue`, `!insertmacro: CodeLangue`,
-  `ExecToLog … ecrire_langue.py "$R0"`, puis
+  `ExecToLog … write_language.py "$R0"`, puis
   « Generating language tables... Done! ». Ce qui reste non vu, faute de
   machine Windows ici, c'est la boîte **à l'écran** : la fabrication est
   vérifiée, l'affichage ne peut pas l'être.
@@ -1025,7 +1025,7 @@ sources et pointait encore sur `sources/firmware-phytosense/phytosense-fw/`.
 | `tools/sbom.py --verifier` | à jour, 15 composants |
 | `certificate.py --verifier` | les deux copies concordent |
 | `languages.py --verifier` | 561 traductions cohérentes |
-| `tools/entetes.py --verifier` | 267 fichiers |
+| `tools/headers.py --verifier` | 267 fichiers |
 | `src/firmware/build.sh` | `phytosense.uf2` 80 ko, `.elf` 764 ko |
 | Cache CMake falsifié | détecté et jeté |
 | YAML des 7 workflows | tous analysables |
@@ -1123,7 +1123,7 @@ première. Lister, puis **supprimer nommément** ce qui a été listé.
 | Cache CMake falsifié | détecté et jeté par `_make_.sh` |
 | `tools/sbom.py` | lit `SDK_VERSION` dans `_make_.sh` — 2.3.1 |
 | YAML des 7 workflows | tous analysables |
-| `tools/entetes.py --verifier` | à jour |
+| `tools/headers.py --verifier` | à jour |
 
 ### Un défaut grave, trouvé juste avant de conclure
 
@@ -1217,7 +1217,7 @@ projet. Formulation corrigée aux deux endroits, et renvoi vers
 | contraintes | 80 | 80 |
 
 Les commandes citées ont été exécutées : `make certificat-etat`,
-`make certificat-verifier`, `tools/verifier_svg.py`, `tools/pdf_impactes.py`,
+`make certificat-verifier`, `tools/verify_svg.py`, `tools/impacted_pdfs.py`,
 `tools/sbom.py --verifier` — toutes passent.
 
 ---
@@ -1297,7 +1297,7 @@ minuscules, qui sont acceptées.
 
 Ni la relecture, ni `yamllint`, ni `zizmor` ne posent la question : tous trois
 lisent le fichier, aucun ne demande à GitHub si la cible existe. D'où
-`tools/verifier_actions.py`, ajouté au travail « Analyse des workflows » —
+`tools/verify_actions.py`, ajouté au travail « Analyse des workflows » —
 **sans** `continue-on-error`, seule étape de ce travail à pouvoir refuser une
 fusion, puisqu'une référence morte rend un contrôle muet.
 
@@ -1316,7 +1316,7 @@ quatre échouent comme prévu, et `securite.yml` a été restauré à l'identiqu
 | Contrôle | Résultat |
 |---|---|
 | `make test` | **349 passent** (344 + 5) |
-| `tools/entetes.py --verifier` | 269 fichiers, tous à jour |
+| `tools/headers.py --verifier` | 269 fichiers, tous à jour |
 | `ruff` (jeu bloquant de la CI) | aucun avertissement |
 | YAML des 7 workflows | tous valides |
 | les 16 références d'actions | toutes résolues |
@@ -1343,7 +1343,7 @@ par l'API GitHub. Elle m'a répondu :
 
     HTTP Error 403: rate limit exceeded
 
-Soixante appels par heure sans jeton, et `tools/verifier_actions.py` en avait
+Soixante appels par heure sans jeton, et `tools/verify_actions.py` en avait
 déjà consommé seize. Ce mur a révélé un défaut sérieux **dans ce que je
 venais de pousser** :
 
@@ -1393,7 +1393,7 @@ une empreinte épinglée sur v2.3.9, ce qui laissait croire à un flottement.
 | `trivy-action@0.28.0` remise | code 1, introuvable |
 | réseau coupé (mandataire mort) | code 0, message clair |
 | `make test` | 349 passent |
-| `tools/entetes.py --verifier` | 269 fichiers à jour |
+| `tools/headers.py --verifier` | 269 fichiers à jour |
 | `ruff` (jeu bloquant) | aucun avertissement |
 | YAML des 7 workflows | valides |
 

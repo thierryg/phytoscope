@@ -336,9 +336,9 @@ def collecter_cles() -> List[str]:
     #  Les tables de données. Importées tardivement : ce module est chargé très
     #  tôt, et rien de tout cela n'est nécessaire pour traduire.
     try:
-        from .core.empreinte import DESCRIPTEURS as EMPREINTE, SEUILS
+        from .core.fingerprint import DESCRIPTEURS as EMPREINTE, SEUILS
         from .core.features import DESCRIPTEURS
-        from .core.grandeurs import inventaire as GRANDEURS
+        from .core.quantities import inventaire as GRANDEURS
         from .core.logging_setup import NIVEAUX_FR
         from .core.sampling import FENETRES
         from .music.instruments import get as _instr, instrument_list

@@ -2,7 +2,7 @@
 
 > **Note d'intégration.** Cette série a été fusionnée dans le dépôt PhytoScope
 > le 2026-09-18. Les chemins ci-dessous sont relatifs à la racine du dépôt :
-> le script de construction s'appelle désormais `build_arbre.py` et sa feuille
+> le script de construction s'appelle désormais `build_tree.py` et sa feuille
 > de style `pdf-src/arbre.css` (pour ne pas entrer en conflit avec `build.py` et
 > `pdf-src/book.css`, qui produisent l’ouvrage principal).
 
@@ -36,10 +36,10 @@ Les annexes techniques du bonus sont **également intégrées au volume III** ; 
 musique-of-the-plants-2/
 ├── build.py                  # Assemble les fragments → HTML → PDF (WeasyPrint)
 ├── tools/
-│   ├── gen_glossaire.py      # Glossaire des 3 volumes depuis une base unique
+│   ├── gen_glossary.py      # Glossaire des 3 volumes depuis une base unique
 │   ├── gen_index.py          # Index paginé, avec vérification des ancres mortes
 │   ├── gen_credits.py        # Crédits iconographiques des photos réellement employées
-│   ├── gen-annexe-parts.py   # Fragments de l'annexe technique (listings extraits des ZIP)
+│   ├── gen-appendix-parts.py   # Fragments de l'annexe technique (listings extraits des ZIP)
 │   ├── build-annexe.py       # Tirage à part de l'annexe technique
 │   └── fetch-software.py     # Téléchargement des dépôts + relevé de licence
 ├── recherche/                # Notes de recherche sourcées (4 fichiers)
@@ -82,13 +82,13 @@ python3 pdf-src/assets/svg/gen_tt.py     # 34 illustrations propres à la série
 python3 pdf-src/assets/svg/gen_sch.py    #  5 planches de schémas électroniques
 
 # 2. (Re)générer les annexes calculées
-python3 tools/gen_glossaire.py       # glossaire des 3 volumes
+python3 tools/gen_glossary.py       # glossaire des 3 volumes
 python3 tools/gen_index.py           # index paginé des 3 volumes
 python3 tools/gen_credits.py         # crédits iconographiques
 
 # 3. Produire les PDF
-python3 pdf-src/build_arbre.py                     # les trois volumes
-python3 pdf-src/build_arbre.py v1                  # un seul volume
+python3 pdf-src/build_tree.py                     # les trois volumes
+python3 pdf-src/build_tree.py v1                  # un seul volume
 python3 tools/build-annexe.py        # le tirage à part de l'annexe technique
 ```
 
@@ -101,7 +101,7 @@ python3 tools/build-annexe.py        # le tirage à part de l'annexe technique
 
 ## 5. Modifier le contenu
 
-- Le texte vit dans `pdf-src/parts/<volume>/*.html`. Éditez, relancez `python3 pdf-src/build_arbre.py`.
+- Le texte vit dans `pdf-src/parts/<volume>/*.html`. Éditez, relancez `python3 pdf-src/build_tree.py`.
 - La mise en forme est centralisée dans `pdf-src/arbre.css`.
 - Pour ajouter une illustration : écrivez une fonction dans `gen_tt.py`, régénérez,
   puis référencez `assets/svg/mon-image.svg`.

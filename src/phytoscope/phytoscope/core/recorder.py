@@ -47,7 +47,7 @@ from typing import Any, Dict, List, Optional
 import numpy as np
 
 from .dsp import Event
-from . import noms
+from . import filenames
 
 
 # ---------------------------------------------------------------------------
@@ -355,4 +355,4 @@ class Recorder:
 
 def _slug(text: str) -> str:
     """Nom de dossier de séance — voir `core.noms` pour le pourquoi."""
-    return noms.assainir(text, defaut="seance", longueur=40)
+    return filenames.assainir(text, defaut="seance", longueur=40)

@@ -23,7 +23,7 @@ invalide, API visée inconnue, bibliothèque absente, ou faute au chargement.
 ## Les essais
 
 ```bash
-python3 -m pytest sdk/bonjour-monde/test_bonjour_monde.py -v
+python3 -m pytest sdk/bonjour-monde/test_hello_world.py -v
 ```
 
 Les essais n'ont besoin **ni du logiciel lancé, ni de matériel** : ils
@@ -33,7 +33,7 @@ C'est ce qui permet de développer un module sans plante sur le bureau.
 ## En créer un nouveau
 
 ```bash
-python3 src/sdk/outils/nouveau_module.py mon-module --capacite analyseur
+python3 src/sdk/outils/new_module.py mon-module --capacite analyseur
 ```
 
 L'outil crée le dossier, le manifeste, le squelette et les essais.

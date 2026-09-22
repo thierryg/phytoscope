@@ -459,7 +459,7 @@ def _graphique(settings, rapport=None, langue_imposee: bool = False) -> int:
     #  que Qt applique, pas la précédente.
     if getattr(settings, "premier_lancement", False) and not langue_imposee:
         try:
-            from .ui.langue_dialog import demander_si_premier_lancement
+            from .ui.language_dialog import demander_si_premier_lancement
             retenue = demander_si_premier_lancement(settings)
             if retenue and retenue != settings.ui.language:
                 settings.ui.language = retenue

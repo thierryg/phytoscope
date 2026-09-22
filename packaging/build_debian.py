@@ -89,8 +89,8 @@ def construire_deb(id_: Identite, embarquer: bool) -> Optional[str]:
         #  `dnf` installent sans interaction, souvent sans session graphique.
         #  Poser la question de l'icône à ce moment-là serait la poser à la
         #  mauvaise personne.
-        for outil, cible in (("icone-bureau.sh", "phytoscope-icone-bureau"),
-                             ("desinstaller.sh", "phytoscope-desinstaller")):
+        for outil, cible in (("desktop-icon.sh", "phytoscope-icone-bureau"),
+                             ("uninstall.sh", "phytoscope-desinstaller")):
             ecrire(os.path.join(racine, "usr", "bin", cible),
                    open(os.path.join(GABARITS, "debian", outil),
                         encoding="utf-8").read(), executable=True)
@@ -200,18 +200,18 @@ def construire_run(id_: Identite, embarquer: bool = False) -> Optional[str]:
         #  La couche porte elle aussi des jetons (@VERSION@ dans son titre) :
         #  on les remplit AVANT de l'insérer, sans quoi ils survivraient à la
         #  substitution de l'en-tête, qui a déjà eu lieu à ce moment-là.
-        couche = remplir(os.path.join(GABARITS, "linux", "interface.sh"),
+        couche = remplir(os.path.join(GABARITS, "linux", "frontend.sh"),
                          id_.jetons())
 
         valeurs = dict(id_.jetons(), EMPREINTE=somme, LIGNES="0",
                        COUCHE_INTERFACE=couche)
-        entete = remplir(os.path.join(GABARITS, "linux", "entete.sh"), valeurs)
+        entete = remplir(os.path.join(GABARITS, "linux", "header.sh"), valeurs)
         #  L'en-tête doit annoncer sa propre longueur en lignes : c'est ainsi
         #  que le script retrouve le début de l'archive. On le remplit donc
         #  deux fois — une première pour compter, une seconde avec le compte.
         #  Le jeton et sa valeur tenant sur une ligne, le compte ne bouge pas.
         valeurs["LIGNES"] = str(entete.count("\n"))
-        entete = remplir(os.path.join(GABARITS, "linux", "entete.sh"), valeurs)
+        entete = remplir(os.path.join(GABARITS, "linux", "header.sh"), valeurs)
         assert entete.count("\n") == int(valeurs["LIGNES"]), \
             "le remplissage a changé le nombre de lignes de l'en-tête"
 

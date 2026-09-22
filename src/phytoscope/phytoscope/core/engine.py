@@ -54,7 +54,7 @@ from ..music.synth import AudioOutput, Synth
 from ..music.voice import VoiceOutput
 from .dsp import (Baseline, Chain, Event, EventDetector, RunningStats,
                   build_chain, welch_psd)
-from . import espace, samples
+from . import disk_space, samples
 from .errors import resilient
 from .logging_setup import get_logger
 from .protocol import BoardInfo, ControlLink
@@ -434,7 +434,7 @@ class Engine:
         échantillon (`C-20`, `C-28`).
         """
         try:
-            from ..api.evenements import BUS
+            from ..api.events import BUS
             BUS.publier(evenement, *args, **kwargs)
         except Exception as exc:                           # noqa: BLE001
             log.error("Publication de « %s » : %s", evenement, exc)
@@ -568,11 +568,11 @@ class Engine:
 
         enregistre = self.recorder is not None and self.recorder.active
         chemin = self.recorder.dir if enregistre else r.directory
-        etat = espace.mesurer(chemin)
+        etat = disk_space.mesurer(chemin)
         if not etat.mesure:
             return
-        debit = espace.debit_mo_par_heure(self.settings)
-        reste = espace.autonomie_heures(etat.libre_mo, r.reserve_mb, debit)
+        debit = disk_space.debit_mo_par_heure(self.settings)
+        reste = disk_space.autonomie_heures(etat.libre_mo, r.reserve_mb, debit)
         alerte = enregistre and reste * 60.0 <= max(r.warn_minutes, 1.0)
 
         with self.lock:
@@ -590,7 +590,7 @@ class Engine:
             self._message(t("Disque plein : enregistrement clos à {reste} "
                             "libres. La séance est complète et refermée : "
                             "{chemin}").format(
-                                reste=espace.formater_mo(etat.libre_mo),
+                                reste=disk_space.formater_mo(etat.libre_mo),
                                 chemin=chemin_clos or "—"))
             self._disque_prevenu = False
             return
@@ -600,9 +600,9 @@ class Engine:
             self._message(t("Espace disque : {reste} libres, soit environ "
                             "{duree} d'enregistrement. L'enregistrement sera "
                             "clos automatiquement à {reserve}.").format(
-                                reste=espace.formater_mo(etat.libre_mo),
-                                duree=espace.formater_duree(reste),
-                                reserve=espace.formater_mo(r.reserve_mb)))
+                                reste=disk_space.formater_mo(etat.libre_mo),
+                                duree=disk_space.formater_duree(reste),
+                                reserve=disk_space.formater_mo(r.reserve_mb)))
 
     def _maj_centroide(self) -> None:
         """Centre de gravité spectral du signal récent, en hertz.

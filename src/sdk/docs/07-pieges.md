@@ -194,7 +194,7 @@ mon-module/test_module.py
 autre-module/test_module.py     ← pytest refuse de collecter les deux
 ```
 
-Nommez-les `test_<votre-module>.py`. L'outil `nouveau_module.py` le fait.
+Nommez-les `test_<votre-module>.py`. L'outil `new_module.py` le fait.
 
 ---
 

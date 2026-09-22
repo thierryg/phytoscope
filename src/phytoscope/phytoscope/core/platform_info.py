@@ -108,7 +108,7 @@ PAQUETS: Dict[str, Dict[str, List[str]]] = {
         "arch": ["rtmidi"], "suse": ["rtmidi-devel"], "alpine": ["rtmidi-dev"],
         "macos": [], "windows": [],
     },
-    #  Chaîne de fabrication des PDF (`build.py`, `build_carte.py`). Elle ne
+    #  Chaîne de fabrication des PDF (`build.py`, `build_board.py`). Elle ne
     #  concerne pas l'utilisateur du logiciel : seulement qui reconstruit
     #  l'ouvrage. WeasyPrint embarque son moteur de rendu depuis la version 53
     #  mais reste lié à Pango, HarfBuzz et fontconfig, qu'aucune roue Python

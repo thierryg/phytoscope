@@ -18,8 +18,8 @@ ici. S'il y a un ticket, renvoyez-y : « corrige #12 ».
 - [ ] `cd src/phytoscope && make test` — la suite passe
 - [ ] `cd src/phytoscope && make lint`
 - [ ] `pre-commit run --all-files`
-- [ ] `python3 tools/entetes.py --verifier` — les en-têtes sont à jour
-- [ ] `python3 tools/verifier_svg.py` — si j'ai touché aux illustrations
+- [ ] `python3 tools/headers.py --verifier` — les en-têtes sont à jour
+- [ ] `python3 tools/verify_svg.py` — si j'ai touché aux illustrations
 - [ ] Les publications se reconstruisent — si j'ai touché à `pdf-src/` ou aux `build_*.py`
 - [ ] `cd packaging && make tout && make verifier` — si j'ai touché à l'empaquetage
 

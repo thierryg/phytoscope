@@ -10,7 +10,7 @@ Le dépôt porte **deux licences**, parce qu'il porte deux natures d'objets
 
 Écrire « MIT » sur un plan de circuit serait faux, et un jour quelqu'un s'en
 servirait en le croyant. D'où la seconde licence, et d'où le fait que
-`tools/entetes.py` la pose automatiquement sur tout fichier vivant sous
+`tools/headers.py` la pose automatiquement sur tout fichier vivant sous
 `hardware/`.
 
 ## Comment savoir quelle licence s'applique à un fichier
@@ -25,7 +25,7 @@ SPDX-License-Identifier: MIT
 Pour le vérifier sur l'ensemble du dépôt :
 
 ```bash
-python3 tools/entetes.py --verifier
+python3 tools/headers.py --verifier
 ```
 
 ## Ce qui n'est ni l'un ni l'autre

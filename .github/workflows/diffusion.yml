@@ -99,7 +99,7 @@ jobs:
       - name: ruff
         run: ruff check packaging tools src/phytoscope pdf-src/build*.py
       - name: En-têtes d'attribution
-        run: python3 tools/entetes.py --verifier
+        run: python3 tools/headers.py --verifier
 
   # -------------------------------------------------------------------------
   #  3, 4, 5. Paquets, nomenclature logicielle, attestation de provenance
@@ -270,12 +270,12 @@ jobs:
           for g in gen gen_carte gen_sch gen_sdk gen_tt; do
             python3 pdf-src/assets/svg/$g.py
           done
-          python3 tools/verifier_svg.py
+          python3 tools/verify_svg.py
           python3 tools/gen_bom.py
           python3 tools/gen_code_annex.py
           python3 pdf-src/build.py
-          python3 pdf-src/build_arbre.py
-          python3 pdf-src/build_carte.py
+          python3 pdf-src/build_tree.py
+          python3 pdf-src/build_board.py
           python3 pdf-src/build_sdk.py
       - name: Nombre de pages produites
         run: |

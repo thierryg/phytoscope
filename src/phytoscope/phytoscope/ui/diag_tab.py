@@ -47,7 +47,7 @@ from ..core.logging_setup import get_logger
 from ..core.sampling import FENETRES
 from .widgets import LevelBar
 from ..i18n import t
-from . import polices
+from . import fonts
 
 log = get_logger(__name__)
 
@@ -613,7 +613,7 @@ class DiagTab(QWidget):
 
         self.vue_journal = QPlainTextEdit()
         self.vue_journal.setReadOnly(True)
-        self.vue_journal.setFont(polices.mono(8))
+        self.vue_journal.setFont(fonts.mono(8))
         lay.addWidget(self.vue_journal, 1)
 
         bas = QHBoxLayout()

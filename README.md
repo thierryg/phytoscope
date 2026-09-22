@@ -80,7 +80,7 @@ distingués :
 
 | Registre | Ce qu'on affirme | Où c'est documenté |
 |---|---|---|
-| **Mesuré** | Ce qu'un instrument donne, avec son incertitude | *La Carte PhytoSense*, `core/grandeurs.py` |
+| **Mesuré** | Ce qu'un instrument donne, avec son incertitude | *La Carte PhytoSense*, `core/quantities.py` |
 | **Plausible** | Ce que la littérature établit, avec sa référence | *La Musique des Plantes*, `sources/INDEX.md` |
 | **Non mesurable** | Ce qui relève du vécu et se dit comme tel | *L'Arbre qui Parle*, échelle épistémique |
 
@@ -144,9 +144,9 @@ phytoscope/
 │   └── sdk/                        la trousse pour écrire un module tiers
 │
 ├── pdf-src/                        LES SOURCES DES DIX PUBLICATIONS
-│   ├── build.py  build_arbre.py    ┐
-│   ├── build_annexe.py             │ les cinq fabriques
-│   ├── build_carte.py  build_sdk.py┘
+│   ├── build.py  build_tree.py    ┐
+│   ├── build_appendix.py             │ les cinq fabriques
+│   ├── build_board.py  build_sdk.py┘
 │   ├── book.css carte.css          les chartes graphiques (paged media)
 │   ├── arbre.css fonts.css
 │   ├── assets/svg/                 104 illustrations + leurs 5 générateurs
@@ -200,10 +200,10 @@ phytoscope/
 
 Ce sont deux choses opposées, et les confondre a des conséquences réelles :
 
-- `src/` est **notre code**. `tools/entetes.py` y pose notre en-tête
+- `src/` est **notre code**. `tools/headers.py` y pose notre en-tête
   d'attribution et son `SPDX-License-Identifier`.
 - `sources/` est **ce que d'autres ont écrit**. Il est **exclu** de
-  `tools/entetes.py`. La raison est concrète : l'outil y avait apposé
+  `tools/headers.py`. La raison est concrète : l'outil y avait apposé
   « © Bretagne Namasté » et « MIT » sur 32 fichiers, dont le micrologiciel
   **Biotron, qui est en GPL-3.0**. C'était une fausse déclaration de licence
   et de paternité ; corrigé, et le job `licences` de la CI refuse qu'elle
@@ -296,7 +296,7 @@ Optionnelles, et le logiciel fonctionne sans : `python-rtmidi` (ports MIDI),
 `src/phytoscope/phytoscope/VERSION` et `.../AUTEURS` sont les **seules**
 sources de vérité pour la version et l'attribution. Le logiciel les lit pour
 sa fenêtre « À propos », la fabrique de paquets pour estampiller le `.deb`,
-`tools/entetes.py` pour les en-têtes, `packaging/signature.py` pour le sujet
+`tools/headers.py` pour les en-têtes, `packaging/signature.py` pour le sujet
 du certificat X.509, et `src/firmware/build.sh` pour la notice du
 micrologiciel. Ils vivent **dans le paquet Python** et non à la racine, pour
 une raison simple : un logiciel installé n'emporte pas le dépôt.
@@ -368,8 +368,8 @@ Un module tiers ajoute un descripteur, un mode de sonification ou un
 exportateur, **sans toucher au logiciel**.
 
 ```bash
-python3 src/sdk/outils/nouveau_module.py mon-module --capacite descripteur
-python3 src/sdk/outils/nouveau_module.py mon-module --installer
+python3 src/sdk/outils/new_module.py mon-module --capacite descripteur
+python3 src/sdk/outils/new_module.py mon-module --installer
 ```
 
 - `src/sdk/docs/` — la documentation en sept parties ;
@@ -392,7 +392,7 @@ main.
 
 > `hardware/` est sous **CERN-OHL-P v2**, pas MIT (`C-53`). Écrire « MIT » sur
 > un plan de circuit serait faux, et un jour quelqu'un s'en servirait en le
-> croyant. `tools/entetes.py` connaît la règle et pose la bonne licence selon
+> croyant. `tools/headers.py` connaît la règle et pose la bonne licence selon
 > le chemin.
 
 ---
@@ -406,14 +406,14 @@ pagination, index paginé, métadonnées.
 | Publication | Pages | Fabrique |
 |---|---:|---|
 | **La Musique des Plantes** | 478 | `build.py` |
-| **L'Arbre qui Parle — Dublin** | 212 | `build_arbre.py v1` |
-| **Biocommunication végétale et IA** | 163 | `build_arbre.py v2` |
-| **Créer un arbre parlant** | 198 | `build_arbre.py v3` |
-| **Annexe — planches, BOM, programmes** | 65 | `build_annexe.py` |
-| **La Carte PhytoSense** | 198 | `build_carte.py` |
-| **PhytoSense — schémas** | 12 | `build_carte.py` |
-| **PhytoSense — nomenclature** | 18 | `build_carte.py` |
-| **PhytoSense — circuit imprimé** | 7 | `build_carte.py` |
+| **L'Arbre qui Parle — Dublin** | 212 | `build_tree.py v1` |
+| **Biocommunication végétale et IA** | 163 | `build_tree.py v2` |
+| **Créer un arbre parlant** | 198 | `build_tree.py v3` |
+| **Annexe — planches, BOM, programmes** | 65 | `build_appendix.py` |
+| **La Carte PhytoSense** | 198 | `build_board.py` |
+| **PhytoSense — schémas** | 12 | `build_board.py` |
+| **PhytoSense — nomenclature** | 18 | `build_board.py` |
+| **PhytoSense — circuit imprimé** | 7 | `build_board.py` |
 | **Écrire un module PhytoScope** | 27 | `build_sdk.py` |
 
 ### Reconstruire
@@ -421,11 +421,11 @@ pagination, index paginé, métadonnées.
 ```bash
 # Les illustrations d'abord : elles sont générées, jamais dessinées (C-45)
 python3 pdf-src/assets/svg/gen.py          # l'ouvrage et la série
-python3 pdf-src/assets/svg/gen_carte.py    # le hors-série
+python3 pdf-src/assets/svg/gen_board.py    # le hors-série
 python3 pdf-src/assets/svg/gen_sch.py      # les planches de schémas
 python3 pdf-src/assets/svg/gen_sdk.py      # le guide du SDK
 python3 pdf-src/assets/svg/gen_tt.py       # la série « L'Arbre qui Parle »
-python3 tools/verifier_svg.py              # sont-elles du XML bien formé ?
+python3 tools/verify_svg.py              # sont-elles du XML bien formé ?
 
 # Les fragments produits à partir de sources de vérité
 python3 tools/gen_bom.py                   # depuis hardware/*.csv
@@ -433,9 +433,9 @@ python3 tools/gen_code_annex.py            # depuis les fichiers de code réels
 
 # Les publications
 python3 pdf-src/build.py
-python3 pdf-src/build_arbre.py             # ou « v1 », « v2 v3 »…
-python3 pdf-src/build_annexe.py
-python3 pdf-src/build_carte.py
+python3 pdf-src/build_tree.py             # ou « v1 », « v2 v3 »…
+python3 pdf-src/build_appendix.py
+python3 pdf-src/build_board.py
 python3 pdf-src/build_sdk.py
 ```
 
@@ -446,7 +446,7 @@ coquille dans le hors-série n'a aucune raison de reconstruire l'ouvrage de
 478 pages :
 
 ```bash
-git diff --name-only | python3 tools/pdf_impactes.py -
+git diff --name-only | python3 tools/impacted_pdfs.py -
 # → les commandes à lancer, et rien d'autre
 ```
 
@@ -455,7 +455,7 @@ rattacher déclenche tout. Se tromper en refaisant trop coûte des minutes ;
 se tromper en refaisant trop peu publie un PDF périmé, **et cela ne se voit
 pas**. C'est lui que la CI utilise.
 
-### Le défaut qui a justifié `tools/verifier_svg.py`
+### Le défaut qui a justifié `tools/verify_svg.py`
 
 Une illustration qui n'est pas du XML bien formé **ne casse pas la
 fabrication** : WeasyPrint la laisse tomber, compose un cadre vide, et le PDF
@@ -557,7 +557,7 @@ Sept workflows, dans `.github/workflows/` :
 - **Les workflows sont eux-mêmes analysés** (`zizmor`) : un workflow qui
   demande `contents: write` là où `read` suffit est une porte ouverte.
 - **Les actions tierces sont épinglées par empreinte de commit**, et leur
-  existence est vérifiée à chaque poussée (`tools/verifier_actions.py`). Une
+  existence est vérifiée à chaque poussée (`tools/verify_actions.py`). Une
   étiquette se déplace ; une empreinte non. Et une référence morte ne fait
   pas échouer une étape : elle empêche le travail de démarrer, donc un
   contrôle de sécurité devient silencieux sans rien dire — cela s'est
@@ -582,7 +582,7 @@ pre-commit run --all-files
 # Les actions de la CI existent-elles, et les tierces sont-elles épinglées ?
 # Par « git ls-remote » : aucun quota d'API, aucun jeton. Sans réseau,
 # l'outil le dit et n'échoue pas.
-python3 tools/verifier_actions.py --epingle
+python3 tools/verify_actions.py --epingle
 ```
 
 `.pre-commit-config.yaml` ajoute aux crochets usuels trois contrôles propres

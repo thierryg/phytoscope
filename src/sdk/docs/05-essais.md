@@ -190,7 +190,7 @@ Nommez votre fichier d'essais **`test_<votre-module>.py`**, et non
 `test_module.py`. Deux fichiers de même nom, dans deux dossiers sans
 `__init__.py`, ne peuvent pas être collectés dans la même session pytest.
 
-L'outil `nouveau_module.py` le fait pour vous.
+L'outil `new_module.py` le fait pour vous.
 
 ---
 

@@ -24,7 +24,7 @@ from __future__ import annotations
 
 from typing import Dict
 
-from . import polices
+from . import fonts
 
 PALETTES: Dict[str, Dict[str, str]] = {
     "sombre": {
@@ -59,12 +59,12 @@ def stylesheet(name: str, font_scale: float = 1.0) -> str:
     p = palette(name)
     #  La pile de familles vit dans `polices` : un seul endroit à
     #  corriger le jour où une police manque sur un système.
-    mono = polices.css_mono()
+    mono = fonts.css_mono()
     s = max(0.8, min(font_scale, 2.0))
     #  Sur macOS le point vaut 1/72 pouce logique contre 1/96 ailleurs :
     #  sans cette correction toute l'interface y serait un tiers plus
-    #  petite. Voir `polices.facteur()`.
-    f = polices.facteur()
+    #  petite. Voir `fonts.facteur()`.
+    f = fonts.facteur()
     base = round(10 * s * f)
     big = round(13 * s * f)
     return f"""
@@ -112,7 +112,7 @@ def stylesheet(name: str, font_scale: float = 1.0) -> str:
                 border: 1px solid {p['or']}; padding: 4px; }}
     QStatusBar {{ background: {p['fond3']}; border-top: 1px solid {p['trait']}; }}
     QLabel#titre {{ font-size: {big}pt; font-weight: bold; color: {p['or']}; }}
-    QLabel#valeur {{ {mono} font-size: {round(28 * s * polices.facteur())}pt;
+    QLabel#valeur {{ {mono} font-size: {round(28 * s * fonts.facteur())}pt;
                      color: {p['trace']}; }}
     QLabel#unite {{ color: {p['texte2']}; }}
     QLabel#alerte {{ color: {p['alerte']}; font-weight: bold; }}

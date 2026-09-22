@@ -264,7 +264,7 @@ jobs:
             echo "! notre attribution se trouve sur du code tiers :"
             echo "$fautifs"
             echo
-            echo "  sources/ est exclu de tools/entetes.py pour cette raison."
+            echo "  sources/ est exclu de tools/headers.py pour cette raison."
             echo "  Retirez ces en-têtes : chaque projet garde sa licence."
             exit 1
           fi
@@ -300,7 +300,7 @@ jobs:
           done
 
       - name: Les en-têtes d'attribution sont à jour
-        run: python3 tools/entetes.py --verifier
+        run: python3 tools/headers.py --verifier
 
       - name: reuse — conformité de la déclaration des licences
         run: |
@@ -339,7 +339,7 @@ jobs:
       #  une étape non tolérante, un quota aurait bloqué une fusion pour une
       #  raison étrangère aux workflows.
       - name: Chaque action référencée existe, et les tierces sont épinglées
-        run: python3 tools/verifier_actions.py --epingle
+        run: python3 tools/verify_actions.py --epingle
 
       - name: zizmor
         run: |

@@ -81,12 +81,12 @@ make demo                      # a guided look, no hardware needed
 
 # Publications (from the repository root) — 10 PDFs, 1,378 pages
 python3 pdf-src/assets/svg/gen.py         && python3 pdf-src/build.py         # main book,      478 pp.
-python3 pdf-src/assets/svg/gen_tt.py      && python3 pdf-src/build_arbre.py   # the series,     573 pp.
-python3 pdf-src/assets/svg/gen_sch.py     && python3 pdf-src/build_annexe.py  # the appendix,    65 pp.
-python3 pdf-src/assets/svg/gen_carte.py   && python3 pdf-src/build_carte.py   # the special,    235 pp.
+python3 pdf-src/assets/svg/gen_tt.py      && python3 pdf-src/build_tree.py   # the series,     573 pp.
+python3 pdf-src/assets/svg/gen_sch.py     && python3 pdf-src/build_appendix.py  # the appendix,    65 pp.
+python3 pdf-src/assets/svg/gen_board.py   && python3 pdf-src/build_board.py   # the special,    235 pp.
 python3 pdf-src/assets/svg/gen_sdk.py     && python3 pdf-src/build_sdk.py     # the SDK guide,   27 pp.
-python3 tools/verifier_svg.py                    # are the 104 figures well-formed XML?
-git diff --name-only | python3 tools/pdf_impactes.py -   # which PDFs need rebuilding?
+python3 tools/verify_svg.py                    # are the 104 figures well-formed XML?
+git diff --name-only | python3 tools/impacted_pdfs.py -   # which PDFs need rebuilding?
 
 # Translation of the repository — see .ai/rename-plan.json
 python3 tools/verify_translation.py --remaining   # how much French is left, per area
@@ -144,13 +144,13 @@ src/                        TOUT LE CODE
   sdk/                      la trousse pour écrire un module tiers
     docs/                   les sept parties de la documentation
     bonjour-monde/          le module d'exemple, avec son test
-    outils/nouveau_module.py
+    outils/new_module.py
 
 pdf-src/                    LES SOURCES DES DIX PUBLICATIONS
   build.py                  l'ouvrage principal                      478 p.
-  build_arbre.py            la série « L'Arbre qui Parle » (v1 v2 v3)
-  build_annexe.py           l'annexe technique de la série            65 p.
-  build_carte.py            le hors-série et ses 3 fascicules
+  build_tree.py            la série « L'Arbre qui Parle » (v1 v2 v3)
+  build_appendix.py           l'annexe technique de la série            65 p.
+  build_board.py            le hors-série et ses 3 fascicules
   build_sdk.py              le guide du SDK                           27 p.
   book.css carte.css        les chartes graphiques (paged media)
   arbre.css fonts.css
@@ -181,17 +181,17 @@ packaging/                  la fabrique des paquets d'installation
   macos_pkg.py              le format .pkg, écrit de bout en bout
   gabarits/                 control, .spec, .nsi, .wxs, Info.plist, lanceurs
 tools/                      les outils du dépôt
-  entetes.py                pose et vérifie les en-têtes d'attribution
-  verifier_svg.py           les illustrations sont-elles du XML bien formé ?
-  pdf_impactes.py           quelles publications refaire, vu ce qui a changé
+  headers.py                pose et vérifie les en-têtes d'attribution
+  verify_svg.py           les illustrations sont-elles du XML bien formé ?
+  impacted_pdfs.py           quelles publications refaire, vu ce qui a changé
   sbom.py                   la nomenclature du PROJET — logiciel ET micrologiciel
   gen_bom.py gen_index.py   fragments générés — ne jamais les éditer (C-45)
-  gen_glossaire.py gen_credits.py gen_code_annex.py
+  gen_glossary.py gen_credits.py gen_code_annex.py
   fetch-software.py         récupère les dépôts tiers (817 Mo, hors dépôt)
 certificat/                 le certificat PUBLIC ; la clé privée est écartée
 
 sources/                    MATIÈRE DE RÉFÉRENCE — rien que nous ayons écrit,
-                            sauf sources/reverse/. Exclu de tools/entetes.py.
+                            sauf sources/reverse/. Exclu de tools/headers.py.
   brevets/                  13 brevets (PDF hors dépôt)
   datasheets/               9 notices de composants (hors dépôt)
   manuels-constructeurs/    11 manuels (hors dépôt)

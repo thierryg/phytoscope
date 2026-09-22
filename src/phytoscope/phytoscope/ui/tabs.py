@@ -38,7 +38,7 @@ from ..music.scales import (NOTE_NAMES_FR, build_notes, diapason_list,
                             ecart_cents, midi_to_hz, note_name, scale_names)
 from .widgets import LevelBar, Readout, TracePlot, VuMetre
 from ..i18n import t
-from . import polices
+from . import fonts
 
 
 # ---------------------------------------------------------------------------
@@ -374,7 +374,7 @@ class MeterTab(QWidget):
         for i, (module, item) in enumerate(collectees):
             libelle = QTableWidgetItem(self._composer(item.libelle, item))
             valeur = QTableWidgetItem(item.texte)
-            valeur.setFont(polices.mono())
+            valeur.setFont(fonts.mono())
             if item.alerte:
                 valeur.setForeground(QColor(self.p["alerte"]))
             #  Un module qui ne dit pas ce que son nombre signifie est chargé
@@ -503,13 +503,13 @@ class MeterTab(QWidget):
 
     def _registre(self):
         from ..config import config_dir
-        from ..core.empreinte import Registre
+        from ..core.fingerprint import Registre
         if getattr(self, "_reg", None) is None:
             self._reg = Registre(os.path.join(config_dir(), "montages.json"))
         return self._reg
 
     def _calculer_empreinte(self) -> None:
-        from ..core import empreinte as emp
+        from ..core import fingerprint as emp
         x = self.engine.recent(120.0)
         if x.size < 64:
             self._log(t("Pas encore assez de signal pour une empreinte."))
@@ -763,7 +763,7 @@ class ListenTab(QWidget):
         pn.addWidget(QLabel(t("Notes jouées (la plus récente en haut)")))
         self.list_notes = QListWidget()
         self.list_notes.setAlternatingRowColors(True)
-        self.list_notes.setFont(polices.mono(8))
+        self.list_notes.setFont(fonts.mono(8))
         pn.addWidget(self.list_notes, 1)
         self.lab_rules = QLabel("")
         self.lab_rules.setWordWrap(True)
@@ -782,7 +782,7 @@ class ListenTab(QWidget):
             [t("Degré"), t("Note"), t("MIDI"), t("Fréquence"), t("Écart / 440 Hz")])
         self.table_notes.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table_notes.setAlternatingRowColors(True)
-        self.table_notes.setFont(polices.mono(8))
+        self.table_notes.setFont(fonts.mono(8))
         pg.addWidget(self.table_notes, 1)
         droite.addTab(page_gamme, t("Gamme et fréquences"))
 

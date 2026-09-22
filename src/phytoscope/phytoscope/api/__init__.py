@@ -24,7 +24,7 @@ Un module n'importe **que depuis ici** :
 
 Ce qui est absent de ce fichier n'est pas de l'API : cela peut changer d'une
 version à l'autre sans préavis. Ce qui y figure est tenu par le contrat de
-version (voir `contrat.VERSION_API`).
+version (voir `contract.VERSION_API`).
 
 Pour écrire un module
 ---------------------
@@ -55,16 +55,16 @@ essais, et un outil qui en crée un nouveau d'une commande.
 """
 from __future__ import annotations
 
-from .contexte import Contexte, EtatMesure
-from .contrat import (VERSION_API, Analyseur, Capacite, Descripteur,
+from .context import Contexte, EtatMesure
+from .contract import (VERSION_API, Analyseur, Capacite, Descripteur,
                       Exportateur, Grandeur, Manifeste, Module, NoteProposee,
                       Sonificateur, Source, Trace, compatible)
-from .evenements import BUS, EVENEMENTS
-from .evenements import (ALERTE_DISQUE, ECHANTILLON_CAPTURE, ENONCE_PRODUIT,
+from .events import BUS, EVENEMENTS
+from .events import (ALERTE_DISQUE, ECHANTILLON_CAPTURE, ENONCE_PRODUIT,
                          EVENEMENT_DETECTE, MESURE_ARRETEE, MESURE_DEMARREE,
                          NOTE_JOUEE, REGLAGES_MODIFIES, SEANCE_COMMENCEE,
                          SEANCE_TERMINEE, SOURCE_CHANGEE)
-from .registre import EtatModule, ModuleCharge, Registre
+from .registry import EtatModule, ModuleCharge, Registre
 
 __all__ = [
     #  Le contrat

@@ -78,7 +78,7 @@ jobs:
       - name: Python — syntaxe
         run: |
           python -m compileall -q packaging src/phytoscope tools \
-            build.py build_arbre.py build_carte.py build_sdk.py
+            build.py build_tree.py build_board.py build_sdk.py
 
       #  Ce pas BLOQUE : syntaxe et noms inexistants. Ce sont des plantages,
       #  pas des questions de style. Le jeu de règles est déclaré dans
@@ -88,8 +88,8 @@ jobs:
           ruff check --output-format=github \
             --select E9,F821,F822,F823,F811 \
             packaging tools src/phytoscope pdf-src/build.py \
-            pdf-src/build_arbre.py pdf-src/build_annexe.py \
-            pdf-src/build_carte.py pdf-src/build_sdk.py
+            pdf-src/build_tree.py pdf-src/build_appendix.py \
+            pdf-src/build_board.py pdf-src/build_sdk.py
 
       #  Ces pas INFORMENT sans bloquer : plus de mille avertissements de
       #  style héritent d'un code écrit pour Python 3.9, et les corriger d'un
@@ -156,7 +156,7 @@ jobs:
           yamllint -c .yamllint.yml .github/
 
       - name: Les en-têtes d'attribution sont-ils à jour ?
-        run: python3 tools/entetes.py --verifier
+        run: python3 tools/headers.py --verifier
 
   # -------------------------------------------------------------------------
   #  2a. Une fabrication par système cible, en parallèle

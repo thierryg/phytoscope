@@ -8,7 +8,7 @@
 #
 #  Elle ne refait PAS les dix publications à chaque fois. Refaire la série
 #  coûte une douzaine de minutes et 84 Mo pour rien quand on a corrigé une
-#  coquille dans le hors-série. « tools/pdf_impactes.py » prend la liste des
+#  coquille dans le hors-série. « tools/impacted_pdfs.py » prend la liste des
 #  fichiers modifiés et rend les commandes à lancer — et rien d'autre.
 #
 #  L'outil est volontairement prudent : un chemin qu'il ne sait pas rattacher
@@ -112,24 +112,24 @@ jobs:
              || [ '${{ inputs.tout }}' = 'true' ]; then
             echo '  · tout est refait'
             printf 'python3 pdf-src/assets/svg/gen.py\n' > commandes.sh
-            printf 'python3 pdf-src/assets/svg/gen_carte.py\n' >> commandes.sh
+            printf 'python3 pdf-src/assets/svg/gen_board.py\n' >> commandes.sh
             printf 'python3 pdf-src/assets/svg/gen_sch.py\n' >> commandes.sh
             printf 'python3 pdf-src/assets/svg/gen_sdk.py\n' >> commandes.sh
             printf 'python3 pdf-src/assets/svg/gen_tt.py\n' >> commandes.sh
             printf 'python3 tools/gen_bom.py\n' >> commandes.sh
             printf 'python3 tools/gen_code_annex.py\n' >> commandes.sh
             printf 'python3 pdf-src/build.py\n' >> commandes.sh
-            printf 'python3 pdf-src/build_arbre.py\n' >> commandes.sh
+            printf 'python3 pdf-src/build_tree.py\n' >> commandes.sh
             printf 'python3 tools/build-annexe.py\n' >> commandes.sh
-            printf 'python3 pdf-src/build_carte.py\n' >> commandes.sh
+            printf 'python3 pdf-src/build_board.py\n' >> commandes.sh
             printf 'python3 pdf-src/build_sdk.py\n' >> commandes.sh
           else
-            python3 tools/pdf_impactes.py - < modifies.txt > commandes.sh
+            python3 tools/impacted_pdfs.py - < modifies.txt > commandes.sh
           fi
           echo "── à lancer"
           sed 's/^/  · /' commandes.sh
           echo "── PDF qui seront réécrits"
-          python3 tools/pdf_impactes.py - < modifies.txt --pdf 2>/dev/null \
+          python3 tools/impacted_pdfs.py - < modifies.txt --pdf 2>/dev/null \
             | sed 's/^/  · /' || true
           if [ ! -s commandes.sh ]; then
             echo "rien=oui" >> "$GITHUB_OUTPUT"
@@ -155,11 +155,11 @@ jobs:
       #  n'échappait pas le texte (journal du 2026-09-18).
       - name: Toutes les illustrations sont-elles du XML bien formé ?
         if: steps.cibles.outputs.rien != 'oui'
-        run: python3 tools/verifier_svg.py
+        run: python3 tools/verify_svg.py
 
       - name: Les en-têtes d'attribution sont-ils à jour ?
         if: steps.cibles.outputs.rien != 'oui'
-        run: python3 tools/entetes.py --verifier
+        run: python3 tools/headers.py --verifier
 
       #  Le contrôle utile ici n'est pas « ça compile » mais « ça n'a pas
       #  rétréci » : un fragment mal fermé ne casse pas WeasyPrint, il

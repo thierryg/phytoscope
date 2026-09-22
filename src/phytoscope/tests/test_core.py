@@ -353,7 +353,7 @@ class TestMajDependances:
         ("", "1.0", -1),
     ])
     def test_comparaison(self, a, b, attendu):
-        from phytoscope.core import maj_dependances as M
+        from phytoscope.core import dependency_updates as M
         assert M.comparer_versions(a, b) == attendu
 
     @pytest.mark.parametrize("installee,disponible,attendu", [
@@ -364,12 +364,12 @@ class TestMajDependances:
         ("2.3.0", "2.2.6", ""),         # plus récent que l'index : rien à dire
     ])
     def test_ampleur(self, installee, disponible, attendu):
-        from phytoscope.core import maj_dependances as M
+        from phytoscope.core import dependency_updates as M
         assert M.ampleur(installee, disponible) == attendu
 
     # -- lecture des exigences ---------------------------------------------
     def test_lecture_des_exigences(self, tmp_path):
-        from phytoscope.core import maj_dependances as M
+        from phytoscope.core import dependency_updates as M
         fichier = tmp_path / "requirements.txt"
         fichier.write_text(
             "# un commentaire\n"
@@ -385,12 +385,12 @@ class TestMajDependances:
                      "pyserial": ">=3.5", "python-rtmidi": ""}
 
     def test_fichier_absent_ne_leve_rien(self, tmp_path):
-        from phytoscope.core import maj_dependances as M
+        from phytoscope.core import dependency_updates as M
         assert M.lire_exigences(str(tmp_path / "absent.txt")) == {}
 
     # -- état d'une dépendance ---------------------------------------------
     def test_etats(self):
-        from phytoscope.core import maj_dependances as M
+        from phytoscope.core import dependency_updates as M
         assert M.Dependance("numpy", installee="", disponible="2.0").etat == "absente"
         assert M.Dependance("numpy", installee="1.0", disponible="").etat == "inconnue"
         assert M.Dependance("numpy", installee="1.0", disponible="1.0").etat == "a_jour"
@@ -400,7 +400,7 @@ class TestMajDependances:
     # -- la vérification, réseau remplacé ----------------------------------
     def _sans_reseau(self, monkeypatch, reponses):
         """Remplace l'interrogation de l'index par une table."""
-        from phytoscope.core import maj_dependances as M
+        from phytoscope.core import dependency_updates as M
         monkeypatch.setattr(
             M, "derniere_version",
             lambda dist, delai=0, index="": reponses.get(dist, ("", "absent du bouchon")))
@@ -430,7 +430,7 @@ class TestMajDependances:
 
     def test_une_dependance_absente_n_est_pas_interrogee(self, monkeypatch):
         """Ce qu'il lui faut est une installation, pas une mise à jour."""
-        from phytoscope.core import maj_dependances as M
+        from phytoscope.core import dependency_updates as M
         interrogees = []
 
         def _index(dist, delai=0, index=""):
@@ -451,7 +451,7 @@ class TestMajDependances:
 
     def test_la_liste_vient_de_preflight(self):
         """Une seule source pour les dépendances : sinon elles divergent."""
-        from phytoscope.core import maj_dependances as M
+        from phytoscope.core import dependency_updates as M
         from phytoscope.core import preflight
         noms = {d.distribution for d in M._dependances_du_logiciel()}
         assert noms == {r.paquet for r in preflight.REQUIREMENTS}

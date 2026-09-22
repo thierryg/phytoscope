@@ -25,7 +25,7 @@
 #
 #      pre-commit run --all-files
 #
-#  Le garde-fou qui compte est le dernier : « detection-cle-privee ». Les
+#  Le garde-fou qui compte est le dernier : « detect-signing-key ». Les
 #  autres rattrapent des étourderies ; celui-là évite de publier la clé qui
 #  signe les paquets. Voir SECURITY.md et certificat/LISEZ-MOI.md.
 # ===========================================================================
@@ -88,8 +88,8 @@ repos:
       #  detect-private-key ci-dessus cherche un bloc PEM dans le contenu ;
       #  celui-ci refuse le fichier sur son seul nom, même vide, même
       #  renommé — c'est le cas qui nous est arrivé de près.
-      - id: detection-cle-privee
-        name: la clé privée de signature n'entre pas dans le dépôt
+      - id: detect-signing-key
+        name: the private signing key stays out of the repository
         entry: >
           bash -c '
           fautifs=$(printf "%s\n" "$@" | grep -Ei "\.(key|p12|pfx|jks|keystore|kdbx)$" || true);
@@ -106,9 +106,9 @@ repos:
       #  Les en-têtes d'attribution portent le chemin du fichier : un
       #  déplacement les périme, et un fichier qui voyage seul mentirait
       #  sur sa provenance.
-      - id: entetes-attribution
-        name: les en-têtes d'attribution sont à jour
-        entry: python3 tools/entetes.py --verifier
+      - id: attribution-headers
+        name: attribution headers are up to date
+        entry: python3 tools/headers.py --verifier
         language: system
         pass_filenames: false
         files: ^(src|pdf|tools|packaging|hardware|sources/reverse)/
@@ -117,8 +117,8 @@ repos:
       #  dans le PDF sans que rien ne le signale. Le défaut a existé :
       #  timeline.svg portait un « & » nu, produit par un générateur qui
       #  n'échappait pas le texte (journal du 2026-09-18).
-      - id: svg-bien-formes
-        name: les illustrations sont du XML bien formé
-        entry: python3 tools/verifier_svg.py
+      - id: svg-well-formed
+        name: figures are well-formed XML
+        entry: python3 tools/verify_svg.py
         language: system
         files: \.svg$

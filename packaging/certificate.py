@@ -244,7 +244,7 @@ qu'un paquet vient bien de nous.
 1. `.gitignore` écarte `certificat/phytoscope.key` nommément, puis `*.key`
    et `*.pem` partout, avec deux exceptions nommées pour les fichiers
    publics ;
-2. le crochet `pre-commit` « detection-cle-privee » la refuse **sur son seul
+2. le crochet `pre-commit` « detect-signing-key » la refuse **sur son seul
    nom** — même vide, même renommée ;
 3. le job « secrets » de l'intégration continue échoue si un fichier de ce
    genre est suivi.

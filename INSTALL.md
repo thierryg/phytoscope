@@ -87,7 +87,7 @@ langue sans se concerter**, et la question ne revient jamais. Elle se modifie
 ensuite par « Affichage → Langue ».
 
 Les trois installateurs passent par le même utilitaire,
-`tools/ecrire_langue.py`, qui **fusionne** au lieu d'écraser : une
+`tools/write_language.py`, qui **fusionne** au lieu d'écraser : une
 réinstallation par-dessus une installation existante ne change que la langue.
 
 Pour imposer la langue sans être interrogé — installation sans surveillance,
@@ -263,7 +263,7 @@ chmod +x PhytoScope-1.5.1-Linux.run
     `~/.local/bin`, `~/.local/share/applications`, `~/.local/share/icons`.
 11. **Un registre est écrit** — c'est lui que `--uninstall` relit, plutôt que
     de deviner.
-12. **Un désinstallateur** est déposé : `<prefixe>/desinstaller.sh`.
+12. **Un désinstallateur** est déposé : `<prefixe>/uninstall.sh`.
 
 > Si `~/.local/bin` n'est pas dans votre `PATH`, l'installateur le dit et
 > donne la ligne à ajouter à `~/.profile`.
@@ -432,7 +432,7 @@ cd packaging && make verifier
 |---|---|
 | Debian, Ubuntu, Mint | `sudo apt remove phytoscope` |
 | Fedora, RHEL | `sudo dnf remove phytoscope` |
-| `.run` | `~/.local/opt/phytoscope/desinstaller.sh` — ou `./PhytoScope-*.run --uninstall` |
+| `.run` | `~/.local/opt/phytoscope/uninstall.sh` — ou `./PhytoScope-*.run --uninstall` |
 | Windows | « Applications et fonctionnalités », ou le raccourci *Désinstaller* |
 | macOS | glissez `PhytoScope.app` vers la Corbeille |
 

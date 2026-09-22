@@ -53,7 +53,7 @@ from ..core.features import (DESCRIPTEURS, cepstre, lpc, mfcc,
 from ..core.logging_setup import get_logger
 from .widgets import TracePlot
 from ..i18n import t
-from . import polices
+from . import fonts
 
 log = get_logger(__name__)
 
@@ -123,7 +123,7 @@ class Heatmap(QWidget):
         qp.setPen(QPen(QColor(self.p["trait"]), 1))
         qp.drawRect(r)
 
-        qp.setFont(polices.mono(7.5))
+        qp.setFont(fonts.mono(7.5))
         qp.setPen(QColor(self.p["texte2"]))
         if self._freqs is not None and self._freqs.size > 1:
             #  Les échelles sont géométriques : les graduations le sont aussi.

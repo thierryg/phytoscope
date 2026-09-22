@@ -72,7 +72,7 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
-from . import noms
+from . import filenames
 
 __all__ = ["EchantillonRef", "dossier_par_defaut", "ecrire", "lister",
            "charger", "supprimer", "renommer", "echelle_adaptee"]
@@ -322,4 +322,4 @@ def _slug(texte: str) -> str:
     pour décider s'il y a une étiquette (`ecrire`) ou pour garder l'ancien nom
     (`renommer`).
     """
-    return noms.assainir(texte, defaut="", longueur=48)
+    return filenames.assainir(texte, defaut="", longueur=48)

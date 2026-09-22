@@ -427,7 +427,7 @@ class MainWindow(QMainWindow):
         """
         import os
 
-        from .maj_dialog import MajDialog
+        from .updates_dialog import MajDialog
 
         #  requirements.txt vit à la racine du logiciel, deux niveaux au-dessus
         #  de ce fichier — et non dans le paquet Python, qui voyage seul dans
@@ -864,7 +864,7 @@ class MainWindow(QMainWindow):
         if st.recording:
             #  Pendant l'enregistrement, l'espace restant compte autant que la
             #  durée écoulée : c'est lui qui décidera de la fin.
-            from ..core.espace import formater_mo
+            from ..core.disk_space import formater_mo
             texte = "● " + _hms(st.record_elapsed)
             if st.disk_free_mb > 0:
                 texte += " · " + formater_mo(st.disk_free_mb)

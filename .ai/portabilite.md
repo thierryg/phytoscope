@@ -12,7 +12,7 @@ refaire. L'état des correctifs figure dans la colonne « Corrigé ».
 
 Ce qui n'est **pas** vérifié : aucun de ces correctifs n'a tourné sur une vraie
 machine Windows ni sur un Mac. Ils le sont par lecture du code et par les
-vingt-trois essais de `tests/test_portabilite.py`, qui vérifient sous Linux ce qui
+vingt-trois essais de `tests/test_portability.py`, qui vérifient sous Linux ce qui
 ne se voit qu'ailleurs.
 
 ## Ce qui est déjà bon — et qu'il ne faut pas casser
@@ -20,7 +20,7 @@ ne se voit qu'ailleurs.
 - `config.py:21-29` `config_dir()` et `:32-40` `data_dir()` respectent les trois
   usages : `%APPDATA%\PhytoScope`, `~/Library/Application Support/PhytoScope`,
   `$XDG_CONFIG_HOME`.
-- `espace.py:73` utilise `shutil.disk_usage`, portable. **Aucun `os.statvfs`**
+- `disk_space.py:73` utilise `shutil.disk_usage`, portable. **Aucun `os.statvfs`**
   dans le projet.
 - Aucun `open()` texte sans `encoding=`. Les CSV portent `newline=""`, ce qui
   est indispensable sous Windows.
@@ -87,6 +87,6 @@ sur Apple Silicon et sur Raspberry Pi ; chemin de programmation
 WeasyPrint reste lié à Pango, HarfBuzz et fontconfig, non fournis par la roue :
 `apt`/`dnf` sous Linux, `brew install pango libffi` sous macOS (plus
 `DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib` sur Apple Silicon), runtime GTK3
-sous Windows — le cas le plus fragile. `build_carte.py:271` appelle `pdfinfo`,
+sous Windows — le cas le plus fragile. `build_board.py:271` appelle `pdfinfo`,
 absent par défaut partout. **Ces prérequis ne sont documentés nulle part** :
 `platform_info.py:192-231` ne connaît que `qt`, `audio`, `midi`, `python`.

@@ -26,7 +26,7 @@ devenu un module pour deux raisons, et la seconde compte plus que la première :
    points — passe par l'API sans contorsion, c'est que l'API suffit. S'il
    avait fallu un passe-droit, c'est l'API qu'il aurait fallu corriger.
 
-Le calcul lui-même vit dans `core/grandeurs.py` : ce fichier n'est qu'un
+Le calcul lui-même vit dans `core/quantities.py` : ce fichier n'est qu'un
 adaptateur. Séparer les deux permet aux essais d'éprouver la physique sans
 monter de module, et au module de rester lisible.
 """
@@ -76,7 +76,7 @@ class GrandeursScientifiques(Module, Analyseur):
 
     def analyser(self, x: np.ndarray, fs: float,
                  contexte: Contexte) -> List[Grandeur]:
-        from phytoscope.core import grandeurs as gr
+        from phytoscope.core import quantities as gr
 
         if x.size < max(64, int(4 * fs)):
             return []

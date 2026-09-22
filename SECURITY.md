@@ -84,7 +84,7 @@ git ls-files | grep -Ei '\.(key|pem|p12|pfx|jks|keystore|asc|gpg)$'
 #   (publics) doivent apparaître.
 
 # Le garde-fou local, posé par pre-commit
-pre-commit run --all-files detection-cle-privee
+pre-commit run --all-files detect-signing-key
 ```
 
 ## Vérifier l'authenticité d'un paquet

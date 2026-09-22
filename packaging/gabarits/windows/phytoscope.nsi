@@ -179,7 +179,7 @@ Section "PhytoScope" SecPrincipale
     ;  reglages de qui s'en sert.
     !insertmacro CodeLangue $R0
     DetailPrint "Langue de PhytoScope : $R0"
-    nsExec::ExecToLog '"$INSTDIR\python\python.exe" "$INSTDIR\app\ecrire_langue.py" "$R0"'
+    nsExec::ExecToLog '"$INSTDIR\python\python.exe" "$INSTDIR\app\write_language.py" "$R0"'
 SectionEnd
 
 ;  L'icone du Bureau est une section A PART, donc une case a cocher sur la

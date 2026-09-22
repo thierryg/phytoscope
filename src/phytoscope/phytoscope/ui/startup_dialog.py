@@ -39,7 +39,7 @@ from ..core import preflight
 from ..core.logging_setup import get_logger
 from . import theme
 from ..i18n import t
-from . import polices
+from . import fonts
 
 log = get_logger(__name__)
 
@@ -107,7 +107,7 @@ class StartupDialog(QDialog):
 
         self.journal = QPlainTextEdit()
         self.journal.setReadOnly(True)
-        self.journal.setFont(polices.mono(8))
+        self.journal.setFont(fonts.mono(8))
         self.journal.setVisible(False)
         self.journal.setMaximumHeight(200)
         lay.addWidget(self.journal, 1)

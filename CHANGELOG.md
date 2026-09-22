@@ -77,7 +77,7 @@ documents, vérifiées après reconstruction (`C-64`).
 ### Ajouté
 - **La série « L'Arbre qui Parle »**, fusionnée dans le projet : trois volumes
   et une annexe technique, **638 pages**, construits par
-  `pdf-src/build_arbre.py` et `pdf-src/build_annexe.py` depuis leur propre
+  `pdf-src/build_tree.py` et `pdf-src/build_appendix.py` depuis leur propre
   charte `pdf-src/arbre.css`.
   - *Dublin — analyse scientifique* (212 p.) — l'enquête sur les « arbres
     parlants » ;
@@ -88,10 +88,10 @@ documents, vérifiées après reconstruction (`C-64`).
 - **234 photographies et planches**, avec leurs crédits
   (`pdf-src/assets/img/photos/CREDITS.md`), et 44 illustrations nouvelles.
 - **Quatre notes de recherche sourcées** (`sources/01-…` à `04-…`).
-- `tools/verifier_svg.py` — contrôle que les 104 illustrations sont du XML
+- `tools/verify_svg.py` — contrôle que les 104 illustrations sont du XML
   bien formé. Une illustration mal formée ne casse pas la fabrication :
   WeasyPrint la laisse tomber et compose un cadre vide, sans rien signaler.
-- `tools/pdf_impactes.py` — dit quelles publications refaire au vu des
+- `tools/impacted_pdfs.py` — dit quelles publications refaire au vu des
   fichiers modifiés. Refaire les dix coûte une douzaine de minutes.
 - **Un dépôt git public** : `LICENSE` (MIT) et `LICENSES/CERN-OHL-P-2.0.txt`
   aux textes officiels SPDX, `SECURITY.md`, `CONTRIBUTING.md`,
@@ -109,7 +109,7 @@ documents, vérifiées après reconstruction (`C-64`).
   `pdf-src/assets/svg/gen.py` avait perdu sa fonction `esc()` : `timeline.svg`
   contenait deux `&` nus et était le **seul SVG mal formé sur 104**. Le
   cadre correspondant était vide dans l'ouvrage, sans que rien ne l'indique.
-- **Fausse déclaration de licence sur 32 fichiers tiers.** `tools/entetes.py`
+- **Fausse déclaration de licence sur 32 fichiers tiers.** `tools/headers.py`
   avait apposé « © Bretagne Namasté » et « SPDX-License-Identifier: MIT » sur
   LEDFader (MIT © Jeremy Gillick), MIDI Sprout (MIT © electricityforprogress)
   et le micrologiciel **Biotron, qui est en GPL-3.0**. En-têtes retirés,
@@ -120,7 +120,7 @@ documents, vérifiées après reconstruction (`C-64`).
   s'était posé sur `packaging/gabarits/debian/control`, et **un fichier
   `control` n'admet aucun commentaire** : `dpkg-deb` refusait le paquet, mais
   `make tout` continuait et produisait les sept autres. `"control"` est
-  entré dans les exclusions de `tools/entetes.py`.
+  entré dans les exclusions de `tools/headers.py`.
 - Les chiffres de `sources/INDEX.md` étaient périmés (76 fichiers annoncés,
   248 réels) : remesurés.
 
@@ -254,7 +254,7 @@ documents, vérifiées après reconstruction (`C-64`).
 - **Une dépendance facultative faisait échouer toute l'installation** :
   `requirements-optionnel.txt` est désormais installé à part.
 - **Les polices** étaient nommées en dur à vingt et un endroits, sans repli :
-  `ui/polices.py` déclare une pile et le genre de la police, et corrige la
+  `ui/fonts.py` déclare une pile et le genre de la police, et corrige la
   taille sur macOS (72 ppp contre 96).
 - Périphérique audio résolu par interface hôte sous Windows ; raccourcis
   affichés comme macOS les présente (⌘) ; port MIDI virtuel expliqué ; voix
@@ -268,7 +268,7 @@ documents, vérifiées après reconstruction (`C-64`).
   les prérequis Pango / HarfBuzz / fontconfig sont déclarés.
 
 ### Ajouté
-- `tests/test_portabilite.py` : vingt-trois essais qui vérifient sous Linux ce
+- `tests/test_portability.py` : vingt-trois essais qui vérifient sous Linux ce
   qui ne se voit qu'ailleurs. **221 essais au vert.**
 
 ---

@@ -92,10 +92,10 @@ Les trois mêmes choses, partout où c'est possible :
 
 | | icône sur le Bureau | lancer à la fin | désinstallateur |
 |---|---|---|---|
-| `.run` | question (ou `--desktop`) | question (ou `--launch`) | `desinstaller.sh` |
+| `.run` | question (ou `--desktop`) | question (ou `--launch`) | `uninstall.sh` |
 | `.exe` NSIS | case à cocher | case à cocher | « Applications et fonctionnalités » |
 | `.msi` | fonctionnalité `IconeBureau` | — (déploiement sans interface) | `msiexec /x` |
-| `.pkg` | fenêtre de l'assistant | fenêtre de l'assistant | `desinstaller.sh` dans le `.app` |
+| `.pkg` | fenêtre de l'assistant | fenêtre de l'assistant | `uninstall.sh` dans le `.app` |
 | `.deb` `.rpm` | `phytoscope-icone-bureau` | — | `phytoscope-desinstaller` |
 
 **Pourquoi `.deb` et `.rpm` ne demandent rien.** `apt` et `dnf` installent sans
@@ -168,7 +168,7 @@ packaging/
   gabarits/
     debian/    control, postinst, prerm, lanceur, .desktop
     fedora/    phytoscope.spec
-    linux/     entete.sh — l'en-tête du .run
+    linux/     header.sh — l'en-tête du .run
     windows/   phytoscope.nsi, phytoscope.wxs, PhytoScope.cmd, Diagnostic.cmd
     macos/     Info.plist, lanceur, postinstall
 ```

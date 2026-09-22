@@ -150,7 +150,7 @@ masquait, et rendait la carte inutilisable sous Windows (`C-2D`).
 Elle est installée d'office sur presque toutes les distributions GNU/Linux et
 sur aucune installation neuve de Windows ou de macOS.
 
-**Décision :** `ui/polices.py` déclare une pile de familles **et le genre**
+**Décision :** `ui/fonts.py` déclare une pile de familles **et le genre**
 (`QFont.Monospace`). Le genre importe plus que la pile : même si aucune famille
 n'existe, Qt choisit alors une police à chasse fixe, et les colonnes de valeurs
 restent alignées. Une substitution proportionnelle rendrait le multimètre
@@ -302,7 +302,7 @@ l'on précise que `.gitignore` protège de Git, pas d'une sauvegarde.
 demande « un affichage graphique comme InstallShield », et une version texte
 sur `--tui`.
 
-**Décision :** une **couche d'affichage** (`gabarits/linux/interface.sh`) avec
+**Décision :** une **couche d'affichage** (`gabarits/linux/frontend.sh`) avec
 une seule API — `ui_question`, `ui_licence`, `ui_dossier`, `ui_progres` — et
 trois implémentations : zenity ou kdialog (graphique), whiptail ou dialog
 (boîtes en mode texte), et des lignes brutes. Le choix est automatique, et

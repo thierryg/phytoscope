@@ -49,7 +49,7 @@ de temps — le vôtre ni celui des autres.
 - ❌ **Copier la clé privée de signature** ailleurs que dans
   `~/.local/share/phytoscope-signature/` et `certificat/` (`C-2R`).
 - ❌ Poser notre en-tête d'attribution sur du code tiers. `sources/` est
-  exclu de `tools/entetes.py` pour cette raison : y écrire
+  exclu de `tools/headers.py` pour cette raison : y écrire
   « SPDX-License-Identifier: MIT » sur du GPL est une fausse déclaration.
 
 ## Mettre en place son poste
@@ -91,11 +91,11 @@ make demo                                        # sans matériel
 
 # Publications (depuis la racine)
 python3 pdf-src/assets/svg/gen.py       && python3 pdf-src/build.py         # l'ouvrage
-python3 pdf-src/assets/svg/gen_carte.py && python3 pdf-src/build_carte.py   # le hors-série
-python3 pdf-src/assets/svg/gen_tt.py    && python3 pdf-src/build_arbre.py   # la série
+python3 pdf-src/assets/svg/gen_board.py && python3 pdf-src/build_board.py   # le hors-série
+python3 pdf-src/assets/svg/gen_tt.py    && python3 pdf-src/build_tree.py   # la série
 python3 pdf-src/assets/svg/gen_sdk.py   && python3 pdf-src/build_sdk.py     # le guide du SDK
-python3 tools/verifier_svg.py                                   # XML bien formé
-python3 tools/entetes.py --verifier                             # en-têtes à jour
+python3 tools/verify_svg.py                                   # XML bien formé
+python3 tools/headers.py --verifier                             # en-têtes à jour
 
 # Paquets (depuis Debian, Ubuntu ou Mint)
 cd packaging
@@ -132,7 +132,7 @@ cd src/firmware
    ```bash
    pre-commit run --all-files
    cd src/phytoscope && make test && make lint
-   python3 tools/entetes.py --verifier
+   python3 tools/headers.py --verifier
    ```
 
 6. **Consignez** : ajoutez une entrée datée dans [`.ai/journal.md`](.ai/journal.md)

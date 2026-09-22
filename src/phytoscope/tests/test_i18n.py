@@ -247,14 +247,14 @@ class TestLangueAlInstallation:
 
     Les installateurs posent la question au tout début et écrivent le choix
     dans les réglages, que le logiciel relit. Ces tests couvrent le maillon
-    qui les relie — `tools/ecrire_langue.py` — et le catalogue de libellés
+    qui les relie — `tools/write_language.py` — et le catalogue de libellés
     des installateurs.
     """
 
     def _outil(self):
         import importlib.util
         chemin = os.path.join(os.path.dirname(os.path.dirname(
-            os.path.abspath(__file__))), "tools", "ecrire_langue.py")
+            os.path.abspath(__file__))), "tools", "write_language.py")
         spec = importlib.util.spec_from_file_location("ecrire_langue", chemin)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)

@@ -27,7 +27,7 @@ import numpy as np
 import pytest
 
 from phytoscope.config import Settings
-from phytoscope.core import espace, samples
+from phytoscope.core import disk_space, samples
 
 
 def signal(n=2500, amplitude=1.5e-4, graine=3):
@@ -119,33 +119,33 @@ class TestGestion:
 
 class TestEspaceDisque:
     def test_mesure_un_dossier_existant(self, tmp_path):
-        e = espace.mesurer(str(tmp_path))
+        e = disk_space.mesurer(str(tmp_path))
         assert e.mesure and e.total_mo > 0 and e.libre_mo >= 0
 
     def test_mesure_un_dossier_a_creer(self, tmp_path):
         #  Demander l'espace d'un dossier qu'on s'apprête à créer est le cas
         #  normal, pas une erreur.
-        e = espace.mesurer(str(tmp_path / "pas" / "encore" / "la"))
+        e = disk_space.mesurer(str(tmp_path / "pas" / "encore" / "la"))
         assert e.mesure and e.total_mo > 0
 
     def test_debit_domine_par_le_rendu_musical(self):
         s = Settings()
-        avec = espace.debit_mo_par_heure(s)
+        avec = disk_space.debit_mo_par_heure(s)
         s.recording.write_audio = False
-        sans = espace.debit_mo_par_heure(s)
+        sans = disk_space.debit_mo_par_heure(s)
         assert avec > 100.0 and sans < 10.0
 
     def test_autonomie(self):
-        assert espace.autonomie_heures(1000.0, 500.0, 100.0) == pytest.approx(5.0)
-        assert espace.autonomie_heures(100.0, 500.0, 100.0) == 0.0
-        assert espace.autonomie_heures(1000.0, 0.0, 0.0) == float("inf")
+        assert disk_space.autonomie_heures(1000.0, 500.0, 100.0) == pytest.approx(5.0)
+        assert disk_space.autonomie_heures(100.0, 500.0, 100.0) == 0.0
+        assert disk_space.autonomie_heures(1000.0, 0.0, 0.0) == float("inf")
 
     def test_formats_lisibles(self):
-        assert espace.formater_mo(512) == "512 Mo"
-        assert espace.formater_mo(2048) == "2,0 Go"
-        assert espace.formater_duree(1.5) == "1 h 30"
-        assert espace.formater_duree(0.25) == "15 min"
-        assert espace.formater_duree(0.0) == "< 1 min"
+        assert disk_space.formater_mo(512) == "512 Mo"
+        assert disk_space.formater_mo(2048) == "2,0 Go"
+        assert disk_space.formater_duree(1.5) == "1 h 30"
+        assert disk_space.formater_duree(0.25) == "15 min"
+        assert disk_space.formater_duree(0.0) == "< 1 min"
 
 
 class TestRelecture:
