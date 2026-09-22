@@ -112,6 +112,16 @@ sources/software/**/*.zip
 # --- Dossier de mise à l'écart (doublons, environnements périmés) -----------
 .ecarte/
 
+# --- Un clone du dépôt déposé dans le dépôt --------------------------------
+#  Le 2026-09-22, un clone complet de ce dépôt s'est retrouvé dans
+#  « phytoscope/ », à sa propre racine. Un « git add -A » l'a aussitôt avalé
+#  comme sous-module (« adding embedded git repository »), ce qui produit un
+#  lien vers un commit que personne d'autre ne peut résoudre.
+#
+#  La règle n'exclut pas src/phytoscope/ — c'est le logiciel, et le « / »
+#  initial ancre le motif à la racine du dépôt.
+/phytoscope/
+
 
 # ###########################################################################
 #  3. CE QUI SE RECONSTRUIT

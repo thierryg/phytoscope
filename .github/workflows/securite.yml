@@ -160,6 +160,29 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+
+      #  Ce contrôle demande que « Dependency graph » soit activé sur le
+      #  dépôt — Settings → Code security and analysis. Il ne l'est pas
+      #  aujourd'hui, et l'action répond alors :
+      #
+      #      Dependency review is not supported on this repository.
+      #
+      #  C'est un réglage du dépôt, pas un défaut du workflow, et il ne se
+      #  corrige pas depuis un fichier versionné. En attendant, l'étape est
+      #  tolérée : une demande de fusion rouge pour un réglage manquant
+      #  apprend à ignorer le rouge, ce qui coûte plus cher que le contrôle
+      #  ne rapporte.
+      #
+      #  Ce qui reste couvert entre-temps, et ce qui ne l'est pas :
+      #    · les FAILLES des dépendances Python — couvertes par pip-audit
+      #      dans le travail « Failles connues des dépendances » ;
+      #    · les LICENCES incompatibles (C-53) — plus couvertes du tout.
+      #      C'est la perte réelle, et c'est pourquoi le réglage vaut la
+      #      minute qu'il coûte.
+      #
+      #  Une fois « Dependency graph » activé, retirer le
+      #  « continue-on-error » ci-dessous : le contrôle redevient bloquant,
+      #  ce qui est son objet.
       - uses: actions/dependency-review-action@v4
         with:
           fail-on-severity: moderate
@@ -168,6 +191,7 @@ jobs:
           #  copyleft fort rendrait la diffusion du logiciel impossible
           #  telle qu'elle est annoncée (C-53).
           deny-licenses: GPL-3.0, AGPL-3.0, GPL-2.0, SSPL-1.0
+        continue-on-error: true
 
   # -------------------------------------------------------------------------
   #  Failles connues dans tout l'arbre, pas seulement les dépendances Python

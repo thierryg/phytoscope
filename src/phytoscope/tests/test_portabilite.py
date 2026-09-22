@@ -588,6 +588,8 @@ class TestGitignoreProtegeLeDepotPublic:
         ("sources/code/*.zip", "dépôts tiers recopiés"),
         ("sources/software/**/*.zip", "817 Mo de dépôts tiers"),
         (".ecarte/", "doublons et environnements mis à l'écart"),
+        ("/phytoscope/", "un clone du dépôt déposé dans le dépôt — "
+                         "« git add -A » l'avalait comme sous-module"),
         ("build/", "PDF et paquets produits"),
         ("src/firmware/build/", "le SDK Pico récupéré, et les objets"),
     ])
