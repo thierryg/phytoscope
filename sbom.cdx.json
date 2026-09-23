@@ -1,16 +1,16 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:c56c1b3f-ec3c-4354-a0cf-40be2dc9265a",
+  "serialNumber": "urn:uuid:82d214e5-ad99-44e5-a9de-90051002aea6",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-09-22T12:49:09.946354+00:00",
+    "timestamp": "2026-09-23T15:10:12.451851+00:00",
     "tools": {
       "components": [
         {
           "type": "application",
           "name": "phytoscope-sbom-projet",
-          "version": "1.5.1",
+          "version": "1.6.0",
           "publisher": "Bretagne Namasté"
         }
       ]
@@ -24,7 +24,7 @@
     "component": {
       "type": "application",
       "name": "PhytoScope",
-      "version": "1.5.1",
+      "version": "1.6.0",
       "publisher": "Bretagne Namasté",
       "description": "Écouter les plantes sans raconter d'histoires — logiciel, micrologiciel et matériel.",
       "licenses": [
@@ -46,7 +46,7 @@
     {
       "type": "application",
       "name": "phytoscope-logiciel",
-      "version": "1.5.1",
+      "version": "1.6.0",
       "description": "Le logiciel d'acquisition et de sonification (Python 3, Qt 6).",
       "licenses": [
         {
@@ -62,7 +62,7 @@
           "version": "2.5.3",
           "purl": "pkg:pypi/numpy@2.5.3",
           "publisher": "NumPy Developers",
-          "description": "calcul numérique et traitement du signal",
+          "description": "numerical computation and signal processing",
           "licenses": [
             {
               "license": {
@@ -78,7 +78,7 @@
           "version": "6.11.2",
           "purl": "pkg:pypi/PySide6@6.11.2",
           "publisher": "The Qt Company",
-          "description": "interface graphique Qt 6",
+          "description": "the Qt 6 graphical interface",
           "licenses": [
             {
               "license": {
@@ -94,7 +94,7 @@
           "version": "6.11.2",
           "purl": "pkg:pypi/shiboken6@6.11.2",
           "publisher": "The Qt Company",
-          "description": "liaison C++/Python de Qt",
+          "description": "Qt's C++/Python binding",
           "licenses": [
             {
               "license": {
@@ -110,7 +110,7 @@
           "version": "3.5",
           "purl": "pkg:pypi/pyserial@3.5",
           "publisher": "Chris Liechti",
-          "description": "port série : contrôle de la carte",
+          "description": "serial port: controlling the board",
           "licenses": [
             {
               "license": {
@@ -126,7 +126,7 @@
           "version": "1.5.8",
           "purl": "pkg:pypi/python-rtmidi@1.5.8",
           "publisher": "Christopher Arndt",
-          "description": "sortie MIDI (liaison RtMidi)",
+          "description": "MIDI output (RtMidi binding)",
           "licenses": [
             {
               "license": {
@@ -139,10 +139,10 @@
         {
           "type": "library",
           "name": "cffi",
-          "version": "2.0.0",
-          "purl": "pkg:pypi/cffi@2.0.0",
+          "version": "2.1.1",
+          "purl": "pkg:pypi/cffi@2.1.1",
           "publisher": "Armin Rigo, Maciej Fijalkowski",
-          "description": "interface C, requise par sounddevice",
+          "description": "C interface, required by sounddevice",
           "licenses": [
             {
               "license": {
@@ -157,7 +157,7 @@
     {
       "type": "firmware",
       "name": "phytosense-firmware",
-      "version": "1.5.1",
+      "version": "1.6.0",
       "description": "Le micrologiciel de la carte PhytoSense One (RP2350, C).",
       "licenses": [
         {
