@@ -1,0 +1,32 @@
+#  ==========================================================================
+#  PhytoScope — attribution — packaging/templates/debian/phytoscope.desktop
+#
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
+#
+#  SPDX-License-Identifier: MIT
+#  end of attribution
+#  ==========================================================================
+
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=PhytoScope
+GenericName=Plant signal monitor
+GenericName[en]=Plant signal listening
+Comment=Measure, listen to and record a plant's electrical signals
+Comment[en]=Measure, listen to and record the electrical signals of a plant
+Exec=phytoscope %f
+TryExec=phytoscope
+Icon=phytoscope
+Terminal=false
+Categories=Science;Education;AudioVideo;Audio;
+Keywords=plante;plant;biosignal;sonification;oscilloscope;MIDI;
+MimeType=application/x-phytoscope-session;
+StartupNotify=true
+StartupWMClass=phytoscope

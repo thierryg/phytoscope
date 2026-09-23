@@ -1,0 +1,94 @@
+<!-- ====================== FIRST MODULE ====================== -->
+<section class="chapter pagebreak">
+  <h2 id="premier" data-toc="chapter">1. A first module, in ten minutes</h2>
+
+  <p class="chapo">Let us do it first and explain afterwards. By the end of
+  this chapter, three rows of your own making will be showing in the software's
+  Multimeter tab.</p>
+
+  <h3 id="premier-creer" data-toc="sub">Creating the skeleton</h3>
+
+  <p class="lettrine noindent">The SDK ships with the source code, in the
+  <code>src/sdk/</code> directory. It holds a tool that creates a complete
+  module:</p>
+
+  <pre class="code"><code>python3 src/sdk/tools/new_module.py my-first-module</code></pre>
+
+  <p>Three files appear:</p>
+
+  <table class="tab">
+    <thead><tr><th>File</th><th>What it holds</th></tr></thead>
+    <tbody>
+      <tr><td><code>module.py</code></td><td>the skeleton, with an analysis
+        capability that already works</td></tr>
+      <tr><td><code>test_my_first_module.py</code></td><td>tests that pass,
+        and that you extend</td></tr>
+      <tr><td><code>README.md</code></td><td>how to install it, and what is
+        left to do</td></tr>
+    </tbody>
+  </table>
+
+  <p>The point of this tool is not to type less. It is that
+  <strong>the skeleton it produces is already correct</strong>: the manifest is
+  valid, the tests pass, and the pitfalls described later on are already
+  avoided. One starts from a module that works, and replaces what one wants.</p>
+
+  <h3 id="premier-eprouver" data-toc="sub">Testing it, without starting anything</h3>
+
+  <pre class="code"><code>python3 -m pytest my-first-module/ -v</code></pre>
+
+  <p>Five tests pass. Notice what they <em>do not require</em>: no running
+  software, no board plugged in, no plant on the desk. The tests build a
+  plausible signal and a fake context, then call your code. That is what makes
+  it possible to develop a module on a train.</p>
+
+  <div class="callout">
+    <h4>The fake context</h4>
+    <p>It is shipped with the tests, and you will copy it. It implements what
+    your module uses, and nothing else. If a test fails because a method is
+    missing from it, that is a sign you are using a part of the interface which
+    will also have to be tested — which is good news, not a nuisance.</p>
+  </div>
+
+  <h3 id="premier-installer" data-toc="sub">Installing it</h3>
+
+  <pre class="code"><code># Linux
+cp -r my-first-module ~/.config/phytoscope/modules/
+
+# macOS
+cp -r my-first-module ~/Library/Application\ Support/PhytoScope/modules/
+
+# Windows
+xcopy /E my-first-module %APPDATA%\PhytoScope\modules\my-first-module\</code></pre>
+
+  <p>Restart PhytoScope. Your module shows up in two places: in the
+  <strong>Multimeter → Scientific quantities</strong> tab, where its values
+  appear among those of the shipped modules; and in the
+  <strong>Diagnostics → Modules</strong> tab, which lists what has been
+  loaded.</p>
+
+  <h3 id="premier-rien" data-toc="sub">If nothing appears</h3>
+
+  <p>Go to Diagnostics. The Modules page says in one sentence what happened.
+  That is the page to look at <em>first</em>, before doubting yourself:</p>
+
+  <table class="tab">
+    <thead><tr><th>What it shows</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td><code>incompatible</code> — targets API 2.0</td>
+          <td>your manifest announces an interface version this software does
+          not know. Correct <code>api=</code>.</td></tr>
+      <tr><td><code>incompatible</code> — library missing</td>
+          <td>you declared <code>requires=("scipy",)</code> and scipy is not
+          installed. The command to type is given on the spot.</td></tr>
+      <tr><td><code>faulted</code> — TypeError while loading</td>
+          <td>your code raised. The full traceback is in the log
+          (<kbd>Ctrl+L</kbd>).</td></tr>
+      <tr><td><code>disabled</code></td>
+          <td>the user turned it off in the settings.</td></tr>
+      <tr><td>absent from the list</td>
+          <td>the directory is in the wrong place, or it holds no
+          <code>module.py</code> file.</td></tr>
+    </tbody>
+  </table>
+</section>

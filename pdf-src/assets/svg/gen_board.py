@@ -3,33 +3,33 @@
 #  ==========================================================================
 #  PhytoScope — attribution — pdf-src/assets/svg/gen_board.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """
-Générateur des figures du hors-série « La Carte PhytoSense ».
+Figure generator for the companion volume *The PhytoSense Board*.
 
-Toutes les planches — schémas électroniques, synoptiques, implantations,
-diagrammes logiciels — sont dessinées ici de façon déterministe, afin que
-le document soit intégralement reproductible à partir des sources.
+Every figure — circuit diagrams, block diagrams, board layouts, software
+diagrams — is drawn here deterministically, so that the document is
+reproducible in full from its sources.
 
-Usage : python3 gen_board.py
-Sortie : pdf-src/assets/svg/carte-*.svg
+Usage:  python3 gen_board.py
+Output: pdf-src/assets/svg/board-*.svg
 """
 import os, math
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# ---- Palette (identique à book.css) -----------------------------------------
+# ---- Palette (the same one as book.css) -------------------------------------
 NUIT   = "#0E2A22"
 NUIT2  = "#17392F"
 SEVE   = "#3F7D5A"
@@ -47,18 +47,19 @@ CUIVRE = "#A8552E"
 CUIV_P = "#FBEEE6"
 INK    = "#23302C"
 
-# Les tailles de texte sont exprimées en POINTS TYPOGRAPHIQUES RÉELS à
-# l'impression. Chaque planche connaît sa largeur imprimée (print_mm) et en
-# déduit le facteur unité→point : une figure pleine page (125 mm) et une
-# planche paysage (212 mm) affichent donc le même corps, quelle que soit la
-# taille de leur viewBox. Plancher de lisibilité : 5,6 pt.
+# Text sizes are expressed in REAL TYPOGRAPHIC POINTS as printed. Every figure
+# knows its printed width (print_mm) and derives the unit-to-point factor from
+# it: a full-page figure (125 mm) and a landscape plate (212 mm) therefore show
+# the same body size, whatever the size of their viewBox. Readability floor:
+# 5.6 pt.
 MM_PAR_POINT = 0.352777
 PT_MIN       = 5.6
 
-# ---- Identité portée par toutes les planches --------------------------------
-#  Un plan qui circule sans nom d'auteur ni adresse devient anonyme en deux
-#  copies. Ces trois chaînes sont donc reprises sur le cartouche de chaque
-#  feuille, sur la sérigraphie du circuit imprimé et dans la nomenclature.
+# ---- The identity every figure carries --------------------------------------
+#  A drawing that circulates without an author's name or an address becomes
+#  anonymous in two copies. These three strings are therefore repeated on the
+#  title block of every
+#  sheet, on the board's silkscreen and in the bill of materials.
 AUTEUR   = "Bretagne Namasté"
 SITE     = "bretagne-namaste.com"
 CONTACT  = "contact@bretagne-namaste.com"
@@ -74,12 +75,12 @@ SERIF = "Cormorant Garamond, serif"
 #  SOCLE DE DESSIN
 # =============================================================================
 class Sheet:
-    """Une planche SVG : liste d'éléments + utilitaires de câblage."""
+    """An SVG sheet: a list of elements plus wiring helpers."""
 
     def __init__(self, w=980, h=600, bg="#FFFFFF", print_mm=125.0):
         self.w, self.h, self.bg = w, h, bg
         self.print_mm = print_mm
-        # unités de viewBox pour 1 point typographique imprimé
+        # viewBox units per printed typographic point
         self.tf = MM_PAR_POINT * w / print_mm
         self.body = []
 
@@ -89,7 +90,7 @@ class Sheet:
                 self.body.append(c)
         return self
 
-    # ---- primitives géométriques -------------------------------------------
+    # ---- geometric primitives ----------------------------------------------
     def rect(self, x, y, w, h, fill="none", stroke=INK, sw=1.4, rx=0, dash=None,
              op=None):
         d = f' stroke-dasharray="{dash}"' if dash else ""
@@ -149,7 +150,7 @@ class Sheet:
 
     # ---- câblage ------------------------------------------------------------
     def wire(self, *pts, stroke=INK, sw=1.35, dash=None):
-        """Fil orthogonal passant par les points donnés (x, y)."""
+        """An orthogonal wire through the given (x, y) points."""
         d = "M " + " L ".join(f"{x},{y}" for x, y in pts)
         return self.path(d, stroke=stroke, sw=sw, dash=dash, cap="square")
 
@@ -173,7 +174,7 @@ class Sheet:
 
     # ---- sortie -------------------------------------------------------------
     def signer(self, y=None, discret=True):
-        """Appose l'auteur et l'adresse en pied de planche."""
+        "Stamp the author and the address at the foot of the plate."
         y = (self.h - 8) if y is None else y
         couleur = GRIS if discret else NUIT
         self.txt(28, y, AUTEUR, size=5.6, fill=couleur, anchor="start")
@@ -221,11 +222,11 @@ DEFS = f'''<defs>
 
 
 # =============================================================================
-#  SYMBOLES NORMALISÉS (CEI 60617)
+#  STANDARD SYMBOLS (IEC 60617)
 # =============================================================================
 def resistor(sh, x, y, ref="", val="", horiz=True, L=92, W=34, lab_above=True,
              color=INK):
-    """Résistance CEI (rectangle). (x, y) = extrémité gauche / haute du fil."""
+    """IEC resistor (a rectangle). (x, y) = the wire's left or top end."""
     if horiz:
         bx = x + (L - 56) / 2
         sh.line(x, y, bx, y, stroke=color)
@@ -254,7 +255,7 @@ def resistor(sh, x, y, ref="", val="", horiz=True, L=92, W=34, lab_above=True,
 
 
 def capacitor(sh, x, y, ref="", val="", horiz=True, L=76, plate=40, color=INK):
-    """Condensateur non polarisé."""
+    """Non-polarised capacitor."""
     if horiz:
         m = x + L / 2
         sh.line(x, y, m - 7, y, stroke=color)
@@ -282,7 +283,7 @@ def capacitor(sh, x, y, ref="", val="", horiz=True, L=76, plate=40, color=INK):
 
 
 def ground(sh, x, y, kind="agnd", label=None, color=INK):
-    """Masses : agnd (analogique), dgnd (numérique), iso (flottante), chassis."""
+    """Grounds: agnd (analog), dgnd (digital), iso (floating), chassis."""
     sh.line(x, y, x, y + 18, stroke=color)
     if kind == "chassis":
         sh.line(x - 22, y + 18, x + 22, y + 18, stroke=color, sw=2.2)
@@ -304,7 +305,7 @@ def ground(sh, x, y, kind="agnd", label=None, color=INK):
 
 
 def rail(sh, x, y, label, up=True, color=CUIVRE):
-    """Repère d'alimentation."""
+    """A supply-rail marker."""
     d = -1 if up else 1
     sh.line(x, y, x, y + d * 20, stroke=color)
     sh.line(x - 19, y + d * 20, x + 19, y + d * 20, stroke=color, sw=2.4)
@@ -314,7 +315,7 @@ def rail(sh, x, y, label, up=True, color=CUIVRE):
 
 
 def opamp(sh, x, y, w=120, h=104, ref="", part="", inv_top=True, fill="#fff"):
-    """Amplificateur opérationnel. Renvoie le dictionnaire des broches."""
+    """Operational amplifier. Returns the dictionary of its pins."""
     sh.poly([(x, y), (x + w, y + h / 2), (x, y + h)], fill=fill, stroke=INK, sw=1.6)
     ya, yb = y + h * 0.28, y + h * 0.72
     s1, s2 = ("−", "+") if inv_top else ("+", "−")
@@ -335,7 +336,7 @@ def opamp(sh, x, y, w=120, h=104, ref="", part="", inv_top=True, fill="#fff"):
 
 
 def inamp(sh, x, y, w=190, h=180, ref="U?", part="INA828", rg=True):
-    """Amplificateur d'instrumentation (triangle avec broches RG)."""
+    """Instrumentation amplifier (a triangle with RG pins)."""
     sh.poly([(x, y), (x + w, y + h / 2), (x, y + h)], fill="#fff", stroke=INK, sw=1.7)
     ya, yb = y + h * 0.22, y + h * 0.78
     sh.txt(x + 24, ya + 9, "+", size=9.5, weight="700")
@@ -370,7 +371,7 @@ def block(sh, x, y, w, h, title, sub=None, lines=None, fill="#fff", stroke=SEVE,
 
 def conn(sh, x, y, n, label="", pitch=30, w=48, vertical=True, pinlabels=None,
          fill=OR_PL):
-    """Connecteur : boîtier + broches."""
+    """Connector: body plus pins."""
     h = n * pitch + 18
     sh.rect(x, y, w, h, fill=fill, stroke=OR, sw=1.5, rx=3)
     pts = []
@@ -417,7 +418,7 @@ def ferrite(sh, x, y, ref="", val="", L=76):
     return (x + L, y)
 
 
-def barrier(sh, x, y0, y1, label="BARRIÈRE GALVANIQUE", color=CUIVRE):
+def barrier(sh, x, y0, y1, label="GALVANIC BARRIER", color=CUIVRE):
     """Trait mixte vertical d'isolation."""
     sh.line(x, y0, x, y1, stroke=color, sw=2.0, dash="12 6 3 6")
     sh.txt(x, y0 - 16, label, size=6.3, fill=color, weight="700", spacing="1.4")
@@ -443,25 +444,25 @@ def note(sh, x, y, w, lines, color=BLEU, fill=BLEU_P, title=None):
 def fig_archi():
     sh = Sheet(980, 820, print_mm=125)
     sh.title("Architecture d'ensemble — PhytoSense One",
-             "Deux îlots d'alimentation, une barrière d'isolement, un seul câble")
+             "Two supply islands, one isolation barrier, a single cable")
 
-    # --- îlots ---------------------------------------------------------------
+    # --- islands -------------------------------------------------------------
     sh.rect(20, 96, 648, 616, fill="#F3F8F5", stroke=SEVE, sw=1.4, rx=10, dash="8 5")
-    sh.txt(344, 120, "ÎLOT ANALOGIQUE FLOTTANT — masse AGND", size=6.6, fill=SEVE,
+    sh.txt(344, 120, "FLOATING ANALOG ISLAND — AGND ground", size=6.6, fill=SEVE,
            weight="700", spacing="0.8")
     sh.rect(716, 96, 236, 616, fill="#EEF3FA", stroke=BLEU, sw=1.4, rx=10, dash="8 5")
-    sh.txt(834, 120, "ÎLOT NUMÉRIQUE (USB)", size=6.6, fill=BLEU,
+    sh.txt(834, 120, "DIGITAL ISLAND (USB)", size=6.6, fill=BLEU,
            weight="700", spacing="0.8")
     barrier(sh, 692, 108, 712)
 
-    # --- chaîne analogique principale ---------------------------------------
+    # --- main analog chain ---------------------------------------------------
     chaine = [
-        ("Électrodes et câble", "Ag/AgCl · TRS blindé · garde"),
-        ("Protection d'entrée", "10 kΩ · BAV199 · PTC"),
-        ("Carte fille FE", "FE-Z électromètre / FE-B pont"),
-        ("Gain programmable", "OPA2189 · ×1 à ×200"),
-        ("Filtre anti-repliement", "Bessel 3ᵉ ordre · 400 Hz"),
-        ("CAN Δ-Σ 24 bits", "ADS131M04 · 4 voies · 32 kSPS"),
+        ("Electrodes and cable", "Ag/AgCl · shielded TRS · guard"),
+        ("Input protection", "10 kΩ · BAV199 · PTC"),
+        ("FE daughter board", "FE-Z electrometer / FE-B bridge"),
+        ("Gain programmable", "OPA2189 · x1 to x200"),
+        ("Anti-aliasing filter", "Bessel 3ᵉ ordre · 400 Hz"),
+        ("CAN Δ-Σ 24 bits", "ADS131M04 · 4 channels · 32 kSPS"),
     ]
     ys = [146, 232, 318, 404, 490, 576]
     for (t, sub), y in zip(chaine, ys):
@@ -471,14 +472,14 @@ def fig_archi():
 
     # --- servitudes ----------------------------------------------------------
     sh.rect(372, 134, 276, 428, fill="#FBF8EF", stroke=OR, sw=1.2, rx=8, dash="6 4")
-    sh.txt(510, 154, "SERVITUDES DE PRÉCISION", size=6.4, fill=OR, weight="700",
+    sh.txt(510, 154, "PRECISION SUPPORT", size=6.4, fill=OR, weight="700",
            spacing="1.2")
     serv = [
-        ("Référence 2,5 V", "ADR4525 · 2 ppm/°C"),
-        ("Auto-test étalonné", "1 M / 10 M / 100 MΩ à 0,1 %"),
-        ("Alimentation ±5 V", "LT3045 · LT3094 · 0,8 µV"),
+        ("2.5 V reference", "ADR4525 · 2 ppm/°C"),
+        ("Calibrated self-test", "1 M / 10 M / 100 MΩ at 0.1 %"),
+        ("Supply ±5 V", "LT3045 · LT3094 · 0,8 µV"),
         ("Base de temps", "TCXO 12,288 MHz · ±1 ppm"),
-        ("Pilote de garde", "suiveur ×1 · Cin < 1 pF"),
+        ("Guard driver", "suiveur ×1 · Cin < 1 pF"),
     ]
     for i, (t, sub) in enumerate(serv):
         block(sh, 386, 170 + i * 78, 248, 58, t, sub, fill="#fff", stroke=OR_CL,
@@ -487,19 +488,19 @@ def fig_archi():
     block(sh, 372, 576, 276, 56, "Capteurs d'ambiance",
           "BME688 · TSL2591 · PT1000", fill="#fff", stroke=SEVE_C, sw=1.4, tsize=7.4)
 
-    # --- franchissement de la barrière --------------------------------------
+    # --- crossing the barrier ------------------------------------------------
     sh.wire((194, 632), (194, 664), (598, 664), stroke=INK, sw=2.0)
     sh.wire((510, 632), (510, 664), stroke=INK, sw=1.6)
     sh.dot(510, 664)
-    block(sh, 598, 636, 188, 56, "Isolateurs", "ADuM4151 · 6 voies",
+    block(sh, 598, 636, 188, 56, "Isolateurs", "ADuM4151 · 6 channels",
           fill=CUIV_P, stroke=CUIVRE, sw=1.8, tsize=7.6)
 
-    # --- chaîne numérique ----------------------------------------------------
+    # --- digital chain -------------------------------------------------------
     num = [
-        (232, "Prise USB-C", "CC 5,1 kΩ · ESD · 5 V"),
+        (232, "USB-C socket", "CC 5,1 kΩ · ESD · 5 V"),
         (330, "Pile USB TinyUSB", "UAC2 + CDC + DFU"),
-        (428, "Microcontrôleur", "RP2350 · 150 MHz"),
-        (526, "Sortie MIDI TRS-A", "synthé externe"),
+        (428, "Microcontroller", "RP2350 · 150 MHz"),
+        (526, "MIDI TRS-A output", "external synth"),
     ]
     for y, t, sub in num:
         block(sh, 738, y, 194, 58, t, sub, fill="#fff", stroke=BLEU, sw=1.7, tsize=7.0)
@@ -508,37 +509,37 @@ def fig_archi():
     sh.arrow(835, 330, 835, 294, color=BLEU, sw=2.0, marker="ahb")
     sh.wire((740, 457), (726, 457), (726, 555), (740, 555), stroke=BLEU, sw=1.5, dash="5 4")
 
-    # --- hôte ----------------------------------------------------------------
-    block(sh, 96, 748, 440, 56, "Ordinateur hôte — PhytoScope",
-          "Linux · Windows · macOS — aucun pilote à installer",
+    # --- host ----------------------------------------------------------------
+    block(sh, 96, 748, 440, 56, "Host computer — PhytoScope",
+          "Linux · Windows · macOS — no driver to install",
           fill=NUIT, stroke=NUIT, sw=1.6, tcol=OR_CL, tsize=8.6)
     sh.wire((738, 261), (712, 261), (712, 776), (580, 776), stroke=BLEU, sw=2.6)
     sh.arrow(600, 776, 540, 776, color=BLEU, sw=2.4, marker="ahb")
-    sh.txt(706, 742, "USB-C · 1 m · blindé", size=6.0, fill=BLEU, anchor="end")
+    sh.txt(706, 742, "USB-C · 1 m · shielded", size=6.0, fill=BLEU, anchor="end")
 
-    # --- entrée plante -------------------------------------------------------
+    # --- plant input ---------------------------------------------------------
     sh.arrow(194, 78, 194, 142, color=SEVE, sw=2.4, marker="ahv")
-    sh.txt(150, 74, "PLANTE", size=7.4, fill=SEVE, weight="700", spacing="1.6",
+    sh.txt(150, 74, "PLANT", size=7.4, fill=SEVE, weight="700", spacing="1.6",
            anchor="end")
     sh.signer()
     sh.save("carte-archi.svg")
 
 
 # =============================================================================
-#  2. CHAÎNE DE MESURE : NIVEAUX, GAINS, BRUIT
+#  2. MEASUREMENT CHAIN: LEVELS, GAINS, NOISE
 # =============================================================================
 def fig_chaine():
     sh = Sheet(980, 600, print_mm=125)
-    sh.title("Budget de la chaîne de mesure",
-             "Niveau du signal, gain et bruit ramené à l'entrée, étage par étage")
+    sh.title("Measurement chain budget",
+             "Signal level, gain and input-referred noise, stage by stage")
 
     etages = [
         ("Source", "plante", "1 µV – 50 mV", "—", "—"),
-        ("Électrode", "Ag/AgCl", "×1", "0,15 µV", "bruit 1/f"),
-        ("Entrée", "ADA4530-1", "×1", "0,42 µV", "14 nV/√Hz"),
+        ("Electrode", "Ag/AgCl", "×1", "0,15 µV", "1/f noise"),
+        ("Input", "ADA4530-1", "×1", "0,42 µV", "14 nV/√Hz"),
         ("InAmp", "INA828", "×10", "0,21 µV", "7 nV/√Hz"),
         ("PGA", "OPA2189", "×1…200", "0,18 µV", "5,9 nV/√Hz"),
-        ("Filtre", "Bessel 3", "×1", "0,09 µV", "R 4,7 kΩ"),
+        ("Filter", "Bessel 3", "×1", "0,09 µV", "R 4,7 kΩ"),
         ("CAN", "ADS131M04", "24 bits", "0,31 µV", "plancher"),
     ]
     x0, w, gap = 40, 118, 15
@@ -559,12 +560,12 @@ def fig_chaine():
 
     sh.txt(40, 214, "", size=6)
     sh.line(40, 245, 940, 245, stroke=TRAIT, sw=1.2)
-    sh.txt(40, 266, "Bruit ramené à l'entrée, bande 0,01 – 10 Hz",
+    sh.txt(40, 266, "Input-referred noise, 0.01 – 10 Hz band",
            size=7, fill=GRIS, anchor="start", style="italic")
 
-    # --- histogramme des contributions --------------------------------------
-    contrib = [("Électrode", 0.15), ("ADA4530-1", 0.42), ("INA828", 0.21),
-               ("OPA2189", 0.18), ("Filtre", 0.09), ("CAN", 0.31)]
+    # --- histogram of contributions ------------------------------------------
+    contrib = [("Electrode", 0.15), ("ADA4530-1", 0.42), ("INA828", 0.21),
+               ("OPA2189", 0.18), ("Filter", 0.09), ("CAN", 0.31)]
     total = math.sqrt(sum(v * v for _, v in contrib))
     bx, by, bw, bh = 60, 300, 620, 190
     sh.rect(bx, by, bw, bh, fill="#FAFBFA", stroke=TRAIT, sw=1.1, rx=5)
@@ -576,7 +577,7 @@ def fig_chaine():
         sh.txt(x + 22, by + bh - 36 - h, f"{v:.2f}".replace(".", ","), size=6.2,
                fill=NUIT, weight="700")
         sh.txt(x + 22, by + bh - 14, nom, size=6.0, fill=GRIS)
-    sh.txt(bx + bw / 2, by - 8, "Contribution de chaque étage (µV eff.)", size=6.8,
+    sh.txt(bx + bw / 2, by - 8, "Each stage's contribution (µV rms)", size=6.8,
            fill=NUIT, weight="700")
 
     # quadrature
@@ -585,9 +586,9 @@ def fig_chaine():
     sh.mono(823, 356, "√(Σ eₙ²)", size=8, fill="#EAF2EC")
     sh.txt(823, 396, f"{total:.2f}".replace(".", ",") + " µV eff.", size=13,
            fill="#fff", weight="700", family=SERIF)
-    sh.txt(823, 424, "sur 0,01 – 10 Hz", size=6.2, fill="#9fb8ab")
+    sh.txt(823, 424, "over 0.01 – 10 Hz", size=6.2, fill="#9fb8ab")
     sh.line(736, 440, 910, 440, stroke=SEVE, sw=1)
-    sh.txt(823, 462, "soit 1 LSB du CAN à ×100", size=6.4, fill=OR_CL)
+    sh.txt(823, 462, "that is 1 ADC LSB at x100", size=6.4, fill=OR_CL)
     sh.txt(823, 478, "dynamique utile : 126 dB", size=6.4, fill="#9fb8ab")
     sh.signer()
     sh.save("carte-chaine.svg")
@@ -599,7 +600,7 @@ def fig_chaine():
 #  OUTILLAGE DES PLANCHES (format CAO : cadre, zones, cartouche)
 # =============================================================================
 def frame(sh, marge=26, zones=("A", "B", "C", "D"), ncol=8):
-    """Cadre de planche avec repères de zone, à la manière d'un schéma de CAO."""
+    """Sheet frame with zone markers, in the manner of a CAD drawing."""
     x0, y0 = marge, marge
     x1, y1 = sh.w - marge, sh.h - marge
     sh.rect(x0, y0, x1 - x0, y1 - y0, fill="none", stroke=INK, sw=1.8)
@@ -624,13 +625,13 @@ def frame(sh, marge=26, zones=("A", "B", "C", "D"), ncol=8):
     return (x0 + 16, y0 + 16, x1 - 16, y1 - 16)
 
 
-def cartouche(sh, titre, feuille="1/8", rev="B", bloc="", w=402, h=138):
-    """Cartouche normalisé, en bas à droite de la planche.
+def cartouche(sh, titre, sheet="1/8", rev="B", bloc="", w=402, h=138):
+    """Standard title block, bottom right of the sheet.
 
-    Trois bandes : le titre ; l'ensemble auquel la feuille appartient, avec le
-    nom de l'auteur et l'adresse du site ; les repères de gestion. Un plan qui
-    circule sans ces mentions devient anonyme dès la deuxième photocopie —
-    c'est la raison d'être d'un cartouche.
+    Three bands: the title; the assembly the sheet belongs to, with the
+    author's name and the site address; the management markers. A drawing that
+    circulates without those becomes anonymous by the second photocopy — which
+    is what a title block is for.
     """
     x = sh.w - 26 - 16 - w
     y = sh.h - 26 - 16 - h
@@ -643,18 +644,18 @@ def cartouche(sh, titre, feuille="1/8", rev="B", bloc="", w=402, h=138):
 
     sh.txt(x + w / 2, y + 27, titre, size=9, family=SERIF, weight="700", fill=NUIT)
 
-    # -- bande d'identité ----------------------------------------------------
+    # -- identity band -------------------------------------------------------
     sh.txt(x + w * 0.31, y + 58, PROJET, size=7.4, weight="700", fill=SEVE)
     sh.txt(x + w * 0.31, y + 72, AUTEUR, size=6.4, fill=NUIT, family=SERIF)
     sh.txt(x + w * 0.31, y + 85, SITE, size=5.8, fill=GRIS, family=MONO)
-    sh.txt(x + w * 0.81, y + 60, bloc or "Carte mère", size=7, fill=INK)
+    sh.txt(x + w * 0.81, y + 60, bloc or "Main board", size=7, fill=INK)
     sh.txt(x + w * 0.81, y + 76, LICENCE, size=5.6, fill=GRIS)
     sh.txt(x + w * 0.81, y + 87, "diffusion libre", size=5.4, fill=GRIS)
 
-    for cx, lab, val in ((x + w * 0.155, "FEUILLE", feuille),
-                         (x + w * 0.465, "RÉVISION", rev),
+    for cx, lab, val in ((x + w * 0.155, "SHEET", sheet),
+                         (x + w * 0.465, "REVISION", rev),
                          (x + w * 0.715, "DATE", "2026-09"),
-                         (x + w * 0.905, "ÉCHELLE", "—")):
+                         (x + w * 0.905, "SCALE", "—")):
         sh.txt(cx, y + 110, lab, size=5.4, fill=GRIS, spacing="0.8")
         sh.txt(cx, y + 128, val, size=7, fill=INK, weight="700", family=MONO)
     return (x, y)
@@ -662,7 +663,7 @@ def cartouche(sh, titre, feuille="1/8", rev="B", bloc="", w=402, h=138):
 
 def connector(sh, x, y, n, label="", pitch=38, w=52, side="right",
               pinlabels=None, netlabels=None, fill=OR_PL, lead=30):
-    """Connecteur générique ; les broches sortent à droite ou à gauche."""
+    """Generic connector; the pins leave to the right or to the left."""
     h = n * pitch + 20
     sh.rect(x, y, w, h, fill=fill, stroke=OR, sw=1.6, rx=3)
     pts = []
@@ -690,7 +691,7 @@ def connector(sh, x, y, n, label="", pitch=38, w=52, side="right",
 
 
 def diode_up(sh, x, y, L=64, color=INK, zener=False):
-    """Diode verticale conduisant vers le HAUT ; (x, y) = extrémité basse."""
+    """Vertical diode conducting UPWARD; (x, y) = the bottom end."""
     m = y - L / 2
     sh.line(x, y, x, m + 15, stroke=color)
     sh.poly([(x - 16, m + 15), (x + 16, m + 15), (x, m - 4)], fill=color,
@@ -701,7 +702,7 @@ def diode_up(sh, x, y, L=64, color=INK, zener=False):
 
 
 def ic_box(sh, x, y, w, h, ref, part, sub=None):
-    """Boîtier de circuit intégré (rectangle normalisé)."""
+    """Integrated-circuit body (a standard rectangle)."""
     sh.rect(x, y, w, h, fill="#FBFBF7", stroke=INK, sw=1.8, rx=3)
     sh.txt(x + w / 2, y + 22, ref, size=7.6, fill=SEVE, weight="700")
     sh.txt(x + w / 2, y + 40, part, size=7, fill=INK, family=MONO)
@@ -711,25 +712,25 @@ def ic_box(sh, x, y, w, h, ref, part, sub=None):
 
 
 # =============================================================================
-#  PLANCHE 1 — ÉTAGE D'ENTRÉE ÉLECTROMÉTRIQUE (carte fille FE-Z)
+#  SHEET 1 — ELECTROMETER INPUT STAGE (FE-Z daughter board)
 # =============================================================================
 def pl_frontend():
     sh = Sheet(1360, 830, print_mm=212)
     frame(sh)
-    cartouche(sh, "Entrée électrométrique FE-Z", feuille="1/8",
-              bloc="Carte fille FE-Z")
-    sh.txt(90, 76, "FE-Z · mesure de potentiel de surface — impédance d'entrée 10¹⁵ Ω",
+    cartouche(sh, "FE-Z electrometer input", sheet="1/8",
+              bloc="FE-Z daughter board")
+    sh.txt(90, 76, "FE-Z · surface-potential measurement — 10¹⁵ Ω input impedance",
            size=8.4, fill=NUIT, weight="700", anchor="start", family=SERIF)
 
-    # --- J1 : connecteur d'électrodes ---------------------------------------
+    # --- J1: the electrode connector ----------------------------------------
     pT, pR, pS = connector(sh, 92, 160, 3, "J1 · TRS 3,5 mm", pitch=72, w=54,
                            pinlabels=["T", "R", "S"])
-    for i, t in enumerate(("T — électrode de mesure",
-                           "R — garde et blindage du câble",
-                           "S — électrode de référence")):
+    for i, t in enumerate(("T — measurement electrode",
+                           "R — guard and cable shield",
+                           "S — reference electrode")):
         sh.txt(92, 420 + i * 17, t, size=6, fill=GRIS, anchor="start")
 
-    # --- protection d'entrée -------------------------------------------------
+    # --- input protection ----------------------------------------------------
     sh.wire(pT, (210, 180), stroke=INK)
     resistor(sh, 210, 180, "R1", "10 kΩ 0,1 %", L=92)
     sh.wire((302, 180), (370, 180), stroke=INK)
@@ -749,10 +750,10 @@ def pl_frontend():
     resistor(sh, 530, 180, "R2", "1 GΩ", horiz=False, L=92, lab_above=False)
     ground(sh, 530, 272, "agnd", "AGND")
 
-    # --- U1 : électromètre ---------------------------------------------------
+    # --- U1: the electrometer ------------------------------------------------
     sh.rect(560, 100, 260, 300, fill="none", stroke=SEVE, sw=1.2, rx=6, dash="7 5")
     sh.txt(690, 122, "U1 · ADA4530-1", size=7.4, fill=SEVE, weight="700")
-    sh.txt(690, 138, "Ib < 20 fA · tampon de garde intégré", size=6, fill=GRIS)
+    sh.txt(690, 138, "Ib < 20 fA · integrated guard buffer", size=6, fill=GRIS)
 
     a = opamp(sh, 600, 151, w=130, h=112, ref="U1A", part="×1")
     sh.wire((530, 180), (560, 180), (560, 232), a["in+"], stroke=INK)
@@ -767,10 +768,10 @@ def pl_frontend():
             stroke=INK)
     sh.dot(760, 332)
 
-    # net GARDE : anneau, blindage, J1 broche R, connecteur mezzanine
+    # GUARD net: ring, shield, J1 pin R, mezzanine connector
     sh.wire((176, 252), (240, 252), (240, 440), (760, 440), (760, 332),
             stroke=OR, sw=1.8)
-    sh.txt(272, 430, "NET « GARDE » — anneau de garde, blindage du câble, plan de garde",
+    sh.txt(272, 430, "“GUARD” NET — guard ring, cable shield, guard plane",
            size=6.2, fill=OR, weight="700", anchor="start")
     sh.wire((760, 332), (1090, 332), (1090, 272), (1150, 272), stroke=OR, sw=1.8)
 
@@ -781,16 +782,16 @@ def pl_frontend():
     # --- J10 : connecteur mezzanine -----------------------------------------
     j10 = connector(sh, 1180, 120, 6, "J10 · mezzanine", pitch=44, w=56,
                     side="left", pinlabels=["1", "2", "3", "4", "5", "6"],
-                    netlabels=["+5 VA", "−5 VA", "AGND", "GARDE", "SIG_A", "ID I²C"])
+                    netlabels=["+5 VA", "−5 VA", "AGND", "GUARD", "SIG_A", "ID I²C"])
     for pin in j10[:3]:
         sh.line(pin[0], pin[1], pin[0] - 18, pin[1], stroke=INK, sw=1.2)
     sh.wire((1040, 360), j10[5], stroke=BLEU, sw=1.3, dash="5 4")
     sh.txt(1030, 356, "EEPROM 24AA02 (identification)", size=6, fill=BLEU,
            anchor="end")
 
-    # --- contre-réaction de mode commun --------------------------------------
+    # --- common-mode feedback ------------------------------------------------
     sh.rect(420, 466, 480, 250, fill="#FBF8EF", stroke=OR_CL, sw=1.1, rx=6)
-    sh.txt(432, 706, "CONTRE-RÉACTION DE MODE COMMUN — pilotage de l'électrode S",
+    sh.txt(432, 706, "COMMON-MODE FEEDBACK — driving the S electrode",
            size=6.4, fill=OR, weight="700", anchor="start")
     sh.wire((830, 207), (830, 496), (452, 496), (452, 532), (464, 532), stroke=INK)
     sh.dot(830, 207)
@@ -809,7 +810,7 @@ def pl_frontend():
     capacitor(sh, 596, 676, "C7", "470 nF", L=76, plate=34)
     sh.wire((596, 676), (574, 676), (574, 552), stroke=INK)
 
-    # retour vers l'électrode de référence
+    # back to the reference electrode
     sh.wire((780, 552), (860, 552), (860, 748), (392, 748), stroke=INK)
     resistor(sh, 300, 748, "R9", "22 kΩ", L=92)
     sh.wire((300, 748), (200, 748), (200, 324), (176, 324), stroke=INK)
@@ -817,7 +818,7 @@ def pl_frontend():
 
 
 def netflag(sh, x, y, name, side="out", color=BLEU, w=None):
-    """Étiquette de net inter-feuilles (pentagone normalisé)."""
+    """Off-sheet net label (the standard pentagon)."""
     w = w or max(56, 5.4 * len(name) + 18)
     h = 26
     if side == "out":
@@ -834,7 +835,7 @@ def netflag(sh, x, y, name, side="out", color=BLEU, w=None):
 
 
 def mux(sh, x, y, w=120, h=150, ref="U?", part="TMUX1208", n=4):
-    """Multiplexeur analogique : boîtier + voies."""
+    """Analog multiplexer: body plus channels."""
     sh.rect(x, y, w, h, fill="#FBFBF7", stroke=INK, sw=1.8, rx=3)
     sh.txt(x + w / 2, y + 20, ref, size=7.2, fill=SEVE, weight="700")
     sh.txt(x + w / 2, y + 36, part, size=6.4, fill=INK, family=MONO)
@@ -853,15 +854,14 @@ def mux(sh, x, y, w=120, h=150, ref="U?", part="TMUX1208", n=4):
 
 
 # =============================================================================
-#  PLANCHE 2 — PONT DE MESURE ET DÉTECTION SYNCHRONE (carte fille FE-B)
+#  SHEET 2 — MEASUREMENT BRIDGE AND SYNCHRONOUS DETECTION (FE-B daughter board)
 # =============================================================================
 def pl_pont():
     sh = Sheet(1360, 830, print_mm=212)
     frame(sh)
-    cartouche(sh, "Pont de mesure et détection synchrone", feuille="2/8",
-              bloc="Carte fille FE-B")
-    sh.txt(90, 76, "FE-B · mesure d'impédance par pont excité en alternatif et "
-           "démodulation synchrone", size=8.4, fill=NUIT, weight="700",
+    cartouche(sh, "Measurement bridge and synchronous detection", sheet="2/8",
+              bloc="FE-B daughter board")
+    sh.txt(90, 76, "FE-B · impedance measurement by AC-excited bridge and synchronous demodulation", size=8.4, fill=NUIT, weight="700",
            anchor="start", family=SERIF)
 
     # --- excitation ----------------------------------------------------------
@@ -869,9 +869,9 @@ def pl_pont():
     sh.wire((168, 130), (340, 130), stroke=INK, sw=1.6)
     sh.dot(340, 130)
     sh.wire((340, 130), (620, 130), stroke=INK, sw=1.6)
-    sh.txt(470, 116, "sinus 200 mV crête — CNA du microcontrôleur", size=6, fill=GRIS)
+    sh.txt(470, 116, "200 mV peak sine — microcontroller DAC", size=6, fill=GRIS)
 
-    # --- branche de référence ------------------------------------------------
+    # --- reference branch ----------------------------------------------------
     sh.wire((340, 130), (340, 168), stroke=INK)
     resistor(sh, 340, 168, "R10", "1 MΩ", horiz=False, L=92, lab_above=False)
     sh.wire((340, 260), (340, 292), stroke=INK)
@@ -885,7 +885,7 @@ def pl_pont():
         sh.wire((96, py), (76, py), stroke=INK)
     sh.wire((76, ins[0][1]), (76, ins[-1][1]), stroke=INK)
     ground(sh, 76, ins[-1][1], "agnd", "AGND")
-    sh.txt(285, 652, "gammes de référence — commutation automatique", size=6, fill=GRIS)
+    sh.txt(285, 652, "reference ranges — switched automatically", size=6, fill=GRIS)
 
     # --- branche « plante » --------------------------------------------------
     sh.wire((620, 130), (620, 168), stroke=INK)
@@ -893,14 +893,14 @@ def pl_pont():
     sh.wire((620, 260), (620, 292), stroke=INK)
     sh.dot(620, 292)
     sh.wire((620, 292), (620, 400), stroke=INK)
-    pT, pS = connector(sh, 660, 380, 2, "J1 · électrodes", pitch=64, w=54,
+    pT, pS = connector(sh, 660, 380, 2, "J1 · electrodes", pitch=64, w=54,
                        pinlabels=["T", "S"], side="left", lead=40)
     sh.wire((620, 400), pT, stroke=INK)
     sh.wire((620, 464), pS, stroke=INK)
     sh.wire((620, 464), (620, 510), stroke=INK)
     ground(sh, 620, 510, "agnd")
-    sh.txt(736, 404, "R(plante)", size=6.4, fill=SEVE, anchor="start", weight="700")
-    sh.txt(736, 420, "100 kΩ à 2 GΩ", size=6, fill=GRIS, anchor="start")
+    sh.txt(736, 404, "R(plant)", size=6.4, fill=SEVE, anchor="start", weight="700")
+    sh.txt(736, 420, "100 kΩ to 2 GΩ", size=6, fill=GRIS, anchor="start")
 
     # --- amplificateur d'instrumentation -------------------------------------
     ia = inamp(sh, 760, 170, w=190, h=180, ref="U3", part="INA828")
@@ -912,16 +912,16 @@ def pl_pont():
     sh.txt(676, 336, "G = 9,08", size=6.2, fill=BLEU, anchor="end", weight="700")
     sh.wire((859, 314), (859, 560), (880, 560), stroke=INK)
     netflag(sh, 880, 560, "V_OFFSET", side="in", color=CUIVRE, w=92)
-    sh.txt(986, 556, "broche REF pilotée par le CNA 16 bits — recentrage",
+    sh.txt(986, 556, "REF pin driven by the 16-bit DAC — re-centring",
            size=6, fill=CUIVRE, anchor="start")
 
-    # --- démodulation synchrone ----------------------------------------------
+    # --- synchronous demodulation --------------------------------------------
     sh.rect(990, 150, 310, 330, fill="#F5F8FB", stroke=BLEU, sw=1.2, rx=6, dash="7 5")
-    sh.txt(1145, 172, "DÉTECTION SYNCHRONE", size=6.6, fill=BLEU, weight="700",
+    sh.txt(1145, 172, "SYNCHRONOUS DETECTION", size=6.6, fill=BLEU, weight="700",
            spacing="1")
     ic_box(sh, 1010, 214, 130, 86, "U4", "ADG1419", "commutateur")
     sh.wire(ia["out"], (1010, 260), stroke=INK, sw=1.6)
-    netflag(sh, 1012, 356, "REF_CARRÉ", side="in", color=BLEU, w=96)
+    netflag(sh, 1012, 356, "REF_SQUARE", side="in", color=BLEU, w=96)
     sh.wire((1075, 330), (1075, 300), stroke=BLEU, sw=1.3, dash="5 4")
     sh.wire((1140, 240), (1164, 240), stroke=INK, sw=1.6)
     resistor(sh, 1164, 240, "R15", "100 kΩ", L=80)
@@ -932,26 +932,25 @@ def pl_pont():
     sh.wire((1244, 240), (1290, 240), stroke=INK, sw=1.6)
     sh.txt(1298, 222, "SIG_B", size=6.4, fill=BLEU, weight="700", family=MONO,
            anchor="end")
-    sh.txt(1145, 424, "f₋₃dB = 1,6 Hz : seule subsiste la composante", size=6, fill=GRIS)
-    sh.txt(1145, 440, "en phase avec l'excitation", size=6, fill=GRIS)
+    sh.txt(1145, 424, "f₋₃dB = 1.6 Hz: only the component", size=6, fill=GRIS)
+    sh.txt(1145, 440, "in phase with the excitation survives", size=6, fill=GRIS)
 
     # --- note ----------------------------------------------------------------
     note(sh, 92, 676, 800,
-         ["Le pont est excité à 1 kHz et démodulé en phase : le bruit en 1/f de la chaîne, la dérive",
-          "thermique et le 50 Hz du réseau tombent hors de la bande utile. Réjection mesurée : 62 dB à 50 Hz."],
+         ["The bridge is excited at 1 kHz and demodulated in phase: the chain's 1/f noise, the thermal",
+          "drift and the mains hum all fall outside the useful band. Measured rejection: 62 dB at 50 Hz."],
          title="POURQUOI EXCITER EN ALTERNATIF ?")
     sh.save("carte-fe-b.svg")
 
 
 # =============================================================================
-#  PLANCHE 3 — CARTE MÈRE : GAIN, FILTRE, CONVERSION
+#  SHEET 3 — MAIN BOARD: GAIN, FILTER, CONVERSION
 # =============================================================================
 def pl_mere():
     sh = Sheet(1360, 830, print_mm=212)
     frame(sh)
-    cartouche(sh, "Gain, filtrage et conversion", feuille="3/8", bloc="Carte mère")
-    sh.txt(90, 76, "Chaîne principale — gain programmable, filtre de Bessel, "
-           "convertisseur Δ-Σ 24 bits", size=8.4, fill=NUIT, weight="700",
+    cartouche(sh, "Gain, filtering and conversion", sheet="3/8", bloc="Main board")
+    sh.txt(90, 76, "Main chain — programmable gain, Bessel filter, 24-bit Δ-Σ converter", size=8.4, fill=NUIT, weight="700",
            anchor="start", family=SERIF)
 
     netflag(sh, 92, 256, "SIG_A", side="in", w=70)
@@ -959,7 +958,7 @@ def pl_mere():
 
     # --- gain programmable ---------------------------------------------------
     sh.rect(200, 100, 420, 530, fill="none", stroke=SEVE, sw=1.2, rx=6, dash="7 5")
-    sh.txt(410, 122, "GAIN PROGRAMMABLE ×1 … ×200", size=6.6, fill=SEVE,
+    sh.txt(410, 122, "PROGRAMMABLE GAIN x1 … x200", size=6.6, fill=SEVE,
            weight="700", spacing="1")
     a = opamp(sh, 300, 174, w=130, h=112, ref="U7A", part="OPA2189")
     sh.wire((250, 256), a["in+"], stroke=INK)
@@ -980,7 +979,7 @@ def pl_mere():
 
     # --- filtre de Bessel ----------------------------------------------------
     sh.rect(660, 100, 420, 400, fill="none", stroke=OR, sw=1.2, rx=6, dash="7 5")
-    sh.txt(870, 122, "FILTRE DE BESSEL 3ᵉ ORDRE — 400 Hz", size=6.6, fill=OR,
+    sh.txt(870, 122, "THIRD-ORDER BESSEL FILTER — 400 Hz", size=6.6, fill=OR,
            weight="700", spacing="1")
     sh.wire((480, 230), (688, 230), stroke=INK, sw=1.6)
     resistor(sh, 688, 230, "R24", "4,7 kΩ", L=84)
@@ -998,24 +997,24 @@ def pl_mere():
     capacitor(sh, 808, 420, "C21", "68 nF", L=76, plate=34)
     sh.wire((884, 420), (1058, 420), (1058, 210), stroke=INK)
     sh.dot(1030, 210)
-    sh.txt(880, 462, "C21 revient sur la sortie : cellule de Sallen-Key", size=6,
+    sh.txt(880, 462, "C21 returns to the output: a Sallen-Key cell", size=6,
            fill=GRIS)
 
-    # --- attaque différentielle et convertisseur -----------------------------
+    # --- differential drive and converter ------------------------------------
     sh.wire((1058, 210), (1160, 210), (1160, 300), stroke=INK, sw=1.6)
     ic_box(sh, 1100, 300, 120, 96, "U9", "THS4551", "asym. → diff.")
     sh.wire((1220, 330), (1268, 330), (1268, 520), (1230, 520), stroke=INK, sw=1.4)
     sh.wire((1220, 366), (1248, 366), (1248, 556), (1230, 556), stroke=INK, sw=1.4)
-    ic_box(sh, 1060, 480, 170, 160, "U10", "ADS131M04", "24 bits · Δ-Σ · 4 voies")
+    ic_box(sh, 1060, 480, 170, 160, "U10", "ADS131M04", "24 bits · Δ-Σ · 4 channels")
     sh.txt(1145, 596, "32 kSPS · 106 dB", size=6, fill=GRIS)
     sh.txt(1145, 612, "AIN0…AIN3", size=6, fill=GRIS, family=MONO)
     for i, n in enumerate(("SCLK", "MOSI", "MISO", "DRDY")):
         netflag(sh, 896, 500 + i * 36, n, side="out", color=CUIVRE, w=74)
         sh.wire((970, 500 + i * 36), (1060, 500 + i * 36), stroke=CUIVRE, sw=1.2)
-    sh.txt(970, 492, "vers les isolateurs (feuille 4)", size=6, fill=CUIVRE,
+    sh.txt(970, 492, "to the isolators (sheet 4)", size=6, fill=CUIVRE,
            anchor="end")
 
-    # --- référence et base de temps ------------------------------------------
+    # --- reference and time base ---------------------------------------------
     ic_box(sh, 660, 560, 160, 86, "U11", "ADR4525", "2,5 V · 2 ppm/°C")
     sh.wire((820, 603), (860, 603), (860, 468), (1250, 468), (1250, 480),
             stroke=INK, sw=1.4)
@@ -1024,15 +1023,15 @@ def pl_mere():
     netflag(sh, 596, 703, "CLKIN", side="out", color=BLEU, w=74)
     sh.wire((570, 703), (596, 703), stroke=BLEU, sw=1.4)
     note(sh, 92, 660, 280,
-         ["Chaque échantillon est daté par",
-          "son numéro d'ordre, jamais par",
+         ["Every sample is dated by",
+          "its index, never by",
           "l'horloge de l'ordinateur."],
          title="BASE DE TEMPS", color=SEVE, fill=SEVE_P)
     sh.save("carte-mere.svg")
 
 
 def transfo(sh, x, y, ref="T1", part="", n=4, h=110):
-    """Transformateur d'isolement : deux bobinages et un noyau."""
+    """Isolation transformer: two windings and a core."""
     for k, xx in enumerate((x, x + 76)):
         d = ["M{},{} ".format(xx, y)]
         for i in range(3):
@@ -1054,20 +1053,19 @@ def transfo(sh, x, y, ref="T1", part="", n=4, h=110):
 def pl_alim():
     sh = Sheet(1360, 830, print_mm=212)
     frame(sh)
-    cartouche(sh, "Alimentations et isolement", feuille="4/8", bloc="Carte mère")
-    sh.txt(90, 76, "Deux masses, une seule barrière — production des rails ±5 V "
-           "analogiques isolés", size=8.4, fill=NUIT, weight="700", anchor="start",
+    cartouche(sh, "Power supplies and isolation", sheet="4/8", bloc="Main board")
+    sh.txt(90, 76, "Two grounds, one barrier — generating the isolated ±5 V analog rails", size=8.4, fill=NUIT, weight="700", anchor="start",
            family=SERIF)
 
     sh.rect(60, 100, 620, 560, fill="#F2F6FC", stroke=BLEU, sw=1.1, rx=8, dash="7 5")
-    sh.txt(370, 122, "CÔTÉ USB — masse DGND", size=6.6, fill=BLEU, weight="700",
+    sh.txt(370, 122, "USB SIDE — DGND ground", size=6.6, fill=BLEU, weight="700",
            spacing="1")
     sh.rect(760, 100, 550, 520, fill="#F3F8F5", stroke=SEVE, sw=1.1, rx=8, dash="7 5")
-    sh.txt(1035, 122, "CÔTÉ MESURE — masse AGND, flottante", size=6.6, fill=SEVE,
+    sh.txt(1035, 122, "MEASUREMENT SIDE — AGND ground, floating", size=6.6, fill=SEVE,
            weight="700", spacing="1")
     barrier(sh, 720, 120, 660)
 
-    # --- entrée VBUS ---------------------------------------------------------
+    # --- VBUS input ----------------------------------------------------------
     netflag(sh, 80, 190, "VBUS 5 V", side="in", w=84)
     sh.wire((164, 190), (190, 190), stroke=INK, sw=1.8)
     ferrite(sh, 190, 190, "FB1", "600 Ω @ 100 MHz")
@@ -1077,20 +1075,20 @@ def pl_alim():
     sh.wire((330, 190), (330, 210), stroke=INK)
     ground(sh, 330, 286, "dgnd", "DGND")
 
-    # --- convertisseur isolé -------------------------------------------------
+    # --- isolated converter --------------------------------------------------
     sh.wire((330, 190), (400, 190), stroke=INK, sw=1.8)
     ic_box(sh, 400, 150, 150, 96, "U20", "SN6505B", "pilote de transfo.")
     netflag(sh, 400, 300, "SYNC", side="in", color=BLEU, w=66)
     sh.wire((466, 300), (475, 300), (475, 246), stroke=BLEU, sw=1.2, dash="5 4")
-    sh.txt(500, 296, "synchronisé sur SYNC : le résidu de découpage", size=5.8,
+    sh.txt(500, 296, "locked to SYNC: the switching residue", size=5.8,
            fill=GRIS, anchor="start")
-    sh.txt(500, 310, "tombe à 410 kHz, hors de la bande de mesure", size=5.8,
+    sh.txt(500, 310, "lands at 410 kHz, outside the measurement band", size=5.8,
            fill=GRIS, anchor="start")
     t1 = transfo(sh, 684, 160, "T1", "WE 750315371 · 1:1,3", h=110)
     sh.wire((550, 178), (684, 178), stroke=INK, sw=1.6)
     sh.wire((550, 218), (620, 218), (620, 270), (684, 270), stroke=INK, sw=1.6)
 
-    # --- redressement et régulation ------------------------------------------
+    # --- rectification and regulation ----------------------------------------
     sh.wire((760, 160), (820, 160), stroke=INK, sw=1.6)
     sh.wire((760, 270), (800, 270), (800, 300), (820, 300), stroke=INK, sw=1.6)
     ic_box(sh, 820, 150, 150, 170, "D10-D13", "BAT54S ×2", "redressement double")
@@ -1102,48 +1100,47 @@ def pl_alim():
     rail(sh, 1250, 195, "+5 VA")
     sh.wire((1170, 305), (1250, 305), stroke=CUIVRE, sw=1.8)
     rail(sh, 1250, 305, "−5 VA", up=False)
-    sh.txt(1090, 380, "PSRR 76 dB à 1 MHz — le résidu de", size=5.8, fill=GRIS)
-    sh.txt(1090, 394, "découpage est enterré sous le bruit", size=5.8, fill=GRIS)
+    sh.txt(1090, 380, "PSRR 76 dB at 1 MHz — the switching", size=5.8, fill=GRIS)
+    sh.txt(1090, 394, "residue is buried under the noise", size=5.8, fill=GRIS)
     ground(sh, 1090, 420, "iso", "AGND (flottante)")
 
     # --- isolateurs ----------------------------------------------------------
-    ic_box(sh, 620, 420, 200, 120, "U24", "ADuM4151", "6 voies · 17 Mb/s")
+    ic_box(sh, 620, 420, 200, 120, "U24", "ADuM4151", "6 channels · 17 Mb/s")
     for i, n in enumerate(("SCLK", "MOSI", "MISO", "DRDY")):
         netflag(sh, 400, 440 + i * 30, n, side="out", color=CUIVRE, w=72)
         sh.wire((472, 440 + i * 30), (620, 440 + i * 30), stroke=CUIVRE, sw=1.1)
-    sh.txt(900, 448, "vers le CAN (feuille 3)", size=6, fill=CUIVRE, anchor="start")
+    sh.txt(900, 448, "to the ADC (sheet 3)", size=6, fill=CUIVRE, anchor="start")
     sh.wire((820, 470), (890, 470), stroke=CUIVRE, sw=1.4)
-    ic_box(sh, 620, 570, 200, 84, "U25", "ADuM1251", "I²C isolé")
+    ic_box(sh, 620, 570, 200, 84, "U25", "ADuM1251", "isolated I²C")
     netflag(sh, 400, 612, "SDA/SCL", side="out", color=CUIVRE, w=84)
     sh.wire((484, 612), (620, 612), stroke=CUIVRE, sw=1.1)
     sh.wire((820, 612), (890, 612), stroke=CUIVRE, sw=1.4)
     sh.txt(900, 616, "capteurs d'ambiance", size=6, fill=CUIVRE, anchor="start")
 
-    # --- rail numérique ------------------------------------------------------
-    ic_box(sh, 120, 380, 150, 90, "U23", "TPS7A2033", "3,3 V numérique")
+    # --- digital rail --------------------------------------------------------
+    ic_box(sh, 120, 380, 150, 90, "U23", "TPS7A2033", "3.3 V digital")
     sh.wire((330, 190), (330, 340), (195, 340), (195, 380), stroke=INK)
     sh.wire((195, 470), (195, 510), stroke=CUIVRE, sw=1.6)
     rail(sh, 195, 510, "+3V3", up=False)
 
     note(sh, 60, 690, 840,
-         ["Aucun chemin conducteur ne relie la plante à la terre du bâtiment : le seul lien est le champ",
-          "magnétique de T1 et les capacités de couplage des isolateurs, soit moins de 3 pF au total."],
-         title="CE QUE LA BARRIÈRE GARANTIT", color=CUIVRE, fill=CUIV_P)
+         ["No conductive path links the plant to the building's earth: the only coupling is T1's magnetic",
+          "field and the isolators' coupling capacitance, less than 3 pF in total."],
+         title="WHAT THE BARRIER GUARANTEES", color=CUIVRE, fill=CUIV_P)
     sh.save("carte-alim.svg")
 
 
 # =============================================================================
-#  PLANCHE 5 — PARTIE NUMÉRIQUE ET LIAISON USB
+#  SHEET 5 — DIGITAL SECTION AND USB LINK
 # =============================================================================
 def pl_num():
     sh = Sheet(1360, 830, print_mm=212)
     frame(sh)
-    cartouche(sh, "Partie numérique et liaison USB", feuille="5/8", bloc="Carte mère")
-    sh.txt(90, 76, "RP2350 · USB-C · classe audio 2.0 sans pilote · sortie MIDI "
-           "directe", size=8.4, fill=NUIT, weight="700", anchor="start", family=SERIF)
+    cartouche(sh, "Digital section and USB link", sheet="5/8", bloc="Main board")
+    sh.txt(90, 76, "RP2350 · USB-C · driverless audio class 2.0 · direct MIDI output", size=8.4, fill=NUIT, weight="700", anchor="start", family=SERIF)
 
     # --- prise USB-C ---------------------------------------------------------
-    pins = connector(sh, 92, 150, 6, "J20 · USB-C (récept.)", pitch=48, w=58,
+    pins = connector(sh, 92, 150, 6, "J20 · USB-C (receptacle)", pitch=48, w=58,
                      pinlabels=["A4", "A1", "A5", "B5", "A6", "A7"],
                      netlabels=["VBUS", "GND", "CC1", "CC2", "D+", "D−"])
     sh.wire(pins[0], (330, 170), stroke=CUIVRE, sw=1.8)
@@ -1161,12 +1158,12 @@ def pl_num():
 
     ic_box(sh, 320, 470, 150, 70, "Y2", "12 MHz", "±20 ppm")
     sh.wire((480, 470), (476, 470), (476, 505), (470, 505), stroke=INK, sw=1.3)
-    ic_box(sh, 100, 560, 180, 80, "U33", "TPD4S014", "réseau ESD · < 0,5 pF")
+    ic_box(sh, 100, 560, 180, 80, "U33", "TPD4S014", "ESD network · < 0.5 pF")
     sh.wire((190, 470), (190, 560), stroke=INK, sw=1.2, dash="5 4")
     sh.wire((176, 362), (190, 362), (190, 470), stroke=INK, sw=1.2, dash="5 4")
 
 
-    # --- microcontrôleur -----------------------------------------------------
+    # --- microcontroller -----------------------------------------------------
     sh.rect(480, 140, 300, 500, fill="#FBFBF7", stroke=INK, sw=2.0, rx=4)
     sh.txt(630, 184, "U30", size=9.5, fill=SEVE, weight="700")
     sh.txt(630, 208, "RP2350B", size=8.6, fill=INK, family=MONO)
@@ -1181,11 +1178,11 @@ def pl_num():
         sh.line(780, y, 798, y, stroke=INK, sw=1.2)
         sh.txt(770, y + 4, n, size=5.8, fill=GRIS, anchor="end", family=MONO)
 
-    # --- vers les isolateurs -------------------------------------------------
+    # --- to the isolators ----------------------------------------------------
     for n, y in (("SCLK", 250), ("MOSI", 276), ("MISO", 302), ("DRDY", 328)):
         netflag(sh, 880, y, n, side="out", color=CUIVRE, w=72)
         sh.wire((798, y), (880, y), stroke=CUIVRE, sw=1.2)
-    sh.txt(960, 254, "→ feuille 4", size=6, fill=CUIVRE, anchor="start")
+    sh.txt(960, 254, "→ sheet 4", size=6, fill=CUIVRE, anchor="start")
 
     # --- sortie MIDI ---------------------------------------------------------
     sh.wire((798, 370), (830, 370), stroke=INK, sw=1.4)
@@ -1197,7 +1194,7 @@ def pl_num():
     sh.txt(1204, 352, "norme MIDI-TRS type A (2018)", size=6, fill=GRIS)
 
     # --- interface homme-machine --------------------------------------------
-    ic_box(sh, 880, 420, 170, 62, "DS1", "LED RVB", "état et niveau")
+    ic_box(sh, 880, 420, 170, 62, "DS1", "LED RVB", "status and level")
     sh.wire((798, 451), (880, 451), stroke=INK, sw=1.3)
     ic_box(sh, 880, 500, 170, 62, "S1", "bouton", "marquage / auto-config")
     sh.wire((798, 531), (880, 531), stroke=INK, sw=1.3)
@@ -1205,10 +1202,10 @@ def pl_num():
     sh.wire((798, 611), (880, 611), stroke=INK, sw=1.3)
 
     note(sh, 92, 660, 620,
-         ["Le microcontrôleur n'interprète rien : il horodate, met en trame et pousse sur USB.",
-          "Toute la musique — échelles, instruments, seuils — est calculée sur l'ordinateur.",
-          "CC1/CC2 déclarent la carte comme consommateur 5 V / 500 mA : aucune négociation PD."],
-         title="CE QUE FAIT, ET NE FAIT PAS, LE MICROCONTRÔLEUR", color=SEVE,
+         ["The microcontroller interprets nothing: it timestamps, frames and pushes over USB.",
+          "All the music — scales, instruments, thresholds — is computed on the computer.",
+          "CC1/CC2 declare the board as a 5 V / 500 mA sink: no PD negotiation."],
+         title="WHAT THE MICROCONTROLLER DOES, AND DOES NOT DO", color=SEVE,
          fill=SEVE_P)
     sh.save("carte-num.svg")
 
@@ -1220,18 +1217,18 @@ def stars(sh, x, y, n, total=5, r=4.2, col=SEVE):
 
 
 # =============================================================================
-#  IMPLANTATION ET EMPILAGE DU CIRCUIT IMPRIMÉ
+#  BOARD LAYOUT AND STACK-UP
 # =============================================================================
 def fig_pcb():
     sh = Sheet(980, 660, print_mm=125)
-    sh.title("Implantation et empilage du circuit imprimé",
-             "Quatre couches, deux plans de masse, un anneau de garde")
+    sh.title("Board layout and stack-up",
+             "Four layers, two ground planes, one guard ring")
 
     # --- empilage ------------------------------------------------------------
-    couches = [("Couche 1 — signaux analogiques", "#D9C08A", 18),
-               ("Couche 2 — plan de masse AGND / DGND (fendu)", "#8FA79A", 26),
-               ("Couche 3 — alimentations", "#B9C6BF", 22),
-               ("Couche 4 — signaux numériques, blindage", "#D9C08A", 18)]
+    couches = [("Layer 1 — analog signals", "#D9C08A", 18),
+               ("Layer 2 — AGND / DGND ground plane (slotted)", "#8FA79A", 26),
+               ("Layer 3 — supplies", "#B9C6BF", 22),
+               ("Layer 4 — digital signals, shielding", "#D9C08A", 18)]
     y = 108
     sh.txt(60, 96, "EMPILAGE", size=7.4, fill=NUIT, weight="700", anchor="start",
            spacing="1.4")
@@ -1241,15 +1238,15 @@ def fig_pcb():
         y += h
         if i < 3:
             sh.rect(60, y, 360, 16, fill="#F0EEE4", stroke=TRAIT, sw=0.9)
-            sh.txt(430, y + 12, ["prépreg 0,2 mm", "âme FR4 1,0 mm",
-                                 "prépreg 0,2 mm"][i], size=5.8, fill=GRIS,
+            sh.txt(430, y + 12, ["0.2 mm prepreg", "FR4 core 1.0 mm",
+                                 "0.2 mm prepreg"][i], size=5.8, fill=GRIS,
                    anchor="start")
             y += 16
-    sh.txt(60, y + 22, "Épaisseur totale 1,6 mm · cuivre 35 µm · FR4 Tg 150",
+    sh.txt(60, y + 22, "Total thickness 1.6 mm · 35 µm copper · FR4 Tg 150",
            size=6.2, fill=GRIS, anchor="start")
 
     # --- implantation --------------------------------------------------------
-    sh.txt(60, 282, "IMPLANTATION (vue de dessus, 100 × 60 mm)", size=7.4,
+    sh.txt(60, 282, "PLACEMENT (seen from above, 100 × 60 mm)", size=7.4,
            fill=NUIT, weight="700", anchor="start", spacing="1.4")
     bx, by, bw, bh = 60, 306, 620, 300
     sh.rect(bx, by, bw, bh, fill="#F7F9F7", stroke=SEVE, sw=2.0, rx=10)
@@ -1257,11 +1254,11 @@ def fig_pcb():
                    (bx + 16, by + bh - 16), (bx + bw - 16, by + bh - 16)):
         sh.circle(cx, cy, 6, fill="#fff", stroke=GRIS, sw=1.2)
     # zones
-    zones = [(76, 330, 150, 130, "Entrées\net garde", "#EDF5F0", SEVE),
-             (240, 330, 150, 130, "Carte fille\n(mezzanine)", "#FBF5E6", OR),
-             (404, 330, 120, 130, "Gain et\nfiltre", "#EDF5F0", SEVE),
-             (538, 330, 126, 130, "CAN et\nréférence", "#EDF5F0", SEVE),
-             (76, 480, 250, 110, "Alimentations isolées", "#FBEEE6", CUIVRE),
+    zones = [(76, 330, 150, 130, "Inputs\nand guard", "#EDF5F0", SEVE),
+             (240, 330, 150, 130, "Daughter board\n(mezzanine)", "#FBF5E6", OR),
+             (404, 330, 120, 130, "Gain and\nfilter", "#EDF5F0", SEVE),
+             (538, 330, 126, 130, "ADC and\nreference", "#EDF5F0", SEVE),
+             (76, 480, 250, 110, "Isolated supplies", "#FBEEE6", CUIVRE),
              (340, 480, 150, 110, "Isolateurs", "#FBEEE6", CUIVRE),
              (504, 480, 160, 110, "RP2350 · USB-C", "#EEF3FA", BLEU)]
     for x, yy, w, h, lab, fill, col in zones:
@@ -1270,29 +1267,29 @@ def fig_pcb():
             sh.txt(x + w / 2, yy + h / 2 - 4 + k * 15, line, size=6.6, fill=col,
                    weight="700")
     sh.line(495, 470, 495, 600, stroke=CUIVRE, sw=2.0, dash="10 6")
-    sh.txt(495, 612, "fente du plan de masse — la barrière", size=6, fill=CUIVRE)
-    # anneau de garde
+    sh.txt(495, 612, "slot in the ground plane — the barrier", size=6, fill=CUIVRE)
+    # guard ring
     sh.rect(68, 322, 166, 146, fill="none", stroke=OR, sw=2.4, dash="6 4")
-    sh.txt(330, 302, "anneau de garde sur les 4 couches", size=5.8, fill=OR,
+    sh.txt(330, 302, "guard ring on all 4 layers", size=5.8, fill=OR,
            weight="700", anchor="start")
 
-    # --- détail de la garde --------------------------------------------------
-    sh.txt(710, 282, "DÉTAIL DE LA GARDE", size=7.4, fill=NUIT, weight="700",
+    # --- guard detail --------------------------------------------------------
+    sh.txt(710, 282, "GUARD DETAIL", size=7.4, fill=NUIT, weight="700",
            anchor="start", spacing="1.4")
     dx, dy = 710, 320
     sh.rect(dx, dy, 220, 170, fill="#FFFFFF", stroke=TRAIT, sw=1.2, rx=6)
     sh.circle(dx + 110, dy + 85, 10, fill=SEVE, stroke=NUIT, sw=1.2)
-    sh.txt(dx + 110, dy + 62, "pastille d'entrée", size=5.8, fill=NUIT)
+    sh.txt(dx + 110, dy + 62, "input pad", size=5.8, fill=NUIT)
     for r in (34, 44):
         sh.circle(dx + 110, dy + 85, r, fill="none", stroke=OR, sw=2.2)
-    sh.txt(dx + 110, dy + 148, "anneau de garde au même", size=5.8, fill=OR)
-    sh.txt(dx + 110, dy + 162, "potentiel que l'entrée", size=5.8, fill=OR)
+    sh.txt(dx + 110, dy + 148, "guard ring at the same", size=5.8, fill=OR)
+    sh.txt(dx + 110, dy + 162, "potential as the input", size=5.8, fill=OR)
     note(sh, 710, 500, 220,
-         ["Le vernis épargné sous",
-          "l'entrée : un courant de",
+         ["The solder mask is kept clear under",
+          "the input: a leakage current of",
           "fuite de surface de 1 pA",
-          "suffit à ruiner la mesure."],
-         title="RÈGLE", color=CUIVRE, fill=CUIV_P)
+          "is enough to ruin the measurement."],
+         title="RULE", color=CUIVRE, fill=CUIV_P)
     sh.signer()
     sh.save("carte-pcb.svg")
 
@@ -1302,29 +1299,29 @@ def fig_pcb():
 # =============================================================================
 def fig_mezzanine():
     sh = Sheet(980, 460, print_mm=125)
-    sh.title("Le connecteur mezzanine, 20 points",
-             "Une carte fille se déclare seule : le logiciel la reconnaît au branchement")
+    sh.title("The 20-pin mezzanine connector",
+             "A daughter board declares itself: the software recognises it when plugged in")
 
-    gauche = [("1", "+5 VA", "alimentation analogique"),
-              ("3", "−5 VA", "alimentation analogique"),
-              ("5", "AGND", "masse analogique"),
-              ("7", "AGND", "masse analogique"),
-              ("9", "GARDE", "sortie du tampon de garde"),
-              ("11", "SIG_A", "voie A vers le PGA"),
-              ("13", "SIG_B", "voie B vers le PGA"),
-              ("15", "EXC", "excitation, CNA du MCU"),
-              ("17", "SDA", "I²C isolé — EEPROM"),
-              ("19", "SCL", "I²C isolé — EEPROM")]
-    droite = [("2", "+3V3", "logique de la carte fille"),
+    gauche = [("1", "+5 VA", "analog supply"),
+              ("3", "−5 VA", "analog supply"),
+              ("5", "AGND", "analog ground"),
+              ("7", "AGND", "analog ground"),
+              ("9", "GUARD", "guard buffer output"),
+              ("11", "SIG_A", "channel A to the PGA"),
+              ("13", "SIG_B", "channel B to the PGA"),
+              ("15", "EXC", "excitation, MCU DAC"),
+              ("17", "SDA", "isolated I²C — EEPROM"),
+              ("19", "SCL", "isolated I²C — EEPROM")]
+    droite = [("2", "+3V3", "daughter-board logic"),
               ("4", "V_OFF", "consigne d'offset (CNA)"),
-              ("6", "AGND", "masse analogique"),
-              ("8", "REF_C", "référence carrée 1 kHz"),
-              ("10", "GARDE", "second point de garde"),
-              ("12", "SEL0", "sélection de gamme"),
-              ("14", "SEL1", "sélection de gamme"),
-              ("16", "TEMP", "sonde de la carte fille"),
-              ("18", "PRES", "détection de présence"),
-              ("20", "AGND", "masse analogique")]
+              ("6", "AGND", "analog ground"),
+              ("8", "REF_C", "1 kHz square reference"),
+              ("10", "GUARD", "second guard point"),
+              ("12", "SEL0", "range selection"),
+              ("14", "SEL1", "range selection"),
+              ("16", "TEMP", "daughter-board sensor"),
+              ("18", "PRES", "presence detection"),
+              ("20", "AGND", "analog ground")]
     y0, dy = 100, 32
     for col, items, x in ((0, gauche, 60), (1, droite, 520)):
         for i, (n, net, desc) in enumerate(items):
@@ -1345,11 +1342,11 @@ def fig_mezzanine():
 # =============================================================================
 def fig_bande():
     sh = Sheet(980, 520, print_mm=125)
-    sh.title("Plan de bande de l'instrument",
-             "Ce qui est mesuré, ce qui est rejeté, et où passe la frontière")
+    sh.title("The instrument's band plan",
+             "What is measured, what is rejected, and where the line falls")
 
     x0, x1, yb = 90, 920, 380
-    f0, f1 = -3.0, 4.0          # décades : 1 mHz … 10 kHz
+    f0, f1 = -3.0, 4.0          # decades: 1 mHz … 10 kHz
 
     def fx(logf):
         return x0 + (logf - f0) / (f1 - f0) * (x1 - x0)
@@ -1374,15 +1371,15 @@ def fig_bande():
         sh.txt(fx(a) + 4, yy - 6, lab, size=6.4, fill=col, weight="700",
                anchor="start")
 
-    # réseau 50 Hz
+    # mains hum
     x50 = fx(math.log10(50))
     sh.line(x50, 108, x50, yb, stroke=CUIVRE, sw=2.0, dash="7 5")
     sh.txt(x50, 100, "50 Hz", size=6.6, fill=CUIVRE, weight="700")
     x1k = fx(3)
     sh.line(x1k, 108, x1k, yb, stroke=BLEU, sw=2.0, dash="7 5")
-    sh.txt(x1k, 100, "excitation 1 kHz", size=6.6, fill=BLEU, weight="700")
+    sh.txt(x1k, 100, "1 kHz excitation", size=6.6, fill=BLEU, weight="700")
 
-    # réponse du filtre
+    # the filter's response
     pts = []
     for i in range(0, 201):
         lf = f0 + (f1 - f0) * i / 200
@@ -1390,33 +1387,30 @@ def fig_bande():
         g = 1.0 / math.sqrt(1 + (f / 400.0) ** 6)
         pts.append((fx(lf), 366 - 34 * g))
     sh.path("M " + " L ".join(f"{x:.1f},{y:.1f}" for x, y in pts), stroke=OR, sw=2.2)
-    sh.txt(fx(1.0), 348, "filtre anti-repliement (−3 dB à 400 Hz)", size=6.2,
+    sh.txt(fx(1.0), 348, "anti-aliasing filter (−3 dB at 400 Hz)", size=6.2,
            fill=OR, anchor="middle")
 
-    sh.txt(x0, 424, "Échantillonnage : 250 Hz par défaut, 1 kHz en oscilloscope, "
-           "32 kHz en écoute directe.", size=6.4, fill=NUIT, anchor="start",
+    sh.txt(x0, 424, "Sampling: 250 Hz by default, 1 kHz in oscilloscope mode, 32 kHz for direct listening.", size=6.4, fill=NUIT, anchor="start",
            weight="700")
-    sh.txt(x0, 444, "Le 50 Hz est retiré numériquement : aucun déphasage ajouté "
-           "dans la bande utile.", size=6.2, fill=GRIS, anchor="start")
-    sh.txt(x0, 462, "Passe-haut à 1 mHz : la dérive de l'électrode est suivie, "
-           "jamais supprimée.", size=6.2, fill=GRIS, anchor="start")
+    sh.txt(x0, 444, "Mains hum is removed digitally: no phase shift is added in the useful band.", size=6.2, fill=GRIS, anchor="start")
+    sh.txt(x0, 462, "1 mHz high-pass: the electrode's drift is tracked, never removed.", size=6.2, fill=GRIS, anchor="start")
     sh.signer()
     sh.save("carte-bande.svg")
 
 
 # =============================================================================
-#  DÉTECTION SYNCHRONE — CHRONOGRAMME
+#  SYNCHRONOUS DETECTION — TIMING DIAGRAM
 # =============================================================================
 def fig_lockin():
     sh = Sheet(980, 610, print_mm=125)
-    sh.title("Le principe de la détection synchrone",
-             "Pourquoi multiplier le signal par sa propre référence élimine presque tout le bruit")
+    sh.title("How synchronous detection works",
+             "Why multiplying the signal by its own reference removes almost all the noise")
 
     x0, x1 = 90, 900
-    rows = [(120, "Excitation appliquée au pont", SEVE),
-            (230, "Signal reçu (bruité, noyé dans le 50 Hz)", CUIVRE),
-            (340, "Référence carrée (même phase)", BLEU),
-            (450, "Produit, puis moyenne glissante", NUIT)]
+    rows = [(120, "Excitation applied to the bridge", SEVE),
+            (230, "Received signal (noisy, buried in mains hum)", CUIVRE),
+            (340, "Square reference (same phase)", BLEU),
+            (450, "Product, then a moving average", NUIT)]
     for yy, lab, col in rows:
         sh.line(x0, yy, x1, yy, stroke=TRAIT, sw=1.0, dash="4 4")
         sh.txt(x0 - 4, yy - 34, lab, size=6.4, fill=col, weight="700", anchor="start")
@@ -1447,13 +1441,13 @@ def fig_lockin():
     poly(p2, CUIVRE, 1.3)
     poly(p3, BLEU)
     poly(p4, NUIT, 2.4)
-    sh.txt(x1 - 6, 412, "≈ amplitude mesurée", size=6.2, fill=NUIT,
+    sh.txt(x1 - 6, 412, "≈ measured amplitude", size=6.2, fill=NUIT,
            anchor="end", weight="700")
 
     note(sh, 90, 490, 810,
-         ["Tout ce qui n'est pas exactement à la fréquence d'excitation — le 50 Hz, le bruit en 1/f,",
-          "la dérive thermique — voit son produit changer de signe en permanence : la moyenne l'annule."],
-         title="CE QUE L'ON GAGNE", color=SEVE, fill=SEVE_P)
+         ["Anything not exactly at the excitation frequency — mains hum, 1/f noise,",
+          "thermal drift — has its product change sign constantly: the average cancels it."],
+         title="WHAT IS GAINED", color=SEVE, fill=SEVE_P)
     sh.signer()
     sh.save("carte-lockin.svg")
 
@@ -1463,15 +1457,15 @@ def fig_lockin():
 # =============================================================================
 def fig_logiciel_archi():
     sh = Sheet(980, 720, print_mm=125)
-    sh.title("Architecture du logiciel PhytoScope",
-             "Trois fils d'exécution, deux files, aucune allocation dans le chemin temps réel")
+    sh.title("The PhytoScope software architecture",
+             "Three threads, two queues, no allocation in the real-time path")
 
     # --- fil d'acquisition ---------------------------------------------------
     sh.rect(40, 92, 260, 300, fill="#F3F8F5", stroke=SEVE, sw=1.4, rx=8)
-    sh.txt(170, 114, "FIL D'ACQUISITION", size=6.8, fill=SEVE, weight="700",
+    sh.txt(170, 114, "THE ACQUISITION THREAD", size=6.8, fill=SEVE, weight="700",
            spacing="1.2")
-    for i, (t, sub) in enumerate([("Source", "UAC2 · série · fichier · simulée"),
-                                  ("Horodatage", "compteur du CAN → temps UTC"),
+    for i, (t, sub) in enumerate([("Source", "UAC2 · serial · file · simulated"),
+                                  ("Horodatage", "ADC counter → UTC time"),
                                   ("Anneau", "collections.deque, 60 s")]):
         block(sh, 60, 138 + i * 84, 220, 66, t, sub, fill="#fff", stroke=SEVE,
               sw=1.3, tsize=7.4)
@@ -1480,13 +1474,13 @@ def fig_logiciel_archi():
 
     # --- fil de traitement ---------------------------------------------------
     sh.rect(340, 92, 300, 480, fill="#FBF8EF", stroke=OR, sw=1.4, rx=8)
-    sh.txt(490, 114, "FIL DE TRAITEMENT (NumPy)", size=6.8, fill=OR, weight="700",
+    sh.txt(490, 114, "THE PROCESSING THREAD (NumPy)", size=6.8, fill=OR, weight="700",
            spacing="1.2")
-    for i, (t, sub) in enumerate([("Filtrage", "passe-haut, notch 50 Hz, lissage"),
-                                  ("Mesures", "eff., crête, pente, écart-type"),
-                                  ("Détection", "seuil adaptatif sur la dérivée"),
-                                  ("Sonification", "événement → note, durée, nuance"),
-                                  ("Synthèse", "table d'ondes + enveloppe ADSR")]):
+    for i, (t, sub) in enumerate([("Filtering", "high-pass, 50 Hz notch, smoothing"),
+                                  ("Measurements", "rms, peak, slope, standard deviation"),
+                                  ("Detection", "adaptive threshold on the derivative"),
+                                  ("Sonification", "event → note, length, dynamics"),
+                                  ("Synthesis", "table d'ondes + enveloppe ADSR")]):
         block(sh, 360, 138 + i * 84, 260, 66, t, sub, fill="#fff", stroke=OR_CL,
               sw=1.3, tsize=7.4)
         if i < 4:
@@ -1496,13 +1490,13 @@ def fig_logiciel_archi():
 
     # --- fil d'interface -----------------------------------------------------
     sh.rect(680, 92, 260, 480, fill="#EEF3FA", stroke=BLEU, sw=1.4, rx=8)
-    sh.txt(810, 114, "FIL D'INTERFACE (Qt)", size=6.8, fill=BLEU, weight="700",
+    sh.txt(810, 114, "THE INTERFACE THREAD (Qt)", size=6.8, fill=BLEU, weight="700",
            spacing="1.2")
     for i, (t, sub) in enumerate([("Oscilloscope", "pyqtgraph · 60 im/s"),
-                                  ("Multimètre", "afficheur et statistiques"),
-                                  ("Analyseur", "FFT et spectrogramme"),
-                                  ("Écoute", "instruments et mixage"),
-                                  ("Bibliothèque", "séances, relecture")]):
+                                  ("Multimeter", "display and statistics"),
+                                  ("Analyser", "FFT and spectrogram"),
+                                  ("Listen", "instruments and mixing"),
+                                  ("Library", "sessions, playback")]):
         block(sh, 700, 138 + i * 84, 220, 66, t, sub, fill="#fff", stroke=BLEU,
               sw=1.3, tsize=7.4)
     sh.arrow(640, 240, 696, 240, color=BLEU, sw=2.0, marker="ahb")
@@ -1511,8 +1505,8 @@ def fig_logiciel_archi():
     # --- sorties -------------------------------------------------------------
     for i, (x, t, sub, col) in enumerate([
             (40, "Enregistreur", "WAV 24 bits + CSV + JSON", NUIT),
-            (340, "Sortie audio", "sounddevice / PortAudio", NUIT),
-            (680, "Sortie MIDI", "python-rtmidi", NUIT)]):
+            (340, "Audio output", "sounddevice / PortAudio", NUIT),
+            (680, "MIDI output", "python-rtmidi", NUIT)]):
         w = 260 if i != 1 else 300
         block(sh, x, 606, w, 62, t, sub, fill=NUIT, stroke=NUIT, tcol=OR_CL,
               sw=1.4, tsize=7.8)
@@ -1529,18 +1523,18 @@ def fig_logiciel_archi():
 def fig_logiciel_ihm():
     sh = Sheet(980, 640, print_mm=125)
     sh.title("Maquette de l'interface — onglet « Oscilloscope »",
-             "Une barre d'état qui ne ment jamais : gain réel, dérive, saturation, horloge")
+             "A status bar that never lies: real gain, drift, saturation, clock")
 
     sh.rect(40, 84, 900, 500, fill="#12201B", stroke=NUIT, sw=1.6, rx=8)
     # barre de titre
     sh.rect(40, 84, 900, 34, fill="#0A1712", stroke="none", rx=8)
-    sh.txt(60, 106, "PhytoScope 1.0 — Ficus benjamina — séance 2026-09-17 14:02",
+    sh.txt(60, 106, "PhytoScope 1.0 — Ficus benjamina — session 2026-09-17 14:02",
            size=6.6, fill=OR_CL, anchor="start")
     for i, c in enumerate(("#E06C5A", "#E0C073", "#6FA98A")):
         sh.circle(900 - i * 22, 101, 6, fill=c, stroke="none")
     # onglets
-    onglets = ["Oscilloscope", "Multimètre", "Analyseur", "Écoute", "Bibliothèque",
-               "Réglages"]
+    onglets = ["Oscilloscope", "Multimeter", "Analyser", "Listen", "Library",
+               "Settings"]
     for i, o in enumerate(onglets):
         x = 56 + i * 142
         act = (i == 0)
@@ -1548,7 +1542,7 @@ def fig_logiciel_ihm():
                 stroke=SEVE if act else "#26443A", sw=1.1, rx=5)
         sh.txt(x + 66, 148, o, size=6.2, fill="#fff" if act else "#9fb8ab",
                weight="700" if act else "400")
-    # tracé
+    # the trace
     sh.rect(56, 176, 660, 300, fill="#0A1712", stroke="#26443A", sw=1.1, rx=5)
     for i in range(1, 8):
         sh.line(56 + i * 82.5, 176, 56 + i * 82.5, 476, stroke="#1B3129", sw=0.9)
@@ -1565,55 +1559,54 @@ def fig_logiciel_ihm():
         pts.append((56 + i * 2, 326 - v * 52))
     sh.path("M " + " L ".join(f"{a:.1f},{b:.1f}" for a, b in pts), stroke="#7FE0A8",
             sw=1.8)
-    sh.txt(240, 214, "événement détecté", size=6, fill=OR_CL)
+    sh.txt(240, 214, "event detected", size=6, fill=OR_CL)
     sh.line(240, 222, 240, 250, stroke=OR_CL, sw=1.2, dash="4 3")
 
-    # panneau latéral
+    # side panel
     sh.rect(732, 176, 192, 300, fill="#16281F", stroke="#26443A", sw=1.1, rx=5)
-    sh.txt(828, 200, "RÉGLAGES RAPIDES", size=6, fill=OR_CL, weight="700",
+    sh.txt(828, 200, "QUICK SETTINGS", size=6, fill=OR_CL, weight="700",
            spacing="1")
-    champs = [("Base de temps", "5 s / div"), ("Sensibilité", "200 µV / div"),
-              ("Couplage", "AC 0,01 Hz"), ("Notch", "50 Hz — actif"),
-              ("Gain matériel", "×100 (auto)"), ("Voie", "A — FE-Z")]
+    champs = [("Base de temps", "5 s / div"), ("Sensitivity", "200 µV / div"),
+              ("Couplage", "AC 0,01 Hz"), ("Notch", "50 Hz — live"),
+              ("Hardware gain", "×100 (auto)"), ("Channel", "A — FE-Z")]
     for i, (k, v_) in enumerate(champs):
         yy = 226 + i * 40
         sh.txt(748, yy, k, size=5.8, fill="#9fb8ab", anchor="start")
         sh.rect(748, yy + 6, 160, 22, fill="#0A1712", stroke="#2E5247", sw=1.0, rx=4)
         sh.txt(756, yy + 21, v_, size=6, fill="#EAF2EC", anchor="start", family=MONO)
 
-    # barre d'état
+    # status bar
     sh.rect(56, 492, 868, 72, fill="#0A1712", stroke="#26443A", sw=1.1, rx=5)
-    etats = [("ÉTAT", "acquisition", "#7FE0A8"), ("HORLOGE", "CAN ±0,4 ppm", "#EAF2EC"),
-             ("SATURATION", "non", "#7FE0A8"), ("DÉRIVE", "+12 µV/min", "#E0C073"),
-             ("ÉLECTRODES", "142 / 138 kΩ", "#EAF2EC"),
+    etats = [("STATUS", "acquisition", "#7FE0A8"), ("HORLOGE", "CAN ±0,4 ppm", "#EAF2EC"),
+             ("SATURATION", "non", "#7FE0A8"), ("DRIFT", "+12 µV/min", "#E0C073"),
+             ("ELECTRODES", "142 / 138 kΩ", "#EAF2EC"),
              ("ENREGISTRE", "● 00:14:22", "#E06C5A")]
     for i, (k, v_, col) in enumerate(etats):
         x = 76 + i * 144
         sh.txt(x, 516, k, size=5.4, fill="#6d8a7d", anchor="start", spacing="0.8")
         sh.txt(x, 540, v_, size=6.6, fill=col, anchor="start", weight="700",
                family=MONO)
-    sh.txt(490, 604, "Mode sombre par défaut ; thème clair et contraste renforcé "
-           "dans les réglages d'accessibilité.", size=6.2, fill=GRIS, style="italic")
+    sh.txt(490, 604, "Dark mode by default; a light theme and higher contrast in the accessibility settings.", size=6.2, fill=GRIS, style="italic")
     sh.signer()
     sh.save("logiciel-ihm.svg")
 
 
 # =============================================================================
-#  CHAÎNE DE SONIFICATION
+#  SONIFICATION CHAIN
 # =============================================================================
 def fig_mapping():
     sh = Sheet(980, 600, print_mm=125)
-    sh.title("De la microvolt à la note",
-             "Chaque flèche est un choix esthétique : le document dit lequel, et pourquoi")
+    sh.title("From the microvolt to the note",
+             "Every arrow is an aesthetic choice: the document says which, and why")
 
-    src = [("Amplitude de l'événement", "µV"), ("Pente à l'origine", "µV/s"),
-           ("Durée au-dessus du seuil", "s"), ("Variabilité sur 60 s", "µV eff."),
-           ("Température, lumière", "capteurs")]
-    dst = [("Hauteur de note", "degré dans la gamme"),
-           ("Nuance (vélocité)", "1 – 127"),
-           ("Durée de la note", "0,2 – 8 s"),
-           ("Densité rythmique", "notes / minute"),
-           ("Timbre, réverbération", "instrument, envoi")]
+    src = [("Event amplitude", "µV"), ("Initial slope", "µV/s"),
+           ("Time above threshold", "s"), ("Variability over 60 s", "µV eff."),
+           ("Temperature, light", "capteurs")]
+    dst = [("Note pitch", "degree in the scale"),
+           ("Dynamics (velocity)", "1 – 127"),
+           ("Note length", "0,2 – 8 s"),
+           ("Rhythmic density", "notes / minute"),
+           ("Timbre, reverberation", "instrument, send level")]
     for i, (t, u) in enumerate(src):
         block(sh, 40, 110 + i * 88, 300, 66, t, u, fill="#fff", stroke=SEVE,
               sw=1.4, tsize=7.4)
@@ -1626,7 +1619,7 @@ def fig_mapping():
         y2 = 143 + b * 88
         sh.arrow_path(f"M340,{y1} C480,{y1} 500,{y2} 636,{y2}", color=OR, sw=1.5)
     block(sh, 392, 254, 196, 120, "Moteur de", "correspondance",
-          ["quantification", "à la gamme", "et anti-répétition"], fill=OR_PL,
+          ["quantification", "to the scale", "and anti-repetition"], fill=OR_PL,
           stroke=OR, sw=1.6, tsize=8)
     sh.signer()
     sh.save("logiciel-mapping.svg")
@@ -1637,17 +1630,17 @@ def fig_mapping():
 # =============================================================================
 def fig_langages():
     sh = Sheet(980, 660, print_mm=125)
-    sh.title("Quel langage pour ce logiciel ?",
-             "Notes attribuées pour CE cahier des charges — pas dans l'absolu")
+    sh.title("Which language for this software?",
+             "Scores given for THESE requirements — not in the abstract")
 
     langs = ["Python 3", "C++", "Rust", "Go", "TypeScript\n(Electron)"]
-    crits = [("Vitesse de développement", [5, 2, 2, 4, 3]),
-             ("Écosystème traitement du signal", [5, 4, 2, 1, 2]),
-             ("Qualité des graphiques temps réel", [4, 5, 3, 2, 4]),
-             ("Facilité d'installation (3 OS)", [3, 2, 4, 5, 3]),
-             ("Accès audio et MIDI", [5, 4, 3, 2, 3]),
-             ("Contributions d'un amateur", [5, 1, 2, 3, 3]),
-             ("Empreinte mémoire", [2, 5, 5, 4, 1])]
+    crits = [("Development speed", [5, 2, 2, 4, 3]),
+             ("Signal-processing ecosystem", [5, 4, 2, 1, 2]),
+             ("Quality of real-time graphics", [4, 5, 3, 2, 4]),
+             ("Ease of installation (3 OSes)", [3, 2, 4, 5, 3]),
+             ("Audio and MIDI access", [5, 4, 3, 2, 3]),
+             ("Contributions from an amateur", [5, 1, 2, 3, 3]),
+             ("Memory footprint", [2, 5, 5, 4, 1])]
     x0, y0, cw, rh = 330, 146, 122, 58
     for j, l in enumerate(langs):
         for k, line in enumerate(l.split("\n")):
@@ -1665,31 +1658,29 @@ def fig_langages():
     sh.txt(60, y0 + len(crits) * rh + 32, "VERDICT", size=7, fill=OR, weight="700",
            anchor="start", spacing="1.2")
     sh.txt(60, y0 + len(crits) * rh + 54,
-           "Python 3 pour l'application, un cœur en C dans le microcontrôleur, "
-           "et NumPy pour les boucles chaudes.", size=6.6, fill=NUIT, anchor="start")
+           "Python 3 for the application, a C core in the microcontroller, and NumPy for the hot loops.", size=6.6, fill=NUIT, anchor="start")
     sh.txt(60, y0 + len(crits) * rh + 70,
-           "Rust devient le bon choix le jour où la carte doit fonctionner sans "
-           "ordinateur.", size=6.2, fill=GRIS, anchor="start")
+           "Rust becomes the right choice the day the board has to work without a computer.", size=6.2, fill=GRIS, anchor="start")
     sh.signer()
     sh.save("logiciel-langages.svg")
 
 
 # =============================================================================
-#  COMPARATIF DES BOÎTES À OUTILS GRAPHIQUES
+#  GRAPHICAL TOOLKITS COMPARED
 # =============================================================================
 def fig_toolkits():
     sh = Sheet(980, 600, print_mm=125)
-    sh.title("Quelle boîte à outils graphique ?",
-             "Le critère décisif n'est pas la beauté : c'est le tracé de 250 points par seconde")
+    sh.title("Which graphical toolkit?",
+             "The deciding criterion is not beauty: it is plotting 250 points per second")
 
     kits = [("Qt 6 (PySide6)", 5, 5, 5, 4, "LGPL · 60 im/s via pyqtgraph"),
-            ("GTK 4 (PyGObject)", 3, 3, 4, 3, "pénible à installer sous Windows"),
-            ("wxWidgets (wxPython)", 3, 3, 3, 3, "natif, mais tracé vieillissant"),
-            ("Tkinter", 2, 1, 5, 2, "canevas saturé au-delà de 20 im/s"),
+            ("GTK 4 (PyGObject)", 3, 3, 4, 3, "painful to install on Windows"),
+            ("wxWidgets (wxPython)", 3, 3, 3, 3, "native, but the plotting is dated"),
+            ("Tkinter", 2, 1, 5, 2, "the canvas saturates beyond 20 fps"),
             ("Dear PyGui", 4, 4, 4, 2, "GPU rapide, peu accessible"),
             ("HTML5 + TypeScript", 4, 4, 3, 5, "Electron/Tauri : 180 Mo, passerelle")]
-    heads = ["Vitesse\nde tracé", "Richesse\ndes widgets", "Installation\nsimple",
-             "Beauté\nnative"]
+    heads = ["Plotting\nspeed", "Widget\ncoverage", "Easy to\ninstall",
+             "Native\nlook"]
     x0, cw = 470, 110
     for j, h in enumerate(heads):
         for k, line in enumerate(h.split("\n")):
@@ -1703,32 +1694,31 @@ def fig_toolkits():
         sh.txt(56, yy + 46, com, size=6, fill=GRIS, anchor="start")
         for j, n in enumerate((a, b, c, d)):
             stars(sh, x0 + j * cw + 26, yy + 30, n)
-    sh.txt(490, 580, "Retenu : PySide6 + pyqtgraph. Le reste du document explique "
-           "comment le remplacer si ce choix vieillit.", size=6.4, fill=OR,
+    sh.txt(490, 580, "Chosen: PySide6 + pyqtgraph. The rest of the document explains how to replace it should the choice age.", size=6.4, fill=OR,
            weight="700")
     sh.signer()
     sh.save("logiciel-toolkits.svg")
 
 
 # =============================================================================
-#  LES TROIS NIVEAUX DE MATÉRIEL
+#  THE THREE HARDWARE LEVELS
 # =============================================================================
 def fig_tiers():
     sh = Sheet(980, 520, print_mm=125)
-    sh.title("Où se situe cette carte",
-             "Trois niveaux d'instrument, trois usages, trois budgets")
+    sh.title("Where this board sits",
+             "Three levels of instrument, three uses, three budgets")
 
     tiers = [("NIVEAU 1", "Oscillateur NE555", "25 – 40 €",
-              ["mesure : une période", "sortie : MIDI", "aucun étalonnage",
-               "idéal pour comprendre"], SEVE, "#EDF5F0",
-              "La Musique des Plantes, partie X"),
+              ["measures: a period", "output: MIDI", "no calibration",
+               "ideal for understanding"], SEVE, "#EDF5F0",
+              "The Music of Plants, part X"),
              ("NIVEAU 2", "INA333 + ADS1115", "60 – 120 €",
-              ["mesure : une tension", "16 bits, 860 éch./s", "étalonnage relatif",
-               "idéal pour l'atelier"], BLEU, "#EEF3FA",
-              "Créer un Arbre Parlant, planche 2"),
+              ["measures: a voltage", "16 bits, 860 samples/s", "relative calibration",
+               "ideal for a workshop"], BLEU, "#EEF3FA",
+              "Build a Talking Tree, figure 2"),
              ("NIVEAU 3", "PhytoSense One", "180 – 240 €",
-              ["mesure : volts et ohms", "24 bits, isolée, datée", "étalonnage absolu",
-               "idéal pour publier"], OR, "#FBF5E6", "Le présent document")]
+              ["measures: volts and ohms", "24 bits, isolated, timestamped", "absolute calibration",
+               "ideal for publishing"], OR, "#FBF5E6", "This document")]
     for i, (n, t, prix, pts, col, fill, src) in enumerate(tiers):
         x = 40 + i * 306
         sh.rect(x, 96, 288, 340, fill=fill, stroke=col, sw=1.8, rx=8)
@@ -1740,11 +1730,10 @@ def fig_tiers():
             sh.txt(x + 24, 216 + k * 26, "·", size=8, fill=col, anchor="start")
             sh.txt(x + 40, 216 + k * 26, p, size=6.4, fill=INK, anchor="start")
         sh.line(x + 24, 340, x + 264, 340, stroke=col, sw=1.0)
-        sh.txt(x + 144, 362, "décrit dans", size=5.8, fill=GRIS)
+        sh.txt(x + 144, 362, "described in", size=5.8, fill=GRIS)
         for k, line in enumerate(src.split(", ")):
             sh.txt(x + 144, 382 + k * 15, line, size=6.2, fill=NUIT, style="italic")
-    sh.txt(490, 470, "Les trois montages partagent les mêmes électrodes et le même "
-           "logiciel : on monte d'un niveau sans rien jeter.", size=6.6, fill=NUIT,
+    sh.txt(490, 470, "The three builds share the same electrodes and the same software: you move up a level without throwing anything away.", size=6.6, fill=NUIT,
            weight="700")
     sh.signer()
     sh.save("carte-tiers.svg")
@@ -1755,17 +1744,17 @@ def fig_tiers():
 # =============================================================================
 def fig_horodatage():
     sh = Sheet(980, 520, print_mm=125)
-    sh.title("L'horodatage : deux horloges, une seule vérité",
-             "Le numéro d'échantillon fait foi ; l'heure du système n'est qu'une étiquette")
+    sh.title("Timestamping: two clocks, one truth",
+             "The sample index is authoritative; the system clock is only a label")
 
     sh.rect(40, 96, 420, 180, fill="#F3F8F5", stroke=SEVE, sw=1.4, rx=8)
-    sh.txt(250, 120, "HORLOGE DE LA CARTE", size=6.8, fill=SEVE, weight="700",
+    sh.txt(250, 120, "THE BOARD'S CLOCK", size=6.8, fill=SEVE, weight="700",
            spacing="1.2")
     sh.txt(250, 148, "TCXO 12,288 MHz · ±1 ppm", size=7, fill=NUIT, family=MONO)
     sh.txt(250, 172, "n = 0, 1, 2, 3 … compteur 64 bits", size=6.4, fill=INK)
     sh.txt(250, 196, "t = n / 250 Hz, exactement", size=6.4, fill=INK)
-    sh.txt(250, 226, "dérive : 86 ms par jour, au pire", size=6.2, fill=GRIS)
-    sh.txt(250, 248, "jamais corrigée en cours de séance", size=6.2, fill=CUIVRE,
+    sh.txt(250, 226, "drift: 86 ms a day, at worst", size=6.2, fill=GRIS)
+    sh.txt(250, 248, "never corrected during a session", size=6.2, fill=CUIVRE,
            weight="700")
 
     sh.rect(520, 96, 420, 180, fill="#EEF3FA", stroke=BLEU, sw=1.4, rx=8)
@@ -1774,36 +1763,36 @@ def fig_horodatage():
     sh.txt(730, 148, "CLOCK_MONOTONIC + UTC", size=7, fill=NUIT, family=MONO)
     sh.txt(730, 172, "sauts possibles : NTP, veille,", size=6.4, fill=INK)
     sh.txt(730, 192, "changement d'heure, suspension", size=6.4, fill=INK)
-    sh.txt(730, 226, "utilisée uniquement pour nommer", size=6.2, fill=GRIS)
-    sh.txt(730, 248, "et pour dater le début de séance", size=6.2, fill=GRIS)
+    sh.txt(730, 226, "used only to name files", size=6.2, fill=GRIS)
+    sh.txt(730, 248, "and to date the session's start", size=6.2, fill=GRIS)
 
-    block(sh, 250, 320, 480, 78, "Ajustement affine au fil de l'eau",
-          "t_UTC = a · n + b, réestimé toutes les 10 s",
+    block(sh, 250, 320, 480, 78, "An affine fit, as it goes",
+          "t_UTC = a · n + b, re-estimated every 10 s",
           fill=OR_PL, stroke=OR, sw=1.6, tsize=7.6)
     sh.arrow(250, 276, 360, 316, color=SEVE, sw=1.8, marker="ahv")
     sh.arrow(730, 276, 620, 316, color=BLEU, sw=1.8, marker="ahb")
-    sh.txt(490, 430, "Résultat : deux séances enregistrées sur deux machines "
-           "différentes restent superposables à la milliseconde.", size=6.6,
+    sh.txt(490, 430, "Result: two sessions recorded on two different machines "
+           "stay superimposable to the millisecond.", size=6.6,
            fill=NUIT, weight="700")
-    sh.txt(490, 452, "Chaque fichier porte les deux échelles ; aucune n'est perdue.",
+    sh.txt(490, 452, "Every file carries both scales; neither is lost.",
            size=6.2, fill=GRIS)
     sh.signer()
     sh.save("carte-horodatage.svg")
 
 
 # =============================================================================
-#  CIRCUIT IMPRIMÉ — IMPLANTATION ET ROUTAGE QUATRE COUCHES
+#  PRINTED CIRCUIT BOARD — PLACEMENT AND FOUR-LAYER ROUTING
 # =============================================================================
-#  Le dessin est décrit en millimètres réels : la carte fait 100 × 60 mm.
-#  Une fonction de conversion place ces millimètres dans le viewBox, de sorte
-#  que les cotes portées sur les planches sont les vraies.
+#  The drawing is described in real millimetres: the board is 100 x 60 mm.
+#  A conversion function places those millimetres inside the viewBox, so
+#  that the dimensions marked on the figures are the true ones.
 # -----------------------------------------------------------------------------
-CARTE_L, CARTE_H = 100.0, 60.0          # dimensions hors tout, en millimètres
+CARTE_L, CARTE_H = 100.0, 60.0          # overall dimensions, in millimetres
 
-#  (référence, x, y, largeur, hauteur, rotation, description)
+#  (reference, x, y, width, height, rotation, description)
 COMPOSANTS = [
-    ("J1",   6.0,  12.0, 12.0, 12.0, "entrée voie A"),
-    ("J2",   6.0,  30.0, 12.0, 12.0, "entrée voie B"),
+    ("J1",   6.0,  12.0, 12.0, 12.0, "channel A input"),
+    ("J2",   6.0,  30.0, 12.0, 12.0, "channel B input"),
     ("U1",  26.0,  14.0,  6.0,  6.0, "ADA4530-1"),
     ("R1",  22.0,  24.0,  3.2,  1.6, "10 kΩ"),
     ("R2",  27.0,  24.0,  3.2,  1.6, "1 GΩ"),
@@ -1829,9 +1818,9 @@ COMPOSANTS = [
     ("U33", 88.0,  44.0,  3.0,  2.0, "ESD"),
 ]
 
-#  Pistes par couche : chaque piste est une polyligne en millimètres.
+#  Tracks per layer: each track is a polyline in millimetres.
 PISTES = {
-    1: [  # signaux analogiques, côté composants
+    1: [  # analog signals, component side
         [(12, 12), (22, 12), (22, 14), (26, 14)],
         [(12, 30), (20, 30), (20, 20), (26, 17)],
         [(32, 14), (36, 14), (36, 12), (38, 12)],
@@ -1860,7 +1849,7 @@ PISTES = {
         [(70, 48), (76, 48), (76, 28), (80, 28)],
         [(96, 24), (96, 16), (86, 16), (86, 18)],
     ],
-    4: [  # signaux numériques et blindage
+    4: [  # digital signals and shielding
         [(70, 46), (76, 46), (76, 22), (80, 22)],
         [(70, 49), (74, 49), (74, 24), (80, 24)],
         [(70, 52), (73, 52), (73, 26), (80, 26)],
@@ -1878,15 +1867,15 @@ VIAS = [(36, 12), (36, 20), (46, 16), (58, 15), (68, 24), (76, 28), (76, 22),
         (34, 24), (69, 33)]
 
 COUCHES = {
-    1: ("Couche 1 — signaux analogiques", "#B03A2E", "côté composants"),
-    2: ("Couche 2 — plan de masse (fendu)", "#1E6F50", "référence unique"),
-    3: ("Couche 3 — alimentations", "#2F5E86", "±5 V, 3,3 V, 5 V"),
-    4: ("Couche 4 — signaux numériques", "#8A6A1F", "côté soudure"),
+    1: ("Layer 1 — analog signals", "#B03A2E", "component side"),
+    2: ("Layer 2 — ground plane (slotted)", "#1E6F50", "single reference"),
+    3: ("Layer 3 — supplies", "#2F5E86", "±5 V, 3.3 V, 5 V"),
+    4: ("Layer 4 — digital signals", "#8A6A1F", "solder side"),
 }
 
 
 def _pcb_transform(x0: float, y0: float, echelle: float):
-    """Renvoie une fonction mm → unités du viewBox."""
+    """Return a function mapping millimetres to viewBox units."""
     def mm(x: float, y: float):
         return (x0 + x * echelle, y0 + y * echelle)
     return mm
@@ -1894,12 +1883,12 @@ def _pcb_transform(x0: float, y0: float, echelle: float):
 
 def _dessiner_carte(sh, mm, echelle, couche: int, avec_composants: bool = True,
                     avec_reperes: bool = True):
-    """Trace le contour, les fixations, les composants et les pistes."""
+    """Draw the outline, the mounting holes, the parts and the tracks."""
     x0, y0 = mm(0, 0)
     x1, y1 = mm(CARTE_L, CARTE_H)
     sh.rect(x0, y0, x1 - x0, y1 - y0, fill="#F7F9F7", stroke=NUIT, sw=2.0, rx=4)
 
-    # fente du plan de masse : la barrière d'isolement
+    # slot in the ground plane: the isolation barrier
     xa, _ = mm(56, 0)
     sh.line(xa, y0 + 2, xa, y1 - 2, stroke=CUIVRE, sw=2.0, dash="8 5")
 
@@ -1909,7 +1898,7 @@ def _dessiner_carte(sh, mm, echelle, couche: int, avec_composants: bool = True,
         sh.circle(px, py, 1.6 * echelle, fill="#fff", stroke=GRIS, sw=1.2)
         sh.circle(px, py, 0.8 * echelle, fill=GRIS, stroke=GRIS, sw=0.8)
 
-    # anneau de garde autour des entrées
+    # guard ring around the inputs
     gx, gy = mm(3, 8)
     gx2, gy2 = mm(34, 44)
     sh.rect(gx, gy, gx2 - gx, gy2 - gy, fill="none", stroke=OR, sw=1.8, dash="5 3")
@@ -1932,9 +1921,9 @@ def _dessiner_carte(sh, mm, echelle, couche: int, avec_composants: bool = True,
         px, py = mm(vx, vy)
         sh.circle(px, py, 0.55 * echelle, fill="#fff", stroke=NUIT, sw=1.0)
 
-    # -- sérigraphie : le nom du projet, l'auteur et l'adresse ---------------
-    #  Gravés dans le cuivre de la couche de sérigraphie : une carte qui
-    #  circule doit dire d'où elle vient, même séparée de sa documentation.
+    # -- silkscreen: the project name, the author and the address ------------
+    #  Etched into the silkscreen layer: a board that circulates must say
+    #  where it came from, even when separated from its documentation.
     if echelle >= 3.0:
         sx, sy = mm(10, 57.2)
         sh.txt(sx, sy, PROJET.upper(), size=max(4.4, echelle * 0.62),
@@ -1945,7 +1934,7 @@ def _dessiner_carte(sh, mm, echelle, couche: int, avec_composants: bool = True,
         tx, ty = mm(90, 57.2)
         sh.txt(tx, ty, SITE, size=max(4.0, echelle * 0.52), fill=GRIS,
                anchor="end")
-        sh.txt(tx, ty + echelle * 1.05, "RÉV. B · CERN-OHL-P v2",
+        sh.txt(tx, ty + echelle * 1.05, "REV. B · CERN-OHL-P v2",
                size=max(3.8, echelle * 0.46), fill=GRIS, anchor="end")
 
     if avec_reperes:
@@ -1955,12 +1944,11 @@ def _dessiner_carte(sh, mm, echelle, couche: int, avec_composants: bool = True,
 
 
 def pl_pcb_couches():
-    """Planche : les quatre couches, côte à côte."""
+    """Plate: the four layers, side by side."""
     sh = Sheet(1360, 830, print_mm=212)
     frame(sh)
-    cartouche(sh, "Routage — quatre couches", feuille="1/3", bloc="Circuit imprimé")
-    sh.txt(90, 74, "PhytoSense One — circuit imprimé 100 × 60 mm, FR4 1,6 mm, "
-           "cuivre 35 µm", size=8.2, fill=NUIT, weight="700", anchor="start",
+    cartouche(sh, "Routing — four layers", sheet="1/3", bloc="Printed circuit board")
+    sh.txt(90, 74, "PhytoSense One — 100 × 60 mm board, FR4 1.6 mm, 35 µm copper", size=8.2, fill=NUIT, weight="700", anchor="start",
            family=SERIF)
 
     echelle = 4.0
@@ -1974,14 +1962,14 @@ def pl_pcb_couches():
         _dessiner_carte(sh, mm, echelle, couche,
                         avec_composants=(couche in (1, 4)), avec_reperes=False)
 
-    # --- légende -----------------------------------------------------------
+    # --- key ---------------------------------------------------------------
     lx, ly = 1030, 130
     sh.rect(lx, ly, 260, 380, fill="#FBFBF7", stroke=TRAIT, sw=1.0, rx=5)
-    sh.txt(lx + 130, ly + 20, "LÉGENDE", size=6.6, fill=NUIT, weight="700",
+    sh.txt(lx + 130, ly + 20, "KEY", size=6.6, fill=NUIT, weight="700",
            spacing="1.4")
-    entrees = [(COUCHES[1][1], "piste couche 1"), (COUCHES[2][1], "piste couche 2"),
-               (COUCHES[3][1], "piste couche 3"), (COUCHES[4][1], "piste couche 4"),
-               (CUIVRE, "fente du plan de masse"), (OR, "anneau de garde")]
+    entrees = [(COUCHES[1][1], "layer 1 track"), (COUCHES[2][1], "layer 2 track"),
+               (COUCHES[3][1], "layer 3 track"), (COUCHES[4][1], "layer 4 track"),
+               (CUIVRE, "slot in the ground plane"), (OR, "guard ring")]
     for i, (couleur, libelle) in enumerate(entrees):
         yy = ly + 44 + i * 22
         sh.line(lx + 14, yy, lx + 44, yy, stroke=couleur, sw=2.4,
@@ -1994,40 +1982,37 @@ def pl_pcb_couches():
     sh.circle(lx + 29, yy + 22, 6, fill="#fff", stroke=GRIS, sw=1.2)
     sh.txt(lx + 52, yy + 26, "fixation M3", size=5.8, fill=INK, anchor="start")
     for i, ligne in enumerate([
-            "Échelle 1 : 2,5", "",
-            "La fente du plan de masse",
-            "sépare la masse analogique",
-            "flottante de la masse USB.",
-            "Aucune piste ne la franchit :",
-            "seuls le transformateur T1 et",
-            "les isolateurs U24 la traversent,",
-            "et ils la traversent dans l'air."]):
+            "Scale 1 : 2.5", "",
+            "The slot in the ground plane",
+            "separates the analog ground",
+            "analog ground from the USB ground.",
+            "No track crosses it:",
+            "only transformer T1 and",
+            "the U24 isolators span it,",
+            "and they span it through air."]):
         sh.txt(lx + 14, yy + 56 + i * 15, ligne, size=5.6, fill=GRIS,
                anchor="start")
-    sh.txt(500, 770, "Les quatre couches sont représentées vues de dessus "
-           "(couche 4 non miroitée) — c'est la convention des fichiers Gerber "
-           "fournis.", size=6.0, fill=GRIS)
+    sh.txt(500, 770, "All four layers are shown from above (layer 4 not mirrored) — the convention of the supplied Gerber files.", size=6.0, fill=GRIS)
     sh.save("pcb-couches.svg")
 
 
 def pl_pcb_implantation():
-    """Planche : implantation, sérigraphie et cotes."""
+    """Plate: placement, silkscreen and dimensions."""
     sh = Sheet(1360, 830, print_mm=212)
     frame(sh)
-    cartouche(sh, "Implantation et sérigraphie", feuille="2/3",
-              bloc="Circuit imprimé")
-    sh.txt(90, 74, "Implantation vue de dessus — repères de sérigraphie et zones "
-           "fonctionnelles", size=8.2, fill=NUIT, weight="700", anchor="start",
+    cartouche(sh, "Placement and silkscreen", sheet="2/3",
+              bloc="Printed circuit board")
+    sh.txt(90, 74, "Placement seen from above — silkscreen markings and functional zones", size=8.2, fill=NUIT, weight="700", anchor="start",
            family=SERIF)
 
     echelle = 8.2
     mm = _pcb_transform(140, 140, echelle)
     _dessiner_carte(sh, mm, echelle, 1, avec_composants=True)
 
-    # --- étiquettes, réparties sans chevauchement -------------------------
-    #  Les composants sont serrés ; on répartit donc les étiquettes sur deux
-    #  colonnes, en les espaçant d'au moins une hauteur de ligne, puis on
-    #  trace un rappel jusqu'à la pastille.
+    # --- labels, spread out so they do not overlap ------------------------
+    #  The parts are packed close together, so the labels are spread over two
+    #  columns, at least one line-height apart, with a leader drawn back to
+    #  the pad.
     def _placer(elements, tx, anchor):
         elements = sorted(elements, key=lambda e: e[1])
         pas = 17.0
@@ -2048,10 +2033,10 @@ def pl_pcb_implantation():
     _placer(gauche, 118, "end")
     _placer(droite, 140 + CARTE_L * echelle + 24, "start")
 
-    zones = [("entrées et garde", 3, 8, 31, 36, OR),
+    zones = [("inputs and guard", 3, 8, 31, 36, OR),
              ("conditionnement", 46, 8, 28, 30, SEVE),
-             ("alimentation isolée", 14, 42, 42, 16, CUIVRE),
-             ("numérique et USB", 74, 12, 24, 40, BLEU)]
+             ("isolated supply", 14, 42, 42, 16, CUIVRE),
+             ("digital and USB", 74, 12, 24, 40, BLEU)]
     for nom, zx, zy, zw, zh, couleur in zones:
         ax, ay = mm(zx, zy)
         sh.rect(ax, ay, zw * echelle, zh * echelle, fill="none", stroke=couleur,
@@ -2062,40 +2047,40 @@ def pl_pcb_implantation():
 
 
 def fig_pcb_empilage():
-    """Figure : empilage, impédances et règles de percement."""
+    """Figure: the stack-up, impedances and drilling rules."""
     sh = Sheet(980, 640, print_mm=125)
-    sh.title("Empilage, impédances et perçages",
-             "Quatre couches sur FR4 1,6 mm — ce que le fabricant doit savoir")
+    sh.title("Stack-up, impedances and drilling",
+             "Four layers on 1.6 mm FR4 — what the fabricator needs to know")
 
-    couches = [("Couche 1 — signaux analogiques", "35 µm", "#D9C08A", 20),
-               ("Prépreg 7628 ×1", "0,20 mm", "#F0EEE4", 14),
-               ("Couche 2 — masse AGND / DGND (fendue)", "35 µm", "#8FA79A", 24),
-               ("Âme FR4 Tg150", "1,00 mm", "#E6E2D2", 30),
-               ("Couche 3 — alimentations", "35 µm", "#B9C6BF", 22),
-               ("Prépreg 7628 ×1", "0,20 mm", "#F0EEE4", 14),
-               ("Couche 4 — numérique et blindage", "35 µm", "#D9C08A", 20)]
+    couches = [("Layer 1 — analog signals", "35 µm", "#D9C08A", 20),
+               ("Prepreg 7628 x1", "0,20 mm", "#F0EEE4", 14),
+               ("Layer 2 — AGND / DGND ground (slotted)", "35 µm", "#8FA79A", 24),
+               ("FR4 core Tg150", "1,00 mm", "#E6E2D2", 30),
+               ("Layer 3 — supplies", "35 µm", "#B9C6BF", 22),
+               ("Prepreg 7628 x1", "0,20 mm", "#F0EEE4", 14),
+               ("Layer 4 — digital and shielding", "35 µm", "#D9C08A", 20)]
     y = 100
     for nom, ep, couleur, h in couches:
         sh.rect(60, y, 420, h, fill=couleur, stroke=INK, sw=1.0)
         sh.txt(492, y + h / 2 + 4, nom, size=6.6, fill=INK, anchor="start")
         sh.txt(474, y + h / 2 + 4, ep, size=6, fill=GRIS, anchor="end")
         y += h
-    sh.txt(270, y + 22, "épaisseur totale 1,60 mm ± 10 %", size=6.4, fill=NUIT,
+    sh.txt(270, y + 22, "total thickness 1.60 mm ± 10 %", size=6.4, fill=NUIT,
            weight="700")
 
     lignes = [
-        ("Largeur de piste minimale", "0,20 mm (8 mil)"),
-        ("Isolement minimal", "0,20 mm — 0,60 mm de part et d'autre de la fente"),
-        ("Via traversant", "percé 0,30 mm, pastille 0,60 mm"),
-        ("Via de masse sous les boîtiers", "matrice de 1,2 mm"),
-        ("Impédance différentielle USB", "90 Ω ± 10 % (couche 4 sur couche 3)"),
-        ("Impédance de l'horloge du CAN", "50 Ω asymétrique"),
-        ("Finition", "ENIG — obligatoire sous les entrées électrométriques"),
-        ("Vernis épargné", "sous J1, J2 et l'anneau de garde"),
-        ("Classe IPC", "2 (fabrication courante, aucun surcoût)"),
+        ("Minimum track width", "0.20 mm (8 mil)"),
+        ("Minimum clearance", "0.20 mm — 0.60 mm either side of the slot"),
+        ("Through via", "0.30 mm drill, 0.60 mm pad"),
+        ("Ground via under the packages", "on a 1.2 mm grid"),
+        ("USB differential impedance", "90 Ω ± 10 % (layer 4 over layer 3)"),
+        ("ADC clock impedance", "50 Ω single-ended"),
+        ("Finish", "ENIG — mandatory under the electrometer inputs"),
+        ("Mask keep-out", "under J1, J2 and the guard ring"),
+        ("IPC class", "2 (standard fabrication, no extra cost)"),
     ]
     y0 = 300
-    sh.txt(60, y0 - 12, "RÈGLES DE FABRICATION", size=7.2, fill=NUIT,
+    sh.txt(60, y0 - 12, "FABRICATION RULES", size=7.2, fill=NUIT,
            weight="700", anchor="start", spacing="1.2")
     for i, (cle, valeur) in enumerate(lignes):
         yy = y0 + i * 26
@@ -2105,10 +2090,10 @@ def fig_pcb_empilage():
         sh.txt(908, yy + 15, valeur, size=6.4, fill=SEVE, anchor="end",
                weight="700")
     note(sh, 60, y0 + len(lignes) * 26 + 16, 860,
-         ["Le vernis épargné sous les entrées n'est pas un détail esthétique : un film",
-          "de vernis humide conduit assez pour ruiner une mesure à 10¹⁵ Ω. C'est la",
-          "première chose à vérifier quand une voie dérive sans raison apparente."],
-         title="LE POINT QUI FAIT ÉCHOUER LES PREMIÈRES SÉRIES", color=CUIVRE,
+         ["The mask keep-out under the inputs is not a cosmetic detail: a film of",
+          "damp solder mask conducts quite enough to ruin a 10¹⁵ Ω measurement. It is the",
+          "first thing to check when a channel drifts for no apparent reason."],
+         title="THE POINT THAT SINKS A FIRST PRODUCTION RUN", color=CUIVRE,
          fill=CUIV_P)
     sh.signer()
     sh.save("pcb-empilage.svg")
@@ -2118,7 +2103,7 @@ def fig_pcb_empilage():
 #  COUVERTURES
 # =============================================================================
 def _fond_circuit(sh, w, h, seed=11, densite=40):
-    """Trame de pistes de circuit imprimé, façon fond de couverture."""
+    """A weave of PCB tracks, as a cover background."""
     import random as _r
     rng = _r.Random(seed)
     sh.rect(0, 0, w, h, fill=NUIT)
@@ -2141,7 +2126,7 @@ def _fond_circuit(sh, w, h, seed=11, densite=40):
 
 
 def _feuille_nervures(sh, cx, cy, hauteur, couleur=SEVE_C, op=0.9):
-    """Feuille stylisée dont les nervures sont des pistes."""
+    """A stylised leaf whose veins are copper tracks."""
     w = hauteur * 0.46
     sh.path(f"M {cx},{cy - hauteur / 2} "
             f"C {cx + w},{cy - hauteur * 0.18} {cx + w},{cy + hauteur * 0.18} "
@@ -2174,7 +2159,7 @@ def fig_cover():
            f'stop-color="{NUIT}" stop-opacity="0"/></radialGradient></defs>')
     sh.add('<ellipse cx="500" cy="720" rx="460" ry="420" fill="url(#halo)"/>')
     _feuille_nervures(sh, 500, 720, 520)
-    # trace d'un signal qui sort de la feuille
+    # the trace of a signal leaving the leaf
     pts = []
     import random as _r
     rng = _r.Random(3)
@@ -2191,7 +2176,7 @@ def fig_cover():
 
 
 def _couverture_annexe(nom, titre, sous_titre, feuille, seed):
-    """Couverture sobre pour les trois annexes détachables."""
+    """A plain cover for the three detachable fascicles."""
     sh = Sheet(1000, 1412, print_mm=170, bg=None)
     _fond_circuit(sh, 1000, 1412, seed=seed, densite=30)
     sh.rect(70, 70, 860, 1272, fill="none", stroke=OR, sw=2.0, op=0.55)
@@ -2211,20 +2196,20 @@ def _couverture_annexe(nom, titre, sous_titre, feuille, seed):
 
 def fig_cover_schemas():
     _couverture_annexe("carte-cover-schemas.svg",
-                       "Dossier\nde schémas",
-                       "Six feuilles — révision B", "ANNEXE 1", 17)
+                       "Schematic\nset",
+                       "Six sheets — revision B", "ANNEXE 1", 17)
 
 
 def fig_cover_bom():
     _couverture_annexe("carte-cover-bom.svg",
-                       "Nomenclature\net accessoires",
-                       "47 références · budgets détaillés", "ANNEXE 2", 23)
+                       "Bill of materials\nand accessories",
+                       "47 part numbers · itemized budgets", "ANNEXE 2", 23)
 
 
 def fig_cover_pcb():
     _couverture_annexe("carte-cover-pcb.svg",
-                       "Circuit\nimprimé",
-                       "Quatre couches — dossier de fabrication", "ANNEXE 3", 31)
+                       "Printed\ncircuit",
+                       "Four layers — the fabrication package", "ANNEXE 3", 31)
 
 
 # =============================================================================
@@ -2233,63 +2218,62 @@ def fig_cover_pcb():
 def pl_protections():
     sh = Sheet(1360, 830, print_mm=212)
     frame(sh)
-    cartouche(sh, "Protections et gestion d'alimentation", feuille="7/8",
-              bloc="Carte mère")
-    sh.txt(90, 74, "Deux sources, une priorité, et rien qui casse en cas de "
-           "fausse manœuvre", size=8.4, fill=NUIT, weight="700", anchor="start",
+    cartouche(sh, "Protections and power management", sheet="7/8",
+              bloc="Main board")
+    sh.txt(90, 74, "Two sources, one priority, and nothing that breaks if you get it wrong", size=8.4, fill=NUIT, weight="700", anchor="start",
            family=SERIF)
 
     # ---------------- voie « bloc secteur » --------------------------------
     sh.rect(60, 104, 560, 210, fill="#FBF8EF", stroke=OR, sw=1.2, rx=6, dash="7 5")
-    sh.txt(340, 124, "ENTRÉE BLOC SECTEUR — 7 à 24 V, polarité indifférente",
+    sh.txt(340, 124, "MAINS ADAPTER INPUT — 7 to 24 V, either polarity",
            size=6.6, fill=OR, weight="700", spacing="1")
 
     pJ30 = connector(sh, 82, 150, 3, "J30 · 2,1 mm", pitch=42, w=50,
                      pinlabels=["+", "−", "S"])
     sh.wire(pJ30[0], (210, 170), stroke=INK, sw=1.8)
 
-    # anti-inversion par MOS canal P
+    # reverse-polarity protection by a P-channel MOSFET
     ic_box(sh, 210, 146, 96, 58, "Q30", "DMP3099L", "anti-inversion")
-    sh.txt(258, 222, "une inversion bloque,", size=5.8, fill=GRIS)
-    sh.txt(258, 236, "elle ne détruit rien", size=5.8, fill=GRIS)
+    sh.txt(258, 222, "a reversal blocks,", size=5.8, fill=GRIS)
+    sh.txt(258, 236, "it destroys nothing", size=5.8, fill=GRIS)
 
     sh.wire((306, 170), (346, 170), stroke=INK, sw=1.8)
     sh.dot(346, 170)
     diode_up(sh, 346, 240, L=60)
     sh.txt(316, 262, "D30 · SMAJ18A", size=6.2, fill=SEVE, anchor="start",
            weight="700")
-    sh.txt(316, 276, "écrête à 18 V, 400 W", size=5.8, fill=GRIS, anchor="start")
+    sh.txt(316, 276, "clamps at 18 V, 400 W", size=5.8, fill=GRIS, anchor="start")
     sh.wire((346, 240), (346, 262), stroke=INK)
     ground(sh, 346, 262, "dgnd")
 
     sh.wire((346, 170), (420, 170), stroke=INK, sw=1.8)
     ic_box(sh, 420, 142, 120, 66, "U60", "TPS62932", "abaisseur 5,2 V")
-    sh.txt(480, 222, "2 A · 92 % · protégé en court-circuit", size=5.8, fill=GRIS)
+    sh.txt(480, 222, "2 A · 92 % · short-circuit protected", size=5.8, fill=GRIS)
     sh.wire((540, 170), (600, 170), (600, 300), stroke=CUIVRE, sw=2.0)
     sh.txt(572, 156, "5,2 V", size=6.4, fill=CUIVRE, weight="700", family=MONO)
 
     # ---------------- voie USB ---------------------------------------------
     sh.rect(60, 340, 560, 190, fill="#F2F6FC", stroke=BLEU, sw=1.2, rx=6, dash="7 5")
-    sh.txt(340, 360, "ENTRÉE USB — 5 V, 500 mA déclarés", size=6.6, fill=BLEU,
+    sh.txt(340, 360, "USB INPUT — 5 V, 500 mA declared", size=6.6, fill=BLEU,
            weight="700", spacing="1")
 
     netflag(sh, 82, 400, "VBUS", side="in", w=64)
     sh.wire((146, 400), (190, 400), stroke=INK, sw=1.8)
     ferrite(sh, 190, 400, "FB1", "600 Ω")
     sh.wire((266, 400), (300, 400), stroke=INK, sw=1.8)
-    ic_box(sh, 300, 372, 130, 66, "U61", "TPS2553", "limite à 500 mA")
-    sh.txt(365, 452, "coupe en 2 µs sur court-circuit,", size=5.8, fill=GRIS)
-    sh.txt(365, 466, "signale le défaut, se réarme seul", size=5.8, fill=GRIS)
+    ic_box(sh, 300, 372, 130, 66, "U61", "TPS2553", "limits to 500 mA")
+    sh.txt(365, 452, "opens in 2 µs on a short,", size=5.8, fill=GRIS)
+    sh.txt(365, 466, "flags the fault, resets itself", size=5.8, fill=GRIS)
     sh.wire((430, 400), (600, 400), (600, 330), stroke=CUIVRE, sw=2.0)
     sh.txt(500, 390, "5,0 V", size=6.4, fill=CUIVRE, weight="700", family=MONO)
     netflag(sh, 300, 480, "FAULT", side="out", color=CUIVRE, w=70)
     sh.wire((370, 480), (410, 480), (410, 438), stroke=CUIVRE, sw=1.2, dash="4 3")
 
     # ---------------- aiguilleur -------------------------------------------
-    ic_box(sh, 640, 270, 150, 90, "U62", "TPS2116", "aiguilleur à priorité")
-    sh.txt(715, 378, "priorité au bloc secteur ;", size=5.8, fill=GRIS)
-    sh.txt(715, 392, "bascule sans coupure ;", size=5.8, fill=GRIS)
-    sh.txt(715, 406, "blocage inverse des deux côtés", size=5.8, fill=GRIS)
+    ic_box(sh, 640, 270, 150, 90, "U62", "TPS2116", "priority selector")
+    sh.txt(715, 378, "the mains adapter wins;", size=5.8, fill=GRIS)
+    sh.txt(715, 392, "switches without a break;", size=5.8, fill=GRIS)
+    sh.txt(715, 406, "reverse blocking on both sides", size=5.8, fill=GRIS)
     sh.wire((600, 300), (640, 300), stroke=CUIVRE, sw=2.0)
     sh.wire((600, 330), (640, 330), stroke=CUIVRE, sw=2.0)
     sh.wire((790, 315), (850, 315), stroke=CUIVRE, sw=2.4)
@@ -2298,23 +2282,23 @@ def pl_protections():
     # ---------------- mesure de consommation --------------------------------
     resistor(sh, 850, 315, "R60", "0,1 Ω", L=80)
     sh.wire((930, 315), (980, 315), stroke=CUIVRE, sw=2.4)
-    ic_box(sh, 980, 286, 130, 62, "U63", "INA219", "tension et courant")
-    sh.txt(1045, 366, "alimente l'afficheur :", size=5.8, fill=GRIS)
+    ic_box(sh, 980, 286, 130, 62, "U63", "INA219", "voltage and current")
+    sh.txt(1045, 366, "feeds the display:", size=5.8, fill=GRIS)
     sh.txt(1045, 380, "5,03 V · 137 mA · 0,69 W", size=5.8, fill=SEVE, weight="700")
     netflag(sh, 980, 410, "I²C", side="out", color=BLEU, w=56)
 
     sh.wire((1110, 315), (1180, 315), stroke=CUIVRE, sw=2.4)
     ferrite(sh, 1180, 315, "F30", "0,5 A")
     sh.wire((1256, 315), (1284, 315), stroke=CUIVRE, sw=2.4)
-    rail(sh, 1284, 315, "5 V carte")
+    rail(sh, 1284, 315, "5 V board")
 
-    # ---------------- protections des entrées de mesure ---------------------
+    # ---------------- protection of the measurement inputs ------------------
     sh.rect(640, 430, 660, 180, fill="#FBEEE6", stroke=CUIVRE, sw=1.2, rx=6,
             dash="7 5")
-    sh.txt(970, 450, "PROTECTION DES ENTRÉES DE MESURE", size=6.6, fill=CUIVRE,
+    sh.txt(970, 450, "MEASUREMENT INPUT PROTECTION", size=6.6, fill=CUIVRE,
            weight="700", spacing="1")
 
-    netflag(sh, 656, 490, "ÉLECTRODE", side="in", color=SEVE, w=98)
+    netflag(sh, 656, 490, "ELECTRODE", side="in", color=SEVE, w=98)
     sh.wire((754, 490), (786, 490), stroke=INK, sw=1.6)
     ferrite(sh, 786, 490, "F1", "50 mA")
     sh.wire((862, 490), (896, 490), stroke=INK, sw=1.6)
@@ -2326,20 +2310,20 @@ def pl_protections():
     sh.wire((1010, 572), (1010, 584), stroke=INK)
     ground(sh, 1010, 584, "agnd")
     sh.wire((1010, 490), (1080, 490), stroke=INK, sw=1.6)
-    sh.txt(1096, 486, "vers U1", size=6.2, fill=SEVE, anchor="start", weight="700")
-    sh.txt(1096, 500, "(feuille 1)", size=5.8, fill=GRIS, anchor="start")
+    sh.txt(1096, 486, "to U1", size=6.2, fill=SEVE, anchor="start", weight="700")
+    sh.txt(1096, 500, "(sheet 1)", size=5.8, fill=GRIS, anchor="start")
     sh.txt(1096, 528, "0,5 pF seulement :", size=5.8, fill=GRIS, anchor="start")
-    sh.txt(1096, 542, "ne charge pas l'entrée", size=5.8, fill=GRIS, anchor="start")
-    sh.txt(700, 556, "un branchement sur une source active ouvre le fusible",
+    sh.txt(1096, 542, "does not load the input", size=5.8, fill=GRIS, anchor="start")
+    sh.txt(700, 556, "connecting to a live source opens the fuse",
            size=5.8, fill=GRIS, anchor="start")
-    sh.txt(700, 570, "au lieu de détruire l'amplificateur d'entrée",
+    sh.txt(700, 570, "instead of destroying the input amplifier",
            size=5.8, fill=GRIS, anchor="start")
 
     note(sh, 60, 560, 550,
-         ["Toute combinaison est admise : bloc secteur seul, USB seul, ou les deux.",
-          "Le passage de l'un à l'autre se fait sans coupure ni redémarrage — on peut",
-          "débrancher l'ordinateur en pleine séance sans perdre un échantillon."],
-         title="DEUX SOURCES, AUCUNE MANIPULATION", color=SEVE, fill=SEVE_P)
+         ["Any combination is allowed: mains adapter alone, USB alone, or both.",
+          "Changing from one to the other happens without a break or a restart — you can",
+          "unplug the computer mid-session without losing a sample."],
+         title="TWO SOURCES, NO HANDLING", color=SEVE, fill=SEVE_P)
     sh.save("carte-protections.svg")
 
 
@@ -2349,8 +2333,8 @@ def pl_protections():
 def pl_ihm():
     sh = Sheet(1360, 830, print_mm=212)
     frame(sh)
-    cartouche(sh, "Signalisation et afficheur", feuille="8/8", bloc="Carte mère")
-    sh.txt(90, 74, "Ce que l'appareil montre sans qu'on ait à ouvrir un logiciel",
+    cartouche(sh, "Indicators and display", sheet="8/8", bloc="Main board")
+    sh.txt(90, 74, "What the instrument shows without opening any software",
            size=8.4, fill=NUIT, weight="700", anchor="start", family=SERIF)
 
     # ---- voyants -----------------------------------------------------------
@@ -2358,18 +2342,18 @@ def pl_ihm():
     sh.txt(320, 124, "VOYANTS", size=6.8, fill=SEVE, weight="700", spacing="1.4")
 
     voyants = [
-        ("DS2", "bicolore", "ALIMENTATION", SEVE,
-         ["vert fixe : bloc secteur", "ambre fixe : alimenté par l'USB",
-          "ambre clignotant : limitation en cours"]),
+        ("DS2", "bi-colour", "POWER", SEVE,
+         ["steady green: mains adapter", "steady amber: powered from USB",
+          "blinking amber: limiting"]),
         ("DS3", "bleue", "LIEN USB", BLEU,
-         ["éteint : non énuméré", "fixe : énuméré, au repos",
-          "clignotant : flux de mesure actif"]),
-        ("DS4", "rouge", "DÉFAUT", CUIVRE,
-         ["surintensité ou court-circuit", "saturation persistante",
-          "auto-test en échec"]),
-        ("DS1", "RVB", "MESURE", OR,
+         ["off: not enumerated", "steady: enumerated, idle",
+          "blinking: the measurement stream is live"]),
+        ("DS4", "rouge", "FAULT", CUIVRE,
+         ["overcurrent or short circuit", "saturation persistante",
+          "self-test failed"]),
+        ("DS1", "RVB", "MEASURE", OR,
          ["vert : acquisition normale", "ambre : saturation",
-          "bleu : aucune électrode", "luminosité = niveau du signal"]),
+          "blue: no electrode", "brightness = signal level"]),
     ]
     for i, (ref, genre, titre, couleur, lignes) in enumerate(voyants):
         y = 150 + i * 84
@@ -2381,13 +2365,12 @@ def pl_ihm():
         for k, ligne in enumerate(lignes):
             sh.txt(290, y + 12 + k * 15, ligne, size=6, fill=INK, anchor="start")
 
-    sh.txt(320, 486, "chaque voyant est en série avec 1 kΩ (R70 à R73) : 2 mA, "
-           "lisible sans éblouir dans le noir", size=6, fill=GRIS)
+    sh.txt(320, 486, "each indicator sits behind 1 kΩ (R70 to R73): 2 mA, readable without dazzling in the dark", size=6, fill=GRIS)
 
     # ---- afficheur ---------------------------------------------------------
     sh.rect(620, 104, 690, 380, fill="#F2F6FC", stroke=BLEU, sw=1.2, rx=6,
             dash="7 5")
-    sh.txt(965, 124, "AFFICHEUR OLED 128 × 64 — BUS I²C", size=6.8, fill=BLEU,
+    sh.txt(965, 124, "OLED DISPLAY 128 × 64 — I²C BUS", size=6.8, fill=BLEU,
            weight="700", spacing="1")
 
     ic_box(sh, 650, 150, 150, 70, "DS5", "SSD1306", "0,96 pouce")
@@ -2397,30 +2380,30 @@ def pl_ihm():
     sh.wire((710, 285), (780, 285), (780, 220), stroke=BLEU, sw=1.2)
     sh.txt(725, 330, "adresse 0x3C · 3,3 V", size=6, fill=GRIS)
 
-    # maquette de l'écran
+    # a mock-up of the screen
     ex, ey, ew, eh = 840, 160, 420, 210
     sh.rect(ex, ey, ew, eh, fill="#0A1712", stroke=INK, sw=2.0, rx=5)
     lignes_ecran = [
         ("PhytoSense One", "#E0C073", 9.4, 30),
-        ("source   bloc secteur", "#EAF2EC", 7.6, 58),
-        ("gain     ×100  gamme 10 MΩ", "#EAF2EC", 7.6, 80),
-        ("mesure   +412,7 µV", "#7FE0A8", 9.0, 106),
-        ("bruit    0,63 µV eff.", "#EAF2EC", 7.6, 130),
-        ("conso.   5,03 V · 137 mA", "#9fb8ab", 7.2, 152),
-        ("USB      flux actif · 0 perdu", "#7FE0A8", 7.2, 174),
-        ("événem.  37 · 12,4 /min", "#EAF2EC", 7.2, 196),
+        ("source   mains adapter", "#EAF2EC", 7.6, 58),
+        ("gain     ×100  range 10 MΩ", "#EAF2EC", 7.6, 80),
+        ("measure  +412.7 µV", "#7FE0A8", 9.0, 106),
+        ("noise    0.63 µV rms", "#EAF2EC", 7.6, 130),
+        ("power    5.03 V · 137 mA", "#9fb8ab", 7.2, 152),
+        ("USB      stream live · 0 lost", "#7FE0A8", 7.2, 174),
+        ("events  37 · 12.4 /min", "#EAF2EC", 7.2, 196),
     ]
     for texte, couleur, taille, dy in lignes_ecran:
         sh.txt(ex + 14, ey + dy, texte, size=taille, fill=couleur, anchor="start",
                family=MONO)
-    sh.txt(ex + ew / 2, ey + eh + 20, "lisible sur place, écran de l'ordinateur hors de portée",
+    sh.txt(ex + ew / 2, ey + eh + 20, "readable on the spot, with the computer's screen out of reach",
            size=6.2, fill=GRIS)
 
-    sh.txt(965, 430, "Quatre pages font défiler par appui bref sur le bouton :",
+    sh.txt(965, 430, "A short press on the button cycles four pages:",
            size=6.4, fill=NUIT, weight="700")
-    sh.txt(965, 448, "mesure · alimentation · lien USB · auto-test", size=6.2,
+    sh.txt(965, 448, "measurement · power · USB link · self-test", size=6.2,
            fill=GRIS)
-    sh.txt(965, 466, "Un appui long pose un marqueur horodaté.", size=6.2,
+    sh.txt(965, 466, "A long press places a timestamped mark.", size=6.2,
            fill=GRIS)
 
     # ---- bouton ------------------------------------------------------------
@@ -2429,32 +2412,32 @@ def pl_ihm():
     netflag(sh, 280, 551, "GPIO", side="out", color=CUIVRE, w=64)
 
     note(sh, 360, 512, 620,
-         ["La carte travaille toujours reliée à un ordinateur, mais celui-ci est posé",
-          "trois mètres plus loin. Les quatre voyants répondent sur place aux quatre",
-          "questions qu'on se pose à genoux devant l'arbre : est-ce alimenté, est-ce",
-          "relié, est-ce que ça mesure, et est-ce qu'il y a un problème."],
-         title="POURQUOI DE LA SIGNALISATION LOCALE", color=SEVE, fill=SEVE_P)
+         ["The board always works attached to a computer, but that computer is sitting",
+          "three metres away. The four indicators answer, on the spot, the four questions",
+          "you ask kneeling in front of the tree: is it powered, is it",
+          "connected, is it measuring, and is anything wrong."],
+         title="WHY LOCAL INDICATORS AT ALL", color=SEVE, fill=SEVE_P)
     sh.save("carte-ihm.svg")
 
 
 # =============================================================================
-#  ARBRE D'ALIMENTATION ET PROTECTIONS (figure de synthèse)
+#  POWER TREE AND PROTECTIONS (a summary figure)
 # =============================================================================
 def fig_alim_arbre():
     sh = Sheet(980, 700, print_mm=125)
-    sh.title("Arbre d'alimentation et protections",
-             "Deux sources, une priorité, cinq barrières de protection")
+    sh.title("Power tree and protections",
+             "Two sources, one priority, five protective barriers")
 
     # sources
-    block(sh, 40, 110, 200, 66, "Bloc secteur", "7 à 24 V · 1 A",
+    block(sh, 40, 110, 200, 66, "Mains adapter", "7 to 24 V · 1 A",
           fill=OR_PL, stroke=OR, sw=1.6, tsize=8)
     block(sh, 40, 230, 200, 66, "Port USB", "5 V · 500 mA",
           fill=BLEU_P, stroke=BLEU, sw=1.6, tsize=8)
 
     # protections voie secteur
     etapes_sec = [("Anti-inversion", "Q30 · MOS canal P"),
-                  ("Écrêtage 18 V", "D30 · transil 400 W"),
-                  ("Abaisseur 5,2 V", "U60 · protégé")]
+                  ("18 V clamp", "D30 · transil 400 W"),
+                  ("Abaisseur 5,2 V", "U60 · protected")]
     for i, (t, sub) in enumerate(etapes_sec):
         block(sh, 280 + i * 190, 110, 170, 66, t, sub, fill="#fff", stroke=OR,
               sw=1.3, tsize=7.2)
@@ -2465,7 +2448,7 @@ def fig_alim_arbre():
     # protections voie USB
     etapes_usb = [("Ferrite", "FB1 · 600 Ω"),
                   ("Limiteur 500 mA", "U61 · coupe en 2 µs"),
-                  ("Signal de défaut", "vers le voyant rouge")]
+                  ("Fault signal", "to the red indicator")]
     for i, (t, sub) in enumerate(etapes_usb):
         block(sh, 280 + i * 190, 230, 170, 66, t, sub, fill="#fff", stroke=BLEU,
               sw=1.3, tsize=7.2)
@@ -2474,66 +2457,66 @@ def fig_alim_arbre():
     sh.arrow(240, 263, 276, 263, color=BLEU, sw=1.8)
 
     # aiguilleur
-    block(sh, 380, 350, 220, 76, "Aiguilleur à priorité",
-          "U62 · TPS2116 · sans coupure", fill=SEVE_P, stroke=SEVE, sw=1.8,
+    block(sh, 380, 350, 220, 76, "Priority selector",
+          "U62 · TPS2116 · break-free", fill=SEVE_P, stroke=SEVE, sw=1.8,
           tsize=8)
     sh.arrow(470, 176, 470, 346, color=OR, sw=1.8)
     sh.arrow(520, 296, 520, 346, color=BLEU, sw=1.8)
-    sh.txt(620, 372, "le bloc secteur l'emporte quand il est présent",
+    sh.txt(620, 372, "the mains adapter wins whenever it is present",
            size=6.2, fill=GRIS, anchor="start")
-    sh.txt(620, 388, "la bascule est indolore : aucun échantillon perdu",
+    sh.txt(620, 388, "the changeover is painless: no sample is lost",
            size=6.2, fill=GRIS, anchor="start")
 
     # mesure et distribution
-    block(sh, 380, 450, 220, 66, "Mesure de consommation", "U63 · INA219",
+    block(sh, 380, 450, 220, 66, "Current measurement", "U63 · INA219",
           fill="#fff", stroke=SEVE, sw=1.4, tsize=7.6)
     sh.arrow(490, 426, 490, 446, color=SEVE, sw=1.8)
-    block(sh, 380, 546, 220, 62, "Fusible réarmable", "F30 · 0,5 A",
+    block(sh, 380, 546, 220, 62, "Resettable fuse", "F30 · 0,5 A",
           fill=CUIV_P, stroke=CUIVRE, sw=1.4, tsize=7.6)
     sh.arrow(490, 516, 490, 542, color=SEVE, sw=1.8)
 
-    sorties = [("+3V3 numérique", "U23"), ("±5 V analogiques isolés", "T1, U21, U22"),
-               ("Afficheur et voyants", "2 mA chacun")]
+    sorties = [("+3V3 digital", "U23"), ("isolated ±5 V analog", "T1, U21, U22"),
+               ("Display and indicators", "2 mA chacun")]
     for i, (t, sub) in enumerate(sorties):
         block(sh, 660, 450 + i * 74, 280, 60, t, sub, fill="#fff", stroke=GRIS,
               sw=1.2, tsize=7.4)
         sh.arrow(604, 577, 656, 480 + i * 74, color=SEVE, sw=1.4)
 
     note(sh, 40, 620, 900,
-         ["Inversion de polarité, court-circuit, surtension, surintensité, décharge",
-          "électrostatique : chacun de ces cinq accidents rencontre une barrière avant",
-          "d'atteindre un composant coûteux. Aucun fusible à remplacer : tout se réarme."],
-         title="LES CINQ ACCIDENTS COUVERTS", color=CUIVRE, fill=CUIV_P)
+         ["Reverse polarity, short circuit, overvoltage, overcurrent, electrostatic",
+          "discharge: each of these five accidents meets a barrier before it",
+          "reaches an expensive part. No fuse to replace: everything resets itself."],
+         title="THE FIVE ACCIDENTS COVERED", color=CUIVRE, fill=CUIV_P)
     sh.signer()
     sh.save("carte-alim-arbre.svg")
 
 
 # =============================================================================
-#  GABARITS DE PERÇAGE — ÉCHELLE 1:1
+#  DRILLING TEMPLATES — 1:1 SCALE
 #
-#  Règle absolue de ces planches : une unité du viewBox vaut exactement un
-#  dixième de millimètre réel. La feuille fait 1800 × 900 unités et s'imprime
-#  sur 180 mm de large ; toute cote lue à la règle sur le papier est donc la
-#  vraie. Une réglette de contrôle de 100 mm figure sur chaque gabarit : si
-#  elle ne mesure pas 100 mm, l'impression a été remise à l'échelle et le
-#  gabarit est inutilisable.
+#  The absolute rule of these figures: one viewBox unit is exactly one
+#  tenth of a real millimetre. The sheet is 1800 x 900 units and prints
+#  180 mm wide, so any dimension measured with a ruler on the paper is the
+#  true one. A 100 mm check ruler appears on every template: if it does not
+#  measure 100 mm, the print was rescaled and the template is unusable.
+#
 # =============================================================================
-UPMM = 10.0          # unités de viewBox par millimètre
+UPMM = 10.0          # viewBox units per millimetre
 
-#  Boîtier retenu : aluminium extrudé 120 × 80 × 30 mm, faces amovibles.
-FACE_L, FACE_H = 116.0, 26.0          # face avant et arrière, en millimètres
+#  Chosen enclosure: extruded aluminium 120 x 80 x 30 mm, removable panels.
+FACE_L, FACE_H = 116.0, 26.0          # front and rear panels, in millimetres
 
 
 def _gab(x_mm, y_mm, ox, oy):
-    """Millimètres de la face → unités du viewBox."""
+    """Panel millimetres to viewBox units."""
     return (ox + x_mm * UPMM, oy + y_mm * UPMM)
 
 
 def _percage(sh, ox, oy, x, y, diametre, repere, legende="", dessous=True):
-    """Trou rond : cercle au diamètre réel, croix de centrage, cote.
+    """Round hole: a circle at true diameter, a centre cross, a dimension.
 
-    `dessous` place les cotes sous le trou ; à faux, elles passent au-dessus,
-    ce qui évite les chevauchements quand deux perçages sont proches.
+    `dessous` puts the dimensions under the hole; when false they go above,
+    which avoids overlaps where two holes sit close together.
     """
     cx, cy = _gab(x, y, ox, oy)
     r = diametre / 2.0 * UPMM
@@ -2555,7 +2538,7 @@ def _percage(sh, ox, oy, x, y, diametre, repere, legende="", dessous=True):
 
 
 def _fenetre(sh, ox, oy, x, y, larg, haut, repere, legende=""):
-    """Ouverture rectangulaire : contour réel, croix de centrage, cotes."""
+    """Rectangular cut-out: true outline, centre cross, dimensions."""
     cx, cy = _gab(x, y, ox, oy)
     w, h = larg * UPMM, haut * UPMM
     sh.rect(cx - w / 2, cy - h / 2, w, h, fill="none", stroke=INK, sw=1.6, rx=3)
@@ -2570,7 +2553,7 @@ def _fenetre(sh, ox, oy, x, y, larg, haut, repere, legende=""):
 
 
 def _reglette(sh, x, y, longueur_mm=100.0):
-    """Réglette de contrôle : si elle ne mesure pas sa cote, ne pas percer."""
+    """A check ruler: if it does not measure its stated length, do not drill."""
     L = longueur_mm * UPMM
     sh.rect(x, y, L, 26, fill="none", stroke=INK, sw=1.4)
     for i in range(int(longueur_mm) + 1):
@@ -2583,26 +2566,26 @@ def _reglette(sh, x, y, longueur_mm=100.0):
         else:
             sh.line(px, y + 16, px, y + 26, stroke=TRAIT, sw=0.7)
     sh.txt(x + L / 2, y - 10,
-           f"RÉGLETTE DE CONTRÔLE — CETTE BARRE DOIT MESURER {longueur_mm:g} mm",
+           f"CHECK RULER — THIS BAR MUST MEASURE {longueur_mm:g} mm",
            size=6.4, fill=CUIVRE, weight="700", spacing="0.8")
 
 
 def _avertissement_impression(sh, x, y, w=700):
     note(sh, x, y, w,
-         ["Imprimer à 100 %, sans « ajuster à la page ».",
-          "Vérifier la réglette à la règle AVANT de percer :",
-          "4 % d'erreur décalent le dernier trou de 4 mm.",
-          "Coller le gabarit à la face au ruban adhésif,",
-          "pointer au pointeau, puis percer en deux passes :",
-          "avant-trou de 3 mm, puis cote finale."],
-         title="AVANT DE PERCER — À LIRE", color=CUIVRE, fill=CUIV_P)
+         ["Print at 100 %, with no “fit to page”.",
+          "Check the ruler with a ruler BEFORE drilling:",
+          "a 4 % error shifts the last hole by 4 mm.",
+          "Tape the template to the panel,",
+          "mark with a centre punch, then drill in two passes:",
+          "a 3 mm pilot hole, then the final size."],
+         title="BEFORE YOU DRILL — READ THIS", color=CUIVRE, fill=CUIV_P)
 
 
 def _cadre_face(sh, ox, oy, titre, sous_titre):
-    """Contour de la face, avec ses cotes d'encombrement."""
+    """The panel outline, with its overall dimensions."""
     w, h = FACE_L * UPMM, FACE_H * UPMM
     sh.rect(ox, oy, w, h, fill="#FBFBF7", stroke=NUIT, sw=2.2, rx=8)
-    # axes de référence
+    # reference axes
     sh.line(ox, oy + h / 2, ox + w, oy + h / 2, stroke=TRAIT, sw=0.8, dash="12 6")
     sh.line(ox + w / 2, oy, ox + w / 2, oy + h, stroke=TRAIT, sw=0.8, dash="12 6")
     # cotes
@@ -2619,13 +2602,12 @@ def _cadre_face(sh, ox, oy, titre, sous_titre):
     sh.txt(ox + w, oy - 62, sous_titre, size=6.4, fill=GRIS, anchor="end")
 
 
-def _tableau_percages(sh, x, y, lignes, titre="COORDONNÉES DES PERÇAGES"):
-    """Table des cotes, mesurées depuis le coin inférieur gauche de la face."""
+def _tableau_percages(sh, x, y, lignes, titre="HOLE COORDINATES"):
+    """Table of dimensions, measured from the panel's bottom-left corner."""
     sh.txt(x, y, titre, size=6.8, fill=NUIT, weight="700", anchor="start",
            spacing="1.2")
-    sh.txt(x, y + 16, "origine : coin supérieur gauche · X vers la droite, "
-           "Y vers le bas", size=5.6, fill=GRIS, anchor="start")
-    entetes = ("REPÈRE", "X (mm)", "Y (mm)", "COTE", "DESTINATION")
+    sh.txt(x, y + 16, "origin: top-left corner · X to the right, Y downward", size=5.6, fill=GRIS, anchor="start")
+    entetes = ("DATUM", "X (mm)", "Y (mm)", "COTE", "DESTINATION")
     colonnes = (0, 110, 200, 290, 420)
     yy = y + 40
     for i, e in enumerate(entetes):
@@ -2649,81 +2631,81 @@ def _tableau_percages(sh, x, y, lignes, titre="COORDONNÉES DES PERÇAGES"):
 
 # -----------------------------------------------------------------------------
 def gab_face_avant():
-    """Gabarit 1:1 de la face avant."""
+    """1:1 drilling template for the front panel."""
     sh = Sheet(1800, 900, print_mm=180)
     ox, oy = 180, 150
-    _cadre_face(sh, ox, oy, "Face avant — gabarit 1:1",
-                "boîtier aluminium 120 × 80 × 30 mm")
+    _cadre_face(sh, ox, oy, "Front panel — a 1:1 template",
+                "aluminium enclosure 120 × 80 × 30 mm")
 
-    _percage(sh, ox, oy, 14.0, 13.0, 6.5, "J1", "électrode A")
-    _percage(sh, ox, oy, 30.0, 13.0, 6.5, "J2", "électrode B")
-    _fenetre(sh, ox, oy, 58.0, 13.0, 25.0, 14.0, "DS5", "afficheur OLED")
-    _percage(sh, ox, oy, 78.0, 6.5, 3.2, "DS2", "alim.", dessous=False)
+    _percage(sh, ox, oy, 14.0, 13.0, 6.5, "J1", "electrode A")
+    _percage(sh, ox, oy, 30.0, 13.0, 6.5, "J2", "electrode B")
+    _fenetre(sh, ox, oy, 58.0, 13.0, 25.0, 14.0, "DS5", "OLED display")
+    _percage(sh, ox, oy, 78.0, 6.5, 3.2, "DS2", "power", dessous=False)
     _percage(sh, ox, oy, 86.0, 6.5, 3.2, "DS3", "USB", dessous=False)
-    _percage(sh, ox, oy, 94.0, 6.5, 3.2, "DS4", "défaut", dessous=False)
+    _percage(sh, ox, oy, 94.0, 6.5, 3.2, "DS4", "fault", dessous=False)
     _percage(sh, ox, oy, 86.0, 18.5, 7.0, "S1", "bouton")
     _percage(sh, ox, oy, 108.0, 13.0, 3.2, "M1", "fixation")
 
     _reglette(sh, ox, oy + FACE_H * UPMM + 90)
     _tableau_percages(sh, ox, oy + FACE_H * UPMM + 200, [
-        ("J1", 14, 13, "Ø 6,5", "embase jack 3,5 mm — électrode A"),
-        ("J2", 30, 13, "Ø 6,5", "embase jack 3,5 mm — électrode B"),
-        ("DS5", 58, 13, "25 × 14", "fenêtre de l'afficheur OLED"),
-        ("DS2", 78, 6.5, "Ø 3,2", "voyant d'alimentation, bicolore"),
+        ("J1", 14, 13, "Ø 6,5", "3.5 mm jack socket — electrode A"),
+        ("J2", 30, 13, "Ø 6,5", "3.5 mm jack socket — electrode B"),
+        ("DS5", 58, 13, "25 × 14", "window for the OLED display"),
+        ("DS2", 78, 6.5, "Ø 3,2", "power indicator, two-color"),
         ("DS3", 86, 6.5, "Ø 3,2", "voyant de lien USB, bleu"),
-        ("DS4", 94, 6.5, "Ø 3,2", "voyant de défaut, rouge"),
+        ("DS4", 94, 6.5, "Ø 3,2", "fault indicator, red"),
         ("S1", 86, 18.5, "Ø 7,0", "bouton-poussoir"),
-        ("M1", 108, 13, "Ø 3,2", "vis de maintien de la face"),
+        ("M1", 108, 13, "Ø 3,2", "panel retaining screw"),
     ])
     _avertissement_impression(sh, 1010, 560)
-    sh.txt(1310, 852, f"{AUTEUR} · {SITE} · révision B", size=5.8, fill=GRIS)
+    sh.txt(1310, 852, f"{AUTEUR} · {SITE} · revision B", size=5.8, fill=GRIS)
     sh.save("gabarit-face-avant.svg")
 
 
 def gab_face_arriere():
-    """Gabarit 1:1 de la face arrière."""
+    """1:1 drilling template for the rear panel."""
     sh = Sheet(1800, 900, print_mm=180)
     ox, oy = 180, 150
-    _cadre_face(sh, ox, oy, "Face arrière — gabarit 1:1",
-                "boîtier aluminium 120 × 80 × 30 mm")
+    _cadre_face(sh, ox, oy, "Rear panel — 1:1 template",
+                "aluminium enclosure 120 × 80 × 30 mm")
 
     _fenetre(sh, ox, oy, 20.0, 13.0, 10.0, 5.0, "J20", "USB-C")
-    _percage(sh, ox, oy, 44.0, 13.0, 8.0, "J30", "bloc secteur")
+    _percage(sh, ox, oy, 44.0, 13.0, 8.0, "J30", "mains adapter")
     _percage(sh, ox, oy, 66.0, 13.0, 6.5, "J21", "MIDI TRS")
-    _percage(sh, ox, oy, 88.0, 13.0, 4.2, "GND", "masse châssis")
+    _percage(sh, ox, oy, 88.0, 13.0, 4.2, "GND", "chassis ground")
     _percage(sh, ox, oy, 108.0, 13.0, 3.2, "M2", "fixation")
 
     _reglette(sh, ox, oy + FACE_H * UPMM + 90)
     _tableau_percages(sh, ox, oy + FACE_H * UPMM + 200, [
-        ("J20", 20, 13, "10 × 5", "prise USB-C — ouverture rectangulaire"),
-        ("J30", 44, 13, "Ø 8,0", "embase d'alimentation 2,1 mm"),
-        ("J21", 66, 13, "Ø 6,5", "sortie MIDI TRS type A"),
-        ("GND", 88, 13, "Ø 4,2", "plot de masse châssis, vis M4"),
-        ("M2", 108, 13, "Ø 3,2", "vis de maintien de la face"),
+        ("J20", 20, 13, "10 × 5", "USB-C socket — a rectangular cut-out"),
+        ("J30", 44, 13, "Ø 8,0", "2.1 mm power jack"),
+        ("J21", 66, 13, "Ø 6,5", "MIDI TRS type A output"),
+        ("GND", 88, 13, "Ø 4,2", "chassis ground stud, M4 screw"),
+        ("M2", 108, 13, "Ø 3,2", "panel retaining screw"),
     ])
     note(sh, 1010, 420, 700,
-         ["Le plot de masse relie le boîtier à la masse analogique flottante,",
-          "et à elle seule. Le relier à la masse USB rétablirait la boucle que",
-          "toute la conception cherche à supprimer : c'est l'erreur de montage",
-          "la plus fréquente, et elle ne se voit pas — elle s'entend, à 50 Hz."],
-         title="LE PLOT DE MASSE", color=CUIVRE, fill=CUIV_P)
+         ["The ground stud connects the enclosure to the floating analog ground,",
+          "and to that alone. Connecting it to the USB ground would restore the loop",
+          "the whole design exists to remove: it is the commonest assembly",
+          "mistake, and it cannot be seen — it is heard, at 50 Hz."],
+         title="THE GROUND STUD", color=CUIVRE, fill=CUIV_P)
     _avertissement_impression(sh, 1010, 640)
-    sh.txt(1310, 868, f"{AUTEUR} · {SITE} · révision B", size=5.8, fill=GRIS)
+    sh.txt(1310, 868, f"{AUTEUR} · {SITE} · revision B", size=5.8, fill=GRIS)
     sh.save("gabarit-face-arriere.svg")
 
 
 def gab_carte():
-    """Gabarit 1:1 du perçage du fond et de l'implantation mécanique."""
+    """1:1 template for drilling the base, and the mechanical layout."""
     sh = Sheet(1800, 1340, print_mm=180)
     ox, oy = 180, 150
     w, h = CARTE_L * UPMM, CARTE_H * UPMM
     sh.rect(ox, oy, w, h, fill="#F7F9F7", stroke=SEVE, sw=2.2, rx=6, dash="10 6")
-    sh.txt(ox, oy - 52, "Fond du boîtier — gabarit 1:1", size=10, fill=NUIT,
+    sh.txt(ox, oy - 52, "Enclosure base — 1:1 template", size=10, fill=NUIT,
            weight="700", anchor="start", family=SERIF)
-    sh.txt(ox + w, oy - 52, "contour de la carte, 100 × 60 mm", size=6.4,
+    sh.txt(ox + w, oy - 52, "board outline, 100 × 60 mm", size=6.4,
            fill=GRIS, anchor="end")
 
-    # empreinte des connecteurs, tracée d'abord pour rester sous les perçages
+    # connector footprints, drawn first so they stay under the holes
     for x, y, lw, lh, nom in ((6, 12, 12, 12, "J1"), (6, 30, 12, 12, "J2"),
                               (93, 20, 9, 7.4, "J20"), (93, 44, 6, 6, "J21"),
                               (38, 27, 4, 34, "J10"), (30, 46, 14, 10, "T1")):
@@ -2738,127 +2720,126 @@ def gab_carte():
     _percage(sh, ox, oy, 96, 56, 3.2, "F4", "entretoise")
 
     sh.txt(ox + w / 2, oy + h + 96,
-           "les rectangles grisés sont les empreintes des connecteurs et des "
-           "pièces hautes : vérifier leur dégagement avant de percer",
+           "the grey rectangles are the footprints of the connectors and the tall parts: check their clearance before drilling",
            size=6, fill=GRIS)
 
     _reglette(sh, ox, oy + h + 140)
 
     _tableau_percages(sh, ox, oy + h + 250, [
-        ("F1", 4, 4, "Ø 3,2", "entretoise M3, hauteur 6 mm, PTFE — côté analogique"),
-        ("F2", 96, 4, "Ø 3,2", "entretoise M3, hauteur 6 mm, PTFE — isolée"),
-        ("F3", 4, 56, "Ø 3,2", "entretoise M3, hauteur 6 mm, PTFE — côté analogique"),
-        ("F4", 96, 56, "Ø 3,2", "entretoise M3, hauteur 6 mm, PTFE — isolée"),
-    ], titre="PERÇAGES DU FOND — origine : coin supérieur gauche de la carte")
+        ("F1", 4, 4, "Ø 3,2", "M3 spacer, 6 mm tall, PTFE — analog side"),
+        ("F2", 96, 4, "Ø 3,2", "M3 spacer, 6 mm tall, PTFE — isolated"),
+        ("F3", 4, 56, "Ø 3,2", "M3 spacer, 6 mm tall, PTFE — analog side"),
+        ("F4", 96, 56, "Ø 3,2", "M3 spacer, 6 mm tall, PTFE — isolated"),
+    ], titre="HOLES IN THE BASE — origin: the board's top-left corner")
 
     note(sh, 180, 1140, 760,
-         ["Entretoises en PTFE, jamais en nylon : le nylon absorbe l'humidité et",
-          "conduit assez, en surface, pour dégrader une mesure à 10¹⁵ ohms.",
-          "Seules F1 et F3, du côté analogique, touchent un plan de masse ; F2 et F4",
-          "restent isolées, sous peine de refermer la boucle ouverte par la fente."],
-         title="LES ENTRETOISES NE SONT PAS NEUTRES", color=CUIVRE, fill=CUIV_P)
+         ["PTFE spacers, never nylon: nylon takes up moisture and conducts",
+          "quite enough, across its surface, to degrade a 10¹⁵ ohm measurement.",
+          "Only F1 and F3, on the analog side, touch a ground plane; F2 and F4 stay",
+          "isolated, on pain of closing the loop that the slot opened."],
+         title="THE SPACERS ARE NOT NEUTRAL", color=CUIVRE, fill=CUIV_P)
     _avertissement_impression(sh, 1000, 1140, 740)
-    sh.txt(900, 1320, f"{AUTEUR} · {SITE} · révision B", size=5.8, fill=GRIS)
+    sh.txt(900, 1320, f"{AUTEUR} · {SITE} · revision B", size=5.8, fill=GRIS)
     sh.save("gabarit-carte.svg")
 
 
 # =============================================================================
-#  ENTRÉE  (doit rester en fin de fichier : insérer les figures AU-DESSUS)
+#  ENTRY POINT  (must stay at the end of the file: insert figures ABOVE)
 # =============================================================================
 
 # =============================================================================
-#  RACCORDEMENT D'ENSEMBLE — PLANTE, BOÎTIER, ORDINATEUR, ÉNERGIE
+#  OVERALL WIRING — PLANT, ENCLOSURE, COMPUTER, POWER
 # =============================================================================
 def fig_raccordement():
-    """Vue d'ensemble : ce qu'on relie à quoi, et d'où vient le courant."""
+    """Overview: what connects to what, and where the current comes from."""
     sh = Sheet(980, 976, print_mm=125)
     sh.title("Raccordement d'ensemble",
-             "L'ordinateur portable est toujours requis ; seule l'énergie a deux provenances")
+             "The laptop is always required; only the power has two sources")
 
-    # ---- les trois éléments de la chaîne -----------------------------------
+    # ---- the three elements of the chain -----------------------------------
     py = 128
-    bp = block(sh, 30, py, 250, 132, "LA PLANTE", "arbre, arbuste ou plante en pot",
-               ["2 électrodes de mesure", "1 électrode de terre", "dans le substrat"],
+    bp = block(sh, 30, py, 250, 132, "THE PLANT", "a tree, a shrub or a potted plant",
+               ["2 measurement electrodes", "1 earth electrode", "in the substrate"],
                fill=SEVE_P, stroke=SEVE, sw=1.8)
-    bb = block(sh, 366, py, 250, 132, "LE BOÎTIER", "PhytoSense One",
+    bb = block(sh, 366, py, 250, 132, "THE ENCLOSURE", "PhytoSense One",
                ["conditionnement analogique", "conversion 24 bits", "horodatage"],
                fill="#fff", stroke=NUIT, sw=2.0)
     bo = block(sh, 700, py, 250, 132, "L'ORDINATEUR", "portable — indispensable",
-               ["réglage de la carte", "enregistrement", "analyse et écoute"],
+               ["board settings", "enregistrement", "analysis and listening"],
                fill=BLEU_P, stroke=BLEU, sw=1.8)
 
-    # ---- liaisons : flèches entre les blocs, légendes AU-DESSOUS ------------
+    # ---- links: arrows between the blocks, captions BELOW ------------------
     sh.arrow(bp["r"][0] + 4, bp["r"][1], bb["l"][0] - 6, bb["l"][1], color=SEVE, sw=2.4)
     sh.arrow(bb["r"][0] + 4, bb["r"][1], bo["l"][0] - 6, bo["l"][1], color=BLEU, sw=2.4)
 
     ly = py + 158
     for x, col, titre, l1, l2 in (
-            (200, SEVE, "LIAISON DE MESURE", "câble blindé RG-174 · 2 m au plus",
-             "jack TRS 3,5 mm sur J1 — voir figure suivante"),
-            (760, BLEU, "LIAISON DE COMMANDE", "un seul câble USB-C",
-             "données de mesure et 5 V dans le même cordon")):
+            (200, SEVE, "THE MEASUREMENT LINK", "shielded RG-174 cable · 2 m at most",
+             "3.5 mm TRS jack on J1 — see the next figure"),
+            (760, BLEU, "LIAISON DE COMMANDE", "a single USB-C cable",
+             "measurement data and 5 V in the same lead")):
         sh.txt(x, ly, titre, size=6.4, fill=col, weight="700", spacing="0.8")
         sh.txt(x, ly + 18, l1, size=6.0, fill=INK)
         sh.txt(x, ly + 34, l2, size=5.9, fill=GRIS)
 
-    # ---- bandeau : les provenances de l'énergie -----------------------------
+    # ---- banner: where the power comes from --------------------------------
     ey = 378
     sh.rect(30, ey, 920, 266, fill=OR_PL, stroke=OR, sw=1.4, rx=10, dash="8 5")
-    sh.txt(490, ey + 26, "D'OÙ VIENT L'ÉNERGIE — AU CHOIX, ET SANS COUPURE AU PASSAGE",
+    sh.txt(490, ey + 26, "WHERE THE POWER COMES FROM — YOUR CHOICE, AND NO BREAK ON CHANGEOVER",
            size=6.6, fill=OR, weight="700", spacing="1.2")
 
     opts = [
-        ("A · PAR L'USB", "le plus simple",
-         ["Un seul câble pour tout.", "500 mA disponibles,", "137 mA consommés.",
-          "Vide la batterie du", "portable en séance longue."], SEVE),
-        ("B · BLOC EXTERNE", "prioritaire",
-         ["Bloc secteur 7 à 24 V", "sur la prise J30.", "Soulage le portable et",
-          "écarte son 5 V bruyant", "de la chaîne de mesure."], CUIVRE),
-        ("C · ACCUMULATEUR", "loin de toute prise",
-         ["Li-Po 3,7 V 2 000 mAh", "et son module de charge.", "Ne tire rien du portable",
-          "ni du secteur — utile", "pour une séance en forêt."], BLEU),
+        ("A · OVER USB", "the simplest",
+         ["A single cable for everything.", "500 mA available,", "137 mA drawn.",
+          "It drains the laptop battery", "over a long session."], SEVE),
+        ("B · BLOC EXTERNE", "it takes priority",
+         ["Mains adapter 7 to 24 V", "on socket J30.", "Relieves the laptop and",
+          "keeps its noisy 5 V away", "from the measurement chain."], CUIVRE),
+        ("C · ACCUMULATEUR", "far from any socket",
+         ["Li-Po 3,7 V 2 000 mAh", "and its charging module.", "Draws nothing from the laptop",
+          "nor from the mains — useful", "for a session in the forest."], BLEU),
     ]
     for i, (titre, sous, lignes, col) in enumerate(opts):
         x = 58 + i * 300
         block(sh, x, ey + 46, 264, 192, titre, sous, lignes, fill="#fff",
               stroke=col, sw=1.7, tsize=7.6)
 
-    # convergence vers le boîtier : une seule flèche, dans le couloir libre
+    # converging on the enclosure: a single arrow, in the free corridor
     sh.arrow(490, ey - 6, 490, py + 142, color=OR, sw=2.6, marker="ahv")
 
     note(sh, 30, 674, 920,
-         ["Les trois provenances peuvent être présentes en même temps. L'aiguilleur U62 donne la",
-          "priorité au bloc externe, puis à l'USB, et bascule de l'une à l'autre en moins de vingt",
-          "microsecondes : on débranche l'ordinateur du secteur en pleine séance sans perdre un",
-          "échantillon. Aucune des trois ne dispense de l'ordinateur, qui reste le seul",
-          "destinataire du flux de mesure."],
-         title="RÈGLE — L'ÉNERGIE EST DOUBLE, LA LIAISON NE L'EST PAS",
+         ["All three sources may be present at once. The U62 selector gives priority",
+          "to the external adapter, then to USB, and switches between them in under twenty",
+          "microseconds: you can unplug the computer from the mains mid-session without losing a",
+          "sample. None of the three does away with the computer, which remains the only",
+          "recipient of the measurement stream."],
+         title="RULE — THE POWER IS DOUBLE, THE LINK IS NOT",
          color=OR, fill=OR_PL)
 
     note(sh, 30, 842, 920,
-         ["Ne jamais relier au secteur autre chose qu'un bloc d'alimentation marqué CE, à double",
-          "isolation et à très basse tension de sécurité. Aucune partie de la carte n'est prévue",
-          "pour la tension du réseau, et aucune ne doit l'être."],
-         title="SÉCURITÉ", color=CUIVRE, fill=CUIV_P)
+         ["Never connect anything to the mains but a CE-marked power supply, double-insulated",
+          "and at safety extra-low voltage. No part of the board is designed for mains",
+          "voltage, and none should be."],
+         title="SAFETY", color=CUIVRE, fill=CUIV_P)
 
     sh.signer()
     sh.save("raccordement-ensemble.svg")
 
 
 # =============================================================================
-#  RACCORDEMENT DÉTAILLÉ — PLANTE / ARBRE VERS LE BOÎTIER
+#  DETAILED WIRING — PLANT / TREE TO THE ENCLOSURE
 # =============================================================================
 def fig_electrodes():
-    """Le détail du raccordement : où poser, avec quoi, avec quel câble."""
+    """Wiring in detail: where to place, with what, and with which cable."""
     sh = Sheet(980, 1060, print_mm=125)
-    sh.title("Raccordement des électrodes",
-             "Où poser, avec quoi, et avec quel câble")
+    sh.title("Wiring the electrodes",
+             "Where to place them, with what, and with which cable")
 
     # =====================================================================
-    #  PANNEAU A — côté plante
+    #  PANEL A — plant side
     # =====================================================================
     sh.rect(30, 110, 440, 510, fill=SEVE_P, stroke=SEVE, sw=1.4, rx=10, dash="8 5")
-    sh.txt(250, 136, "CÔTÉ PLANTE", size=6.6, fill=SEVE, weight="700", spacing="1.2")
+    sh.txt(250, 136, "PLANT SIDE", size=6.6, fill=SEVE, weight="700", spacing="1.2")
 
     # tronc, ramure, feuillage
     sh.rect(226, 300, 44, 190, fill="#D8CBB4", stroke="#9C8A6E", sw=1.4, rx=4)
@@ -2868,7 +2849,7 @@ def fig_electrodes():
     sh.circle(316, 206, 28, fill=SEVE_C, stroke=SEVE, sw=1.4)
     sh.rect(126, 490, 244, 30, fill="#C7B79A", stroke="#9C8A6E", sw=1.2, rx=3)
 
-    # points de contact, repérés par une pastille courte
+    # contact points, marked with a short pad
     def contact(cx, cy, ref, col, tx, ty, anchor="middle"):
         sh.circle(cx, cy, 8.5, fill=col, stroke="#fff", sw=1.8)
         sh.line(cx, cy, tx, ty + 6, stroke=col, sw=1.0, dash="4 3")
@@ -2878,10 +2859,10 @@ def fig_electrodes():
     contact(248, 396, "E2", BLEU, 306, 388, "start")
     contact(248, 505, "E3", NUIT, 306, 497, "start")
 
-    # légende des trois contacts, dans le bas du panneau
-    leg = [(CUIVRE, "E1", "mesure — sous une feuille"),
-           (BLEU,   "E2", "référence — tronc, 10 à 30 cm plus bas"),
-           (NUIT,   "E3", "terre — tige inox 316L dans le substrat")]
+    # key to the three contacts, at the foot of the panel
+    leg = [(CUIVRE, "E1", "measurement — under a leaf"),
+           (BLEU,   "E2", "reference — trunk, 10 to 30 cm lower"),
+           (NUIT,   "E3", "earth — 316L stainless rod in the substrate")]
     for i, (col, ref, txt) in enumerate(leg):
         y = 552 + i * 24
         sh.circle(58, y - 4, 6, fill=col, stroke="none", sw=0)
@@ -2889,10 +2870,10 @@ def fig_electrodes():
         sh.txt(104, y, txt, size=5.8, fill=INK, anchor="start")
 
     # =====================================================================
-    #  PANNEAU B — le câble, vu dénudé
+    #  PANEL B — the cable, stripped
     # =====================================================================
     sh.rect(500, 110, 450, 250, fill="#fff", stroke=NUIT, sw=1.6, rx=10)
-    sh.txt(725, 136, "LE CÂBLE", size=6.6, fill=NUIT, weight="700", spacing="1.2")
+    sh.txt(725, 136, "THE CABLE", size=6.6, fill=NUIT, weight="700", spacing="1.2")
 
     yc = 262
     sh.rect(522, yc - 19, 160, 38, fill="#D7D7C6", stroke=INK, sw=1.3, rx=4)
@@ -2900,22 +2881,22 @@ def fig_electrodes():
     sh.rect(750, yc - 8, 52, 16, fill=IVOIRE, stroke=INK, sw=1.1, rx=2)
     sh.line(802, yc, 862, yc, stroke=CUIVRE, sw=4.0)
 
-    # repères : deux au-dessus, deux au-dessous, jamais sur la même ligne
-    for x, ylab, lab, col, sens in ((602, yc + 52, "gaine extérieure", GRIS, 1),
-                                    (716, yc - 38, "tresse → BAGUE (garde)", SEVE, -1),
-                                    (776, yc + 52, "diélectrique", GRIS, 1),
-                                    (832, yc - 62, "âme → POINTE (mesure)", CUIVRE, -1)):
+    # markers: two above, two below, never on the same line
+    for x, ylab, lab, col, sens in ((602, yc + 52, "outer jacket", GRIS, 1),
+                                    (716, yc - 38, "braid → RING (guard)", SEVE, -1),
+                                    (776, yc + 52, "dielectric", GRIS, 1),
+                                    (832, yc - 62, "core → TIP (measurement)", CUIVRE, -1)):
         sh.line(x, yc + sens * 22, x, ylab - sens * 12, stroke=col, sw=0.9, dash="3 3")
         sh.txt(x, ylab, lab, size=6.0, fill=col, weight="700")
 
-    sh.txt(725, 336, "RG-174 · Belden 8216 · 2 m au plus", size=6.0, fill=INK,
+    sh.txt(725, 336, "RG-174 · Belden 8216 · 2 m at most", size=6.0, fill=INK,
            family=MONO)
 
     # =====================================================================
-    #  PANNEAU C — le connecteur
+    #  PANEL C — the connector
     # =====================================================================
     sh.rect(500, 384, 450, 236, fill="#fff", stroke=OR, sw=1.6, rx=10)
-    sh.txt(725, 410, "LE CONNECTEUR — J1 · JACK TRS 3,5 mm", size=6.6, fill=OR,
+    sh.txt(725, 410, "THE CONNECTOR — J1 · 3.5 mm TRS JACK", size=6.6, fill=OR,
            weight="700", spacing="1.0")
 
     jx, jy = 548, 442
@@ -2925,36 +2906,36 @@ def fig_electrodes():
         sh.rect(x0, jy + 4, x1 - x0, 22, fill=col, stroke="none", sw=0, rx=2)
     sh.circle(jx + 300, jy + 15, 15, fill="#E8E4D6", stroke=INK, sw=1.4)
 
-    broches = [(CUIVRE, "T · pointe", "E1 — électrode de mesure"),
-               (SEVE,   "R · bague",  "garde et tresse du câble"),
-               (BLEU,   "S · corps",  "E2 — électrode de référence")]
+    broches = [(CUIVRE, "T · tip", "E1 — measurement electrode"),
+               (SEVE,   "R · ring",  "guard and cable braid"),
+               (BLEU,   "S · corps",  "E2 — reference electrode")]
     for i, (col, nom, role) in enumerate(broches):
         y = 510 + i * 26
         sh.rect(jx, y - 11, 16, 14, fill=col, stroke="none", sw=0, rx=2)
         sh.txt(jx + 26, y, nom, size=6.2, fill=col, weight="700", anchor="start")
         sh.txt(jx + 128, y, role, size=6.0, fill=INK, anchor="start")
 
-    sh.txt(725, 600, "La tresse va sur la bague, jamais sur le corps.",
+    sh.txt(725, 600, "The braid goes to the ring, never to the sleeve.",
            size=6.2, fill=CUIVRE, weight="700")
 
     # =====================================================================
     #  CONSEILS
     # =====================================================================
     note(sh, 30, 652, 920,
-         ["Électrodes Ag/AgCl adhésives d'électrocardiographie : le contact le plus stable, plusieurs",
-          "heures sans dérive. Une noisette de gel conducteur sans chlorure prolonge encore la tenue.",
-          "Sur feuille épaisse ou sur écorce, pince crocodile à mors cuivre garnie d'une éponge humide.",
-          "Deux électrodes espacées de 10 à 30 cm sur le même individu ; jamais sur deux plantes.",
-          "Câble de deux mètres au plus, fixé par un serre-câble à vingt centimètres du contact."],
-         title="CE QU'IL FAUT FAIRE", color=SEVE, fill=SEVE_P)
+         ["Adhesive Ag/AgCl ECG electrodes: the most stable contact there is, good for several",
+          "hours without drift. A dab of chloride-free conductive gel extends it further.",
+          "On a thick leaf or on bark, a copper-jawed crocodile clip lined with a damp sponge.",
+          "Two electrodes 10 to 30 cm apart on the same individual; never across two plants.",
+          "A cable of two metres at most, strain-relieved twenty centimetres from the contact."],
+         title="WHAT TO DO", color=SEVE, fill=SEVE_P)
 
     note(sh, 30, 832, 920,
-         ["Pas d'aluminium ménager : il s'oxyde en quelques heures et fabrique une pile parasite.",
-          "Pas d'aiguille plantée dans le tronc : blessure inutile, et le signal n'y gagne rien.",
-          "Pas de câble non blindé ni de rallonge : chaque mètre nu ajoute le réseau à cinquante hertz.",
-          "Pas de tresse reliée à la masse du boîtier : c'est la faute la plus fréquente, et elle fait",
-          "perdre d'un seul coup tout le bénéfice de l'étage électrométrique."],
-         title="CE QU'IL NE FAUT PAS FAIRE", color=CUIVRE, fill=CUIV_P)
+         ["No kitchen foil: it oxidises within hours and makes a parasitic cell.",
+          "No needle driven into the trunk: a pointless wound, and the signal gains nothing.",
+          "No unshielded cable and no extension: every bare metre adds mains hum.",
+          "No braid tied to the enclosure ground: it is the commonest mistake, and it throws",
+          "away the whole benefit of the electrometer stage at a stroke."],
+         title="WHAT NOT TO DO", color=CUIVRE, fill=CUIV_P)
 
     sh.signer()
     sh.save("raccordement-electrodes.svg")
@@ -2962,28 +2943,28 @@ def fig_electrodes():
 
 
 # =============================================================================
-#  RACCORDEMENT FEUILLE / RACINE — et l'électrode de substrat
+#  LEAF / ROOT WIRING — and the substrate electrode
 # =============================================================================
 def fig_feuille_racine():
     sh = Sheet(980, 1310, print_mm=125)
-    sh.title("Brancher une feuille et une racine",
-             "Le montage le plus courant — et le choix de l'électrode de substrat")
+    sh.title("Connecting a leaf and a root",
+             "The commonest arrangement — and the choice of substrate electrode")
 
     # =====================================================================
     #  A — LE MONTAGE, EN COUPE
     # =====================================================================
     sh.rect(30, 108, 470, 560, fill=SEVE_P, stroke=SEVE, sw=1.4, rx=10, dash="8 5")
-    sh.txt(265, 134, "LE MONTAGE, EN COUPE", size=6.6, fill=SEVE, weight="700",
+    sh.txt(265, 134, "THE ARRANGEMENT, IN SECTION", size=6.6, fill=SEVE, weight="700",
            spacing="1.2")
 
-    #  le pot, coupé
+    #  the pot, in section
     sh.path("M150 430 L 178 620 L 352 620 L 380 430 Z", fill="#E4D9C4",
             stroke="#9C8A6E", sw=1.6)
     sh.path("M150 430 L 380 430", stroke="#9C8A6E", sw=1.6)
-    #  le substrat
+    #  the substrate
     sh.path("M158 448 L 182 606 L 348 606 L 372 448 Z", fill="#C2A882",
             stroke="none", sw=0)
-    #  la tige et les feuilles
+    #  the stem and the leaves
     sh.path("M265 430 L 265 250", stroke=SEVE, sw=4.0)
     sh.path("M265 300 C 225 286, 205 262, 202 236", stroke=SEVE, sw=2.6)
     sh.path("M265 336 C 305 322, 326 300, 330 274", stroke=SEVE, sw=2.6)
@@ -2991,60 +2972,60 @@ def fig_feuille_racine():
         sh.add(f'<g transform="rotate({rot},{cx},{cy})">'
                f'<ellipse cx="{cx}" cy="{cy}" rx="34" ry="17" fill="{SEVE_C}" '
                f'stroke="{SEVE}" stroke-width="1.4"/></g>')
-    #  les racines
+    #  the roots
     for dx in (-60, -26, 0, 26, 60):
         sh.path(f"M265 432 C {265+dx*0.4} 470, {265+dx} 520, {265+dx*1.1} 588",
                 stroke="#A58A5E", sw=1.6)
 
-    #  E1 — sur la feuille
+    #  E1 — on the leaf
     sh.circle(196, 228, 9, fill=CUIVRE, stroke="#fff", sw=2.0)
     sh.line(196, 228, 120, 192, stroke=CUIVRE, sw=1.0, dash="4 3")
     sh.txt(52, 182, "E1", size=7.0, fill=CUIVRE, weight="700", anchor="start")
     sh.txt(52, 196, "pastille Ag/AgCl", size=5.6, fill=INK, anchor="start")
-    sh.txt(52, 208, "sous la feuille", size=5.6, fill=GRIS, anchor="start")
+    sh.txt(52, 208, "under the leaf", size=5.6, fill=GRIS, anchor="start")
 
-    #  E2 — dans le substrat
+    #  E2 — in the substrate
     sh.rect(316, 452, 7, 118, fill="#BFC4C8", stroke=INK, sw=1.2, rx=2)
     sh.circle(319, 452, 8, fill=NUIT, stroke="#fff", sw=2.0)
     sh.line(319, 452, 416, 396, stroke=NUIT, sw=1.0, dash="4 3")
     sh.txt(484, 384, "E2", size=7.0, fill=NUIT, weight="700", anchor="end")
     sh.txt(484, 398, "tige inox 316L", size=5.6, fill=INK, anchor="end")
-    sh.txt(484, 410, "3 à 5 cm de profondeur", size=5.6, fill=GRIS, anchor="end")
+    sh.txt(484, 410, "3 to 5 cm deep", size=5.6, fill=GRIS, anchor="end")
 
-    #  les cotes
+    #  the dimensions
     sh.line(265, 640, 319, 640, stroke=BLEU, sw=1.0)
-    sh.txt(292, 656, "≥ 5 cm de la tige", size=5.8, fill=BLEU)
+    sh.txt(292, 656, "≥ 5 cm from the stem", size=5.8, fill=BLEU)
     sh.line(330, 452, 330, 570, stroke=BLEU, sw=1.0, dash="3 3")
     sh.txt(352, 516, "3–5 cm", size=5.8, fill=BLEU, anchor="start")
 
-    #  ce que l'on mesure
+    #  what is being measured
     note(sh, 30, 690, 920,
-         ["La tension mesurée est celle du chemin feuille → tige → racines → substrat → électrode.",
-          "Elle ne dit donc pas « la feuille » : elle dit l'ensemble plante + substrat + contacts.",
-          "Un arrosage la déplace autant qu'un changement de la plante — c'est la limite du montage,",
-          "et elle doit être écrite dans le carnet de séance."],
-         title="CE QUE MESURE CE MONTAGE", color=BLEU, fill=BLEU_P)
+         ["The measured voltage is that of the path leaf → stem → roots → substrate → electrode.",
+          "So it does not say “the leaf”: it says plant + substrate + contacts, as a whole.",
+          "Watering shifts it as much as a change in the plant does — that is the arrangement's limit,",
+          "and it belongs in the session notebook."],
+         title="WHAT THIS CIRCUIT MEASURES", color=BLEU, fill=BLEU_P)
 
     # =====================================================================
-    #  B — L'ÉLECTRODE DE SUBSTRAT : QUOI PLANTER DANS LA TERRE
+#  B — THE SUBSTRATE ELECTRODE: WHAT TO PUT IN THE SOIL
     # =====================================================================
     sh.rect(516, 108, 434, 560, fill="#fff", stroke=NUIT, sw=1.6, rx=10)
-    sh.txt(733, 134, "QUE PLANTER DANS LA TERRE", size=6.6, fill=NUIT,
+    sh.txt(733, 134, "WHAT TO PUT IN THE SOIL", size=6.6, fill=NUIT,
            weight="700", spacing="1.2")
 
     lignes = [
         (SEVE,   "Inox 316L", "tige ø 4–6 mm, 60–100 mm",
-         "Le choix par défaut : stable, inerte, increvable.", True),
-        (SEVE,   "Graphite", "mine ø 5 mm ou charbon",
-         "Peu polarisable, aucun ion métallique. Fragile.", True),
+         "The default choice: stable, inert, indestructible.", True),
+        (SEVE,   "Graphite", "a ø 5 mm lead, or charcoal",
+         "Barely polarisable, no metal ions. Fragile.", True),
         (OR,     "Ag/AgCl + pont salin", "agar 3 % + KCl 3 mol/L",
-         "La référence de laboratoire : dérive minimale.", True),
+         "The laboratory reference: minimal drift.", True),
         (CUIVRE, "Laiton, cuivre", "—",
-         "Pile galvanique avec E1, et toxique pour les racines.", False),
-        (CUIVRE, "Acier galvanisé", "—",
-         "Le zinc se dissout : décalage énorme et croissant.", False),
+         "A galvanic cell with E1, and toxic to the roots.", False),
+        (CUIVRE, "Galvanised steel", "—",
+         "The zinc dissolves: a huge and growing offset.", False),
         (CUIVRE, "Aluminium", "—",
-         "S'oxyde en quelques heures ; mesure instable.", False),
+         "It oxidizes within hours; the measurement is unstable.", False),
     ]
     y = 170
     for col, nom, format_, texte, bon in lignes:
@@ -3058,51 +3039,51 @@ def fig_feuille_racine():
                anchor="start")
         y += 62
 
-    #  le détail du pont salin
+    #  the salt bridge in detail
     sh.rect(540, 548, 386, 104, fill=OR_PL, stroke=OR, sw=1.3, rx=6)
-    sh.txt(733, 570, "LE PONT SALIN, EN DEUX MOTS", size=6.0, fill=OR,
+    sh.txt(733, 570, "THE SALT BRIDGE, IN TWO LINES", size=6.0, fill=OR,
            weight="700", spacing="0.8")
     sh.rect(566, 584, 16, 54, fill="#EDE7D4", stroke=INK, sw=1.2, rx=3)
     sh.rect(568, 592, 12, 44, fill=BLEU_P, stroke="none", sw=0)
     sh.line(574, 584, 574, 566, stroke="#BFC4C8", sw=3.0)
-    sh.txt(596, 596, "tube rempli d'agar-agar salé,", size=5.6, fill=INK, anchor="start")
-    sh.txt(596, 610, "fil d'argent chloruré à l'intérieur,", size=5.6, fill=INK, anchor="start")
-    sh.txt(596, 624, "l'extrémité seule touche la terre.", size=5.6, fill=INK, anchor="start")
-    sh.txt(596, 640, "Aucun métal ne touche les racines.", size=5.6, fill=SEVE,
+    sh.txt(596, 596, "a tube filled with salted agar,", size=5.6, fill=INK, anchor="start")
+    sh.txt(596, 610, "a chlorided silver wire inside,", size=5.6, fill=INK, anchor="start")
+    sh.txt(596, 624, "only its end touches the soil.", size=5.6, fill=INK, anchor="start")
+    sh.txt(596, 640, "No metal touches the roots.", size=5.6, fill=SEVE,
            anchor="start", weight="700")
 
     # =====================================================================
-    #  C — LA RÈGLE QUI COMPTE
+#  C — THE RULE THAT MATTERS
     # =====================================================================
     note(sh, 30, 852, 920,
-         ["LE MÊME MÉTAL AUX DEUX BOUTS. Deux métaux différents dans un milieu humide font une pile :",
-          "on mesure alors sa tension — quelques dizaines de millivolts — et sa dérive avec l'humidité,",
-          "bien plus que la plante. Si E1 est une pastille Ag/AgCl, la meilleure E2 est un pont salin ;",
-          "à défaut, inox des deux côtés. La ligne de base retire le décalage constant, jamais sa dérive.",
+         ["THE SAME METAL AT BOTH ENDS. Two different metals in a damp medium make a cell:",
+          "you then measure its voltage — a few tens of millivolts — and its drift with humidity,",
+          "far more than the plant does. If E1 is an Ag/AgCl pad, the best E2 is a salt bridge;",
+          "failing that, stainless steel at both ends. The baseline removes the constant offset, never its drift.",
           "",
-          "SUBSTRAT HUMIDE, jamais détrempé ni sec : sec, l'impédance monte et le bruit avec elle.",
-          "Quelques gouttes d'eau avant la séance suffisent — pas d'eau salée, qui brûle les racines.",
+          "DAMP SUBSTRATE, never waterlogged and never dry: dry, the impedance rises and the noise with it.",
+          "A few drops of water before the session are enough — no salt water, which burns the roots.",
           "",
-          "MÊME PLACE D'UNE SÉANCE À L'AUTRE si l'on veut comparer : noter la profondeur, la distance",
-          "à la tige et la feuille choisie. Sans cela, deux séances ne se comparent pas."],
-         title="TROIS RÈGLES, ET RIEN DE PLUS", color=SEVE, fill=SEVE_P)
+          "THE SAME SPOT FROM ONE SESSION TO THE NEXT if you mean to compare: note the depth, the distance",
+          "from the stem and which leaf was chosen. Without that, two sessions do not compare."],
+         title="THREE RULES, AND NOTHING MORE", color=SEVE, fill=SEVE_P)
 
     note(sh, 30, 1146, 920,
-         ["Ne jamais planter l'électrode dans le tronc ou dans une racine : la blessure ne se referme",
-          "pas et le signal n'y gagne rien. Ne jamais relier l'électrode de substrat à la terre du",
-          "secteur — ni à la masse du boîtier. Ne jamais employer d'engrais liquide juste avant une",
-          "séance : la conductivité change pendant des heures et masque tout le reste."],
-         title="CE QU'IL NE FAUT PAS FAIRE", color=CUIVRE, fill=CUIV_P)
+         ["Never drive the electrode into the trunk or into a root: the wound does not close",
+          "and the signal gains nothing. Never connect the substrate electrode to mains earth",
+          "— nor to the enclosure ground. Never use liquid fertiliser just before a",
+          "session: the conductivity changes for hours and masks everything else."],
+         title="WHAT NOT TO DO", color=CUIVRE, fill=CUIV_P)
 
     sh.signer()
     sh.save("raccordement-feuille-racine.svg")
 
 
 # =============================================================================
-#  LES SIX DESCRIPTEURS — ce que chaque représentation montre
+#  THE SIX DESCRIPTORS — what each view shows
 # =============================================================================
 def _bruit(i, graine=7):
-    """Pseudo-aléa déterministe : la planche doit être reproductible au bit."""
+    """Deterministic pseudo-randomness: the figure must be bit-reproducible."""
     x = math.sin((i + 1) * 12.9898 + graine * 78.233) * 43758.5453
     return (x - math.floor(x)) * 2.0 - 1.0
 
@@ -3114,8 +3095,8 @@ def _mini_cadre(sh, x, y, w, h, titre, verdict, couleur=SEVE):
            f'fill="{couleur}" opacity="0.14"/>')
     sh.txt(x + 10, y + 15, titre, size=7.0, fill=couleur, anchor="start",
            weight="700")
-    #  Trente-deux caractères tiennent dans la largeur d'une vignette : au-delà
-    #  la ligne dépasse le cadre, ce qui ne se voit qu'à l'impression.
+    #  Thirty-two characters fit across a thumbnail: beyond that the line
+    #  overruns the frame, which only shows up in print.
     for k, ligne in enumerate(verdict):
         sh.txt(x + 10, y + h - 14 - (len(verdict) - 1 - k) * 12, ligne,
                size=5.6, fill=GRIS, anchor="start")
@@ -3142,9 +3123,8 @@ def _courbe(sh, aire, valeurs, couleur=SEVE, sw=1.5, remplir=False):
 
 def fig_descripteurs():
     sh = Sheet(980, 706, print_mm=125)
-    sh.title("Six regards sur le même signal",
-             "La même minute d'enregistrement, vue par six outils — et ce que "
-             "chacun permet de dire")
+    sh.title("Six views of the same signal",
+             "The same minute of recording, seen through six tools — and what each one lets you say")
 
     L, H = 296, 188
     X = [30, 342, 654]
@@ -3152,23 +3132,23 @@ def fig_descripteurs():
 
     # --- 1. domaine temporel ------------------------------------------------
     aire = _mini_cadre(sh, X[0], Y[0], L, H, "Forme d'onde",
-                       ["Rien n'y est calculé,",
-                        "donc rien n'y est perdu."], SEVE)
+                       ["Nothing is computed here,",
+                        "so nothing is lost there."], SEVE)
     temporel = [0.6 * math.sin(i / 34.0) + 0.12 * _bruit(i)
                 + (1.6 * math.exp(-((i - 108) / 9.0) ** 2))
                 for i in range(160)]
     _courbe(sh, aire, temporel, SEVE, 1.4)
 
-    # --- 2. domaine fréquentiel ---------------------------------------------
+    # --- 2. frequency domain -------------------------------------------------
     aire = _mini_cadre(sh, X[1], Y[0], L, H, "Spectre (FFT)",
-                       ["Les périodicités, et le réseau.",
-                        "Suppose le signal stationnaire :",
-                        "il ne l'est jamais longtemps."], BLEU)
+                       ["The periodicities, and the mains.",
+                        "Assumes the signal is stationary:",
+                        "it never is for long."], BLEU)
     spectre = []
     for i in range(160):
         f = 0.02 * (i + 1)
         v = 1.0 / (f ** 0.8) + 0.25 * abs(_bruit(i, 3))
-        if 96 <= i <= 100:                              # la raie du réseau
+        if 96 <= i <= 100:                              # the mains line
             v += 9.0 * math.exp(-((i - 98) / 1.1) ** 2)
         spectre.append(math.log10(v + 0.05))
     _courbe(sh, aire, spectre, BLEU, 1.3)
@@ -3177,16 +3157,16 @@ def fig_descripteurs():
 
     # --- 3. ondelettes ------------------------------------------------------
     aire = _mini_cadre(sh, X[2], Y[0], L, H, "Ondelettes (scalogramme)",
-                       ["Situe dans le temps ce que",
-                        "la FFT se contente de moyenner.",
-                        "La mieux adaptée à ce signal."], OR)
+                       ["Locates in time what the",
+                        "FFT merely averages.",
+                        "The best suited to this signal."], OR)
     x0, y0, w, h = aire
-    x0 += 26                                          # gouttière des repères
+    x0 += 26                                          # gutter for the markers
     w -= 26
     nc, nl = 26, 10
     for c in range(nc):
         for l in range(nl):
-            #  Une bouffée brève en haute fréquence, un fond lent en bas.
+            #  A brief burst high up, a slow floor below.
             e = (1.15 * math.exp(-(((c - 17) / 2.4) ** 2 + ((l - 2.5) / 1.7) ** 2))
                  + 0.75 * math.exp(-(((l - 7.5) / 2.2) ** 2)) * (0.5 + 0.4 * math.sin(c / 3.0))
                  + 0.08 * abs(_bruit(c * nl + l, 5)))
@@ -3200,9 +3180,9 @@ def fig_descripteurs():
 
     # --- 4. MFCC ------------------------------------------------------------
     aire = _mini_cadre(sh, X[0], Y[1], L, H, "MFCC",
-                       ["Compresse le spectre en",
+                       ["Compresses the spectrum into",
                         "quelques nombres comparables.",
-                        "Compare ; ne mesure rien."], SEVE)
+                        "It compares; it measures nothing."], SEVE)
     x0, y0, w, h = aire
     for i in range(13):
         v = (1.0 / (i + 1.4)) * math.cos(i * 1.7) + 0.25 * _bruit(i, 11)
@@ -3216,9 +3196,9 @@ def fig_descripteurs():
     sh.txt(x0 + w, y0 + 10, "c0 … c12", size=5.6, fill=GRIS, anchor="end")
 
     # --- 5. LPC -------------------------------------------------------------
-    aire = _mini_cadre(sh, X[1], Y[1], L, H, "Prédiction linéaire (LPC)",
-                       ["Enveloppe et résonances du",
-                        "système de mesure. Pas des",
+    aire = _mini_cadre(sh, X[1], Y[1], L, H, "Linear prediction (LPC)",
+                       ["Envelope and resonances of the",
+                        "measurement system. Not of the",
                         "formants : aucun conduit vocal."], CUIVRE)
     brut, env = [], []
     for i in range(160):
@@ -3236,45 +3216,44 @@ def fig_descripteurs():
 
     # --- 6. cepstre ---------------------------------------------------------
     aire = _mini_cadre(sh, X[2], Y[1], L, H, "Cepstre",
-                       ["Révèle les périodicités lentes",
-                        "qu'une dérive de fond masque.",
-                        "L'abscisse est une quéfrence."], BLEU)
+                       ["Reveals the slow periodicities",
+                        "that a background drift hides.",
+                        "The abscissa is a quefrency."], BLEU)
     cep = [0.12 * _bruit(i, 23) + 1.5 * math.exp(-((i - 104) / 2.6) ** 2)
            + 0.55 * math.exp(-((i - 52) / 2.2) ** 2) for i in range(160)]
     _courbe(sh, aire, cep, BLEU, 1.3)
     x0, y0, w, h = aire
-    sh.txt(x0 + w * 104 / 160, y0 + 8, "période détectée", size=5.6,
+    sh.txt(x0 + w * 104 / 160, y0 + 8, "detected period", size=5.6,
            fill=BLEU, anchor="middle")
 
     note(sh, 30, 508, 920,
-         ["Aucune de ces représentations ne décode quoi que ce soit : elles décrivent la forme du",
-          "signal, plus finement qu'une courbe. Les constantes des outils de la parole — largeur des",
-          "fenêtres, bornes du banc de Mel, ordre de prédiction — sont transposées d'après la",
-          "fréquence d'échantillonnage réelle, cinq décades plus bas que la voix humaine : une trame",
-          "de MFCC dure ici huit secondes, non vingt-cinq millisecondes."],
-         title="CE QUE CES OUTILS FONT, ET CE QU'ILS NE FONT PAS",
+         ["None of these views decodes anything: they describe the shape of the",
+          "signal, more finely than a curve does. The constants of the speech tools — the width of the",
+          "windows, Mel bank edges, prediction order — are transposed from the actual",
+          "sample rate, five decades below the human voice: one frame",
+          "of MFCCs lasts eight seconds here, not twenty-five milliseconds."],
+         title="WHAT THESE TOOLS DO, AND WHAT THEY DO NOT",
          color=SEVE, fill=SEVE_P)
     sh.signer()
     sh.save("logiciel-descripteurs.svg")
 
 
 # =============================================================================
-#  LE MODE VOCAL — des mots au lieu des notes
+#  VOICE MODE — words instead of notes
 # =============================================================================
 def fig_lexique():
     sh = Sheet(980, 836, print_mm=125)
-    sh.title("Du microvolt au mot",
-             "Le mode vocal, axe par axe — et ce que l'utilisateur apporte "
-             "lui-même")
+    sh.title("From the microvolt to the word",
+             "Voice mode, axis by axis — and what the user brings themselves")
 
-    mesures = [("Sens de la pente", "montée ou descente"),
-               ("Amplitude", "en écarts-types"),
-               ("Temps écoulé", "depuis l'énoncé précédent"),
-               ("Gravité du spectre", "centre de gravité, en hertz")]
-    registres = [("verbe", "cinq mots, du faible au fort"),
-                 ("intensité", "l'adverbe"),
-                 ("tempo", "la circonstance de temps"),
-                 ("couleur", "la qualification")]
+    mesures = [("Direction of slope", "rise or fall"),
+               ("Amplitude", "in standard deviations"),
+               ("Time elapsed", "since the previous statement"),
+               ("Spectral centroid", "centre of gravity, in hertz")]
+    registres = [("verbe", "five words, from weak to strong"),
+                 ("intensity", "l'adverbe"),
+                 ("tempo", "the temporal circumstance"),
+                 ("couleur", "the qualifier")]
 
     for i, (t, u) in enumerate(mesures):
         block(sh, 30, 104 + i * 84, 250, 62, t, u, fill="#fff", stroke=SEVE,
@@ -3285,52 +3264,52 @@ def fig_lexique():
         sh.arrow(284, 135 + i * 84, 356, 135 + i * 84, color=OR, sw=1.5)
         sh.arrow(614, 135 + i * 84, 686, 306, color=OR, sw=1.1)
 
-    #  Le sujet ne vient d'aucune mesure : c'est le point à ne pas cacher.
-    block(sh, 30, 452, 250, 62, "Sujet", "choisi par l'utilisateur",
+    #  The subject comes from no measurement: that is the point not to hide.
+    block(sh, 30, 452, 250, 62, "Sujet", "chosen by the user",
           fill=CUIV_P, stroke=CUIVRE, sw=1.6, tsize=7.0)
     sh.arrow(284, 483, 356, 483, color=CUIVRE, sw=1.5)
-    block(sh, 360, 452, 250, 62, "sujet", "qui parle — rien ne le mesure",
+    block(sh, 360, 452, 250, 62, "sujet", "who speaks — nothing measures it",
           fill=CUIV_P, stroke=CUIVRE, sw=1.6, tsize=7.0)
     sh.arrow(614, 483, 686, 372, color=CUIVRE, sw=1.1)
 
-    block(sh, 690, 276, 260, 122, "Grammaire", "un gabarit tiré au sort",
-          ["minimale · télégraphique", "contemplative · descriptive"],
+    block(sh, 690, 276, 260, 122, "Grammaire", "a template drawn at random",
+          ["minimal · telegraphic", "contemplative · descriptive"],
           fill=SEVE_P, stroke=SEVE, sw=1.6, tsize=7.6)
     sh.arrow(820, 402, 820, 446, color=SEVE, sw=1.6)
 
     sh.add(f'<rect x="690" y="450" width="260" height="96" rx="6" fill="#fff" '
            f'stroke="{NUIT}" stroke-width="1.6"/>')
-    sh.txt(820, 478, "« La feuille frémit", size=8.2, fill=NUIT,
+    sh.txt(820, 478, "“The leaf shivers", size=8.2, fill=NUIT,
            family=SERIF, style="italic")
     sh.txt(820, 498, "doucement, sourd »", size=8.2, fill=NUIT,
            family=SERIF, style="italic")
     sh.txt(820, 520, "σ=4,1 · pente +2e−5", size=5.2, fill=GRIS, family=MONO)
     sh.txt(820, 534, "Δt=38 s · f=0,21 Hz", size=5.2, fill=GRIS, family=MONO)
-    sh.txt(820, 560, "chaque énoncé porte les valeurs", size=5.6, fill=GRIS)
-    sh.txt(820, 574, "qui l'ont déclenché", size=5.6, fill=GRIS)
+    sh.txt(820, 560, "every statement carries the values", size=5.6, fill=GRIS)
+    sh.txt(820, 574, "that triggered it", size=5.6, fill=GRIS)
 
     note(sh, 30, 600, 920,
-         ["La plante n'émet pas de mots et n'a pas de langage : rien dans son signal électrique ne",
-          "correspond à un vocabulaire. Ce dispositif applique des règles explicites, réglables et",
-          "consignées, qui associent une région de l'espace des descripteurs à un mot choisi par",
-          "l'utilisateur. Le mot qui sort est donc dans le dictionnaire de celui qui l'a écrit : il dit",
-          "quelque chose du signal — intensité, sens de variation, rythme, couleur spectrale — et",
-          "rien de ce que « pense » la plante. Le dialogue qui s'installe est un dialogue entre",
-          "l'utilisateur et sa propre grille de lecture ; il peut être fécond, à condition de le savoir."],
-         title="CE N'EST PAS UNE TRADUCTION", color=CUIVRE, fill=CUIV_P)
+         ["The plant emits no words and has no language: nothing in its electrical signal",
+          "corresponds to a vocabulary. This arrangement applies explicit, adjustable and",
+          "recorded rules, which map a region of the descriptor space to a word chosen by",
+          "the user. The word that comes out is therefore from the dictionary of whoever wrote it: it says",
+          "something about the signal — intensity, direction of change, rhythm, spectral colour — and",
+          "nothing of what the plant “thinks”. The dialogue that sets in is a dialogue between",
+          "the user and their own reading grid; it can be fruitful, provided one knows it."],
+         title="THIS IS NOT A TRANSLATION", color=CUIVRE, fill=CUIV_P)
     sh.signer()
     sh.save("logiciel-lexique.svg")
 
 
 
 def main():
-    print("• Génération des planches de la carte PhytoSense…")
+    print("• Generating the PhytoSense board figures…")
     n = 0
     for nom, fn in sorted(globals().items()):
         if callable(fn) and nom.split("_")[0] in ("fig", "pl", "gab"):
             fn()
             n += 1
-    print(f"✓ {n} planches générées")
+    print(f"✓ {n} figures generated")
 
 
 if __name__ == "__main__":

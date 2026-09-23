@@ -1,49 +1,52 @@
-## Ce que fait cette demande
+## What this request does
 
-<!-- En une ou deux phrases, et surtout : pourquoi. -->
+<!-- In a sentence or two, and above all: why. -->
 
-## Pourquoi
+## Why
 
 <!--
-La règle du dépôt : un commentaire qui paraphrase le code est à supprimer,
-un commentaire qui dit pourquoi le code est ainsi est à garder. Même chose
-ici. S'il y a un ticket, renvoyez-y : « corrige #12 ».
+The repository's rule: a comment that paraphrases the code is to be deleted,
+a comment that says why the code is as it is, is to be kept. The same here.
+If there is an issue, point at it: "fixes #12".
 -->
 
-## Ce que j'ai vérifié
+## What I checked
 
-<!-- Cochez ce que vous avez réellement lancé. Les cases non cochées ne sont
-     pas un reproche : elles disent au relecteur où regarder. -->
+<!-- Tick what you actually ran. An unticked box is not a reproach: it tells
+     the reviewer where to look. -->
 
-- [ ] `cd src/phytoscope && make test` — la suite passe
+- [ ] `cd src/phytoscope && make test` — the suite passes
 - [ ] `cd src/phytoscope && make lint`
 - [ ] `pre-commit run --all-files`
-- [ ] `python3 tools/headers.py --verifier` — les en-têtes sont à jour
-- [ ] `python3 tools/verify_svg.py` — si j'ai touché aux illustrations
-- [ ] Les publications se reconstruisent — si j'ai touché à `pdf-src/` ou aux `build_*.py`
-- [ ] `cd packaging && make tout && make verifier` — si j'ai touché à l'empaquetage
+- [ ] `python3 tools/headers.py --verifier` — the headers are up to date
+- [ ] `python3 tools/verify_svg.py` — if I touched the illustrations
+- [ ] The publications rebuild — if I touched `pdf-src/` or the `build_*.py`
+- [ ] `cd packaging && make all && make verify` — if I touched the packaging
 
-## Chiffres
+## Figures
 
 <!--
-Le dépôt impose de mesurer avant d'affirmer. Si votre texte annonce un
-nombre — de pages, de tests, de références, un prix, un débit — donnez la
-commande qui le produit.
+The repository requires measuring before asserting. If your text states a
+number — of pages, of tests, of references, a price, a data rate — give the
+command that produces it.
 -->
 
-## Ce que j'ai consigné
+## What I recorded
 
-- [ ] Entrée datée dans `.ai/journal.md`
-- [ ] `.ai/etat.md` mis à jour
-- [ ] `.ai/decisions.md` — si ceci tranche une question de conception
-- [ ] `CHANGELOG.md` — si cela se voit de l'extérieur
-- [ ] `constraints.md` — si une contrainte change (et alors, dites laquelle)
+- [ ] A dated entry in `.ai/journal.md`
+- [ ] `.ai/state.md` brought up to date
+- [ ] `.ai/decisions.md` — if this settles a design question
+- [ ] `CHANGELOG.md` — if it shows from the outside
+- [ ] `constraints.md` — if a constraint changes (and then say which)
 
-## Contrôles du dépôt
+## The repository's checks
 
-- [ ] Tout est en français, typographie comprise
-- [ ] Aucune dépendance obligatoire ajoutée (`C-40`)
-- [ ] Aucun `sudo` (`C-55`)
-- [ ] Aucun fichier généré modifié à la main (`C-45`)
-- [ ] **Aucune clé privée, aucun secret** (`C-2R`)
-- [ ] Aucun en-tête d'attribution posé sur du code tiers (`sources/`)
+- [ ] Everything is in technical US English (`C-42`) — the interface excepted,
+      which follows the catalogues
+- [ ] No mandatory dependency added (`C-40`)
+- [ ] No `sudo` (`C-55`)
+- [ ] No generated file edited by hand (`C-45`)
+- [ ] **No private key, no secret** (`C-2R`)
+- [ ] No attribution header stamped on third-party code (`sources/`)
+- [ ] If the module contract changed: the major bumped and the migration
+      documented (`C-49`)

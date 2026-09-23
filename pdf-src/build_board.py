@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — pdf-src/build_board.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """
@@ -21,8 +21,8 @@ Build du hors-série « La Carte PhytoSense » et de ses trois annexes détachab
 Quatre documents sont produits à partir des mêmes fragments :
 
     build/La-Carte-PhytoSense.pdf          l'ouvrage complet
-    build/PhytoSense-schemas.pdf           les six feuilles de schéma seules
-    build/PhytoSense-bom-accessoires.pdf   nomenclature et accessoires
+    build/PhytoSense-schematics.pdf           the eight schematic sheets alone
+    build/PhytoSense-bom-accessories.pdf   nomenclature et accessoires
     build/PhytoSense-pcb.pdf               circuit imprimé et fabrication
 
 Les trois annexes sont faites pour être imprimées séparément et emportées
@@ -43,8 +43,8 @@ SRC = os.path.join(ROOT, "pdf-src")
 #  2026-09-18, chaque PDF a son propre dossier de fragments. COMMUN tient
 #  ceux que plusieurs documents se partagent — les tableaux de nomenclature,
 #  produits par tools/gen_bom.py et inclus par <!--INCLURE:…-->.
-PARTS = os.path.join(SRC, "la-carte-phytosense")
-COMMUN = os.path.join(SRC, "commun")
+PARTS = os.path.join(SRC, "the-phytosense-board")
+COMMUN = os.path.join(SRC, "common")
 BUILD = os.path.join(ROOT, "build")
 
 DATE = "2026-09-17"
@@ -57,7 +57,7 @@ SITE = "https://bretagne-namaste.com"
 # =============================================================================
 DOCUMENTS = {
     "livre": {
-        "dir": "la-carte-phytosense",
+        "dir": "the-phytosense-board",
         "out": "La-Carte-PhytoSense.pdf",
         "title": "La Carte PhytoSense — conditionnement analogique et interface USB",
         "running": "La Carte PhytoSense",
@@ -91,36 +91,37 @@ DOCUMENTS = {
         ],
     },
     "schemas": {
-        "dir": "phytosense-schemas",
-        "out": "PhytoSense-schemas.pdf",
-        "title": "PhytoSense One — dossier de schémas",
-        "running": "PhytoSense One — schémas",
-        "description": ("Les huit feuilles de schéma de la carte PhytoSense One, "
-                        "protections, alimentation et signalisation comprises. "
+        "dir": "phytosense-schematics",
+        "out": "PhytoSense-schematics.pdf",
+        "title": "PhytoSense One — schematic package",
+        "running": "PhytoSense One — schematics",
+        "description": ("The eight schematic sheets of the PhytoSense One "
+                        "board, protection, power and indicators included. "
                         "Bretagne Namasté — bretagne-namaste.com"),
-        "keywords": "schéma électronique, PhytoSense, électrophysiologie",
+        "keywords": "schematic, electronics, PhytoSense, electrophysiology",
         "order": ["S0-cover", "S1-notice", "S2-schemas"],
     },
     "bom": {
-        "dir": "phytosense-bom-accessoires",
-        "out": "PhytoSense-bom-accessoires.pdf",
-        "title": "PhytoSense One — nomenclature et accessoires",
-        "running": "PhytoSense One — nomenclature",
-        "description": ("Nomenclature chiffrée de la carte PhytoSense One, "
-                        "accessoires, outillage, nomenclature logicielle et "
-                        "budgets. Bretagne Namasté — bretagne-namaste.com"),
-        "keywords": "nomenclature, BOM, accessoires, budget, PhytoSense",
+        "dir": "phytosense-bom-accessories",
+        "out": "PhytoSense-bom-accessories.pdf",
+        "title": "PhytoSense One — bill of materials and accessories",
+        "running": "PhytoSense One — bill of materials",
+        "description": ("Priced bill of materials for the PhytoSense One "
+                        "board, accessories, tooling, software bill of "
+                        "materials and budgets. "
+                        "Bretagne Namasté — bretagne-namaste.com"),
+        "keywords": "bill of materials, BOM, accessories, budget, PhytoSense",
         "order": ["B0-cover", "B1-bom", "B2-accessoires", "B4-sbom",
                   "B3-budget"],
     },
     "pcb": {
         "dir": "phytosense-pcb",
         "out": "PhytoSense-pcb.pdf",
-        "title": "PhytoSense One — circuit imprimé",
-        "running": "PhytoSense One — circuit imprimé",
-        "description": ("Routage quatre couches, implantation, empilage et "
-                        "dossier de fabrication de la carte PhytoSense One."),
-        "keywords": "circuit imprimé, routage, quatre couches, Gerber, PhytoSense",
+        "title": "PhytoSense One — printed circuit board",
+        "running": "PhytoSense One — printed circuit board",
+        "description": ("Four-layer routing, placement, stack-up and "
+                        "fabrication package of the PhytoSense One board."),
+        "keywords": "printed circuit, routing, four layers, Gerber, PhytoSense",
         "order": ["P0-cover", "P1-pcb", "P2-fabrication"],
     },
 }
@@ -265,8 +266,12 @@ def build(key, spec):
         body = body.replace("<!--TOC_FULL-->", render_toc(items, with_sub=True))
     check(body)
 
+    #  The language is per document, not per builder: this mould serves the
+    #  board book (still French) and the SDK volume (English). It is not
+    #  decoration — WeasyPrint hyphenates according to it, and an English text
+    #  broken with French rules shows.
     html = f"""<!DOCTYPE html>
-<html lang="fr">
+<html lang="{spec.get('lang', 'fr')}">
 <head>
 <meta charset="utf-8"/>
 <title>{spec['title']}</title>
@@ -281,7 +286,7 @@ def build(key, spec):
 <meta name="generator" content="WeasyPrint"/>
 <link rel="stylesheet" href="fonts.css"/>
 <link rel="stylesheet" href="book.css"/>
-<link rel="stylesheet" href="carte.css"/>
+<link rel="stylesheet" href="board.css"/>
 <style>body{{ string-set: booktitle "{spec['running']}"; }}</style>
 </head>
 <body>

@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<!--
+  ==========================================================================
+  PhytoScope — attribution — sources/usb/reference.html
+
+  Version   : 1.5.1
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
+
+  SPDX-License-Identifier: MIT
+  end of attribution
+  ==========================================================================
+
+  Every descriptor value in this document was read out of
+  src/firmware/usb_descriptors.c and src/firmware/tusb_config.h, and every
+  length was computed by the C preprocessor rather than by hand. Where the
+  document says the device does something, it is because the source says so.
+  Where the device diverges from what its own descriptors promise, section 11
+  says so plainly.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>USB Device Reference — PhytoScope</title>
+  <link rel="stylesheet" href="reference.css"/>
+</head>
+<body>
+
+<!-- ===================================================== cover ========= -->
+<section>
+  <h1 class="cover-title">USB Device<br/>Reference</h1>
+  <p class="cover-sub">The descriptors PhytoSense One presents,<br/>the frames that cross the bus,<br/>and what the host makes of them</p>
+  <p class="cover-meta">
+    Bretagne Namasté — PhytoScope 1.5.1 — 2026-09-23<br/>
+    Written for this project. MIT licensed.<br/><br/>
+    Every byte here comes from <strong>the firmware source</strong>, not from
+    a datasheet<br/>
+    and not from memory. The normative documents are listed in section 14;<br/>
+    we do not redistribute them, and where this document and they<br/>
+    disagree, they are right.
+  </p>
+</section>
+
+<!-- ===================================================== toc =========== -->
+<nav id="toc">
+  <h2 style="break-before:page">Contents</h2>
+  <ol>
+    <li><a href="#s1">1 — Scope, and what this document is not</a></li>
+    <li><a href="#s2">2 — The physical layer, and why full speed</a></li>
+    <li><a href="#s3">3 — The device descriptor, byte by byte</a></li>
+    <li><a href="#s4">4 — The configuration, and the four interfaces</a></li>
+    <li><a href="#s5">5 — Interfaces 0 and 1: the measurement stream</a></li>
+    <li><a href="#s6">6 — The isochronous endpoint, and what a frame contains</a></li>
+    <li><a href="#s7">7 — Interfaces 2 and 3: the control port</a></li>
+    <li><a href="#s8">8 — The control protocol carried over CDC</a></li>
+    <li><a href="#s9">9 — String descriptors, and the serial number</a></li>
+    <li><a href="#s10">10 — Enumeration, transfer by transfer</a></li>
+    <li><a href="#s11">11 — Known divergences from the descriptors</a></li>
+    <li><a href="#s12">12 — What each host does with the device</a></li>
+    <li><a href="#s13">13 — Diagnosing, and the failures that cost time</a></li>
+    <li><a href="#s14">14 — Normative references</a></li>
+  </ol>
+</nav>
+
+<!-- ===================================================== 1 ============= -->
+<h2 id="s1" class="newpage">1 — Scope, and what this document is not</h2>
+
+<p>This is the reference for the USB side of <strong>PhytoSense One</strong>:
+the descriptors the board presents at plug-in, the two data paths it opens, the
+byte layout of what travels on each, and the way three operating systems bind
+drivers to it. It is written for whoever has to make a host talk to the board —
+someone writing an acquisition client, packaging a driver rule, or trying to
+work out why a freshly flashed board enumerates but produces nothing.</p>
+
+<p>It is <strong>not</strong> a USB tutorial and not a specification. It
+assumes the reader knows what a descriptor and an endpoint are. Where a field
+is standard and unremarkable, it is named and left alone; where the board's
+choice is unusual or costly, the reasoning is given, because that is the part a
+specification cannot supply.</p>
+
+<p>Nor is it a promise. Sections 3 to 9 describe what the firmware in this
+repository does at version 1.0.0. Section 11 records three places where the
+device's behaviour did <em>not</em> match what its own descriptors advertised;
+all three were settled on 2026-09-23, and they are kept because a board
+flashed with an earlier firmware still shows them, and because the reasoning
+outlives the defect. A reference that hides a divergence costs its reader more
+than one that has none to hide.</p>
+
+<div class="note">
+  <span class="label">Where the numbers come from</span>
+  <p>Constants and descriptor fields were read from
+  <code>src/firmware/usb_descriptors.c</code> and
+  <code>src/firmware/tusb_config.h</code>. Descriptor <em>lengths</em> are
+  computed from TinyUSB's own macros by the C preprocessor, not added up by
+  hand — the audio function's length in particular is the sum of thirteen
+  terms, and adding those by hand is how documents come to disagree with
+  their firmware.</p>
+</div>
+
+<h3>Conventions</h3>
+
+<p>Multi-byte fields are little-endian, as USB requires: a
+<code>wTotalLength</code> of 219 appears on the wire as <code>DB 00</code>.
+Endpoint addresses are given as the host sees them, with bit 7 set for IN
+(device to host): <code>0x81</code> is IN endpoint 1. Byte values are written
+<code>0x</code>-prefixed; decimal values are bare.</p>
+
+<!-- ===================================================== 2 ============= -->
+<h2 id="s2" class="newpage">2 — The physical layer, and why full speed</h2>
+
+<p>The board is a USB 2.0 <strong>full-speed</strong> device: 12 Mbit/s, one
+frame per millisecond, over a USB-C receptacle wired for USB 2.0 only. It is
+bus-powered. The RP2350's USB controller has no high-speed PHY, so full speed
+is not a choice so much as the ceiling; what follows is why that ceiling is
+comfortably above the need.</p>
+
+<h3>The bandwidth actually required</h3>
+
+<p>Four channels, three bytes per sample, 250 samples per second:</p>
+
+<pre>4 channels x 3 bytes x 250 Hz = 3000 bytes/s = 3 kB/s</pre>
+
+<p>Full speed offers roughly 1023 bytes per frame to a single isochronous
+endpoint, which is 1023 kB/s. The measurement stream uses three parts in a
+thousand of it. Even the 32 kHz mode the analog front end can be driven at
+comes to 384 kB/s, still inside the budget with the control port alongside.</p>
+
+<div class="ps">
+  <span class="label">Why this matters more than it looks</span>
+  <p>An instrument whose bus is nearly full has no margin for a host that
+  schedules badly, and isochronous transfers are <em>not retried</em>: a frame
+  the host fails to collect is gone. Running at three parts in a thousand means
+  that a lost frame is always the host's doing and never a bandwidth
+  shortage — which turns a whole class of intermittent faults into a
+  diagnosable one. The counter in section 8's beacon exists to say so.</p>
+</div>
+
+<h3>Cabling, and the cable that is not a cable</h3>
+
+<p>The receptacle is USB-C, but only the USB 2.0 pairs are connected: there is
+no SuperSpeed wiring, no alternate mode and no Power Delivery negotiation. Any
+USB-C cable that carries data will work, in either orientation.</p>
+
+<p>The failure that costs the most time is a cable that carries power but not
+data — common among cables shipped with chargers. The board then powers up,
+its indicator behaves normally, and the host sees nothing at all. A board that
+has power and does not enumerate is almost always this.</p>
+
+<h3>Current</h3>
+
+<table class="short">
+  <thead><tr><th>Quantity</th><th class="hex">Value</th><th>Where it comes from</th></tr></thead>
+  <tbody>
+    <tr><td>Declared in the configuration descriptor</td><td class="hex">500 mA</td>
+        <td><code>TUD_CONFIG_DESCRIPTOR(..., 500)</code>, encoded as <code>bMaxPower = 250</code> in 2 mA units</td></tr>
+    <tr><td>Typical draw, streaming</td><td class="hex">~180 mA</td>
+        <td>Measured on the bench; see the board fascicle's power budget</td></tr>
+    <tr><td>Margin</td><td class="hex">~320 mA</td>
+        <td>Covers the inrush when the isolated supplies come up</td></tr>
+  </tbody>
+</table>
+
+<p>Declaring 500 mA when 180 mA is used is deliberate. The isolated rails draw
+a brief surge at start-up, and a hub that has granted only 100 mA may cut the
+port during it. Asking for the full bus-powered allowance costs nothing on a
+host with a normal budget and avoids an enumeration that succeeds and then
+drops.</p>
+
+<!-- ===================================================== 3 ============= -->
+<h2 id="s3" class="newpage">3 — The device descriptor, byte by byte</h2>
+
+<p>Eighteen bytes, returned for the first <code>GET_DESCRIPTOR(Device)</code>.
+This is the whole of it, with the value each field actually carries:</p>
+
+<table class="desc long">
+  <thead><tr><th class="off">Offset</th><th>Field</th><th class="hex">Value</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td class="off">0</td><td><code>bLength</code></td><td class="hex">0x12</td><td>18 bytes</td></tr>
+    <tr><td class="off">1</td><td><code>bDescriptorType</code></td><td class="hex">0x01</td><td>DEVICE</td></tr>
+    <tr><td class="off">2</td><td><code>bcdUSB</code></td><td class="hex">0x0200</td><td>USB 2.0 (at full speed)</td></tr>
+    <tr><td class="off">4</td><td><code>bDeviceClass</code></td><td class="hex">0xEF</td><td>Miscellaneous</td></tr>
+    <tr><td class="off">5</td><td><code>bDeviceSubClass</code></td><td class="hex">0x02</td><td>Common class</td></tr>
+    <tr><td class="off">6</td><td><code>bDeviceProtocol</code></td><td class="hex">0x01</td><td>Interface Association Descriptor</td></tr>
+    <tr><td class="off">7</td><td><code>bMaxPacketSize0</code></td><td class="hex">0x40</td><td>64 bytes on endpoint 0</td></tr>
+    <tr><td class="off">8</td><td><code>idVendor</code></td><td class="hex">0x1209</td><td>pid.codes, the allocation for open projects</td></tr>
+    <tr><td class="off">10</td><td><code>idProduct</code></td><td class="hex">0x7A01</td><td>PhytoSense One</td></tr>
+    <tr><td class="off">12</td><td><code>bcdDevice</code></td><td class="hex">0x0100</td><td>Firmware 1.0.0</td></tr>
+    <tr><td class="off">14</td><td><code>iManufacturer</code></td><td class="hex">0x01</td><td>String 1, "Bretagne Namaste"</td></tr>
+    <tr><td class="off">15</td><td><code>iProduct</code></td><td class="hex">0x02</td><td>String 2, "PhytoSense One"</td></tr>
+    <tr><td class="off">16</td><td><code>iSerialNumber</code></td><td class="hex">0x03</td><td>String 3, built at run time (section 9)</td></tr>
+    <tr><td class="off">17</td><td><code>bNumConfigurations</code></td><td class="hex">0x01</td><td>One configuration</td></tr>
+  </tbody>
+</table>
+
+<p>On the wire, in order:</p>
+
+<pre class="wire">12 01 00 02 EF 02 01 40 09 12 01 7A 00 01 01 02 03 01</pre>
+
+<h3>The three bytes that decide whether Windows works</h3>
+
+<p><code>bDeviceClass</code>, <code>bDeviceSubClass</code> and
+<code>bDeviceProtocol</code> are <code>0xEF</code>, <code>0x02</code>,
+<code>0x01</code>. That triple is the standard signature of a
+<strong>composite device described by Interface Association
+Descriptors</strong>. It says: do not look for a class here, look at each
+interface, and honour the IADs that group them.</p>
+
+<p>Getting it wrong is not a cosmetic error. With any other triple, Windows
+treats the device as single-function, binds one driver to the first interface it
+recognises, and never reaches the CDC interfaces — so the board appears as an
+audio device with no control port, and no amount of driver-side effort fixes it
+because the host has already decided. Linux is more forgiving and will bind
+per-interface anyway, which is precisely why this class of bug survives testing
+on Linux and is found on Windows.</p>
+
+<div class="warn">
+  <span class="label">A trap for anyone forking this firmware</span>
+  <p>It is tempting to set <code>bDeviceClass</code> to the audio class, since
+  audio is the board's main function. Do not. The moment a second function
+  exists, the device is composite, and the only portable way to say so is the
+  Miscellaneous/Common/IAD triple above.</p>
+</div>
+
+<h3>The vendor and product identifiers</h3>
+
+<p><code>0x1209</code> is the <strong>pid.codes</strong> vendor identifier, an
+allocation shared by open-hardware projects, and <code>0x7A01</code> is this
+board within it. The pair is what every udev rule, every driver-matching table
+and every diagnostic in this project keys on; it is stable across firmware
+versions, whereas <code>bcdDevice</code> is not.</p>
+
+<p>Anyone rebuilding this firmware for a different board should change the
+product identifier. Two different boards answering to the same VID:PID will be
+matched by the same rules, and the first diagnostic to run on a machine with
+both attached will report whichever it found first.</p>
+
+<!-- ===================================================== 4 ============= -->
+<h2 id="s4" class="newpage">4 — The configuration, and the four interfaces</h2>
+
+<p>There is one configuration, holding four interfaces in two functions. Its
+total length is <strong>219 bytes</strong>, made of three parts:</p>
+
+<table class="short">
+  <thead><tr><th>Part</th><th class="hex">Bytes</th><th>TinyUSB macro</th></tr></thead>
+  <tbody>
+    <tr><td>Configuration header</td><td class="hex">9</td><td><code>TUD_CONFIG_DESC_LEN</code></td></tr>
+    <tr><td>Audio function (UAC2, four-channel input)</td><td class="hex">144</td><td><code>TUD_AUDIO_MIC_FOUR_CH_DESC_LEN</code></td></tr>
+    <tr><td>CDC function (virtual serial port)</td><td class="hex">66</td><td><code>TUD_CDC_DESC_LEN</code></td></tr>
+    <tr><td><strong>Total</strong></td><td class="hex"><strong>219</strong></td><td><code>wTotalLength</code>, on the wire <code>DB 00</code></td></tr>
+  </tbody>
+</table>
+
+<h3>The configuration descriptor</h3>
+
+<table class="desc short">
+  <thead><tr><th class="off">Offset</th><th>Field</th><th class="hex">Value</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td class="off">0</td><td><code>bLength</code></td><td class="hex">0x09</td><td>9 bytes</td></tr>
+    <tr><td class="off">1</td><td><code>bDescriptorType</code></td><td class="hex">0x02</td><td>CONFIGURATION</td></tr>
+    <tr><td class="off">2</td><td><code>wTotalLength</code></td><td class="hex">0x00DB</td><td>219 bytes, this descriptor included</td></tr>
+    <tr><td class="off">4</td><td><code>bNumInterfaces</code></td><td class="hex">0x04</td><td>Four</td></tr>
+    <tr><td class="off">5</td><td><code>bConfigurationValue</code></td><td class="hex">0x01</td><td>Selected by <code>SET_CONFIGURATION(1)</code></td></tr>
+    <tr><td class="off">6</td><td><code>iConfiguration</code></td><td class="hex">0x00</td><td>No string</td></tr>
+    <tr><td class="off">7</td><td><code>bmAttributes</code></td><td class="hex">0xA0</td><td>Bus-powered, remote wake-up supported</td></tr>
+    <tr><td class="off">8</td><td><code>bMaxPower</code></td><td class="hex">0xFA</td><td>250 x 2 mA = 500 mA</td></tr>
+  </tbody>
+</table>
+
+<h3>The interfaces, and the order they appear in</h3>
+
+<table class="short">
+  <thead><tr><th class="hex">#</th><th>Interface</th><th>Class</th><th>Endpoints</th></tr></thead>
+  <tbody>
+    <tr><td class="hex">0</td><td>Audio Control</td><td>Audio (0x01), subclass AUDIOCONTROL</td><td>none</td></tr>
+    <tr><td class="hex">1</td><td>Audio Streaming</td><td>Audio (0x01), subclass AUDIOSTREAMING</td><td><code>0x81</code> isochronous IN, on alternate setting 1</td></tr>
+    <tr><td class="hex">2</td><td>CDC Communication</td><td>CDC (0x02), Abstract Control Model</td><td><code>0x82</code> interrupt IN, 8 bytes</td></tr>
+    <tr><td class="hex">3</td><td>CDC Data</td><td>CDC Data (0x0A)</td><td><code>0x03</code> bulk OUT and <code>0x83</code> bulk IN, 64 bytes</td></tr>
+  </tbody>
+</table>
+
+<p>Interfaces 0 and 1 are grouped by one IAD, interfaces 2 and 3 by another.
+The IAD is what tells a composite-aware host that interface 1 belongs with
+interface 0 and must not be handed to a different driver.</p>
+
+<p>The audio function comes <strong>first</strong>, and that is deliberate.
+Some older hosts stop exploring a composite device at the first function whose
+class they can handle; putting the measurement stream first means that on such
+a host the instrument still measures, losing only the control port. The reverse
+order would give a host that can be configured but cannot acquire, which is the
+less useful half.</p>
+
+<h3>Endpoint map</h3>
+
+<table class="short">
+  <thead><tr><th class="hex">Address</th><th>Direction</th><th>Type</th><th class="hex">Max packet</th><th>Carries</th></tr></thead>
+  <tbody>
+    <tr><td class="hex">0x00 / 0x80</td><td>both</td><td>Control</td><td class="hex">64</td><td>Enumeration, class requests</td></tr>
+    <tr><td class="hex">0x81</td><td>IN</td><td>Isochronous</td><td class="hex">384</td><td>The measurement stream</td></tr>
+    <tr><td class="hex">0x82</td><td>IN</td><td>Interrupt</td><td class="hex">8</td><td>CDC serial-state notifications</td></tr>
+    <tr><td class="hex">0x03</td><td>OUT</td><td>Bulk</td><td class="hex">64</td><td>Commands to the board</td></tr>
+    <tr><td class="hex">0x83</td><td>IN</td><td>Bulk</td><td class="hex">64</td><td>Replies and beacons</td></tr>
+  </tbody>
+</table>
+
+<!-- ===================================================== 5 ============= -->
+<h2 id="s5" class="newpage">5 — Interfaces 0 and 1: the measurement stream</h2>
+
+<p>The measurement path is declared as a <strong>USB Audio Class 2.0
+input</strong> — in the class's own vocabulary, a four-channel microphone. It is
+built from TinyUSB's <code>TUD_AUDIO_MIC_FOUR_CH_DESCRIPTOR</code> template
+with three parameters supplied by this firmware:</p>
+
+<table class="short">
+  <thead><tr><th>Parameter</th><th class="hex">Value</th><th>Effect</th></tr></thead>
+  <tbody>
+    <tr><td><code>_nBytesPerSample</code></td><td class="hex">3</td><td>Three bytes on the wire per sample</td></tr>
+    <tr><td><code>_nBitsUsedPerSample</code></td><td class="hex">24</td><td>All 24 bits carry data</td></tr>
+    <tr><td><code>_epin</code></td><td class="hex">0x81</td><td>The isochronous IN endpoint</td></tr>
+    <tr><td><code>CFG_TUD_AUDIO_FUNC_1_N_CHANNELS_TX</code></td><td class="hex">4</td><td>Four channels</td></tr>
+    <tr><td><code>CFG_TUD_AUDIO_EP_SZ_IN</code></td><td class="hex">384</td><td>Maximum packet size — 32 x 12, checked by a static assert</td></tr>
+  </tbody>
+</table>
+
+<h3>Why audio class, for an electrometer</h3>
+
+<p>Nothing about a plant's membrane potential is audio. The class was chosen
+for what it gives the user, not for what it describes:</p>
+
+<ul>
+  <li><strong>No driver to install.</strong> UAC2 is supported out of the box
+  by Linux, Windows 10 and later, and macOS. A vendor-class endpoint would
+  mean shipping a driver, signing it, and maintaining it for three operating
+  systems — against constraint C-40, which forbids making the user install
+  anything mandatory.</li>
+  <li><strong>Isochronous scheduling for free.</strong> The class brings a
+  guaranteed slot in every frame and a host-side buffering model built for a
+  continuous stream with a fixed cadence, which is exactly the traffic
+  shape.</li>
+  <li><strong>Existing tools.</strong> Anything that can record from a sound
+  card can record the raw stream, which makes the board inspectable with
+  software the user already has.</li>
+</ul>
+
+<div class="warn">
+  <span class="label">And what it costs</span>
+  <p>The price is that the host's audio stack believes it is handling audio. It
+  may offer to resample, to apply gain, or to mix — every one of which would
+  destroy the measurement. Section 6 explains how the asynchronous clock
+  declaration keeps the host from resampling, and section 11 records where
+  this choice is not yet fully honoured.</p>
+</div>
+
+<h3>Interface 0: audio control</h3>
+
+<p>Interface 0 carries no endpoint. It exists to hold the function's topology,
+which UAC2 expresses as a graph of entities:</p>
+
+<dl>
+  <dt>Clock Source, ID 0x04</dt>
+  <dd>Declared <code>AUDIO_CLOCK_SOURCE_ATT_INT_FIX_CLK</code> — an internal,
+  fixed clock — with its frequency marked <em>readable</em>. That last
+  attribute has a consequence the firmware does not yet meet; see section
+  11.</dd>
+
+  <dt>Input Terminal, ID 0x01</dt>
+  <dd>Type <code>AUDIO_TERM_TYPE_IN_GENERIC_MIC</code>, four channels,
+  associated with the output terminal. This is the entity the four electrode
+  inputs are modelled as.</dd>
+
+  <dt>Feature Unit, four channels</dt>
+  <dd>Declared with mute and volume controls, because the template declares
+  them. They are not wired to anything in the analog front end: gain is set
+  through the control port (section 8), not through this unit.</dd>
+
+  <dt>Output Terminal, ID 0x03</dt>
+  <dd>Type USB streaming — the point at which the samples leave for the
+  host.</dd>
+</dl>
+
+<h3>Interface 1: audio streaming, and its two alternate settings</h3>
+
+<p>Interface 1 has two alternate settings, which is how UAC2 idles:</p>
+
+<table class="short">
+  <thead><tr><th class="hex">Alt</th><th>Endpoints</th><th>State</th></tr></thead>
+  <tbody>
+    <tr><td class="hex">0</td><td>none</td><td>Idle. No bus bandwidth is reserved.</td></tr>
+    <tr><td class="hex">1</td><td><code>0x81</code>, isochronous IN, 384 bytes</td><td>Streaming.</td></tr>
+  </tbody>
+</table>
+
+<p>A host that is not recording leaves the interface on alternate setting 0,
+and the board's isochronous slot costs the bus nothing. Streaming begins when
+the host issues <code>SET_INTERFACE(1, 1)</code>, and the firmware's
+<code>tud_audio_tx_done_pre_load_cb</code> starts being called once per
+frame.</p>
+
+<div class="note">
+  <span class="label">What this means for a client</span>
+  <p>Opening the control port does not start the stream, and closing it does
+  not stop it: they are separate functions with separate state. A client that
+  wants samples must select alternate setting 1 — which, on every host, means
+  opening the capture device rather than sending a command.</p>
+</div>
+
+<!-- ===================================================== 6 ============= -->
+<h2 id="s6" class="newpage">6 — The isochronous endpoint, and what a frame contains</h2>
+
+<p>Endpoint <code>0x81</code> carries the measurement. Its declared maximum
+packet size is <strong>384 bytes</strong> — 32 sample sets exactly, the fastest
+the analog front end can be driven — its interval is one frame (1 ms at full
+speed), and it has <strong>no feedback endpoint</strong>. It was 256 bytes
+before 2026-09-23; see 11.2.</p>
+
+<h3>Sample layout</h3>
+
+<p>A sample set is four channels of three bytes, little-endian, two's
+complement, 24 bits significant: twelve bytes, channel 0 first.</p>
+
+<pre class="wire">offset  0  1  2   3  4  5   6  7  8   9 10 11
+        &lt;--ch0--&gt; &lt;--ch1--&gt; &lt;--ch2--&gt; &lt;--ch3--&gt;
+        LSB..MSB  LSB..MSB  LSB..MSB  LSB..MSB</pre>
+
+<p>The firmware writes each sample as three separate bytes, least significant
+first, which is what the host's audio stack expects of a 24-bit
+little-endian format:</p>
+
+<pre>trame_usb[n++] = (uint8_t)(code &amp; 0xFF);
+trame_usb[n++] = (uint8_t)((code &gt;&gt; 8) &amp; 0xFF);
+trame_usb[n++] = (uint8_t)((code &gt;&gt; 16) &amp; 0xFF);</pre>
+
+<h3>Frame length is variable, and this surprises people</h3>
+
+<p>The endpoint's packet is <em>not</em> a fixed twelve bytes. Once per frame
+the firmware drains whatever the acquisition ring holds, up to the packet
+size:</p>
+
+<pre>while (n + (AFE_VOIES * 3u) &lt;= sizeof(trame_usb) &amp;&amp; tampon_tirer(&amp;e)) {
+    /* ... three bytes per channel ... */
+}
+tud_audio_write(trame_usb, (uint16_t)n);</pre>
+
+<p>At the default 250 Hz, a sample set becomes available every 4 ms, so the
+steady state is a repeating pattern of three empty frames and one carrying
+twelve bytes. At 1 kHz it is one sample set per frame. At 32 kHz it is 32 sets,
+384 bytes — which is exactly the declared maximum, and the reason the maximum
+is that number rather than a round one.</p>
+
+<table class="short">
+  <thead><tr><th>Rate</th><th class="hex">Sets per frame</th><th class="hex">Bytes per frame</th><th class="hex">Average</th><th>Fits in 384 B?</th></tr></thead>
+  <tbody>
+    <tr><td>250 Hz (default)</td><td class="hex">0 or 1</td><td class="hex">0 or 12</td><td class="hex">3 B/ms</td><td>yes</td></tr>
+    <tr><td>1 kHz</td><td class="hex">1</td><td class="hex">12</td><td class="hex">12 B/ms</td><td>yes</td></tr>
+    <tr><td>8 kHz</td><td class="hex">8</td><td class="hex">96</td><td class="hex">96 B/ms</td><td>yes</td></tr>
+    <tr><td>16 kHz</td><td class="hex">16</td><td class="hex">192</td><td class="hex">192 B/ms</td><td>yes</td></tr>
+    <tr><td>32 kHz</td><td class="hex">32</td><td class="hex">384</td><td class="hex">384 B/ms</td><td>yes — exactly, with nothing to spare</td></tr>
+  </tbody>
+</table>
+
+<div class="warn">
+  <span class="label">A client must not assume a frame length</span>
+  <p>A reader that expects twelve bytes per frame will work at 1 kHz and fail
+  at every other rate. Read whatever length the transfer returns and treat the
+  stream as a byte sequence in which every twelve bytes is one sample set —
+  which is what a host audio stack does anyway, and why recording through the
+  sound API works when a hand-rolled reader does not.</p>
+</div>
+
+<h3>Asynchronous clock, and no feedback</h3>
+
+<p>Two settings in <code>tusb_config.h</code> decide the timing model:</p>
+
+<pre>#define CFG_TUD_AUDIO_ENABLE_FEEDBACK_EP     0
+#define CFG_TUD_AUDIO_FUNC_1_CLK_SRC_ASYNC   1</pre>
+
+<p>Asynchronous means <strong>the board sets the cadence, not the host</strong>.
+The sample clock is the board's own, derived from its oscillator; the host
+adapts. This is the only defensible choice for an instrument: if the host
+supplied the clock, or if the board resampled to follow one, the time base of
+every recorded measurement would be the host's scheduler rather than a
+crystal, and a timestamp would stop meaning anything.</p>
+
+<p>The absence of a feedback endpoint is the consequence. A feedback endpoint
+exists so the host can be told to speed up or slow down its delivery — which
+only makes sense for output. For an asynchronous input the host simply takes
+what arrives, and the stream carries no rate correction at all.</p>
+
+<div class="ps">
+  <span class="label">How drift shows up, and what to do about it</span>
+  <p>Board and host clocks differ by some tens of parts per million. Over an
+  hour that is tens of milliseconds of accumulated offset — invisible within a
+  recording, and real between a recording and an external event. The board
+  therefore ships its own sample counter: the <code>clock</code> command
+  (section 8) returns <code>n</code>, the count since power-up, and
+  <code>t_s</code>, that count divided by the sample rate. Timestamp against
+  <code>n</code>, never against the host's clock, and the drift becomes a
+  constant offset that can be measured once instead of an error that
+  grows.</p>
+</div>
+
+<h3>Lost samples are counted, not hidden</h3>
+
+<p>The ring buffer between the acquisition loop and the USB callback has a
+fixed size. When the host does not collect frames fast enough, the producer
+overruns the consumer, and the firmware increments a counter rather than
+blocking:</p>
+
+<pre>if (/* ring full */) {
+    echantillons_perdus++;        /* the host is not reading fast enough */
+}</pre>
+
+<p>That counter is reported in every beacon as <code>lost</code>, and by the
+<code>clock</code> command. A recording whose <code>lost</code> is non-zero has
+gaps, and the number says how many. This is worth checking at the end of every
+session: isochronous transfers are not retried, so nothing else will tell
+you.</p>
+
+<!-- ===================================================== 7 ============= -->
+<h2 id="s7" class="newpage">7 — Interfaces 2 and 3: the control port</h2>
+
+<p>The second function is a <strong>CDC-ACM virtual serial port</strong>:
+interface 2 for control, interface 3 for data, grouped by their own IAD.</p>
+
+<table class="short">
+  <thead><tr><th class="hex">Endpoint</th><th>Type</th><th class="hex">Size</th><th>Use</th></tr></thead>
+  <tbody>
+    <tr><td class="hex">0x82</td><td>Interrupt IN</td><td class="hex">8</td><td>Serial-state notifications (<code>SERIAL_STATE</code>)</td></tr>
+    <tr><td class="hex">0x03</td><td>Bulk OUT</td><td class="hex">64</td><td>Command lines from the host</td></tr>
+    <tr><td class="hex">0x83</td><td>Bulk IN</td><td class="hex">64</td><td>Replies, and unsolicited beacons</td></tr>
+  </tbody>
+</table>
+
+<p>Buffering, from <code>tusb_config.h</code>:</p>
+
+<pre>#define CFG_TUD_CDC_RX_BUFSIZE   256
+#define CFG_TUD_CDC_TX_BUFSIZE   512</pre>
+
+<p>Those sizes match the protocol's own limits — <code>PROTO_LIGNE_MAX</code>
+is 256 and <code>PROTO_REPONSE_MAX</code> is 512 — so a maximum-length command
+or reply never needs to be split across buffer refills. The asymmetry is
+because replies are JSON and longer than the commands that ask for them: the
+answer to <code>selftest</code> runs to several hundred bytes, while the
+command is eight.</p>
+
+<h3>Why a serial port rather than control transfers</h3>
+
+<p>Configuration could have gone over endpoint 0 as vendor requests. A serial
+port was chosen because it is <strong>reachable by hand</strong>. Anyone with
+<code>screen</code>, <code>minicom</code> or PuTTY can type
+<code>selftest</code> and read the answer, with no client, no library and no
+tooling — which matters for a board meant to be built by its user. A vendor
+control interface would make the instrument opaque to everyone but the author
+of its client.</p>
+
+<div class="note">
+  <span class="label">Baud rate is a fiction</span>
+  <p>CDC-ACM carries a baud rate because it emulates a UART, and the board
+  ignores it entirely: the data travels in bulk transfers at bus speed. Any
+  setting works. Line discipline, on the other hand, is not a fiction — see
+  section 13 for what a terminal's local echo and line ending do to this
+  protocol.</p>
+</div>
+
+<!-- ===================================================== 8 ============= -->
+<h2 id="s8" class="newpage">8 — The control protocol carried over CDC</h2>
+
+<p>The protocol is deliberately plain: <strong>one command per line, one reply
+per line</strong>. A line is CR-LF terminated, at most 256 bytes in and 512
+bytes out. Every reply begins with a single character that says how to read the
+rest.</p>
+
+<table class="short">
+  <thead><tr><th class="hex">First byte</th><th>Meaning</th><th>Body</th></tr></thead>
+  <tbody>
+    <tr><td class="hex">+</td><td>Success</td><td>A JSON object</td></tr>
+    <tr><td class="hex">-</td><td>Failure</td><td>A JSON object with a <code>message</code> field</td></tr>
+  </tbody>
+</table>
+
+<p>A one-character status ahead of the JSON means a client can branch before
+parsing, and a human reading the port can see at a glance whether something
+worked. The body is JSON so that a client need not write a parser.</p>
+
+<h3>The command set</h3>
+
+<table class="long">
+  <thead><tr><th>Command</th><th>Argument</th><th>Returns</th></tr></thead>
+  <tbody>
+    <tr><td><code>?</code> or <code>id</code></td><td>none</td>
+        <td>Model, serial, firmware version, channel count, sample rate, front-end type and serial, the gain table, current gain and range, volts per unit</td></tr>
+    <tr><td><code>gain</code></td><td><code>2</code>, <code>10</code>, <code>20</code>, <code>200</code> or <code>auto</code></td>
+        <td>The gain applied, and whether auto-ranging is on. The argument is the gain itself, not an index into the table</td></tr>
+    <tr><td><code>range</code></td><td><code>0</code>..<code>3</code></td>
+        <td>The selected range and the reference resistance in ohms</td></tr>
+    <tr><td><code>offset</code></td><td>a DAC code</td><td>The offset applied</td></tr>
+    <tr><td><code>clock</code></td><td>none</td>
+        <td><code>n</code> (samples since power-up), <code>t_s</code> (<code>n</code> / sample rate), <code>tcxo_ppm</code>, <code>lost</code></td></tr>
+    <tr><td><code>mark</code></td><td>a label, up to 48 printable characters</td>
+        <td>The sample index at which the mark was placed, and the sanitised label</td></tr>
+    <tr><td><code>selftest</code></td><td>none</td>
+        <td>Pass or fail; the three reference resistors as measured (1 M, 10 M, 100 M); the error on each; the noise floor in volts; the leakage in femtoamperes</td></tr>
+    <tr><td><code>env</code></td><td>none</td><td>Temperature in degrees Celsius; humidity, pressure and illuminance, reserved</td></tr>
+    <tr><td><code>save</code></td><td>none</td><td>Commits the current settings to flash</td></tr>
+    <tr><td><code>help</code></td><td>none</td><td>The command names, as a JSON array</td></tr>
+  </tbody>
+</table>
+
+<h3>An exchange, as it appears on the port</h3>
+
+<pre>&gt; ?
++{"model":"PhytoSense One","serial":"PS1-4A17C302","firmware":"1.0.0",
+  "channels":4,"sample_rate":250.0,"frontend":"ADA4530-1",
+  "frontend_serial":"...","gains":[2,10,20,200],"gain":10,"range":1,
+  "volts_per_unit":1.0}
+
+&gt; gain 200
++{"gain":200,"auto":false,"message":"gain forced"}
+
+&gt; gain 7
+-{"message":"gain not in table: 2, 10, 20 or 200"}
+
+&gt; clock
++{"n":1250000,"t_s":5000.000,"tcxo_ppm":-0.4,"lost":0}
+
+&gt; mark stimulus-3
++{"n":1250412,"label":"stimulus-3"}</pre>
+
+<div class="note">
+  <span class="label">The gain argument is the gain, not an index</span>
+  <p><code>gain 200</code> asks for a gain of 200, and the firmware searches
+  the table for it. <code>gain 3</code> is an error, not "the fourth entry".
+  This reads better at a terminal and is the one place where the protocol
+  chose the human over the program.</p>
+</div>
+
+<h3>Unsolicited output: the beacon</h3>
+
+<p>The board writes a beacon to the port on its own, without being asked:</p>
+
+<pre>+{"beacon":1,"n":1250000,"lost":0,"gain":10,"range":1,"offset":2048,"sat":false}</pre>
+
+<p>It carries the sample index, the lost-sample count, the current gain, range
+and offset, and whether the front end is saturated. Its purpose is to let a
+client follow the instrument's state — and in particular notice saturation and
+loss — without polling.</p>
+
+<div class="warn">
+  <span class="label">A client must tolerate an unrequested line</span>
+  <p>A reader that sends a command and takes the next line as its answer will
+  eventually read a beacon instead, and mis-attribute it. Beacons are
+  identifiable: their object carries <code>"beacon":1</code>, which no reply
+  does. Filter on that, and read on.</p>
+</div>
+
+<p>Beacons are only written when the port is open —
+<code>tud_cdc_connected()</code> is checked first — so an instrument nobody is
+listening to does not fill a buffer with them.</p>
+
+<h3>Marks, and why the label is filtered</h3>
+
+<p><code>mark</code> exists to tie an external event to a sample index: the
+operator touches the plant, types <code>mark touch</code>, and the recording
+carries the exact sample at which it happened. The label is copied through a
+filter that keeps only printable ASCII and drops the double quote and
+backslash:</p>
+
+<pre>if (*p &gt;= 32 &amp;&amp; *p &lt; 127 &amp;&amp; *p != '"' &amp;&amp; *p != '\\') {
+    propre[k++] = *p;
+}</pre>
+
+<p>The reply is JSON, and an unescaped quote in a label would produce a
+document the client cannot parse — from a string the operator typed. Filtering
+at the source is cheaper than escaping correctly in an embedded
+<code>snprintf</code>, and it cannot be got wrong later. An empty label becomes
+a default rather than an empty string.</p>
+
+<!-- ===================================================== 9 ============= -->
+<h2 id="s9" class="newpage">9 — String descriptors, and the serial number</h2>
+
+<table class="short">
+  <thead><tr><th class="hex">Index</th><th>Content</th><th>Referenced by</th></tr></thead>
+  <tbody>
+    <tr><td class="hex">0</td><td>Language table: <code>0x0409</code>, English (United States)</td><td>The host, first</td></tr>
+    <tr><td class="hex">1</td><td>Bretagne Namaste</td><td><code>iManufacturer</code></td></tr>
+    <tr><td class="hex">2</td><td>PhytoSense One</td><td><code>iProduct</code></td></tr>
+    <tr><td class="hex">3</td><td><code>PS1-XXXXXXXX</code>, built at run time</td><td><code>iSerialNumber</code></td></tr>
+    <tr><td class="hex">4</td><td>PhytoSense Measurement Input</td><td>The audio function</td></tr>
+    <tr><td class="hex">5</td><td>PhytoSense Control</td><td>The CDC function</td></tr>
+  </tbody>
+</table>
+
+<p>The strings are stored as ASCII and widened to UTF-16LE on demand, into a
+32-word buffer. A string longer than 31 characters is <strong>truncated rather
+than allowed to overflow</strong> — none of the strings above comes close, but
+the guard is there for whoever adds one:</p>
+
+<pre>if (n &gt; TU_ARRAY_SIZE(desc_str) - 1) {
+    n = TU_ARRAY_SIZE(desc_str) - 1;
+}</pre>
+
+<p>The manufacturer string is written "Bretagne Namaste", without the acute
+accent the name carries elsewhere in this project. The widening loop copies
+each byte into a 16-bit word, which is correct for ASCII and wrong for any
+multi-byte UTF-8 sequence: an "é" would arrive as two spurious characters.
+Unaccented here is a deliberate consequence of a cheap conversion, not an
+oversight.</p>
+
+<h3>The serial number</h3>
+
+<p>Built once, on the first request, from the RP2350's unique flash
+identifier:</p>
+
+<pre>pico_unique_board_id_t uid;
+pico_get_unique_board_id(&amp;uid);
+/* the last four bytes, in uppercase hexadecimal */</pre>
+
+<p>The form is <code>PS1-</code> followed by eight hexadecimal digits: the low
+32 bits of the 64-bit identifier. <code>PS1-4A17C302</code> is a
+representative value.</p>
+
+<p>Thirty-two bits rather than sixty-four is a compromise stated plainly in the
+firmware's own comment: enough to be unique across any plausible production
+run, short enough to be copied onto a lab notebook by hand. Both halves of that
+matter. A serial nobody transcribes is a serial that never appears in the
+record of an experiment.</p>
+
+<div class="ps">
+  <span class="label">Why a real serial number at all</span>
+  <p>Because two boards will eventually be attached to one machine, and a
+  recording has to say which one made it. The serial is in the USB descriptor,
+  so the host knows it before any software runs; it is in the
+  <code>?</code> reply, so a client can record it; and it is stable across
+  reflashes, because it comes from the flash chip rather than from the
+  firmware image.</p>
+</div>
+
+<!-- ===================================================== 10 ============ -->
+<h2 id="s10" class="newpage">10 — Enumeration, transfer by transfer</h2>
+
+<p>What happens between plugging the board in and a client reading samples.
+Steps 1 to 7 are the standard sequence and are listed so that a trace can be
+compared against them; steps 8 and 9 are where this device's own behaviour
+begins.</p>
+
+<ol>
+  <li><strong>Reset and address.</strong> The host resets the port and assigns
+  an address. The board answers on endpoint 0 with 64-byte packets
+  (<code>bMaxPacketSize0 = 0x40</code>).</li>
+
+  <li><strong><code>GET_DESCRIPTOR(Device)</code>.</strong> The eighteen bytes
+  of section 3. The host now knows the device is composite with IADs, and that
+  it must not bind a single driver.</li>
+
+  <li><strong><code>GET_DESCRIPTOR(Configuration)</code>, nine bytes.</strong>
+  The host reads the header to learn <code>wTotalLength</code> = 219.</li>
+
+  <li><strong><code>GET_DESCRIPTOR(Configuration)</code>, 219 bytes.</strong>
+  The whole tree: two IADs, four interfaces, the UAC2 entity graph, the CDC
+  functional descriptors, five endpoint descriptors.</li>
+
+  <li><strong>String descriptors.</strong> Index 0 for the language table, then
+  1, 2 and 3. Index 3 triggers the one-time construction of the serial.</li>
+
+  <li><strong><code>SET_CONFIGURATION(1)</code>.</strong> The device is
+  configured. Interface 1 is on alternate setting 0, so no isochronous
+  bandwidth is reserved yet.</li>
+
+  <li><strong>Driver binding.</strong> The host attaches its audio class driver
+  to interfaces 0 and 1, and its CDC-ACM driver to interfaces 2 and 3. The
+  control port appears as a device node (section 12).</li>
+
+  <li><strong>The audio driver interrogates the clock.</strong> Having seen a
+  clock source whose frequency is marked readable, the host issues a
+  class-specific <code>GET CUR</code> on <code>CS_SAM_FREQ_CONTROL</code>.
+  <strong>The board stalls it</strong> — see section 11. What follows depends
+  on the host's tolerance.</li>
+
+  <li><strong><code>SET_INTERFACE(1, 1)</code>.</strong> When the host does
+  open the stream, this selects alternate setting 1, endpoint
+  <code>0x81</code> is scheduled, and
+  <code>tud_audio_tx_done_pre_load_cb</code> begins to be called once per
+  frame.</li>
+</ol>
+
+<div class="note">
+  <span class="label">Reading a trace</span>
+  <p>On Linux, <code>usbmon</code> shows all of the above. The transfer worth
+  finding is step 8: a <code>GET CUR</code> on the clock entity answered with a
+  STALL. Its presence confirms that the host asked and the board refused, which
+  is the difference between "the stream did not open" and "the stream opened
+  and produced nothing".</p>
+</div>
+
+<!-- ===================================================== 11 ============ -->
+<h2 id="s11" class="newpage">11 — Known divergences from the descriptors</h2>
+
+<p>Three places where the device did not do what its own descriptors
+advertised. <strong>All three were settled on 2026-09-23</strong>, and they
+are kept here rather than deleted: a reader holding a board flashed with an
+earlier firmware needs to know what it will meet, and the reasoning is worth
+more than the tidiness.</p>
+
+<h3>11.1 — The clock frequency: settled on 2026-09-23</h3>
+
+<p>The UAC2 clock source (entity <code>0x04</code>) is declared with a read
+control on its sample-frequency attribute. A host is therefore entitled — and
+in practice does — to issue a class-specific <code>GET CUR</code> on
+<code>CS_SAM_FREQ_CONTROL</code>.</p>
+
+<p>Answering that request is the job of
+<code>tud_audio_get_req_entity_cb</code>. Until 2026-09-23 this firmware did
+not define it, and TinyUSB's weak default — a log line and
+<code>return false</code> — stalled a request the board had itself invited. A
+permissive host carried on with the format it had read from the descriptors; a
+strict one refused to open the stream. The symptom was a device that enumerated
+perfectly, appeared as a four-channel capture device, and produced silence or
+an open error, with nothing in any log to connect it to a control transfer.</p>
+
+<p><strong>The firmware now answers, and it answers the truth.</strong>
+<code>usb_descriptors.c</code> defines both entity callbacks:</p>
+
+<table class="short">
+  <thead><tr><th>Entity</th><th>Request</th><th>Answer</th></tr></thead>
+  <tbody>
+    <tr><td rowspan="3"><code>0x04</code> clock source</td>
+        <td><code>GET CUR CS_SAM_FREQ</code></td>
+        <td><code>250</code>, as a 4-byte <code>CUR</code> block</td></tr>
+    <tr><td><code>GET RANGE CS_SAM_FREQ</code></td>
+        <td>one sub-range, <code>bMin = bMax = 250</code>, <code>bRes = 0</code></td></tr>
+    <tr><td><code>SET CUR CS_SAM_FREQ</code></td>
+        <td>accepted for <code>250</code>, stalled for anything else</td></tr>
+    <tr><td><code>0x04</code> clock source</td>
+        <td><code>GET CUR CS_CLK_VALID</code></td>
+        <td><code>1</code> — it is a crystal</td></tr>
+    <tr><td rowspan="2"><code>0x02</code> feature unit</td>
+        <td><code>GET CUR</code> mute / volume</td>
+        <td><code>0</code> (not muted) / <code>0</code> (0 dB)</td></tr>
+    <tr><td><code>GET RANGE</code> volume</td>
+        <td>one sub-range, all zero — the slider cannot move</td></tr>
+    <tr><td><code>0x01</code> input terminal</td>
+        <td><code>GET CUR CONNECTOR</code></td>
+        <td>4 channels, no predefined spatial position</td></tr>
+  </tbody>
+</table>
+
+<p>A single sub-range with <code>bRes = 0</code> is how UAC2 says "this value
+is fixed", which agrees with
+<code>AUDIO_CLOCK_SOURCE_ATT_INT_FIX_CLK</code> in the descriptor: the rate is
+fixed by the analog chain — 12.288 MHz / 2 / 4096 / 6 — and nothing on the
+board can change it.</p>
+
+<div class="warn">
+  <span class="label">Why 250 and not a rate a host would like</span>
+  <p>Most host audio stacks will not accept a sample rate below 8 kHz, so a
+  host may refuse the stream on reading this answer. <strong>That refusal is
+  the correct outcome.</strong> The alternative is to report a rate the
+  converter does not run at — 8 kHz, say — and then every timestamp the host
+  derives from it is wrong, silently, for as long as the recording lasts. A
+  host that refuses tells you at plug-in; a host misled by a convenient lie
+  tells you months later, if ever, when two recordings of the same plant
+  disagree about when something happened.</p>
+  <p>This is why the board carries a <em>second</em> path: the measurement
+  stream is also fully described by the control port (section 8), which owes
+  nothing to the audio class and its rate conventions. A client that reads the
+  board through <code>libusb</code> or through the CDC port is not affected by
+  any of this.</p>
+</div>
+
+<p>The one thing still worth doing here is in the descriptor rather than in
+the callback: the feature unit's mute and volume are declared
+<em>read/write</em> because TinyUSB's four-channel microphone template declares
+them so, and they are wired to nothing (11.3). Declaring them read-only would
+mean writing the audio descriptor out by hand instead of using the template.
+Recorded, not done.</p>
+
+<h3>11.2 — The endpoint size: settled on 2026-09-23</h3>
+
+<p><code>tusb_config.h</code> sized the isochronous packet at 256 bytes, with
+a comment claiming it absorbed "the 1 kHz and 32 kHz modes without
+reconfiguring the stack". It did not. The drain loop in
+<code>main.c</code> fills a frame with <em>whole</em> sample sets and stops
+when the next one would not fit, so the packet size is a hard ceiling on the
+rate:</p>
+
+<pre>highest rate = packet size / 12 bytes x 1000 frames/s</pre>
+
+<p>256 bytes gives 21 sample sets — 252 bytes used, four wasted in every
+frame — and a ceiling near 21 kHz. Above it the loop left samples in the ring,
+where the <code>lost</code> counter recorded them; a claim about a mode nobody
+could select, which is how it went unnoticed.</p>
+
+<p><strong>The packet is now 384 bytes</strong>, which is 32 x 12 exactly: the
+32 kHz mode with nothing wasted. A <code>TU_VERIFY_STATIC</code> in
+<code>main.c</code> makes a packet size that is not a whole number of sample
+sets a build error, so the next change to it cannot quietly reintroduce the
+waste.</p>
+
+<div class="warn">
+  <span class="label">What the larger packet costs</span>
+  <p>A host reserves 384 bytes of every frame from the moment it selects
+  alternate setting 1, used or not — 384 kB/s of bus held for a stream that
+  currently carries 3 kB/s. Full speed allows a single isochronous endpoint up
+  to 1023 bytes per frame, so this asks for 37 % of what one endpoint may
+  claim, on a bus otherwise running at three parts in a thousand of its
+  capacity. Alternate setting 0 reserves nothing, and that is what the board
+  sits in whenever nobody is capturing.</p>
+  <p>That is the price of a descriptor that does not lie. The alternative —
+  256 bytes and a comment about a mode that does not work — costs nothing
+  until somebody believes it.</p>
+</div>
+
+<h3>11.3 — The phantom mute and volume: settled on 2026-09-23</h3>
+
+<p>The audio control interface declared a four-channel feature unit with mute
+and volume controls, on the master and on all four channels, because TinyUSB's
+microphone template declares them. Nothing on the board is wired to them: the
+gain is set through the control port, in decade steps chosen by a relay tree
+(section 8). A host offered a volume slider that did nothing — and worse, an
+application could set it, read it back unchanged, and draw its own
+conclusions.</p>
+
+<p>The first attempt, the same morning, was to <em>answer</em> those requests
+with fixed values — not muted, 0 dB, a range allowing nothing else. That is a
+polite fiction, and it was replaced the same day by the honest fix: <strong>the
+audio function is now written out by hand</strong> in
+<code>usb_descriptors.c</code>, instead of taken from the template, and the
+feature unit declares <code>AUDIO_CTRL_NONE</code> everywhere. A host shows no
+slider at all, which is the truth, and a request about a control the device
+never advertised is stalled — which is the correct answer to it.</p>
+
+<p>The entity graph is unchanged, deliberately: <code>0x01</code>,
+<code>0x02</code>, <code>0x03</code> and <code>0x04</code> are what a host
+addresses in a class request and what section 5 documents, and the
+configuration descriptor is still 219 bytes. What changed is four
+<code>bmaControls</code> fields, from <code>0x03</code> to <code>0x00</code>.</p>
+
+<div class="note">
+  <span class="label">Why gain is not a volume control</span>
+  <p>It would have been easy to wire the volume control to the gain and call
+  the divergence fixed. It would also have been wrong: gain changes the
+  measurement's <strong>full scale</strong>, and a host that moved it without
+  recording the change would invalidate every sample that followed. The
+  control port's <code>gain</code> command exists because the change has to be
+  written into the session's metadata, next to the samples it applies to. A
+  mixer slider has nowhere to write that.</p>
+</div>
+
+<!-- ===================================================== 12 ============ -->
+<h2 id="s12" class="newpage">12 — What each host does with the device</h2>
+
+<h3>Linux</h3>
+
+<table class="short">
+  <thead><tr><th>Interfaces</th><th>Driver</th><th>Appears as</th></tr></thead>
+  <tbody>
+    <tr><td>0, 1</td><td><code>snd-usb-audio</code></td><td>An ALSA capture device, four channels, <code>S24_3LE</code></td></tr>
+    <tr><td>2, 3</td><td><code>cdc_acm</code></td><td><code>/dev/ttyACM<em>n</em></code></td></tr>
+  </tbody>
+</table>
+
+<p>Both drivers are in-tree, so nothing needs installing. Access to
+<code>/dev/ttyACM<em>n</em></code> normally requires membership of the
+<code>dialout</code> group, which is the commonest reason a client that works
+under <code>sudo</code> fails without it. A udev rule keyed on the VID:PID
+avoids both the group and the privilege:</p>
+
+<pre># /etc/udev/rules.d/70-phytosense.rules
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="7a01", \
+  MODE="0660", TAG+="uaccess", SYMLINK+="phytosense-%s{serial}"</pre>
+
+<p>The symlink carries the serial, so two boards on one machine get stable,
+distinguishable names rather than <code>ttyACM0</code> and
+<code>ttyACM1</code> in whichever order they were found.</p>
+
+<h3>Windows</h3>
+
+<table class="short">
+  <thead><tr><th>Interfaces</th><th>Driver</th><th>Appears as</th></tr></thead>
+  <tbody>
+    <tr><td>0, 1</td><td><code>usbaudio2.sys</code></td><td>A recording device in Sound settings</td></tr>
+    <tr><td>2, 3</td><td><code>usbser.sys</code></td><td><code>COM<em>n</em></code></td></tr>
+  </tbody>
+</table>
+
+<p>Windows 10 version 1703 and later bind both without a driver package, and
+both depend on the IAD signature of section 3 being exactly right. On Windows 7
+and 8 the CDC interface needs an <code>.inf</code> to point
+<code>usbser.sys</code> at it; those versions are out of support and out of
+scope here.</p>
+
+<h3>macOS</h3>
+
+<table class="short">
+  <thead><tr><th>Interfaces</th><th>Driver</th><th>Appears as</th></tr></thead>
+  <tbody>
+    <tr><td>0, 1</td><td><code>AppleUSBAudio</code></td><td>A Core Audio input device</td></tr>
+    <tr><td>2, 3</td><td><code>AppleUSBCDCACM</code></td><td><code>/dev/cu.usbmodem<em>nnnn</em></code></td></tr>
+  </tbody>
+</table>
+
+<p>Use <code>/dev/cu.*</code> and not <code>/dev/tty.*</code>. The
+<code>tty</code> node waits for carrier detect, which a CDC device does not
+assert, so opening it blocks; <code>cu</code> does not wait. This costs an hour
+the first time and is the single most common macOS problem with any CDC
+device.</p>
+
+<div class="note">
+  <span class="label">One behaviour all three share</span>
+  <p>Opening the control port asserts DTR, and many terminal programs toggle it
+  on connect. The board does not reset on DTR — unlike a great many
+  microcontroller boards — so a connection does not interrupt a recording in
+  progress. That is a property worth knowing before someone connects a
+  terminal to a running experiment to see what it is doing.</p>
+</div>
+
+<!-- ===================================================== 13 ============ -->
+<h2 id="s13" class="newpage">13 — Diagnosing, and the failures that cost time</h2>
+
+<h3>Confirming the device from outside</h3>
+
+<pre>$ lsusb -d 1209:7a01
+Bus 001 Device 014: ID 1209:7a01 pid.codes PhytoSense One
+
+$ lsusb -v -d 1209:7a01 | head -20      # descriptors, field by field
+$ lsusb -t                              # which driver bound to which interface</pre>
+
+<p><code>lsusb -t</code> is the one to reach for first: it shows the interface
+tree with the driver attached to each. Four interfaces with
+<code>snd-usb-audio</code> on two and <code>cdc_acm</code> on two means the
+descriptors were understood. Anything else — one driver, or none — points at
+section 3.</p>
+
+<p>The project ships its own check, which goes further than enumeration:</p>
+
+<pre>$ python3 -m phytoscope.core.usbdiag
+$ phytoscope --check</pre>
+
+<h3>The failures, in the order they are met</h3>
+
+<table class="long">
+  <thead><tr><th>Symptom</th><th>Most likely cause</th><th>Test</th></tr></thead>
+  <tbody>
+    <tr><td>Nothing in <code>lsusb</code>; board has power</td>
+        <td>A charge-only USB-C cable</td>
+        <td>Try a cable known to carry data. This is the commonest fault by a wide margin</td></tr>
+    <tr><td>Enumerates, then disappears</td>
+        <td>Port current limit hit by the isolated rails' inrush</td>
+        <td>A powered hub, or a rear port rather than a front one</td></tr>
+    <tr><td>Audio device present, control port absent (Windows)</td>
+        <td>IAD signature not honoured — the host bound one driver</td>
+        <td><code>lsusb -t</code> on Linux for comparison; check the three bytes of section 3</td></tr>
+    <tr><td>Capture device present, always silent</td>
+        <td>Alternate setting 1 never selected; or, on firmware older than 2026-09-23, the clock request stalled</td>
+        <td>Open the capture device; then look for a stalled <code>GET CUR</code> in <code>usbmon</code> (section 11.1)</td></tr>
+    <tr><td>Opening the port blocks forever (macOS)</td>
+        <td><code>/dev/tty.*</code> instead of <code>/dev/cu.*</code></td>
+        <td>Open <code>cu</code></td></tr>
+    <tr><td>Permission denied on <code>/dev/ttyACM0</code></td>
+        <td>Not in <code>dialout</code>, and no udev rule</td>
+        <td>Install the rule in section 12</td></tr>
+    <tr><td>Commands ignored; the port is open</td>
+        <td>Line ending. The board wants CR-LF</td>
+        <td>In <code>screen</code>, press Ctrl-J after the line, or configure CR-LF</td></tr>
+    <tr><td>Replies arrive garbled or doubled</td>
+        <td>The terminal's local echo, mixed into the stream</td>
+        <td>Turn local echo off</td></tr>
+    <tr><td>A reply does not match the command sent</td>
+        <td>A beacon was read as the answer</td>
+        <td>Skip objects carrying <code>"beacon":1</code> (section 8)</td></tr>
+    <tr><td><code>lost</code> is non-zero at the end of a recording</td>
+        <td>The host did not collect frames fast enough</td>
+        <td>Close other capture clients; check for a hub shared with a busy device</td></tr>
+    <tr><td>Two boards, the wrong one answers</td>
+        <td>Both match the same VID:PID</td>
+        <td>Use the serial-bearing symlink, or the <code>serial</code> field of <code>?</code></td></tr>
+  </tbody>
+</table>
+
+<div class="ps">
+  <span class="label">The check worth making a habit</span>
+  <p>Read <code>clock</code> at the start and at the end of every session. Two
+  numbers — the sample index and <code>lost</code> — tell you how many samples
+  the recording should contain and how many went missing. A recording whose
+  arithmetic does not close is one to repeat, and it is far cheaper to know
+  that at the bench than during analysis.</p>
+</div>
+
+<!-- ===================================================== 14 ============ -->
+<h2 id="s14" class="newpage">14 — Normative references</h2>
+
+<p>None of these is redistributed with this project. Where this document and
+any of them disagree, they are right.</p>
+
+<dl>
+  <dt>Universal Serial Bus Specification, Revision 2.0</dt>
+  <dd>USB Implementers Forum, 2000, with its later engineering change notices.
+  Chapter 9 defines the descriptors of sections 3 and 4 and the enumeration of
+  section 10.</dd>
+
+  <dt>USB Device Class Definition for Audio Devices, Release 2.0</dt>
+  <dd>USB-IF, 2006. Defines the entity graph of section 5, the alternate-setting
+  idiom, the asynchronous clock model of section 6, and the
+  <code>CS_SAM_FREQ_CONTROL</code> request of section 11.1.</dd>
+
+  <dt>USB Device Class Definition for Audio Data Formats, Release 2.0</dt>
+  <dd>USB-IF, 2006. Defines the Type I PCM format and the three-byte,
+  24-bit-significant layout of section 6.</dd>
+
+  <dt>USB Class Definitions for Communication Devices, Revision 1.2</dt>
+  <dd>USB-IF, 2007, plus the PSTN subclass document. Defines the Abstract
+  Control Model of section 7.</dd>
+
+  <dt>USB Interface Association Descriptor, Engineering Change Notice</dt>
+  <dd>USB-IF, 2005. The source of the <code>0xEF</code>/<code>0x02</code>/<code>0x01</code>
+  device triple of section 3.</dd>
+
+  <dt>RP2350 Datasheet</dt>
+  <dd>Raspberry Pi Ltd. The USB device controller, its endpoint budget, and the
+  unique board identifier used for the serial number of section 9.</dd>
+
+  <dt>TinyUSB</dt>
+  <dd>The device stack this firmware is built on, vendored with the Pico SDK.
+  <code>src/device/usbd.h</code> holds the descriptor templates whose lengths
+  section 4 quotes and whose entity numbering section 11.1 answers to, and
+  <code>src/class/audio/audio_device.c</code> the weak callback that section
+  overrides.</dd>
+
+  <dt>pid.codes</dt>
+  <dd>The allocation under vendor identifier <code>0x1209</code> from which
+  <code>0x7A01</code> is taken.</dd>
+</dl>
+
+<h3>Within this project</h3>
+
+<dl>
+  <dt><code>src/firmware/usb_descriptors.c</code></dt>
+  <dd>Every descriptor in sections 3, 4, 5 and 9.</dd>
+
+  <dt><code>src/firmware/tusb_config.h</code></dt>
+  <dd>The stack configuration of sections 6 and 7.</dd>
+
+  <dt><code>src/firmware/protocol.c</code></dt>
+  <dd>The command set, reply format and beacon of section 8.</dd>
+
+  <dt><code>src/firmware/main.c</code></dt>
+  <dd>The acquisition ring, the frame-filling loop of section 6, and the
+  lost-sample counter.</dd>
+
+  <dt><code>src/phytoscope/phytoscope/core/usbdiag.py</code></dt>
+  <dd>The host-side check of section 13.</dd>
+
+  <dt><em>MIDI Protocol Reference</em>, <code>sources/midi/</code></dt>
+  <dd>The other protocol this instrument speaks, on the way out rather than
+  in.</dd>
+</dl>
+
+</body>
+</html>

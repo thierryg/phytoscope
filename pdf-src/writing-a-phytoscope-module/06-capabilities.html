@@ -1,0 +1,126 @@
+<!-- ====================== THE FIVE CAPABILITIES ====================== -->
+<section class="chapter pagebreak">
+  <h2 id="capacites" data-toc="chapter">3. The five capabilities</h2>
+
+  <p class="chapo">A capability is what your module knows how to do. You
+  declare one, several, or none — a module that acts only at install and at
+  shutdown is perfectly legitimate.</p>
+
+  <h3 id="cap-analyseur" data-toc="sub">Analyser — computing quantities</h3>
+
+  <p>Called by the Multimeter tab, every two seconds, and <em>only while the
+  page is visible</em>. You are handed a window of signal and return
+  numbers.</p>
+
+  <pre class="code"><code>class MyAnalysis(Module, Analyser):
+    WINDOW_S = 60.0        # how many seconds you want
+    RAW_SIGNAL = True      # before the notch and the low-pass
+
+    def analyse(self, x, fs, context):
+        return [Quantity(
+            key="my-indicator",
+            label="My indicator",
+            value=float(np.std(x)),
+            text=f"{np.std(x) * 1e6:.2f} µV",
+            meaning="What this number says, and what it does not say.",
+        )]</code></pre>
+
+  <div class="callout important">
+    <h4>Raw or processed: the choice matters</h4>
+    <p><code>RAW_SIGNAL = True</code> gives the signal <em>before</em> the
+    mains notch and the low-pass. That is what any noise measurement needs:
+    <strong>filtering before measuring noise amounts to measuring your own
+    filter</strong>. The notch would erase the mains residue that is precisely
+    what one wants to see, and the 40 Hz low-pass would erase the band in
+    which thermal noise is read.</p>
+    <p><code>False</code> gives the processed signal, the one seen on screen.
+    That is what is needed for analysing <em>activity</em> rather than the
+    measurement chain.</p>
+  </div>
+
+  <h3 id="cap-descripteur" data-toc="sub">Descriptor — producing a curve</h3>
+
+  <p>Called at the user's request, in the Descriptors tab. This is not a
+  critical path: a second of computation is acceptable.</p>
+
+  <pre class="code"><code>def describe(self, x, fs, context):
+    t = np.arange(x.size) / fs
+    return [Trace(
+        x=t, y=x * 1e6,
+        title="My representation",
+        x_label="time (s)", y_label="µV",
+        warning="What this representation assumes.",
+    )]</code></pre>
+
+  <h3 id="cap-sonificateur" data-toc="sub">Sonifier — making notes</h3>
+
+  <p>Called for every event detected. <strong>Be quick</strong>: you are
+  inside the musical rendering loop. Returning an empty list means "no note
+  for this value", which is a legitimate answer.</p>
+
+  <pre class="code"><code>def sonify(self, value_v, context):
+    gamme = (0, 2, 4, 5, 7, 9, 11)          # diatonic
+    rang = int(abs(value_v) * 1e6) % len(gamme)
+    return [ProposedNote(midi_pitch=60 + gamme[rang],
+                         velocity=70, duration_s=0.4,
+                         source_v=value_v)]</code></pre>
+
+  <p>The <code>source_v</code> field is not decorative: it keeps the measured
+  value that produced the note. A sonification from which one can no longer
+  get back to the measurement is no longer a measurement.</p>
+
+  <h3 id="cap-exportateur" data-toc="sub">Exporter — another format</h3>
+
+  <pre class="code"><code>FORMAT = "My format"         # what appears in the list
+EXTENSION = ".xyz"
+
+def export(self, session, target, context):
+    # `session` is the session's directory — READ from it, do not write to it.
+    # `target` is the file to produce — the only place to write.
+    return True</code></pre>
+
+  <h3 id="cap-source" data-toc="sub">Source — a measurement stream</h3>
+
+  <p>The most delicate one: it runs on the data path. The software isolates
+  you as far as it can, but <strong>it cannot isolate you from the time you
+  take</strong>. A slow source drops samples, and that cannot be made up
+  for.</p>
+
+  <pre class="code"><code>LABEL = "My board"
+
+def open(self, context): ...   # returns true once it is open
+def read(self): ...               # a block in volts, or None
+def close(self): ...</code></pre>
+
+  <h3 id="cap-tableau" data-toc="sub">In summary</h3>
+
+  <table class="tab">
+    <thead><tr><th>Capability</th><th>Called</th><th>Time constraint</th></tr></thead>
+    <tbody>
+      <tr><td>Analyser</td><td>every 2 s, page visible</td>
+          <td>a few tens of ms</td></tr>
+      <tr><td>Descriptor</td><td>on demand</td><td>a second will do</td></tr>
+      <tr><td>Sonifier</td><td>on every event</td>
+          <td><strong>very short</strong></td></tr>
+      <tr><td>Exporter</td><td>on demand</td><td>none</td></tr>
+      <tr><td>Source</td><td>continuously</td>
+          <td><strong>critical</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout important">
+    <h4>Three of the five are not consumed yet</h4>
+    <p>As of PhytoScope 1.5, the host asks the registry for two capabilities
+    only: <code>providers(Capability.ANALYSER)</code>, in
+    <code>ui/tabs.py</code>, and <code>providers(Capability.DESCRIPTOR)</code>,
+    in <code>ui/features_tab.py</code>. The contract declares all five, the
+    registry records all five, and a manifest announcing any of them is
+    accepted — but a sonifier, an exporter or a source will load, show as
+    <code>active</code> in Diagnostics, and never be called. The shipped
+    <code>export-csv</code> module is in exactly that position.</p>
+    <p>We would rather say so than let you spend an evening looking for the
+    mistake in your own code. Write against the first two today; a module
+    written against the other three will start working the day the host asks
+    for it, without changing.</p>
+  </div>
+</section>

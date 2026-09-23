@@ -1,28 +1,28 @@
 # ===========================================================================
-#  PhytoScope — comment git doit traiter chaque type de fichier
+#  PhytoScope — how git is to treat each kind of file
 # ===========================================================================
 
-# --- Par défaut : git décide, et normalise les fins de ligne en LF ----------
+# --- By default: git decides, and normalises line endings to LF ------------
 *               text=auto eol=lf
 
-# --- Ce qui doit garder des fins de ligne Windows ---------------------------
-#  NSIS et cmd.exe ne lisent pas un script en LF. Ces fichiers sortent donc
-#  du dépôt en CRLF, sur tous les systèmes.
+# --- What must keep Windows line endings -----------------------------------
+#  NSIS and cmd.exe will not read a script in LF. These files therefore leave
+#  the repository in CRLF, on every system.
 *.bat           text eol=crlf
 *.cmd           text eol=crlf
 *.nsi           text eol=crlf
 *.nsh           text eol=crlf
 *.ps1           text eol=crlf
 
-# --- Ce qui doit rester en LF quoi qu'il arrive -----------------------------
-#  Un script shell en CRLF échoue avec « bad interpreter: no such file ».
+# --- What must stay in LF whatever happens ---------------------------------
+#  A shell script in CRLF fails with "bad interpreter: no such file".
 *.sh            text eol=lf
 Makefile        text eol=lf
 *.mk            text eol=lf
 *.py            text eol=lf
 configure       text eol=lf
 
-# --- Binaire : ne jamais convertir, ne jamais fusionner ---------------------
+# --- Binary: never convert, never merge ------------------------------------
 *.pdf           binary
 *.png           binary
 *.jpg           binary
@@ -53,13 +53,13 @@ configure       text eol=lf
 *.der           binary
 *.p12           binary
 
-# --- Certificats : du texte, mais qu'on ne fusionne pas ---------------------
+# --- Certificates: text, but not to be merged ------------------------------
 *.pem           text eol=lf -merge
 *.crt           text eol=lf -merge
 
-# --- Fichiers générés : ne pas les compter dans les statistiques de langage,
-#     ne pas les afficher dans les diff par défaut (C-45 : jamais édités
-#     à la main, donc leur diff n'apprend rien).
+# --- Generated files: keep them out of the language statistics, and out of
+#     the diff by default (C-45: never edited by hand, so their diff teaches
+#     nothing).
 pdf-src/assets/svg/*.svg        linguistic-documentation -diff linguist-generated=true
 pdf-src/_*.html                 -diff linguist-generated=true
 pdf-src/parts/A0b-codes.html    -diff linguist-generated=true
@@ -68,16 +68,17 @@ pdf-src/parts/A3-index.html     -diff linguist-generated=true
 pdf-src/parts-carte/_*.html     -diff linguist-generated=true
 src/phytoscope/sbom.cdx.json -diff linguist-generated=true
 
-# --- Code tiers : hors des statistiques de langage du dépôt -----------------
-#  Sans cela, GitHub annonce que le projet est écrit en C par Playtronica.
+# --- Third-party code: out of the repository's language statistics ---------
+#  Without this, GitHub announces that the project is written in C by
+#  Playtronica.
 sources/**                  linguist-vendored=true
 sources/reverse/**              linguist-documentation=true
 
-# --- Textes de licence : reconnus, mais pas comptés comme du code -----------
+# --- Licence texts: recognised, but not counted as code --------------------
 LICENSES/**                 linguist-documentation=true
 LICENSE                     linguist-documentation=true
 
-# --- Ce qui ne doit pas partir dans une archive « git archive » -------------
+# --- What must not leave in a `git archive` --------------------------------
 .github/            export-ignore
 .ai/                export-ignore
 .gitattributes      export-ignore

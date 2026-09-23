@@ -2,16 +2,16 @@
   ==========================================================================
   PhytoScope — attribution — pdf-src/assets/svg/logiciel-toolkits.svg
 
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
+  Version   : 1.6.0
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
 
   SPDX-License-Identifier: MIT
-  fin de l'attribution
+  end of attribution
   ==========================================================================
 -->
 
@@ -40,16 +40,16 @@
    <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
 </defs>
 <rect width="980" height="600" fill="#FFFFFF"/>
-<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Quelle boîte à outils graphique ?</text>
-<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Le critère décisif n'est pas la beauté : c'est le tracé de 250 points par seconde</text>
-<text x="525.0" y="104" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Vitesse</text>
-<text x="525.0" y="117" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">de tracé</text>
-<text x="635.0" y="104" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Richesse</text>
-<text x="635.0" y="117" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">des widgets</text>
-<text x="745.0" y="104" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Installation</text>
-<text x="745.0" y="117" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">simple</text>
-<text x="855.0" y="104" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Beauté</text>
-<text x="855.0" y="117" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">native</text>
+<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Which graphical toolkit?</text>
+<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">The deciding criterion is not beauty: it is plotting 250 points per second</text>
+<text x="525.0" y="104" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Plotting</text>
+<text x="525.0" y="117" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">speed</text>
+<text x="635.0" y="104" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Widget</text>
+<text x="635.0" y="117" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">coverage</text>
+<text x="745.0" y="104" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Easy to</text>
+<text x="745.0" y="117" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">install</text>
+<text x="855.0" y="104" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Native</text>
+<text x="855.0" y="117" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">look</text>
 <rect x="40" y="132" width="900" height="64" rx="4" fill="#fff" stroke="#D9D9C6" stroke-width="0.9"/>
 <text x="56" y="158" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Qt 6 (PySide6)</text>
 <text x="56" y="178" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">LGPL · 60 im/s via pyqtgraph</text>
@@ -75,7 +75,7 @@
 <circle cx="869.6800000000001" cy="162" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
 <rect x="40" y="204" width="900" height="64" rx="4" fill="#FAFBFA" stroke="#D9D9C6" stroke-width="0.9"/>
 <text x="56" y="230" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">GTK 4 (PyGObject)</text>
-<text x="56" y="250" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">pénible à installer sous Windows</text>
+<text x="56" y="250" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">painful to install on Windows</text>
 <circle cx="496.0" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
 <circle cx="506.92" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
 <circle cx="517.84" cy="234" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
@@ -98,7 +98,7 @@
 <circle cx="869.6800000000001" cy="234" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
 <rect x="40" y="276" width="900" height="64" rx="4" fill="#fff" stroke="#D9D9C6" stroke-width="0.9"/>
 <text x="56" y="302" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">wxWidgets (wxPython)</text>
-<text x="56" y="322" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">natif, mais tracé vieillissant</text>
+<text x="56" y="322" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">native, but the plotting is dated</text>
 <circle cx="496.0" cy="306" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
 <circle cx="506.92" cy="306" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
 <circle cx="517.84" cy="306" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
@@ -121,7 +121,7 @@
 <circle cx="869.6800000000001" cy="306" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
 <rect x="40" y="348" width="900" height="64" rx="4" fill="#FAFBFA" stroke="#D9D9C6" stroke-width="0.9"/>
 <text x="56" y="374" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Tkinter</text>
-<text x="56" y="394" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">canevas saturé au-delà de 20 im/s</text>
+<text x="56" y="394" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">the canvas saturates beyond 20 fps</text>
 <circle cx="496.0" cy="378" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
 <circle cx="506.92" cy="378" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
 <circle cx="517.84" cy="378" r="4.2" fill="#fff" stroke="#3F7D5A" stroke-width="1.1"/>
@@ -188,7 +188,7 @@
 <circle cx="847.84" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
 <circle cx="858.76" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
 <circle cx="869.6800000000001" cy="522" r="4.2" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.1"/>
-<text x="490" y="580" font-family="Lato, sans-serif" font-size="17.7" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Retenu : PySide6 + pyqtgraph. Le reste du document explique comment le remplacer si ce choix vieillit.</text>
+<text x="490" y="580" font-family="Lato, sans-serif" font-size="17.7" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Chosen: PySide6 + pyqtgraph. The rest of the document explains how to replace it should the choice age.</text>
 <text x="28" y="592" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
 <text x="952" y="592" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
 </svg>

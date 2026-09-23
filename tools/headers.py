@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — tools/headers.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Pose et tient à jour l'en-tête d'attribution de chaque fichier source.
@@ -28,7 +28,7 @@ D'où viennent les valeurs
 **De nulle part ailleurs que des fichiers de référence** :
 
 * ``src/phytoscope/phytoscope/VERSION`` — la version et sa date ;
-* ``src/phytoscope/phytoscope/AUTEURS`` — l'éditeur, l'auteur, le site.
+* ``src/phytoscope/phytoscope/AUTHORS`` — l'éditeur, l'auteur, le site.
 
 Les mêmes que lit le logiciel pour sa fenêtre « À propos » et la fabrique de
 paquets pour estampiller le ``.deb``. Une troisième copie ici finirait par
@@ -81,18 +81,26 @@ from typing import Dict, List, Optional, Sequence, Tuple
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOGICIEL = os.path.join(RACINE, "src", "phytoscope")
 FICHIER_VERSION = os.path.join(LOGICIEL, "phytoscope", "VERSION")
-FICHIER_AUTEURS = os.path.join(LOGICIEL, "phytoscope", "AUTEURS")
+FICHIER_AUTEURS = os.path.join(LOGICIEL, "phytoscope", "AUTHORS")
 
 #  Les marques qui délimitent l'en-tête. Sans elles, on ne saurait pas
 #  distinguer notre bloc d'un commentaire écrit par quelqu'un, et relancer
 #  l'outil empilerait les en-têtes.
 DEBUT = "PhytoScope — attribution"
-FIN = "fin de l'attribution"
+FIN = "end of attribution"
+
+#  Les deux marques de fin sont acceptées à la lecture, la nouvelle et
+#  l'ancienne. C'est ce qui rend la bascule vers l'anglais sûre : sans cela,
+#  l'outil ne reconnaîtrait plus les 271 en-têtes français déjà posés et
+#  empilerait un bloc anglais par-dessus chacun d'eux. L'ancienne marque
+#  pourra disparaître d'ici quand plus aucun fichier ne la portera — ce que
+#  « --verifier » saura dire.
+FINS_LUES = (FIN, "fin de l'attribution")
 
 #  Ce qu'on ne touche pas, et pourquoi.
 EXCLUS = (
     ".venv", "__pycache__", ".git", ".pytest_cache", ".ruff_cache",
-    "build/paquets",            # produits, régénérés à chaque fabrication
+    "build/packages",           # produits, régénérés à chaque fabrication
     "build/",                   # idem
     "pico-sdk",                 # le SDK de Raspberry Pi : pas notre code
     #  Le code TIERS ne reçoit JAMAIS notre en-tête. Poser « © Bretagne
@@ -100,7 +108,7 @@ EXCLUS = (
     #  Biotron, qui est en GPL-3.0, était une fausse déclaration de licence ;
     #  sur LEDFader et MIDI Sprout, une fausse déclaration de paternité. Les
     #  32 fichiers concernés ont été rendus à leur en-tête d'origine le
-    #  2026-09-18. Chaque projet garde sa licence : voir sources/schemas/LISEZ-MOI.md.
+    #  2026-09-18. Chaque projet garde sa licence : voir sources/schematics/README.md.
     "sources/schemas",
     "sources/code",             # archives de dépôts tiers
     "sources/software",         # idem
@@ -112,8 +120,8 @@ EXCLUS = (
 
 #  Les fichiers qui ne doivent surtout pas recevoir d'en-tête.
 NOMS_EXCLUS = {
-    "VERSION", "AUTEURS",       # fichiers de données, lus par analyse stricte
-    "LICENCE.txt", "LICENSE",
+    "VERSION", "AUTHORS",       # fichiers de données, lus par analyse stricte
+    "LICENSE.txt", "LICENSE",
     "pico_sdk_import.cmake",    # recopié du SDK à chaque construction
     #  Un fichier « control » Debian n'admet AUCUN commentaire : dpkg-deb
     #  refuse le paquet avec « field name '#' must be followed by colon ».
@@ -263,17 +271,17 @@ def entete(chemin: str, id_: Identite, style: Style) -> str:
     lignes = [
         f"{DEBUT} — {relatif}",
         "",
-        f"Version  : {id_.version}",
-        f"Date     : {id_.date}",
-        f"Éditeur  : {id_.editeur}",
+        f"Version   : {id_.version}",
+        f"Date      : {id_.date}",
+        f"Publisher : {id_.editeur}",
     ]
     if id_.auteur:
         auteur = id_.auteur + (f" <{id_.courriel}>" if id_.courriel else "")
-        lignes.append(f"Auteur   : {auteur}")
+        lignes.append(f"Author    : {auteur}")
     lignes += [
-        f"Site     : {id_.site}",
-        f"Contact  : {id_.contact}",
-        f"Licence  : {licence} — voir LICENCE.txt",
+        f"Website   : {id_.site}",
+        f"Contact   : {id_.contact}",
+        f"License   : {licence} — see LICENSE.txt",
         "",
         f"SPDX-License-Identifier: {spdx}",
         FIN,
@@ -315,7 +323,8 @@ def _retirer_un(lignes: List[str], style: Style) -> Optional[List[str]]:
         nette = sans_accents(ligne)
         if marque in nette and debut is None:
             debut = i
-        elif FIN in nette and debut is not None:
+        elif debut is not None and any(sans_accents(f) in nette
+                                       for f in FINS_LUES):
             fin = i
             break
     if debut is None or fin is None:

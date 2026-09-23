@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/core/sources.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Sources de signal — d'où viennent les échantillons.
@@ -135,7 +135,7 @@ class SimulatedSource(Source):
     def __init__(self, out: "queue.Queue[Block]", sample_rate: float = 250.0,
                  channels: int = 1, seed: int = 7, mains: float = 50.0,
                  activity: float = 1.0, realtime: bool = True):
-        super().__init__(SourceInfo("simulation", t("Plante simulée"),
+        super().__init__(SourceInfo("simulation", t("Simulated plant"),
                                     channels=channels, sample_rate=sample_rate,
                                     detail="générateur interne, aucun matériel requis"),
                          out)
@@ -523,7 +523,7 @@ class FileSource(Source):
             data = data[:, None]
         super().__init__(SourceInfo("fichier", name, channels=data.shape[1],
                                     sample_rate=sample_rate,
-                                    detail="relecture"), out)
+                                    detail="replay"), out)
         self.data = data
         self.fs = sample_rate
         self.speed = max(speed, 0.01)
@@ -536,7 +536,7 @@ class FileSource(Source):
         if self.running:
             return True
         self.running = True
-        self._thread = threading.Thread(target=self._run, name="relecture",
+        self._thread = threading.Thread(target=self._run, name="replay",
                                         daemon=True)
         self._thread.start()
         return True

@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/core/dependency_updates.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Les bibliothèques Python sont-elles à jour ?
@@ -26,7 +26,7 @@ Ce qu'il ne fait pas, et pourquoi
 
 **Il n'installe rien.** Mettre à jour PySide6 sous les pieds d'une séance
 d'enregistrement en cours serait une mauvaise surprise ; et une mise à jour
-majeure peut casser la portabilité que `.ai/portabilite.md` tient à jour.
+majeure peut casser la portabilité que `.ai/portability.md` tient à jour.
 L'installation reste une décision explicite, prise dans la fenêtre, et
 confiée à `preflight.installer()` — qui sait déjà choisir entre l'environnement
 virtuel, `--user` et le gestionnaire du système.
@@ -208,7 +208,7 @@ class Dependance:
     def etat(self) -> str:
         """Un mot, pour l'affichage : le tri et les couleurs s'y appuient."""
         if self.absente:
-            return "absente"
+            return "missing"
         if self.inconnue:
             return "inconnue"
         return self.ampleur or "a_jour"

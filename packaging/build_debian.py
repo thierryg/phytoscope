@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — packaging/build_debian.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Génère le paquet Debian (.deb) — Debian, Ubuntu, Mint.
@@ -23,12 +23,12 @@ l'installation un environnement Python privé — voir `gabarits/debian/postinst
 pour le pourquoi.
 
 Deux variantes : **légère** par défaut (340 ko, l'installation va chercher les
-bibliothèques), et **hors ligne** avec `--hors-ligne` (335 Mo, tout est dedans,
+bibliothèques), et **hors ligne** avec `--offline` (335 Mo, tout est dedans,
 pour un atelier sans réseau).
 
 .. code-block:: console
 
-    python3 packaging/build_debian.py [--hors-ligne]
+    python3 packaging/build_debian.py [--offline]
 
 Ce script est autonome : il ne dépend que de `common.py`, et se lance seul ou
 par le Makefile du même dossier (`make debian`).
@@ -49,7 +49,7 @@ from typing import List, Optional
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from common import (  # noqa: E402
-    GABARITS, GRIS, JAUNE, LOGICIEL, echec, PYTHONS_COUVERTS, RACINE_SORTIE, VERT, Identite,
+    GABARITS, GRIS, JAUNE, LOGICIEL, echec, PYTHONS_COUVERTS, OUTPUT_ROOT, VERT, Identite,
     appliquer_les_arguments, arguments_communs, bien, copier_le_logiciel,
     dire, dossier_sortie, ecrire, ecrire_les_documents, ecrire_les_empreintes,
     etape, executer, icone_svg, lisible, remplir, souci, taille_ko,
@@ -62,7 +62,7 @@ def construire_deb(id_: Identite, embarquer: bool) -> Optional[str]:
     Deux variantes, et le choix n'est pas anodin. Le paquet **léger** (340 ko)
     laisse le script d'après-installation aller chercher les bibliothèques :
     c'est le cas courant, puisqu'on installe un `.deb` par `apt`, donc en
-    ligne. Le paquet **hors ligne** (`--hors-ligne`, 335 Mo) les embarque pour
+    ligne. Le paquet **hors ligne** (`--offline`, 335 Mo) les embarque pour
     Python 3.9 à 3.13 : c'est ce qu'il faut pour un atelier ou une salle de
     classe sans réseau, où trente machines doivent s'installer d'une clé USB.
     """
@@ -85,15 +85,27 @@ def construire_deb(id_: Identite, embarquer: bool) -> Optional[str]:
         ecrire(os.path.join(racine, "usr", "bin", "phytoscope"),
                open(os.path.join(GABARITS, "debian", "lanceur"),
                     encoding="utf-8").read(), executable=True)
-        #  Deux outils que l'utilisateur appelle quand IL le décide : `apt` et
-        #  `dnf` installent sans interaction, souvent sans session graphique.
-        #  Poser la question de l'icône à ce moment-là serait la poser à la
-        #  mauvaise personne.
-        for outil, cible in (("desktop-icon.sh", "phytoscope-icone-bureau"),
-                             ("uninstall.sh", "phytoscope-desinstaller")):
+        #  Two tools the user runs when THEY decide to: `apt` and `dnf`
+        #  install without interaction, often with no graphical session.
+        #  Asking about the icon at that point would be asking the wrong
+        #  person.
+        for outil, cible in (("desktop-icon.sh", "phytoscope-desktop-icon"),
+                             ("uninstall.sh", "phytoscope-uninstall")):
             ecrire(os.path.join(racine, "usr", "bin", cible),
                    open(os.path.join(GABARITS, "debian", outil),
                         encoding="utf-8").read(), executable=True)
+
+        #  Those three scripts talk to the end user, so they must speak the
+        #  language chosen at installation. They read it the same way the
+        #  software does, and they need the label catalogues next to them —
+        #  without Python, because the launcher's reason to speak at all is
+        #  usually that Python is missing.
+        etape("installer labels (11 languages)")
+        shutil.copy2(os.path.join(GABARITS, "common", "labels.sh"),
+                     os.path.join(partage, "labels.sh"))
+        import languages as _langues
+        _cat = _langues.ecrire_shell(os.path.join(partage, "languages"))
+        dire(f"      {len(_cat)} catalogues", GRIS)
         applications = os.path.join(racine, "usr", "share", "applications")
         os.makedirs(applications, exist_ok=True)
         shutil.copy2(os.path.join(GABARITS, "debian", "phytoscope.desktop"),
@@ -237,7 +249,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         prog="build_debian.py",
         description="Fabrique le paquet Debian de PhytoScope.")
     arguments_communs(p)
-    p.add_argument("--hors-ligne", action="store_true",
+    p.add_argument("--offline", "--hors-ligne", dest="hors_ligne",
+                   action="store_true",
                    help="embarquer les bibliothèques (Python 3.9 à 3.13) pour "
                         "une installation sans connexion")
     p.add_argument("--sans-run", action="store_true",
@@ -254,7 +267,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ecrire_les_empreintes(id_)
         ecrire_les_documents(id_)
     for f in produits:
-        dire(f"    {os.path.relpath(f, RACINE_SORTIE)}", GRIS)
+        dire(f"    {os.path.relpath(f, OUTPUT_ROOT)}", GRIS)
     return 0 if produits else 1
 
 

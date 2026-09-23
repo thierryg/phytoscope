@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — packaging/build_windows.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Génère les paquets Windows 10 et 11 : archive portable, .exe et .msi.
@@ -64,7 +64,7 @@ from typing import List, Optional
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from common import (  # noqa: E402
-    ABI_WINDOWS, GABARITS, GRIS, LOGICIEL, PYTHON_WINDOWS, RACINE_SORTIE,
+    ABI_WINDOWS, GABARITS, GRIS, LOGICIEL, PYTHON_WINDOWS, OUTPUT_ROOT,
     VERT, Identite, appliquer_les_arguments, arguments_communs, bien,
     copier_le_logiciel, deplier_les_roues, dire, dossier_sortie, echec,
     ecrire, ecrire_les_documents, ecrire_les_empreintes, environnement_nsis,
@@ -120,8 +120,8 @@ def construire_windows(id_: Identite, faire_zip: bool = True,
             with open(os.path.join(charge, nom), "w", encoding="utf-8",
                       newline="\r\n") as f:
                 f.write(texte)
-        shutil.copy2(os.path.join(LOGICIEL, "LICENCE.txt"),
-                     os.path.join(charge, "LICENCE.txt"))
+        shutil.copy2(os.path.join(LOGICIEL, "LICENSE.txt"),
+                     os.path.join(charge, "LICENSE.txt"))
         shutil.copy2(os.path.join(LOGICIEL, "README.txt"),
                      os.path.join(charge, "LISEZ-MOI.txt"))
         icone = os.path.join(charge, "phytoscope.ico")
@@ -162,7 +162,7 @@ def construire_windows(id_: Identite, faire_zip: bool = True,
             os.path.join(GABARITS, "windows", "phytoscope.nsi"),
             dict(id_.jetons(), SORTIE=exe, CHARGE=charge,
              ICONE=icone or os.path.join(charge, "app", "phytoscope"),
-             FICHIER_LICENCE=os.path.join(charge, "LICENCE.txt"))))
+             FICHIER_LICENCE=os.path.join(charge, "LICENSE.txt"))))
         if executer([makensis, "-V2", script], env=environnement_nsis()):
             bien(f"{os.path.basename(exe)}  ({lisible(os.path.getsize(exe))})")
             produits.append(exe)
@@ -306,7 +306,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ecrire_les_empreintes(id_)
         ecrire_les_documents(id_)
     for f in produits:
-        dire(f"    {os.path.relpath(f, RACINE_SORTIE)}", GRIS)
+        dire(f"    {os.path.relpath(f, OUTPUT_ROOT)}", GRIS)
     return 0 if produits else 1
 
 

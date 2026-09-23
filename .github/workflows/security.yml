@@ -1,0 +1,354 @@
+# ===========================================================================
+#  PhytoScope — the security checks
+# ===========================================================================
+#  Six questions, asked on every push and once a week:
+#
+#    · has a secret leaked into the history? (gitleaks, our own guard)
+#    · does the code do something imprudent? (bandit)
+#    · does a dependency carry a known vulnerability? (pip-audit, trivy)
+#    · does this pull request add one? (dependency-review)
+#    · are the licences declared and consistent? (reuse, our own check)
+#    · do the workflows ask for more rights than they need? (zizmor)
+#
+#  The weekly run exists because a vulnerability appears in a dependency
+#  without anybody touching the repository: without it, one learns of it at
+#  the next release.
+# ===========================================================================
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '17 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  secrets:
+    name: No secret in the repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      #  fetch-depth: 0 — gitleaks has to see the whole history: a secret
+      #  removed in the next commit stays in the git objects.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7  # v2.3.9
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      #  The guard particular to this project: the private signing key must
+      #  never be tracked, and the public certificate must be (C-2R).
+      - name: The private signing key is not tracked
+        run: |
+          echo "── what git tracks that looks like a key"
+          tracked=$(git ls-files | grep -Ei '\.(key|p12|pfx|jks|keystore|asc|gpg|kdbx)$' || true)
+          if [ -n "$tracked" ]; then
+            echo "! these files should not be tracked:"; echo "$tracked"; exit 1
+          fi
+          echo "  · no key tracked"
+          echo "── the PUBLIC certificate, on the other hand, must be"
+          git ls-files --error-unmatch certificate/phytoscope-certificate.pem >/dev/null
+          echo "  · the public certificate is there"
+
+      - name: No private key in the clear among the tracked files
+        run: |
+          if git grep -lE 'BEGIN (RSA |EC |OPENSSH |PGP )?PRIVATE KEY' -- \
+               $(git ls-files | grep -v '^sources/') > /tmp/leaks 2>/dev/null; then
+            echo "! a private-key block was found in:"; cat /tmp/leaks; exit 1
+          fi
+          echo "  · no private-key block"
+
+  code:
+    name: Code analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: The tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install bandit[sarif] pip-audit
+
+      #  `sources/` is third-party code: its defects are reported upstream,
+      #  not here. See SECURITY.md, § Out of scope.
+      - name: bandit
+        run: |
+          bandit -r packaging tools src/phytoscope \
+                 --exclude '**/tests/**' \
+                 --severity-level medium --confidence-level medium \
+                 --format screen
+        continue-on-error: true
+
+      - name: bandit — rapport SARIF pour l'onglet Security
+        run: |
+          bandit -r packaging tools src/phytoscope \
+                 --exclude '**/tests/**' \
+                 --format sarif --output bandit.sarif || true
+
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: bandit.sarif
+          category: bandit
+        continue-on-error: true
+
+  dependencies:
+    name: Known vulnerabilities in the dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: pip-audit
+        run: |
+          python -m pip install --upgrade pip pip-audit
+          cd src/phytoscope
+          pip-audit --requirement requirements.txt --strict --progress-spinner off
+        continue-on-error: true
+
+      #  The SBOM is version-controlled (src/phytoscope/sbom.cdx.json). If it
+      #  no longer matches the declared dependencies it has to be
+      #  regenerated: a false SBOM is worse than no SBOM.
+      - name: Is the SBOM up to date?
+        run: |
+          cd src/phytoscope
+          python -m pip install -r requirements.txt
+          python tools/sbom.py --json > /tmp/sbom-fresh.json
+          count() { python -c "import json,sys;print(len(json.load(open(sys.argv[1])).get('components',[])))" "$1"; }
+          if [ "$(count sbom.cdx.json)" != "$(count /tmp/sbom-fresh.json)" ]; then
+            echo "! the version-controlled SBOM does not count the same components"
+            echo "  regenerate it:  .venv/bin/python tools/sbom.py --json > sbom.cdx.json"
+            exit 1
+          fi
+          echo "  · the SBOM agrees"
+        continue-on-error: true
+
+  # -------------------------------------------------------------------------
+  #  What risk this pull request adds
+  # -------------------------------------------------------------------------
+  #  A check particular to pull requests: it refuses the addition of a
+  #  dependency carrying a known vulnerability, or an incompatible licence.
+  #  Refusing it BEFORE the merge costs a minute; afterwards, a republication.
+  dependency-review:
+    name: Review of the dependencies added
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      #  This check requires "Dependency graph" to be enabled on the
+      #  repository — Settings → Code security and analysis. It is not
+      #  enabled today, and the action then answers:
+      #
+      #      Dependency review is not supported on this repository.
+      #
+      #  That is a repository setting, not a defect in the workflow, and it
+      #  cannot be fixed from a version-controlled file. Until then the step
+      #  is tolerated: a pull request showing red for a missing setting
+      #  teaches people to ignore red, which costs more than the check
+      #  brings in.
+      #
+      #  What stays covered meanwhile, and what does not:
+      #    · the VULNERABILITIES of the Python dependencies — covered by
+      #      pip-audit, in the "Known vulnerabilities" job;
+      #    · incompatible LICENCES (C-53) — no longer covered at all. That
+      #      is the real loss, and it is why the setting is worth the minute
+      #      it costs.
+      #
+      #  Once "Dependency graph" is enabled, remove the `continue-on-error`
+      #  below: the check becomes blocking again, which is its purpose.
+      - uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: moderate
+          comment-summary-in-pr: on-failure
+          #  The project is under MIT and CERN-OHL-P v2: a strong-copyleft
+          #  dependency would make distributing the software as announced
+          #  impossible (C-53).
+          deny-licenses: GPL-3.0, AGPL-3.0, GPL-2.0, SSPL-1.0
+        continue-on-error: true
+
+  # -------------------------------------------------------------------------
+  #  Known vulnerabilities across the whole tree, not only the Python
+  #  dependencies
+  # -------------------------------------------------------------------------
+  filesystem:
+    name: Filesystem analysis (trivy)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: trivy — the filesystem
+        #  Pinned by commit fingerprint, not by tag: a tag moves, a
+        #  fingerprint does not. It is also what zizmor requires (the
+        #  `unpinned-uses` rule) for a third-party action. The comment gives
+        #  the version readably; Dependabot updates both together.
+        #
+        #  This line has failed once already: `@0.28.0` — without the `v` —
+        #  does not exist, and the job went red at "Set up job", BEFORE
+        #  `continue-on-error` could apply. Hence the step "Every action
+        #  referenced exists" in the job below.
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          severity: CRITICAL,HIGH,MEDIUM
+          #  Without this, the `severity` above does NOT apply to the SARIF
+          #  report: the action pours every severity into it, and the filter
+          #  we announce would be a lie.
+          limit-severities-for-sarif: true
+          format: sarif
+          output: trivy.sarif
+          #  `sources/` is third-party code, copied in for the book: its
+          #  vulnerabilities are reported upstream (see SECURITY.md, § Out of
+          #  scope).
+          skip-dirs: sources,build
+        continue-on-error: true
+
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy.sarif
+          category: trivy
+        continue-on-error: true
+
+  # -------------------------------------------------------------------------
+  #  Are the licences declared, and do they tell the truth?
+  # -------------------------------------------------------------------------
+  #  This check exists because of a real defect: the header tool had stamped
+  #  "SPDX-License-Identifier: MIT" and our copyright on 32 files of the
+  #  Biotron firmware, which is GPL-3.0, and on LEDFader and MIDI Sprout,
+  #  which belong to other people. That was a false statement of licence and
+  #  of authorship. Corrected on 2026-09-18; this check is here so that it
+  #  does not come back.
+  licences:
+    name: Licence consistency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Our header is never stamped on third-party code
+        run: |
+          offenders=$(grep -rl 'PhytoScope — attribution' sources/ 2>/dev/null \
+                      | grep -v '^sources/reverse/' || true)
+          if [ -n "$offenders" ]; then
+            echo "! our attribution is on third-party code:"
+            echo "$offenders"
+            echo
+            echo "  sources/ is excluded from tools/headers.py for this reason."
+            echo "  Remove those headers: every project keeps its own licence."
+            exit 1
+          fi
+          echo "  · no attribution where it does not belong"
+
+      #  This check was first written `ls "$d"LICENSE* "$d"LICENCE*
+      #  "$d"COPYING*`. That was wrong: `ls` returns a non-zero code as soon
+      #  as ONE of the patterns matches nothing, even if the others match.
+      #  All three projects did have their licence, and the check declared
+      #  all three missing. `find` does not get that wrong, and it ignores
+      #  case in one go.
+      - name: Every third-party project copied in keeps its licence file
+        run: |
+          missing=0
+          for d in sources/schematics/*/; do
+            file=$(find "$d" -maxdepth 1 -type f \
+                     \( -iname 'LICENSE*' -o -iname 'LICENCE*' \
+                        -o -iname 'COPYING*' \) -printf '%f\n' \
+                   | sort | head -1)
+            if [ -z "$file" ]; then
+              echo "! $d — no licence file"
+              missing=1
+            else
+              echo "  · $d$file"
+            fi
+          done
+          exit $missing
+
+      - name: Both of the project's licences are present and announced
+        run: |
+          for f in LICENSE LICENSES/MIT.txt LICENSES/CERN-OHL-P-2.0.txt LICENSES/README.md; do
+            test -f "$f" && echo "  · $f" || { echo "! $f is missing"; exit 1; }
+          done
+
+      - name: The attribution headers are up to date
+        run: python3 tools/headers.py --verifier
+
+      - name: reuse — is the licence declaration conformant?
+        run: |
+          python -m pip install --quiet reuse
+          reuse lint || true
+        continue-on-error: true
+
+  # -------------------------------------------------------------------------
+  #  The workflows are themselves code: they get analysed
+  # -------------------------------------------------------------------------
+  #  A workflow asking for `contents: write` where `read` would do, or
+  #  interpolating ${{ github.event.* }} into a `run:`, is an open door.
+  workflows:
+    name: Workflow analysis (zizmor)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      #  zizmor reads the workflows; it does not ask GitHub whether the
+      #  actions referenced exist. Two of them did not — see the tool's
+      #  docstring. This step is NOT tolerant: it is the only one in the job
+      #  that can refuse a merge, because a dead reference makes a security
+      #  check go silent. No token: the tool questions the repositories with
+      #  `git ls-remote`, which does not consume the API quota. The first
+      #  version went through api.github.com and failed with "403, rate
+      #  limit exceeded" — in a step that is not tolerant, a quota would
+      #  have blocked a merge for a reason foreign to the workflows.
+      - name: Every action referenced exists, and the third-party ones are pinned
+        run: python3 tools/verify_actions.py --epingle
+
+      - name: zizmor
+        run: |
+          python -m pip install --quiet zizmor
+          zizmor --format sarif .github/workflows/ > zizmor.sarif || true
+          zizmor .github/workflows/ || true
+        continue-on-error: true
+
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: zizmor.sarif
+          category: zizmor
+        continue-on-error: true

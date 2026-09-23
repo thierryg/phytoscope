@@ -1,0 +1,166 @@
+#!/bin/bash
+#  ==========================================================================
+#  PhytoScope — attribution — packaging/templates/macos/lanceur
+#
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
+#
+#  SPDX-License-Identifier: MIT
+#  end of attribution
+#  ==========================================================================
+
+# ===========================================================================
+#  PhytoScope — launcher inside the .app bundle (macOS)
+#
+#  The bundle carries the software and its libraries but NOT the Python
+#  interpreter: Apple has shipped no usable Python since macOS 12.3, and
+#  redistributing a CPython built on Linux would give an unsigned binary that
+#  Gatekeeper would refuse anyway. So we use the user's Python, and say
+#  clearly when it is missing — in a real window, because a .app started from
+#  the Finder has no terminal to write to.
+#
+#  The language is NOT asked here. The .pkg post-install script asks it, as
+#  the first question of the installation, and writes it where the software
+#  reads it. This script only reads it back, so that its windows are in the
+#  same language as everything else. Should the settings be missing — a .app
+#  copied by hand rather than installed — it asks, once, using the same list.
+# ===========================================================================
+set -u
+ICI="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+RESSOURCES="$(cd "$ICI/../Resources" && pwd)"
+
+if [ -f "$RESSOURCES/labels.sh" ]; then
+    # shellcheck disable=SC1091
+    . "$RESSOURCES/labels.sh"
+else
+    tl() { _d="$2"; shift 2; while [ "$#" -ge 2 ]; do
+               _d="$(printf '%s' "$_d" | sed "s|{$1}|$2|g")"; shift 2; done
+           printf '%s' "$_d"; }
+    demander_la_langue() { return 1; }
+    ecrire_la_langue() { return 1; }
+    charger_libelles() { return 1; }
+fi
+
+#  Loaded HERE, before the first message. The very first thing this script can
+#  have to say is that Python is missing, and that sentence must already be in
+#  the user's language; the settings file is all it takes, and it is written
+#  at installation. Loaded a second time further down, after the language has
+#  been asked, for the bundle-copied-by-hand case.
+charger_libelles "$RESSOURCES/languages" || true
+
+dire() {
+    /usr/bin/osascript -e "display dialog \"$1\" buttons {\"OK\"} \
+        with title \"PhytoScope\" with icon caution" >/dev/null 2>&1 || echo "$1" >&2
+}
+
+#  Ordre de préférence, et pourquoi il est ainsi :
+#
+#    1. l'interpréteur EMBARQUÉ dans le paquet — un CPython relogeable
+#       (python-build-standalone). Il rend l'application utilisable sur une
+#       machine nue, sans rien installer ni demander de privilèges (C-55) ;
+#    2. le Python officiel de python.org, installé en « framework » ;
+#    3. celui d'Apple, dans /usr/bin.
+#
+#  Homebrew est ÉCARTÉ. Un interpréteur posé sous /opt/homebrew ou
+#  /usr/local/Cellar vient avec son propre chargeur dynamique et son propre
+#  chemin de recherche : les roues de Qt, pyqtgraph et sounddevice s'y
+#  installent, puis échouent à l'exécution sur des bibliothèques pourtant
+#  présentes. Le défaut a été constaté sous Linux le 2026-09-18, et la même
+#  mécanique existe sous macOS.
+ecarte() {
+    case "$(/usr/bin/python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$1" 2>/dev/null || echo "$1")" in
+        /opt/homebrew/*|/usr/local/Cellar/*|/nix/store/*|/opt/conda/*|/opt/anaconda*/*) return 0 ;;
+    esac
+    return 1
+}
+
+trouver_python() {
+    local p
+    for p in "$RESSOURCES/python/bin/python3" \
+             /Library/Frameworks/Python.framework/Versions/Current/bin/python3 \
+             /usr/bin/python3; do
+        [ -x "$p" ] || continue
+        ecarte "$p" && continue
+        #  Au moins 3.9, et capable de bâtir un environnement virtuel.
+        "$p" -c 'import sys, venv; raise SystemExit(0 if sys.version_info >= (3,9) else 1)' \
+            >/dev/null 2>&1 && { echo "$p"; return; }
+    done
+    echo ""
+}
+
+PY="$(trouver_python)"
+if [ -z "$PY" ]; then
+    dire "$(tl T_PY_MACOS_ABSENT "PhytoScope needs Python 3.9 or newer, and this package does not carry one.")\n\n$(tl T_PY_MACOS_TELECHARGER "Download it from python.org (the “macOS 64-bit universal2 installer” build), then start PhytoScope again.")\n\n$(tl T_PY_MACOS_HOMEBREW "Avoid the Homebrew build: it does not see the system graphics libraries.")"
+    exit 1
+fi
+
+#  L'environnement Python vit dans le dossier de l'utilisateur, pas dans le
+#  paquet : un .app installé dans /Applications n'est pas inscriptible, et il
+#  doit pouvoir servir plusieurs comptes.
+VENV="$HOME/Library/Application Support/PhytoScope/venv"
+REGLAGES="$HOME/Library/Application Support/PhytoScope/reglages.json"
+
+#  The language, only when nothing has been recorded yet. The .pkg asked it
+#  during installation; this covers the case of a bundle copied by hand,
+#  where no post-install script ever ran.
+#
+#  We ASK, we do not guess: constraint C-31 forbids automatic locale
+#  detection, and `AppleLocale` would give the system's language rather than
+#  the one the user wants to work in.
+#
+#  The list of languages comes from the generated catalogue index, never from
+#  a copy written here — adding a language must not mean editing this file.
+if [ ! -f "$REGLAGES" ]; then
+    LANGUE="$(demander_la_langue "$RESSOURCES/languages" || true)"
+    if [ -n "$LANGUE" ]; then
+        #  Through the software's own tool where it is available, because it
+        #  knows how to merge and how to write atomically. Failing that, the
+        #  minimal document: there is nothing to preserve, the file is absent.
+        if [ -f "$RESSOURCES/app/write_language.py" ] && [ -n "${PY:-}" ]; then
+            "$PY" "$RESSOURCES/app/write_language.py" "$LANGUE" >/dev/null 2>&1 \
+                || ecrire_la_langue "$LANGUE" "$REGLAGES" || true
+        else
+            ecrire_la_langue "$LANGUE" "$REGLAGES" || true
+        fi
+    fi
+fi
+charger_libelles "$RESSOURCES/languages" || true
+
+if [ ! -x "$VENV/bin/python" ]; then
+    dire "$(tl T_PREMIERE_OUVERTURE "First run: PhytoScope will prepare its Python environment.")\n\n$(tl T_PREMIERE_OUVERTURE_DUREE "This takes a minute or two and happens only once.")"
+    mkdir -p "$(dirname "$VENV")"
+    "$PY" -m venv "$VENV" \
+        || { dire "$(tl T_ENV_IMPOSSIBLE "Cannot create the environment: the “venv” module is missing.")"
+             exit 1; }
+    if [ -d "$RESSOURCES/roues" ]; then
+        "$VENV/bin/pip" install --quiet --no-index --find-links "$RESSOURCES/roues" \
+            -r "$RESSOURCES/app/requirements.txt" 2>/dev/null \
+        || "$VENV/bin/pip" install --quiet -r "$RESSOURCES/app/requirements.txt"
+    else
+        "$VENV/bin/pip" install --quiet -r "$RESSOURCES/app/requirements.txt"
+    fi || { dire "$(tl T_LIBS_IMPOSSIBLE "Cannot install the libraries.")\n$(tl T_RELANCEZ_APRES "Check your connection and start again.")"
+            exit 1; }
+    "$VENV/bin/pip" install --quiet -r "$RESSOURCES/app/requirements-optionnel.txt" \
+        >/dev/null 2>&1 || true
+
+    #  Cache de bytecode. Le .app posé dans /Applications n'est pas
+    #  inscriptible : sans ce cache, Python recompile à chaque démarrage les
+    #  modules du paquet et jette le résultat. On le construit dans
+    #  l'environnement de l'utilisateur, qui l'est, et une seule fois.
+    "$VENV/bin/python" -m compileall -q "$VENV/lib" >/dev/null 2>&1 || true
+    #  Les modules du paquet, eux, vont dans un cache à part : leur dossier
+    #  est en lecture seule, d'où PYTHONPYCACHEPREFIX ci-dessous.
+    PYTHONPYCACHEPREFIX="$(dirname "$VENV")/bytecode" \
+        "$VENV/bin/python" -m compileall -q "$RESSOURCES/app" >/dev/null 2>&1 || true
+fi
+
+#  Le cache des modules du paquet vit à côté de l'environnement, parce que le
+#  .app lui-même est en lecture seule.
+export PYTHONPYCACHEPREFIX="$(dirname "$VENV")/bytecode"
+
+exec "$VENV/bin/python" "$RESSOURCES/app/run.py" "$@"

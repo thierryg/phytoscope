@@ -14,6 +14,46 @@
 
 ================================================================================
 
+1.6.0 — 2026-09-23
+------------------------------------------------------------------------------
+  L'interface des modules passe en anglais, et son majeur passe à 3.0.
+
+  RUPTURE
+    · API_VERSION : "2.0" → "3.0". Un module écrit pour 2.0 est REFUSÉ au
+      moment de la découverte, avec une phrase dans Diagnostic :
+      « incompatible — targets API 2.0, but this software offers 3.0 ».
+      Rien n'est aliasé : un alias laisserait le module se charger puis
+      échouer au premier champ lu, en pleine séance.
+    · 195 identifiants renommés : Manifeste→Manifest, Capacite→Capability,
+      Grandeur→Quantity, NoteProposee→ProposedNote, Contexte→Context,
+      EtatMesure→MeasurementState, installer()→setup(),
+      arreter()→shutdown(), analyser()→analyse(), et le reste.
+    · Les états affichés dans Diagnostic : « actif » → « active »,
+      « en_faute » → « faulted », « desactive » → « disabled ».
+    · Les valeurs de capacité dans un manifeste : « analyseur » → « analyser »,
+      et les trois autres.
+
+  MIGRATION
+    · src/sdk/docs/08-migrating-from-2.0.md — la table complète, champ par
+      champ, et ce qui n'a PAS changé.
+    · new_module.py accepte encore « --capacite descripteur » : il traduit et
+      le dit.
+
+  NE CHANGE PAS
+    · les noms des événements sur le fil (renommés en 2.0) ;
+    · les fichiers de séance sur le disque (mesures.csv, seance.json…) ;
+    · le fichier de réglages : les réglages d'un module sont toujours rangés
+      sous son nom, et se relisent tels quels.
+
+  CORRIGÉ
+    · quatre listes __all__ nommaient des classes inexistantes — résidu d'un
+      renommage arrêté à mi-course le 2026-09-22. Un essai les compare
+      désormais toutes.
+    · packaging : « make » sans argument était cassé depuis le 2026-09-22
+      (.DEFAULT_GOAL pointait sur une cible « aide » disparue).
+    · micrologiciel : l'horloge UAC2 répond enfin aux requêtes que ses propres
+      descripteurs invitent — 250 Hz, la cadence réelle.
+
 1.5.1 — 2026-09-18
 ------------------------------------------------------------------------------
   Revue de portabilité Windows 10/11, macOS (Intel et Apple Silicon) et

@@ -1,668 +1,854 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
-<title>Écrire un module pour PhytoScope</title>
+<title>Writing a module for PhytoScope</title>
 <meta name="author" content="Bretagne Namasté"/>
 <meta name="publisher" content="Bretagne Namasté"/>
 <meta name="copyright" content="© 2026 Bretagne Namasté — https://bretagne-namaste.com"/>
 <meta name="contact" content="contact@bretagne-namaste.com"/>
 <meta name="source" content="https://bretagne-namaste.com"/>
-<meta name="description" content="L'interface de programmation des modules de PhytoScope, le SDK, et ce qu'un module a le droit de faire : les cinq capacités, les événements, les essais sans matériel, et les pièges."/>
-<meta name="keywords" content="PhytoScope, module, greffon, SDK, API, Python, extension, plugin, biosignal, plante"/>
+<meta name="description" content="The programming interface of PhytoScope's modules, the SDK, and what a module is allowed to do: the five capabilities, the events, testing without hardware, and the pitfalls."/>
+<meta name="keywords" content="PhytoScope, module, SDK, API, Python, extension, plugin, biosignal, plant"/>
 <meta name="dcterms.created" content="2026-09-17"/>
 <meta name="generator" content="WeasyPrint"/>
 <link rel="stylesheet" href="fonts.css"/>
 <link rel="stylesheet" href="book.css"/>
-<link rel="stylesheet" href="carte.css"/>
-<style>body{ string-set: booktitle "Écrire un module pour PhytoScope"; }</style>
+<link rel="stylesheet" href="board.css"/>
+<style>body{ string-set: booktitle "Writing a module for PhytoScope"; }</style>
 </head>
 <body>
-<!-- ====================== COUVERTURE ====================== -->
+<!-- ====================== COVER ====================== -->
 <section class="cover">
-  <div class="cover-collection">La Musique des Plantes — hors-série développeur</div>
-  <h1 class="cover-title">Écrire un module<br/>pour PhytoScope</h1>
-  <div class="cover-subtitle">L'interface de programmation, le SDK,
-    et ce qu'un module a le droit de faire</div>
+  <div class="cover-collection">The Music of Plants — developer companion volume</div>
+  <h1 class="cover-title">Writing a module<br/>for PhytoScope</h1>
+  <div class="cover-subtitle">The programming interface, the SDK,
+    and what a module is allowed to do</div>
   <div class="cover-rule"></div>
   <div class="cover-author">Bretagne Namasté — Thierry GAYET</div>
   <div class="cover-site">bretagne-namaste.com</div>
 </section>
 
 <section class="titlepage pagebreak">
-  <h1>Écrire un module pour PhytoScope</h1>
-  <p class="subtitle">L'interface de programmation, le SDK, et ce qu'un module
-    a le droit de faire</p>
-  <p class="edition">Interface de programmation <strong>version 1.0</strong><br/>
-     Pour PhytoScope 1.5 et suivants</p>
+  <h1>Writing a module for PhytoScope</h1>
+  <p class="subtitle">The programming interface, the SDK, and what a module is
+    allowed to do</p>
+  <p class="edition">Programming interface <strong>version 2.0</strong><br/>
+     For PhytoScope 1.5 and later</p>
   <p class="author">Bretagne Namasté — Thierry GAYET<br/>
      <span class="small">contact@bretagne-namaste.com ·
      Thierry.Gayet@gmail.com</span></p>
-  <p class="licence">Le logiciel, le SDK et ce document sont publiés sous
-     licence MIT.<br/>
-     Le code des exemples est à recopier sans condition.</p>
+  <p class="licence">The software, the SDK and this document are published
+     under the MIT licence.<br/>
+     The example code is yours to copy, with no conditions attached.</p>
 </section>
 
 <section class="notice pagebreak">
-  <h2 id="notice" data-toc="chapter">Avant de commencer</h2>
+  <h2 id="notice" data-toc="chapter">Before you start</h2>
 
-  <p class="chapo">Ce document s'adresse à quelqu'un qui sait programmer en
-  Python et qui veut ajouter quelque chose à PhytoScope : une analyse, une
-  représentation, une sonification, un format d'export, une source de mesure.
-  Il ne suppose aucune connaissance du code du logiciel — c'est même tout
-  l'objet de l'interface décrite ici.</p>
+  <p class="chapo">This document is addressed to somebody who can program in
+  Python and wants to add something to PhytoScope: an analysis, a
+  representation, a sonification, an export format, a measurement source. It
+  assumes no knowledge of the software's own code — that, indeed, is the whole
+  point of the interface described here.</p>
 
   <div class="callout">
-    <h4>Ce que vous n'aurez pas à faire</h4>
-    <p>Lire le moteur. Comprendre comment l'acquisition est ordonnancée.
-    Savoir ce qu'est un <code>EngineState</code>. Un module reçoit une surface
-    étroite et documentée, et c'est délibérément tout ce qu'il reçoit.</p>
+    <h4>What you will not have to do</h4>
+    <p>Read the engine. Understand how acquisition is scheduled. Know what an
+    <code>EngineState</code> is. A module is handed a narrow, documented
+    surface, and that is deliberately all it is handed.</p>
   </div>
 
-  <h3 id="notice-promesse" data-toc="sub">Ce que nous promettons</h3>
+  <h3 id="notice-promesse" data-toc="sub">What we promise</h3>
 
-  <p>L'interface porte un numéro de version, en numérotation sémantique.
-  Tant que le chiffre majeur ne change pas, <strong>un module écrit
-  aujourd'hui fonctionnera</strong> : nous pouvons ajouter, nous ne pouvons
-  pas retirer. Si le jour vient où il faut rompre cette promesse, le numéro
-  majeur changera, le logiciel refusera de charger les modules anciens en le
-  disant clairement, et ce document expliquera la migration.</p>
+  <p>The interface carries a version number, in semantic numbering. As long as
+  the major figure does not change, <strong>a module written today will go on
+  working</strong>: we may add, we may not take away. If the day comes when
+  that promise has to be broken, the major number will change, the software
+  will refuse to load the older modules while saying so clearly, and this
+  document will explain the migration.</p>
 
-  <p>Nous promettons aussi que <strong>votre module ne fera jamais tomber le
-  logiciel</strong>. Une faute, où qu'elle survienne, désactive votre module et
-  l'inscrit au journal ; la séance continue. C'est autant pour vous que pour
-  l'utilisateur : on écrit plus librement quand on sait qu'une étourderie ne
-  coûtera pas huit heures de mesure à quelqu'un.</p>
+  <p>We also promise that <strong>your module will never bring the software
+  down</strong>. A fault, wherever it happens, disables your module and writes
+  it to the log; the session goes on. That is as much for you as for the user:
+  one writes more freely knowing that a slip will not cost somebody eight
+  hours of measurement.</p>
 
-  <h3 id="notice-limite" data-toc="sub">Ce que nous ne promettons pas</h3>
+  <h3 id="notice-limite" data-toc="sub">What we do not promise</h3>
 
-  <p>Ce n'est pas un bac à sable. Votre module s'exécute dans le même
-  processus, avec les mêmes droits que le logiciel : il peut écrire où il veut
-  et lire ce qu'il veut. Nous n'avons ni les moyens ni l'intention de l'en
-  empêcher — Python ne s'y prête pas, et un bac à sable mal fait donne une
-  confiance qu'il ne mérite pas.</p>
+  <p>This is not a sandbox. Your module runs in the same process, with the
+  same rights as the software: it can write where it likes and read what it
+  likes. We have neither the means nor the intention of preventing it — Python
+  does not lend itself to that, and a badly made sandbox inspires a confidence
+  it has not earned.</p>
 
-  <p>Ce que nous faisons à la place est plus honnête : nous disons clairement
-  ce qu'un module <em>doit</em> faire, nous rendons ce chemin facile, et nous
-  isolons les fautes. Un module qui écrit ailleurs que chez lui n'est pas
-  bloqué ; il est mal élevé, et cela se saura.</p>
+  <p>What we do instead is more honest: we say clearly what a module
+  <em>ought</em> to do, we make that path easy, and we isolate faults. A
+  module that writes outside its own directory is not blocked; it is
+  ill-mannered, and that will get about.</p>
 </section>
 
 <section class="toc pagebreak">
-  <h2 id="sommaire">Sommaire</h2>
+  <h2 id="sommaire">Contents</h2>
   <ul>
-<li><a class="tl" href="#notice"><span class="t">Avant de commencer</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#notice-promesse"><span class="t">Ce que nous promettons</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#notice-limite"><span class="t">Ce que nous ne promettons pas</span><span class="leader"></span></a></li>
-<li><a class="tl" href="#premier"><span class="t">1. Un premier module, en dix minutes</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#premier-creer"><span class="t">Créer le squelette</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#premier-eprouver"><span class="t">L'éprouver, sans rien lancer</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#premier-installer"><span class="t">L'installer</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#premier-rien"><span class="t">Si rien n'apparaît</span><span class="leader"></span></a></li>
-<li><a class="tl" href="#anatomie"><span class="t">2. Anatomie d'un module</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#anatomie-manifeste"><span class="t">Le manifeste, seul élément obligatoire</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#anatomie-champs"><span class="t">Les champs du manifeste</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#anatomie-cycle"><span class="t">Le cycle de vie</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#anatomie-reglages"><span class="t">Vos réglages</span><span class="leader"></span></a></li>
-<li><a class="tl" href="#capacites"><span class="t">3. Les cinq capacités</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#cap-analyseur"><span class="t">Analyseur — calculer des grandeurs</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#cap-descripteur"><span class="t">Descripteur — produire une courbe</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#cap-sonificateur"><span class="t">Sonificateur — faire des notes</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#cap-exportateur"><span class="t">Exportateur — un autre format</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#cap-source"><span class="t">Source — un flux de mesure</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#cap-tableau"><span class="t">En résumé</span><span class="leader"></span></a></li>
-<li><a class="tl" href="#evenements"><span class="t">4. Les événements</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#evenements-liste"><span class="t">Ce qu'on peut écouter</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#evenements-garanties"><span class="t">Ce que l'hôte garantit</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#evenements-futur"><span class="t">S'abonner à ce qui n'existe pas encore</span><span class="leader"></span></a></li>
-<li><a class="tl" href="#pieges"><span class="t">5. Les pièges</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#piege-manifeste"><span class="t">Le manifeste doit être littéral</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#piege-lever"><span class="t">Ne jamais lever pour dire « rien à signaler »</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#piege-gabarit"><span class="t">Les libellés avec un nombre sont des gabarits</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#piege-texte"><span class="t">Le champ « texte » ne porte que des unités</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#piege-brut"><span class="t">Ne pas filtrer avant de mesurer le bruit</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#piege-ecrire"><span class="t">N'écrire que chez soi</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#piege-import"><span class="t">N'importer que depuis phytoscope.api</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#piege-resume"><span class="t">En un tableau</span><span class="leader"></span></a></li>
-<li><a class="tl" href="#fin"><span class="t">6. Pour aller plus loin</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#fin-lire"><span class="t">Lire les modules livrés</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#fin-sdk"><span class="t">Le SDK</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#fin-manque"><span class="t">Si quelque chose vous manque</span><span class="leader"></span></a></li>
-<li><a class="tl sub" href="#fin-contact"><span class="t">Écrire</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#notice"><span class="t">Before you start</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#notice-promesse"><span class="t">What we promise</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#notice-limite"><span class="t">What we do not promise</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#premier"><span class="t">1. A first module, in ten minutes</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#premier-creer"><span class="t">Creating the skeleton</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#premier-eprouver"><span class="t">Testing it, without starting anything</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#premier-installer"><span class="t">Installing it</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#premier-rien"><span class="t">If nothing appears</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#anatomie"><span class="t">2. The anatomy of a module</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#anatomie-manifeste"><span class="t">The manifest, the one required part</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#anatomie-champs"><span class="t">The manifest's fields</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#anatomie-version"><span class="t">The version contract, both ways</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#anatomie-cycle"><span class="t">The life cycle</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#anatomie-reglages"><span class="t">Your settings</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#capacites"><span class="t">3. The five capabilities</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#cap-analyseur"><span class="t">Analyser — computing quantities</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#cap-descripteur"><span class="t">Descriptor — producing a curve</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#cap-sonificateur"><span class="t">Sonifier — making notes</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#cap-exportateur"><span class="t">Exporter — another format</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#cap-source"><span class="t">Source — a measurement stream</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#cap-tableau"><span class="t">In summary</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#evenements"><span class="t">4. Events</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#evenements-liste"><span class="t">What can be listened to</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#evenements-garanties"><span class="t">What the host guarantees</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#evenements-futur"><span class="t">Subscribing to what does not exist yet</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#pieges"><span class="t">5. Pitfalls</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-manifeste"><span class="t">The manifest has to be literal</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-lever"><span class="t">Never raise to say "nothing to report"</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-gabarit"><span class="t">Labels containing a number are templates</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-texte"><span class="t">The "texte" field carries units only</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-brut"><span class="t">Do not filter before measuring noise</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-ecrire"><span class="t">Write nowhere but at home</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-import"><span class="t">Import from phytoscope.api and nowhere else</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#piege-resume"><span class="t">In one table</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#migrer"><span class="t">6. Migrating from API 2.0</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#migrer-faire"><span class="t">Doing it</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#migrer-table"><span class="t">What changed</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#migrer-neuf"><span class="t">What 3.0 added</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#migrer-pas"><span class="t">What did not change</span><span class="leader"></span></a></li>
+<li><a class="tl" href="#fin"><span class="t">7. Going further</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#fin-lire"><span class="t">Read the shipped modules</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#fin-sdk"><span class="t">The SDK</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#fin-manque"><span class="t">If something you need is missing</span><span class="leader"></span></a></li>
+<li><a class="tl sub" href="#fin-contact"><span class="t">Writing to us</span><span class="leader"></span></a></li>
 </ul>
 </section>
 
-<!-- ====================== PREMIER MODULE ====================== -->
+<!-- ====================== FIRST MODULE ====================== -->
 <section class="chapter pagebreak">
-  <h2 id="premier" data-toc="chapter">1. Un premier module, en dix minutes</h2>
+  <h2 id="premier" data-toc="chapter">1. A first module, in ten minutes</h2>
 
-  <p class="chapo">Commençons par le faire, on expliquera ensuite. À la fin de
-  ce chapitre, trois lignes de votre cru s'afficheront dans l'onglet
-  Multimètre du logiciel.</p>
+  <p class="chapo">Let us do it first and explain afterwards. By the end of
+  this chapter, three rows of your own making will be showing in the software's
+  Multimeter tab.</p>
 
-  <h3 id="premier-creer" data-toc="sub">Créer le squelette</h3>
+  <h3 id="premier-creer" data-toc="sub">Creating the skeleton</h3>
 
-  <p class="lettrine noindent">Le SDK est livré avec le code source, dans le
-  dossier <code>sdk/</code>. Il contient un outil qui crée un module complet :</p>
+  <p class="lettrine noindent">The SDK ships with the source code, in the
+  <code>src/sdk/</code> directory. It holds a tool that creates a complete
+  module:</p>
 
-  <pre class="code"><code>python3 src/sdk/outils/new_module.py mon-premier-module</code></pre>
+  <pre class="code"><code>python3 src/sdk/tools/new_module.py my-first-module</code></pre>
 
-  <p>Trois fichiers apparaissent :</p>
+  <p>Three files appear:</p>
 
   <table class="tab">
-    <thead><tr><th>Fichier</th><th>Ce qu'il contient</th></tr></thead>
+    <thead><tr><th>File</th><th>What it holds</th></tr></thead>
     <tbody>
-      <tr><td><code>module.py</code></td><td>le squelette, avec une capacité
-        d'analyse qui fonctionne déjà</td></tr>
-      <tr><td><code>test_mon_premier_module.py</code></td><td>des essais qui
-        passent, et qu'on étend</td></tr>
-      <tr><td><code>README.md</code></td><td>comment l'installer, et ce qui
-        reste à faire</td></tr>
+      <tr><td><code>module.py</code></td><td>the skeleton, with an analysis
+        capability that already works</td></tr>
+      <tr><td><code>test_my_first_module.py</code></td><td>tests that pass,
+        and that you extend</td></tr>
+      <tr><td><code>README.md</code></td><td>how to install it, and what is
+        left to do</td></tr>
     </tbody>
   </table>
 
-  <p>L'intérêt de cet outil n'est pas de taper moins. C'est que
-  <strong>le squelette produit est déjà correct</strong> : le manifeste est
-  valide, les essais passent, et les pièges décrits plus loin sont déjà évités.
-  On part d'un module qui marche, et l'on remplace ce qu'on veut.</p>
+  <p>The point of this tool is not to type less. It is that
+  <strong>the skeleton it produces is already correct</strong>: the manifest is
+  valid, the tests pass, and the pitfalls described later on are already
+  avoided. One starts from a module that works, and replaces what one wants.</p>
 
-  <h3 id="premier-eprouver" data-toc="sub">L'éprouver, sans rien lancer</h3>
+  <h3 id="premier-eprouver" data-toc="sub">Testing it, without starting anything</h3>
 
-  <pre class="code"><code>python3 -m pytest mon-premier-module/ -v</code></pre>
+  <pre class="code"><code>python3 -m pytest my-first-module/ -v</code></pre>
 
-  <p>Cinq essais passent. Remarquez ce qu'ils <em>n'exigent pas</em> : ni le
-  logiciel lancé, ni une carte branchée, ni une plante sur le bureau. Les
-  essais fabriquent un signal plausible et un faux contexte, puis appellent
-  votre code. C'est ce qui permet de développer un module dans le train.</p>
+  <p>Five tests pass. Notice what they <em>do not require</em>: no running
+  software, no board plugged in, no plant on the desk. The tests build a
+  plausible signal and a fake context, then call your code. That is what makes
+  it possible to develop a module on a train.</p>
 
   <div class="callout">
-    <h4>Le faux contexte</h4>
-    <p>Il est fourni avec les essais, et vous le recopierez. Il implémente ce
-    dont votre module se sert, et rien d'autre. Si un essai échoue parce
-    qu'une méthode y manque, c'est le signe que vous employez une partie de
-    l'interface qu'il faudra aussi éprouver — ce qui est une bonne nouvelle,
-    pas un ennui.</p>
+    <h4>The fake context</h4>
+    <p>It is shipped with the tests, and you will copy it. It implements what
+    your module uses, and nothing else. If a test fails because a method is
+    missing from it, that is a sign you are using a part of the interface which
+    will also have to be tested — which is good news, not a nuisance.</p>
   </div>
 
-  <h3 id="premier-installer" data-toc="sub">L'installer</h3>
+  <h3 id="premier-installer" data-toc="sub">Installing it</h3>
 
   <pre class="code"><code># Linux
-cp -r mon-premier-module ~/.config/phytoscope/modules/
+cp -r my-first-module ~/.config/phytoscope/modules/
 
 # macOS
-cp -r mon-premier-module ~/Library/Application\ Support/PhytoScope/modules/
+cp -r my-first-module ~/Library/Application\ Support/PhytoScope/modules/
 
 # Windows
-xcopy /E mon-premier-module %APPDATA%\PhytoScope\modules\mon-premier-module\</code></pre>
+xcopy /E my-first-module %APPDATA%\PhytoScope\modules\my-first-module\</code></pre>
 
-  <p>Relancez PhytoScope. Votre module apparaît à deux endroits :
-  dans l'onglet <strong>Multimètre → Grandeurs scientifiques</strong>, où ses
-  valeurs s'affichent parmi celles des modules livrés ; et dans l'onglet
-  <strong>Diagnostic → Modules</strong>, qui liste ce qui est chargé.</p>
+  <p>Restart PhytoScope. Your module shows up in two places: in the
+  <strong>Multimeter → Scientific quantities</strong> tab, where its values
+  appear among those of the shipped modules; and in the
+  <strong>Diagnostics → Modules</strong> tab, which lists what has been
+  loaded.</p>
 
-  <h3 id="premier-rien" data-toc="sub">Si rien n'apparaît</h3>
+  <h3 id="premier-rien" data-toc="sub">If nothing appears</h3>
 
-  <p>Allez au Diagnostic. La page Modules dit en une phrase ce qui s'est
-  passé. C'est la page qu'on regarde <em>en premier</em>, avant de douter de
-  soi :</p>
+  <p>Go to Diagnostics. The Modules page says in one sentence what happened.
+  That is the page to look at <em>first</em>, before doubting yourself:</p>
 
   <table class="tab">
-    <thead><tr><th>Ce qui s'affiche</th><th>Ce que cela signifie</th></tr></thead>
+    <thead><tr><th>What it shows</th><th>What it means</th></tr></thead>
     <tbody>
-      <tr><td><code>incompatible</code> — vise l'API 2.0</td>
-          <td>votre manifeste annonce une version d'interface que ce logiciel
-          ne connaît pas. Corrigez <code>api=</code>.</td></tr>
-      <tr><td><code>incompatible</code> — bibliothèque absente</td>
-          <td>vous avez déclaré <code>exige=("scipy",)</code> et scipy n'est
-          pas installé. La commande à taper est donnée.</td></tr>
-      <tr><td><code>en_faute</code> — TypeError au chargement</td>
-          <td>votre code a levé. La trace complète est dans le journal
+      <tr><td><code>incompatible</code> — targets API 2.0</td>
+          <td>your manifest announces an interface version this software does
+          not know. Correct <code>api=</code>.</td></tr>
+      <tr><td><code>incompatible</code> — library missing</td>
+          <td>you declared <code>requires=("scipy",)</code> and scipy is not
+          installed. The command to type is given on the spot.</td></tr>
+      <tr><td><code>faulted</code> — TypeError while loading</td>
+          <td>your code raised. The full traceback is in the log
           (<kbd>Ctrl+L</kbd>).</td></tr>
-      <tr><td><code>desactive</code></td>
-          <td>l'utilisateur l'a désactivé dans les réglages.</td></tr>
-      <tr><td>absent de la liste</td>
-          <td>le dossier n'est pas au bon endroit, ou il ne contient pas de
-          fichier <code>module.py</code>.</td></tr>
+      <tr><td><code>disabled</code></td>
+          <td>the user turned it off in the settings.</td></tr>
+      <tr><td>absent from the list</td>
+          <td>the directory is in the wrong place, or it holds no
+          <code>module.py</code> file.</td></tr>
     </tbody>
   </table>
 </section>
 
-<!-- ====================== ANATOMIE ====================== -->
+<!-- ====================== ANATOMY ====================== -->
 <section class="chapter pagebreak">
-  <h2 id="anatomie" data-toc="chapter">2. Anatomie d'un module</h2>
+  <h2 id="anatomie" data-toc="chapter">2. The anatomy of a module</h2>
 
-  <p class="chapo">Un module est un dossier contenant un fichier
-  <code>module.py</code>, qui déclare une classe héritant de
-  <code>Module</code>. Tout le reste est facultatif.</p>
+  <p class="chapo">A module is a directory holding a <code>module.py</code>
+  file, which declares a class inheriting from <code>Module</code>. Everything
+  else is optional.</p>
 
-  <h3 id="anatomie-manifeste" data-toc="sub">Le manifeste, seul élément obligatoire</h3>
+  <h3 id="anatomie-manifeste" data-toc="sub">The manifest, the one required part</h3>
 
-  <pre class="code"><code>from phytoscope.api import Capacite, Manifeste, Module
+  <pre class="code"><code>from phytoscope.api import Capability, Manifest, Module
 
-class MonModule(Module):
-    MANIFESTE = Manifeste(
-        nom="mon-module",           # a-z, 0-9, tirets — l'identifiant
-        titre="Mon module",         # ce que l'utilisateur lit
+class MyModule(Module):
+    MANIFEST = Manifest(
+        name="my-module",            # a-z, 0-9, hyphens — the identifier
+        title="My module",          # what the user reads
         version="1.0.0",
-        api="1.0",                  # la version d'interface visée
-        description="Ce que fait ce module.",
-        auteur="Votre nom",
+        api="3.0",                  # the interface version aimed at
+        description="What this module does.",
+        author="Your name",
         licence="MIT",
-        capacites=(Capacite.ANALYSEUR,),
+        capabilities=(Capability.ANALYSER,),
     )</code></pre>
 
   <div class="callout important">
-    <h4>Le manifeste est lu sans exécuter votre code</h4>
-    <p>Le logiciel analyse syntaxiquement <code>module.py</code> pour en
-    extraire le manifeste, <em>avant</em> de l'importer. C'est ce qui lui
-    permet de lister les modules présents, d'en désactiver un et de refuser
-    celui qui vise une interface inconnue — sans avoir à exécuter du code pour
-    savoir s'il faut l'exécuter.</p>
-    <p><strong>Conséquence pratique :</strong> écrivez des valeurs littérales.
-    Une valeur calculée — <code>version=lire_version()</code> — ne sera pas
-    lue, et le défaut s'appliquera. Seules les constantes de
-    <code>Capacite</code> font exception, parce qu'elles appartiennent au
-    contrat.</p>
+    <h4>The manifest is read without running your code</h4>
+    <p>The software parses <code>module.py</code> to extract the manifest,
+    <em>before</em> importing it. That is what lets it list the modules
+    present, disable one, and refuse the one that aims at an unknown interface
+    — without having to run code in order to find out whether the code should
+    be run.</p>
+    <p><strong>The practical consequence:</strong> write literal values. A
+    computed value — <code>version=read_version()</code> — will not be read,
+    and the default will apply. Only the constants of <code>Capability</code>
+    are an exception, because they belong to the contract.</p>
   </div>
 
-  <h3 id="anatomie-champs" data-toc="sub">Les champs du manifeste</h3>
+  <h3 id="anatomie-champs" data-toc="sub">The manifest's fields</h3>
 
   <table class="tab">
-    <thead><tr><th>Champ</th><th>Rôle</th><th>Défaut</th></tr></thead>
+    <thead><tr><th>Field</th><th>Role</th><th>Default</th></tr></thead>
     <tbody>
-      <tr><td><code>nom</code></td><td>l'identifiant technique. Sert de clé
-        partout : réglages, dossier, journal.</td><td><em>obligatoire</em></td></tr>
-      <tr><td><code>titre</code></td><td>ce qui s'affiche</td><td>le nom</td></tr>
-      <tr><td><code>version</code></td><td>la vôtre, en sémantique</td><td>0.1.0</td></tr>
-      <tr><td><code>api</code></td><td>la version d'interface visée</td><td>la courante</td></tr>
-      <tr><td><code>capacites</code></td><td>ce que vous fournissez.
-        <strong>Déclaratif</strong> : ce qui n'est pas là n'est pas proposé,
-        même si la méthode existe.</td><td>aucune</td></tr>
-      <tr><td><code>depend_de</code></td><td>les modules à charger avant le
-        vôtre, par leur nom</td><td>aucun</td></tr>
-      <tr><td><code>exige</code></td><td>les bibliothèques Python nécessaires.
-        Vérifiées <em>avant</em> l'import.</td><td>aucune</td></tr>
-      <tr><td><code>description</code>, <code>auteur</code>,
-        <code>licence</code>, <code>site</code></td><td>affichés dans le
-        Diagnostic</td><td>vide</td></tr>
+      <tr><td><code>name</code></td><td>the technical identifier. It serves as
+        the key everywhere: settings, directory, log.</td><td><em>required</em></td></tr>
+      <tr><td><code>title</code></td><td>what is displayed</td><td>the name</td></tr>
+      <tr><td><code>version</code></td><td>yours, semantic</td><td>0.1.0</td></tr>
+      <tr><td><code>api</code></td><td>the <strong>minimum</strong> interface
+        version you need. Accepted on any later minor of the same major.</td>
+        <td>the current one</td></tr>
+      <tr><td><code>capabilities</code></td><td>what you provide.
+        <strong>Declarative</strong>: what is not there is not offered,
+        even if the method exists.</td><td>none</td></tr>
+      <tr><td><code>depends_on</code></td><td>the modules to load before
+        yours, by their name</td><td>none</td></tr>
+      <tr><td><code>requires</code></td><td>the Python libraries needed.
+        Checked <em>before</em> the import.</td><td>none</td></tr>
+      <tr><td><code>description</code>, <code>author</code>,
+        <code>licence</code>, <code>website</code></td><td>displayed in
+        Diagnostics</td><td>empty</td></tr>
     </tbody>
   </table>
 
-  <h3 id="anatomie-cycle" data-toc="sub">Le cycle de vie</h3>
+  <h3 id="anatomie-version" data-toc="sub">The version contract, both ways</h3>
+
+  <p><code>api</code> is a <strong>minimum</strong>, and the host reads it as
+  one. The question can be asked from either side, through the same parser, so
+  the two answers cannot drift apart.</p>
+
+  <pre class="code"><code># your module, asking what it is running on
+context.api_version            # "3.0" — the host's API version
+context.api_required           # "3.0" — what YOUR manifest asked for
+context.api_at_least("3.2")    # bool — same major, minor at least
+
+# the host, asking what your module needs
+manifest.api                   # "3.0" — the minimum, as you wrote it
+manifest.api_required          # (3, 0) — the same, parsed
+manifest.api_satisfied_by      # "API 3.0 or any later 3.x"
+registry.api_requirements()    # the minimum of every module at once</code></pre>
+
+  <div class="callout">
+    <h4>Declare the lowest that suffices</h4>
+    <p>A module that needs 3.0 to work at all, but would <em>like</em> a field
+    added in 3.2, declares <code>api="3.0"</code> and asks at run time:</p>
+    <pre class="code"><code>if context.api_at_least("3.2"):
+    return self._with_the_new_field(x, fs, context)
+return self._the_way_that_works_on_3_0(x, fs, context)</code></pre>
+    <p>Declaring <code>3.2</code> because that is what its author had
+    installed makes the module refused on every 3.0 and 3.1 host, to gain one
+    optional field. The manifest states what you <em>need</em>; the context
+    tells you what you <em>got</em>.</p>
+  </div>
+
+  <h3 id="anatomie-cycle" data-toc="sub">The life cycle</h3>
 
   <figure class="figframe">
-    <img src="assets/svg/sdk-cycle.svg" alt="Le cycle de vie d'un module"/>
-    <figcaption>Fig. ## — Les quatre moments de la vie d'un module. Une faute,
-    à n'importe lequel, désactive le module et laisse le logiciel tourner.</figcaption>
+    <img src="assets/svg/sdk-cycle.svg" alt="The life cycle of a module"/>
+    <figcaption>Fig. ## — The four moments in the life of a module. A fault at
+    any of them disables the module and leaves the software running.</figcaption>
   </figure>
 
   <ol>
-    <li><code>__init__(contexte)</code> — vous recevez le contexte.
-      <strong>Ne faites rien de long ici</strong> : c'est appelé au démarrage,
-      pour tous les modules, l'un après l'autre.</li>
-    <li><code>installer()</code> — une fois, après le chargement de tous les
-      modules. C'est ici qu'on s'abonne et qu'on prépare ses fichiers.</li>
-    <li>vos capacités sont appelées pendant la séance, à la demande.</li>
-    <li><code>arreter()</code> — une fois, à la fermeture. Fermez ce que vous
-      avez ouvert ; les abonnements sont retirés pour vous.</li>
+    <li><code>__init__(context)</code> — you are handed the context.
+      <strong>Do nothing lengthy here</strong>: this is called at start-up, for
+      every module, one after another.</li>
+    <li><code>setup()</code> — once, after every module has been loaded.
+      This is where you subscribe and prepare your files.</li>
+    <li>your capabilities are called during the session, on demand.</li>
+    <li><code>shutdown()</code> — once, at shutdown. Close what you opened; your
+      subscriptions are removed for you.</li>
   </ol>
 
-  <h3 id="anatomie-reglages" data-toc="sub">Vos réglages</h3>
+  <h3 id="anatomie-reglages" data-toc="sub">Your settings</h3>
 
-  <pre class="code"><code>def reglages_par_defaut(self):
-    return {"seuil_uv": 8.0, "montrer_le_detail": True}
+  <pre class="code"><code>def default_settings(self):
+    return {"seuil_uv": 8.0, "show_detail": True}
 
-# plus tard, dans une capacité :
-seuil = contexte.reglages.get("seuil_uv", 8.0)</code></pre>
+# later on, inside a capability:
+seuil = context.settings.get("seuil_uv", 8.0)</code></pre>
 
-  <p>Le logiciel les conserve sous le nom de votre module et vous les rend au
-  démarrage suivant. <strong>N'écrivez jamais vous-même dans le fichier de
-  réglages du logiciel</strong> : il ne vous appartient pas, et sa forme peut
-  changer.</p>
+  <p>The software keeps them under your module's name and hands them back at
+  the next start-up. <strong>Never write into the software's own settings file
+  yourself</strong>: it is not yours, and its shape may change.</p>
 </section>
 
-<!-- ====================== LES CINQ CAPACITÉS ====================== -->
+<!-- ====================== THE FIVE CAPABILITIES ====================== -->
 <section class="chapter pagebreak">
-  <h2 id="capacites" data-toc="chapter">3. Les cinq capacités</h2>
+  <h2 id="capacites" data-toc="chapter">3. The five capabilities</h2>
 
-  <p class="chapo">Une capacité est ce que votre module sait faire. Vous en
-  déclarez une, plusieurs, ou aucune — un module qui ne fait quelque chose
-  qu'à l'installation et à l'arrêt est parfaitement légitime.</p>
+  <p class="chapo">A capability is what your module knows how to do. You
+  declare one, several, or none — a module that acts only at install and at
+  shutdown is perfectly legitimate.</p>
 
-  <h3 id="cap-analyseur" data-toc="sub">Analyseur — calculer des grandeurs</h3>
+  <h3 id="cap-analyseur" data-toc="sub">Analyser — computing quantities</h3>
 
-  <p>Appelé par l'onglet Multimètre, toutes les deux secondes, et
-  <em>seulement quand la page est visible</em>. Vous recevez une fenêtre de
-  signal et rendez des nombres.</p>
+  <p>Called by the Multimeter tab, every two seconds, and <em>only while the
+  page is visible</em>. You are handed a window of signal and return
+  numbers.</p>
 
-  <pre class="code"><code>class MonAnalyse(Module, Analyseur):
-    FENETRE_S = 60.0        # combien de secondes vous voulez
-    SIGNAL_BRUT = True      # avant réjecteur et passe-bas
+  <pre class="code"><code>class MyAnalysis(Module, Analyser):
+    WINDOW_S = 60.0        # how many seconds you want
+    RAW_SIGNAL = True      # before the notch and the low-pass
 
-    def analyser(self, x, fs, contexte):
-        return [Grandeur(
-            cle="mon-indicateur",
-            libelle="Mon indicateur",
-            valeur=float(np.std(x)),
-            texte=f"{np.std(x) * 1e6:.2f} µV",
-            sens="Ce que ce nombre dit, et ce qu'il ne dit pas.",
+    def analyse(self, x, fs, context):
+        return [Quantity(
+            key="my-indicator",
+            label="My indicator",
+            value=float(np.std(x)),
+            text=f"{np.std(x) * 1e6:.2f} µV",
+            meaning="What this number says, and what it does not say.",
         )]</code></pre>
 
   <div class="callout important">
-    <h4>Brut ou traité : le choix compte</h4>
-    <p><code>SIGNAL_BRUT = True</code> donne le signal <em>avant</em> le
-    réjecteur de réseau et le passe-bas. C'est ce qu'il faut pour toute mesure
-    de bruit : <strong>filtrer avant de mesurer le bruit revient à mesurer son
-    propre filtre</strong>. Le réjecteur effacerait le résidu de secteur qu'on
-    cherche justement à voir, et le passe-bas à 40 Hz effacerait la bande où
-    se lit le bruit thermique.</p>
-    <p><code>False</code> donne le signal traité, celui qu'on voit à l'écran.
-    C'est ce qu'il faut pour analyser l'<em>activité</em> plutôt que la chaîne
-    de mesure.</p>
+    <h4>Raw or processed: the choice matters</h4>
+    <p><code>RAW_SIGNAL = True</code> gives the signal <em>before</em> the
+    mains notch and the low-pass. That is what any noise measurement needs:
+    <strong>filtering before measuring noise amounts to measuring your own
+    filter</strong>. The notch would erase the mains residue that is precisely
+    what one wants to see, and the 40 Hz low-pass would erase the band in
+    which thermal noise is read.</p>
+    <p><code>False</code> gives the processed signal, the one seen on screen.
+    That is what is needed for analysing <em>activity</em> rather than the
+    measurement chain.</p>
   </div>
 
-  <h3 id="cap-descripteur" data-toc="sub">Descripteur — produire une courbe</h3>
+  <h3 id="cap-descripteur" data-toc="sub">Descriptor — producing a curve</h3>
 
-  <p>Appelé à la demande de l'utilisateur, dans l'onglet Descripteurs. Ce
-  n'est pas un chemin critique : un calcul d'une seconde est acceptable.</p>
+  <p>Called at the user's request, in the Descriptors tab. This is not a
+  critical path: a second of computation is acceptable.</p>
 
-  <pre class="code"><code>def decrire(self, x, fs, contexte):
+  <pre class="code"><code>def describe(self, x, fs, context):
     t = np.arange(x.size) / fs
     return [Trace(
         x=t, y=x * 1e6,
-        titre="Ma représentation",
-        x_libelle="temps (s)", y_libelle="µV",
-        avertissement="Ce que cette représentation suppose.",
+        title="My representation",
+        x_label="time (s)", y_label="µV",
+        warning="What this representation assumes.",
     )]</code></pre>
 
-  <h3 id="cap-sonificateur" data-toc="sub">Sonificateur — faire des notes</h3>
+  <h3 id="cap-sonificateur" data-toc="sub">Sonifier — making notes</h3>
 
-  <p>Appelé pour chaque événement détecté. <strong>Soyez rapide</strong> :
-  vous êtes dans la boucle de rendu musical. Rendre une liste vide signifie
-  « pas de note pour cette valeur », ce qui est une réponse légitime.</p>
+  <p>Called for every event detected. <strong>Be quick</strong>: you are
+  inside the musical rendering loop. Returning an empty list means "no note
+  for this value", which is a legitimate answer.</p>
 
-  <pre class="code"><code>def sonifier(self, valeur_v, contexte):
-    gamme = (0, 2, 4, 5, 7, 9, 11)          # diatonique
-    rang = int(abs(valeur_v) * 1e6) % len(gamme)
-    return [NoteProposee(hauteur_midi=60 + gamme[rang],
-                         velocite=70, duree_s=0.4,
-                         origine_v=valeur_v)]</code></pre>
+  <pre class="code"><code>def sonify(self, value_v, context):
+    gamme = (0, 2, 4, 5, 7, 9, 11)          # diatonic
+    rang = int(abs(value_v) * 1e6) % len(gamme)
+    return [ProposedNote(midi_pitch=60 + gamme[rang],
+                         velocity=70, duration_s=0.4,
+                         source_v=value_v)]</code></pre>
 
-  <p>Le champ <code>origine_v</code> n'est pas décoratif : il conserve la
-  valeur mesurée qui a produit la note. Une sonification dont on ne peut plus
-  remonter à la mesure n'est plus une mesure.</p>
+  <p>The <code>source_v</code> field is not decorative: it keeps the measured
+  value that produced the note. A sonification from which one can no longer
+  get back to the measurement is no longer a measurement.</p>
 
-  <h3 id="cap-exportateur" data-toc="sub">Exportateur — un autre format</h3>
+  <h3 id="cap-exportateur" data-toc="sub">Exporter — another format</h3>
 
-  <pre class="code"><code>FORMAT = "Mon format"        # ce qui s'affiche dans la liste
+  <pre class="code"><code>FORMAT = "My format"         # what appears in the list
 EXTENSION = ".xyz"
 
-def exporter(self, seance, cible, contexte):
-    # `seance` est le dossier de la séance — LISEZ-Y, n'y écrivez pas.
-    # `cible` est le fichier à produire — c'est le seul endroit où écrire.
+def export(self, session, target, context):
+    # `session` is the session's directory — READ from it, do not write to it.
+    # `target` is the file to produce — the only place to write.
     return True</code></pre>
 
-  <h3 id="cap-source" data-toc="sub">Source — un flux de mesure</h3>
+  <h3 id="cap-source" data-toc="sub">Source — a measurement stream</h3>
 
-  <p>La plus délicate : elle s'exécute sur le chemin des données. Le logiciel
-  vous isole autant qu'il peut, mais <strong>il ne peut pas vous isoler du
-  temps que vous prenez</strong>. Une source lente fait tomber des
-  échantillons, et cela ne se rattrape pas.</p>
+  <p>The most delicate one: it runs on the data path. The software isolates
+  you as far as it can, but <strong>it cannot isolate you from the time you
+  take</strong>. A slow source drops samples, and that cannot be made up
+  for.</p>
 
-  <pre class="code"><code>LIBELLE = "Ma carte"
+  <pre class="code"><code>LABEL = "My board"
 
-def ouvrir(self, contexte): ...   # rend vrai si c'est ouvert
-def lire(self): ...               # un bloc en volts, ou None
-def fermer(self): ...</code></pre>
+def open(self, context): ...   # returns true once it is open
+def read(self): ...               # a block in volts, or None
+def close(self): ...</code></pre>
 
-  <h3 id="cap-tableau" data-toc="sub">En résumé</h3>
+  <h3 id="cap-tableau" data-toc="sub">In summary</h3>
 
   <table class="tab">
-    <thead><tr><th>Capacité</th><th>Appelée</th><th>Contrainte de temps</th></tr></thead>
+    <thead><tr><th>Capability</th><th>Called</th><th>Time constraint</th></tr></thead>
     <tbody>
-      <tr><td>Analyseur</td><td>toutes les 2 s, page visible</td>
-          <td>quelques dizaines de ms</td></tr>
-      <tr><td>Descripteur</td><td>à la demande</td><td>une seconde passe</td></tr>
-      <tr><td>Sonificateur</td><td>à chaque événement</td>
-          <td><strong>très court</strong></td></tr>
-      <tr><td>Exportateur</td><td>à la demande</td><td>aucune</td></tr>
-      <tr><td>Source</td><td>en continu</td>
-          <td><strong>critique</strong></td></tr>
+      <tr><td>Analyser</td><td>every 2 s, page visible</td>
+          <td>a few tens of ms</td></tr>
+      <tr><td>Descriptor</td><td>on demand</td><td>a second will do</td></tr>
+      <tr><td>Sonifier</td><td>on every event</td>
+          <td><strong>very short</strong></td></tr>
+      <tr><td>Exporter</td><td>on demand</td><td>none</td></tr>
+      <tr><td>Source</td><td>continuously</td>
+          <td><strong>critical</strong></td></tr>
     </tbody>
   </table>
+
+  <div class="callout important">
+    <h4>Three of the five are not consumed yet</h4>
+    <p>As of PhytoScope 1.5, the host asks the registry for two capabilities
+    only: <code>providers(Capability.ANALYSER)</code>, in
+    <code>ui/tabs.py</code>, and <code>providers(Capability.DESCRIPTOR)</code>,
+    in <code>ui/features_tab.py</code>. The contract declares all five, the
+    registry records all five, and a manifest announcing any of them is
+    accepted — but a sonifier, an exporter or a source will load, show as
+    <code>active</code> in Diagnostics, and never be called. The shipped
+    <code>export-csv</code> module is in exactly that position.</p>
+    <p>We would rather say so than let you spend an evening looking for the
+    mistake in your own code. Write against the first two today; a module
+    written against the other three will start working the day the host asks
+    for it, without changing.</p>
+  </div>
 </section>
 
 <section class="chapter pagebreak">
-  <h2 id="evenements" data-toc="chapter">4. Les événements</h2>
+  <h2 id="evenements" data-toc="chapter">4. Events</h2>
 
-  <p class="chapo">Un module n'interroge pas le logiciel en boucle : il dit ce
-  qui l'intéresse, et l'hôte l'appelle. C'est le seul moyen d'avoir des modules
-  qui ne coûtent rien quand il ne se passe rien.</p>
+  <p class="chapo">A module does not poll the software in a loop: it says what
+  interests it, and the host calls it. That is the only way to have modules
+  that cost nothing when nothing is happening.</p>
 
-  <pre class="code"><code>from phytoscope.api import EVENEMENT_DETECTE
+  <pre class="code"><code>from phytoscope.api import EVENT_DETECTED
 
-def installer(self):
-    self.contexte.abonner(EVENEMENT_DETECTE, self._sur_evenement)
+def setup(self):
+    self.context.subscribe(EVENT_DETECTED, self._sur_evenement)
 
 def _sur_evenement(self, instant_s, amplitude_v):
     self._compte += 1</code></pre>
 
-  <h3 id="evenements-liste" data-toc="sub">Ce qu'on peut écouter</h3>
+  <h3 id="evenements-liste" data-toc="sub">What can be listened to</h3>
 
   <table class="tab">
-    <thead><tr><th>Constante</th><th>Le rappel reçoit</th></tr></thead>
+    <thead><tr><th>Constant</th><th>The callback receives</th></tr></thead>
     <tbody>
-      <tr><td><code>MESURE_DEMARREE</code></td><td><code>(etat)</code></td></tr>
-      <tr><td><code>MESURE_ARRETEE</code></td><td><code>(etat)</code></td></tr>
-      <tr><td><code>SOURCE_CHANGEE</code></td><td><code>(nom)</code></td></tr>
-      <tr><td><code>EVENEMENT_DETECTE</code></td><td><code>(instant_s, amplitude_v)</code></td></tr>
-      <tr><td><code>NOTE_JOUEE</code></td><td><code>(hauteur_midi, velocite)</code></td></tr>
-      <tr><td><code>ENONCE_PRODUIT</code></td><td><code>(texte)</code></td></tr>
-      <tr><td><code>SEANCE_COMMENCEE</code></td><td><code>(dossier)</code></td></tr>
-      <tr><td><code>SEANCE_TERMINEE</code></td><td><code>(dossier)</code></td></tr>
-      <tr><td><code>ECHANTILLON_CAPTURE</code></td><td><code>(chemin)</code></td></tr>
-      <tr><td><code>REGLAGES_MODIFIES</code></td><td><em>rien</em></td></tr>
-      <tr><td><code>ALERTE_DISQUE</code></td><td><code>(megaoctets_restants)</code></td></tr>
+      <tr><td><code>MEASUREMENT_STARTED</code></td><td><code>(state)</code></td></tr>
+      <tr><td><code>MEASUREMENT_STOPPED</code></td><td><code>(state)</code></td></tr>
+      <tr><td><code>SOURCE_CHANGED</code></td><td><code>(name)</code></td></tr>
+      <tr><td><code>EVENT_DETECTED</code></td><td><code>(instant_s, amplitude_v)</code></td></tr>
+      <tr><td><code>NOTE_PLAYED</code></td><td><code>(midi_pitch, velocity)</code></td></tr>
+      <tr><td><code>UTTERANCE_PRODUCED</code></td><td><code>(text)</code></td></tr>
+      <tr><td><code>SESSION_STARTED</code></td><td><code>(directory)</code></td></tr>
+      <tr><td><code>SESSION_ENDED</code></td><td><code>(directory)</code></td></tr>
+      <tr><td><code>SAMPLE_CAPTURED</code></td><td><code>(path)</code></td></tr>
+      <tr><td><code>SETTINGS_CHANGED</code></td><td><em>nothing</em></td></tr>
+      <tr><td><code>DISK_ALERT</code></td><td><code>(megaoctets_restants)</code></td></tr>
     </tbody>
   </table>
 
-  <h3 id="evenements-garanties" data-toc="sub">Ce que l'hôte garantit</h3>
+  <h3 id="evenements-garanties" data-toc="sub">What the host guarantees</h3>
 
   <div class="callout important">
-    <h4>Les rappels viennent du fil de l'interface</h4>
-    <p>Jamais du fil d'acquisition. Un module qui met trente millisecondes à
-    répondre ralentit l'affichage ; il ne fait pas tomber un échantillon.</p>
-    <p>Ce n'est pas une permission d'être lent. Trente millisecondes à chaque
-    événement, sur une plante active, se voient à l'écran.</p>
+    <h4>Callbacks come from the interface thread</h4>
+    <p>Never from the acquisition thread. A module that takes thirty
+    milliseconds to answer slows the display down; it does not drop a
+    sample.</p>
+    <p>That is not permission to be slow. Thirty milliseconds at every event,
+    on an active plant, shows on screen.</p>
   </div>
 
-  <p><strong>Un rappel qui lève est désabonné sur-le-champ</strong>, et
-  l'incident inscrit au journal avec le nom du module. C'est délibéré : laisser
-  branché un abonné fautif reviendrait à inscrire la même trace toutes les
-  secondes, et à rendre illisible le journal — celui-là même dont on a besoin
-  pour comprendre la panne.</p>
+  <p><strong>A callback that raises is unsubscribed on the spot</strong>, and
+  the incident written to the log with the module's name. That is deliberate:
+  leaving a faulty subscriber connected would mean writing the same traceback
+  every second, and making the log unreadable — the very log one needs in order
+  to understand the fault.</p>
 
-  <p>Si votre module « cesse de réagir » après quelques minutes, regardez le
-  journal : vous y trouverez la faute, et l'heure à laquelle il a été
-  débranché.</p>
+  <p>If your module "stops reacting" after a few minutes, look at the log: you
+  will find the fault there, and the time at which it was disconnected.</p>
 
-  <h3 id="evenements-futur" data-toc="sub">S'abonner à ce qui n'existe pas encore</h3>
+  <h3 id="evenements-futur" data-toc="sub">Subscribing to what does not exist yet</h3>
 
-  <p>Ce n'est pas une erreur : le rappel ne sera simplement jamais appelé.
-  C'est voulu. Une version ultérieure peut publier de nouveaux événements sans
-  que les modules anciens aient à changer, et un module peut profiter d'un
-  événement récent tout en restant chargeable sur une version plus ancienne.</p>
+  <p>That is not an error: the callback will simply never be called. It is
+  intended. A later version can publish new events without older modules
+  having to change, and a module can take advantage of a recent event while
+  remaining loadable on an older version.</p>
 </section>
 
 <section class="chapter pagebreak">
-  <h2 id="pieges" data-toc="chapter">5. Les pièges</h2>
+  <h2 id="pieges" data-toc="chapter">5. Pitfalls</h2>
 
-  <p class="chapo">Ce qui coûte une soirée quand on l'ignore. Ils sont tous
-  réels : chacun a été rencontré en écrivant les modules livrés avec le
-  logiciel.</p>
+  <p class="chapo">What costs you an evening when you do not know about it.
+  Every one of these is real: each was met while writing the modules shipped
+  with the software.</p>
 
-  <h3 id="piege-manifeste" data-toc="sub">Le manifeste doit être littéral</h3>
+  <h3 id="piege-manifeste" data-toc="sub">The manifest has to be literal</h3>
 
-  <pre class="code"><code># NON — ne sera pas lu, le défaut s'appliquera
-MANIFESTE = Manifeste(nom="mon-module", version=lire_ma_version())
+  <pre class="code"><code># NO — will not be read, and the default will apply
+MANIFEST = Manifest(name="my-module", version=read_my_version())
 
-# NON — pareil, même avec une constante du module
+# NO — the same, even with a constant of the module
 VERSION = "1.0.0"
-MANIFESTE = Manifeste(nom="mon-module", version=VERSION)
+MANIFEST = Manifest(name="my-module", version=VERSION)
 
-# OUI
-MANIFESTE = Manifeste(nom="mon-module", version="1.0.0")</code></pre>
+# YES
+MANIFEST = Manifest(name="my-module", version="1.0.0")</code></pre>
 
-  <p>Le logiciel analyse syntaxiquement votre fichier pour en extraire le
-  manifeste, <em>avant</em> de l'importer. Exécuter un module pour savoir s'il
-  faut l'exécuter serait absurde.</p>
+  <p>The software parses your file to extract the manifest, <em>before</em>
+  importing it. Running a module in order to find out whether it should be run
+  would be absurd.</p>
 
-  <h3 id="piege-lever" data-toc="sub">Ne jamais lever pour dire « rien à signaler »</h3>
+  <h3 id="piege-lever" data-toc="sub">Never raise to say "nothing to report"</h3>
 
-  <pre class="code"><code># NON — désactive votre module pour toute la séance
+  <pre class="code"><code># NO — disables your module for the whole session
 if x.size == 0:
-    raise ValueError("pas de signal")
+    raise ValueError("no signal")
 
-# OUI
+# YES
 if x.size == 0:
     return []</code></pre>
 
-  <h3 id="piege-gabarit" data-toc="sub">Les libellés avec un nombre sont des gabarits</h3>
+  <h3 id="piege-gabarit" data-toc="sub">Labels containing a number are templates</h3>
 
-  <pre class="code"><code># NON — cette phrase ne peut entrer dans aucun catalogue de traduction
-Grandeur(libelle=f"Écart d'Allan à {tau} s", ...)
+  <pre class="code"><code># NO — this sentence cannot go into any translation catalogue
+Quantity(label=f"Allan deviation at {tau} s", ...)
 
-# OUI
-Grandeur(libelle="Écart d'Allan à {tau} s", params={"tau": f"{tau:g}"}, ...)</code></pre>
+# YES
+Quantity(label="Allan deviation at {tau} s", params={"tau": f"{tau:g}"}, ...)</code></pre>
 
-  <p>L'interface traduit <strong>d'abord</strong>, remplit ensuite. Un libellé
-  où le nombre est déjà incrusté restera en français dans les dix autres
-  langues.</p>
+  <p>The interface translates <strong>first</strong> and fills in afterwards. A
+  label with the number already embedded will stay in English in all the other
+  languages.</p>
 
-  <h3 id="piege-texte" data-toc="sub">Le champ « texte » ne porte que des unités</h3>
+  <h3 id="piege-texte" data-toc="sub">The "texte" field carries units only</h3>
 
-  <pre class="code"><code>texte="+37.2 dB"                        # OUI — les symboles sont internationaux
-texte="+37.2 dB au-dessus du plancher"  # NON — restera en français partout</code></pre>
+  <pre class="code"><code>text="+37.2 dB"                        # YES — symbols are international
+text="+37.2 dB above the floor"        # NO — will stay in English everywhere</code></pre>
 
-  <p>Ce piège est d'autant plus facile qu'il ne se voit pas depuis une
-  interface française.</p>
+  <p>This pitfall is all the easier to fall into because it is invisible from
+  an English interface.</p>
 
-  <h3 id="piege-brut" data-toc="sub">Ne pas filtrer avant de mesurer le bruit</h3>
+  <h3 id="piege-brut" data-toc="sub">Do not filter before measuring noise</h3>
 
-  <p>Le signal traité a traversé le réjecteur de réseau et le passe-bas à
-  40 Hz. Mesurer le bruit dessus revient à <strong>mesurer son propre
-  filtre</strong>. Employez <code>SIGNAL_BRUT = True</code>.</p>
+  <p>The processed signal has been through the mains notch and the 40 Hz
+  low-pass. Measuring noise on it amounts to <strong>measuring your own
+  filter</strong>. Use <code>RAW_SIGNAL = True</code>.</p>
 
-  <h3 id="piege-ecrire" data-toc="sub">N'écrire que chez soi</h3>
+  <h3 id="piege-ecrire" data-toc="sub">Write nowhere but at home</h3>
 
-  <pre class="code"><code>chemin = os.path.join(self.contexte.dossier(), "mon-fichier.txt")</code></pre>
+  <pre class="code"><code>path = os.path.join(self.context.directory(), "my-file.txt")</code></pre>
 
-  <p>Rien ne vous en empêche techniquement. Mais un module qui salit le dossier
-  des séances sera désinstallé, et à juste titre.</p>
+  <p>Nothing stops you technically. But a module that litters the sessions
+  directory will be uninstalled, and rightly so.</p>
 
-  <h3 id="piege-import" data-toc="sub">N'importer que depuis phytoscope.api</h3>
+  <h3 id="piege-import" data-toc="sub">Import from phytoscope.api and nowhere else</h3>
 
-  <pre class="code"><code># NON — cassera sans préavis, et nous ne le saurons même pas
+  <pre class="code"><code># NO — will break without notice, and we shall not even know
 from phytoscope.core.engine import Engine
 
-# OUI
-from phytoscope.api import Analyseur, Grandeur, Manifeste, Module</code></pre>
+# YES
+from phytoscope.api import Analyser, Quantity, Manifest, Module</code></pre>
 
-  <p>Le moteur change à chaque version. <code>phytoscope.api</code> ne change
-  pas tant que le majeur ne change pas. Si quelque chose vous manque dans
-  l'interface, <strong>dites-le</strong> : c'est ainsi qu'elle s'enrichira.</p>
+  <p>The engine changes with every version. <code>phytoscope.api</code> does
+  not change as long as the major does not. If something you need is missing
+  from the interface, <strong>say so</strong>: that is how it will grow.</p>
 
-  <h3 id="piege-resume" data-toc="sub">En un tableau</h3>
+  <h3 id="piege-resume" data-toc="sub">In one table</h3>
 
   <table class="tab">
-    <thead><tr><th>Le piège</th><th>Le symptôme</th><th>La règle</th></tr></thead>
+    <thead><tr><th>The pitfall</th><th>The symptom</th><th>The rule</th></tr></thead>
     <tbody>
-      <tr><td>manifeste calculé</td><td>les défauts s'appliquent</td><td>des littéraux</td></tr>
-      <tr><td>exception pour « rien »</td><td>module désactivé</td><td>rendre <code>[]</code></td></tr>
-      <tr><td><code>__init__</code> long</td><td>démarrage lent</td><td><code>installer()</code></td></tr>
-      <tr><td>libellé non gabarit</td><td>intraduisible</td><td><code>{param}</code> + <code>params</code></td></tr>
-      <tr><td>mots dans <code>texte</code></td><td>français partout</td><td>symboles seulement</td></tr>
-      <tr><td>signal traité pour le bruit</td><td>on mesure son filtre</td><td><code>SIGNAL_BRUT</code></td></tr>
-      <tr><td>écrire ailleurs</td><td>module désinstallé</td><td><code>contexte.dossier()</code></td></tr>
-      <tr><td>rappel long</td><td>affichage saccadé</td><td>noter, calculer ailleurs</td></tr>
-      <tr><td>import hors API</td><td>casse à la mise à jour</td><td><code>phytoscope.api</code></td></tr>
-      <tr><td><code>sens</code> absent</td><td>l'interface vous dénonce</td><td>toujours l'écrire</td></tr>
+      <tr><td>a computed manifest</td><td>the defaults apply</td><td>use literals</td></tr>
+      <tr><td>raising for "nothing"</td><td>module disabled</td><td>return <code>[]</code></td></tr>
+      <tr><td>a lengthy <code>__init__</code></td><td>slow start-up</td><td><code>setup()</code></td></tr>
+      <tr><td>a label that is not a template</td><td>untranslatable</td><td><code>{param}</code> + <code>params</code></td></tr>
+      <tr><td>words in <code>text</code></td><td>English everywhere</td><td>symbols only</td></tr>
+      <tr><td>the processed signal for noise</td><td>you measure your filter</td><td><code>RAW_SIGNAL</code></td></tr>
+      <tr><td>writing elsewhere</td><td>module uninstalled</td><td><code>context.directory()</code></td></tr>
+      <tr><td>a lengthy callback</td><td>a jerky display</td><td>note it down, compute elsewhere</td></tr>
+      <tr><td>importing outside the API</td><td>breaks on update</td><td><code>phytoscope.api</code></td></tr>
+      <tr><td>no <code>meaning</code></td><td>the interface tells on you</td><td>always write it</td></tr>
     </tbody>
   </table>
 </section>
 
 <section class="chapter pagebreak">
-  <h2 id="fin" data-toc="chapter">6. Pour aller plus loin</h2>
+  <h2 id="migrer" data-toc="chapter">6. Migrating from API 2.0</h2>
 
-  <h3 id="fin-lire" data-toc="sub">Lire les modules livrés</h3>
+  <p class="chapo">Every name in the interface changed on 2026-09-23: the
+  surface was French, and the repository turned to technical US English.
+  <code>API_VERSION</code> went from <code>"2.0"</code> to <code>"3.0"</code>
+  in the same change, which is exactly what a major number is for.</p>
 
-  <p>Ils passent par la même interface que les vôtres — aucun privilège, aucun
-  raccourci. C'est ce qui garantit que cette interface suffit réellement, et
-  cela a une conséquence agréable : <strong>pour savoir comment écrire un
-  module, il suffit d'en lire un</strong>.</p>
+  <div class="callout important">
+    <h4>Your 2.0 module will not run, and it will not half-run</h4>
+    <p>The host reads the manifest without importing the module, sees
+    <code>api="2.0"</code>, and refuses it <em>at discovery</em>, with one
+    sentence in Diagnostics:</p>
+    <pre class="code"><code>incompatible — targets API 2.0, but this software offers 3.0</code></pre>
+    <p>Nothing is aliased, deliberately. An alias would let the module load
+    and then fail on the first field it read, halfway through a session —
+    which is the failure a major bump exists to prevent. A refusal you can
+    read at start-up is worth more than a module that works until it does
+    not.</p>
+  </div>
+
+  <h3 id="migrer-faire" data-toc="sub">Doing it</h3>
+
+  <ol>
+    <li><code>api="3.0"</code> in the manifest.</li>
+    <li><strong>Rename</strong>, with the table below. Every one is a plain
+      rename: no behaviour changed, no argument moved, nothing was added or
+      taken away.</li>
+    <li><strong>Run your tests.</strong> If they use the SDK's fake context,
+      copy the current one out of
+      <code>src/sdk/hello-world/test_hello_world.py</code> — shorter than
+      patching the old one.</li>
+  </ol>
+
+  <p>There is no step four. The interface does the same things it did, under
+  names somebody who does not read French can follow.</p>
+
+  <h3 id="migrer-table" data-toc="sub">What changed</h3>
 
   <table class="tab">
-    <thead><tr><th>Module</th><th>Ce qu'il montre</th></tr></thead>
+    <thead><tr><th>2.0</th><th>3.0</th></tr></thead>
     <tbody>
-      <tr><td><code>grandeurs-scientifiques</code></td>
-          <td>un analyseur qui calcule beaucoup, et explique chaque nombre</td></tr>
-      <tr><td><code>descripteurs-avances</code></td>
-          <td>six représentations, avec leurs avertissements</td></tr>
-      <tr><td><code>empreinte-montage</code></td>
-          <td>un module qui conserve un état sur le disque</td></tr>
-      <tr><td><code>export-csv</code></td>
-          <td>le plus court exemple complet — soixante lignes</td></tr>
+      <tr><td><code>VERSION_API</code></td><td><code>API_VERSION</code></td></tr>
+      <tr><td><code>Manifeste</code> · <code>MANIFESTE</code></td>
+          <td><code>Manifest</code> · <code>MANIFEST</code></td></tr>
+      <tr><td><code>Capacite.ANALYSEUR</code> …</td>
+          <td><code>Capability.ANALYSER</code> …</td></tr>
+      <tr><td><code>nom</code> · <code>titre</code> · <code>auteur</code> ·
+          <code>site</code></td>
+          <td><code>name</code> · <code>title</code> · <code>author</code> ·
+          <code>website</code></td></tr>
+      <tr><td><code>capacites</code> · <code>depend_de</code> ·
+          <code>exige</code></td>
+          <td><code>capabilities</code> · <code>depends_on</code> ·
+          <code>requires</code></td></tr>
+      <tr><td><code>installer()</code> · <code>arreter()</code></td>
+          <td><code>setup()</code> · <code>shutdown()</code></td></tr>
+      <tr><td><code>reglages_par_defaut()</code> · <code>self.contexte</code></td>
+          <td><code>default_settings()</code> · <code>self.context</code></td></tr>
+      <tr><td><code>analyser()</code> · <code>decrire()</code> ·
+          <code>sonifier()</code> · <code>exporter()</code></td>
+          <td><code>analyse()</code> · <code>describe()</code> ·
+          <code>sonify()</code> · <code>export()</code></td></tr>
+      <tr><td><code>FENETRE_S</code> · <code>SIGNAL_BRUT</code> ·
+          <code>LIBELLE</code></td>
+          <td><code>WINDOW_S</code> · <code>RAW_SIGNAL</code> ·
+          <code>LABEL</code></td></tr>
+      <tr><td><code>Grandeur</code>: <code>cle</code>, <code>libelle</code>,
+          <code>valeur</code>, <code>texte</code>, <code>sens</code>,
+          <code>alerte</code></td>
+          <td><code>Quantity</code>: <code>key</code>, <code>label</code>,
+          <code>value</code>, <code>text</code>, <code>meaning</code>,
+          <code>alert</code></td></tr>
+      <tr><td><code>NoteProposee</code>: <code>hauteur_midi</code>,
+          <code>velocite</code>, <code>duree_s</code>, <code>origine_v</code></td>
+          <td><code>ProposedNote</code>: <code>midi_pitch</code>,
+          <code>velocity</code>, <code>duration_s</code>,
+          <code>source_v</code></td></tr>
+      <tr><td><code>Contexte</code> · <code>EtatMesure</code></td>
+          <td><code>Context</code> · <code>MeasurementState</code></td></tr>
+      <tr><td><code>contexte.dossier()</code> · <code>.reglages</code> ·
+          <code>.journal()</code> · <code>.traduire()</code> ·
+          <code>.abonner()</code></td>
+          <td><code>context.directory()</code> · <code>.settings</code> ·
+          <code>.log()</code> · <code>.translate()</code> ·
+          <code>.subscribe()</code></td></tr>
+      <tr><td><code>"actif"</code> · <code>"en_faute"</code> ·
+          <code>"desactive"</code></td>
+          <td><code>"active"</code> · <code>"faulted"</code> ·
+          <code>"disabled"</code></td></tr>
     </tbody>
   </table>
 
-  <p>Ils vivent dans <code>src/phytoscope/phytoscope/modules/</code>.</p>
+  <p>The complete table, field by field, is in
+  <code>src/sdk/docs/08-migrating-from-2.0.md</code>.</p>
 
-  <h3 id="fin-sdk" data-toc="sub">Le SDK</h3>
+  <h3 id="migrer-neuf" data-toc="sub">What 3.0 added</h3>
 
-  <p>Dans <code>sdk/</code>, avec le code source :</p>
+  <p>Renaming was the occasion, not the whole of it. Three members on each
+  side are new, so that the version contract can be <em>read</em> rather than
+  guessed: <code>context.api_version</code>,
+  <code>context.api_required</code> and
+  <code>context.api_at_least(v)</code> for the module;
+  <code>manifest.api_required</code>,
+  <code>manifest.api_satisfied_by</code> and
+  <code>registry.api_requirements()</code> for the host; and
+  <code>parse_version()</code> for both, so that neither writes its own
+  regular expression.</p>
+
+  <p><code>Manifest.api</code> had always been a <em>minimum</em> — that is
+  what <code>compatible()</code> computed — but nothing said so, and nothing
+  handed it back parsed. The refusal now names both versions and what would
+  satisfy the module:</p>
+
+  <pre class="code"><code>needs at least API 2.0, but this software offers 3.0 — it wants API 2.0 or any later 2.x</code></pre>
+
+  <h3 id="migrer-pas" data-toc="sub">What did not change</h3>
 
   <ul>
-    <li><code>docs/</code> — cette documentation, en sept parties, au format
-      Markdown ;</li>
-    <li><code>bonjour-monde/</code> — un exemple complet avec ses essais ;</li>
-    <li><code>outils/new_module.py</code> — crée un module qui fonctionne
-      déjà.</li>
+    <li>the <strong>event wire names</strong> — <code>measurement.started</code>,
+      <code>signal.event</code> and the nine others. They were renamed in 2.0,
+      and renaming them twice would have been its own kind of cruelty;</li>
+    <li><strong>subscribing to an unknown event is still not an error</strong>;</li>
+    <li>the <strong>session files on disk</strong>: <code>mesures.csv</code>,
+      <code>evenements.csv</code>, <code>seance.json</code>. An exporter reads
+      the names it always did;</li>
+    <li>the <strong>settings file</strong>: your module's settings are still
+      stored under its name, and what you had is what you get back;</li>
+    <li>the <strong>guarantees</strong>: a module that raises still never
+      brings the software down, load order is still deterministic, and nothing
+      is still called on the acquisition thread.</li>
+  </ul>
+</section>
+
+<section class="chapter pagebreak">
+  <h2 id="fin" data-toc="chapter">7. Going further</h2>
+
+  <h3 id="fin-lire" data-toc="sub">Read the shipped modules</h3>
+
+  <p>They go through the same interface as yours — no privilege, no shortcut.
+  That is what guarantees the interface really is enough, and it has an
+  agreeable consequence: <strong>to learn how to write a module, it is enough
+  to read one</strong>.</p>
+
+  <table class="tab">
+    <thead><tr><th>Module</th><th>What it shows</th></tr></thead>
+    <tbody>
+      <tr><td><code>scientific-quantities</code></td>
+          <td>an analyser that computes a great deal, and explains every
+          number</td></tr>
+      <tr><td><code>advanced-descriptors</code></td>
+          <td>six representations, with their warnings</td></tr>
+      <tr><td><code>rig-fingerprint</code></td>
+          <td>a module that keeps state on the disk</td></tr>
+      <tr><td><code>export-csv</code></td>
+          <td>the shortest complete example — sixty lines</td></tr>
+    </tbody>
+  </table>
+
+  <p>They live in <code>src/phytoscope/phytoscope/modules/</code>.</p>
+
+  <h3 id="fin-sdk" data-toc="sub">The SDK</h3>
+
+  <p>In <code>src/sdk/</code>, with the source code:</p>
+
+  <ul>
+    <li><code>docs/</code> — this documentation, in eight parts, in Markdown;</li>
+    <li><code>hello-world/</code> — a complete example with its tests;</li>
+    <li><code>tools/new_module.py</code> — creates a module that already
+      works.</li>
   </ul>
 
-  <h3 id="fin-manque" data-toc="sub">Si quelque chose vous manque</h3>
+  <h3 id="fin-manque" data-toc="sub">If something you need is missing</h3>
 
-  <p>Dites-le. L'interface a été écrite en essayant d'anticiper, et
-  l'anticipation se trompe toujours un peu. Une capacité qui manque, un
-  événement qu'on n'a pas prévu, une donnée qu'on ne vous donne pas : ce sont
-  les demandes qui font avancer une interface, et elles sont plus utiles que
-  les compliments.</p>
+  <p>Say so. The interface was written by trying to anticipate, and
+  anticipation is always a little wrong. A capability that is missing, an event
+  nobody foresaw, a piece of data you are not given: those are the requests
+  that move an interface forward, and they are more useful than
+  compliments.</p>
 
-  <p>En revanche, nous ne l'enrichirons pas au coup par coup. Une capacité
-  ajoutée est une capacité à tenir dix ans ; nous préférons attendre qu'une
-  même demande revienne de trois côtés plutôt que de l'ajouter la première
-  fois, et d'avoir à la porter ensuite.</p>
+  <p>We shall not, however, grow it one request at a time. A capability added
+  is a capability to be honoured for ten years; we would rather wait for the
+  same request to come from three directions than add it the first time and
+  have to carry it afterwards.</p>
 
   <div class="callout">
-    <h4>Ce que nous ne ferons pas</h4>
-    <p><strong>Un bac à sable.</strong> Python ne s'y prête pas, et un bac à
-    sable mal fait donne une confiance qu'il ne mérite pas. Nous préférons dire
-    clairement ce qu'un module doit faire, rendre ce chemin facile, et isoler
-    les fautes.</p>
-    <p><strong>Un rechargement à chaud.</strong> Recharger un module dont des
-    objets sont déjà référencés ailleurs laisse deux versions en mémoire et
-    produit des bogues qu'on ne sait pas lire. Un redémarrage coûte trois
-    secondes.</p>
+    <h4>What we shall not do</h4>
+    <p><strong>A sandbox.</strong> Python does not lend itself to it, and a
+    badly made sandbox inspires a confidence it has not earned. We would rather
+    say clearly what a module ought to do, make that path easy, and isolate
+    faults.</p>
+    <p><strong>Hot reloading.</strong> Reloading a module whose objects are
+    already referenced elsewhere leaves two versions in memory and produces
+    bugs nobody can read. A restart costs three seconds.</p>
   </div>
 
-  <h3 id="fin-contact" data-toc="sub">Écrire</h3>
+  <h3 id="fin-contact" data-toc="sub">Writing to us</h3>
 
   <p>Bretagne Namasté — Thierry GAYET<br/>
   <code>contact@bretagne-namaste.com</code> ·
   <code>Thierry.Gayet@gmail.com</code><br/>
   <a href="https://bretagne-namaste.com">bretagne-namaste.com</a></p>
 
-  <p class="small">Le logiciel, le SDK et ce document sont publiés sous licence
-  MIT. Le code des exemples est à recopier sans condition.</p>
+  <p class="small">The software, the SDK and this document are published under
+  the MIT licence. The example code is yours to copy, with no conditions
+  attached.</p>
 </section>
 
 </body>

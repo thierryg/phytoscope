@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/ui/voice_tab.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """L'onglet « Parole » : le mode vocal, ses mots et sa justification.
@@ -50,10 +50,7 @@ from . import fonts
 log = get_logger(__name__)
 
 AVERTISSEMENT = (
-    "Ce n'est pas une traduction. La plante n'a pas de langage ; ces mots "
-    "sont ceux du dictionnaire choisi, appliqués à des grandeurs mesurées "
-    "selon des règles affichées ci-contre. Ce qui se dit ici est un dialogue "
-    "entre vous et votre propre grille de lecture.")
+    "This is not a translation. The plant has no language; these words are those of the chosen dictionary, applied to measured quantities according to the rules shown opposite. What is said here is a dialogue between you and your own frame of reading.")
 
 
 class VoiceTab(QWidget):
@@ -71,8 +68,8 @@ class VoiceTab(QWidget):
         bandeau = QLabel("⚠  " + t(AVERTISSEMENT))
         bandeau.setWordWrap(True)
         bandeau.setStyleSheet(
-            f"background:{palette['fond3']};color:{palette['or']};"
-            f"border:1px solid {palette['or']};border-radius:5px;padding:7px;")
+            f"background:{palette['background3']};color:{palette['gold']};"
+            f"border:1px solid {palette['gold']};border-radius:5px;padding:7px;")
         racine.addWidget(bandeau)
 
         lay = QHBoxLayout()
@@ -80,50 +77,47 @@ class VoiceTab(QWidget):
         gauche = QVBoxLayout()
 
         # --- le dictionnaire ------------------------------------------------
-        boite = QGroupBox(t("Dictionnaire"))
+        boite = QGroupBox(t("Dictionary"))
         fd = QFormLayout(boite)
-        self.chk_actif = QCheckBox(t("activer le mode vocal"))
+        self.chk_actif = QCheckBox(t("enable speech mode"))
         self.chk_actif.setChecked(v.enabled)
         self.chk_actif.setToolTip(
-            t("La plante « parle » à la place de jouer : mêmes événements, "
-              "mêmes seuils, des mots au lieu de notes."))
+            t("The plant “speaks” instead of playing: same events, same thresholds, words instead of notes."))
         self.chk_actif.stateChanged.connect(self._modifie)
-        self.chk_musique = QCheckBox(t("couper la musique pendant la parole"))
+        self.chk_musique = QCheckBox(t("mute the music while speaking"))
         self.chk_musique.setChecked(v.mute_music)
         self.chk_musique.setToolTip(
-            t("Une voix et un synthétiseur qui jouent ensemble se couvrent "
-              "l'un l'autre. La détection, elle, continue comme avant."))
+            t("A voice and a synthesiser playing together cover each other. Detection, meanwhile, carries on as before."))
         self.chk_musique.stateChanged.connect(self._modifie)
         self.cb_dico = QComboBox()
-        self.cb_dico.addItem(t("— suivre la langue de l'interface —"), "")
+        self.cb_dico.addItem(t("— follow the interface language —"), "")
         for code, titre in lexiques_livres():
             self.cb_dico.addItem(titre, code)
         _choisir(self.cb_dico, v.lexicon_code)
         self.cb_dico.currentIndexChanged.connect(self._changer_dico)
         self.lab_lexique = QLabel("")
         self.lab_lexique.setWordWrap(True)
-        self.lab_lexique.setStyleSheet(f"color:{palette['texte2']};")
+        self.lab_lexique.setStyleSheet(f"color:{palette['text2']};")
         bl = QHBoxLayout()
-        b_charger = QPushButton(t("Ouvrir…"))
+        b_charger = QPushButton(t("Open…"))
         b_charger.clicked.connect(self._charger)
-        b_modele = QPushButton(t("Écrire un modèle…"))
-        b_modele.setToolTip(t("Enregistre le dictionnaire livré dans un fichier "
-                            "JSON, à modifier avec un éditeur de texte."))
+        b_modele = QPushButton(t("Write a template…"))
+        b_modele.setToolTip(t("Saves the bundled dictionary to a JSON file, to be edited with a text editor."))
         b_modele.clicked.connect(self._ecrire_modele)
-        b_defaut = QPushButton(t("Revenir au dictionnaire livré"))
+        b_defaut = QPushButton(t("Back to the bundled dictionary"))
         b_defaut.clicked.connect(self._defaut)
         bl.addWidget(b_charger)
         bl.addWidget(b_modele)
         fd.addRow(self.chk_actif)
         fd.addRow(self.chk_musique)
-        fd.addRow(t("Dictionnaire"), self.cb_dico)
+        fd.addRow(t("Dictionary"), self.cb_dico)
         fd.addRow(self.lab_lexique)
         fd.addRow(bl)
         fd.addRow(b_defaut)
         gauche.addWidget(boite)
 
         # --- la grammaire ---------------------------------------------------
-        boite2 = QGroupBox(t("Grammaire"))
+        boite2 = QGroupBox(t("Grammar"))
         fg = QFormLayout(boite2)
         self.cb_grammaire = QComboBox()
         for cle, g in GRAMMAIRES.items():
@@ -132,10 +126,9 @@ class VoiceTab(QWidget):
         self.cb_grammaire.currentIndexChanged.connect(self._modifie)
         self.lab_grammaire = QLabel("")
         self.lab_grammaire.setWordWrap(True)
-        self.lab_grammaire.setStyleSheet(f"color:{palette['texte2']};")
+        self.lab_grammaire.setStyleSheet(f"color:{palette['text2']};")
         self.cb_sujet = QComboBox()
-        self.cb_sujet.setToolTip(t("Qui parle. C'est vous qui le décidez : "
-                                 "le signal ne dit rien à ce sujet."))
+        self.cb_sujet.setToolTip(t("Who is speaking. You decide: the signal says nothing about it."))
         self.cb_sujet.currentIndexChanged.connect(self._modifie)
         self.sl_densite = QSlider(Qt.Horizontal)
         self.sl_densite.setRange(1, 60)
@@ -145,27 +138,26 @@ class VoiceTab(QWidget):
         self.sp_tempo.setRange(5.0, 1800.0)
         self.sp_tempo.setSuffix(t(" s"))
         self.sp_tempo.setValue(float(v.tempo_scale_s))
-        self.sp_tempo.setToolTip(t("Silence au bout duquel le registre « tempo » "
-                                 "atteint son dernier mot."))
+        self.sp_tempo.setToolTip(t("The silence after which the “tempo” register reaches its last word."))
         self.sp_tempo.valueChanged.connect(self._modifie)
-        fg.addRow(t("Assemblage"), self.cb_grammaire)
+        fg.addRow(t("Assembly"), self.cb_grammaire)
         fg.addRow(self.lab_grammaire)
-        fg.addRow(t("Sujet"), self.cb_sujet)
-        fg.addRow(t("Densité (énoncés/min)"), self.sl_densite)
-        fg.addRow(t("Échelle du temps"), self.sp_tempo)
+        fg.addRow(t("Subject"), self.cb_sujet)
+        fg.addRow(t("Density (utterances/min)"), self.sl_densite)
+        fg.addRow(t("Time scale"), self.sp_tempo)
         gauche.addWidget(boite2)
 
         # --- la voix --------------------------------------------------------
-        boite3 = QGroupBox(t("Voix"))
+        boite3 = QGroupBox(t("Voice"))
         fv = QFormLayout(boite3)
-        self.chk_parler = QCheckBox(t("prononcer à voix haute"))
+        self.chk_parler = QCheckBox(t("speak out loud"))
         self.chk_parler.setChecked(v.spoken)
         self.chk_parler.stateChanged.connect(self._modifie)
-        self.chk_muet = QCheckBox(t("couper la voix (garder les énoncés écrits)"))
+        self.chk_muet = QCheckBox(t("mute the voice (keep the written utterances)"))
         self.chk_muet.setChecked(v.muted)
         self.chk_muet.stateChanged.connect(self._modifie)
         self.cb_moteur = QComboBox()
-        self.cb_moteur.addItem(t("automatique"), "auto")
+        self.cb_moteur.addItem(t("automatic"), "auto")
         for nom, description, disponible in strategies_disponibles():
             etiquette = f"{nom} — {description}"
             self.cb_moteur.addItem(etiquette if disponible
@@ -176,28 +168,28 @@ class VoiceTab(QWidget):
         _choisir(self.cb_moteur, v.backend)
         self.cb_moteur.currentIndexChanged.connect(self._modifie)
         self.cb_voix = QComboBox()
-        self.cb_voix.addItem(t("voix par défaut"), "")
+        self.cb_voix.addItem(t("default voice"), "")
         _choisir(self.cb_voix, v.voice_id)
         self.cb_voix.currentIndexChanged.connect(self._modifie)
         self.sp_debit = QSpinBox()
         self.sp_debit.setRange(60, 400)
-        self.sp_debit.setSuffix(t(" mots/min"))
+        self.sp_debit.setSuffix(t(" words/min"))
         self.sp_debit.setValue(int(v.rate_wpm))
         self.sp_debit.valueChanged.connect(self._modifie)
         self.sl_volume = QSlider(Qt.Horizontal)
         self.sl_volume.setRange(0, 100)
         self.sl_volume.setValue(int(v.volume * 100))
         self.sl_volume.valueChanged.connect(self._modifie)
-        b_essai = QPushButton(t("Essayer la voix"))
+        b_essai = QPushButton(t("Try the voice"))
         b_essai.clicked.connect(self._essai)
         self.lab_voix = QLabel("")
         self.lab_voix.setWordWrap(True)
-        self.lab_voix.setStyleSheet(f"color:{palette['texte2']};font-size:8pt;")
+        self.lab_voix.setStyleSheet(f"color:{palette['text2']};font-size:8pt;")
         fv.addRow(self.chk_parler)
         fv.addRow(self.chk_muet)
-        fv.addRow(t("Synthèse"), self.cb_moteur)
-        fv.addRow(t("Voix"), self.cb_voix)
-        fv.addRow(t("Débit"), self.sp_debit)
+        fv.addRow(t("Synthesis"), self.cb_moteur)
+        fv.addRow(t("Voice"), self.cb_voix)
+        fv.addRow(t("Speech rate"), self.sp_debit)
         fv.addRow(t("Volume"), self.sl_volume)
         fv.addRow(b_essai)
         fv.addRow(self.lab_voix)
@@ -210,7 +202,7 @@ class VoiceTab(QWidget):
         self.lab_veille.setWordWrap(True)
         self.lab_veille.setTextFormat(Qt.RichText)
         self.lab_veille.setStyleSheet(
-            f"background:{palette['fond3']};border:1px solid {palette['trait']};"
+            f"background:{palette['background3']};border:1px solid {palette['line']};"
             f"border-radius:5px;padding:7px;")
         gauche.addWidget(self.lab_veille)
         gauche.addStretch(1)
@@ -230,15 +222,15 @@ class VoiceTab(QWidget):
 
         page_journal = QWidget()
         pj = QVBoxLayout(page_journal)
-        pj.addWidget(QLabel(t("Énoncés (le plus récent en haut)")))
+        pj.addWidget(QLabel(t("Utterances (most recent first)")))
         self.liste = QListWidget()
         self.liste.setAlternatingRowColors(True)
         self.liste.setWordWrap(True)
         pj.addWidget(self.liste, 1)
-        b_copier = QPushButton(t("Copier le journal"))
+        b_copier = QPushButton(t("Copy the log"))
         b_copier.clicked.connect(self._copier)
         pj.addWidget(b_copier)
-        droite.addTab(page_journal, t("Journal"))
+        droite.addTab(page_journal, t("Log"))
 
         page_regles = QWidget()
         pr = QVBoxLayout(page_regles)
@@ -247,7 +239,7 @@ class VoiceTab(QWidget):
         self.lab_regles.setTextFormat(Qt.RichText)
         pr.addWidget(self.lab_regles)
         pr.addStretch(1)
-        droite.addTab(page_regles, t("Règles appliquées"))
+        droite.addTab(page_regles, t("Rules applied"))
 
         page_mots = QWidget()
         pm = QVBoxLayout(page_mots)
@@ -257,7 +249,7 @@ class VoiceTab(QWidget):
         self.lab_mots.setFont(fonts.mono(8))
         pm.addWidget(self.lab_mots)
         pm.addStretch(1)
-        droite.addTab(page_mots, t("Registres"))
+        droite.addTab(page_mots, t("Registers"))
 
         page_mesure = QWidget()
         px = QVBoxLayout(page_mesure)
@@ -266,7 +258,7 @@ class VoiceTab(QWidget):
         self.lab_mesure.setTextFormat(Qt.RichText)
         px.addWidget(self.lab_mesure)
         px.addStretch(1)
-        droite.addTab(page_mesure, t("Grandeurs mesurées"))
+        droite.addTab(page_mesure, t("Measured quantities"))
 
         lay.addWidget(droite, 1)
 
@@ -296,10 +288,10 @@ class VoiceTab(QWidget):
         self.lab_grammaire.setText(t(str(g["description"])))
         lex = self.engine.vocal.lexique
         self.lab_lexique.setText(
-            t("{nom} — {mots} mots · {registres} registres").format(
+            t("{nom} — {mots} words · {registres} registers").format(
                 nom=lex.nom, mots=lex.taille(), registres=len(lex.registres))
             + "\n" + (v.lexicon_path if v.lexicon_path
-                      else t("Dictionnaire livré avec le logiciel.")))
+                      else t("Dictionary shipped with the software.")))
         self.lab_regles.setText("<br>".join(self.engine.vocal.describe_rules()))
         #  On n'appelle que ce qui concerne la voix : ouvrir ou fermer la
         #  synthèse. Passer par le rappel général reconstruirait toute la
@@ -313,7 +305,7 @@ class VoiceTab(QWidget):
 
     def _maj_etat_voix(self) -> None:
         sortie = self.engine.voice
-        self.lab_voix.setText(t("État : {etat}").format(etat=sortie.etat()))
+        self.lab_voix.setText(t("State: {etat}").format(etat=sortie.etat()))
         voix = sortie.voix_disponibles()
         if voix and self.cb_voix.count() <= 1:
             self.cb_voix.blockSignals(True)
@@ -361,15 +353,16 @@ class VoiceTab(QWidget):
 
     def _charger(self) -> None:
         chemin, _ = QFileDialog.getOpenFileName(
-            self, t("Ouvrir un dictionnaire"), "",
-            t("Dictionnaire PhytoScope (*.json)"))
+            self, t("Open a dictionary"), "",
+            t("PhytoScope dictionary (*.json)"))
         if not chemin:
             return
         try:
             lex = Lexique.charger(chemin)
         except (OSError, ValueError, TypeError) as exc:
-            QMessageBox.warning(self, t("Dictionnaire"),
-                                f"Fichier illisible :\n{exc}")
+            QMessageBox.warning(
+                self, t("Dictionary"),
+                t("The file cannot be read:\n{erreur}").format(erreur=exc))
             return
         self.engine.settings.voice.lexicon_path = chemin
         self.engine.settings.voice.lexicon_code = ""
@@ -383,24 +376,22 @@ class VoiceTab(QWidget):
 
     def _ecrire_modele(self) -> None:
         chemin, _ = QFileDialog.getSaveFileName(
-            self, t("Écrire un modèle de dictionnaire"),
+            self, t("Write a dictionary template"),
             "dictionnaire-phytoscope.json",
-            t("Dictionnaire PhytoScope (*.json)"))
+            t("PhytoScope dictionary (*.json)"))
         if not chemin:
             return
         try:
             with open(chemin, "w", encoding="utf-8") as f:
                 json.dump(LEXIQUE_PAR_DEFAUT, f, ensure_ascii=False, indent=2)
         except OSError as exc:
-            QMessageBox.warning(self, t("Dictionnaire"),
-                                f"Écriture impossible :\n{exc}")
+            QMessageBox.warning(
+                self, t("Dictionary"),
+                t("Writing failed:\n{erreur}").format(erreur=exc))
             return
         QMessageBox.information(
-            self, t("Dictionnaire"),
-            f"Modèle écrit dans :\n{os.path.abspath(chemin)}\n\n"
-            "Modifiez les listes de mots avec un éditeur de texte, puis "
-            "ouvrez le fichier avec « Ouvrir… ». L'ordre compte : du plus "
-            "faible au plus fort sur l'axe concerné.")
+            self, t("Dictionary"),
+            t("Template written to:\n{chemin}\n\nEdit the word lists with a text editor, then open the file with “Open…”. Order matters: weakest to strongest along the axis concerned.").format(chemin=os.path.abspath(chemin)))
 
     def _defaut(self) -> None:
         self.engine.settings.voice.lexicon_path = ""
@@ -425,11 +416,8 @@ class VoiceTab(QWidget):
                           lex.choisir("intensite", 0.6)])
         if not self.engine.voice.dire(essai):
             QMessageBox.information(
-                self, t("Voix"),
-                t("Aucune synthèse vocale n'a pu être ouverte.\n\n"
-                "Sous Linux : « sudo apt install espeak-ng » ou "
-                "« pip install pyttsx3 ».\n"
-                "Les énoncés restent écrits et enregistrés."))
+                self, t("Voice"),
+                t("No speech synthesis could be opened.\n\nOn Linux: “sudo apt install espeak-ng” or “pip install pyttsx3”.\nUtterances are still written and recorded."))
         self._maj_etat_voix()
 
     def _copier(self) -> None:
@@ -443,29 +431,28 @@ class VoiceTab(QWidget):
         p = self.p
         if not v.enabled:
             self.lab_veille.setText(
-                f"<b style='color:{p['texte2']}'>" + t("Mode vocal arrêté") +
-                "</b><br>" + t("Cochez « activer le mode vocal » ci-dessus."))
+                f"<b style='color:{p['text2']}'>" + t("Speech mode stopped") +
+                "</b><br>" + t("Tick “enable speech mode” above."))
             return
         sortie = self.engine.voice
         if not v.spoken:
-            voix = t("écrite seulement")
+            voix = t("written only")
         elif v.muted:
-            voix = t("coupée")
+            voix = t("muted")
         elif sortie.backend in ("", "—", "silencieuse"):
-            voix = t("aucune synthèse installée")
+            voix = t("no synthesis installed")
         else:
             voix = sortie.backend
         dernier = state.last_enonce
         if dernier is not None:
             phrase = (f"<span style='color:{p['trace']}'>« {dernier.texte} »</span>"
-                      "<br>" + t("il y a {n:.0f} s").format(
+                      "<br>" + t("{n:.0f} s ago").format(
                           n=max(state.elapsed_s - dernier.time_s, 0.0)))
         else:
-            phrase = t("aucun énoncé pour l'instant — le mode vocal attend un "
-                       "événement, il n'en invente pas.")
+            phrase = t("no utterance yet — speech mode waits for an event, it does not invent any.")
         self.lab_veille.setText(
-            f"<b style='color:{p['or']}'>" + t("En écoute") + "</b> · " + voix +
-            " · " + t("{n} énoncés").format(n=state.enonces_total) + "<br>" +
+            f"<b style='color:{p['gold']}'>" + t("Listening") + "</b> · " + voix +
+            " · " + t("{n} utterances").format(n=state.enonces_total) + "<br>" +
             phrase)
 
     # -- appelé par la fenêtre principale ------------------------------------

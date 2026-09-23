@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/tests/test_samples.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Tests des échantillons et de la surveillance du disque.
@@ -172,7 +172,7 @@ class TestRelecture:
         time.sleep(1.0)
         vivante = e.source
         assert vivante.running
-        assert e.rejouer(signal(), 250.0, vitesse=50.0, nom="essai")
+        assert e.rejouer(signal(), 250.0, vitesse=50.0, name="essai")
         try:
             assert not vivante.running, "l'entrée en direct doit être suspendue"
             assert e.state.replaying
@@ -188,7 +188,7 @@ class TestRelecture:
         e.start()
         time.sleep(0.5)
         depart = e.settings.acquisition.sample_rate
-        e.rejouer(signal(), 1000.0, nom="autre cadence")
+        e.rejouer(signal(), 1000.0, name="autre cadence")
         try:
             assert e.settings.acquisition.sample_rate == 1000.0
         finally:

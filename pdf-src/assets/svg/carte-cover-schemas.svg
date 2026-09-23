@@ -2,16 +2,16 @@
   ==========================================================================
   PhytoScope — attribution — pdf-src/assets/svg/carte-cover-schemas.svg
 
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
+  Version   : 1.6.0
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
 
   SPDX-License-Identifier: MIT
-  fin de l'attribution
+  end of attribution
   ==========================================================================
 -->
 
@@ -195,9 +195,9 @@
 <rect x="84" y="84" width="832" height="1244" rx="0" fill="none" stroke="#B08528" stroke-width="1.0" opacity="0.3"/>
 <text x="500" y="430" font-family="Lato, sans-serif" font-size="24.9" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="7">PHYTOSENSE ONE</text>
 <line x1="330" y1="470" x2="670" y2="470" stroke="#B08528" stroke-width="1.2" stroke-linecap="round"/>
-<text x="500" y="560" font-family="Cormorant Garamond, serif" font-size="62.25" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Dossier</text>
-<text x="500" y="634" font-family="Cormorant Garamond, serif" font-size="62.25" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">de schémas</text>
-<text x="500" y="700" font-family="Cormorant Garamond, serif" font-size="24.9" fill="#6FA98A" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Six feuilles — révision B</text>
+<text x="500" y="560" font-family="Cormorant Garamond, serif" font-size="62.25" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Schematic</text>
+<text x="500" y="634" font-family="Cormorant Garamond, serif" font-size="62.25" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">set</text>
+<text x="500" y="700" font-family="Cormorant Garamond, serif" font-size="24.9" fill="#6FA98A" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Six sheets — revision B</text>
 <text x="500" y="1180" font-family="Lato, sans-serif" font-size="20.75" fill="#E0C073" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="3">ANNEXE 1</text>
 <text x="500" y="1230" font-family="Lato, sans-serif" font-size="18.68" fill="#9fb8ab" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté · 2026</text>
 </svg>

@@ -2,84 +2,85 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/api/__init__.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
-"""L'API des modules de PhytoScope — la surface publique, et elle seule.
+"""The PhytoScope module API — the public surface, and nothing else.
 
-Un module n'importe **que depuis ici** :
-
-.. code-block:: python
-
-    from phytoscope.api import Module, Manifeste, Capacite, Analyseur, Grandeur
-
-Ce qui est absent de ce fichier n'est pas de l'API : cela peut changer d'une
-version à l'autre sans préavis. Ce qui y figure est tenu par le contrat de
-version (voir `contract.VERSION_API`).
-
-Pour écrire un module
----------------------
-
-Le plus court qui fasse quelque chose tient en vingt lignes :
+A module imports **only from here**:
 
 .. code-block:: python
 
-    from phytoscope.api import Analyseur, Capacite, Grandeur, Manifeste, Module
+    from phytoscope.api import Module, Manifest, Capability, Analyser, Quantity
 
-    class Bonjour(Module, Analyseur):
-        MANIFESTE = Manifeste(
-            nom="bonjour-monde",
-            titre="Bonjour, monde",
+What is absent from this file is not part of the API: it may change from one
+release to the next without notice. What appears here is held by the version
+contract (see `contract.API_VERSION`).
+
+Writing a module
+----------------
+
+The shortest one that does anything fits in twenty lines:
+
+.. code-block:: python
+
+    from phytoscope.api import Analyser, Capability, Quantity, Manifest, Module
+
+    class Bonjour(Module, Analyser):
+        MANIFEST = Manifest(
+            name="hello-world",
+            title="Hello, world",
             version="1.0.0",
-            api="1.0",
-            capacites=(Capacite.ANALYSEUR,),
+            api="2.0",
+            capabilities=(Capability.ANALYSER,),
         )
 
-        def analyser(self, x, fs, contexte):
-            return [Grandeur(
-                cle="compte", libelle="Échantillons reçus",
-                valeur=float(x.size), texte=f"{x.size}",
-                sens="Le nombre d'échantillons de la fenêtre analysée.")]
+        def analyse(self, x, fs, context):
+            return [Quantity(
+                key="compte", label="Samples received",
+                value=float(x.size), text=f"{x.size}",
+                meaning="The number of samples in the analyzed window.")]
 
-Le SDK, à la racine du projet (`sdk/`), en donne un exemplaire complet avec ses
-essais, et un outil qui en crée un nouveau d'une commande.
+The SDK, under `src/sdk/`, gives a complete specimen together with its tests,
+and a tool that creates a new one in a single command.
 """
 from __future__ import annotations
 
-from .context import Contexte, EtatMesure
-from .contract import (VERSION_API, Analyseur, Capacite, Descripteur,
-                      Exportateur, Grandeur, Manifeste, Module, NoteProposee,
-                      Sonificateur, Source, Trace, compatible)
-from .events import BUS, EVENEMENTS
-from .events import (ALERTE_DISQUE, ECHANTILLON_CAPTURE, ENONCE_PRODUIT,
-                         EVENEMENT_DETECTE, MESURE_ARRETEE, MESURE_DEMARREE,
-                         NOTE_JOUEE, REGLAGES_MODIFIES, SEANCE_COMMENCEE,
-                         SEANCE_TERMINEE, SOURCE_CHANGEE)
-from .registry import EtatModule, ModuleCharge, Registre
+from .context import Context, MeasurementState
+from .contract import (API_VERSION, Analyser, Capability, Descriptor,
+                      Exporter, Quantity, Manifest, Module, ProposedNote,
+                      Sonifier, Source, Trace, compatible, parse_version)
+from .events import BUS, EVENTS
+from .events import (DISK_ALERT, SAMPLE_CAPTURED, UTTERANCE_PRODUCED,
+                         EVENT_DETECTED, MEASUREMENT_STOPPED, MEASUREMENT_STARTED,
+                         NOTE_PLAYED, SETTINGS_CHANGED, SESSION_STARTED,
+                         SESSION_ENDED, SOURCE_CHANGED)
+from .registry import ModuleState, LoadedModule, Registry
 
 __all__ = [
-    #  Le contrat
-    "VERSION_API", "compatible", "Manifeste", "Module", "Capacite",
-    #  Les capacités
-    "Analyseur", "Descripteur", "Sonificateur", "Exportateur", "Source",
-    #  Ce qu'elles échangent
-    "Grandeur", "Trace", "NoteProposee",
-    #  Ce qu'un module reçoit
-    "Contexte", "EtatMesure",
-    #  Les événements
-    "BUS", "EVENEMENTS", "MESURE_DEMARREE", "MESURE_ARRETEE", "SOURCE_CHANGEE",
-    "EVENEMENT_DETECTE", "NOTE_JOUEE", "ENONCE_PRODUIT", "SEANCE_COMMENCEE",
-    "SEANCE_TERMINEE", "ECHANTILLON_CAPTURE", "REGLAGES_MODIFIES",
-    "ALERTE_DISQUE",
-    #  L'hôte — un module n'en a pas besoin, l'interface si
-    "Registre", "ModuleCharge", "EtatModule",
+    #  The contract
+    "API_VERSION", "compatible", "parse_version", "Manifest", "Module",
+    "Capability",
+    #  The capabilities
+    "Analyser", "Descriptor", "Sonifier", "Exporter", "Source",
+    #  What they exchange
+    "Quantity", "Trace", "ProposedNote",
+    #  What a module receives
+    "Context", "MeasurementState",
+    #  The events
+    "BUS", "EVENTS", "MEASUREMENT_STARTED", "MEASUREMENT_STOPPED", "SOURCE_CHANGED",
+    "EVENT_DETECTED", "NOTE_PLAYED", "UTTERANCE_PRODUCED", "SESSION_STARTED",
+    "SESSION_ENDED", "SAMPLE_CAPTURED", "SETTINGS_CHANGED",
+    "DISK_ALERT",
+    #  The host — a module does not need it, the interface does
+    "Registry", "LoadedModule", "ModuleState",
 ]

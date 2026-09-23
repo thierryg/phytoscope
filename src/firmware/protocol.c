@@ -2,29 +2,35 @@
  *  ==========================================================================
  *  PhytoScope — attribution — src/firmware/protocol.c
  *
- *  Version  : 1.5.1
- *  Date     : 2026-09-18
- *  Éditeur  : Bretagne Namasté
- *  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
- *  Site     : https://bretagne-namaste.com
- *  Contact  : contact@bretagne-namaste.com
- *  Licence  : MIT — voir LICENCE.txt
+ *  Version   : 1.6.0
+ *  Date      : 2026-09-23
+ *  Publisher : Bretagne Namasté
+ *  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+ *  Website   : https://bretagne-namaste.com
+ *  Contact   : contact@bretagne-namaste.com
+ *  License   : MIT — see LICENSE.txt
  *
  *  SPDX-License-Identifier: MIT
- *  fin de l'attribution
+ *  end of attribution
  *  ==========================================================================
  */
 
 /* ===========================================================================
- *  protocol.c — dialogue de contrôle sur le port série virtuel.
+ *  protocol.c — the control dialogue on the virtual serial port.
  *
- *  Commandes en texte, réponses en JSON sur une ligne. Ce choix délibérément
- *  archaïque permet d'interroger et de dépanner la carte avec n'importe quel
- *  terminal, sans logiciel, sans bibliothèque et sans documentation. Une
- *  carte qu'on ne peut pas interroger à la main est une carte qu'on ne peut
- *  pas réparer.
+ *  Commands in plain text, replies as one line of JSON. The choice is
+ *  deliberately archaic: it means the board can be interrogated and repaired
+ *  with any terminal, with no software, no library and no documentation. A
+ *  board that cannot be questioned by hand is a board that cannot be fixed.
  *
- *  Licence MIT — Bretagne Namasté — https://bretagne-namaste.com
+ *  Every reply opens with one character saying how to read the rest: '+' for
+ *  success, '-' for failure. A client can branch before parsing, and a human
+ *  reading the port sees at a glance whether something worked.
+ *
+ *  The command set is documented, with worked exchanges, in
+ *  sources/usb/reference.html section 8.
+ *
+ *  MIT licence — Bretagne Namasté — https://bretagne-namaste.com
  * ======================================================================== */
 
 #include <stdio.h>
@@ -39,22 +45,22 @@
 #include "protocol.h"
 
 #define FW_VERSION  "1.0.0"
-#define MODELE      "PhytoSense One"
-#define FS_HZ       250.0f
+#define MODEL      "PhytoSense One"
+#define FS_HZ       ((float)AFE_RATE_HZ)   /* one source: afe.h */
 
-static char ligne[PROTO_LIGNE_MAX];
-static uint32_t remplissage = 0;
-static char reponse[PROTO_REPONSE_MAX];
-static char serie_carte[20];
-static char type_fille[12] = "inconnue";
-static char serie_fille[16] = "";
+static char line[PROTO_LINE_MAX];
+static uint32_t fill = 0;
+static char reply[PROTO_REPLY_MAX];
+static char board_serial[20];
+static char daughter_type[12] = "unknown";
+static char daughter_serial[16] = "";
 
 /* --------------------------------------------------------------------------
- *  Émission
+ *  Sending
  * ----------------------------------------------------------------------- */
-static void emettre(const char *texte)
+static void send(const char *text)
 {
-    tud_cdc_write_str(texte);
+    tud_cdc_write_str(text);
     tud_cdc_write_str("\r\n");
     tud_cdc_write_flush();
 }
@@ -62,103 +68,105 @@ static void emettre(const char *texte)
 static void ok(const char *format, ...)
 {
     va_list args;
-    reponse[0] = '+';
+    reply[0] = '+';
     va_start(args, format);
-    vsnprintf(reponse + 1, sizeof(reponse) - 1, format, args);
+    vsnprintf(reply + 1, sizeof(reply) - 1, format, args);
     va_end(args);
-    emettre(reponse);
+    send(reply);
 }
 
-static void erreur(const char *message)
+static void fail(const char *message)
 {
-    snprintf(reponse, sizeof(reponse), "-{\"message\":\"%s\"}", message);
-    emettre(reponse);
+    snprintf(reply, sizeof(reply), "-{\"message\":\"%s\"}", message);
+    send(reply);
 }
 
 /* --------------------------------------------------------------------------
- *  Commandes
+ *  Commands
  * ----------------------------------------------------------------------- */
-static void cmd_identifier(void)
+static void cmd_identify(void)
 {
-    afe_etat_t e;
-    afe_etat(&e);
-    const uint16_t *gains = afe_table_gains();
+    afe_state_t e;
+    afe_state(&e);
+    const uint16_t *gains = afe_gain_table();
     ok("{\"model\":\"%s\",\"serial\":\"%s\",\"firmware\":\"%s\","
        "\"channels\":%d,\"sample_rate\":%.1f,"
        "\"frontend\":\"%s\",\"frontend_serial\":\"%s\","
        "\"gains\":[%u,%u,%u,%u],\"gain\":%u,\"range\":%u,"
        "\"volts_per_unit\":1.0}",
-       MODELE, serie_carte, FW_VERSION, AFE_VOIES, FS_HZ,
-       type_fille, serie_fille,
-       gains[0], gains[1], gains[2], gains[3], e.gain, e.gamme);
+       MODEL, board_serial, FW_VERSION, AFE_CHANNELS, FS_HZ,
+       daughter_type, daughter_serial,
+       gains[0], gains[1], gains[2], gains[3], e.gain, e.range);
 }
 
 static void cmd_gain(const char *argument)
 {
     if (argument == NULL) {
-        erreur("usage : gain <indice> | auto");
+        fail("usage: gain <value> | auto");
         return;
     }
     if (strncmp(argument, "auto", 4) == 0) {
         afe_set_gain(-1);
         ok("{\"gain\":\"auto\",\"auto\":true,"
-           "\"message\":\"boucle d'auto-echelle rendue\"}");
+           "\"message\":\"auto-ranging handed back to the loop\"}");
         return;
     }
-    int demande = atoi(argument);
-    /* L'utilisateur donne un gain (×10), pas un indice : on cherche. */
-    const uint16_t *gains = afe_table_gains();
-    int indice = -1;
+    int wanted = atoi(argument);
+    /* The user gives a gain, not an index into the table: search for it.
+     * This reads better at a terminal, and is the one place where the
+     * protocol chose the human over the program.                          */
+    const uint16_t *gains = afe_gain_table();
+    int idx = -1;
     for (int i = 0; i < AFE_GAINS; i++) {
-        if (gains[i] == (uint16_t)demande) {
-            indice = i;
+        if (gains[i] == (uint16_t)wanted) {
+            idx = i;
         }
     }
-    if (indice < 0 || !afe_set_gain(indice)) {
-        erreur("gain hors table : 2, 10, 20 ou 200");
+    if (idx < 0 || !afe_set_gain(idx)) {
+        fail("gain not in table: 2, 10, 20 or 200");
         return;
     }
-    ok("{\"gain\":%d,\"auto\":false,\"message\":\"gain force\"}", demande);
+    ok("{\"gain\":%d,\"auto\":false,\"message\":\"gain forced\"}", wanted);
 }
 
-static void cmd_gamme(const char *argument)
+static void cmd_range(const char *argument)
 {
-    if (argument == NULL || !afe_set_gamme(atoi(argument))) {
-        erreur("usage : range 0..3");
+    if (argument == NULL || !afe_set_range(atoi(argument))) {
+        fail("usage: range 0..3");
         return;
     }
-    afe_etat_t e;
-    afe_etat(&e);
+    afe_state_t e;
+    afe_state(&e);
     ok("{\"range\":%u,\"reference_ohm\":%lu}",
-       e.gamme, (unsigned long)afe_table_gammes()[e.gamme]);
+       e.range, (unsigned long)afe_range_table()[e.range]);
 }
 
-static void cmd_horloge(uint64_t index, uint32_t perdus)
+static void cmd_clock(uint64_t index, uint32_t lost)
 {
     ok("{\"n\":%llu,\"t_s\":%.3f,\"tcxo_ppm\":-0.4,\"lost\":%lu}",
        (unsigned long long)index, (double)index / FS_HZ,
-       (unsigned long)perdus);
+       (unsigned long)lost);
 }
 
-static void cmd_marqueur(const char *etiquette, uint64_t index)
+static void cmd_mark(const char *label, uint64_t index)
 {
-    char propre[49];
+    char clean[49];
     size_t k = 0;
-    for (const char *p = etiquette; p && *p && k < sizeof(propre) - 1; p++) {
+    for (const char *p = label; p && *p && k < sizeof(clean) - 1; p++) {
         if (*p >= 32 && *p < 127 && *p != '"' && *p != '\\') {
-            propre[k++] = *p;
+            clean[k++] = *p;
         }
     }
-    propre[k] = '\0';
+    clean[k] = '\0';
     ok("{\"n\":%llu,\"label\":\"%s\"}", (unsigned long long)index,
-       k ? propre : "marqueur");
+       k ? clean : "mark");
 }
 
-static void cmd_autotest(void)
+static void cmd_selftest(void)
 {
-    afe_autotest_t rapport;
-    if (!afe_autotest(&rapport)) {
-        erreur("auto-test impossible");
+    afe_selftest_t report;
+    if (!afe_selftest(&report)) {
+        fail("self-test could not run");
         return;
     }
     ok("{\"passed\":%s,"
@@ -166,44 +174,44 @@ static void cmd_autotest(void)
        "\"errors\":{\"1M\":%.3f,\"10M\":%.3f,\"100M\":%.3f},"
        "\"noise_floor_v\":%.3e,\"leakage_fa\":%.1f,"
        "\"message\":\"%s\"}",
-       rapport.reussi ? "true" : "false",
-       rapport.mesure_ohm[0], rapport.mesure_ohm[1], rapport.mesure_ohm[2],
-       rapport.ecart_pourcent[0], rapport.ecart_pourcent[1],
-       rapport.ecart_pourcent[2],
-       rapport.bruit_v, rapport.fuite_fa,
-       rapport.reussi ? "trois etalons dans les tolerances"
-                      : "au moins un etalon hors tolerance");
+       report.passed ? "true" : "false",
+       report.measured_ohm[0], report.measured_ohm[1], report.measured_ohm[2],
+       report.error_percent[0], report.error_percent[1],
+       report.error_percent[2],
+       report.noise_v, report.leakage_fa,
+       report.passed ? "all three references within tolerance"
+                      : "at least one reference out of tolerance");
 }
 
-static void cmd_ambiance(void)
+static void cmd_env(void)
 {
-    afe_etat_t e;
-    afe_etat(&e);
+    afe_state_t e;
+    afe_state(&e);
     ok("{\"temperature_c\":%.2f,\"humidity_pct\":0.0,"
        "\"pressure_hpa\":0.0,\"lux\":0.0}", e.temperature_c);
 }
 
-static void cmd_aide(void)
+static void cmd_help(void)
 {
-    emettre("+{\"commands\":[\"?\",\"gain\",\"range\",\"offset\",\"clock\","
+    send("+{\"commands\":[\"?\",\"gain\",\"range\",\"offset\",\"clock\","
             "\"mark\",\"selftest\",\"env\",\"save\",\"help\"]}");
 }
 
 /* --------------------------------------------------------------------------
- *  Analyse d'une ligne
+ *  Parsing a line
  * ----------------------------------------------------------------------- */
-static uint64_t index_courant = 0;
-static uint32_t perdus_courant = 0;
+static uint64_t current_index = 0;
+static uint32_t current_lost = 0;
 
-static void traiter(char *entree)
+static void handle(char *input)
 {
-    while (*entree == ' ') {
-        entree++;
+    while (*input == ' ') {
+        input++;
     }
-    if (*entree == '\0') {
+    if (*input == '\0') {
         return;
     }
-    char *argument = strchr(entree, ' ');
+    char *argument = strchr(input, ' ');
     if (argument) {
         *argument++ = '\0';
         while (*argument == ' ') {
@@ -211,83 +219,83 @@ static void traiter(char *entree)
         }
     }
 
-    if (strcmp(entree, "?") == 0 || strcmp(entree, "id") == 0) {
-        cmd_identifier();
-    } else if (strcmp(entree, "gain") == 0) {
+    if (strcmp(input, "?") == 0 || strcmp(input, "id") == 0) {
+        cmd_identify();
+    } else if (strcmp(input, "gain") == 0) {
         cmd_gain(argument);
-    } else if (strcmp(entree, "range") == 0) {
-        cmd_gamme(argument);
-    } else if (strcmp(entree, "offset") == 0) {
-        if (!argument) { erreur("usage : offset 0..65535"); return; }
+    } else if (strcmp(input, "range") == 0) {
+        cmd_range(argument);
+    } else if (strcmp(input, "offset") == 0) {
+        if (!argument) { fail("usage: offset 0..65535"); return; }
         afe_set_offset((uint16_t)atoi(argument));
         ok("{\"offset\":%d}", atoi(argument));
-    } else if (strcmp(entree, "clock") == 0) {
-        cmd_horloge(index_courant, perdus_courant);
-    } else if (strcmp(entree, "mark") == 0) {
-        cmd_marqueur(argument, index_courant);
-    } else if (strcmp(entree, "selftest") == 0) {
-        cmd_autotest();
-    } else if (strcmp(entree, "env") == 0) {
-        cmd_ambiance();
-    } else if (strcmp(entree, "save") == 0) {
-        ok("{\"message\":\"reglages memorises en flash\"}");
-    } else if (strcmp(entree, "help") == 0) {
-        cmd_aide();
+    } else if (strcmp(input, "clock") == 0) {
+        cmd_clock(current_index, current_lost);
+    } else if (strcmp(input, "mark") == 0) {
+        cmd_mark(argument, current_index);
+    } else if (strcmp(input, "selftest") == 0) {
+        cmd_selftest();
+    } else if (strcmp(input, "env") == 0) {
+        cmd_env();
+    } else if (strcmp(input, "save") == 0) {
+        ok("{\"message\":\"settings stored in flash\"}");
+    } else if (strcmp(input, "help") == 0) {
+        cmd_help();
     } else {
-        erreur("commande inconnue — taper help");
+        fail("unknown command - type help");
     }
 }
 
 /* --------------------------------------------------------------------------
- *  Interface publique
+ *  Public interface
  * ----------------------------------------------------------------------- */
 void protocol_init(void)
 {
-    pico_unique_board_id_t identifiant;
-    pico_get_unique_board_id(&identifiant);
-    snprintf(serie_carte, sizeof(serie_carte), "PS1-%02X%02X%02X%02X",
-             identifiant.id[4], identifiant.id[5],
-             identifiant.id[6], identifiant.id[7]);
-    afe_lire_eeprom_carte_fille(type_fille, sizeof(type_fille),
-                                serie_fille, sizeof(serie_fille));
-    remplissage = 0;
+    pico_unique_board_id_t uid;
+    pico_get_unique_board_id(&uid);
+    snprintf(board_serial, sizeof(board_serial), "PS1-%02X%02X%02X%02X",
+             uid.id[4], uid.id[5],
+             uid.id[6], uid.id[7]);
+    afe_read_daughter_eeprom(daughter_type, sizeof(daughter_type),
+                                daughter_serial, sizeof(daughter_serial));
+    fill = 0;
 }
 
-void protocol_recevoir(const uint8_t *octets, uint32_t n)
+void protocol_receive(const uint8_t *bytes, uint32_t n)
 {
     for (uint32_t i = 0; i < n; i++) {
-        char c = (char)octets[i];
+        char c = (char)bytes[i];
         if (c == '\r' || c == '\n') {
-            if (remplissage) {
-                ligne[remplissage] = '\0';
-                traiter(ligne);
-                remplissage = 0;
+            if (fill) {
+                line[fill] = '\0';
+                handle(line);
+                fill = 0;
             }
-        } else if (remplissage < sizeof(ligne) - 1) {
-            ligne[remplissage++] = c;
+        } else if (fill < sizeof(line) - 1) {
+            line[fill++] = c;
         } else {
-            remplissage = 0;           /* ligne trop longue : on repart */
-            erreur("ligne trop longue");
+            fill = 0;           /* line too long: start over */
+            fail("line too long");
         }
     }
 }
 
-void protocol_balise(uint64_t index, uint32_t perdus)
+void protocol_beacon(uint64_t index, uint32_t lost)
 {
-    index_courant = index;
-    perdus_courant = perdus;
+    current_index = index;
+    current_lost = lost;
     if (!tud_cdc_connected()) {
         return;
     }
-    afe_etat_t e;
-    afe_etat(&e);
+    afe_state_t e;
+    afe_state(&e);
     ok("{\"beacon\":1,\"n\":%llu,\"lost\":%lu,\"gain\":%u,\"range\":%u,"
        "\"offset\":%u,\"sat\":%s}",
-       (unsigned long long)index, (unsigned long)perdus, e.gain, e.gamme,
-       e.offset_cna, e.sature ? "true" : "false");
+       (unsigned long long)index, (unsigned long)lost, e.gain, e.range,
+       e.dac_offset, e.saturated ? "true" : "false");
 }
 
-void protocol_marqueur(const char *etiquette, uint64_t index)
+void protocol_mark(const char *label, uint64_t index)
 {
-    cmd_marqueur(etiquette, index);
+    cmd_mark(label, index);
 }

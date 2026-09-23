@@ -1,0 +1,42 @@
+<section class="chapter">
+  <h2 id="b-sbom" data-toc="chapter">Software bill of materials</h2>
+
+  <p class="chapo">A board has its bill of materials; the software that drives it has one too.
+  It answers the same questions: what goes into the product, where it comes from, under which
+  licence, and in exactly which version.</p>
+
+  <!--INCLURE:_sbom-table.html-->
+
+  <h3 id="b-sbom-portee" data-toc="sub">Scope and obligations</h3>
+
+  <p>PhytoScope <strong>incorporates no third-party code</strong>: it relies on these libraries
+  at run time. Distributed as Python sources, it satisfies in practice the substitutability
+  obligation that Qt's LGPL licence imposes — a user can replace the library without
+  recompiling anything.</p>
+
+  <p>The four native libraries in the second part of the table are reached through the Python
+  packages. They are part of what runs on the machine, and so they belong in the inventory,
+  even though they are not redistributed.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ An inventory that describes the machine, not the file</div>
+    <p class="noindent">This table is not copied from a dependency file: it is established by
+    introspecting the modules that are <em>actually importable</em>. It therefore describes what
+    is installed, rather than what the project claims to require — which is precisely the point
+    of the exercise. The command <span class="phon">python3 tools/sbom.py</span> regenerates it
+    at any time; the <span class="phon">--json</span> option produces a CycloneDX 1.5 document,
+    usable directly by compliance and vulnerability tooling.</p>
+  </div>
+
+  <div class="term">
+    <div class="t-h">Regenerating the software bill of materials</div>
+<pre><span class="g">$ </span><span class="c">python3 tools/sbom.py</span>              <span class="g"># human-readable</span>
+<span class="g">$ </span><span class="c">python3 tools/sbom.py --json</span>       <span class="g"># CycloneDX 1.5</span>
+<span class="g">$ </span><span class="c">python3 tools/sbom.py --html</span>       <span class="g"># fascicle fragment</span></pre>
+  </div>
+
+  <p class="copyright">PhytoScope is published under the MIT licence by Bretagne Namasté —
+  <a href="https://bretagne-namaste.com">bretagne-namaste.com</a> —
+  contact@bretagne-namaste.com. The hardware described in this fascicle is published under the
+  CERN-OHL-P v2 licence.</p>
+</section>

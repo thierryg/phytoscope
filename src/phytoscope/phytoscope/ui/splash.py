@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/ui/splash.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Écran d'accueil — la fleur, le nom, et ce que fait le logiciel pendant ce temps.
@@ -48,42 +48,42 @@ class Splash(QSplashScreen):
     def _fond(self) -> QPixmap:
         from .icon import dessiner_lotus
         pm = QPixmap(self.LARGEUR, self.HAUTEUR)
-        pm.fill(QColor(self.p["fond3"]))
+        pm.fill(QColor(self.p["background3"]))
         qp = QPainter(pm)
         try:
             qp.setRenderHint(QPainter.Antialiasing, True)
-            qp.setPen(QColor(self.p["trait"]))
+            qp.setPen(QColor(self.p["line"]))
             qp.drawRect(0, 0, self.LARGEUR - 1, self.HAUTEUR - 1)
 
             qp.save()
             qp.translate(36, 70)
-            dessiner_lotus(qp, 180.0, "#FFFFFF", self.p["trait"])
+            dessiner_lotus(qp, 180.0, "#FFFFFF", self.p["line"])
             qp.restore()
 
             f = QFont()
             f.setPointSize(30)
             f.setBold(True)
             qp.setFont(f)
-            qp.setPen(QColor(self.p["or"]))
+            qp.setPen(QColor(self.p["gold"]))
             qp.drawText(240, 118, V.APP_NAME)
 
             f.setPointSize(11)
             f.setBold(False)
             f.setItalic(True)
             qp.setFont(f)
-            qp.setPen(QColor(self.p["texte2"]))
+            qp.setPen(QColor(self.p["text2"]))
             qp.drawText(242, 146, "Écoute et mesure des signaux végétaux")
 
             f.setItalic(False)
             f.setPointSize(10)
             qp.setFont(f)
-            qp.setPen(QColor(self.p["texte"]))
+            qp.setPen(QColor(self.p["text"]))
             qp.drawText(242, 186, f"version {V.TITRE_VERSION}")
-            qp.setPen(QColor(self.p["texte2"]))
+            qp.setPen(QColor(self.p["text2"]))
             qp.drawText(242, 208, V.AUTHOR)
             qp.drawText(242, 228, V.WEBSITE)
 
-            qp.setPen(QColor(self.p["trait"]))
+            qp.setPen(QColor(self.p["line"]))
             qp.drawLine(36, 268, self.LARGEUR - 36, 268)
         finally:
             qp.end()

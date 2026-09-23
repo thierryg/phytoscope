@@ -3,22 +3,22 @@
 #  ==========================================================================
 #  PhytoScope — attribution — packaging/verify.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Relit les paquets produits et contrôle qu'ils disent ce qu'on a voulu.
 
 Un paquet ne se vérifie pas en le regardant : il se vérifie en l'ouvrant. Ce
-script rouvre chacun de ceux qui se trouvent dans `build/paquets` et contrôle,
+script rouvre chacun de ceux qui se trouvent dans `build/packages` et contrôle,
 selon son format :
 
 * **`.deb`** — métadonnées lisibles par `dpkg-deb`, version conforme, présence
@@ -38,7 +38,7 @@ Le script le dit plutôt que de le laisser croire.
 
 .. code-block:: console
 
-    python3 packaging/verify.py        ou    make verifier
+    python3 packaging/verify.py        ou    make verify
 """
 from __future__ import annotations
 
@@ -53,7 +53,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import macos_pkg  # noqa: E402
 from common import (  # noqa: E402
-    GRIS, JAUNE, RACINE_SORTIE, ROUGE, VERT, Identite, bien, dire, echec,
+    GRIS, JAUNE, OUTPUT_ROOT, ROUGE, VERT, Identite, bien, dire, echec,
     environnement_wixl, fabrications, lisible, souci, trouver_wixl)
 
 
@@ -187,14 +187,14 @@ def main(argv: Optional[List[str]] = None) -> int:
         description="Rouvre les paquets produits et contrôle leur structure.")
     p.add_argument("dossier", nargs="?", default="",
                    help="la fabrication à vérifier ; par défaut, la plus "
-                        "récente de build/paquets")
+                        "récente de build/packages")
     args = p.parse_args(argv)
 
     base = os.path.abspath(args.dossier) if args.dossier else ""
     if not base:
         candidats = fabrications()
         if not candidats:
-            echec(f"aucune fabrication dans {RACINE_SORTIE}")
+            echec(f"aucune fabrication dans {OUTPUT_ROOT}")
             return 1
         base = candidats[0]
     if not os.path.isdir(base):

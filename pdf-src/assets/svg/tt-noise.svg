@@ -1,20 +1,3 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/tt-noise.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520">
 
 <defs>
@@ -29,39 +12,39 @@
    <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
 </defs>
 <rect width="900" height="520" fill="#FBF9F1"/>
-<text x="450" y="34" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2.4">CE QUI CONTAMINE UNE MESURE EN EXTÉRIEUR</text>
+<text x="450" y="34" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2.4">WHAT CONTAMINATES A MEASUREMENT OUT OF DOORS</text>
 <line x1="70" y1="250" x2="70" y2="100" stroke="#6B7A72" stroke-width="1.5"/>
 <line x1="70" y1="250" x2="830" y2="250" stroke="#6B7A72" stroke-width="1.5"/>
-<text x="830" y="268" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">temps (24 h)</text>
+<text x="830" y="268" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">time (24 h)</text>
 <text x="64" y="94" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">amplitude</text>
 <polyline points="70,268.0 73,270.8 76,268.0 79,260.9 82,256.4 85,258.4 88,262.9 91,263.1 94,258.1 97,253.6 100,255.3 103,261.4 106,265.2 109,262.9 112,258.8 115,259.5 118,265.8 121,271.6 124,271.3 127,266.9 130,265.1 133,269.3 136,274.9 139,275.3 142,269.8 145,264.8 148,265.4 151,269.4 154,270.0 157,264.2 160,256.7 163,254.1 166,256.7 169,258.3 172,254.0 175,246.2 178,242.0 181,244.1 184,247.9 187,246.8 190,240.8 193,236.5 196,238.6 199,244.4 202,246.8 205,243.4 208,239.2 211,240.3 214,246.4 217,251.0 220,249.4 223,244.4 226,242.9 229,247.1 232,251.8 235,250.7 238,244.4 241,239.4 244,240.4 247,243.9 250,243.2 253,236.4 256,228.9 259,226.8 262,229.5 265,230.2 268,224.8 271,217.0 274,213.5 277,216.2 280,219.5 283,217.5 286,211.3 289,207.6 292,210.6 295,216.3 298,217.9 301,214.0 304,210.2 307,212.2 310,218.6 313,222.4 316,220.0 319,215.0 322,214.4 325,219.1 328,223.3 331,221.3 334,214.8 337,210.6 340,212.3 343,215.8 346,214.3 349,207.2 352,200.4 355,199.5 358,184.6 361,184.9 364,179.2 367,172.0 370,169.9 373,173.5 376,176.8 379,174.4 382,168.7 385,166.4 388,170.6 391,176.6 394,177.9 397,174.1 400,171.4 403,174.8 406,181.8 409,185.3 412,182.6 415,178.4 418,179.1 421,202.7 424,206.8 427,204.3 430,198.2 433,195.4 436,198.3 439,201.9 442,200.1 445,193.2 448,187.6 451,188.3 454,192.1 457,192.3 460,186.7 463,180.6 466,180.3 469,185.1 472,188.6 475,186.3 478,181.4 481,180.8 484,186.5 487,193.0 490,194.2 493,190.8 496,189.5 499,194.5 502,202.1 505,205.4 508,202.8 511,199.6 514,201.8 517,208.3 520,212.2 523,209.5 526,204.1 529,202.6 532,206.7 535,210.6 538,208.5 541,201.9 544,197.7 547,199.8 550,204.3 553,204.3 556,198.9 559,194.1 562,195.4 565,201.2 568,204.7 571,202.3 574,198.4 577,199.4 580,206.3 583,212.9 586,213.8 589,210.9 592,210.9 595,217.1 598,224.9 601,227.8 604,225.0 607,222.8 610,226.2 613,233.0 616,236.4 619,233.3 622,228.3 625,228.0 628,232.8 631,236.3 634,233.6 637,227.2 640,224.2 643,227.3 646,231.7 649,231.2 652,225.7 655,221.8 658,224.3 661,230.5 664,233.4 667,230.7 670,227.3 673,229.4 676,236.9 679,243.0 682,243.2 685,240.3 688,241.1 691,247.9 694,255.4 697,257.2 700,253.9 703,252.1 706,256.1 709,262.7 712,265.0 715,260.9 718,256.0 721,256.3 724,261.1 727,263.6 730,259.8 733,253.2 736,250.7 739,254.2 742,258.0 745,256.3 748,250.3 751,246.9 754,249.9 757,255.8 760,257.6 763,254.1 766,250.8 769,253.5 772,260.8 775,265.9 778,264.8 781,261.5 784,262.7 787,269.5 790,275.9 793,276.2 796,272.0 799,270.2 802,274.3 805,280.0 808,280.6 811,275.3 814,270.1 817,270.6 820,274.7 823,275.8 826,270.6 829,263.5" fill="none" stroke="#2F5E86" stroke-width="1.8"/>
 <polyline points="70,268.0 73,268.0 76,268.0 79,267.9 82,267.8 85,267.7 88,267.6 91,267.4 94,267.3 97,267.1 100,266.8 103,266.6 106,266.3 109,266.0 112,265.7 115,265.4 118,265.0 121,264.7 124,264.3 127,263.9 130,263.4 133,263.0 136,262.5 139,262.0 142,261.5 145,260.9 148,260.4 151,259.8 154,259.2 157,258.6 160,258.0 163,257.3 166,256.6 169,256.0 172,255.3 175,254.6 178,253.8 181,253.1 184,252.3 187,251.6 190,250.8 193,250.0 196,249.2 199,248.4 202,247.5 205,246.7 208,245.8 211,245.0 214,244.1 217,243.2 220,242.3 223,241.4 226,240.5 229,239.6 232,238.7 235,237.8 238,236.9 241,235.9 244,235.0 247,234.1 250,233.1 253,232.2 256,231.3 259,230.3 262,229.4 265,228.4 268,227.5 271,226.5 274,225.6 277,224.7 280,223.7 283,222.8 286,221.9 289,221.0 292,220.1 295,219.2 298,218.3 301,217.4 304,216.5 307,215.6 310,214.7 313,213.9 316,213.0 319,212.2 322,211.4 325,210.5 328,209.7 331,209.0 334,208.2 337,207.4 340,206.7 343,205.9 346,205.2 349,204.5 352,203.8 355,203.1 358,202.5 361,201.8 364,201.2 367,200.6 370,200.0 373,199.4 376,198.9 379,198.4 382,197.8 385,197.4 388,196.9 391,196.4 394,196.0 397,195.6 400,195.2 403,194.8 406,194.5 409,194.2 412,193.9 415,193.6 418,193.3 421,193.1 424,192.9 427,192.7 430,192.5 433,192.4 436,192.3 439,192.2 442,192.1 445,192.0 448,192.0 451,192.0 454,192.0 457,192.1 460,192.1 463,192.2 466,192.3 469,192.5 472,192.6 475,192.8 478,193.0 481,193.2 484,193.5 487,193.8 490,194.1 493,194.4 496,194.7 499,195.1 502,195.5 505,195.9 508,196.3 511,196.7 514,197.2 517,197.7 520,198.2 523,198.7 526,199.3 529,199.8 532,200.4 535,201.0 538,201.6 541,202.3 544,202.9 547,203.6 550,204.3 553,205.0 556,205.7 559,206.4 562,207.2 565,207.9 568,208.7 571,209.5 574,210.3 577,211.1 580,211.9 583,212.7 586,213.6 589,214.4 592,215.3 595,216.2 598,217.1 601,218.0 604,218.9 607,219.8 610,220.7 613,221.6 616,222.5 619,223.4 622,224.4 625,225.3 628,226.2 631,227.2 634,228.1 637,229.1 640,230.0 643,230.9 646,231.9 649,232.8 652,233.8 655,234.7 658,235.6 661,236.6 664,237.5 667,238.4 670,239.3 673,240.2 676,241.1 679,242.0 682,242.9 685,243.8 688,244.7 691,245.6 694,246.4 697,247.3 700,248.1 703,248.9 706,249.7 709,250.5 712,251.3 715,252.1 718,252.8 721,253.6 724,254.3 727,255.0 730,255.7 733,256.4 736,257.1 739,257.7 742,258.4 745,259.0 748,259.6 751,260.2 754,260.7 757,261.3 760,261.8 763,262.3 766,262.8 769,263.3 772,263.7 775,264.1 778,264.5 781,264.9 784,265.3 787,265.6 790,265.9 793,266.2 796,266.5 799,266.8 802,267.0 805,267.2 808,267.4 811,267.5 814,267.7 817,267.8 820,267.9 823,267.9 826,268.0 829,268.0" fill="none" stroke="#3F7D5A" stroke-width="2.2" stroke-dasharray="7 4"/>
-<text x="830" y="120" font-family="Lato, sans-serif" font-size="11.6" fill="#3F7D5A" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">— signal physiologique supposé</text>
-<text x="830" y="134" font-family="Lato, sans-serif" font-size="11.6" fill="#2F5E86" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">— signal réellement enregistré</text>
+<text x="830" y="120" font-family="Lato, sans-serif" font-size="11.6" fill="#3F7D5A" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">— the presumed physiological signal</text>
+<text x="830" y="134" font-family="Lato, sans-serif" font-size="11.6" fill="#2F5E86" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">— the signal actually recorded</text>
 <rect x="70" y="296" width="376" height="54" rx="5" fill="#FFFFFF" stroke="#D9D9C6" stroke-width="1"/>
 <rect x="70" y="296" width="5" height="54" rx="2.5" fill="#A8552E"/>
-<text x="86" y="313" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Dérive d'électrode</text>
-<text x="86" y="328.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Polarisation et oxydation du contact : 10 à 40 % dans la</text>
-<text x="86" y="338.5" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">première demi-heure, puis lente dérive sur des jours.</text>
+<text x="86" y="313" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Electrode drift</text>
+<text x="86" y="328.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Polarization and oxidation of the contact: 10 to 40 % in the</text>
+<text x="86" y="338.5" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">first half hour, then a slow drift over days.</text>
 <rect x="470" y="296" width="376" height="54" rx="5" fill="#FFFFFF" stroke="#D9D9C6" stroke-width="1"/>
 <rect x="470" y="296" width="5" height="54" rx="2.5" fill="#B08528"/>
-<text x="486" y="313" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Température</text>
-<text x="486" y="328.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Le gain de l'amplificateur et la résistance du tissu varient</text>
-<text x="486" y="338.5" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">avec T°. Un cycle jour/nuit se lit comme un « rythme ».</text>
+<text x="486" y="313" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Temperature</text>
+<text x="486" y="328.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">The amplifier gain and the tissue resistance both vary with</text>
+<text x="486" y="338.5" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">T°. A day/night cycle reads as a “rhythm”.</text>
 <rect x="70" y="358" width="376" height="54" rx="5" fill="#FFFFFF" stroke="#D9D9C6" stroke-width="1"/>
 <rect x="70" y="358" width="5" height="54" rx="2.5" fill="#2F5E86"/>
-<text x="86" y="375" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Humidité de surface</text>
-<text x="86" y="390.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Rosée, pluie, brouillard : le film d'eau court-circuite le</text>
-<text x="86" y="400.5" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">trajet à travers le tissu.</text>
+<text x="86" y="375" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Surface moisture</text>
+<text x="86" y="390.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Dew, rain, fog: the film of water short-circuits the path</text>
+<text x="86" y="400.5" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">through the tissue.</text>
 <rect x="470" y="358" width="376" height="54" rx="5" fill="#FFFFFF" stroke="#D9D9C6" stroke-width="1"/>
 <rect x="470" y="358" width="5" height="54" rx="2.5" fill="#3F7D5A"/>
-<text x="486" y="375" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Mouvement</text>
-<text x="486" y="390.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Vent, passage d'un promeneur, vibration : micro-déplacement de</text>
-<text x="486" y="400.5" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">l'électrode = artefact de grande amplitude.</text>
+<text x="486" y="375" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Movement</text>
+<text x="486" y="390.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Wind, a passing walker, vibration: a micro-movement of the</text>
+<text x="486" y="400.5" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">electrode = a large-amplitude artefact.</text>
 <rect x="70" y="420" width="376" height="54" rx="5" fill="#FFFFFF" stroke="#D9D9C6" stroke-width="1"/>
 <rect x="70" y="420" width="5" height="54" rx="2.5" fill="#6B7A72"/>
-<text x="86" y="437" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Couplage secteur</text>
-<text x="86" y="452.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">50 Hz rayonné par le réseau et les lampadaires. Sans filtre,</text>
-<text x="86" y="462.5" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">il se replie dans la bande utile.</text>
-<text x="450" y="500" font-family="Lato, sans-serif" font-size="12.18" fill="#A8552E" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Un signal propre en laboratoire devient, en extérieur, une somme dont la part biologique est minoritaire.</text>
+<text x="86" y="437" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Mains coupling</text>
+<text x="86" y="452.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">50 Hz radiated by the grid and by street lamps. Unfiltered, it</text>
+<text x="86" y="462.5" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">aliases into the useful band.</text>
+<text x="450" y="500" font-family="Lato, sans-serif" font-size="12.18" fill="#A8552E" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">A signal that is clean in the laboratory becomes, outdoors, a sum in which the biological share is the smallest.</text>
 </svg>

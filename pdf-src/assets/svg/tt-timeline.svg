@@ -1,20 +1,3 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/tt-timeline.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 366" width="1000" height="366">
 
 <defs>
@@ -29,15 +12,16 @@
    <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
 </defs>
 <rect width="1000" height="366" fill="#FBF9F1"/>
-<text x="500" y="34" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2.4">CENT CINQUANTE ANS DE PLANTES QUI « RÉPONDENT »</text>
+<text x="500" y="34" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2.4">A HUNDRED AND FIFTY YEARS OF PLANTS THAT “ANSWER”</text>
 <line x1="56" y1="196" x2="950" y2="196" stroke="#B08528" stroke-width="2.6"/>
 <circle cx="74" cy="196" r="6.5" fill="#3F7D5A" stroke="#FBF9F1" stroke-width="2"/>
 <line x1="74" y1="189" x2="74" y2="180" stroke="#3F7D5A" stroke-width="1.3"/>
 <rect x="12" y="98" width="124" height="70" rx="5" fill="#FFFFFF" stroke="#3F7D5A" stroke-width="1.2"/>
 <text x="74.0" y="113" font-family="Cormorant Garamond, serif" font-size="14.5" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">1873</text>
 <text x="74.0" y="125" font-family="Lato, sans-serif" font-size="10.01" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Burdon-Sanderson</text>
-<text x="74.0" y="137" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Potentiel électrique</text>
-<text x="74.0" y="146" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">mesuré chez la dionée.</text>
+<text x="74.0" y="137" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Electrical potential</text>
+<text x="74.0" y="146" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">measured in the Venus</text>
+<text x="74.0" y="155" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">flytrap.</text>
 <circle cx="140" cy="196" r="6.5" fill="#3F7D5A" stroke="#FBF9F1" stroke-width="2"/>
 <line x1="140" y1="203" x2="140" y2="212" stroke="#3F7D5A" stroke-width="1.3"/>
 <rect x="78" y="224" width="124" height="70" rx="5" fill="#FFFFFF" stroke="#3F7D5A" stroke-width="1.2"/>
@@ -50,90 +34,90 @@
 <rect x="144" y="98" width="124" height="70" rx="5" fill="#FFFFFF" stroke="#3F7D5A" stroke-width="1.2"/>
 <text x="206.30769230769232" y="113" font-family="Cormorant Garamond, serif" font-size="14.5" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">1902</text>
 <text x="206.30769230769232" y="125" font-family="Lato, sans-serif" font-size="10.01" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">J. C. Bose</text>
-<text x="206.30769230769232" y="137" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Crescographe ; réponses</text>
-<text x="206.30769230769232" y="146" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">électriques du végétal.</text>
+<text x="206.30769230769232" y="137" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">The crescograph;</text>
+<text x="206.30769230769232" y="146" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">electrical responses of</text>
+<text x="206.30769230769232" y="155" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">plants.</text>
 <circle cx="272" cy="196" r="6.5" fill="#A8552E" stroke="#FBF9F1" stroke-width="2"/>
 <line x1="272" y1="203" x2="272" y2="212" stroke="#A8552E" stroke-width="1.3"/>
 <rect x="210" y="224" width="124" height="70" rx="5" fill="#FFFFFF" stroke="#A8552E" stroke-width="1.2"/>
 <text x="272.46153846153845" y="239" font-family="Cormorant Garamond, serif" font-size="14.5" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">1966</text>
 <text x="272.46153846153845" y="251" font-family="Lato, sans-serif" font-size="10.01" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Cleve Backster</text>
-<text x="272.46153846153845" y="263" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Polygraphe sur dracaena :</text>
-<text x="272.46153846153845" y="272" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">l'« effet Backster ».</text>
+<text x="272.46153846153845" y="263" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">A polygraph on a dracaena:</text>
+<text x="272.46153846153845" y="272" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">the “Backster effect”.</text>
 <circle cx="339" cy="196" r="6.5" fill="#A8552E" stroke="#FBF9F1" stroke-width="2"/>
 <line x1="339" y1="189" x2="339" y2="180" stroke="#A8552E" stroke-width="1.3"/>
 <rect x="277" y="98" width="124" height="70" rx="5" fill="#FFFFFF" stroke="#A8552E" stroke-width="1.2"/>
 <text x="338.61538461538464" y="113" font-family="Cormorant Garamond, serif" font-size="14.5" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">1973</text>
 <text x="338.61538461538464" y="125" font-family="Lato, sans-serif" font-size="10.01" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Tompkins &amp; Bird</text>
-<text x="338.61538461538464" y="137" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">« La Vie secrète des</text>
-<text x="338.61538461538464" y="146" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">plantes » : diffusion</text>
-<text x="338.61538461538464" y="155" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">mondiale.</text>
+<text x="338.61538461538464" y="137" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">“The Secret Life of</text>
+<text x="338.61538461538464" y="146" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Plants”: a worldwide</text>
+<text x="338.61538461538464" y="155" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">readership.</text>
 <circle cx="405" cy="196" r="6.5" fill="#2F5E86" stroke="#FBF9F1" stroke-width="2"/>
 <line x1="405" y1="203" x2="405" y2="212" stroke="#2F5E86" stroke-width="1.3"/>
 <rect x="343" y="224" width="124" height="70" rx="5" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.2"/>
 <text x="404.76923076923083" y="239" font-family="Cormorant Garamond, serif" font-size="14.5" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">1975</text>
 <text x="404.76923076923083" y="251" font-family="Lato, sans-serif" font-size="10.01" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Horowitz et al.</text>
-<text x="404.76923076923083" y="263" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Réfutation de l'effet</text>
-<text x="404.76923076923083" y="272" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Backster (Science).</text>
+<text x="404.76923076923083" y="263" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">The Backster effect</text>
+<text x="404.76923076923083" y="272" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">refuted (Science).</text>
 <circle cx="471" cy="196" r="6.5" fill="#B08528" stroke="#FBF9F1" stroke-width="2"/>
 <line x1="471" y1="189" x2="471" y2="180" stroke="#B08528" stroke-width="1.3"/>
 <rect x="409" y="98" width="124" height="70" rx="5" fill="#FFFFFF" stroke="#B08528" stroke-width="1.2"/>
 <text x="470.92307692307696" y="113" font-family="Cormorant Garamond, serif" font-size="14.5" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">1976</text>
 <text x="470.92307692307696" y="125" font-family="Lato, sans-serif" font-size="10.01" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Damanhur</text>
-<text x="470.92307692307696" y="137" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Premiers dispositifs de</text>
-<text x="470.92307692307696" y="146" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">sonification végétale.</text>
+<text x="470.92307692307696" y="137" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">The first plant</text>
+<text x="470.92307692307696" y="146" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">sonification devices.</text>
 <circle cx="537" cy="196" r="6.5" fill="#2F5E86" stroke="#FBF9F1" stroke-width="2"/>
 <line x1="537" y1="203" x2="537" y2="212" stroke="#2F5E86" stroke-width="1.3"/>
 <rect x="475" y="224" width="124" height="70" rx="5" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.2"/>
 <text x="537.0769230769231" y="239" font-family="Cormorant Garamond, serif" font-size="14.5" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">1997</text>
 <text x="537.0769230769231" y="251" font-family="Lato, sans-serif" font-size="10.01" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Suzanne Simard</text>
-<text x="537.0769230769231" y="263" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Transferts de carbone</text>
-<text x="537.0769230769231" y="272" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">entre arbres (Nature).</text>
+<text x="537.0769230769231" y="263" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Carbon transfers between</text>
+<text x="537.0769230769231" y="272" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">trees (Nature).</text>
 <circle cx="603" cy="196" r="6.5" fill="#A8552E" stroke="#FBF9F1" stroke-width="2"/>
 <line x1="603" y1="189" x2="603" y2="180" stroke="#A8552E" stroke-width="1.3"/>
 <rect x="541" y="98" width="124" height="70" rx="5" fill="#FFFFFF" stroke="#A8552E" stroke-width="1.2"/>
 <text x="603.2307692307693" y="113" font-family="Cormorant Garamond, serif" font-size="14.5" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2010</text>
 <text x="603.2307692307693" y="125" font-family="Lato, sans-serif" font-size="10.01" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Happiness Brussels</text>
-<text x="603.2307692307693" y="137" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">« Talking Tree » : un</text>
-<text x="603.2307692307693" y="146" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">arbre bruxellois sur les</text>
-<text x="603.2307692307693" y="155" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">réseaux.</text>
+<text x="603.2307692307693" y="137" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">“Talking Tree”: a Brussels</text>
+<text x="603.2307692307693" y="146" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">tree on social media.</text>
 <circle cx="669" cy="196" r="6.5" fill="#B08528" stroke="#FBF9F1" stroke-width="2"/>
 <line x1="669" y1="203" x2="669" y2="212" stroke="#B08528" stroke-width="1.3"/>
 <rect x="607" y="224" width="124" height="70" rx="5" fill="#FFFFFF" stroke="#B08528" stroke-width="1.2"/>
 <text x="669.3846153846155" y="239" font-family="Cormorant Garamond, serif" font-size="14.5" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2015</text>
 <text x="669.3846153846155" y="251" font-family="Lato, sans-serif" font-size="10.01" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Alexandre Ferran</text>
-<text x="669.3846153846155" y="263" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Clavier de mots : la</text>
-<text x="669.3846153846155" y="272" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">plante déclenche du</text>
-<text x="669.3846153846155" y="281" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">langage.</text>
+<text x="669.3846153846155" y="263" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">A word keyboard: the plant</text>
+<text x="669.3846153846155" y="272" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">triggers language.</text>
 <circle cx="736" cy="196" r="6.5" fill="#2F5E86" stroke="#FBF9F1" stroke-width="2"/>
 <line x1="736" y1="189" x2="736" y2="180" stroke="#2F5E86" stroke-width="1.3"/>
 <rect x="674" y="98" width="124" height="70" rx="5" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.2"/>
 <text x="735.5384615384617" y="113" font-family="Cormorant Garamond, serif" font-size="14.5" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2018</text>
 <text x="735.5384615384617" y="125" font-family="Lato, sans-serif" font-size="10.01" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Toyota &amp; Gilroy</text>
-<text x="735.5384615384617" y="137" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Vagues calciques à longue</text>
-<text x="735.5384615384617" y="146" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">distance (Science).</text>
+<text x="735.5384615384617" y="137" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Long-distance calcium</text>
+<text x="735.5384615384617" y="146" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">waves (Science).</text>
 <circle cx="802" cy="196" r="6.5" fill="#2F5E86" stroke="#FBF9F1" stroke-width="2"/>
 <line x1="802" y1="203" x2="802" y2="212" stroke="#2F5E86" stroke-width="1.3"/>
 <rect x="740" y="224" width="124" height="70" rx="5" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.2"/>
 <text x="801.6923076923077" y="239" font-family="Cormorant Garamond, serif" font-size="14.5" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2023</text>
 <text x="801.6923076923077" y="251" font-family="Lato, sans-serif" font-size="10.01" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Khait et al.</text>
-<text x="801.6923076923077" y="263" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Sons aériens émis sous</text>
-<text x="801.6923076923077" y="272" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">stress (Cell).</text>
+<text x="801.6923076923077" y="263" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Airborne sounds emitted</text>
+<text x="801.6923076923077" y="272" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">under stress (Cell).</text>
 <circle cx="868" cy="196" r="6.5" fill="#2F5E86" stroke="#FBF9F1" stroke-width="2"/>
 <line x1="868" y1="189" x2="868" y2="180" stroke="#2F5E86" stroke-width="1.3"/>
 <rect x="806" y="98" width="124" height="70" rx="5" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.2"/>
 <text x="867.8461538461539" y="113" font-family="Cormorant Garamond, serif" font-size="14.5" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2023</text>
 <text x="867.8461538461539" y="125" font-family="Lato, sans-serif" font-size="10.01" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Karst et al.</text>
-<text x="867.8461538461539" y="137" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Critique du « wood wide</text>
-<text x="867.8461538461539" y="146" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">web » (Nat. Ecol. Evol.).</text>
+<text x="867.8461538461539" y="137" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">A critique of the “wood</text>
+<text x="867.8461538461539" y="146" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">wide web” (Nat. Ecol.</text>
+<text x="867.8461538461539" y="155" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Evol.).</text>
 <circle cx="934" cy="196" r="6.5" fill="#A8552E" stroke="#FBF9F1" stroke-width="2"/>
 <line x1="934" y1="203" x2="934" y2="212" stroke="#A8552E" stroke-width="1.3"/>
 <rect x="872" y="224" width="124" height="70" rx="5" fill="#FFFFFF" stroke="#A8552E" stroke-width="1.2"/>
 <text x="934.0000000000001" y="239" font-family="Cormorant Garamond, serif" font-size="14.5" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2025</text>
 <text x="934.0000000000001" y="251" font-family="Lato, sans-serif" font-size="10.01" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Droga5 / Agency for</text>
 <text x="934.0000000000001" y="260" font-family="Lato, sans-serif" font-size="10.01" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Nature</text>
-<text x="934.0000000000001" y="272" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">« The Talking Tree » :</text>
-<text x="934.0000000000001" y="281" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">capteurs + LLM local.</text>
-<text x="210" y="344" font-family="Lato, sans-serif" font-size="11.02" fill="#3F7D5A" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">■ physiologie mesurée</text>
-<text x="390" y="344" font-family="Lato, sans-serif" font-size="11.02" fill="#2F5E86" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">■ écologie &amp; signalisation</text>
-<text x="590" y="344" font-family="Lato, sans-serif" font-size="11.02" fill="#A8552E" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">■ dispositifs artistiques et médiatiques</text>
+<text x="934.0000000000001" y="272" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">“The Talking Tree”:</text>
+<text x="934.0000000000001" y="281" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">sensors + a local LLM.</text>
+<text x="210" y="344" font-family="Lato, sans-serif" font-size="11.02" fill="#3F7D5A" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">■ measured physiology</text>
+<text x="390" y="344" font-family="Lato, sans-serif" font-size="11.02" fill="#2F5E86" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">■ ecology &amp; signalling</text>
+<text x="590" y="344" font-family="Lato, sans-serif" font-size="11.02" fill="#A8552E" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">■ artistic and media installations</text>
 </svg>

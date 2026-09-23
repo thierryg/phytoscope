@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/ui/updates_dialog.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """La fenêtre « Mises à jour des bibliothèques ».
@@ -31,7 +31,7 @@ a un sens.
 
 **Rien n'est coché d'avance.** Proposer une liste pré-cochée fait cliquer
 « Installer » sans lire, et une mise à jour majeure de PySide6 ou de NumPy
-peut casser la portabilité que `.ai/portabilite.md` tient à jour. C'est à
+peut casser la portabilité que `.ai/portability.md` tient à jour. C'est à
 qui utilise le logiciel de décider, écart par écart.
 
 **L'installation montre ce qu'elle fait.** La sortie de `pip` défile dans la
@@ -65,7 +65,7 @@ _ETATS = {
     "correctif":  ("#7FBEE0", "correctif"),
     "mineure":    ("#E0C073", "mise à jour mineure"),
     "majeure":    ("#E0955A", "mise à jour majeure"),
-    "absente":    ("#E06C5A", "absente"),
+    "missing":    ("#E06C5A", "missing"),
     "inconnue":   ("#8D9A93", "non vérifiée"),
 }
 
@@ -129,7 +129,7 @@ class MajDialog(QDialog):
     def __init__(self, palette: Optional[dict] = None,
                  racine_exigences: str = "", parent=None):
         super().__init__(parent)
-        self.setWindowTitle(t("Mises à jour des bibliothèques"))
+        self.setWindowTitle(t("Library updates"))
         self.setMinimumSize(760, 520)
         self._palette = palette or {}
         self._racine = racine_exigences
@@ -141,15 +141,12 @@ class MajDialog(QDialog):
 
         # -- ce que fait cette fenêtre, dit une fois ------------------------
         intro = QLabel(t(
-            "PhytoScope compare les bibliothèques installées à ce que publie "
-            "l'index des paquets Python. Rien n'est installé sans votre "
-            "demande explicite."))
+            "PhytoScope compares the installed libraries with what the Python package index publishes. Nothing is installed without your explicit request."))
         intro.setWordWrap(True)
         disposition.addWidget(intro)
 
         avertissement = QLabel(t(
-            "Une mise à jour majeure change une interface : relisez les notes "
-            "de version avant de l'installer."))
+            "A major update changes an interface: read the release notes before installing it."))
         avertissement.setWordWrap(True)
         police = QFont()
         police.setItalic(True)
@@ -160,8 +157,8 @@ class MajDialog(QDialog):
         # -- le tableau ----------------------------------------------------
         self.table = QTableWidget(0, 6, self)
         self.table.setHorizontalHeaderLabels([
-            "", t("Bibliothèque"), t("Rôle"), t("Exigée"),
-            t("Installée"), t("Disponible")])
+            "", t("Library"), t("Role"), t("Required"),
+            t("Installed"), t("Available")])
         self.table.verticalHeader().setVisible(False)
         self.table.setAlternatingRowColors(True)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
@@ -193,16 +190,16 @@ class MajDialog(QDialog):
 
         # -- les boutons ----------------------------------------------------
         barre_boutons = QHBoxLayout()
-        self.btn_verifier = QPushButton(t("Vérifier maintenant"))
+        self.btn_verifier = QPushButton(t("Check now"))
         self.btn_verifier.clicked.connect(self._verifier)
         barre_boutons.addWidget(self.btn_verifier)
 
-        self.btn_installer = QPushButton(t("Installer la sélection"))
+        self.btn_installer = QPushButton(t("Install selection"))
         self.btn_installer.setEnabled(False)
         self.btn_installer.clicked.connect(self._installer)
         barre_boutons.addWidget(self.btn_installer)
 
-        self.btn_tout = QPushButton(t("Tout sélectionner"))
+        self.btn_tout = QPushButton(t("Select all"))
         self.btn_tout.setEnabled(False)
         self.btn_tout.clicked.connect(self._tout_selectionner)
         barre_boutons.addWidget(self.btn_tout)
@@ -216,7 +213,7 @@ class MajDialog(QDialog):
         #  Rien n'est interrogé à l'ouverture : une fenêtre qui part sur le
         #  réseau dès qu'on l'ouvre surprend, et le réseau n'est pas toujours
         #  celui qu'on croit. C'est un clic.
-        self.verdict.setText(t("Cliquez sur « Vérifier maintenant »."))
+        self.verdict.setText(t("Click “Check now”."))
 
     # -- vérification --------------------------------------------------------
     def _verifier(self) -> None:
@@ -230,10 +227,10 @@ class MajDialog(QDialog):
         self._cases.clear()
         self.btn_installer.setEnabled(False)
         self.btn_tout.setEnabled(False)
-        self.btn_verifier.setText(t("Annuler"))
+        self.btn_verifier.setText(t("Cancel"))
         self.barre.setVisible(True)
         self.barre.setValue(0)
-        self.verdict.setText(t("Interrogation de l'index des paquets…"))
+        self.verdict.setText(t("Querying the package index…"))
 
         fil = _FilVerification(self._racine, self)
         fil.avance.connect(self._avancement)
@@ -245,13 +242,13 @@ class MajDialog(QDialog):
         self.barre.setMaximum(max(total, 1))
         self.barre.setValue(fait)
         if nom:
-            self.verdict.setText(t("Interrogation de {nom}…").format(nom=nom))
+            self.verdict.setText(t("Querying {nom}…").format(nom=nom))
 
     def _verification_finie(self, rapport) -> None:
         self._fil = None
         self._rapport = rapport
         self.barre.setVisible(False)
-        self.btn_verifier.setText(t("Vérifier de nouveau"))
+        self.btn_verifier.setText(t("Check again"))
         self._remplir(rapport)
 
         self.verdict.setText(rapport.resume)
@@ -269,7 +266,7 @@ class MajDialog(QDialog):
 
     def _remplir(self, rapport) -> None:
         #  Ce qui demande une action d'abord : on ne fait pas chercher.
-        ordre = {"absente": 0, "majeure": 1, "mineure": 2, "correctif": 3,
+        ordre = {"missing": 0, "majeure": 1, "mineure": 2, "correctif": 3,
                  "inconnue": 4, "a_jour": 5}
         dependances = sorted(rapport.dependances,
                              key=lambda d: (ordre.get(d.etat, 9),
@@ -304,10 +301,10 @@ class MajDialog(QDialog):
 
             role = t(d.role) if d.role else ""
             if not d.obligatoire:
-                role += t("  (facultative)")
+                role += t("  (optional)")
             self.table.setItem(i, 2, QTableWidgetItem(role))
             self.table.setItem(i, 3, QTableWidgetItem(d.exigence or "—"))
-            self.table.setItem(i, 4, QTableWidgetItem(d.installee or t("absente")))
+            self.table.setItem(i, 4, QTableWidgetItem(d.installee or t("missing")))
 
             dispo = QTableWidgetItem(d.disponible or (d.erreur or "?"))
             from PySide6.QtGui import QColor
@@ -324,8 +321,8 @@ class MajDialog(QDialog):
         tout = not all(c.isChecked() for c in self._cases)
         for c in self._cases:
             c.setChecked(tout)
-        self.btn_tout.setText(t("Tout désélectionner") if tout
-                              else t("Tout sélectionner"))
+        self.btn_tout.setText(t("Deselect all") if tout
+                              else t("Select all"))
 
     # -- installation --------------------------------------------------------
     def _installer(self) -> None:
@@ -336,15 +333,12 @@ class MajDialog(QDialog):
         majeures = [d.distribution for d in (self._rapport.a_mettre_a_jour
                                              if self._rapport else [])
                     if d.ampleur == "majeure" and d.distribution in paquets]
-        question = t("Installer {n} bibliothèque(s) ?").format(n=len(paquets))
+        question = t("Install {n} library/libraries?").format(n=len(paquets))
         detail = "\n".join("  · " + p for p in paquets)
         if majeures:
             detail += "\n\n" + t(
-                "Dont {n} mise(s) à jour MAJEURE(S) : elles changent une "
-                "interface et peuvent empêcher le logiciel de démarrer. "
-                "Le journal dira ce qui s'est passé, et « Contrôles avant "
-                "vol » ce qui manque.").format(n=len(majeures))
-        if QMessageBox.question(self, t("Confirmer"), question + "\n\n" + detail,
+                "Including {n} MAJOR update(s): they change an interface and may prevent the software from starting. The log will say what happened, and “Preflight checks” what is missing.").format(n=len(majeures))
+        if QMessageBox.question(self, t("Confirm"), question + "\n\n" + detail,
                                 QMessageBox.Yes | QMessageBox.No,
                                 QMessageBox.No) != QMessageBox.Yes:
             return
@@ -354,7 +348,7 @@ class MajDialog(QDialog):
         self.btn_installer.setEnabled(False)
         self.btn_verifier.setEnabled(False)
         self.btn_tout.setEnabled(False)
-        self.verdict.setText(t("Installation en cours…"))
+        self.verdict.setText(t("Installing…"))
 
         fil = _FilInstallation(paquets, self)
         fil.ligne.connect(self._journal_ligne)
@@ -370,13 +364,11 @@ class MajDialog(QDialog):
         self.btn_verifier.setEnabled(True)
         if ok:
             self.verdict.setText(t(
-                "Installation terminée. Redémarrez PhytoScope pour que les "
-                "nouvelles versions soient chargées."))
+                "Installation finished. Restart PhytoScope so the new versions are loaded."))
             self.verdict.setStyleSheet("color: #7FE0A8;")
         else:
             self.verdict.setText(t(
-                "Installation en échec — le détail est ci-dessous. Les "
-                "anciennes versions restent en place."))
+                "Installation failed — the details are below. The previous versions remain in place."))
             self.verdict.setStyleSheet("color: #E06C5A;")
         #  On revérifie pour montrer l'état réel, et non l'état espéré.
         self._verifier()
@@ -391,9 +383,8 @@ class MajDialog(QDialog):
             #  pip au milieu laisse l'environnement à moitié écrit.
             elif isinstance(self._fil, _FilInstallation):
                 QMessageBox.information(
-                    self, t("Installation en cours"),
-                    t("Attendez la fin de l'installation : interrompre pip "
-                      "laisserait l'environnement Python à moitié écrit."))
+                    self, t("Installation in progress"),
+                    t("Wait for the installation to finish: interrupting pip would leave the Python environment half written."))
                 return
             self._fil.wait(2000)
         super().reject()

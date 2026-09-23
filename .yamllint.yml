@@ -1,26 +1,25 @@
 #  ==========================================================================
 #  PhytoScope — attribution — .yamllint.yml
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 # ===========================================================================
-#  PhytoScope — réglages de yamllint
+#  PhytoScope — yamllint settings
 # ===========================================================================
-#  Les fichiers d'Actions GitHub ont deux particularités qui font hurler la
-#  configuration par défaut, sans qu'il y ait quoi que ce soit à corriger :
-#  la clé « on: » est lue comme le booléen « true », et les lignes de
-#  commandes shell y sont naturellement longues. On les tolère ; le reste
-#  reste contrôlé.
+#  GitHub Actions files have two peculiarities that make the default
+#  configuration shout without there being anything to fix: the key "on:" is
+#  read as the boolean "true", and shell command lines in them are naturally
+#  long. Those two are tolerated; everything else stays checked.
 # ===========================================================================
 extends: relaxed
 
@@ -43,7 +42,8 @@ rules:
   brackets:
     max-spaces-inside: 1
 
+#  `.ecarte/` was listed here until 2026-09-23, when it was deleted: 857 MB
+#  of an obsolete virtual environment, duplicates and a dead CMake cache.
 ignore: |
-  .ecarte/
   sources/
   build/

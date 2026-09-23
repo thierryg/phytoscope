@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<!--
+  ==========================================================================
+  PhytoScope — attribution — sources/midi/reference.html
+
+  Version   : 1.5.1
+  Date      : 2026-09-22
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
+
+  SPDX-License-Identifier: MIT
+  end of attribution
+  ==========================================================================
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>MIDI Protocol Reference — PhytoScope</title>
+  <link rel="stylesheet" href="reference.css"/>
+</head>
+<body>
+
+<!-- ===================================================== cover ========= -->
+<section>
+  <h1 class="cover-title">MIDI Protocol<br/>Reference</h1>
+  <p class="cover-sub">Wire format, message set, file format,<br/>and what PhytoScope actually sends</p>
+  <p class="cover-meta">
+    Bretagne Namasté — PhytoScope 1.5.1 — 2026-09-22<br/>
+    Written for this project. MIT licensed.<br/><br/>
+    This is a <strong>working reference</strong>, not a specification.<br/>
+    The normative documents are listed in section 13; we do not<br/>
+    redistribute them, and where this document and they disagree,<br/>
+    they are right.
+  </p>
+</section>
+
+<!-- ===================================================== toc =========== -->
+<nav id="toc">
+  <h2 style="break-before:page">Contents</h2>
+  <ol>
+    <li><a href="#s1">1 — Scope, and what this document is not</a></li>
+    <li><a href="#s2">2 — Transport: the 31.25 kbaud current loop, and USB</a></li>
+    <li><a href="#s3">3 — Byte structure, and running status</a></li>
+    <li><a href="#s4">4 — Channel Voice messages</a></li>
+    <li><a href="#s5">5 — Control Change, and Channel Mode</a></li>
+    <li><a href="#s6">6 — Registered and non-registered parameters</a></li>
+    <li><a href="#s7">7 — System messages</a></li>
+    <li><a href="#s8">8 — Timing and synchronization</a></li>
+    <li><a href="#s9">9 — Standard MIDI Files</a></li>
+    <li><a href="#s10">10 — General MIDI</a></li>
+    <li><a href="#s11">11 — MIDI 2.0, UMP and MIDI-CI</a></li>
+    <li><a href="#s12">12 — What PhytoScope emits, and what it does not</a></li>
+    <li><a href="#s13">13 — Pitfalls that cost real time</a></li>
+    <li><a href="#s14">14 — Normative references</a></li>
+  </ol>
+</nav>
+
+<!-- ===================================================== 1 ============= -->
+<h2 id="s1" class="newpage">1 — Scope, and what this document is not</h2>
+
+<p>PhytoScope turns the electrical activity of a plant into sound. One of its
+outputs is MIDI: the software maps detected events onto notes and sends them
+to a synthesizer, a digital audio workstation, or the PhytoSense board's own
+hardware output. Getting that right means knowing the protocol at the byte
+level, because the failures are silent — a note that never stops, a channel
+off by one, a running-status stream that a receiver parses as garbage.</p>
+
+<p>This document is the reference we needed while writing
+<code>phytoscope/music/midi_out.py</code> and the firmware's direct MIDI
+path. It covers MIDI 1.0 in the detail required to read a byte stream by
+hand, the Standard MIDI File container, General MIDI as far as it constrains
+a sender, and MIDI 2.0 at the level of what changes and why.</p>
+
+<div class="warn">
+  <span class="label">What this is not</span>
+  It is <strong>not normative</strong>. The MIDI Association's
+  specifications are, and they are copyrighted: we do not redistribute them,
+  and section 14 says where to get them. Everything here was written to be
+  checked against them. Where it is wrong, they win.
+</div>
+
+<p>Numbers are written <code>0x90</code> for hexadecimal and plain for
+decimal. Bit 7 is the most significant bit of a byte. "Channel 1" means what
+a musician calls channel 1, which is the nibble <code>0x0</code> on the wire
+— the off-by-one that section 12 returns to.</p>
+
+<!-- ===================================================== 2 ============= -->
+<h2 id="s2" class="newpage">2 — Transport: the 31.25 kbaud current loop, and USB</h2>
+
+<h3>2.1 — The original electrical layer</h3>
+
+<p>MIDI 1.0's wire layer is an asynchronous serial link, deliberately crude
+so that it could be built in 1983 from parts anyone had:</p>
+
+<table class="short">
+  <tr><th style="width:38%">Property</th><th>Value</th></tr>
+  <tr><td>Bit rate</td><td class="hex">31,250 bits/s, ±1%</td></tr>
+  <tr><td>Framing</td><td>1 start bit, 8 data bits, 1 stop bit, no parity (8N1)</td></tr>
+  <tr><td>Bits per byte on the wire</td><td>10</td></tr>
+  <tr><td>Time per byte</td><td class="hex">320 µs</td></tr>
+  <tr><td>Signaling</td><td>5 mA current loop, opto-isolated at the input</td></tr>
+  <tr><td>Connector</td><td>5-pin DIN 41524 (later also 3.5 mm TRS, type A)</td></tr>
+  <tr><td>Direction</td><td>One way. An IN and an OUT are separate cables.</td></tr>
+</table>
+
+<p>On the 5-pin DIN, pin 4 sources the current, pin 5 sinks it, and pin 2 is
+the shield — connected at the OUT end only, which is what keeps a ground loop
+out of the audio. Pins 1 and 3 are unused in MIDI 1.0. The input is
+opto-isolated precisely so that two pieces of equipment on different mains
+circuits cannot hum at each other through the MIDI cable.</p>
+
+<div class="note">
+  <span class="label">Why 31.25 kbaud</span>
+  It is 1 MHz divided by 32, which any 1980s microcontroller could derive
+  from its own clock without a dedicated crystal. The consequence is the one
+  that still matters: <strong>320 µs per byte</strong>. A three-byte Note On
+  takes about 1 ms, so a ten-note chord takes about 10 ms to leave the port,
+  and the last note of that chord is measurably late. This is not a defect to
+  be fixed; it is the budget you work within.
+</div>
+
+<h3>2.2 — USB-MIDI</h3>
+
+<p>A USB device that declares the Audio class with a MIDIStreaming subclass
+carries the same messages, packed into 4-byte USB-MIDI Event Packets: one
+byte of Cable Number and Code Index Number, then up to three bytes of MIDI.
+The message set does not change. What changes is the timing: USB delivers in
+bursts on frame boundaries, so inter-message jitter is different in character
+— generally smaller in total, but lumpier — than on the current loop.</p>
+
+<p>PhytoSense exposes a composite USB device; the MIDI path, when enabled,
+sits alongside the measurement stream and the serial control port. The
+software's own MIDI output goes through the host operating system's MIDI
+stack (ALSA, CoreMIDI, or Windows MM) and never touches USB directly.</p>
+
+<!-- ===================================================== 3 ============= -->
+<h2 id="s3" class="newpage">3 — Byte structure, and running status</h2>
+
+<h3>3.1 — Status bytes and data bytes</h3>
+
+<p>Every byte is one or the other, and bit 7 decides which. This single rule
+is what makes a MIDI stream resynchronizable: a receiver that joins mid-flight
+can discard bytes until it sees one with bit 7 set, and it is then aligned.</p>
+
+<table class="short">
+  <tr><th style="width:26%">Kind</th><th class="hex" style="width:22%">Range</th><th>Bit 7</th><th>Carries</th></tr>
+  <tr><td>Status byte</td><td class="hex">0x80–0xFF</td><td>1</td><td>What the message is, and (for channel messages) which channel</td></tr>
+  <tr><td>Data byte</td><td class="hex">0x00–0x7F</td><td>0</td><td>7 bits of payload — a note number, a velocity, a controller value</td></tr>
+</table>
+
+<p>A channel message's status byte splits into two nibbles: the high nibble
+is the message type, the low nibble is the channel, 0–15, displayed to
+musicians as 1–16.</p>
+
+<pre>  Status byte of a channel message
+
+    bit   7  6  5  4   3  2  1  0
+          1  t  t  t   c  c  c  c
+             \______/  \________/
+              type      channel 0-15  (shown as 1-16)
+
+  Example: 0x93 = 1001 0011 = Note On, channel 4</pre>
+
+<h3>3.2 — Running status</h3>
+
+<p>A sender may omit the status byte when it equals the previous one. The
+receiver keeps the last channel status it saw and applies it to any data
+bytes that follow. A stream of eighty notes on one channel therefore costs
+161 bytes rather than 240 — a 33% saving on a 31.25 kbaud link, which is why
+the feature exists.</p>
+
+<pre>  Without running status          With running status
+    90 3C 40                        90 3C 40
+    90 3E 40                           3E 40
+    90 40 40                           40 40
+    80 3C 00                        80 3C 00
+    80 3E 00                           3E 00</pre>
+
+<p>Three rules govern it, and every one of them has bitten somebody:</p>
+
+<ol>
+  <li><strong>Only channel messages</strong> (<code>0x80</code>–<code>0xEF</code>)
+  participate. A System Common message <em>clears</em> the running status.</li>
+  <li><strong>System Real-Time messages do not clear it.</strong> A timing
+  clock (<code>0xF8</code>) can appear between two data bytes of a running-status
+  message, and the receiver must step over it and carry on.</li>
+  <li><strong>A receiver must accept it; a sender need not use it.</strong>
+  Emitting full status bytes is always legal, and is what PhytoScope does.</li>
+</ol>
+
+<div class="warn">
+  <span class="label">The classic parser bug</span>
+  A parser that resets running status on <em>any</em> byte with bit 7 set will
+  mis-handle rule 2: it drops the rest of the note whenever a clock arrives
+  mid-message. The stream is valid; the parser is not. If you write a MIDI
+  input, test it with clock running.
+</div>
+
+<!-- ===================================================== 4 ============= -->
+<h2 id="s4" class="newpage">4 — Channel Voice messages</h2>
+
+<p>Seven message types, each addressed to one of sixteen channels. This table
+is the core of the protocol; everything else is around it.</p>
+
+<table class="long">
+  <thead>
+    <tr>
+      <th class="hex" style="width:11%">Status</th>
+      <th style="width:23%">Message</th>
+      <th style="width:22%">Data byte 1</th>
+      <th style="width:22%">Data byte 2</th>
+      <th>Bytes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td class="hex">0x8n</td><td>Note Off</td><td>Key number 0–127</td><td>Release velocity 0–127</td><td>3</td></tr>
+    <tr><td class="hex">0x9n</td><td>Note On</td><td>Key number 0–127</td><td>Velocity 1–127; <strong>0 means Note Off</strong></td><td>3</td></tr>
+    <tr><td class="hex">0xAn</td><td>Polyphonic Key Pressure</td><td>Key number 0–127</td><td>Pressure 0–127</td><td>3</td></tr>
+    <tr><td class="hex">0xBn</td><td>Control Change</td><td>Controller 0–119</td><td>Value 0–127</td><td>3</td></tr>
+    <tr><td class="hex">0xBn</td><td>Channel Mode</td><td>Controller 120–127</td><td>See section 5.3</td><td>3</td></tr>
+    <tr><td class="hex">0xCn</td><td>Program Change</td><td>Program 0–127</td><td>—</td><td>2</td></tr>
+    <tr><td class="hex">0xDn</td><td>Channel Pressure</td><td>Pressure 0–127</td><td>—</td><td>2</td></tr>
+    <tr><td class="hex">0xEn</td><td>Pitch Bend Change</td><td>Value LSB (7 bits)</td><td>Value MSB (7 bits)</td><td>3</td></tr>
+  </tbody>
+</table>
+
+<h3>4.1 — Note numbers and velocity</h3>
+
+<p>Key number 60 is middle C, and the octave convention almost everybody uses
+calls it C4 — so <code>note = 12 × (octave + 1) + semitone</code>, with
+semitone 0 = C. Key 69 is A4, 440 Hz by convention. The usable range is 0
+(C-1) to 127 (G9), which is wider than any acoustic instrument and narrower
+than the audible spectrum.</p>
+
+<p>Velocity is 1–127 for a Note On. <strong>Velocity 0 is a Note Off</strong>,
+and this is not a convention but the specification: it exists so that running
+status can express a stream of note-ons and note-offs without ever changing
+the status byte. A sender must therefore never emit a Note On with velocity 0
+meaning "silent note", and a receiver must treat it as a release.</p>
+
+<h3>4.2 — Pitch bend, and why LSB comes first</h3>
+
+<p>Pitch bend is the only 14-bit value in a single channel message. The two
+data bytes carry 7 bits each, <strong>least significant byte first</strong>,
+which is the opposite of the order used by 14-bit Control Change pairs — a
+genuine inconsistency in the standard, and a reliable source of bugs.</p>
+
+<pre>  value = (msb &lt;&lt; 7) | lsb          range 0 .. 16383
+  center = 8192 = 0x2000            no bend
+  wire:  En  lsb  msb
+
+  Examples on channel 1:
+    E0 00 40   center, no bend
+    E0 00 00   full bend down
+    E0 7F 7F   full bend up</pre>
+
+<p>How far "full bend" actually is, is not defined by the message — it is the
+receiver's Pitch Bend Sensitivity, set through RPN 0 (section 6) and
+defaulting to ±2 semitones under General MIDI. A sender that needs a known
+interval must set the sensitivity first, or accept that the result depends on
+the instrument.</p>
+
+<!-- ===================================================== 5 ============= -->
+<h2 id="s5" class="newpage">5 — Control Change, and Channel Mode</h2>
+
+<p>Control Change (<code>0xBn</code>) is the protocol's extension mechanism.
+Controllers 0–119 are continuous or switch controllers; 120–127 are reserved
+for Channel Mode messages, which change how the channel behaves rather than
+how it sounds.</p>
+
+<h3>5.1 — Controllers worth knowing</h3>
+
+<table class="long">
+  <thead><tr><th style="width:12%">Number</th><th style="width:34%">Controller</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td class="hex">0</td><td>Bank Select (MSB)</td><td>Paired with 32; selects a bank of programs before a Program Change</td></tr>
+    <tr><td class="hex">1</td><td>Modulation Wheel</td><td>Required by General MIDI</td></tr>
+    <tr><td class="hex">2</td><td>Breath Controller</td><td></td></tr>
+    <tr><td class="hex">4</td><td>Foot Controller</td><td></td></tr>
+    <tr><td class="hex">5</td><td>Portamento Time</td><td></td></tr>
+    <tr><td class="hex">6</td><td>Data Entry (MSB)</td><td>Value for the currently selected RPN/NRPN</td></tr>
+    <tr><td class="hex">7</td><td>Channel Volume</td><td>Required by General MIDI</td></tr>
+    <tr><td class="hex">8</td><td>Balance</td><td></td></tr>
+    <tr><td class="hex">10</td><td>Pan</td><td>0 = left, 64 = center, 127 = right. Required by GM</td></tr>
+    <tr><td class="hex">11</td><td>Expression</td><td>Required by GM. Scales volume without replacing CC 7</td></tr>
+    <tr><td class="hex">32–63</td><td>LSB for controllers 0–31</td><td>See section 5.2</td></tr>
+    <tr><td class="hex">64</td><td>Sustain Pedal (damper)</td><td>≤63 off, ≥64 on. Required by GM</td></tr>
+    <tr><td class="hex">65</td><td>Portamento On/Off</td><td></td></tr>
+    <tr><td class="hex">66</td><td>Sostenuto</td><td></td></tr>
+    <tr><td class="hex">67</td><td>Soft Pedal</td><td></td></tr>
+    <tr><td class="hex">68</td><td>Legato Footswitch</td><td></td></tr>
+    <tr><td class="hex">71</td><td>Filter Resonance</td><td>Sound Controller 2, by convention</td></tr>
+    <tr><td class="hex">74</td><td>Brightness / cutoff</td><td>Sound Controller 5, by convention</td></tr>
+    <tr><td class="hex">84</td><td>Portamento Control</td><td>Carries the source note number</td></tr>
+    <tr><td class="hex">91</td><td>Effect 1 Depth (reverb)</td><td></td></tr>
+    <tr><td class="hex">93</td><td>Effect 3 Depth (chorus)</td><td></td></tr>
+    <tr><td class="hex">98</td><td>NRPN (LSB)</td><td>Section 6</td></tr>
+    <tr><td class="hex">99</td><td>NRPN (MSB)</td><td>Section 6</td></tr>
+    <tr><td class="hex">100</td><td>RPN (LSB)</td><td>Section 6</td></tr>
+    <tr><td class="hex">101</td><td>RPN (MSB)</td><td>Section 6</td></tr>
+  </tbody>
+</table>
+
+<h3>5.2 — 14-bit controllers, and why they mostly are not used</h3>
+
+<p>Controllers 0–31 may be paired with 32–63 to form a 14-bit value: send the
+MSB on controller <var>n</var>, then the LSB on controller <var>n</var>+32.
+Here the MSB comes <strong>first</strong>, unlike pitch bend.</p>
+
+<p>In practice, almost nothing outside bank select uses the pairs. Two 3-byte
+messages cost 1.9 ms on the current loop for one parameter, and most
+receivers ignore the LSB. If you need smooth control, a single 7-bit
+controller sent often usually beats a 14-bit pair sent half as often.</p>
+
+<h3>5.3 — Channel Mode messages</h3>
+
+<table class="short">
+  <thead><tr><th style="width:12%">CC</th><th style="width:32%">Message</th><th>Effect</th></tr></thead>
+  <tbody>
+    <tr><td class="hex">120</td><td>All Sound Off</td><td>Silence immediately, ignoring release and sustain. Value 0.</td></tr>
+    <tr><td class="hex">121</td><td>Reset All Controllers</td><td>Controllers to their default; notes keep sounding. Value 0.</td></tr>
+    <tr><td class="hex">122</td><td>Local Control</td><td>0 = off, 127 = on. Disconnects a keyboard from its own sound engine.</td></tr>
+    <tr><td class="hex">123</td><td>All Notes Off</td><td>Release every note, as if each got a Note Off. Sustain still applies.</td></tr>
+    <tr><td class="hex">124</td><td>Omni Mode Off</td><td>Respond on the basic channel only. Implies All Notes Off.</td></tr>
+    <tr><td class="hex">125</td><td>Omni Mode On</td><td>Respond on every channel. Implies All Notes Off.</td></tr>
+    <tr><td class="hex">126</td><td>Mono Mode On</td><td>Value = number of channels, 0 = as many as there are voices.</td></tr>
+    <tr><td class="hex">127</td><td>Poly Mode On</td><td>Value 0. Implies All Notes Off.</td></tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <span class="label">All Notes Off is not a panic button</span>
+  CC 123 honors the sustain pedal: if the receiver thinks the pedal is down,
+  the notes keep sounding. A reliable panic is CC 123, then CC 120, then CC
+  121 — on <em>all sixteen</em> channels. Many sequencers get this wrong and
+  leave one note droning.
+</div>
+
+<!-- ===================================================== 6 ============= -->
+<h2 id="s6" class="newpage">6 — Registered and non-registered parameters</h2>
+
+<p>The 120 controllers were not enough, so the standard adds a level of
+indirection: select a parameter number with two Control Changes, then set its
+value with two more. Registered Parameter Numbers (RPN) are defined by the
+MIDI Association; Non-Registered (NRPN) are the manufacturer's own.</p>
+
+<pre>  Selecting and setting an RPN — pitch bend sensitivity of ±12 semitones,
+  channel 1:
+
+    B0 65 00     CC 101, RPN MSB = 0
+    B0 64 00     CC 100, RPN LSB = 0      -> RPN 0 = pitch bend sensitivity
+    B0 06 0C     CC 6,  data MSB = 12     -> 12 semitones
+    B0 26 00     CC 38, data LSB = 0      -> 0 cents
+    B0 65 7F     CC 101, RPN MSB = 127
+    B0 64 7F     CC 100, RPN LSB = 127    -> RPN Null: deselect</pre>
+
+<table class="short">
+  <thead><tr><th class="hex" style="width:16%">RPN</th><th style="width:34%">Parameter</th><th>Data</th></tr></thead>
+  <tbody>
+    <tr><td class="hex">0x0000</td><td>Pitch Bend Sensitivity</td><td>MSB = semitones, LSB = cents</td></tr>
+    <tr><td class="hex">0x0001</td><td>Channel Fine Tuning</td><td>14-bit, center 0x2000 = no detune</td></tr>
+    <tr><td class="hex">0x0002</td><td>Channel Coarse Tuning</td><td>MSB in semitones, center 64</td></tr>
+    <tr><td class="hex">0x0003</td><td>Tuning Program Select</td><td></td></tr>
+    <tr><td class="hex">0x0004</td><td>Tuning Bank Select</td><td></td></tr>
+    <tr><td class="hex">0x0005</td><td>Modulation Depth Range</td><td>Added with General MIDI 2</td></tr>
+    <tr><td class="hex">0x3FFF</td><td>RPN Null</td><td>Deselects; no data follows</td></tr>
+  </tbody>
+</table>
+
+<div class="warn">
+  <span class="label">Always send RPN Null</span>
+  The selection is sticky. Leave an RPN selected and the next stray CC 6 or
+  CC 38 — from a control surface, from another track — writes into that
+  parameter. Closing with <code>101/100 = 127/127</code> costs six bytes and
+  prevents a class of bug that is very hard to see.
+</div>
+
+<!-- ===================================================== 7 ============= -->
+<h2 id="s7" class="newpage">7 — System messages</h2>
+
+<p>System messages carry no channel. They divide into three families by how a
+receiver must treat them.</p>
+
+<h3>7.1 — System Common</h3>
+
+<table class="short">
+  <thead><tr><th class="hex" style="width:12%">Status</th><th style="width:30%">Message</th><th style="width:10%">Bytes</th><th>Payload</th></tr></thead>
+  <tbody>
+    <tr><td class="hex">0xF0</td><td>System Exclusive start</td><td>variable</td><td>See 7.3</td></tr>
+    <tr><td class="hex">0xF1</td><td>MTC Quarter Frame</td><td>2</td><td>Message type in bits 6–4, value in bits 3–0</td></tr>
+    <tr><td class="hex">0xF2</td><td>Song Position Pointer</td><td>3</td><td>14-bit, LSB first, in MIDI beats (6 clocks = a sixteenth note)</td></tr>
+    <tr><td class="hex">0xF3</td><td>Song Select</td><td>2</td><td>Song number 0–127</td></tr>
+    <tr><td class="hex">0xF4</td><td>undefined</td><td>—</td><td>Reserved. Skip it.</td></tr>
+    <tr><td class="hex">0xF5</td><td>undefined</td><td>—</td><td>Reserved; used by some gear as a port select</td></tr>
+    <tr><td class="hex">0xF6</td><td>Tune Request</td><td>1</td><td>Analog oscillators, retune yourselves</td></tr>
+    <tr><td class="hex">0xF7</td><td>End of Exclusive</td><td>1</td><td>Terminates <code>0xF0</code></td></tr>
+  </tbody>
+</table>
+
+<p>All of these <strong>clear running status</strong>.</p>
+
+<h3>7.2 — System Real-Time</h3>
+
+<table class="short">
+  <thead><tr><th class="hex" style="width:12%">Status</th><th style="width:30%">Message</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td class="hex">0xF8</td><td>Timing Clock</td><td>24 per quarter note, always, whatever the tempo</td></tr>
+    <tr><td class="hex">0xF9</td><td>undefined</td><td>Reserved</td></tr>
+    <tr><td class="hex">0xFA</td><td>Start</td><td>Play from the beginning</td></tr>
+    <tr><td class="hex">0xFB</td><td>Continue</td><td>Play from where we stopped, or from the last Song Position</td></tr>
+    <tr><td class="hex">0xFC</td><td>Stop</td><td></td></tr>
+    <tr><td class="hex">0xFD</td><td>undefined</td><td>Reserved</td></tr>
+    <tr><td class="hex">0xFE</td><td>Active Sensing</td><td>"I am still here", every 300 ms at most</td></tr>
+    <tr><td class="hex">0xFF</td><td>System Reset</td><td>Return to power-on state. Almost never sent on purpose.</td></tr>
+  </tbody>
+</table>
+
+<p>These are one byte each, they may appear <strong>anywhere</strong> — even
+between two data bytes of another message — and they do <strong>not</strong>
+clear running status. That is the whole point: a clock has to be able to
+arrive on time regardless of what else is being transmitted.</p>
+
+<div class="note">
+  <span class="label">Active Sensing is opt-in, and sticky</span>
+  A receiver that has seen one <code>0xFE</code> is entitled to assume the
+  sender will keep sending them, and to silence all notes if none arrives
+  within about 300 ms. So a device that sends Active Sensing must keep
+  sending it. Sending it once, or occasionally, is worse than never sending
+  it at all.
+</div>
+
+<h3>7.3 — System Exclusive</h3>
+
+<pre>  F0  &lt;manufacturer ID&gt;  &lt;data ...&gt;  F7
+
+  Manufacturer ID is one byte, or three when the first is 0x00:
+    0x01        Sequential Circuits      0x41  Roland
+    0x43        Yamaha                   0x47  Akai
+    0x00 0x20 0x33  (example 3-byte form, allocated by the MIDI Association)
+
+  Three reserved IDs matter to anyone writing tools:
+    0x7D   non-commercial: research, education, private use
+    0x7E   universal non-real-time
+    0x7F   universal real-time</pre>
+
+<p>Data bytes inside a SysEx block must have bit 7 clear — the payload is
+7-bit, so binary data has to be packed, commonly seven bytes into eight. The
+block is terminated by <code>0xF7</code>, and a receiver must also abandon it
+if any other status byte arrives first.</p>
+
+<p>The one universal message worth implementing is Device Inquiry:</p>
+
+<pre>  Request:  F0 7E &lt;device ID&gt; 06 01 F7
+  Reply:    F0 7E &lt;device ID&gt; 06 02 &lt;manufacturer&gt; &lt;family&gt; &lt;member&gt;
+                              &lt;version 4 bytes&gt; F7
+
+  &lt;device ID&gt; is 0x7F for "all devices".</pre>
+
+<!-- ===================================================== 8 ============= -->
+<h2 id="s8" class="newpage">8 — Timing and synchronization</h2>
+
+<h3>8.1 — MIDI Clock</h3>
+
+<p>MIDI Clock is 24 pulses per quarter note (ppqn), a constant. Tempo is
+expressed by how fast the pulses arrive, and nothing in the stream states the
+tempo in beats per minute — the receiver infers it, which is why locking to
+external MIDI clock always has a settling time.</p>
+
+<pre>  interval between clocks = 60 / (BPM × 24) seconds
+
+  120 BPM  ->  20.8 ms     (48 clocks per second)
+   60 BPM  ->  41.7 ms
+  240 BPM  ->  10.4 ms</pre>
+
+<p>At 120 BPM the clock alone consumes 48 bytes per second out of roughly
+3,125 — about 1.5% of the link. That is negligible; what is not negligible is
+that each clock byte can delay a note by up to 320 µs.</p>
+
+<h3>8.2 — Song Position Pointer</h3>
+
+<p>Song Position counts <em>MIDI beats</em>, where one beat is six clocks —
+that is, a sixteenth note. It is 14-bit, so it addresses 16,384 sixteenths:
+1,024 bars of 4/4, about 34 minutes at 120 BPM. Beyond that, it wraps, and
+the usual approach is to not rely on it for long-form material.</p>
+
+<p>The sequence for locating is: <code>0xFC</code> Stop, <code>0xF2</code>
+Song Position, then <code>0xFB</code> Continue.</p>
+
+<h3>8.3 — MIDI Time Code</h3>
+
+<p>MTC carries SMPTE timecode. A full frame arrives as eight Quarter Frame
+messages (<code>0xF1</code>), each holding a 4-bit nibble and a 3-bit
+selector — so two frames' worth of messages are needed to transmit one
+complete timecode value, and the reader is always a frame or two behind. A
+full timecode value can also be sent as a universal real-time SysEx, which is
+what a jump uses.</p>
+
+<div class="ps">
+  <span class="label">PhytoScope</span>
+  The software sends no clock, no Song Position and no MTC. A plant is not a
+  metronome: events arrive when they arrive, and imposing a grid on them
+  would be a musical decision presented as a measurement. Section 12.
+</div>
+
+<!-- ===================================================== 9 ============= -->
+<h2 id="s9" class="newpage">9 — Standard MIDI Files</h2>
+
+<p>An SMF is a container of chunks, each with a 4-character type and a 32-bit
+big-endian length. Two types exist: one header, then one or more tracks.</p>
+
+<h3>9.1 — The header chunk</h3>
+
+<pre>  "MThd"  00 00 00 06  &lt;format:2&gt;  &lt;ntrks:2&gt;  &lt;division:2&gt;
+
+  format    0  one track containing everything
+            1  several tracks, played simultaneously — the common case
+            2  several tracks, each an independent sequence
+
+  ntrks     number of MTrk chunks that follow
+
+  division  if bit 15 = 0:  ticks per quarter note (e.g. 480, 960)
+            if bit 15 = 1:  SMPTE — upper byte is the negative frame rate
+                            (-24, -25, -29, -30), lower byte is ticks
+                            per frame</pre>
+
+<h3>9.2 — Track chunks and delta times</h3>
+
+<pre>  "MTrk"  &lt;length:4&gt;  then a stream of:  &lt;delta-time:VLQ&gt; &lt;event&gt;</pre>
+
+<p>Delta times are variable-length quantities: seven bits of payload per
+byte, with bit 7 set on every byte except the last. This is the same encoding
+as Git's varints and Protocol Buffers', and it is the reason an SMF can hold
+a long silence in two bytes.</p>
+
+<pre>  VLQ encoding
+       0        ->  00
+      64        ->  40
+     127        ->  7F
+     128        ->  81 00
+    8192        ->  C0 00
+  1048576       ->  C0 80 00
+  0x0FFFFFFF    ->  FF FF FF 7F     (the maximum a VLQ may hold)</pre>
+
+<p>Running status applies inside a track, and MIDI files use it heavily. The
+status byte is remembered across delta times, which is exactly where a naive
+reader goes wrong: the delta time is not a status byte, and it must not reset
+the running status.</p>
+
+<h3>9.3 — Meta events</h3>
+
+<p>Meta events are <code>0xFF &lt;type&gt; &lt;length:VLQ&gt; &lt;data&gt;</code>
+and never reach the wire — they exist only in files.</p>
+
+<table class="long">
+  <thead><tr><th class="hex" style="width:10%">Type</th><th style="width:28%">Meta event</th><th>Data</th></tr></thead>
+  <tbody>
+    <tr><td class="hex">0x00</td><td>Sequence Number</td><td>2 bytes</td></tr>
+    <tr><td class="hex">0x01</td><td>Text</td><td>Any text</td></tr>
+    <tr><td class="hex">0x02</td><td>Copyright Notice</td><td>Should be the first event of the first track</td></tr>
+    <tr><td class="hex">0x03</td><td>Track Name</td><td>Sequence name in track 0 of a format 1 file</td></tr>
+    <tr><td class="hex">0x04</td><td>Instrument Name</td><td></td></tr>
+    <tr><td class="hex">0x05</td><td>Lyric</td><td>One syllable, usually</td></tr>
+    <tr><td class="hex">0x06</td><td>Marker</td><td>A named point in time</td></tr>
+    <tr><td class="hex">0x07</td><td>Cue Point</td><td></td></tr>
+    <tr><td class="hex">0x20</td><td>MIDI Channel Prefix</td><td>1 byte; applies to following meta events</td></tr>
+    <tr><td class="hex">0x21</td><td>MIDI Port</td><td>1 byte; non-standard but widespread</td></tr>
+    <tr><td class="hex">0x2F</td><td>End of Track</td><td>Length 0. <strong>Required</strong>, and must be last.</td></tr>
+    <tr><td class="hex">0x51</td><td>Set Tempo</td><td>3 bytes: microseconds per quarter note</td></tr>
+    <tr><td class="hex">0x54</td><td>SMPTE Offset</td><td>5 bytes: hr mn se fr ff</td></tr>
+    <tr><td class="hex">0x58</td><td>Time Signature</td><td>4 bytes: nn dd cc bb — see below</td></tr>
+    <tr><td class="hex">0x59</td><td>Key Signature</td><td>2 bytes: sf (−7..+7), mi (0 major, 1 minor)</td></tr>
+    <tr><td class="hex">0x7F</td><td>Sequencer Specific</td><td>Manufacturer ID, then anything</td></tr>
+  </tbody>
+</table>
+
+<pre>  Set Tempo — 120 BPM
+    60,000,000 / 120 = 500,000 µs per quarter = 0x07A120
+    FF 51 03 07 A1 20
+
+  Time Signature — 6/8, metronome every dotted quarter, 24 MIDI clocks
+  per quarter note
+    FF 58 04 06 03 24 08
+             |  |  |  |
+             |  |  |  +-- bb: 32nd notes per quarter (almost always 8)
+             |  |  +----- cc: MIDI clocks per metronome click
+             |  +-------- dd: denominator as a power of two (3 -> 8)
+             +----------- nn: numerator</pre>
+
+<div class="warn">
+  <span class="label">Ticks are not time</span>
+  A tick is a fraction of a quarter note, and the quarter note's duration
+  changes at every Set Tempo. Converting a tick position to seconds requires
+  walking the tempo map from the start of the file. Code that multiplies
+  ticks by a single tempo is correct only for files that never change tempo —
+  and it fails silently on the ones that do.
+</div>
+
+<!-- ===================================================== 10 ============ -->
+<h2 id="s10" class="newpage">10 — General MIDI</h2>
+
+<p>MIDI says nothing about what a program number sounds like. General MIDI
+Level 1 fixes that by assigning 128 sounds to the 128 program numbers, and by
+requiring a minimum capability: 24 simultaneous voices, all sixteen channels,
+channel 10 for percussion, and support for controllers 1, 7, 10, 11, 64, 121
+and 123 plus RPN 0, 1 and 2, with pitch bend defaulting to ±2 semitones.</p>
+
+<h3>10.1 — Program families</h3>
+
+<p>The 128 programs are grouped in sixteen families of eight. Program numbers
+here are <strong>1-based</strong>, as GM documents them; the byte on the wire
+is one less.</p>
+
+<table class="long">
+  <thead><tr><th style="width:14%">Programs</th><th style="width:30%">Family</th><th>Programs</th><th>Family</th></tr></thead>
+  <tbody>
+    <tr><td class="hex">1–8</td><td>Piano</td><td class="hex">65–72</td><td>Reed</td></tr>
+    <tr><td class="hex">9–16</td><td>Chromatic Percussion</td><td class="hex">73–80</td><td>Pipe</td></tr>
+    <tr><td class="hex">17–24</td><td>Organ</td><td class="hex">81–88</td><td>Synth Lead</td></tr>
+    <tr><td class="hex">25–32</td><td>Guitar</td><td class="hex">89–96</td><td>Synth Pad</td></tr>
+    <tr><td class="hex">33–40</td><td>Bass</td><td class="hex">97–104</td><td>Synth Effects</td></tr>
+    <tr><td class="hex">41–48</td><td>Strings</td><td class="hex">105–112</td><td>Ethnic</td></tr>
+    <tr><td class="hex">49–56</td><td>Ensemble</td><td class="hex">113–120</td><td>Percussive</td></tr>
+    <tr><td class="hex">57–64</td><td>Brass</td><td class="hex">121–128</td><td>Sound Effects</td></tr>
+  </tbody>
+</table>
+
+<h3>10.2 — The percussion key map on channel 10</h3>
+
+<p>On channel 10 the key number selects an instrument, not a pitch.</p>
+
+<table class="long">
+  <thead><tr>
+    <th class="hex" style="width:8%">Key</th><th style="width:25%">Instrument</th>
+    <th class="hex" style="width:8%">Key</th><th style="width:25%">Instrument</th>
+    <th class="hex" style="width:8%">Key</th><th>Instrument</th>
+  </tr></thead>
+  <tbody>
+    <tr><td class="hex">35</td><td>Acoustic Bass Drum</td><td class="hex">51</td><td>Ride Cymbal 1</td><td class="hex">67</td><td>High Agogo</td></tr>
+    <tr><td class="hex">36</td><td>Bass Drum 1</td><td class="hex">52</td><td>Chinese Cymbal</td><td class="hex">68</td><td>Low Agogo</td></tr>
+    <tr><td class="hex">37</td><td>Side Stick</td><td class="hex">53</td><td>Ride Bell</td><td class="hex">69</td><td>Cabasa</td></tr>
+    <tr><td class="hex">38</td><td>Acoustic Snare</td><td class="hex">54</td><td>Tambourine</td><td class="hex">70</td><td>Maracas</td></tr>
+    <tr><td class="hex">39</td><td>Hand Clap</td><td class="hex">55</td><td>Splash Cymbal</td><td class="hex">71</td><td>Short Whistle</td></tr>
+    <tr><td class="hex">40</td><td>Electric Snare</td><td class="hex">56</td><td>Cowbell</td><td class="hex">72</td><td>Long Whistle</td></tr>
+    <tr><td class="hex">41</td><td>Low Floor Tom</td><td class="hex">57</td><td>Crash Cymbal 2</td><td class="hex">73</td><td>Short Guiro</td></tr>
+    <tr><td class="hex">42</td><td>Closed Hi-Hat</td><td class="hex">58</td><td>Vibraslap</td><td class="hex">74</td><td>Long Guiro</td></tr>
+    <tr><td class="hex">43</td><td>High Floor Tom</td><td class="hex">59</td><td>Ride Cymbal 2</td><td class="hex">75</td><td>Claves</td></tr>
+    <tr><td class="hex">44</td><td>Pedal Hi-Hat</td><td class="hex">60</td><td>Hi Bongo</td><td class="hex">76</td><td>Hi Wood Block</td></tr>
+    <tr><td class="hex">45</td><td>Low Tom</td><td class="hex">61</td><td>Low Bongo</td><td class="hex">77</td><td>Low Wood Block</td></tr>
+    <tr><td class="hex">46</td><td>Open Hi-Hat</td><td class="hex">62</td><td>Mute Hi Conga</td><td class="hex">78</td><td>Mute Cuica</td></tr>
+    <tr><td class="hex">47</td><td>Low-Mid Tom</td><td class="hex">63</td><td>Open Hi Conga</td><td class="hex">79</td><td>Open Cuica</td></tr>
+    <tr><td class="hex">48</td><td>Hi-Mid Tom</td><td class="hex">64</td><td>Low Conga</td><td class="hex">80</td><td>Mute Triangle</td></tr>
+    <tr><td class="hex">49</td><td>Crash Cymbal 1</td><td class="hex">65</td><td>High Timbale</td><td class="hex">81</td><td>Open Triangle</td></tr>
+    <tr><td class="hex">50</td><td>High Tom</td><td class="hex">66</td><td>Low Timbale</td><td class="hex"></td><td></td></tr>
+  </tbody>
+</table>
+
+<h3>10.3 — GM2, GS and XG</h3>
+
+<p>General MIDI 2 extends GM1 with bank select, more controllers, more
+programs and a defined reverb and chorus. Roland's GS and Yamaha's XG are
+earlier, incompatible extensions of the same idea. A sender that wants to
+work everywhere sticks to GM1, sends a GM1 System Exclusive reset if it needs
+a known state, and treats anything beyond as a bonus.</p>
+
+<pre>  GM1 System On — universal non-real-time SysEx
+    F0 7E 7F 09 01 F7</pre>
+
+<!-- ===================================================== 11 ============ -->
+<h2 id="s11" class="newpage">11 — MIDI 2.0, UMP and MIDI-CI</h2>
+
+<p>MIDI 2.0 is not a replacement but an envelope. Its transport unit is the
+Universal MIDI Packet (UMP): 32, 64, 96 or 128 bits, whose first four bits
+say which message type it holds — and one of those types is MIDI 1.0,
+unchanged. A MIDI 2.0 device therefore speaks MIDI 1.0 natively, and
+everything in sections 3 to 8 keeps applying.</p>
+
+<table class="short">
+  <thead><tr><th class="hex" style="width:12%">Type</th><th style="width:34%">Content</th><th>Size</th></tr></thead>
+  <tbody>
+    <tr><td class="hex">0x0</td><td>Utility — NOOP, jitter-reduction timestamps</td><td>32 bits</td></tr>
+    <tr><td class="hex">0x1</td><td>System Real-Time and System Common</td><td>32 bits</td></tr>
+    <tr><td class="hex">0x2</td><td>MIDI 1.0 Channel Voice</td><td>32 bits</td></tr>
+    <tr><td class="hex">0x3</td><td>Data — 7-bit SysEx</td><td>64 bits</td></tr>
+    <tr><td class="hex">0x4</td><td>MIDI 2.0 Channel Voice</td><td>64 bits</td></tr>
+    <tr><td class="hex">0x5</td><td>Data — 8-bit SysEx, mixed data set</td><td>128 bits</td></tr>
+  </tbody>
+</table>
+
+<p>What the 64-bit channel voice messages buy:</p>
+
+<ul>
+  <li><strong>Resolution.</strong> Velocity becomes 16-bit, controllers 32-bit.
+  The 7-bit steps that make a slow filter sweep audibly staircase are gone.</li>
+  <li><strong>Per-note controllers and per-note pitch bend.</strong> In MIDI
+  1.0, pitch bend belongs to the channel, so bending one note of a chord means
+  putting it on its own channel. MIDI 2.0 addresses the note.</li>
+  <li><strong>Groups.</strong> Sixteen groups of sixteen channels — 256
+  channels on one connection.</li>
+  <li><strong>Registered controllers</strong> that no longer need the four-CC
+  dance of section 6.</li>
+</ul>
+
+<p>MIDI-CI (Capability Inquiry) is the negotiation layer, carried over MIDI
+1.0 SysEx so that it works on existing cables. Three things it does: Protocol
+Negotiation (agree to switch to MIDI 2.0), Profile Configuration (a device
+declares "I am a drawbar organ" and a known controller layout follows), and
+Property Exchange (JSON over SysEx for names, patch lists, state).</p>
+
+<div class="ps">
+  <span class="label">PhytoScope</span>
+  The software emits MIDI 1.0 only. There is a real reason to want MIDI 2.0
+  here — 7-bit velocity quantizes a measured amplitude into 127 steps, and
+  the measurement deserves better — but no reason to want it before the
+  receiving software does. It is a candidate for a later version, recorded in
+  <code>.ai/decisions.md</code> rather than half-implemented.
+</div>
+
+<!-- ===================================================== 12 ============ -->
+<h2 id="s12" class="newpage">12 — What PhytoScope emits, and what it does not</h2>
+
+<p>Measured from <code>phytoscope/music/midi_out.py</code>, version 1.5.1.
+Four message types, and nothing else.</p>
+
+<table class="short">
+  <thead><tr><th class="hex" style="width:14%">Status</th><th style="width:26%">Message</th><th>How PhytoScope uses it</th></tr></thead>
+  <tbody>
+    <tr><td class="hex">0x90</td><td>Note On</td><td>One per detected event. Velocity clamped to 1–127, so a Note On is never mistaken for a release.</td></tr>
+    <tr><td class="hex">0x80</td><td>Note Off</td><td>Scheduled automatically at the note's duration, and sent with release velocity 0.</td></tr>
+    <tr><td class="hex">0xB0</td><td>Control Change</td><td>Available to modules through the API; the software itself sends none by default.</td></tr>
+    <tr><td class="hex">0xC0</td><td>Program Change</td><td>Once, when the user picks an instrument.</td></tr>
+  </tbody>
+</table>
+
+<h3>12.1 — The channel off-by-one, made explicit</h3>
+
+<p>The public API takes a channel numbered 1–16, as a musician says it, and
+converts once:</p>
+
+<pre>  ch = (channel - 1) &amp; 0x0F
+  self._send(NOTE_ON | ch, midi, max(1, min(velocity, 127)))</pre>
+
+<p>Doing the subtraction in exactly one place is deliberate. The alternative —
+0-based at the boundary, 1-based in the interface — produces a bug that only
+shows up on channel 16 wrapping to channel 1, which is the kind of thing that
+is found by a user and not by a test.</p>
+
+<h3>12.2 — Every data byte is masked</h3>
+
+<pre>  self._port.send_message([status &amp; 0xFF, d1 &amp; 0x7F, d2 &amp; 0x7F])</pre>
+
+<p>The <code>&amp; 0x7F</code> is not defensive clutter. A data byte with bit 7
+set is a status byte, so a single out-of-range value does not produce a wrong
+note — it produces a stream the receiver resynchronizes from, losing the
+messages in between. Masking converts a protocol violation into a wrong value,
+which is a much smaller failure.</p>
+
+<h3>12.3 — What is deliberately absent</h3>
+
+<dl>
+  <dt>No running status</dt>
+  <dd>Full status bytes on every message. The bandwidth saving is real but
+  small at the rates a plant produces, and a stream that any parser reads
+  correctly is worth more than 33% of a link we are not saturating.</dd>
+
+  <dt>No clock, no Song Position, no MTC</dt>
+  <dd>Events happen when the plant produces them. Emitting a tempo would be
+  asserting a musical grid that the measurement does not contain.</dd>
+
+  <dt>No pitch bend</dt>
+  <dd>Its range depends on the receiver's Pitch Bend Sensitivity, so the same
+  stream would sound different on two synthesizers. A mapping whose result is
+  not reproducible is not a measurement.</dd>
+
+  <dt>No System Exclusive</dt>
+  <dd>Nothing to say that is not already in the note stream, and SysEx is by
+  definition device-specific.</dd>
+
+  <dt>No Active Sensing</dt>
+  <dd>Section 7.2: sending it once obliges you to keep sending it. The
+  software has no need, so it never starts.</dd>
+</dl>
+
+<!-- ===================================================== 13 ============ -->
+<h2 id="s13" class="newpage">13 — Pitfalls that cost real time</h2>
+
+<dl>
+  <dt>Note On with velocity 0 is a Note Off</dt>
+  <dd>Not a convention — the specification. A "silent note" sent this way
+  releases a note instead.</dd>
+
+  <dt>Pitch bend sends LSB first; 14-bit CC pairs send MSB first</dt>
+  <dd>An inconsistency in the standard, and the reason a bend that should go
+  up goes 128 times too far.</dd>
+
+  <dt>System Real-Time bytes appear inside other messages</dt>
+  <dd>A clock can land between a note number and its velocity. A parser that
+  is not written for it loses notes whenever the sender is synchronized.</dd>
+
+  <dt>All Notes Off obeys the sustain pedal</dt>
+  <dd>A stuck note survives CC 123. Panic needs 123, then 120, then 121, on
+  all sixteen channels.</dd>
+
+  <dt>An RPN stays selected</dt>
+  <dd>Close with RPN Null (<code>101/100 = 127/127</code>) or the next CC 6
+  from anywhere writes into your parameter.</dd>
+
+  <dt>SMF ticks are not time</dt>
+  <dd>Walk the tempo map. A single multiplication is right only until the
+  first Set Tempo.</dd>
+
+  <dt>End of Track is mandatory</dt>
+  <dd>A track without <code>FF 2F 00</code> is malformed, and readers
+  disagree about what to do with it.</dd>
+
+  <dt>320 µs per byte</dt>
+  <dd>A ten-note chord is 10 ms wide on a DIN cable. If the timing matters,
+  measure it rather than assuming the port is instant.</dd>
+
+  <dt>Channel 10 is percussion, and only under General MIDI</dt>
+  <dd>On a non-GM instrument it is an ordinary channel. Do not send a drum
+  map to something that never agreed to one.</dd>
+</dl>
+
+<!-- ===================================================== 14 ============ -->
+<h2 id="s14" class="newpage">14 — Normative references</h2>
+
+<p>These are the documents that decide. They are published by the MIDI
+Association and are copyrighted; this repository does not redistribute them,
+which is why you are reading a summary and not a copy.</p>
+
+<dl>
+  <dt>MIDI 1.0 Detailed Specification, version 4.2.1</dt>
+  <dd>The message set, the electrical layer, the timing. Everything in
+  sections 2 to 8 is a condensation of this.</dd>
+
+  <dt>Standard MIDI Files 1.0 (SMF)</dt>
+  <dd>The chunk format, delta times, meta events. Section 9.</dd>
+
+  <dt>General MIDI System Level 1, and General MIDI 2</dt>
+  <dd>Program assignments, the percussion key map, minimum capability.
+  Section 10.</dd>
+
+  <dt>MIDI 2.0 Specification, and the UMP and MIDI-CI documents</dt>
+  <dd>Universal MIDI Packet, MIDI 2.0 Channel Voice messages, Capability
+  Inquiry, Profiles, Property Exchange. Section 11.</dd>
+
+  <dt>midi.org — The MIDI Association</dt>
+  <dd>Where the specifications are obtained, and where manufacturer
+  identifiers are allocated.</dd>
+</dl>
+
+<h3>14.1 — Provenance of this document</h3>
+
+<p>Written for PhytoScope in September 2026, from the specifications above
+and from what the project's own MIDI output does. The figures in section 12
+were read from the source, not remembered: <code>NOTE_ON = 0x90</code>,
+<code>NOTE_OFF = 0x80</code>, <code>PROGRAM_CHANGE = 0xC0</code>,
+<code>CONTROL_CHANGE = 0xB0</code>, velocity clamped to 1–127, channel
+converted once as <code>(channel - 1) &amp; 0x0F</code>.</p>
+
+<p><small>This file and its stylesheet are MIT licensed, like the rest of the
+software. It is regenerated by <code>sources/midi/build.py</code>; edit the
+HTML, never the PDF.</small></p>
+
+</body>
+</html>

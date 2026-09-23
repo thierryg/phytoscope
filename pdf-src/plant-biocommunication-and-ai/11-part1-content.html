@@ -1,0 +1,163 @@
+<section class="chapter">
+  <h2 id="c1-inventaire" data-toc="chapter">L'inventaire des canaux</h2>
+  <p class="chapo">Avant d'examiner chaque voie en détail, il faut en avoir la carte — et surtout comprendre ce qui les distingue les unes des autres : la portée, la vitesse, le coût métabolique, et la question de savoir si quelqu'un écoute.</p>
+
+  <p class="lettrine noindent">Un organisme sans système nerveux ni appareil circulatoire au sens animal n'est pas pour autant privé de moyens de transport d'information. Une plante en possède plusieurs, qui coexistent, opèrent à des échelles de temps très différentes, et n'ont pas du tout le même statut sur le plan de la preuve.</p>
+
+  <figure class="full">
+    <img src="assets/svg/pipeline.svg" alt="Chaîne de traitement du signal au son"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Toute la difficulté de ce domaine tient dans cette chaîne : entre le phénomène biologique et ce que l'on en perçoit, il y a autant d'étapes que d'occasions de se tromper sur ce qu'on tient.</figcaption>
+  </figure>
+
+  <h3 id="c1-criteres" data-toc="sub">Quatre critères pour évaluer un canal</h3>
+
+  <p>Pour comparer honnêtement des voies aussi différentes, il faut des critères explicites. Voici ceux que ce volume applique systématiquement.</p>
+
+  <ol>
+    <li><strong>Le mécanisme physique est-il identifié&nbsp;?</strong> Sait-on <em>pourquoi</em> le signal existe&nbsp;? Un mécanisme identifié résiste ; une corrélation inexpliquée ne résiste pas.</li>
+    <li><strong>Le signal porte-t-il une information exploitable&nbsp;?</strong> Critère opératoire : un classificateur automatique parvient-il, à partir de ce seul signal, à distinguer des états physiologiques&nbsp;? Si oui, l'information est présente, quelle que soit sa signification.</li>
+    <li><strong>Un récepteur naturel l'exploite-t-il&nbsp;?</strong> Question empirique et distincte de la précédente. Un signal peut être informatif pour un chercheur muni d'instruments sans que rien, dans la nature, ne l'écoute.</li>
+    <li><strong>Y a-t-il un avantage sélectif à émettre&nbsp;?</strong> Sans quoi le signal est un sous-produit, non une communication. Un craquement de parquet qui sèche est informatif ; il n'est pas émis pour informer.</li>
+  </ol>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Le tableau que ce volume va remplir</div>
+    <table class="tight">
+      <thead><tr><th>Canal</th><th>1. Mécanisme</th><th>2. Information</th><th>3. Récepteur</th><th>4. Avantage</th></tr></thead>
+      <tbody>
+        <tr><td>Électrique</td><td><strong>Oui</strong></td><td><strong>Oui</strong></td><td>Interne à la plante</td><td><strong>Oui</strong> — défense systémique</td></tr>
+        <tr><td>Hydraulique</td><td><strong>Oui</strong></td><td><strong>Oui</strong></td><td>Interne à la plante</td><td><strong>Oui</strong></td></tr>
+        <tr><td>Acoustique</td><td><strong>Oui</strong></td><td><strong>Oui</strong></td><td><strong>Non établi</strong></td><td><strong>Non établi</strong></td></tr>
+        <tr><td>Chimique</td><td><strong>Oui</strong></td><td><strong>Oui</strong></td><td><strong>Oui</strong></td><td>Discuté — voir chapitre 9</td></tr>
+        <tr><td>Souterrain</td><td>Partiel</td><td>Partiel</td><td>Discuté</td><td><strong>Non établi</strong></td></tr>
+      </tbody>
+    </table>
+    <p>Chaque case de ce tableau est justifiée dans le chapitre correspondant. Notez la colonne 3 : c'est elle qui sépare une émission d'une communication, et c'est elle que la vulgarisation escamote systématiquement.</p>
+  </div>
+
+  <h3 id="c1-couts" data-toc="sub">Les échelles de temps, et pourquoi elles comptent</h3>
+
+  <p>Une observation souvent négligée : ces canaux opèrent à des vitesses séparées par <strong>plusieurs ordres de grandeur</strong>, et cela détermine ce qu'ils peuvent transporter.</p>
+
+  <div class="schema light">
+    <div class="sch-h">Échelles de temps des canaux végétaux</div>
+<pre>
+  microseconde   milliseconde   seconde      minute       heure        jour
+       │              │            │            │            │           │
+       ├──────────────┼────────────┼────────────┼────────────┼───────────┤
+       │              │            │            │            │           │
+       │         ┌────┴────┐       │            │            │           │
+       │         │ CLIC DE │       │            │            │           │
+       │         │CAVITATION       │            │            │           │
+       │         │ ~0,1 ms │       │            │            │           │
+       │         └─────────┘       │            │            │           │
+       │                      ┌────┴─────┐      │            │           │
+       │                      │POTENTIEL │      │            │           │
+       │                      │ D'ACTION │      │            │           │
+       │                      │  ~3 s    │      │            │           │
+       │                      └──────────┘      │            │           │
+       │                                   ┌────┴──────┐     │           │
+       │                                   │ POTENTIEL │     │           │
+       │                                   │ DE VARIAT.│     │           │
+       │                                   │  ~45 s    │     │           │
+       │                                   └───────────┘     │           │
+       │                                   ┌────────────┐    │           │
+       │                                   │ ÉMISSION   │    │           │
+       │                                   │ DE VOLATILS│    │           │
+       │                                   │  minutes   │    │           │
+       │                                   └────────────┘    │           │
+       │                                                ┌────┴──────┐    │
+       │                                                │ ÉLECTROME │    │
+       │                                                │ (rythmes) │    │
+       │                                                └───────────┘    │
+       │                                                            ┌────┴────┐
+       │                                                            │TRANSFERT│
+       │                                                            │MYCORHIZ.│
+       │                                                            └─────────┘
+
+  CONSÉQUENCE POUR LA MESURE
+  Un dispositif qui échantillonne toutes les 15 minutes ne peut PAS
+  voir un potentiel d'action, ni a fortiori un clic de cavitation.
+  Il ne voit que la dernière ligne — et ce qu'il appelle « réactivité »
+  est une dérive lente.
+</pre>
+    <figcaption>La fréquence d'échantillonnage détermine quel canal on observe. La plupart des appareils grand public échantillonnent trop lentement pour voir autre chose que l'électrome.</figcaption>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Cinq canaux : électrique, hydraulique, acoustique, chimique, souterrain.</li>
+      <li>Quatre critères d'évaluation : mécanisme, information, récepteur naturel, avantage sélectif.</li>
+      <li>Le critère 3 — existe-t-il un récepteur&nbsp;? — sépare l'émission de la communication.</li>
+      <li>Les échelles de temps s'étalent sur neuf ordres de grandeur, de la microseconde au jour.</li>
+      <li>La fréquence d'échantillonnage décide de quel canal on observe — souvent à l'insu de l'observateur.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c2-histoire" data-toc="chapter">Cent cinquante ans d'une question mal posée</h2>
+  <p class="chapo">L'histoire de ce domaine est un cycle : une découverte solide, une surinterprétation spectaculaire, une réfutation discrète, un oubli — puis le cycle recommence avec une technologie nouvelle.</p>
+
+  <figure class="full">
+    <img src="assets/svg/tt-timeline.svg" alt="Frise chronologique de 1873 à 2025"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Cent cinquante ans. Les jalons en vert et bleu sont des résultats mesurés ; ceux en cuivre sont des dispositifs artistiques ou médiatiques. Observez que chaque emballement est suivi d'une correction — qui ne circule pas.</figcaption>
+  </figure>
+
+  <h3 id="c2-fondateurs" data-toc="sub">1873-1927 : les fondateurs</h3>
+
+  <p><strong>John Burdon-Sanderson (1873)</strong> enregistre le premier potentiel d'action végétal, sur une feuille de dionée, dans les <em>Proceedings of the Royal Society of London</em> 21, p. 495-496. Le contexte mérite d'être noté : il travaillait sur des plants fournis par Charles Darwin, qui préparait <em>The Power of Movement in Plants</em> (1880) avec son fils Francis.</p>
+
+  <div class="duo">
+    <figure class="photo"><img src="assets/img/p/history-darwin-portrait-05.jpg" alt="Portrait de Charles Darwin"/><figcaption><span class="fig-n">Fig. ##.</span> Charles Darwin. Ses travaux sur le mouvement des plantes ouvrent la question du signal végétal.<span class="credit">Portrait de Charles Darwin — John Collier, domaine public, Wikimedia Commons.</span></figcaption></figure>
+    <figure class="photo"><img src="assets/img/p/history-darwin-radicles-08.jpg" alt="Planche du mouvement des radicules"/><figcaption><span class="fig-n">Fig. ##.</span> Planche du <em>Power of Movement in Plants</em> : le tracé du mouvement des radicules.<span class="credit">Movement of radicles, from Darwin, Power of Movement in Plants — domaine public.</span></figcaption></figure>
+  </div>
+
+  <p><strong>Jagadish Chandra Bose</strong> publie <em>Response in the Living and Non-Living</em> (1902), puis <em>Comparative Electro-Physiology</em> (1907) et <em>Researches on Irritability of Plants</em> (1913). Il conçoit le <strong>crescographe</strong>, qui amplifie optiquement la croissance jusqu'à la rendre visible en temps réel. Son intuition centrale — que la réponse électrique est un phénomène général du vivant — est juste. Sa formulation, qui efface la frontière entre le vivant et le non-vivant, a mal vieilli.</p>
+
+  <div class="callout limite">
+    <div class="callout-title">⚠️ Une vérification bibliographique</div>
+    <p><em>The Nervous Mechanism of Plants</em> (1926), fréquemment cité comme ouvrage de Bose, n'a pas pu être retrouvé dans les catalogues numériques consultés lors de la préparation de ce volume. Son existence est attestée par des sources secondaires uniquement. Nous le mentionnons avec cette réserve plutôt que de le citer comme si nous l'avions consulté.</p>
+  </div>
+
+
+  <div class="duo">
+    <figure class="photo"><img src="assets/img/p/history-bose-portrait-01.jpg" alt="Jagadish Chandra Bose (1858-1937). Son intuition — que la réponse électrique est un phén"/><figcaption><span class="fig-n">Fig. ##.</span> Jagadish Chandra Bose (1858-1937). Son intuition — que la réponse électrique est un phénomène général du vivant — était juste.<span class="credit">1920 Jagadish Chandra Bose — Georges Chevalier, CC BY-SA 4.0.</span></figcaption></figure>
+    <figure class="photo"><img src="assets/img/p/history-bose-crescograph-04.jpg" alt="Le crescographe : amplification optique de la croissance, rendue visible en temps réel."/><figcaption><span class="fig-n">Fig. ##.</span> Le crescographe : amplification optique de la croissance, rendue visible en temps réel.<span class="credit">Crescograph - Jagadish Chandra Bose Museum - Bose Institute - Kolkata 2011-07-26 4039 — Biswarup Ganguly, CC BY 3.0.</span></figcaption></figure>
+  </div>
+
+  <h3 id="c2-backster" data-toc="sub">1966-1975 : l'emballement et sa réfutation</h3>
+
+  <p>En 1966, <strong>Cleve Backster</strong>, spécialiste du polygraphe, relie un dracaena à un appareil de mesure de la conductance électrodermale et croit observer des réponses aux intentions humaines. L'affirmation est reprise par <em>The Secret Life of Plants</em> (Tompkins &amp; Bird, 1973), qui connaît un succès mondial et fixe pour cinquante ans l'imaginaire du domaine.</p>
+
+  <div class="callout sci">
+    <div class="callout-title">🔬 La réfutation, et son sort</div>
+    <p><strong>Horowitz, K. A., Lewis, D. C. &amp; Gasteiger, E. L. (1975)</strong>, « Plant "Primary Perception": Electrophysiological Unresponsiveness to Brine Shrimp Killing », <em>Science</em> 189(4201), p. 478-480.</p>
+    <p>Réplication en conditions contrôlées du protocole de Backster : <strong>aucune relation</strong> entre l'événement et l'activité électrique du philodendron. Les tracés observés par Backster s'expliquent par l'électricité statique, les mouvements et l'humidité — c'est-à-dire par trois des sept artefacts que le volume I catalogue.</p>
+    <p>Cette réfutation est parue dans <em>Science</em>, l'une des deux revues les plus lues au monde. Elle est aujourd'hui, en volume de citations grand public, <strong>invisible</strong> face au livre qu'elle réfutait.</p>
+  </div>
+
+  <h3 id="c2-moderne" data-toc="sub">2006-2026 : la période actuelle</h3>
+
+  <p>La période récente est infiniment plus solide. Trois raisons techniques l'expliquent : l'imagerie calcique par capteurs fluorescents génétiquement encodés, qui rend les ondes <em>visibles</em> ; la génétique inverse, qui permet de supprimer un récepteur et d'observer la disparition du phénomène ; et la classification automatique, qui mesure objectivement l'information présente dans un signal.</p>
+
+  <p>Mais le cycle n'a pas cessé. Il s'est seulement déplacé : les emballements portent désormais sur l'apprentissage et la conscience plutôt que sur la télépathie, et les corrections restent aussi discrètes.</p>
+
+  <div class="callout key">
+    <div class="callout-title">✦ La régularité à retenir</div>
+    <p>Dans ce domaine, depuis cent cinquante ans, <strong>le délai moyen entre une affirmation spectaculaire et sa mise au point publiée est de cinq à dix ans</strong> — et la mise au point ne circule jamais.</p>
+    <p>Conséquence pratique pour le lecteur : devant toute affirmation forte dans ce champ, <strong>cherchez systématiquement la réponse publiée</strong>. Elle existe presque toujours. Il suffit de la chercher, et personne ne vous l'apportera.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Burdon-Sanderson (1873) enregistre le premier potentiel d'action végétal, sur des plants fournis par Darwin.</li>
+      <li>Bose fonde l'électrophysiologie végétale expérimentale entre 1902 et 1913.</li>
+      <li>L'effet Backster (1966) a été réfuté en 1975 dans <em>Science</em> — réfutation restée invisible.</li>
+      <li>La période actuelle doit sa solidité à l'imagerie calcique, la génétique inverse et la classification automatique.</li>
+      <li>Délai typique entre affirmation et mise au point : cinq à dix ans. La mise au point ne circule pas.</li>
+    </ul>
+  </div>
+</section>

@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — tools/apply_renames.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Rename files and directories, and fix every reference to them.
@@ -20,9 +20,9 @@
 Why this is a tool and not a `sed` one-liner
 --------------------------------------------
 
-Renaming `packaging/commun.py` to `packaging/common.py` is one `git mv`. What
+Renaming `packaging/common.py` to `packaging/common.py` is one `git mv`. What
 takes care is everything that *named* it: `import commun` in nine sibling
-scripts, `$(PY) commun.py` in the Makefile, `packaging/commun.py` in the CI
+scripts, `$(PY) common.py` in the Makefile, `packaging/common.py` in the CI
 workflows, and the prose that mentions it in four documents. Miss one and the
 build breaks; over-reach and prose gets mangled — `commun` is also an ordinary
 French word, and a blind substitution turns "le socle commun" into "le socle
@@ -33,8 +33,8 @@ Substitution here is therefore **syntactic, never lexical**.
 Path rules, applied to every tracked text file
 ----------------------------------------------
 
-  · **full paths.** `packaging/commun.py` -> `packaging/common.py`.
-  · **bare basenames.** `commun.py` -> `common.py`. Distinctive thanks to the
+  · **full paths.** `packaging/common.py` -> `packaging/common.py`.
+  · **bare basenames.** `common.py` -> `common.py`. Distinctive thanks to the
     extension.
 
 Module rules, applied to a Python file only when it *binds* the module
@@ -43,10 +43,10 @@ Module rules, applied to a Python file only when it *binds* the module
 A module is bound by any of these, and all four forms occur in this
 repository:
 
-    import commun
-    import phytoscope.core.commun
-    from commun import quelque_chose
-    from phytoscope.core import commun          <- the one that was missed
+    import common
+    import phytoscope.core.common
+    from common import quelque_chose
+    from phytoscope.core import common          <- the one that was missed
 
 When a file binds the module, three rewrites apply and nothing else:
 
@@ -55,17 +55,17 @@ When a file binds the module, three rewrites apply and nothing else:
     the stem is left alone;
   · the **imported names** of a `from ... import a, b, c` statement, in name
     position only;
-  · **module attribute access**, `commun.RACINE` -> `common.RACINE`.
+  · **module attribute access**, `common.RACINE` -> `common.RACINE`.
 
 Two mistakes this design exists to prevent, both of which happened
 ------------------------------------------------------------------
 
 **A quoted bare word is never substituted.** The first version did, and it
-lasted one stage: renaming `packaging/certificat.py` rewrote
+lasted one stage: renaming `packaging/certificate.py` rewrote
 
-    CERTIFICAT_PROJET = os.path.join(_RACINE, "certificat", ...)
+    CERTIFICAT_PROJET = os.path.join(_RACINE, "certificate", ...)
 
-in `signature.py`, where `"certificat"` is the **directory** — renamed in a
+in `signature.py`, where `"certificate"` is the **directory** — renamed in a
 later stage, so the code then pointed at a path that did not exist. A quoted
 word can be a directory, a settings key, a catalog entry, or displayed text;
 nothing distinguishes them from outside, and a module named as a string is
@@ -126,12 +126,24 @@ MAP = os.path.join(ROOT, ".ai", "translation-renames.json")
 
 #  Extensions in which references are rewritten. Binary and generated files
 #  are left alone; the generated ones are rebuilt from their sources (C-45).
+#  This list was short by six extensions and several extensionless scripts,
+#  and the gap was silent: `packaging/templates/windows/phytoscope.wxs` still
+#  named `build_windows.py` — renamed back in stage 1 — because `.wxs`
+#  was simply never opened. A rename tool that skips a file type leaves stale
+#  references behind and says nothing about it, which is the failure mode
+#  worth guarding against.
+#
+#  The .deb and .pkg maintainer scripts carry no extension at all
+#  (`postinst`, `prerm`, `postinstall`, `lanceur`), so they are matched by
+#  name instead.
 TEXT = (".py", ".sh", ".md", ".html", ".css", ".txt", ".yml", ".yaml",
         ".json", ".cfg", ".toml", ".spec", ".nsi", ".cmake", ".c", ".h",
-        ".ino", ".in", ".desktop", ".control", ".gitignore", ".cmd")
+        ".ino", ".in", ".desktop", ".control", ".gitignore", ".cmd",
+        ".wxs", ".plist", ".bat", ".csv", ".editorconfig", ".gitattributes")
 
-BY_NAME = ("Makefile", "control", "AUTHORS", "LICENSE", "VERSION", "AUTEURS",
-           "CODEOWNERS")
+BY_NAME = ("Makefile", "control", "AUTHORS", "LICENSE", "VERSION",
+           "CODEOWNERS", "postinst", "prerm", "postrm", "preinst",
+           "postinstall", "preinstall", "lanceur")
 
 #  Files left out of reference rewriting, and the only three that are.
 #
@@ -207,9 +219,21 @@ def module_rewrites(text: str, stem: str, new_stem: str) -> str:
                   _from, text)
 
     def _import(trouve):
-        return trouve.group(1) + ",".join(
-            _rewrite_components(part.strip(), stem, new_stem)
-            for part in trouve.group(2).split(","))
+        #  `import build_carte as moule` — the alias must survive, and the
+        #  dotted path in front of it is what gets rewritten. The first
+        #  version fed the whole "build_carte as moule" to the component
+        #  rewriter, which compared it to the stem, found no match, and left
+        #  the import pointing at a module that no longer existed.
+        #  `pdf-src/build_sdk.py` did exactly this, and the SDK guide stopped
+        #  building with ModuleNotFoundError.
+        morceaux = []
+        for part in trouve.group(2).split(","):
+            jetons = part.split()
+            if not jetons:
+                continue
+            jetons[0] = _rewrite_components(jetons[0], stem, new_stem)
+            morceaux.append(" ".join(jetons))
+        return trouve.group(1) + ", ".join(morceaux)
 
     text = re.sub(r"(?m)^(\s*import\s+)([\w.,\s]+?)(?=\s*(?:#|$))",
                   _import, text)
@@ -223,13 +247,93 @@ def module_rewrites(text: str, stem: str, new_stem: str) -> str:
     return text
 
 
+#  A path reference must not begin in the middle of another path or another
+#  word. Without this guard, renaming the TOP-LEVEL directory `certificat`
+#  substituted the bare word everywhere, because a top-level name carries no
+#  slash to anchor it. Two things broke at once:
+#
+#    · `packaging/certificate.py`, already renamed in stage 1, became
+#      `packaging/certificatee.py` — the rule matched inside the new name.
+#      Nine tests then reported "absent de cette copie de travail" and were
+#      SKIPPED. A skipped test verifies nothing, and that is the worst
+#      possible failure mode: the suite still reported 341 passed;
+#    · French prose lost the ordinary word: "le certificat auto-signé"
+#      became "le certificate auto-signé" in AGENTS.md, CHANGELOG.md and
+#      PACKAGING.md. This tool's own docstring was mangled too.
+#
+#  So: nothing that looks like a path or an identifier may precede the match,
+#  and a directory is only recognised with its trailing separator.
+BEFORE = r"(?<![\w./-])"
+
+
 def path_rules(old: str, new: str, a_directory: bool) -> list[tuple[str, str]]:
     """(pattern, replacement) for the textual path references of one rename."""
-    rules = [(re.escape(old), new)]
+    if a_directory:
+        #  A directory is referenced with a trailing separator —
+        #  `certificate/` — and that separator is what tells the path apart
+        #  from the ordinary word. A bare mention without it is prose, and
+        #  prose is translated by hand.
+        rules = [(BEFORE + re.escape(old) + "/", new + "/")]
+
+        #  One exception, and it is not a guess about words: a name with a
+        #  hyphen in it is a slug. `the-music-of-plants` and
+        #  `hello-world` are how a directory is written, never how French
+        #  is written, so the bare form is substituted as well. Without this
+        #  the nine publication directories would be renamed while twelve
+        #  files went on naming them — `tools/impacted_pdfs.py` maps them one
+        #  by one, and the CI decides from that map which PDFs to rebuild.
+        #
+        #  The old name `certificat` has no hyphen and is therefore excluded,
+        #  which is exactly the case that caused the damage.
+        old_base, new_base = os.path.basename(old), os.path.basename(new)
+        if "-" in old_base and old_base != new_base:
+            rules.append(
+                (BEFORE + re.escape(old_base) + r"(?![\w-])", new_base))
+        return rules
+
+    rules = [(BEFORE + re.escape(old), new)]
     old_base, new_base = os.path.basename(old), os.path.basename(new)
-    if not a_directory and old_base != old and old_base != new_base:
-        rules.append((re.escape(old_base), new_base))
+    if old_base != old and old_base != new_base:
+        #  A basename keeps the left guard MINUS the slash, because a slash
+        #  is precisely what precedes a basename in the wild. With the full
+        #  guard, renaming LICENSE.txt to LICENSE.txt updated
+        #
+        #      extraire_un "LICENSE.txt" "$BAC_LICENCE"
+        #
+        #  in the .run header but not the very next line,
+        #
+        #      ui_licence "$BAC_LICENCE/LICENSE.txt"
+        #
+        #  so the installer extracted one name and read another: no licence
+        #  shown, and no error either. The Fedora spec had the same break in
+        #  « %license usr/share/phytoscope/LICENSE.txt ».
+        #
+        #  Letters, digits, dots and hyphens still block the match, so
+        #  MY-LICENCE.txt is left alone.
+        rules.append((r"(?<![\w.-])" + re.escape(old_base), new_base))
     return rules
+
+
+def ignored_inside(directory: str) -> list[str]:
+    """Git-ignored files inside a directory that is about to be moved.
+
+    Why this warning exists. `git mv certificat certificate` moves everything,
+    the ignored files included — and `git reset --hard` afterwards restores
+    only what git tracks. The ignored ones stay at the new name, invisible to
+    every git command, so the revert looks complete and is not.
+
+    That happened here with **the private signing key**. `certificate/` came
+    back without `phytoscope.key`, while `certificate/phytoscope.key` sat
+    there with no trace in `git status`. Nothing was lost — the reference copy
+    in `~/.local/share/phytoscope-signature/` was intact, and the pair was
+    checked afterwards — but a rename tool that can silently displace a
+    private key has to say so out loud (`C-2R`).
+    """
+    issue = subprocess.run(
+        ["git", "ls-files", "--others", "--ignored", "--exclude-standard",
+         "--", directory],
+        cwd=ROOT, capture_output=True, text=True)
+    return issue.stdout.split()
 
 
 # --------------------------------------------------------------------- actions
@@ -266,6 +370,9 @@ def apply_stage(stage: str, dry_run: bool, references_only: bool) -> int:
         kind = "dir " if old in directories else "file"
         print(f"    {kind}  {old}")
         print(f"       ->  {new}")
+        if old in directories:
+            for ignored in ignored_inside(old):
+                print(f"       !!  carries an IGNORED file: {ignored}")
         if not dry_run and not references_only:
             parent = os.path.join(ROOT, os.path.dirname(new))
             os.makedirs(parent or ROOT, exist_ok=True)

@@ -1,0 +1,123 @@
+<!-- ====================== ANATOMY ====================== -->
+<section class="chapter pagebreak">
+  <h2 id="anatomie" data-toc="chapter">2. The anatomy of a module</h2>
+
+  <p class="chapo">A module is a directory holding a <code>module.py</code>
+  file, which declares a class inheriting from <code>Module</code>. Everything
+  else is optional.</p>
+
+  <h3 id="anatomie-manifeste" data-toc="sub">The manifest, the one required part</h3>
+
+  <pre class="code"><code>from phytoscope.api import Capability, Manifest, Module
+
+class MyModule(Module):
+    MANIFEST = Manifest(
+        name="my-module",            # a-z, 0-9, hyphens — the identifier
+        title="My module",          # what the user reads
+        version="1.0.0",
+        api="3.0",                  # the interface version aimed at
+        description="What this module does.",
+        author="Your name",
+        licence="MIT",
+        capabilities=(Capability.ANALYSER,),
+    )</code></pre>
+
+  <div class="callout important">
+    <h4>The manifest is read without running your code</h4>
+    <p>The software parses <code>module.py</code> to extract the manifest,
+    <em>before</em> importing it. That is what lets it list the modules
+    present, disable one, and refuse the one that aims at an unknown interface
+    — without having to run code in order to find out whether the code should
+    be run.</p>
+    <p><strong>The practical consequence:</strong> write literal values. A
+    computed value — <code>version=read_version()</code> — will not be read,
+    and the default will apply. Only the constants of <code>Capability</code>
+    are an exception, because they belong to the contract.</p>
+  </div>
+
+  <h3 id="anatomie-champs" data-toc="sub">The manifest's fields</h3>
+
+  <table class="tab">
+    <thead><tr><th>Field</th><th>Role</th><th>Default</th></tr></thead>
+    <tbody>
+      <tr><td><code>name</code></td><td>the technical identifier. It serves as
+        the key everywhere: settings, directory, log.</td><td><em>required</em></td></tr>
+      <tr><td><code>title</code></td><td>what is displayed</td><td>the name</td></tr>
+      <tr><td><code>version</code></td><td>yours, semantic</td><td>0.1.0</td></tr>
+      <tr><td><code>api</code></td><td>the <strong>minimum</strong> interface
+        version you need. Accepted on any later minor of the same major.</td>
+        <td>the current one</td></tr>
+      <tr><td><code>capabilities</code></td><td>what you provide.
+        <strong>Declarative</strong>: what is not there is not offered,
+        even if the method exists.</td><td>none</td></tr>
+      <tr><td><code>depends_on</code></td><td>the modules to load before
+        yours, by their name</td><td>none</td></tr>
+      <tr><td><code>requires</code></td><td>the Python libraries needed.
+        Checked <em>before</em> the import.</td><td>none</td></tr>
+      <tr><td><code>description</code>, <code>author</code>,
+        <code>licence</code>, <code>website</code></td><td>displayed in
+        Diagnostics</td><td>empty</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="anatomie-version" data-toc="sub">The version contract, both ways</h3>
+
+  <p><code>api</code> is a <strong>minimum</strong>, and the host reads it as
+  one. The question can be asked from either side, through the same parser, so
+  the two answers cannot drift apart.</p>
+
+  <pre class="code"><code># your module, asking what it is running on
+context.api_version            # "3.0" — the host's API version
+context.api_required           # "3.0" — what YOUR manifest asked for
+context.api_at_least("3.2")    # bool — same major, minor at least
+
+# the host, asking what your module needs
+manifest.api                   # "3.0" — the minimum, as you wrote it
+manifest.api_required          # (3, 0) — the same, parsed
+manifest.api_satisfied_by      # "API 3.0 or any later 3.x"
+registry.api_requirements()    # the minimum of every module at once</code></pre>
+
+  <div class="callout">
+    <h4>Declare the lowest that suffices</h4>
+    <p>A module that needs 3.0 to work at all, but would <em>like</em> a field
+    added in 3.2, declares <code>api="3.0"</code> and asks at run time:</p>
+    <pre class="code"><code>if context.api_at_least("3.2"):
+    return self._with_the_new_field(x, fs, context)
+return self._the_way_that_works_on_3_0(x, fs, context)</code></pre>
+    <p>Declaring <code>3.2</code> because that is what its author had
+    installed makes the module refused on every 3.0 and 3.1 host, to gain one
+    optional field. The manifest states what you <em>need</em>; the context
+    tells you what you <em>got</em>.</p>
+  </div>
+
+  <h3 id="anatomie-cycle" data-toc="sub">The life cycle</h3>
+
+  <figure class="figframe">
+    <img src="assets/svg/sdk-cycle.svg" alt="The life cycle of a module"/>
+    <figcaption>Fig. ## — The four moments in the life of a module. A fault at
+    any of them disables the module and leaves the software running.</figcaption>
+  </figure>
+
+  <ol>
+    <li><code>__init__(context)</code> — you are handed the context.
+      <strong>Do nothing lengthy here</strong>: this is called at start-up, for
+      every module, one after another.</li>
+    <li><code>setup()</code> — once, after every module has been loaded.
+      This is where you subscribe and prepare your files.</li>
+    <li>your capabilities are called during the session, on demand.</li>
+    <li><code>shutdown()</code> — once, at shutdown. Close what you opened; your
+      subscriptions are removed for you.</li>
+  </ol>
+
+  <h3 id="anatomie-reglages" data-toc="sub">Your settings</h3>
+
+  <pre class="code"><code>def default_settings(self):
+    return {"seuil_uv": 8.0, "show_detail": True}
+
+# later on, inside a capability:
+seuil = context.settings.get("seuil_uv", 8.0)</code></pre>
+
+  <p>The software keeps them under your module's name and hands them back at
+  the next start-up. <strong>Never write into the software's own settings file
+  yourself</strong>: it is not yours, and its shape may change.</p>
+</section>

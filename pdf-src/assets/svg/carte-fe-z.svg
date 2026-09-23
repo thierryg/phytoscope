@@ -2,16 +2,16 @@
   ==========================================================================
   PhytoScope — attribution — pdf-src/assets/svg/carte-fe-z.svg
 
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
+  Version   : 1.6.0
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
 
   SPDX-License-Identifier: MIT
-  fin de l'attribution
+  end of attribution
   ==========================================================================
 -->
 
@@ -92,22 +92,22 @@
 <line x1="1165.24" y1="690" x2="1165.24" y2="742" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
 <line x1="1040.62" y1="742" x2="1040.62" y2="788" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
 <line x1="1241.62" y1="742" x2="1241.62" y2="788" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
-<text x="1117.0" y="677" font-family="Cormorant Garamond, serif" font-size="20.37" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Entrée électrométrique FE-Z</text>
+<text x="1117.0" y="677" font-family="Cormorant Garamond, serif" font-size="20.37" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">FE-Z electrometer input</text>
 <text x="1040.62" y="708" font-family="Lato, sans-serif" font-size="16.75" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">PhytoSense One</text>
 <text x="1040.62" y="722" font-family="Cormorant Garamond, serif" font-size="14.48" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
 <text x="1040.62" y="735" font-family="DejaVu Sans Mono, monospace" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
-<text x="1241.62" y="710" font-family="Lato, sans-serif" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Carte fille FE-Z</text>
+<text x="1241.62" y="710" font-family="Lato, sans-serif" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">FE-Z daughter board</text>
 <text x="1241.62" y="726" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">CERN-OHL-P v2</text>
 <text x="1241.62" y="737" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">diffusion libre</text>
-<text x="978.31" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">FEUILLE</text>
+<text x="978.31" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">SHEET</text>
 <text x="978.31" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">1/8</text>
-<text x="1102.93" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">RÉVISION</text>
+<text x="1102.93" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">REVISION</text>
 <text x="1102.93" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">B</text>
 <text x="1203.43" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">DATE</text>
 <text x="1203.43" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2026-09</text>
-<text x="1279.81" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">ÉCHELLE</text>
+<text x="1279.81" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">SCALE</text>
 <text x="1279.81" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">—</text>
-<text x="90" y="76" font-family="Cormorant Garamond, serif" font-size="19.01" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">FE-Z · mesure de potentiel de surface — impédance d'entrée 10¹⁵ Ω</text>
+<text x="90" y="76" font-family="Cormorant Garamond, serif" font-size="19.01" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">FE-Z Â· surface-potential measurement â 10¹⁵ Ω input impedance</text>
 <rect x="92" y="160" width="54" height="236" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.6"/>
 <line x1="146" y1="180" x2="176" y2="180" stroke="#23302C" stroke-width="1.3" stroke-linecap="round"/>
 <circle cx="136" cy="180" r="4.2" fill="#B08528" stroke="#B08528" stroke-width="1"/>
@@ -119,9 +119,9 @@
 <circle cx="136" cy="324" r="4.2" fill="#B08528" stroke="#B08528" stroke-width="1"/>
 <text x="119.0" y="327" font-family="DejaVu Sans Mono, monospace" font-size="13.13" fill="#fff" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">S</text>
 <text x="119.0" y="150" font-family="Lato, sans-serif" font-size="15.39" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">J1 · TRS 3,5 mm</text>
-<text x="92" y="420" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">T — électrode de mesure</text>
-<text x="92" y="437" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">R — garde et blindage du câble</text>
-<text x="92" y="454" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">S — électrode de référence</text>
+<text x="92" y="420" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">T — measurement electrode</text>
+<text x="92" y="437" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">R — guard and cable shield</text>
+<text x="92" y="454" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">S — reference electrode</text>
 <path d="M 176,180 L 210,180" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
 <line x1="210" y1="180" x2="228.0" y2="180" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
 <rect x="228.0" y="163.0" width="56" height="34" rx="0" fill="#fff" stroke="#23302C" stroke-width="1.8"/>
@@ -160,7 +160,7 @@
 <text x="530" y="330" font-family="DejaVu Sans Mono, monospace" font-size="14.26" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">AGND</text>
 <rect x="560" y="100" width="260" height="300" rx="6" fill="none" stroke="#3F7D5A" stroke-width="1.2" stroke-dasharray="7 5"/>
 <text x="690" y="122" font-family="Lato, sans-serif" font-size="16.75" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U1 · ADA4530-1</text>
-<text x="690" y="138" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Ib &lt; 20 fA · tampon de garde intégré</text>
+<text x="690" y="138" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Ib &lt; 20 fA · integrated guard buffer</text>
 <polygon points="600,151 730,207.0 600,263" fill="#fff" stroke="#23302C" stroke-width="1.6" stroke-linejoin="round"/>
 <text x="620" y="191.36" font-family="Lato, sans-serif" font-size="21.5" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">−</text>
 <text x="620" y="240.64" font-family="Lato, sans-serif" font-size="21.5" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">+</text>
@@ -178,7 +178,7 @@
 <path d="M 720,332.0 L 760,332 L 760,384 L 582,384 L 582,314 L 600,313.52" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
 <circle cx="760" cy="332" r="3.6" fill="#23302C"/>
 <path d="M 176,252 L 240,252 L 240,440 L 760,440 L 760,332" fill="none" stroke="#B08528" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="round"/>
-<text x="272" y="430" font-family="Lato, sans-serif" font-size="14.03" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">NET « GARDE » — anneau de garde, blindage du câble, plan de garde</text>
+<text x="272" y="430" font-family="Lato, sans-serif" font-size="14.03" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">“GUARD” NET — guard ring, cable shield, guard plane</text>
 <path d="M 760,332 L 1090,332 L 1090,272 L 1150,272" fill="none" stroke="#B08528" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="round"/>
 <path d="M 790,207 L 1060,207 L 1060,316 L 1150,316" fill="none" stroke="#23302C" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="round"/>
 <text x="940" y="196" font-family="DejaVu Sans Mono, monospace" font-size="14.94" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">SIG_A</text>
@@ -198,7 +198,7 @@
 <line x1="1150" y1="272" x2="1180" y2="272" stroke="#23302C" stroke-width="1.3" stroke-linecap="round"/>
 <circle cx="1190" cy="272" r="4.2" fill="#B08528" stroke="#B08528" stroke-width="1"/>
 <text x="1208.0" y="275" font-family="DejaVu Sans Mono, monospace" font-size="13.13" fill="#fff" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">4</text>
-<text x="1244" y="275" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">GARDE</text>
+<text x="1244" y="275" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">GUARD</text>
 <line x1="1150" y1="316" x2="1180" y2="316" stroke="#23302C" stroke-width="1.3" stroke-linecap="round"/>
 <circle cx="1190" cy="316" r="4.2" fill="#B08528" stroke="#B08528" stroke-width="1"/>
 <text x="1208.0" y="319" font-family="DejaVu Sans Mono, monospace" font-size="13.13" fill="#fff" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">5</text>
@@ -214,7 +214,7 @@
 <path d="M 1040,360 L 1150,360" fill="none" stroke="#2F5E86" stroke-width="1.3" stroke-linecap="square" stroke-linejoin="round" stroke-dasharray="5 4"/>
 <text x="1030" y="356" font-family="Lato, sans-serif" font-size="13.58" fill="#2F5E86" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">EEPROM 24AA02 (identification)</text>
 <rect x="420" y="466" width="480" height="250" rx="6" fill="#FBF8EF" stroke="#E0C073" stroke-width="1.1"/>
-<text x="432" y="706" font-family="Lato, sans-serif" font-size="14.48" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">CONTRE-RÉACTION DE MODE COMMUN — pilotage de l'électrode S</text>
+<text x="432" y="706" font-family="Lato, sans-serif" font-size="14.48" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">COMMON-MODE FEEDBACK — driving the S electrode</text>
 <path d="M 830,207 L 830,496 L 452,496 L 452,532 L 464,532" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
 <circle cx="830" cy="207" r="3.6" fill="#23302C"/>
 <line x1="464" y1="532" x2="482.0" y2="532" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>

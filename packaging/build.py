@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — packaging/build.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Fabrique les paquets d'installation de PhytoScope, depuis Debian/Ubuntu/Mint.
@@ -30,7 +30,7 @@ lançable seul :
 ==========================  ===========================================
 
 Le `Makefile` du même dossier fait la même chose, en plus court :
-``make debian``, ``make windows``, ``make tout``.
+``make debian``, ``make windows``, ``make all``.
 
 Pourquoi tout se construit depuis Linux
 ---------------------------------------
@@ -78,7 +78,7 @@ from typing import Callable, List, Optional, Tuple
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from common import (  # noqa: E402
-    GRIS, RACINE_SORTIE, ROUGE, VERT, VARIABLE_SORTIE, Identite,
+    GRIS, OUTPUT_ROOT, ROUGE, VERT, OUTPUT_VARIABLE, Identite,
     appliquer_les_arguments, arguments_communs, dire, dossier_fabrication,
     echec, ecrire_les_documents, ecrire_les_empreintes, etat_des_outils,
     installer_les_outils, lisible, souci, tous_les_paquets)
@@ -91,8 +91,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                     "depuis Debian, Ubuntu ou Mint.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="Le Makefile du même dossier fait la même chose, en plus "
-               "court :\n  make outils · make deps · make debian · make "
-               "windows · make tout\n")
+               "court :\n  make tools · make deps · make debian · make "
+               "windows · make all\n")
     p.add_argument("--tout", action="store_true", help="toutes les cibles")
     p.add_argument("--deb", "--debian", dest="deb", action="store_true",
                    help="Debian, Ubuntu, Mint")
@@ -108,11 +108,12 @@ def main(argv: Optional[List[str]] = None) -> int:
     p.add_argument("--deps", action="store_true",
                    help="installer NSIS et msitools dans ~/.local/opt, "
                         "sans privilèges")
-    p.add_argument("--hors-ligne", action="store_true",
+    p.add_argument("--offline", "--hors-ligne", dest="hors_ligne",
+                   action="store_true",
                    help="embarquer les bibliothèques, pour une installation "
                         "sans connexion (atelier, salle de classe)")
     p.add_argument("--nettoyer", action="store_true",
-                   help="vider build/paquets avant de construire")
+                   help="vider build/packages avant de construire")
     arguments_communs(p)
     args = p.parse_args(argv)
 
@@ -131,20 +132,20 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     id_ = appliquer_les_arguments(args)
 
-    if args.nettoyer and os.path.isdir(RACINE_SORTIE):
+    if args.nettoyer and os.path.isdir(OUTPUT_ROOT):
         import shutil
-        shutil.rmtree(RACINE_SORTIE)
+        shutil.rmtree(OUTPUT_ROOT)
 
     #  Le dossier est choisi ICI, une fois, et imposé aux générateurs par
     #  l'environnement : sans cela chacun créerait le sien, et les paquets
     #  d'une même fabrication se retrouveraient éparpillés.
     dossier = dossier_fabrication(id_)
-    os.environ[VARIABLE_SORTIE] = dossier
+    os.environ[OUTPUT_VARIABLE] = dossier
 
     dire(f"\n  PhytoScope {id_.version}-{id_.release}"
          f"{id_.mention_nom} — fabrication des paquets", VERT)
     dire(f"  {id_.auteur} · {id_.site}", GRIS)
-    dire(f"  sortie : {os.path.relpath(dossier, os.path.dirname(RACINE_SORTIE))}\n",
+    dire(f"  sortie : {os.path.relpath(dossier, os.path.dirname(OUTPUT_ROOT))}\n",
          GRIS)
 
     options_communes = ["--version", id_.version, "--release", id_.release,
@@ -154,11 +155,17 @@ def main(argv: Optional[List[str]] = None) -> int:
     #  secondes, et non au bout du quart d'heure que demande la compression
     #  de l'installateur Windows.
     ordre: List[Tuple[str, str, List[str]]] = [
-        ("source", "construire_source", []),
-        ("deb", "construire_debian", ["--hors-ligne"] if args.hors_ligne else []),
-        ("rpm", "construire_fedora", ["--hors-ligne"] if args.hors_ligne else []),
-        ("macos", "construire_macos", ["--hors-ligne"] if args.hors_ligne else []),
-        ("windows", "construire_windows", []),
+        #  The module names are STRINGS, so the rename pass of 2026-09-22
+        #  could not see them: they still said `construire_*` while the files
+        #  had become `build_*`, and every target died on a
+        #  ModuleNotFoundError that this loop merely logged. Found on
+        #  2026-09-23 while analysing the impact of renaming the Makefile
+        #  targets. A test now reads this list and checks each module imports.
+        ("source", "build_source", []),
+        ("deb", "build_debian", ["--offline"] if args.hors_ligne else []),
+        ("rpm", "build_fedora", ["--offline"] if args.hors_ligne else []),
+        ("macos", "build_macos", ["--offline"] if args.hors_ligne else []),
+        ("windows", "build_windows", []),
     ]
 
     faits, rates = 0, []
@@ -187,7 +194,7 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     dire(f"\n  {faits} cible(s) en {time.time() - debut:.0f} s, "
          f"{len(documents)} documents\n", VERT if faits else ROUGE)
-    dire(f"  {os.path.relpath(dossier, os.path.dirname(RACINE_SORTIE))}/", GRIS)
+    dire(f"  {os.path.relpath(dossier, os.path.dirname(OUTPUT_ROOT))}/", GRIS)
     for chemin in tous_les_paquets(id_):
         relatif = os.path.relpath(chemin, dossier)
         dire(f"    {relatif:<52} {lisible(os.path.getsize(chemin)):>9}", GRIS)

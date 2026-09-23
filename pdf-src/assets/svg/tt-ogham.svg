@@ -1,20 +1,3 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/tt-ogham.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 440" width="880" height="440">
 
 <defs>
@@ -29,72 +12,71 @@
    <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
 </defs>
 <rect width="880" height="440" fill="#FBF9F1"/>
-<text x="440" y="34" font-family="Cormorant Garamond, serif" font-size="16.68" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2.2">L'OGHAM : UNE ÉCRITURE ADOSSÉE AUX ARBRES</text>
-<text x="440" y="55" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Alphabet irlandais des IVᵉ–VIᵉ siècles, gravé sur l'arête des pierres dressées</text>
+<text x="440" y="34" font-family="Cormorant Garamond, serif" font-size="16.68" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2.2">OGHAM: A SCRIPT LEANING ON TREES</text>
+<text x="440" y="55" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">An Irish alphabet of the 4th–6th centuries, carved on the edge of standing stones</text>
 <line x1="140" y1="86" x2="140" y2="386" stroke="#0E2A22" stroke-width="3"/>
 <line x1="140" y1="108.0" x2="170" y2="108.0" stroke="#B08528" stroke-width="2.4"/>
 <text x="188" y="116" font-family="Cormorant Garamond, serif" font-size="15.08" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">B</text>
-<text x="208" y="116" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">beith — bouleau</text>
+<text x="208" y="116" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">beith — birch</text>
 <line x1="140" y1="136.0" x2="170" y2="136.0" stroke="#B08528" stroke-width="2.4"/>
 <line x1="140" y1="140.6" x2="170" y2="140.6" stroke="#B08528" stroke-width="2.4"/>
 <text x="188" y="144" font-family="Cormorant Garamond, serif" font-size="15.08" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">L</text>
-<text x="208" y="144" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">luis — sorbier</text>
+<text x="208" y="144" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">luis — rowan</text>
 <line x1="140" y1="164.0" x2="170" y2="164.0" stroke="#B08528" stroke-width="2.4"/>
 <line x1="140" y1="168.6" x2="170" y2="168.6" stroke="#B08528" stroke-width="2.4"/>
 <line x1="140" y1="173.2" x2="170" y2="173.2" stroke="#B08528" stroke-width="2.4"/>
 <text x="188" y="172" font-family="Cormorant Garamond, serif" font-size="15.08" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">F</text>
-<text x="208" y="172" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">fearn — aulne</text>
+<text x="208" y="172" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">fearn — alder</text>
 <line x1="140" y1="192.0" x2="170" y2="192.0" stroke="#B08528" stroke-width="2.4"/>
 <line x1="140" y1="196.6" x2="170" y2="196.6" stroke="#B08528" stroke-width="2.4"/>
 <line x1="140" y1="201.2" x2="170" y2="201.2" stroke="#B08528" stroke-width="2.4"/>
 <line x1="140" y1="205.8" x2="170" y2="205.8" stroke="#B08528" stroke-width="2.4"/>
 <text x="188" y="200" font-family="Cormorant Garamond, serif" font-size="15.08" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">S</text>
-<text x="208" y="200" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">sail — saule</text>
+<text x="208" y="200" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">sail — willow</text>
 <line x1="140" y1="220.0" x2="170" y2="220.0" stroke="#B08528" stroke-width="2.4"/>
 <line x1="140" y1="224.6" x2="170" y2="224.6" stroke="#B08528" stroke-width="2.4"/>
 <line x1="140" y1="229.2" x2="170" y2="229.2" stroke="#B08528" stroke-width="2.4"/>
 <line x1="140" y1="233.8" x2="170" y2="233.8" stroke="#B08528" stroke-width="2.4"/>
 <line x1="140" y1="238.4" x2="170" y2="238.4" stroke="#B08528" stroke-width="2.4"/>
 <text x="188" y="228" font-family="Cormorant Garamond, serif" font-size="15.08" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">N</text>
-<text x="208" y="228" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">nion — frêne</text>
+<text x="208" y="228" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">nion — ash</text>
 <line x1="110" y1="248.0" x2="140" y2="248.0" stroke="#3F7D5A" stroke-width="2.4"/>
 <text x="188" y="256" font-family="Cormorant Garamond, serif" font-size="15.08" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">H</text>
-<text x="208" y="256" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">uath — aubépine</text>
+<text x="208" y="256" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">uath — hawthorn</text>
 <line x1="110" y1="276.0" x2="140" y2="276.0" stroke="#3F7D5A" stroke-width="2.4"/>
 <line x1="110" y1="280.6" x2="140" y2="280.6" stroke="#3F7D5A" stroke-width="2.4"/>
 <text x="188" y="284" font-family="Cormorant Garamond, serif" font-size="15.08" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">D</text>
-<text x="208" y="284" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">dair — chêne</text>
+<text x="208" y="284" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">dair — oak</text>
 <line x1="110" y1="304.0" x2="140" y2="304.0" stroke="#3F7D5A" stroke-width="2.4"/>
 <line x1="110" y1="308.6" x2="140" y2="308.6" stroke="#3F7D5A" stroke-width="2.4"/>
 <line x1="110" y1="313.2" x2="140" y2="313.2" stroke="#3F7D5A" stroke-width="2.4"/>
 <text x="188" y="312" font-family="Cormorant Garamond, serif" font-size="15.08" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">T</text>
-<text x="208" y="312" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">tinne — houx</text>
+<text x="208" y="312" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">tinne — holly</text>
 <line x1="110" y1="332.0" x2="140" y2="332.0" stroke="#3F7D5A" stroke-width="2.4"/>
 <line x1="110" y1="336.6" x2="140" y2="336.6" stroke="#3F7D5A" stroke-width="2.4"/>
 <line x1="110" y1="341.2" x2="140" y2="341.2" stroke="#3F7D5A" stroke-width="2.4"/>
 <line x1="110" y1="345.8" x2="140" y2="345.8" stroke="#3F7D5A" stroke-width="2.4"/>
 <text x="188" y="340" font-family="Cormorant Garamond, serif" font-size="15.08" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">C</text>
-<text x="208" y="340" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">coll — noisetier</text>
+<text x="208" y="340" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">coll — hazel</text>
 <line x1="110" y1="360.0" x2="140" y2="360.0" stroke="#3F7D5A" stroke-width="2.4"/>
 <line x1="110" y1="364.6" x2="140" y2="364.6" stroke="#3F7D5A" stroke-width="2.4"/>
 <line x1="110" y1="369.2" x2="140" y2="369.2" stroke="#3F7D5A" stroke-width="2.4"/>
 <line x1="110" y1="373.8" x2="140" y2="373.8" stroke="#3F7D5A" stroke-width="2.4"/>
 <line x1="110" y1="378.4" x2="140" y2="378.4" stroke="#3F7D5A" stroke-width="2.4"/>
 <text x="188" y="368" font-family="Cormorant Garamond, serif" font-size="15.08" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Q</text>
-<text x="208" y="368" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">ceirt — pommier</text>
+<text x="208" y="368" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="italic" letter-spacing="0">ceirt — apple</text>
 <rect x="470" y="92" width="366" height="132" rx="7" fill="#FFFFFF" stroke="#3F7D5A" stroke-width="1.5"/>
-<text x="653" y="114" font-family="Lato, sans-serif" font-size="14.5" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Ce qui est attesté</text>
-<text x="490" y="136" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">L'ogham est une écriture réelle, documentée par environ</text>
-<text x="490" y="148" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">400 inscriptions lapidaires en Irlande et au pays de</text>
-<text x="490" y="160" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Galles. Les gloses médiévales associent chaque lettre à un</text>
-<text x="490" y="172" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">nom, souvent d'arbre. L'ordre et la valeur des lettres</text>
-<text x="490" y="184" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">sont établis.</text>
+<text x="653" y="114" font-family="Lato, sans-serif" font-size="14.5" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">What is attested</text>
+<text x="490" y="136" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Ogham is a real script, documented by some 400 stone</text>
+<text x="490" y="148" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">inscriptions in Ireland and Wales. The medieval glosses</text>
+<text x="490" y="160" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">tie each letter to a name, often a tree. The order and the</text>
+<text x="490" y="172" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">value of the letters are established.</text>
 <rect x="470" y="242" width="366" height="144" rx="7" fill="#FBF0E8" stroke="#F0DCC9" stroke-width="1.5"/>
-<text x="653" y="264" font-family="Lato, sans-serif" font-size="14.5" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Ce qui ne l'est pas</text>
-<text x="490" y="286" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Le « calendrier des arbres » et le système divinatoire</text>
-<text x="490" y="298" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">qu'on lui associe sont une reconstruction du XXᵉ siècle,</text>
-<text x="490" y="310" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">largement due à Robert Graves (« The White Goddess »,</text>
-<text x="490" y="322" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">1948). C'est une création poétique moderne, non une</text>
-<text x="490" y="334" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">tradition celtique transmise. La dire ancienne est une</text>
-<text x="490" y="346" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">erreur ; la pratiquer en le sachant est un choix.</text>
+<text x="653" y="264" font-family="Lato, sans-serif" font-size="14.5" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">What is not</text>
+<text x="490" y="286" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">The “tree calendar” and the divinatory system attached to</text>
+<text x="490" y="298" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">it are a 20th-century reconstruction, owed largely to</text>
+<text x="490" y="310" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Robert Graves (“The White Goddess”, 1948). It is a modern</text>
+<text x="490" y="322" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">poetic creation, not a Celtic tradition handed down. To</text>
+<text x="490" y="334" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">call it ancient is an error; to practise it knowingly is a</text>
+<text x="490" y="346" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">choice.</text>
 </svg>

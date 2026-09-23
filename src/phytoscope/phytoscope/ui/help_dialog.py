@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/ui/help_dialog.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Fenêtre d'aide — ce qu'il faut savoir sans lire le document.
@@ -47,60 +47,45 @@ from . import fonts
 #  le reste ensuite. La colonne de droite dit la fonction, pas le nom du
 #  bouton — c'est la fonction qu'on cherche quand on ouvre cette page.
 RACCOURCIS = [
-    ("Pendant la séance", [
-        ("Ctrl+R", "démarrer ou arrêter l'enregistrement"),
-        ("Ctrl+M", "poser un marqueur horodaté dans la séance"),
-        ("Ctrl+E", "garder sur le disque le signal qui vient de passer — un "
-                   "échantillon, sans rien démarrer ni arrêter"),
-        ("Ctrl+K", "couper le son sans interrompre la mesure ni "
-                   "l'enregistrement"),
+    ("During the session", [
+        ("Ctrl+R", "start or stop recording"),
+        ("Ctrl+M", "drop a time-stamped marker in the session"),
+        ("Ctrl+E", "keep on disk the signal that has just gone by — a sample, without starting or stopping anything"),
+        ("Ctrl+K", "mute without interrupting the measurement or the recording"),
         ("Ctrl+Shift+." if sys.platform == "darwin" else "Ctrl+.",
-         "silence : coupe immédiatement toutes les notes en cours"),
-        ("Ctrl+A", "ouvrir l'assistant d'auto-configuration"),
+         "silence: immediately cuts every note currently sounding"),
+        ("Ctrl+A", "open the auto-setup wizard"),
     ]),
-    ("La fenêtre", [
-        ("F1", "cette fenêtre d'aide"),
-        ("Maj+F1", "fenêtre « À propos » : version, composants, rapport "
-                   "d'environnement"),
-        ("Ctrl+L", "ouvrir le journal du logiciel : le fichier en direct, "
-                   "son emplacement, et de quoi en enregistrer une copie"),
-        ("Ctrl+0", "ramener tous les tracés de l'onglet à leur cadrage "
-                   "d'origine — après un zoom à la molette"),
-        ("Ctrl+Tab", "passer à l'onglet suivant"),
-        ("Ctrl+Maj+Tab", "passer à l'onglet précédent"),
-        ("Tab / Maj+Tab", "passer d'une commande à la suivante, ou à la "
-                          "précédente"),
-        ("Espace", "cocher ou décocher la case, actionner le bouton qui a "
-                   "le focus"),
-        ("Échap", "fermer la fenêtre de dialogue en cours sans rien appliquer"),
-        ("Ctrl+Q", "quitter en refermant proprement la séance en cours"),
+    ("The window", [
+        ("F1", "this help window"),
+        ("Maj+F1", "the “About” window: version, components, environment report"),
+        ("Ctrl+L", "open the application log: the file live, where it is, and the means to save a copy of it"),
+        ("Ctrl+0", "bring every plot in the tab back to its original framing — after a zoom with the wheel"),
+        ("Ctrl+Tab", "go to the next tab"),
+        ("Ctrl+Maj+Tab", "go to the previous tab"),
+        ("Tab / Maj+Tab", "move to the next control, or to the previous one"),
+        ("Espace", "tick or untick the box, press the button that has the focus"),
+        ("Échap", "close the current dialog without applying anything"),
+        ("Ctrl+Q", "quit, closing the current session cleanly"),
     ]),
-    ("Onglet Traceur — ligne de commande", [
-        ("Entrée", "exécuter la commande saisie"),
-        ("↑", "rappeler la commande précédente de l'historique"),
-        ("↓", "revenir à la commande suivante de l'historique"),
+    ("Plotter tab — command line", [
+        ("Entrée", "run the typed command"),
+        ("↑", "recall the previous command from the history"),
+        ("↓", "go back to the next command in the history"),
     ]),
-    ("Champs de saisie, listes et tableaux", [
-        ("Ctrl+C / Ctrl+V", "copier, coller — dans tout champ de texte"),
-        ("Ctrl+A", "tout sélectionner, lorsque le focus est dans un champ "
-                   "de texte (ailleurs : auto-configuration)"),
-        ("↑ ↓ ← →", "se déplacer dans une liste, un tableau ou une valeur "
-                    "numérique"),
-        ("Page préc. / Page suiv.", "faire défiler une liste ou un tableau "
-                                    "d'un écran"),
+    ("Text fields, lists and tables", [
+        ("Ctrl+C / Ctrl+V", "copy, paste — in any text field"),
+        ("Ctrl+A", "select all, when the focus is in a text field (elsewhere: auto-setup)"),
+        ("↑ ↓ ← →", "move through a list, a table or a numeric value"),
+        ("Page préc. / Page suiv.", "scroll a list or a table by one screen"),
     ]),
-    ("Depuis le terminal", [
-        ("Ctrl+C", "interrompre le logiciel : la séance en cours est close, "
-                   "les réglages sauvés, puis le programme s'arrête. Un "
-                   "second Ctrl+C termine sans attendre."),
+    ("From the terminal", [
+        ("Ctrl+C", "interrupt the software: the current session is closed, the settings saved, then the program stops. A second Ctrl+C ends it without waiting."),
         #  L'entrée reste présente sur les trois systèmes, et dit elle-même
         #  où elle s'applique : la retirer sous Windows ferait varier
         #  l'inventaire des libellés d'un système à l'autre, et un même
         #  catalogue de traduction ne pourrait plus les servir tous.
-        ("Ctrl+Z", "suspendre le processus — sur Unix et macOS seulement, "
-                   "Windows n'ayant pas de signal de suspension. "
-                   "L'acquisition s'arrête aussi : « fg » la reprend, mais le "
-                   "signal manquant est perdu."),
+        ("Ctrl+Z", "suspend the process — on Unix and macOS only, Windows having no suspend signal. Acquisition stops too: « fg » resumes it, but the missing signal is lost."),
     ]),
 ]
 
@@ -111,42 +96,24 @@ FOURNIS_PAR_QT = {"Ctrl+Tab", "Ctrl+Maj+Tab", "Tab / Maj+Tab", "Espace",
                   "Page préc. / Page suiv.", "Ctrl+C", "Ctrl+Z"}
 
 ONGLETS = [
-    ("Oscilloscope", "Le signal dans le temps, de 5 s à 1 h. L'onglet de la "
-     "séance : c'est celui qu'on regarde."),
-    ("Multimètre", "Les chiffres — tension, bruit, dérive, qualité du contact. "
-     "À consulter avant de lancer une heure d'enregistrement."),
-    ("Analyseur", "Le spectre, avec détection automatique du réseau. Un pic à "
-     "50 Hz signale un problème de blindage, pas un signal végétal."),
-    ("Descripteurs", "Six représentations du même signal : forme d'onde, FFT, "
-     "ondelettes, MFCC, prédiction linéaire, cepstre. Chacune affiche ce "
-     "qu'elle montre et ce qu'elle ne permet pas de conclure."),
-    ("Traceur", "Un gnuplot intégré : neuf sources, échelles logarithmiques, "
-     "exportation en PNG, SVG, données et script."),
-    ("Écoute", "Timbre, gamme, tonique, diapason — et le journal des notes "
-     "avec la règle qui a produit chacune."),
-    ("Parole", "Le mode vocal : un dictionnaire de mots au lieu d'une gamme. "
-     "Ce n'est pas une traduction, et l'onglet le rappelle en permanence — "
-     "chaque énoncé est accompagné des valeurs qui l'ont déclenché."),
-    ("Bibliothèque", "Les séances enregistrées, avec relecture accélérée "
-     "jusqu'à six cents fois."),
-    ("Diagnostic", "Lien USB, échantillonnage, sortie sonore, journal. "
-     "Le premier endroit où aller quand quelque chose cloche."),
-    ("Réglages", "Sept pages, de l'assistant automatique à la page Expert où "
-     "rien n'est caché."),
+    ("Oscilloscope", "The signal over time, from 5 s to 1 h. The session tab: this is the one you watch."),
+    ("Multimeter", "The numbers — voltage, noise, drift, contact quality. To be consulted before starting an hour of recording."),
+    ("Analyser", "The spectrum, with automatic mains detection. A peak at 50 Hz points to a shielding problem, not to a plant signal."),
+    ("Descriptors", "Six representations of the same signal: waveform, FFT, wavelets, MFCC, linear prediction, cepstrum. Each one states what it shows and what it does not allow you to conclude."),
+    ("Plotter", "A built-in gnuplot: nine sources, logarithmic scales, export to PNG, SVG, data and script."),
+    ("Listening", "Timbre, scale, root, tuning — and the log of notes with the rule that produced each one."),
+    ("Speech", "Speech mode: a dictionary of words instead of a scale. It is not a translation, and the tab says so permanently — every utterance comes with the values that triggered it."),
+    ("Library", "The recorded sessions, with replay accelerated up to six hundred times."),
+    ("Diagnostics", "USB link, sampling, audio output, log. The first place to go when something is wrong."),
+    ("Settings", "Seven pages, from the automatic wizard to the Expert page where nothing is hidden."),
 ]
 
 DEMARRAGE = [
-    ("1", "Brancher les électrodes", "Une pince sur une feuille humidifiée, "
-     "une tige dans le substrat. Le contact met dix à trente minutes à se "
-     "stabiliser : c'est normal, et c'est mesurable."),
-    ("2", "Vérifier le contact", "Onglet Multimètre : la qualité du contact "
-     "doit afficher « correct » ou « excellent ». Sinon, humidifier."),
-    ("3", "Lancer l'auto-configuration", "Ctrl+A. L'assistant écoute douze "
-     "secondes, mesure, propose — et explique chacun de ses choix."),
-    ("4", "Écouter", "Onglet Écoute : choisir un profil. « Découverte » rend "
-     "chaque événement audible ; « Méditation » espace les notes."),
-    ("5", "Enregistrer", "Ctrl+R. Une séance est un répertoire : WAV, CSV et "
-     "JSON, tous lisibles sans ce logiciel."),
+    ("1", "Connect the electrodes", "A clip on a moistened leaf, a probe in the substrate. The contact takes ten to thirty minutes to settle: this is normal, and it is measurable."),
+    ("2", "Check the contact", "Multimeter tab: contact quality must read “fair” or “excellent”. If it does not, moisten."),
+    ("3", "Run the auto-setup", "Ctrl+A. The wizard listens for twelve seconds, measures, proposes — and explains every one of its choices."),
+    ("4", "Listen", "Listening tab: choose a preset. “Discovery” makes every event audible; “Meditation” spaces the notes out."),
+    ("5", "Record", "Ctrl+R. A session is a folder: WAV, CSV and JSON, all readable without this software."),
 ]
 
 
@@ -156,7 +123,7 @@ class HelpDialog(QDialog):
     def __init__(self, palette: dict, parent=None):
         super().__init__(parent)
         self.p = palette
-        self.setWindowTitle(f"Aide — {V.APP_NAME}")
+        self.setWindowTitle(t("Help — {app}").format(app=V.APP_NAME))
         self.setMinimumSize(700, 560)
         try:
             from .icon import app_icon
@@ -165,10 +132,10 @@ class HelpDialog(QDialog):
             pass
 
         tabs = QTabWidget()
-        tabs.addTab(self._page_demarrage(), t("Prise en main"))
-        tabs.addTab(self._page_raccourcis(), t("Raccourcis"))
-        tabs.addTab(self._page_onglets(), t("Les onglets"))
-        tabs.addTab(self._page_ailleurs(), t("Pour aller plus loin"))
+        tabs.addTab(self._page_demarrage(), t("Getting started"))
+        tabs.addTab(self._page_raccourcis(), t("Shortcuts"))
+        tabs.addTab(self._page_onglets(), t("The tabs"))
+        tabs.addTab(self._page_ailleurs(), t("Going further"))
 
         boutons = QDialogButtonBox(QDialogButtonBox.Ok)
         boutons.accepted.connect(self.accept)
@@ -176,7 +143,7 @@ class HelpDialog(QDialog):
         if ok is not None:
             ok.setText(t("OK"))
             ok.setDefault(True)
-        self.btn_apropos = QPushButton(t("À propos…"))
+        self.btn_apropos = QPushButton(t("About…"))
         self.btn_apropos.clicked.connect(self._apropos)
         boutons.addButton(self.btn_apropos, QDialogButtonBox.ActionRole)
 
@@ -195,14 +162,12 @@ class HelpDialog(QDialog):
     def _page_demarrage(self) -> QWidget:
         w = QWidget()
         lay = QVBoxLayout(w)
-        intro = QLabel(t("Cinq gestes, dans cet ordre. Le logiciel fonctionne "
-                       "aussi sans matériel : la source « Générateur interne » "
-                       "produit un signal statistiquement crédible."))
+        intro = QLabel(t("Five steps, in this order. The software also works with no hardware at all: the “internal generator” source produces a statistically credible signal."))
         intro.setWordWrap(True)
-        intro.setStyleSheet(f"color:{self.p['texte2']};")
+        intro.setStyleSheet(f"color:{self.p['text2']};")
         lay.addWidget(intro)
         for numero, titre, texte in DEMARRAGE:
-            bloc = QLabel(f"<b style='color:{self.p['or']}'>{numero}. {t(titre)}</b>"
+            bloc = QLabel(f"<b style='color:{self.p['gold']}'>{numero}. {t(titre)}</b>"
                           f"<br>{t(texte)}")
             bloc.setTextFormat(Qt.RichText)
             bloc.setWordWrap(True)
@@ -223,7 +188,7 @@ class HelpDialog(QDialog):
         for titre, lignes in groupes:
             entete = QLabel(t(titre))
             entete.setStyleSheet(
-                f"color:{self.p['or']};font-weight:bold;padding-top:10px;")
+                f"color:{self.p['gold']};font-weight:bold;padding-top:10px;")
             lay.addWidget(entete)
             for touches, role in lignes:
                 ligne = QHBoxLayout()
@@ -242,13 +207,9 @@ class HelpDialog(QDialog):
                 lay.addLayout(ligne)
 
         note = QLabel(
-            t("Cette liste est vérifiée à l'ouverture : tout raccourci installé "
-            "dans la fenêtre principale et absent d'ici y est ajouté "
-            "automatiquement. Les raccourcis d'édition courants (Tab, Échap, "
-            "copier-coller) viennent de la boîte à outils graphique et valent "
-            "pour toutes les applications du système."))
+            t("This list is checked when the window opens: any shortcut installed in the main window and missing from here is added automatically. The usual editing shortcuts (Tab, Esc, copy-paste) come from the graphical toolkit and apply to every application on the system."))
         note.setWordWrap(True)
-        note.setStyleSheet(f"color:{self.p['texte2']};font-size:8pt;"
+        note.setStyleSheet(f"color:{self.p['text2']};font-size:8pt;"
                            f"padding-top:12px;")
         lay.addWidget(note)
         lay.addStretch(1)
@@ -319,7 +280,7 @@ class HelpDialog(QDialog):
         lay.addWidget(texte)
 
         ligne = QHBoxLayout()
-        b_site = QPushButton(t("Ouvrir le site"))
+        b_site = QPushButton(t("Open the website"))
         b_site.clicked.connect(lambda: webbrowser.open(V.WEBSITE))
         ligne.addWidget(b_site)
         ligne.addStretch(1)

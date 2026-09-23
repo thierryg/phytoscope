@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — packaging/common.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Outillage commun aux générateurs de paquets.
@@ -53,25 +53,25 @@ from typing import Dict, List, Optional, Sequence
 
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOGICIEL = os.path.join(RACINE, "src", "phytoscope")
-GABARITS = os.path.join(RACINE, "packaging", "gabarits")
-#  Chaque fabrication a son dossier : « build/paquets/1.5.1-20260918-1345 ».
+GABARITS = os.path.join(RACINE, "packaging", "templates")
+#  Every fabrication has its own directory: "build/packages/1.5.1-20260918-1345".
 #  Motif : on garde ainsi plusieurs constructions d'une même version côte à
 #  côte — celle d'avant un correctif et celle d'après — sans qu'un fichier en
 #  écrase un autre, et l'on sait au nom près ce qu'on est en train de diffuser.
-APP_TAGLINE = "Écoute, mesure et enregistrement des signaux végétaux"
+APP_TAGLINE = "Listen to, measure and record plant signals"
 
-RACINE_SORTIE = os.path.join(RACINE, "build", "paquets")
+OUTPUT_ROOT = os.path.join(RACINE, "build", "packages")
 
-#  Le lien « dernier » pointe toujours sur la fabrication la plus récente :
+#  The "latest" link always names the most recent fabrication:
 #  c'est ce qu'on met dans un script de publication, plutôt qu'un nom qui
 #  change à chaque fois.
-LIEN_DERNIER = os.path.join(RACINE_SORTIE, "dernier")
+LATEST_LINK = os.path.join(OUTPUT_ROOT, "latest")
 
 #  Variable d'environnement qui impose le dossier. C'est par elle que
 #  `build.py` fait converger toutes les cibles d'une même fabrication
 #  vers un seul dossier : sans cela, chaque générateur en créerait un nouveau
 #  et les paquets d'une même version se retrouveraient éparpillés.
-VARIABLE_SORTIE = "PHYTOSCOPE_SORTIE"
+OUTPUT_VARIABLE = "PHYTOSCOPE_OUTPUT"
 
 _sortie_courante = ""
 
@@ -80,12 +80,12 @@ _sortie_courante = ""
 FICHIER_VERSION = os.path.join(LOGICIEL, "phytoscope", "VERSION")
 #  L'attribution vit dans son propre fichier, lu aussi par le logiciel et par
 #  la génération du certificat : une seule source, pas de copie à maintenir.
-FICHIER_AUTEURS = os.path.join(LOGICIEL, "phytoscope", "AUTEURS")
+FICHIER_AUTEURS = os.path.join(LOGICIEL, "phytoscope", "AUTHORS")
 MODULE_VERSION = os.path.join(LOGICIEL, "phytoscope", "version.py")
 
 
 def lire_cle_valeur(chemin: str) -> Dict[str, str]:
-    """Analyse un fichier « clé = valeur » — le format de VERSION et AUTEURS."""
+    """Analyse un fichier « clé = valeur » — le format de VERSION et AUTHORS."""
     valeurs: Dict[str, str] = {}
     try:
         with open(chemin, encoding="utf-8") as f:
@@ -173,7 +173,7 @@ PYTHONS_MACOS = ("3.11", "3.12", "3.13")
 #  pèsent, et l'utilisateur d'un paquet ne les lance pas.
 CONTENU = ["phytoscope", "run.py", "requirements.txt",
            "requirements-optionnel.txt", "README.txt", "CHANGELOG.txt",
-           "LICENCE.txt", "pyproject.toml"]
+           "LICENSE.txt", "pyproject.toml"]
 
 VERT, JAUNE, ROUGE, GRIS, NEUTRE = (
     "\033[0;32m", "\033[0;33m", "\033[0;31m", "\033[0;90m", "\033[0m")
@@ -334,11 +334,11 @@ SYSTEMES = ("Linux", "Windows", "MacOSX")
 
 def dossier_fabrication(id_: Optional["Identite"] = None,
                         nouveau: bool = False) -> str:
-    """Le dossier de CETTE fabrication : « build/paquets/1.5.1-20260918-1345 ».
+    """This fabrication's directory: "build/packages/1.5.1-20260918-1345".
 
     Trois cas, dans cet ordre :
 
-    1. la variable d'environnement ``PHYTOSCOPE_SORTIE`` est posée — on
+    1. la variable d'environnement ``PHYTOSCOPE_OUTPUT`` est posée — on
        l'utilise telle quelle. C'est ainsi que toutes les cibles d'une même
        fabrication se retrouvent au même endroit, même lancées par des
        processus distincts ;
@@ -351,30 +351,30 @@ def dossier_fabrication(id_: Optional["Identite"] = None,
     ce qu'on est en train de diffuser.
     """
     global _sortie_courante
-    impose = os.environ.get(VARIABLE_SORTIE, "").strip()
+    impose = os.environ.get(OUTPUT_VARIABLE, "").strip()
     if impose and not nouveau:
         os.makedirs(impose, exist_ok=True)
         _sortie_courante = impose
-        #  Le lien « dernier » se pose aussi quand le dossier est imposé —
+        #  The "latest" link is laid down even when the directory is imposed —
         #  c'est le cas courant, puisque le Makefile le calcule une fois et
         #  l'impose à tous les générateurs.
-        if os.path.dirname(os.path.abspath(impose)) == RACINE_SORTIE:
+        if os.path.dirname(os.path.abspath(impose)) == OUTPUT_ROOT:
             _poser_le_lien(impose)
         return impose
     if _sortie_courante and not nouveau:
         return _sortie_courante
 
     version = (id_ or Identite.lire()).version
-    dossier = os.path.join(RACINE_SORTIE,
+    dossier = os.path.join(OUTPUT_ROOT,
                            f"{version}-{time.strftime('%Y%m%d-%H%M')}")
     #  Deux fabrications dans la même minute : on ajoute les secondes plutôt
     #  que d'écrire par-dessus la précédente.
     if os.path.isdir(dossier):
-        dossier = os.path.join(RACINE_SORTIE,
+        dossier = os.path.join(OUTPUT_ROOT,
                                f"{version}-{time.strftime('%Y%m%d-%H%M%S')}")
     os.makedirs(dossier, exist_ok=True)
     _sortie_courante = dossier
-    os.environ[VARIABLE_SORTIE] = dossier
+    os.environ[OUTPUT_VARIABLE] = dossier
     _poser_le_lien(dossier)
     return dossier
 
@@ -406,7 +406,7 @@ def dossier_sortie(id_: Optional["Identite"] = None,
 
 
 def _poser_le_lien(dossier: str) -> None:
-    """« dernier » désigne la fabrication la plus récente.
+    """"latest" names the most recent fabrication.
 
     Un lien symbolique, refait à chaque fabrication : c'est ce qu'on met dans
     un script de publication, plutôt qu'un nom horodaté qui change à chaque
@@ -414,9 +414,9 @@ def _poser_le_lien(dossier: str) -> None:
     n'en veulent pas, et rien n'en dépend.
     """
     try:
-        if os.path.islink(LIEN_DERNIER) or os.path.exists(LIEN_DERNIER):
-            os.remove(LIEN_DERNIER)
-        os.symlink(os.path.basename(dossier), LIEN_DERNIER)
+        if os.path.islink(LATEST_LINK) or os.path.exists(LATEST_LINK):
+            os.remove(LATEST_LINK)
+        os.symlink(os.path.basename(dossier), LATEST_LINK)
     except OSError:                                    # pragma: no cover
         pass
 
@@ -451,12 +451,12 @@ def derniere_fabrication() -> str:
 
 def fabrications() -> List[str]:
     """Les dossiers de fabrication, du plus récent au plus ancien."""
-    if not os.path.isdir(RACINE_SORTIE):
+    if not os.path.isdir(OUTPUT_ROOT):
         return []
-    dossiers = [os.path.join(RACINE_SORTIE, n)
-                for n in os.listdir(RACINE_SORTIE)
-                if os.path.isdir(os.path.join(RACINE_SORTIE, n))
-                and not os.path.islink(os.path.join(RACINE_SORTIE, n))]
+    dossiers = [os.path.join(OUTPUT_ROOT, n)
+                for n in os.listdir(OUTPUT_ROOT)
+                if os.path.isdir(os.path.join(OUTPUT_ROOT, n))
+                and not os.path.islink(os.path.join(OUTPUT_ROOT, n))]
     return sorted(dossiers, key=os.path.getmtime, reverse=True)
 
 
@@ -667,7 +667,7 @@ def arguments_communs(p: "argparse.ArgumentParser") -> None:
 def appliquer_les_arguments(args) -> "Identite":
     """Lit l'identité en tenant compte des options communes."""
     if getattr(args, "sortie", ""):
-        os.environ[VARIABLE_SORTIE] = os.path.abspath(args.sortie)
+        os.environ[OUTPUT_VARIABLE] = os.path.abspath(args.sortie)
     return Identite.lire(getattr(args, "version", ""),
                          getattr(args, "release", ""))
 
@@ -1076,9 +1076,19 @@ def ecrire_les_documents(id_: Optional["Identite"] = None) -> List[str]:
         ecrire(chemin, contenu)
         ecrits.append(chemin)
 
-    for systeme in SYSTEMES:
+    #  Every non-empty subdirectory, not only the three named in SYSTEMES.
+    #
+    #  `verify.py` walks the build's subdirectories and asks each one for the
+    #  four documents; this loop used to write into `SYSTEMES` alone. So
+    #  `Firmware/`, created by `build.sh` after `make all`, was checked and
+    #  never written, and every `make deliverables` produced a build that
+    #  `make verify` refused (found 2026-09-23). Reading the directory rather
+    #  than a list means the two cannot disagree again, and a fourth family
+    #  — an Android package, say — needs no edit here.
+    for systeme in sorted(d for d in os.listdir(base)
+                          if os.path.isdir(os.path.join(base, d))):
         dossier = os.path.join(base, systeme)
-        if not os.path.isdir(dossier) or not os.listdir(dossier):
+        if not os.listdir(dossier):
             continue
         for nom, contenu in (("readme.txt", _readme(id_, dossier, systeme)),
                              ("install.txt", _install(id_, systeme)),
@@ -1159,7 +1169,7 @@ LES AUTRES FICHIERS DE CE DOSSIER
     licence.txt          la licence MIT
     changelog.txt        ce qui a changé, version par version
     AUTHENTICITE.txt     ce que la signature prouve — et ce qu'elle ne prouve pas
-    phytoscope-certificat.pem   le certificat public, pour vérifier
+    phytoscope-certificate.pem   le certificat public, pour vérifier
 
 
 LEQUEL PRENDRE
@@ -1394,9 +1404,9 @@ def _install(id_: "Identite", systeme: str = "") -> str:
   apparaît ensuite dans le menu, ou se lance par « phytoscope ».
 
   Deux outils sont posés avec lui :
-      phytoscope-icone-bureau              pose l'icône sur le Bureau
-      phytoscope-icone-bureau --retirer    la retire
-      phytoscope-desinstaller              désinstalle
+      phytoscope-desktop-icon              pose l'icône sur le Bureau
+      phytoscope-desktop-icon --retirer    la retire
+      phytoscope-uninstall              désinstalle
 
   Pourquoi l'icône n'est pas proposée à l'installation : « apt » installe sans
   interaction, souvent sans session graphique, et parfois pour un autre compte
@@ -1496,7 +1506,7 @@ TOUTE AUTRE DISTRIBUTION  (installateur autonome)
 
       openssl cms -verify -binary -inform DER \\
           -in <paquet>.p7s -content <paquet> \\
-          -certfile phytoscope-certificat.pem -noverify -out /dev/null
+          -certfile phytoscope-certificate.pem -noverify -out /dev/null
 
       Sous Windows, pour les .exe et .msi, la signature est visible dans les
       propriétés du fichier, onglet « Signatures numériques ».
@@ -1786,7 +1796,7 @@ CE QUE CE LOGICIEL NE PRÉTEND PAS FAIRE
 
 def _licence(id_: "Identite") -> str:
     """La licence du logiciel, recopiée depuis sa source."""
-    chemin = os.path.join(LOGICIEL, "LICENCE.txt")
+    chemin = os.path.join(LOGICIEL, "LICENSE.txt")
     try:
         with open(chemin, encoding="utf-8") as f:
             return f.read()

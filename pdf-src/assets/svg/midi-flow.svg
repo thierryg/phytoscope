@@ -1,20 +1,3 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/midi-flow.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 220" width="820" height="220">
 
 <defs>
@@ -29,11 +12,11 @@
    <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
 </defs>
 <rect width="820" height="220" fill="#FFFFFF"/>
-<text x="410.0" y="34" font-family="Lato, sans-serif" font-size="17.4" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2">INTÉGRATION DANS UNE STATION AUDIONUMÉRIQUE</text>
+<text x="410.0" y="34" font-family="Lato, sans-serif" font-size="17.4" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2">INTEGRATION INTO A DIGITAL AUDIO WORKSTATION</text>
 <rect x="28" y="80" width="152" height="78" rx="8" fill="#FBFAF4" stroke="#3F7D5A" stroke-width="1.8"/>
 <rect x="28" y="80" width="152" height="5" rx="2" fill="#3F7D5A"/>
-<text x="104" y="116" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">BOÎTIER</text>
-<text x="104" y="138" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">sortie MIDI</text>
+<text x="104" y="116" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">ENCLOSURE</text>
+<text x="104" y="138" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">MIDI out</text>
 <line x1="184" y1="119" x2="228" y2="119" stroke="#B08528" stroke-width="2.2" marker-end="url(#ah)"/>
 <rect x="232" y="80" width="152" height="78" rx="8" fill="#FBFAF4" stroke="#2F5E86" stroke-width="1.8"/>
 <rect x="232" y="80" width="152" height="5" rx="2" fill="#2F5E86"/>
@@ -48,6 +31,6 @@
 <rect x="640" y="80" width="152" height="78" rx="8" fill="#FBFAF4" stroke="#B08528" stroke-width="1.8"/>
 <rect x="640" y="80" width="152" height="5" rx="2" fill="#B08528"/>
 <text x="716" y="116" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">INSTRUMENT</text>
-<text x="716" y="138" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">synthé · échantillonneur</text>
-<text x="410.0" y="206" font-family="Cormorant Garamond, serif" font-size="12.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Le MIDI est une partition, pas un enregistrement.</text>
+<text x="716" y="138" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">synth · sampler</text>
+<text x="410.0" y="206" font-family="Cormorant Garamond, serif" font-size="12.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">MIDI is a score, not a recording.</text>
 </svg>

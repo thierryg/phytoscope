@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/tests/test_portability.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Portabilité : ce qui doit rester vrai sur les trois systèmes.
@@ -167,13 +167,13 @@ def _construire():
                                            "common.py"))
     if not os.path.exists(chemin):
         pytest.skip("packaging/common.py absent de cette copie de travail")
-    spec = importlib.util.spec_from_file_location("commun", chemin)
+    spec = importlib.util.spec_from_file_location("common", chemin)
     module = importlib.util.module_from_spec(spec)
     #  Inscrire le module AVANT de l'exécuter : `@dataclass` va chercher
     #  `sys.modules[cls.__module__]` pour résoudre les annotations, et
     #  échouerait sur un module encore absent.
     import sys as _sys
-    _sys.modules["commun"] = module
+    _sys.modules["common"] = module
     spec.loader.exec_module(module)
     return module
 
@@ -287,7 +287,7 @@ def test_un_fichier_version_absent_narrete_pas_le_logiciel():
 
 
 def test_lattribution_vient_dun_seul_fichier():
-    """L'éditeur, l'auteur et ses coordonnées vivent dans `phytoscope/AUTEURS`.
+    """L'éditeur, l'auteur et ses coordonnées vivent dans `phytoscope/AUTHORS`.
 
     Le logiciel, la fabrique de paquets et la génération du certificat lisent
     tous ce fichier. Une copie ailleurs finirait par diverger — c'est
@@ -296,7 +296,7 @@ def test_lattribution_vient_dun_seul_fichier():
     from phytoscope.version import (AUTHOR, AUTHOR_EMAIL, AUTHOR_NAME,
                                     FICHIER_AUTEURS, lire_le_fichier_auteurs)
     assert os.path.exists(FICHIER_AUTEURS), \
-        "le fichier AUTEURS doit voyager avec le paquet"
+        "le fichier AUTHORS doit voyager avec le paquet"
     brut = lire_le_fichier_auteurs()
     assert brut["editeur"] == AUTHOR
     assert brut["auteur"] == AUTHOR_NAME
@@ -309,8 +309,8 @@ def test_lattribution_vient_dun_seul_fichier():
     assert id_.responsable == f"{AUTHOR_NAME} <{AUTHOR_EMAIL}>"
 
     with open(os.path.join(RACINE, "pyproject.toml"), encoding="utf-8") as f:
-        assert '"AUTEURS"' in f.read(), \
-            "AUTEURS doit figurer dans package-data, sinon une roue le perd"
+        assert '"AUTHORS"' in f.read(), \
+            "AUTHORS doit figurer dans package-data, sinon une roue le perd"
 
 
 def test_la_cle_privee_nentre_jamais_dans_le_depot():
@@ -322,10 +322,10 @@ def test_la_cle_privee_nentre_jamais_dans_le_depot():
     with open(gitignore, encoding="utf-8") as f:
         regles = f.read()
     assert "*.key" in regles
-    assert "certificat/phytoscope.key" in regles
+    assert "certificate/phytoscope.key" in regles
 
     #  Et le certificat déposé à la racine ne doit contenir QUE du public.
-    public = os.path.join(racine, "phytoscope-certificat.pem")
+    public = os.path.join(racine, "phytoscope-certificate.pem")
     if os.path.exists(public):
         with open(public, encoding="utf-8") as f:
             contenu = f.read()
@@ -440,7 +440,7 @@ class TestCertificat:
     def test_la_cle_de_travail_reste_dans_certificat(self):
         """`C-2R` n'autorise la clé privée qu'à deux endroits."""
         m = self._module()
-        assert os.path.basename(os.path.dirname(m.CLE_TRAVAIL)) == "certificat"
+        assert os.path.basename(os.path.dirname(m.CLE_TRAVAIL)) == "certificate"
         assert m.CLE_TRAVAIL.endswith("phytoscope.key")
 
     def test_le_certificat_public_va_dans_certificat_et_non_a_la_racine(self):
@@ -448,11 +448,11 @@ class TestCertificat:
         que personne ne savait à jour."""
         m = self._module()
         import importlib.util
-        assert os.path.basename(os.path.dirname(m.PUBLIC)) == "certificat"
+        assert os.path.basename(os.path.dirname(m.PUBLIC)) == "certificate"
         signature = _charger(os.path.join("packaging", "signature.py"))
         if signature is not None:
             assert os.path.basename(
-                os.path.dirname(signature.CERTIFICAT_PROJET)) == "certificat"
+                os.path.dirname(signature.CERTIFICAT_PROJET)) == "certificate"
 
     def test_le_depot_refuse_sans_copie_de_reference(self, monkeypatch):
         """Créer une clé est une décision, pas un effet de bord."""
@@ -527,11 +527,11 @@ class TestScriptsDuMicrologiciel:
         assert not re.search(r'VERSION="\d+\.\d+\.\d+"', source)
 
     def test_build_suit_la_sortie_de_la_fabrique(self):
-        """Lancé par `make tout`, le micrologiciel doit se ranger dans la
+        """Lancé par `make all`, le micrologiciel doit se ranger dans la
         MÊME fabrication que les .deb et les .msi."""
         source = open(os.path.join(self._firmware(), "build.sh"),
                       encoding="utf-8").read()
-        assert "PHYTOSCOPE_SORTIE" in source
+        assert "PHYTOSCOPE_OUTPUT" in source
 
     def test_make_jette_un_cache_cmake_perime(self):
         """Un cache retient le chemin ABSOLU des sources : déplacer la copie
@@ -551,6 +551,467 @@ class TestScriptsDuMicrologiciel:
             r = subprocess.run(["sh", "-n", os.path.join(d, nom)],
                                capture_output=True, text=True)
             assert r.returncode == 0, f"{nom} : {r.stderr.strip()}"
+
+
+class TestLaFabriqueDeSesGenerateurs:
+    """`build.py` names its generators as STRINGS, so nothing checks them.
+
+    The rename pass of 2026-09-22 turned `construire_debian.py` into
+    `build_debian.py` and could not see the string that names it: `build.py`
+    went on calling `__import__("construire_debian")`. Every target then died
+    on a `ModuleNotFoundError` that the dispatcher merely **logged** — it
+    printed "0 target(s)", wrote its five documents, produced no package, and
+    exited 1 with a message nobody reads in a log.
+
+    The Makefile was unaffected, because it calls the scripts by path. So the
+    defect only showed up through `build.py`, which is the documented entry
+    point. Found on 2026-09-23 while analysing the impact of renaming the
+    Makefile targets.
+
+    These tests read the list out of the source and import each module for
+    real. Nothing is built.
+    """
+
+    def _packaging(self):
+        chemin = os.path.normpath(os.path.join(RACINE, "..", "..", "packaging"))
+        if not os.path.isdir(chemin):
+            pytest.skip("packaging absent de cette copie de travail")
+        return chemin
+
+    def _modules_cites(self):
+        """The module names `build.py` hands to `__import__`."""
+        source = open(os.path.join(self._packaging(), "build.py"),
+                      encoding="utf-8").read()
+        arbre = ast.parse(source)
+        #  The list is a literal of (key, module, options) tuples; we read the
+        #  second element of each, which is the module name.
+        noms = []
+        for n in ast.walk(arbre):
+            if not isinstance(n, ast.Tuple) or len(n.elts) != 3:
+                continue
+            cle, module = n.elts[0], n.elts[1]
+            if (isinstance(cle, ast.Constant) and isinstance(cle.value, str)
+                    and isinstance(module, ast.Constant)
+                    and isinstance(module.value, str)):
+                noms.append(module.value)
+        return noms
+
+    def test_build_cite_bien_cinq_generateurs(self):
+        noms = self._modules_cites()
+        assert len(noms) == 5, f"attendu 5 generateurs, trouve {noms}"
+
+    def test_chaque_generateur_cite_existe_sur_le_disque(self):
+        """A string that names no file is a target that cannot run."""
+        d = self._packaging()
+        for nom in self._modules_cites():
+            chemin = os.path.join(d, f"{nom}.py")
+            assert os.path.isfile(chemin), (
+                f"build.py importe « {nom} », absent de packaging/")
+
+    def test_chaque_generateur_cite_offre_un_main(self):
+        """`build.py` calls `generateur.main(options)`."""
+        d = self._packaging()
+        for nom in self._modules_cites():
+            source = open(os.path.join(d, f"{nom}.py"), encoding="utf-8").read()
+            assert re.search(r"^def main\(", source, re.M), (
+                f"{nom}.py n'offre pas de main()")
+
+
+class TestThePackageFactorysMakefile:
+    """`packaging/Makefile` — the three things that broke in it.
+
+    All three were found on 2026-09-23, and all three were silent:
+
+      1. `.DEFAULT_GOAL := aide` survived the rename of 2026-09-22. A bare
+         `make` — the first thing a newcomer types — died on "No rule to make
+         target 'aide'".
+      2. `make verify` on its own **created** an empty timestamped build and
+         repointed `latest` at it, because `$(OUTPUT)` carries the current
+         invocation's timestamp and `dossier_fabrication()` makes what it is
+         asked for. Verifying a build therefore destroyed it.
+      3. `make deliverables` produced a build that `make verify` refused:
+         `all` writes the documents per system directory, `firmware` then
+         creates `Firmware/`, and nothing wrote into it.
+
+    These tests read the Makefile rather than run it — building takes a
+    quarter of an hour and needs NSIS — except the one that runs `make -n`,
+    which touches nothing.
+    """
+
+    def _makefile(self):
+        path = os.path.normpath(os.path.join(RACINE, "..", "..", "packaging",
+                                             "Makefile"))
+        if not os.path.isfile(path):
+            pytest.skip("packaging/Makefile is absent from this working copy")
+        return path
+
+    def _phony(self, text):
+        m = re.search(r"^\.PHONY:(.*?)(?<!\\)$", text, re.M | re.S)
+        assert m, "no .PHONY in the Makefile"
+        return m.group(1).replace("\\", " ").split()
+
+    def test_the_default_goal_is_a_target_that_exists(self):
+        """A bare `make` must work: it is the first thing anybody types."""
+        text = open(self._makefile(), encoding="utf-8").read()
+        m = re.search(r"^\.DEFAULT_GOAL\s*:=\s*(\S+)", text, re.M)
+        assert m, "no .DEFAULT_GOAL declared"
+        goal = m.group(1)
+        assert re.search(rf"^{re.escape(goal)}:", text, re.M), (
+            f".DEFAULT_GOAL is “{goal}”, which is not a target of this "
+            "Makefile — a bare `make` would fail")
+
+    def test_every_phony_target_is_defined(self):
+        """The CI checks this too; here it costs nothing and runs offline."""
+        path = self._makefile()
+        text = open(path, encoding="utf-8").read()
+        undefined = [t for t in self._phony(text)
+                     if not re.search(rf"^{re.escape(t)}:", text, re.M)]
+        assert not undefined, (
+            f"declared .PHONY but never defined: {undefined}")
+
+    def test_the_after_the_fact_targets_do_not_use_a_fresh_timestamp(self):
+        """`documents`, `verify`, `checksums` and `sign` work on an
+        EXISTING build.
+
+        The regression to prevent: they used `$(OUTPUT)`, which carries this
+        invocation's timestamp, so each one named a directory that did not
+        exist — and creating it moved `latest` onto an empty build.
+        """
+        text = open(self._makefile(), encoding="utf-8").read()
+        assert "TARGET_DIR" in text, (
+            "the after-the-fact targets no longer resolve their directory")
+        for target in ("documents", "verify", "checksums", "sign"):
+            m = re.search(rf"^{target}:\n((?:\t.*\n)+)", text, re.M)
+            assert m, f"target {target} not found"
+            body = m.group(1)
+            assert "$(TARGET_DIR)" in body, (
+                f"`{target}` does not use $(TARGET_DIR): a bare "
+                f"`make {target}` would invent a new build")
+            assert "$(OUTPUT)" not in body, (
+                f"`{target}` still uses $(OUTPUT), which carries a fresh "
+                "timestamp")
+
+    def test_deliverables_writes_the_documents_after_the_firmware(self):
+        """Otherwise `Firmware/` has none, and `make verify` refuses."""
+        text = open(self._makefile(), encoding="utf-8").read()
+        m = re.search(r"^deliverables:(.*)\n((?:\t.*\n)+)", text, re.M)
+        assert m, "the deliverables target was not found"
+        assert "firmware" in m.group(1), "deliverables no longer builds the firmware"
+        assert "documents" in m.group(2), (
+            "`deliverables` does not run `documents` after `firmware`: the "
+            "Firmware/ directory would carry none, and `make verify` refuses "
+            "exactly that")
+
+    def test_the_documents_are_written_into_every_subdirectory(self):
+        """`verify.py` walks the directories; the writer must too.
+
+        `verify.py` asks every subdirectory of a build for the four
+        documents. `common.ecrire_les_documents` used to write into the three
+        names of `SYSTEMES`, so a fourth directory was checked and never
+        written.
+        """
+        path = os.path.normpath(os.path.join(RACINE, "..", "..", "packaging",
+                                             "common.py"))
+        if not os.path.isfile(path):
+            pytest.skip("packaging/common.py is absent from this working copy")
+        source = open(path, encoding="utf-8").read()
+        body = re.search(r"def ecrire_les_documents\(.*?\n(?=def |\Z)",
+                         source, re.S)
+        assert body, "ecrire_les_documents was not found"
+        assert "os.listdir(base)" in body.group(0), (
+            "ecrire_les_documents does not read the build's directories: a "
+            "directory verify.py checks would go unwritten")
+
+    def test_make_dry_runs_every_target(self):
+        """`make -n` parses the whole file and resolves every prerequisite."""
+        import subprocess
+        path = self._makefile()
+        text = open(path, encoding="utf-8").read()
+        broken = []
+        for target in self._phony(text):
+            done = subprocess.run(["make", "-n", "-C", os.path.dirname(path),
+                                   target],
+                                  capture_output=True, text=True)
+            if done.returncode:
+                broken.append((target, done.stderr.strip().splitlines()[:1]))
+        assert not broken, f"targets that do not even dry-run: {broken}"
+
+
+class TestTheReleaseToolLeavesTheChangelogIntact:
+    """`release.py bump` writes into CHANGELOG.txt. It must not damage it.
+
+    On 2026-09-23 it did. It looked for a separator of 78 "=" characters;
+    the journal's banners are 80 long. So the pattern matched the first 78
+    characters of the banner on line 1, split the file in the middle of it,
+    inserted the new section **above the journal's own header**, and left two
+    orphan "=" twelve lines further down.
+
+    `release.py check` passed throughout: it verifies that a section for the
+    version exists and that "(à compléter)" is gone, not that the file it
+    wrote still reads. A release tool that quietly mangles the file it
+    maintains is the kind of defect that is found by whoever downloads the
+    release.
+
+    These tests run the real function on a copy, and read the result.
+    """
+
+    def _tool(self):
+        import importlib.util
+        path = os.path.join(RACINE, "tools", "release.py")
+        if not os.path.isfile(path):
+            pytest.skip("tools/release.py is absent from this working copy")
+        spec = importlib.util.spec_from_file_location("release_under_test",
+                                                      path)
+        tool = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(tool)
+        return tool
+
+    def _changelog(self, tmp_path):
+        import shutil
+        source = os.path.join(RACINE, "CHANGELOG.txt")
+        if not os.path.isfile(source):
+            pytest.skip("CHANGELOG.txt is absent from this working copy")
+        target = str(tmp_path / "CHANGELOG.txt")
+        shutil.copy(source, target)
+        return target
+
+    def test_the_new_section_goes_after_the_header(self, tmp_path):
+        tool = self._tool()
+        path = self._changelog(tmp_path)
+        tool.CHANGELOG = path
+        before = open(path, encoding="utf-8").read().split("\n")
+        tool.changelog_open_section("9.9.9", "2026-01-01", "trial")
+        after = open(path, encoding="utf-8").read().split("\n")
+
+        #  The header is whatever precedes the first version section.
+        head_before = before[:next(i for i, l in enumerate(before)
+                                   if tool.HEADER_RE.match(l))]
+        head_after = after[:next(i for i, l in enumerate(after)
+                                 if tool.HEADER_RE.match(l))]
+        assert head_after == head_before, (
+            "the header changed; the section was inserted into it")
+
+    def test_no_separator_is_cut_in_half(self, tmp_path):
+        """A banner that loses two characters is how the defect showed."""
+        tool = self._tool()
+        path = self._changelog(tmp_path)
+        tool.CHANGELOG = path
+        widths_before = {len(l) for l in open(path, encoding="utf-8")
+                         .read().split("\n") if l and set(l) == {"="}}
+        tool.changelog_open_section("9.9.9", "2026-01-01", "trial")
+        widths_after = {len(l) for l in open(path, encoding="utf-8")
+                        .read().split("\n") if l and set(l) == {"="}}
+        assert widths_after == widths_before, (
+            f"the separator widths changed: {sorted(widths_before)} -> "
+            f"{sorted(widths_after)}")
+
+    def test_the_previous_sections_are_all_still_there(self, tmp_path):
+        tool = self._tool()
+        path = self._changelog(tmp_path)
+        tool.CHANGELOG = path
+        text = open(path, encoding="utf-8").read()
+        before = [m.group(1) for m in tool.HEADER_RE.finditer(text)]
+        tool.changelog_open_section("9.9.9", "2026-01-01", "trial")
+        after = [m.group(1) for m in
+                 tool.HEADER_RE.finditer(open(path, encoding="utf-8").read())]
+        assert after == ["9.9.9"] + before, (
+            "the new section must come first, and lose none of the others")
+
+    def test_the_shipped_changelog_opens_on_the_version_in_VERSION(self):
+        """What `release.py check` does not check: they must agree."""
+        tool = self._tool()
+        version = tool.read_version()["string"] if hasattr(tool, "read_version") \
+            else None
+        text = open(os.path.join(RACINE, "CHANGELOG.txt"),
+                    encoding="utf-8").read()
+        first = tool.HEADER_RE.search(text)
+        assert first, "no version section in CHANGELOG.txt"
+        if version:
+            assert first.group(1) == version, (
+                f"CHANGELOG.txt opens on {first.group(1)}, VERSION says "
+                f"{version}")
+
+
+class TestEveryAllIsHonest:
+    """`__all__` must name only things the module actually has.
+
+    A name in `__all__` that does not exist is not caught by an import of the
+    module: it only bites on `from … import *`, which raises `AttributeError`
+    naming the first one it cannot find. Nothing in this repository does a
+    star import, so three of them sat there unnoticed — `phytoscope.api` and
+    `phytoscope.api.contract` each claimed `Analyser`, `Descriptor` and
+    `Quantity` while the classes were still called `Analyseur`,
+    `Descripteur` and `Grandeur`, and `core/quantities.py` claimed a
+    `Quantity` it has never had.
+
+    They were the residue of a rename that stopped halfway, and they were a
+    fair warning of it: `__all__` is the module's own statement of its public
+    surface, and a statement nothing checks drifts. Found on 2026-09-23 while
+    renaming the API to English.
+    """
+
+    def _modules(self):
+        import importlib
+        import pkgutil
+        found = []
+        pkg = importlib.import_module("phytoscope")
+        for info in pkgutil.walk_packages(pkg.__path__, "phytoscope."):
+            #  The UI needs a display; the modules directory is loaded by the
+            #  registry, not by import. Neither declares `__all__`.
+            if ".ui." in info.name or ".modules." in info.name:
+                continue
+            found.append(info.name)
+        assert len(found) > 20, f"only {len(found)} modules walked"
+        return found
+
+    def test_no_module_promises_what_it_does_not_have(self):
+        import importlib
+        liars = []
+        for name in self._modules():
+            try:
+                mod = importlib.import_module(name)
+            except Exception:                              # noqa: BLE001
+                continue        # an optional dependency, not our business
+            for exported in getattr(mod, "__all__", ()):
+                if not hasattr(mod, exported):
+                    liars.append(f"{name}.__all__ names “{exported}”")
+        assert not liars, ("`__all__` names something absent:\n  "
+                           + "\n  ".join(liars))
+
+    def test_the_api_exports_the_whole_contract(self):
+        """`phytoscope.api` is the only surface a module may import from."""
+        import phytoscope.api as api
+        for name in ("API_VERSION", "compatible", "parse_version",
+                     "Manifest", "Module",
+                     "Capability", "Analyser", "Descriptor", "Sonifier",
+                     "Exporter", "Source", "Quantity", "Trace",
+                     "ProposedNote", "Context", "MeasurementState",
+                     "BUS", "EVENTS"):
+            assert name in api.__all__, f"{name} is missing from api.__all__"
+            assert hasattr(api, name), f"{name} is not importable from api"
+
+
+class TestTheSdkSkeletonGenerator:
+    """`new_module.py` writes the first module anybody will read.
+
+    It has to keep working even when the software is *not* installed, so it
+    holds its own copy of what it needs — the capability names, the ones the
+    host really calls, and the path to the contract it reads `API_VERSION`
+    from. Those are duplicates, and a duplicate drifts.
+
+    It had already drifted: the path said `src/software/phytoscope`, a
+    directory that has never existed. `api_version()` caught the `OSError`,
+    fell back to "2.0", and said nothing; on a 2.1 host the generated module
+    would have claimed 2.0 — loadable, but a version behind, and nobody would
+    have known why. Found on 2026-09-23 while finishing the SDK.
+
+    These tests read the generator, run it into a temporary directory, and
+    hand what it wrote to the software's own manifest reader. Nothing is
+    installed, and the user's configuration is never touched.
+    """
+
+    EXPECTED_CAPABILITIES = ("analyser", "descriptor", "sonifier",
+                             "exporter")
+
+    def _generator(self):
+        path = os.path.normpath(os.path.join(RACINE, "..", "sdk", "tools",
+                                             "new_module.py"))
+        if not os.path.isfile(path):
+            pytest.skip("src/sdk is absent from this working copy")
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("sdk_new_module", path)
+        tool = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(tool)
+        return tool
+
+    def test_the_contract_it_reads_is_on_the_disk(self):
+        """A path that names no file is a silent fallback."""
+        path = self._generator().contract_path()
+        assert os.path.isfile(path), (
+            f"new_module.py reads API_VERSION from \u201c{path}\u201d, which "
+            "does not exist: it would fall back without saying so")
+
+    def test_it_writes_the_softwares_own_api_version(self):
+        """What it writes into a manifest has to be what the host offers."""
+        from phytoscope.api import API_VERSION
+        assert self._generator().api_version() == API_VERSION
+
+    def test_every_capability_it_offers_is_one_the_contract_knows(self):
+        """A capability the contract ignores is a module never called."""
+        from phytoscope.api import Capability
+        offered = set(self._generator().CAPABILITIES)
+        assert offered == set(self.EXPECTED_CAPABILITIES)
+        assert offered <= set(Capability.ALL), (
+            "unknown to the contract: "
+            f"{sorted(offered - set(Capability.ALL))}")
+
+    def test_it_knows_which_capabilities_the_host_really_calls(self):
+        """The SDK must not promise a capability nothing asks for.
+
+        Of the contract's five, the host asks the registry for two:
+        `providers(Capability.ANALYSEUR)` in `ui/tabs.py` and
+        `providers(Capability.DESCRIPTEUR)` in `ui/features_tab.py`. A
+        sonifier, an exporter or a source loads, shows as `actif`, and is
+        never called — which costs its author an evening unless it is said
+        out loud. `new_module.py` says it, and so do the SDK chapters.
+
+        This test reads what the interface actually calls, and compares. The
+        day somebody wires up the exporter, it fails and names what to update.
+        """
+        called = set()
+        ui = os.path.join(PAQUET, "ui")
+        for name in sorted(os.listdir(ui)):
+            if not name.endswith(".py"):
+                continue
+            source = open(os.path.join(ui, name), encoding="utf-8").read()
+            called |= set(re.findall(
+                r"providers\(\s*Capability\.([A-Z_]+)", source))
+        assert called, "no call to providers() found — is the read right?"
+
+        from phytoscope.api import Capability
+        consumed = {getattr(Capability, name) for name in called}
+        announced = set(self._generator().CONSUMED)
+        assert announced == consumed, (
+            f"the host calls {sorted(consumed)}, new_module.py announces "
+            f"{sorted(announced)} — update CONSUMED, "
+            "src/sdk/docs/01-getting-started.md, docs/03-capabilities.md, "
+            "pdf-src/writing-a-phytoscope-module/06-capabilities.html "
+            "and .ai/state.md")
+
+    @pytest.mark.parametrize("capability", EXPECTED_CAPABILITIES)
+    def test_the_skeleton_it_writes_is_accepted_by_the_registry(self,
+                                                                capability,
+                                                                tmp_path):
+        """The real reader, on the real file — not a regex of our own."""
+        from phytoscope.api import compatible
+        from phytoscope.api.registry import Registry
+
+        tool = self._generator()
+        name = f"probe-{capability}"
+        assert tool.main([name, "--capability", capability,
+                          "--in", str(tmp_path)]) == 0
+
+        manifest = Registry(None, None)._read_manifest(
+            str(tmp_path / name / "module.py"), name)
+        assert manifest is not None, "the manifest was not read at all"
+        assert manifest.problems() == [], manifest.problems()
+        assert manifest.name == name
+        assert compatible(manifest.api), (
+            f"the host would refuse a module aiming at {manifest.api}")
+        assert manifest.capabilities == (capability,)
+
+    @pytest.mark.parametrize("capability", EXPECTED_CAPABILITIES)
+    def test_the_tests_it_writes_parse(self, capability, tmp_path):
+        """A skeleton whose tests do not even compile teaches the wrong thing."""
+        tool = self._generator()
+        name = f"probe-{capability}"
+        assert tool.main([name, "--capability", capability,
+                          "--in", str(tmp_path)]) == 0
+        directory = tmp_path / name
+        tests = directory / f"test_{name.replace('-', '_')}.py"
+        assert tests.is_file(), f"{tests.name} was not written"
+        for f in (directory / "module.py", tests):
+            ast.parse(f.read_text(encoding="utf-8"), str(f))
 
 
 class TestGitignoreProtegeLeDepotPublic:
@@ -574,16 +1035,16 @@ class TestGitignoreProtegeLeDepotPublic:
         return open(chemin, encoding="utf-8").read()
 
     @pytest.mark.parametrize("regle,pourquoi", [
-        ("certificat/phytoscope.key", "la clé privée de signature (C-2R)"),
+        ("certificate/phytoscope.key", "la clé privée de signature (C-2R)"),
         ("*.key", "toute clé, où qu'elle soit"),
         ("*.pem", "idem — avec deux exceptions nommées plus bas"),
         ("sources/ebooks/", "cinq ouvrages sous droits"),
-        ("sources/documents/articles-scientifiques/*.pdf",
+        ("sources/documents/scientific-articles/*.pdf",
          "articles payants — nos notes .md, elles, se publient"),
         ("sources/datasheets/*.pdf", "notices constructeurs"),
-        ("sources/manuels-constructeurs/*.pdf", "manuels constructeurs"),
+        ("sources/manufacturer-manuals/*.pdf", "manuels constructeurs"),
         ("sources/brevets/*.pdf", "brevets en fac-similé"),
-        ("sources/documents/domaine-public/*.pdf",
+        ("sources/documents/public-domain/*.pdf",
          "258 Mo de numérisations — libres, mais lourdes"),
         ("sources/code/*.zip", "dépôts tiers recopiés"),
         ("sources/software/**/*.zip", "817 Mo de dépôts tiers"),
@@ -599,9 +1060,9 @@ class TestGitignoreProtegeLeDepotPublic:
             f"règle absente du .gitignore : {regle!r} — {pourquoi}")
 
     @pytest.mark.parametrize("exception,pourquoi", [
-        ("!certificat/phytoscope-certificat.pem",
+        ("!certificate/phytoscope-certificate.pem",
          "le certificat PUBLIC se diffuse : c'est lui qui vérifie une signature"),
-        ("!certificat/phytoscope.crt", "idem, en brut"),
+        ("!certificate/phytoscope.crt", "idem, en brut"),
         ("!sources/software/MANIFESTE.md", "la provenance des dépôts tiers"),
         ("!src/phytoscope/sbom.cdx.json", "la nomenclature du logiciel"),
         ("!/sbom.cdx.json", "la nomenclature du projet"),
@@ -687,9 +1148,9 @@ class TestReferencesDesActions:
 
     def test_la_ci_lance_l_outil(self):
         depot = os.path.dirname(os.path.dirname(RACINE))
-        chemin = os.path.join(depot, ".github", "workflows", "securite.yml")
+        chemin = os.path.join(depot, ".github", "workflows", "security.yml")
         if not os.path.exists(chemin):
-            pytest.skip("securite.yml absent de cette copie de travail")
+            pytest.skip("security.yml absent de cette copie de travail")
         contenu = open(chemin, encoding="utf-8").read()
         assert "tools/verify_actions.py" in contenu, (
             "la CI ne lance plus le contrôle des références d'actions")
@@ -733,3 +1194,155 @@ class TestReferencesDesActions:
         assert not fautives, (
             "référence(s) sur une branche mouvante :\n  "
             + "\n  ".join(fautives))
+
+
+class TestEveryPaletteKeyAskedForExists:
+    """A colour asked for but not defined stops the software from starting.
+
+    `theme.py` holds three palettes, and every widget reads a colour out of
+    them by name. A `KeyError` there is not a wrong colour: it is raised while
+    the window is being built, so the user sees a fatal-error dialog with the
+    missing key as its whole message and an application that never opens.
+
+    This is what happened on 2026-09-23: eight call sites had been translated
+    to `p["alert"]` while the three palettes still spelled it `"alerte"`. The
+    391 tests then in the suite all passed, because not one of them built a
+    widget. The check below reads the source rather than the screen, which is
+    what makes it cheap enough to keep.
+    """
+
+    UI = os.path.join(RACINE, "phytoscope", "ui")
+
+    def _palettes(self):
+        from phytoscope.ui.theme import PALETTES
+        return PALETTES
+
+    def _keys_asked_for(self):
+        """Every `p["…"]` / `palette["…"]` in the package, with its place."""
+        asked = {}
+        for base, _dirs, files in os.walk(os.path.join(RACINE, "phytoscope")):
+            for f in files:
+                if not f.endswith(".py"):
+                    continue
+                chemin = os.path.join(base, f)
+                with open(chemin, encoding="utf-8") as fh:
+                    arbre = ast.parse(fh.read(), chemin)
+                for n in ast.walk(arbre):
+                    if not (isinstance(n, ast.Subscript)
+                            and isinstance(n.slice, ast.Constant)
+                            and isinstance(n.slice.value, str)):
+                        continue
+                    cible = n.value
+                    nom = (cible.id if isinstance(cible, ast.Name)
+                           else cible.attr if isinstance(cible, ast.Attribute)
+                           else None)
+                    if nom in ("p", "palette"):
+                        asked.setdefault(n.slice.value, []).append(
+                            f"{os.path.relpath(chemin, RACINE)}:{n.lineno}")
+        return asked
+
+    def test_every_key_a_widget_asks_for_is_in_every_palette(self):
+        palettes = self._palettes()
+        manquantes = []
+        for cle, endroits in sorted(self._keys_asked_for().items()):
+            for nom, palette in palettes.items():
+                if cle not in palette:
+                    manquantes.append(f"{cle!r} absent de « {nom} » "
+                                      f"— demandé en {endroits[0]}")
+        assert not manquantes, (
+            "couleur(s) demandée(s) mais non définie(s) :\n  "
+            + "\n  ".join(manquantes))
+
+    def test_the_three_palettes_define_exactly_the_same_colours(self):
+        """A colour that exists in one theme only breaks on the other two."""
+        palettes = self._palettes()
+        reference = None
+        ecarts = []
+        for nom, palette in palettes.items():
+            if reference is None:
+                reference = (nom, set(palette))
+                continue
+            manque = reference[1] - set(palette)
+            surplus = set(palette) - reference[1]
+            if manque or surplus:
+                ecarts.append(f"« {nom} » vs « {reference[0]} » : "
+                              f"manque {sorted(manque)}, en trop {sorted(surplus)}")
+        assert not ecarts, "palettes désaccordées :\n  " + "\n  ".join(ecarts)
+
+    def test_no_palette_key_is_still_spelled_in_french(self):
+        """The vocabulary is US English, the palette included.
+
+        It is also what keeps a half-finished rename visible: a `fond` left in
+        one file and a `background` in the next is exactly the state that
+        produced the crash.
+        """
+        FRANCAIS = {"fond", "fond2", "fond3", "trait", "texte", "texte2",
+                    "or", "alerte", "couleur", "cadre"}
+        fautives = []
+        for nom, palette in self._palettes().items():
+            for cle in sorted(set(palette) & FRANCAIS):
+                fautives.append(f"« {nom} » définit {cle!r}")
+        for cle, endroits in sorted(self._keys_asked_for().items()):
+            if cle in FRANCAIS:
+                fautives.append(f"{endroits[0]} demande {cle!r}")
+        assert not fautives, (
+            "clé(s) de palette encore en français :\n  " + "\n  ".join(fautives))
+
+
+class TestEverySettingsFieldNamedExists:
+    """`settings.modules.settings` was written where the field is `reglages`.
+
+    Nothing refused it: Python creates the attribute on assignment and raises
+    only on the read, inside the shutdown path, where a `try` logged it and
+    carried on. The user lost every module setting at each exit and saw
+    nothing — and the sibling defect, `modules.disabled = …`, wrote to an
+    attribute nobody ever read.
+
+    So the check is not "does it crash" but "is the name a declared field".
+    `Settings` says which dataclass hides behind each of its own fields, and
+    every `….<that field>.<name>` in the package is measured against it.
+    """
+
+    def _dataclasses_by_field(self):
+        """`{"modules": ModulesSettings, "music": MusicSettings, …}`."""
+        from dataclasses import fields, is_dataclass
+        from phytoscope.config import Settings
+        return {f.name: f.type if is_dataclass(f.type) else type(getattr(Settings(), f.name))
+                for f in fields(Settings)
+                if is_dataclass(type(getattr(Settings(), f.name)))}
+
+    def test_no_line_names_a_settings_field_that_does_not_exist(self):
+        from dataclasses import fields
+        groupes = self._dataclasses_by_field()
+        connus = {nom: {f.name for f in fields(cls)}
+                  for nom, cls in groupes.items()}
+        fautives = []
+        for base, _dirs, files in os.walk(os.path.join(RACINE, "phytoscope")):
+            for f in sorted(files):
+                if not f.endswith(".py"):
+                    continue
+                chemin = os.path.join(base, f)
+                with open(chemin, encoding="utf-8") as fh:
+                    arbre = ast.parse(fh.read(), chemin)
+                for n in ast.walk(arbre):
+                    #  `<anything>.settings.modules.<name>`: the chain has to
+                    #  start at a `Settings`, or the name means something else
+                    #  — `self.modules` on the registry is a dict, and
+                    #  `self.voice` on the engine is the voice itself.
+                    if not (isinstance(n, ast.Attribute)
+                            and isinstance(n.value, ast.Attribute)
+                            and isinstance(n.value.value, ast.Attribute)
+                            and n.value.value.attr == "settings"):
+                        continue
+                    groupe = n.value.attr
+                    if groupe not in connus or n.attr in connus[groupe]:
+                        continue
+                    if n.attr.startswith("__"):
+                        continue
+                    fautives.append(
+                        f"{os.path.relpath(chemin, RACINE)}:{n.lineno} — "
+                        f"{groupe}.{n.attr} n'est pas un champ de "
+                        f"{groupes[groupe].__name__} "
+                        f"({', '.join(sorted(connus[groupe]))})")
+        assert not fautives, (
+            "réglage(s) nommé(s) mais inexistant(s) :\n  " + "\n  ".join(fautives))

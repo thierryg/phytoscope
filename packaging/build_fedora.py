@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — packaging/build_fedora.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Génère le paquet RPM — Fedora, Red Hat, Rocky, AlmaLinux, CentOS.
@@ -26,7 +26,7 @@ Le paquet est construit par `rpmbuild`, que Debian empaquette sous le nom
 
 .. code-block:: console
 
-    python3 packaging/build_fedora.py [--hors-ligne]
+    python3 packaging/build_fedora.py [--offline]
 
 Ce script est autonome : il ne dépend que de `common.py`, et se lance seul ou
 par le Makefile du même dossier (`make fedora`).
@@ -46,7 +46,7 @@ from typing import List, Optional
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from common import (  # noqa: E402
-    GABARITS, GRIS, LOGICIEL, PYTHONS_COUVERTS, RACINE_SORTIE, VERT, Identite,
+    GABARITS, GRIS, LOGICIEL, PYTHONS_COUVERTS, OUTPUT_ROOT, VERT, Identite,
     appliquer_les_arguments, arguments_communs, bien, copier_le_logiciel,
     dire, dossier_sortie, ecrire, ecrire_les_documents, ecrire_les_empreintes,
     etape, executer, echec, icone_svg, lisible, remplir, telecharger_les_roues,
@@ -78,15 +78,25 @@ def construire_rpm(id_: Identite, embarquer: bool) -> Optional[str]:
         ecrire(os.path.join(racine, "usr", "bin", "phytoscope"),
                open(os.path.join(GABARITS, "debian", "lanceur"),
                     encoding="utf-8").read(), executable=True)
-        #  Deux outils que l'utilisateur appelle quand IL le décide : `apt` et
-        #  `dnf` installent sans interaction, souvent sans session graphique.
-        #  Poser la question de l'icône à ce moment-là serait la poser à la
-        #  mauvaise personne.
-        for outil, cible in (("desktop-icon.sh", "phytoscope-icone-bureau"),
-                             ("uninstall.sh", "phytoscope-desinstaller")):
+        #  Two tools the user runs when THEY decide to: `apt` and `dnf`
+        #  install without interaction, often with no graphical session.
+        #  Asking about the icon at that point would be asking the wrong
+        #  person.
+        for outil, cible in (("desktop-icon.sh", "phytoscope-desktop-icon"),
+                             ("uninstall.sh", "phytoscope-uninstall")):
             ecrire(os.path.join(racine, "usr", "bin", cible),
                    open(os.path.join(GABARITS, "debian", outil),
                         encoding="utf-8").read(), executable=True)
+
+        #  The label catalogues, next to the three scripts that talk to the
+        #  end user. The spec copies `usr/share/phytoscope/.` wholesale, so
+        #  putting them here is all it takes for the .rpm to carry them.
+        etape("installer labels (11 languages)")
+        shutil.copy2(os.path.join(GABARITS, "common", "labels.sh"),
+                     os.path.join(partage, "labels.sh"))
+        import languages as _langues
+        _cat = _langues.ecrire_shell(os.path.join(partage, "languages"))
+        dire(f"      {len(_cat)} catalogues", GRIS)
         os.makedirs(os.path.join(racine, "usr", "share", "applications"),
                     exist_ok=True)
         shutil.copy2(os.path.join(GABARITS, "debian", "phytoscope.desktop"),
@@ -130,7 +140,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         prog="build_fedora.py",
         description="Fabrique le paquet RPM de PhytoScope.")
     arguments_communs(p)
-    p.add_argument("--hors-ligne", action="store_true",
+    p.add_argument("--offline", "--hors-ligne", dest="hors_ligne",
+                   action="store_true",
                    help="embarquer les bibliothèques (Python 3.9 à 3.13) pour "
                         "une installation sans connexion")
     args = p.parse_args(argv)
@@ -142,7 +153,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ecrire_les_empreintes(id_)
         ecrire_les_documents(id_)
     for f in produits:
-        dire(f"    {os.path.relpath(f, RACINE_SORTIE)}", GRIS)
+        dire(f"    {os.path.relpath(f, OUTPUT_ROOT)}", GRIS)
     return 0 if produits else 1
 
 

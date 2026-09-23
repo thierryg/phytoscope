@@ -1,16 +1,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/firmware/CMakeLists.txt
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 # ---------------------------------------------------------------------------
@@ -46,7 +46,8 @@ target_link_libraries(phytosense
     tinyusb_board
 )
 
-# Le flux de mesure passe par l'USB : on libère la console série matérielle.
+# The measurement stream goes over USB, so the hardware serial console is
+# released.
 pico_enable_stdio_usb(phytosense 0)
 pico_enable_stdio_uart(phytosense 0)
 

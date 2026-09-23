@@ -4,7 +4,7 @@ This project follows `AGENTS.md`, which applies to every agent — Claude Code
 included.
 
 **Read `AGENTS.md` first.** It points, in order, to the requirements
-(`constraints.md`), the state of the work (`.ai/etat.md`), the intervention log
+(`constraints.md`), the state of the work (`.ai/state.md`), the intervention log
 (`.ai/journal.md`), and the design decisions (`.ai/decisions.md`).
 
 Reminders that cost real time when they are forgotten:

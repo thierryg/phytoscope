@@ -1,88 +1,87 @@
-# Fabriquer les paquets
+# Building the packages
 
-Ce fichier dit **comment produire un paquet précis, ou tous**, et ce qu'il
-faut avoir avant. Il ne décrit pas ce que fait un installateur une fois entre
-les mains de qui l'exécute : cela, c'est [`INSTALL.md`](INSTALL.md).
+This file says **how to produce one particular package, or all of them**, and
+what you need beforehand. It does not describe what an installer does once it
+is in the hands of whoever runs it: that is [`INSTALL.md`](INSTALL.md).
 
-Tout se passe depuis `packaging/`, et tout passe par `make`.
+Everything happens from `packaging/`, and everything goes through `make`.
 
-> **Un seul poste Debian, Ubuntu ou Mint produit les paquets de tous les
-> systèmes.** Windows et macOS sont fabriqués par compilation croisée — NSIS,
-> msitools et un générateur de `.pkg` écrit de bout en bout. Il n'y a pas de
-> machine Windows ni de Mac dans la boucle, et c'est assumé : ce qui est
-> vérifié ici, c'est la **structure** des paquets, pas leur installation.
-
----
-
-## Table des matières
-
-1. [En cinq minutes](#1-en-cinq-minutes)
-2. [Ce qu'il faut avoir](#2-ce-quil-faut-avoir)
-3. [Le certificat de signature](#3-le-certificat-de-signature)
-4. [Fabriquer un paquet précis](#4-fabriquer-un-paquet-précis)
-4 bis. [Fabriquer le micrologiciel](#4-bis-fabriquer-le-micrologiciel)
-5. [Fabriquer tout](#5-fabriquer-tout)
-6. [Imposer la version, la révision, la destination](#6-imposer-la-version-la-révision-la-destination)
-7. [Vérifier ce qui a été produit](#7-vérifier-ce-qui-a-été-produit)
-8. [La nomenclature logicielle](#8-la-nomenclature-logicielle)
-9. [Publier une version](#9-publier-une-version)
-10. [Quand ça échoue](#10-quand-ça-échoue)
-11. [Toutes les cibles](#11-toutes-les-cibles)
+> **One Debian, Ubuntu or Mint machine produces the packages for every
+> system.** Windows and macOS are cross-built — NSIS, msitools and a `.pkg`
+> generator written end to end. There is no Windows machine and no Mac in the
+> loop, and that is owned: what is verified here is the packages'
+> **structure**, not their installation.
 
 ---
 
-## 1. En cinq minutes
+## Contents
+
+1. [In five minutes](#1-in-five-minutes)
+2. [What you need](#2-what-you-need)
+3. [The signing certificate](#3-the-signing-certificate)
+4. [Building one package](#4-building-one-package)
+4 bis. [Building the firmware](#4-bis-building-the-firmware)
+5. [Building everything](#5-building-everything)
+6. [Forcing the version, the release, the destination](#6-forcing-the-version-the-release-the-destination)
+7. [Checking what was produced](#7-checking-what-was-produced)
+8. [The software bill of materials](#8-the-software-bill-of-materials)
+9. [Publishing a version](#9-publishing-a-version)
+10. [When it fails](#10-when-it-fails)
+11. [Every target](#11-every-target)
+
+---
+
+## 1. In five minutes
 
 ```bash
 cd packaging
 
-make outils        # ce qui est installé, ce qui manque
-make deps          # installe NSIS, msitools, osslsigncode — sans sudo
-make certificat    # une seule fois, puis jamais
-make tout          # les neuf paquets, signés
-make verifier      # rouvre et contrôle tout ce qui a été produit
+make                # the target list — `help` is the default goal
+make tools          # what is installed, what is missing
+make deps           # installs NSIS, msitools, osslsigncode — without sudo
+make certificate    # once, and then never again
+make all            # the nine packages, signed
+make verify         # reopens and checks everything produced
 ```
 
-Les paquets arrivent dans
-`build/paquets/<version>-<horodatage>/`, et `build/paquets/dernier` pointe sur
-la dernière fabrication.
+The packages arrive in `build/packages/<version>-<timestamp>/`, and
+`build/packages/latest` points at the most recent build.
 
 ---
 
-## 2. Ce qu'il faut avoir
+## 2. What you need
 
-`make outils` répond, et ne se trompe pas :
+`make tools` answers, and does not get it wrong:
 
 ```
-  ✓ dpkg-deb   paquet Debian (.deb)
-  ✓ rpmbuild   paquet Red Hat (.rpm)
-  ✓ makensis   installateur Windows (.exe)
-  ✓ wixl       paquet Windows (.msi)
-  ✓ zip        archives Windows et macOS
-  ✓ openssl    certificat et signatures
-  ✓ osslsigncode signature Authenticode (.exe, .msi)
+  ✓ dpkg-deb   Debian package (.deb)
+  ✓ rpmbuild   Red Hat package (.rpm)
+  ✓ makensis   Windows installer (.exe)
+  ✓ wixl       Windows package (.msi)
+  ✓ zip        Windows and macOS archives
+  ✓ openssl    certificate and signatures
+  ✓ osslsigncode Authenticode signing (.exe, .msi)
 ```
 
-### Ce qui manque s'installe sans `sudo`
+### What is missing installs without `sudo`
 
 ```bash
 make deps
 ```
 
-NSIS, msitools et osslsigncode sont dépliés dans `~/.local/opt`. Le projet
-s'interdit d'élever les droits (`C-55`) : aucune de ces commandes n'appelle
-`sudo`.
+NSIS, msitools and osslsigncode are unpacked into `~/.local/opt`. The project
+will not elevate privileges (`C-55`): none of these commands calls `sudo`.
 
-`dpkg-deb` et `rpmbuild`, eux, viennent de votre distribution :
+`dpkg-deb` and `rpmbuild` come from your distribution:
 
 ```bash
 sudo apt install dpkg-dev fakeroot rpm
 ```
 
-### L'environnement Python du projet
+### The project's Python environment
 
-La fabrique utilise l'interpréteur du projet s'il existe
-(`src/phytoscope/.venv/bin/python`), sinon celui du système. Pour le créer :
+The factory uses the project's interpreter if it exists
+(`src/phytoscope/.venv/bin/python`), otherwise the system's. To create it:
 
 ```bash
 cd ../src/phytoscope && make install-dev
@@ -90,511 +89,516 @@ cd ../src/phytoscope && make install-dev
 
 ---
 
-## 3. Le certificat de signature
+## 3. The signing certificate
 
-**Une seule fois dans la vie du projet.** Ensuite, on n'y touche plus.
+**Once in the project's life.** After that, it is left alone.
 
 ```bash
-make certificat          # crée s'il n'existe pas, puis remplit certificat/
-make certificat-etat     # ce qui existe, et où
-make certificat-verifier # les deux copies concordent-elles ?
+make certificate          # creates it if absent, then fills certificate/
+make certificate-status   # what exists, and where
+make certificate-verify   # do the two copies agree?
 ```
 
-### Où vit quoi
+### Where everything lives
 
-| Où | Quoi | Dans le dépôt ? |
+| Where | What | In the repository? |
 |---|---|---|
-| `~/.local/share/phytoscope-signature/` | la copie de **référence** : clé privée + certificat | **non**, et jamais |
-| `certificat/` | la copie de **travail** : certificat public, `.crt`, clé en 0600, notice | le public **oui**, la clé **jamais** |
+| `~/.local/share/phytoscope-signature/` | the **reference** copy: private key + certificate | **no**, and never |
+| `certificate/` | the **working** copy: public certificate, `.crt`, the key at 0600, a notice | the public part **yes**, the key **never** |
 
-La contrainte `C-2R` n'autorise la clé privée qu'à ces deux endroits. Trois
-filets l'empêchent d'être publiée : `.gitignore` l'écarte nommément, le
-crochet `pre-commit` la refuse **sur son seul nom** — même vide, même
-renommée —, et le job « secrets » de l'intégration continue échoue si elle
-apparaît. Trois, parce qu'une clé publiée ne se dépublie pas.
+Constraint `C-2R` allows the private key in those two places only. Three nets
+stop it being published: `.gitignore` excludes it by name, the `pre-commit`
+hook refuses it **on its name alone** — even empty, even renamed — and
+continuous integration's "secrets" job fails if it appears. Three, because a
+published key cannot be unpublished.
 
-### Si le certificat manque au moment de signer
+### If the certificate is missing when it is time to sign
 
-La fabrique **le dit et propose**, elle ne crée rien d'autorité :
+The factory **says so and offers**; it creates nothing on its own authority:
 
 ```
-  ! aucun certificat de signature : les paquets ne seront pas signés.
-      La copie de référence est attendue dans
+  ! no signing certificate: the packages will not be signed.
+      The reference copy is expected in
       /home/…/.local/share/phytoscope-signature
 
-  En créer un maintenant ? [o/N]
+  Create one now? [y/N]
 ```
 
-Sans terminal — dans un script, dans l'intégration continue — elle affiche la
-commande et s'arrête plutôt que de supposer un accord : fabriquer une clé de
-signature à l'improviste produirait une clé éphémère qu'on croirait
-permanente.
+With no terminal — in a script, in continuous integration — it prints the
+command and stops rather than assume agreement: making a signing key on the
+spur of the moment would produce an ephemeral key that somebody would believe
+permanent.
 
-### SAUVEGARDEZ la clé privée
+### BACK UP the private key
 
-Sans elle, les versions suivantes ne pourront plus être rattachées aux
-précédentes. Qui avait noté l'empreinte verrait soudain une autre.
+Without it, later versions can no longer be tied to earlier ones. Anybody who
+had noted the fingerprint would suddenly see a different one.
 
 ```bash
-make empreinte-certificat     # l'empreinte SHA-256, celle qu'on publie
+make certificate-fingerprint     # the SHA-256 fingerprint, the published one
 ```
 
-### Refaire le certificat — ce qu'il faut savoir avant
+### Remaking the certificate — what to know first
 
 ```bash
-make certificat-refait
+make certificate-renew
 ```
 
-Cela **remplace la clé** et **rompt le lien** avec tout ce qui a été signé :
-les paquets déjà publiés deviennent invérifiables avec le nouveau certificat.
-La commande demande de taper `REMPLACER` en entier, et refuse s'il n'y a pas
-de terminal. Ajoutez `--oui` à `certificate.py --refaire` seulement si c'est
-vraiment voulu.
+That **replaces the key** and **breaks the link** with everything already
+signed: the packages already published become unverifiable with the new
+certificate. The command asks you to type `REPLACE` in full, and refuses if
+there is no terminal. Add `--oui` to `certificate.py --refaire` only if that
+is really what you mean.
 
-### Ce que ce certificat prouve, et ce qu'il ne prouve pas
+### What this certificate proves, and what it does not
 
-Il est **auto-signé**. Il prouve l'**intégrité** d'un paquet et la
-**continuité d'origine**. Il ne fait **pas** taire SmartScreen ni Gatekeeper,
-et n'a jamais prétendu le faire (`C-2Q`).
+It is **self-signed**. It proves a package's **integrity** and its
+**continuity of origin**. It does **not** silence SmartScreen or Gatekeeper,
+and has never claimed to (`C-2Q`).
 
 ---
 
-## 4. Fabriquer un paquet précis
+## 4. Building one package
 
-| Commande | Produit | Pour |
+| Command | Produces | For |
 |---|---|---|
-| `make debian` | `phytoscope_<v>_all.deb` **et** `PhytoScope-<v>-Linux.run` | Debian, Ubuntu, Mint — et toutes distributions pour le `.run` |
+| `make debian` | `phytoscope_<v>_all.deb` **and** `PhytoScope-<v>-Linux.run` | Debian, Ubuntu, Mint — and every distribution for the `.run` |
 | `make fedora` | `phytoscope-<v>-1.noarch.rpm` | Fedora, RHEL, Rocky, Alma |
 | `make windows` | `PhytoScope-<v>-Windows.exe`, `.msi`, `-portable.zip` | Windows 10 / 11 |
-| `make macos` | `PhytoScope-<v>.pkg`, `-macOS.zip` | macOS Intel et Apple Silicon |
-| `make source` | `phytoscope-<v>.tar.gz` | tous systèmes |
-| `make linux` | `.deb` + `.run` + `.rpm` | les deux familles Linux |
+| `make macos` | `PhytoScope-<v>.pkg`, `-macOS.zip` | macOS Intel and Apple Silicon |
+| `make source` | `phytoscope-<v>.tar.gz` | every system |
+| `make linux` | `.deb` + `.run` + `.rpm` | both Linux families |
 
-### Par le script, pour les options fines
+### Through the script, for the finer options
 
 ```bash
-python3 packaging/build_debian.py            # .deb et .run
-python3 packaging/build_fedora.py            # .rpm
-python3 packaging/build_windows.py --msi     # le .msi seulement
-python3 packaging/build_macos.py --pkg       # le .pkg seulement
+python3 packaging/build_debian.py            # the .deb and the .run
+python3 packaging/build_fedora.py            # the .rpm
+python3 packaging/build_windows.py --msi     # the .msi only
+python3 packaging/build_macos.py --pkg       # the .pkg only
 python3 packaging/build_macos.py --arch arm64
 python3 packaging/build_source.py
 ```
 
-### Combien de temps, et combien de place
+### How long, and how much room
 
-| Cible | Durée | Taille |
+| Target | Time | Size |
 |---|---:|---:|
-| `source` | quelques secondes | 640 ko |
-| `debian` | ~1 min *(le `.run` embarque un interpréteur)* | 388 ko + 29 Mo |
-| `fedora` | quelques secondes | 636 ko |
-| `macos` | ~1 min | 18 + 19 Mo |
-| `windows` | **~15 min** *(250 Mo de roues à télécharger)* | 178 + 275 + 262 Mo |
+| `source` | a few seconds | 656 kB |
+| `debian` | ~1 min *(the `.run` bundles an interpreter)* | 416 kB + 29 MB |
+| `fedora` | a few seconds | 668 kB |
+| `macos` | ~1 min | 18 + 19 MB |
+| `windows` | **~15 min** *(250 MB of wheels to download)* | 178 + 275 + 262 MB |
 
-`make windows` est de loin le plus long : il récupère l'interpréteur
-embarquable et les roues Qt, puis compresse trois fois le même contenu. C'est
-pourquoi `make tout` enchaîne les cibles rapides d'abord — une panne d'outil
-se voit en dix secondes plutôt qu'au bout du quart d'heure.
+`make windows` is by far the longest: it fetches the embeddable interpreter
+and the Qt wheels, then compresses the same content three times. That is why
+`make all` runs the quick targets first — a missing tool then shows in ten
+seconds rather than after a quarter of an hour.
 
-### Sans réseau
+### Without a network
 
 ```bash
-make hors-ligne
+make offline
 ```
 
-Les roues sont embarquées dans les paquets : l'installation chez qui les
-reçoit se fait alors sans connexion. Les paquets grossissent d'autant — Qt
-pèse 450 Mo en « universal2 » pour macOS.
+The wheels are bundled inside the packages: the installation on the receiving
+machine then needs no connection. The packages grow accordingly — Qt weighs
+450 MB as "universal2" for macOS.
 
 ---
 
-## 4 bis. Fabriquer le micrologiciel
+## 4 bis. Building the firmware
 
-Le `.uf2` est un **livrable à part entière** : sans lui, les paquets
-installent un logiciel qui n'a rien à écouter.
+The `.uf2` is **a deliverable in its own right**: without it, the packages
+install software that has nothing to listen to.
 
-**Deux scripts, deux usages.**
+**Two scripts, two uses.**
 
-| | Ce qu'il fait | Quand |
+| | What it does | When |
 |---|---|---|
-| `./_make_.sh` | compile, et rien de plus → `build/phytosense.uf2` | pendant la mise au point, quand on compile vingt fois d'affilée |
-| `./build.sh` | compile **puis range le livrable** dans `build/paquets/` | pour publier, et dans l'intégration continue |
+| `./_make_.sh` | builds, and nothing else → `build/phytosense.uf2` | while developing, when you build twenty times in a row |
+| `./build.sh` | builds **and then files the deliverable** in `build/packages/` | to publish, and in continuous integration |
 
 ```bash
 cd src/firmware
-./build.sh --deps      # Pico SDK et chaîne ARM dans $HOME, sans sudo — une fois
-./build.sh             # compile et range le livrable
+./build.sh --deps      # Pico SDK and ARM toolchain in $HOME, no sudo — once
+./build.sh             # build and file the deliverable
 ```
 
-Le livrable arrive **au même endroit que les paquets**, parce que c'en est un :
+The deliverable arrives **in the same place as the packages**, because that
+is what it is:
 
 ```
-build/paquets/<version>-<horodatage>/Firmware/
-    phytosense-<version>.uf2      ce qu'on copie sur la carte
-    phytosense-<version>.elf      pour le débogage
-    phytosense-<version>.bin      image brute
-    phytosense-<version>.sha256   les empreintes
-    LISEZ-MOI.txt                 comment programmer la carte
+build/packages/<version>-<timestamp>/Firmware/
+    phytosense-<version>.uf2      what you copy onto the board
+    phytosense-<version>.elf      for debugging
+    phytosense-<version>.bin      the raw image
+    phytosense-<version>.sha256   the checksums
+    README.txt                    how to flash the board
 ```
 
-Le nom porte la version : « phytosense.uf2 » tout court, sur le disque de
-quelqu'un six mois plus tard, ne dit pas de quelle version il sort.
+The name carries the version: a bare "phytosense.uf2", on somebody's disk six
+months later, does not say which version it came from.
 
-| Option de `build.sh` | Effet |
+| `build.sh` option | Effect |
 |---|---|
-| `--deps` | installe le Pico SDK et la chaîne ARM dans `$HOME` |
-| `--propre` | repart d'un répertoire de construction vide |
-| `--sortie DOSSIER` | range ailleurs |
-| `--sans-installer` | compile seulement, comme `./_make_.sh` |
+| `--deps` | installs the Pico SDK and the ARM toolchain in `$HOME` |
+| `--clean` | start again from an empty build directory |
+| `--output DIRECTORY` | file it elsewhere |
+| `--no-install` | build only, like `./_make_.sh` |
 
-Lancé par la fabrique de paquets, il suit la variable `PHYTOSCOPE_SORTIE` :
-le micrologiciel se range alors dans **la même fabrication** que les `.deb` et
-les `.msi`, même lancé séparément. D'où deux cibles, depuis `packaging/` :
+The French spellings — `--sortie`, `--sans-installer` — are still accepted.
 
-```bash
-make micrologiciel     # le .uf2, rangé dans la fabrication en cours
-make livrables         # les paquets ET le micrologiciel, ensemble
-```
-
-**`micrologiciel` est volontairement hors de `make tout`** : compiler demande
-une chaîne croisée ARM que la machine qui empaquette n'a pas forcément, et un
-`make tout` qui échouerait faute de `arm-none-eabi-gcc` serait une mauvaise
-surprise. `make livrables` est là pour qui veut les deux d'un coup.
-
-### Ce qu'il faut sur la machine
+Started by the package factory, it follows the `PHYTOSCOPE_OUTPUT` variable:
+the firmware is then filed in **the same build** as the `.deb` and the
+`.msi`, even when run on its own. Hence two targets, from `packaging/`:
 
 ```bash
-sudo apt install cmake gcc-arm-none-eabi libnewlib-arm-none-eabi                  libstdc++-arm-none-eabi-newlib
+make firmware       # the .uf2, filed in the build in progress
+make deliverables   # the packages AND the firmware, together
 ```
 
-Le Pico SDK (**2.0.0 minimum** — les versions 1.x ne connaissent que le
-RP2040 et échouent à la configuration) et la chaîne ARM sont installés par
-`--deps` dans `$HOME`, sans privilèges.
+**`firmware` is deliberately outside `make all`**: building it needs an ARM
+cross-toolchain that the packaging machine may not have, and a `make all`
+that failed for want of `arm-none-eabi-gcc` would be an unpleasant surprise.
+`make deliverables` is there for whoever wants both at once.
 
-### Si la compilation refuse de partir
+### What the machine needs
+
+```bash
+sudo apt install cmake gcc-arm-none-eabi libnewlib-arm-none-eabi \
+                 libstdc++-arm-none-eabi-newlib
+```
+
+The Pico SDK (**2.0.0 minimum** — the 1.x versions know only the RP2040 and
+fail at configuration) and the ARM toolchain are installed by `--deps` in
+`$HOME`, without privileges.
+
+### If the build refuses to start
 
 ```
 CMake Error: The current CMakeCache.txt directory … is different than
 the directory … where CMakeCache.txt was created.
 ```
 
-Un cache CMake retient le **chemin absolu** des sources : déplacer ou
-renommer la copie de travail le rend périmé. `build.sh` le détecte
-maintenant et le jette de lui-même — le message ne devrait plus apparaître.
-Si cela arrive quand même : `rm -rf src/firmware/build`.
+A CMake cache remembers the **absolute path** of the sources: moving or
+renaming the working copy makes it stale. `build.sh` now detects that and
+throws it away itself — the message should no longer appear. If it does
+anyway: `rm -rf src/firmware/build`.
 
-### Dans l'intégration continue
+### In continuous integration
 
-`paquets.yml` compile le micrologiciel à chaque passage — un binaire
-fabriqué à la main est un binaire dont personne ne sait de quel commit il
-sort — et le joint aux artéfacts avec ses empreintes. `diffusion.yml` le
-publie avec la version, sous le nom `phytosense-<version>.uf2`, et **atteste
-sa provenance** comme celle des paquets.
+`packages.yml` builds the firmware on every run — a binary made by hand is a
+binary nobody can tie to a commit — and attaches it to the artefacts with its
+checksums. `release.yml` publishes it with the version, under the name
+`phytosense-<version>.uf2`, and **attests its provenance** as it does the
+packages'.
 
 ---
 
-## 5. Fabriquer tout
+## 5. Building everything
 
 ```bash
-make tout
+make all
 ```
 
-Enchaîne, **dans cet ordre, qui n'est pas indifférent** :
+It chains, **in this order, which is not arbitrary**:
 
 ```
-source → linux → macos → windows → certificat → signer → documents
+source → linux → macos → windows → certificate → sign → documents
 ```
 
-1. **les cibles rapides d'abord** — une panne d'outil se voit tout de suite ;
-2. **`certificat`** avant `signer`, évidemment ;
-3. **`signer`** avant `documents` : la signature Authenticode **modifie** le
-   `.exe` et le `.msi`, et les empreintes doivent donc être calculées
-   **après** elle. `documents` écrit les empreintes ; il vient en dernier.
+1. **the quick targets first** — a missing tool shows at once;
+2. **`certificate`** before `sign`, obviously;
+3. **`sign`** before `documents`: the Authenticode signature **modifies** the
+   `.exe` and the `.msi`, so the checksums have to be computed **after** it.
+   `documents` writes the checksums; it comes last.
 
-Puis `make tout` appelle `verify.py` de lui-même et en affiche le bilan.
+Then `make all` calls `verify.py` itself and prints its report.
 
-### Ce que cela produit
+### What that produces
 
-> **Le micrologiciel n'est pas dans `make tout`.** Il se compile par
-> `src/firmware/build.sh` ou `make micrologiciel` (voir le
-> [§ 4 bis](#4-bis-fabriquer-le-micrologiciel)), et la CI le joint aux
-> livrables. Les deux chaînes sont séparées parce que leurs outils le sont :
-> `make tout` n'a pas besoin d'un compilateur ARM. `make livrables` fait les
-> deux.
+> **The firmware is not in `make all`.** It builds through
+> `src/firmware/build.sh` or `make firmware` (see
+> [§ 4 bis](#4-bis-building-the-firmware)), and the CI attaches it to the
+> deliverables. The two chains are separate because their tools are:
+> `make all` needs no ARM compiler. `make deliverables` does both.
 
-**Neuf paquets**, chacun accompagné de :
+**Nine packages**, each accompanied by:
 
-- son empreinte `.sha256` ;
-- sa signature — `.p7s` (CMS détachée) pour tous, **Authenticode** pour le
-  `.exe` et le `.msi` ;
-- sept documents : `AUTHENTICITE.txt`, `install.txt`, `manuel.txt`,
+- its `.sha256` checksum;
+- its signature — `.p7s` (detached CMS) for all of them, **Authenticode** for
+  the `.exe` and the `.msi`;
+- seven documents: `AUTHENTICITE.txt`, `install.txt`, `manuel.txt`,
   `readme.txt`, `licence.txt`, `changelog.txt`,
-  `phytoscope-certificat.pem`.
+  `phytoscope-certificate.pem`.
 
-Rangés par système :
+Filed by system:
 
 ```
-build/paquets/1.5.1-20260918-2044/
-├── phytoscope-1.5.1.tar.gz          + .sha256 .p7s
-├── Linux/    .deb  .run  .rpm       + empreintes, signatures, documents
+build/packages/1.6.0-20260923-1445/
+├── phytoscope-1.6.0.tar.gz          + .sha256 .p7s
+├── Linux/    .deb  .run  .rpm       + checksums, signatures, documents
 ├── Windows/  .exe  .msi  .zip
 ├── MacOSX/   .pkg  .zip
-└── (documents à la racine)
+├── Firmware/ .uf2  (with `make deliverables`)
+└── (the documents at the root)
 ```
 
 ---
 
-## 6. Imposer la version, la révision, la destination
+## 6. Forcing the version, the release, the destination
 
-La version est lue dans `src/phytoscope/phytoscope/VERSION`, **seule source
-de vérité**. Pour la contourner le temps d'un essai :
+The version is read from `src/phytoscope/phytoscope/VERSION`, **the only
+source of truth**. To work around it for one trial:
 
 ```bash
-make tout VERSION=1.6.0            # une autre version
-make tout RELEASE=2                # révision du paquet, pas du logiciel
-make tout SORTIE=/tmp/essai        # ailleurs que dans build/paquets/
+make all VERSION=1.6.0            # another version
+make all RELEASE=2                # the package's release, not the software's
+make all OUTPUT=/tmp/trial        # somewhere other than build/packages/
 make debian VERSION=1.6.0 RELEASE=2
 ```
 
-Pour **changer** la version pour de bon, c'est le logiciel qui décide :
+`SORTIE=` is still honoured: it was the documented name until 2026-09-23.
+
+To **change** the version for good, the software decides:
 
 ```bash
 cd ../src/phytoscope
-make bump-patch      # 1.5.1 → 1.5.2
-make bump-minor      # 1.5.1 → 1.6.0
-make bump-major      # 1.5.1 → 2.0.0
-make release-check   # la version est-elle diffusable ?
+make bump-patch      # 1.6.0 → 1.5.2
+make bump-minor      # 1.6.0 → 1.6.0
+make bump-major      # 1.6.0 → 2.0.0
+make release-check   # is this version fit to publish?
 ```
 
-`release-check` refuse une version suffixée (`-dev`, `-rc1`) : elle n'est pas
-destinée à être diffusée.
+`release-check` refuses a suffixed version (`-dev`, `-rc1`): it is not meant
+to be distributed.
 
 ---
 
-## 7. Vérifier ce qui a été produit
+## 7. Checking what was produced
 
 ```bash
-make verifier      # rouvre chaque paquet et contrôle sa cohérence
-make empreintes    # recalcule les .sha256
+make verify      # reopens each package and checks its consistency
+make checksums   # recomputes the .sha256 files
 ```
 
-`make verifier` contrôle, pour chaque paquet :
+`make verify` checks, for each package:
 
-- qu'il s'**ouvre** — un `.deb` se relit par `dpkg-deb`, un `.rpm` par
-  `rpm -qp`, un `.msi` par `msiinfo`, un `.pkg` par `xar`, une archive par
-  son propre format ;
-- que la **version annoncée** dedans correspond à celle attendue ;
-- que la **nomenclature interne** concorde avec la charge réelle ;
-- que les **empreintes SHA-256** correspondent ;
-- que les **sept documents** sont présents dans chaque dossier système.
+- that it **opens** — a `.deb` is read back by `dpkg-deb`, an `.rpm` by
+  `rpm -qp`, an `.msi` by `msiinfo`, a `.pkg` by `xar`, an archive by its own
+  format;
+- that the **version declared** inside matches the one expected;
+- that the **internal manifest** agrees with the real payload;
+- that the **SHA-256 checksums** match;
+- that the **seven documents** are present in each system directory.
 
-Il termine par un avertissement qu'il faut lire :
+It ends with a warning that needs reading:
 
 ```
-  ! aucun de ces paquets n'a été INSTALLÉ : il n'y a sur cette machine
-    ni Windows, ni macOS, ni Fedora. Ce qui est vérifié ici, c'est leur
-    structure et leur cohérence interne.
+  ! none of these packages has been INSTALLED: this machine has no
+    Windows, no macOS and no Fedora. What is verified here is their
+    structure and their internal consistency.
 ```
 
-L'installation réelle se teste sur chaque système. L'intégration continue y
-aide : `paquets.yml` passe les tests sur Linux, Windows et macOS.
+Real installation is tested on each system. Continuous integration helps:
+`packages.yml` runs the tests on Linux, Windows and macOS.
 
-### Vérifier une signature à la main
+### Verifying a signature by hand
 
 ```bash
-cd build/paquets/dernier
-openssl cms -verify -binary -inform DER -in Linux/phytoscope_1.5.1_all.deb.p7s \
-    -content Linux/phytoscope_1.5.1_all.deb \
-    -certfile phytoscope-certificat.pem -noverify -out /dev/null
+cd build/packages/latest
+openssl cms -verify -binary -inform DER -in Linux/phytoscope_1.6.0_all.deb.p7s \
+    -content Linux/phytoscope_1.6.0_all.deb \
+    -certfile phytoscope-certificate.pem -noverify -out /dev/null
 ```
 
 ---
 
-## 8. La nomenclature logicielle
+## 8. The software bill of materials
 
-Deux nomenclatures, deux portées — et c'est voulu.
+Two bills of materials, two scopes — and that is intentional.
 
-| Fichier | Portée | Produit par |
+| File | Scope | Produced by |
 |---|---|---|
-| `src/phytoscope/sbom.cdx.json` | **le logiciel** — c'est elle qui est livrée dans les paquets | `src/phytoscope/tools/sbom.py` |
-| `sbom.cdx.json` (racine) | **le projet entier** — logiciel *et* micrologiciel RP2350 | `tools/sbom.py` |
+| `src/phytoscope/sbom.cdx.json` | **the software** — this is the one shipped inside the packages | `src/phytoscope/tools/sbom.py` |
+| `sbom.cdx.json` (at the root) | **the whole project** — software *and* RP2350 firmware | `tools/sbom.py` |
 
 ```bash
-python3 tools/sbom.py                  # le relevé, en texte
-python3 tools/sbom.py --ecrire         # écrit sbom.cdx.json (CycloneDX 1.6)
-python3 tools/sbom.py --verifier       # est-il à jour ? code 1 sinon
-python3 tools/sbom.py --logiciel-seul  # régénère aussi celui du logiciel
+python3 tools/sbom.py                  # the reading, as text
+python3 tools/sbom.py --ecrire         # writes sbom.cdx.json (CycloneDX 1.6)
+python3 tools/sbom.py --verifier       # is it up to date? exit 1 if not
+python3 tools/sbom.py --logiciel-seul  # also regenerates the software's
 ```
 
-La partie micrologiciel lit les versions **dans les fichiers qui font foi** —
-`src/firmware/_make_.sh` pour le Pico SDK et la chaîne ARM,
-`CMakeLists.txt` pour les bibliothèques réellement liées. Rien n'est recopié
-à la main : une version écrite dans un tableau vieillirait en silence.
+The firmware part reads its versions **from the files that are
+authoritative** — `src/firmware/_make_.sh` for the Pico SDK and the ARM
+toolchain, `CMakeLists.txt` for the libraries actually linked. Nothing is
+copied by hand: a version written into a table would go stale in silence.
 
-Le compilateur ARM et `picotool` y portent `scope: excluded` : ils
-**construisent** le produit, ils n'y sont pas embarqués. La distinction
-compte pour qui lit ce document afin de savoir si une faille le concerne.
+The ARM compiler and `picotool` carry `scope: excluded` there: they **build**
+the product, they are not embedded in it. The distinction matters to whoever
+reads this document in order to know whether a vulnerability concerns them.
 
-> **Un SBOM faux est pire qu'aucun SBOM.** Il sert à répondre « cette faille
-> me concerne-t-elle ? ». `.github/workflows/sbom.yml` le régénère dès
-> qu'une modification touche `src/phytoscope/`, et `securite.yml` refuse
-> qu'il dérive.
+> **A false SBOM is worse than no SBOM.** Its purpose is to answer "does this
+> vulnerability concern me?". `.github/workflows/sbom.yml` regenerates it as
+> soon as a change touches `src/phytoscope/`, and `security.yml` refuses to
+> let it drift.
 
 ---
 
-## 9. Publier une version
+## 9. Publishing a version
 
 ```bash
-# 1. la version, à la source
+# 1. the version, at the source
 cd src/phytoscope
 make bump-patch && make release-check
 
-# 2. les tests, avant tout
-make test                      # 306, sans matériel ni réseau
+# 2. the tests, before anything else
+make test                      # 385, no hardware and no network
 
-# 3. les nomenclatures
+# 3. the bills of materials
 cd .. && python3 tools/sbom.py --ecrire --logiciel-seul
 
-# 4-5. les paquets ET le micrologiciel, dans la même fabrication
-cd packaging && make livrables && make verifier
+# 4-5. the packages AND the firmware, in the same build
+cd packaging && make deliverables && make verify
 
-# 6. les publications, si elles ont changé
+# 6. the publications, if they changed
 cd .. && git diff --name-only | python3 tools/impacted_pdfs.py -
 
-# 7. l'étiquette — c'est elle qui déclenche la diffusion
+# 7. the tag — it is what triggers the release
 git tag -a v1.5.2 -m "PhytoScope 1.5.2"
 git push --tags
 ```
 
-L'étiquette déclenche `.github/workflows/diffusion.yml`, qui **vérifie que
-l'étiquette correspond à `VERSION`** — une étiquette qui ne correspond pas
-produirait des paquets estampillés d'un numéro que personne ne retrouverait —,
-rejoue les tests, refabrique tout — **paquets, micrologiciel et
-publications** —, **atteste la provenance** de chaque livrable auprès de
-GitHub (Sigstore), et publie.
+The tag triggers `.github/workflows/release.yml`, which **checks that the
+tag matches `VERSION`** — a tag that did not match would produce packages
+stamped with a number nobody could find again — replays the tests, rebuilds
+everything — **packages, firmware and publications** — **attests the
+provenance** of every deliverable to GitHub (Sigstore), and publishes.
 
-Qui télécharge peut alors vérifier d'où sort un fichier :
+Whoever downloads can then check where a file came from:
 
 ```bash
 gh attestation verify phytoscope_1.5.2_all.deb --repo thierryg/phytoscope
 ```
 
-La CI signe la **provenance** ; l'éditeur signe l'**origine**. Les deux sont
-utiles et ne se remplacent pas.
+The CI signs the **provenance**; the publisher signs the **origin**. Both are
+useful and neither replaces the other.
 
 ---
 
-## 10. Quand ça échoue
+## 10. When it fails
 
-### « makensis a échoué »
+### "makensis failed"
 
-Le plus souvent : **plus de place**. NSIS compresse ~500 Mo d'un coup.
+Most often: **out of disk space**. NSIS compresses ~500 MB in one go.
 
 ```bash
 df -h .
-make propre                    # vide build/paquets
+make clean                    # empties build/packages
 ```
 
-Sinon, l'erreur exacte se voit en montant la verbosité — `-V2` dans
-`build_windows.py` devient `-V4`.
+Otherwise the exact error shows if you raise the verbosity — `-V2` in
+`build_windows.py` becomes `-V4`.
 
-### « rpmbuild absent »
+### "rpmbuild missing"
 
 ```bash
 sudo apt install rpm
 ```
 
-### « dépendances non installées » à l'installation du `.deb`
+### "dependencies not installed" when installing the `.deb`
 
-L'installation **n'est pas annulée** : le logiciel le dira au démarrage.
+The installation **is not rolled back**: the software will say so at
+start-up.
 
 ```bash
 sudo dpkg-reconfigure phytoscope
 phytoscope --check
 ```
 
-### Le `.deb` ne se produit plus
+### The `.deb` stops being produced
 
-Regardez `packaging/gabarits/debian/control` : **un fichier `control`
-n'admet aucun commentaire.** Une ligne commençant par `#` fait échouer
-`dpkg-deb` avec « field name '#' must be followed by colon » — et `make tout`
-continue, produisant les huit autres paquets sans broncher. C'est arrivé le
-2026-09-18 ; `"control"` est depuis dans les exclusions de
-`tools/headers.py`.
+Look at `packaging/templates/debian/control`: **a `control` file admits no
+comment.** A line beginning with `#` makes `dpkg-deb` fail with "field name
+'#' must be followed by colon" — and `make all` carries on, producing the
+other eight packages without a murmur. It happened on 2026-09-18;
+`"control"` has been in `tools/headers.py`'s exclusions ever since.
 
-### « aucun certificat de signature »
+### "no signing certificate"
 
-Voir le [§ 3](#3-le-certificat-de-signature). `make certificat`.
+See [§ 3](#3-the-signing-certificate). `make certificate`.
 
-### Les paquets Windows pèsent 275 Mo — est-ce normal ?
+### The Windows packages weigh 275 MB — is that normal?
 
-Oui. Ils embarquent l'interpréteur Python et Qt, pour n'exiger **rien** de la
-machine. Les autres systèmes s'appuient sur leur Python.
-
----
-
-## 11. Toutes les cibles
-
-```
-Préparation
-  make outils                 ce qui est installé, ce qui manque
-  make deps                   installe NSIS et msitools sans sudo
-
-Un système
-  make debian                 .deb et .run
-  make fedora                 .rpm
-  make windows                .zip .exe .msi
-  make macos                  .zip .pkg
-  make source                 .tar.gz
-
-Plusieurs
-  make tout                   les neuf paquets, signés
-  make linux                  .deb .run .rpm
-  make hors-ligne             avec les bibliothèques embarquées
-
-Micrologiciel
-  make micrologiciel          compile le .uf2 et le range dans la fabrication
-  make livrables              les paquets ET le micrologiciel
-
-Signature
-  make certificat             crée le certificat et remplit certificat/
-  make certificat-etat        ce qui existe, et où
-  make certificat-verifier    les deux copies concordent ?
-  make certificat-refait      REMPLACE la clé (rompt le lien)
-  make signer                 signe les paquets de la fabrication
-  make empreinte-certificat   son empreinte SHA-256
-
-Après coup
-  make documents              readme, install, licence, changelog, empreintes
-  make verifier               relit et contrôle ce qui a été produit
-  make empreintes             recalcule les .sha256
-  make propre                 vide build/paquets
-
-  make version                affiche la version qui serait utilisée
-  make aide                   ce résumé
-```
+Yes. They bundle the Python interpreter and Qt, so as to require **nothing**
+of the machine. The other systems rely on their own Python.
 
 ---
 
-## Où vit quoi, dans `packaging/`
+## 11. Every target
 
 ```
-Makefile               enchaîne les cibles
-common.py              ce qui ne dépend d'aucun système : identité,
-                       copie du logiciel, roues, interpréteurs embarqués
-build.py          --outils, --deps
-build_debian.py   le .deb et l'installateur .run
-build_fedora.py   le .rpm
-build_windows.py  le .exe, le .msi, l'archive portable
-build_macos.py    le .app, le .zip, le .pkg
-build_source.py   le .tar.gz
-macos_pkg.py           le format .pkg, écrit de bout en bout
-signature.py           certificat X.509, Authenticode, CMS
-certificate.py          crée, recrée et dépose le certificat
-verify.py            rouvre et contrôle ce qui a été produit
-languages.py             les libellés des installateurs, 11 langues
-langues/               installateur.json — 51 libellés × 11 langues
-gabarits/              control, .spec, .nsi, .wxs, Info.plist, lanceurs
+Preparation
+  make tools                     what is installed, what is missing
+  make deps                      install NSIS and msitools without sudo
+
+One system
+  make debian                    .deb and .run
+  make fedora                    .rpm
+  make windows                   .zip .exe .msi
+  make macos                     .zip .pkg
+  make source                    .tar.gz
+
+Several
+  make all                       the nine packages, signed
+  make linux                     .deb .run .rpm
+  make offline                   with the libraries bundled
+
+Firmware
+  make firmware                  build the .uf2 and file it with the rest
+  make deliverables              the packages AND the firmware
+
+Signing
+  make certificate               create it, and fill certificate/
+  make certificate-status        what exists, and where
+  make certificate-verify        do both copies agree?
+  make certificate-renew         REPLACE the key (breaks the link)
+  make sign                      sign this build's packages
+  make certificate-fingerprint   its SHA-256 fingerprint
+
+Afterwards
+  make documents                 readme, install, licence, changelog, checksums
+  make verify                    reread and check what was produced
+  make checksums                 recompute the .sha256 files
+  make clean                     empty build/packages
+
+  make version                   print the version that would be used
+  make help                      this summary — and the default goal
+```
+
+---
+
+## Where everything lives, in `packaging/`
+
+```
+Makefile               chains the targets
+common.py              what depends on no particular system: identity,
+                       copying the software, wheels, bundled interpreters
+build.py               --outils, --deps, and the five generators below
+build_debian.py        the .deb and the .run installer
+build_fedora.py        the .rpm
+build_windows.py       the .exe, the .msi, the portable archive
+build_macos.py         the .app, the .zip, the .pkg
+build_source.py        the .tar.gz
+macos_pkg.py           the .pkg format, written end to end
+signature.py           X.509 certificate, Authenticode, CMS
+certificate.py         creates, recreates and installs the certificate
+verify.py              reopens and checks what was produced
+languages.py           the installers' labels, 11 languages
+languages/             installateur.json — 104 labels × 11 languages
+templates/             control, .spec, .nsi, .wxs, Info.plist, launchers
 ```
 
 ---

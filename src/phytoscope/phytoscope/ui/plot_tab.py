@@ -2,19 +2,19 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/ui/plot_tab.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
-"""Traceur — un gnuplot intégré, pour tracer autre chose que le signal brut.
+"""Traceur — un gnuplot intégré, pour tracer autre chose que le signal raw.
 
 Pourquoi imiter gnuplot ? Parce que c'est la langue commune des gens qui
 tracent des courbes depuis quarante ans, parce qu'elle est concise, et
@@ -38,14 +38,14 @@ Commandes reconnues (sous-ensemble volontairement restreint) :
     set key on|off                               légende
     set style <style>                            style par défaut
     set samples <n>                              points maximum tracés
-    set window <secondes>                        durée analysée
-    export png|svg|dat|gp <fichier>              exportation
+    set window <seconds>                        durée analysée
+    export png|svg|dat|gp <file_path>              exportation
     help                                         aide
 
-Sources disponibles : signal, brut, spectre, densite, histogramme,
-autocorrelation, allan, evenements, bloc.
+Sources disponibles : signal, raw, spectre, densite, histogramme,
+autocorrelation, allan, events, bloc.
 
-Motif de conception : *Command* — chaque instruction est un objet exécutable
+Motif de conception : *Command* — chaque instruction est un obj exécutable
 enregistré dans une table, ce qui rend l'ajout d'une commande trivial.
 """
 from __future__ import annotations
@@ -78,15 +78,15 @@ log = get_logger(__name__)
 STYLES = ("lines", "points", "linespoints", "impulses", "steps", "dots", "boxes")
 
 SOURCES: Dict[str, str] = {
-    "signal": "signal filtré, en fonction du temps",
-    "brut": "signal avant filtrage",
-    "spectre": "densité spectrale de puissance (dB)",
-    "densite": "densité d'amplitude (V/√Hz)",
-    "histogramme": "distribution des amplitudes",
-    "autocorrelation": "autocorrélation normalisée",
-    "allan": "écart-type d'Allan (stabilité)",
-    "evenements": "amplitude des événements détectés",
-    "bloc": "dernier bloc de l'échantillonneur",
+    "signal": "filtered signal, against time",
+    "raw": "signal before filtering",
+    "spectre": "power spectral density (dB)",
+    "densite": "amplitude density (V/√Hz)",
+    "histogramme": "distribution of amplitudes",
+    "autocorrelation": "normalised autocorrelation",
+    "allan": "Allan deviation (stability)",
+    "events": "amplitude of the detected events",
+    "bloc": "last block from the sampler",
 }
 
 
@@ -108,35 +108,35 @@ class PlotState:
     style: str = "lines"
     samples: int = 4000
     window_s: float = 60.0
-    courbes: List[Tuple[str, str, str]] = field(default_factory=list)  # source, style, titre
+    courbes: List[Tuple[str, str, str]] = field(default_factory=list)  # source, style, title
 
     def to_gnuplot(self) -> str:
         """Script gnuplot équivalent — pour refaire la figure hors du logiciel."""
-        lignes = ["#!/usr/bin/env gnuplot",
+        rows = ["#!/usr/bin/env gnuplot",
                   "# Généré par PhytoScope — les données sont dans le .dat associé",
                   "set terminal pngcairo size 1200,700 font 'Lato,11'",
                   "set output 'figure.png'"]
         if self.title:
-            lignes.append(f'set title "{self.title}"')
-        lignes.append(f'set xlabel "{self.xlabel}"')
-        lignes.append(f'set ylabel "{self.ylabel}"')
+            rows.append(f'set title "{self.title}"')
+        rows.append(f'set xlabel "{self.xlabel}"')
+        rows.append(f'set ylabel "{self.ylabel}"')
         if self.logx:
-            lignes.append("set logscale x")
+            rows.append("set logscale x")
         if self.logy:
-            lignes.append("set logscale y")
-        lignes.append("set grid" if self.grid else "unset grid")
-        lignes.append("set key on" if self.key else "unset key")
+            rows.append("set logscale y")
+        rows.append("set grid" if self.grid else "unset grid")
+        rows.append("set key on" if self.key else "unset key")
         bornes = lambda r: (f"[{'*' if r[0] is None else r[0]}:"       # noqa: E731
                             f"{'*' if r[1] is None else r[1]}]")
-        lignes.append(f"set xrange {bornes(self.xrange)}")
-        lignes.append(f"set yrange {bornes(self.yrange)}")
+        rows.append(f"set xrange {bornes(self.xrange)}")
+        rows.append(f"set yrange {bornes(self.yrange)}")
         if self.courbes:
             morceaux = []
-            for i, (source, style, titre) in enumerate(self.courbes):
+            for i, (source, style, title) in enumerate(self.courbes):
                 morceaux.append(f"'donnees.dat' index {i} with {style} "
-                                f"title \"{titre or source}\"")
-            lignes.append("plot " + ", \\\n     ".join(morceaux))
-        return "\n".join(lignes) + "\n"
+                                f"title \"{title or source}\"")
+            rows.append("plot " + ", \\\n     ".join(morceaux))
+        return "\n".join(rows) + "\n"
 
 
 # ---------------------------------------------------------------------------
@@ -168,7 +168,7 @@ class Interpreter:
         fn = self.commandes.get(cmd)
         if fn is None:
             return (f"commande inconnue : « {cmd} ». "
-                    "Tapez « help » pour la liste.")
+                    "Tapez « help » pour la entries.")
         try:
             resultat = fn(jetons[1:])
         except Exception as exc:                       # noqa: BLE001
@@ -186,7 +186,7 @@ class Interpreter:
             return (f"source inconnue : « {source} ». Disponibles : "
                     + ", ".join(SOURCES))
         style = self.state.style
-        titre = ""
+        title = ""
         i = 1
         while i < len(args):
             mot = args[i].lower()
@@ -194,13 +194,13 @@ class Interpreter:
                 style = args[i + 1].lower()
                 i += 2
             elif mot in ("title", "t") and i + 1 < len(args):
-                titre = args[i + 1]
+                title = args[i + 1]
                 i += 2
             else:
                 i += 1
         if style not in STYLES:
             return f"style inconnu : « {style} ». Disponibles : " + ", ".join(STYLES)
-        self.state.courbes = [(source, style, titre)]
+        self.state.courbes = [(source, style, title)]
         return f"tracé : {source} ({SOURCES[source]})"
 
     def _replot(self, _args: List[str]) -> str:
@@ -212,63 +212,63 @@ class Interpreter:
 
     def _set(self, args: List[str]) -> str:
         if not args:
-            return "usage : set <paramètre> <valeur>"
-        cle = args[0].lower()
+            return "usage : set <paramètre> <value>"
+        key = args[0].lower()
         reste = args[1:]
         s = self.state
-        if cle == "title":
+        if key == "title":
             s.title = " ".join(reste)
-        elif cle == "xlabel":
+        elif key == "xlabel":
             s.xlabel = " ".join(reste)
-        elif cle == "ylabel":
+        elif key == "ylabel":
             s.ylabel = " ".join(reste)
-        elif cle in ("xrange", "yrange"):
+        elif key in ("xrange", "yrange"):
             bornes = self._bornes(" ".join(reste))
             if bornes is None:
                 return "usage : set xrange [min:max]  (« * » pour automatique)"
-            setattr(s, cle, bornes)
-        elif cle == "logscale":
+            setattr(s, key, bornes)
+        elif key == "logscale":
             axes = (reste[0].lower() if reste else "y")
             s.logx = "x" in axes
             s.logy = "y" in axes
-        elif cle == "grid":
+        elif key == "grid":
             s.grid = True
-        elif cle == "key":
-            s.key = not reste or reste[0].lower() not in ("off", "0", "non")
-        elif cle == "style":
+        elif key == "key":
+            s.key = not reste or reste[0].lower() not in ("off", "0", "no")
+        elif key == "style":
             if not reste or reste[0].lower() not in STYLES:
                 return "styles : " + ", ".join(STYLES)
             s.style = reste[0].lower()
-        elif cle == "samples":
+        elif key == "samples":
             s.samples = max(int(float(reste[0])), 32)
-        elif cle == "window":
+        elif key == "window":
             s.window_s = max(float(reste[0]), 1.0)
         else:
-            return f"paramètre inconnu : « {cle} »"
-        return f"{cle} → {' '.join(reste) if reste else 'activé'}"
+            return f"paramètre inconnu : « {key} »"
+        return f"{key} → {' '.join(reste) if reste else 'activé'}"
 
     def _unset(self, args: List[str]) -> str:
         if not args:
             return "usage : unset <paramètre>"
-        cle = args[0].lower()
+        key = args[0].lower()
         s = self.state
-        if cle == "logscale":
+        if key == "logscale":
             s.logx = s.logy = False
-        elif cle == "grid":
+        elif key == "grid":
             s.grid = False
-        elif cle == "key":
+        elif key == "key":
             s.key = False
-        elif cle == "title":
+        elif key == "title":
             s.title = ""
-        elif cle in ("xrange", "yrange"):
-            setattr(s, cle, (None, None))
+        elif key in ("xrange", "yrange"):
+            setattr(s, key, (None, None))
         else:
-            return f"paramètre inconnu : « {cle} »"
-        return f"{cle} désactivé"
+            return f"paramètre inconnu : « {key} »"
+        return f"{key} désactivé"
 
     def _export(self, args: List[str]) -> str:
         if len(args) < 2:
-            return "usage : export png|svg|dat|gp <fichier>"
+            return "usage : export png|svg|dat|gp <file_path>"
         return self.on_export(args[0].lower(), args[1])
 
     def _show(self, _args: List[str]) -> str:
@@ -277,28 +277,28 @@ class Interpreter:
                 f"logx={s.logx} logy={s.logy} grid={s.grid} key={s.key}")
 
     def _help(self, _args: List[str]) -> str:
-        lignes = ["Commandes :",
+        rows = ["Commandes :",
                   "  plot <source> [with <style>] [title \"...\"]",
                   "  replot | clear | show | help",
-                  "  set title|xlabel|ylabel \"texte\"",
+                  "  set title|xlabel|ylabel \"text\"",
                   "  set xrange [a:b] | set yrange [a:b]   (« * » = auto)",
                   "  set logscale x|y|xy | unset logscale",
                   "  set grid | unset grid | set key on|off",
                   "  set style <style> | set samples <n> | set window <s>",
-                  "  export png|svg|dat|gp <fichier>",
+                  "  export png|svg|dat|gp <file_path>",
                   "",
                   "Sources :"]
-        lignes += [f"  {k:<16} {v}" for k, v in SOURCES.items()]
-        lignes += ["", "Styles : " + ", ".join(STYLES)]
-        return "\n".join(lignes)
+        rows += [f"  {k:<16} {v}" for k, v in SOURCES.items()]
+        rows += ["", "Styles : " + ", ".join(STYLES)]
+        return "\n".join(rows)
 
     @staticmethod
-    def _bornes(texte: str) -> Optional[Tuple[Optional[float], Optional[float]]]:
-        m = re.match(r"^\s*\[?\s*([^:\]]*)\s*:\s*([^\]]*)\s*\]?\s*$", texte or "")
+    def _bornes(text: str) -> Optional[Tuple[Optional[float], Optional[float]]]:
+        m = re.match(r"^\s*\[?\s*([^:\]]*)\s*:\s*([^\]]*)\s*\]?\s*$", text or "")
         if not m:
             return None
 
-        def lire(v: str) -> Optional[float]:
+        def read(v: str) -> Optional[float]:
             v = v.strip()
             if not v or v == "*":
                 return None
@@ -306,7 +306,7 @@ class Interpreter:
                 return float(v)
             except ValueError:
                 return None
-        return (lire(m.group(1)), lire(m.group(2)))
+        return (read(m.group(1)), read(m.group(2)))
 
 
 # ---------------------------------------------------------------------------
@@ -331,7 +331,7 @@ class PlotTab(QWidget):
         pv = QVBoxLayout(panneau)
         pv.setContentsMargins(0, 0, 0, 0)
 
-        gsrc = QGroupBox(t("Données"))
+        gsrc = QGroupBox(t("Data"))
         f1 = QFormLayout(gsrc)
         self.cb_source = QComboBox()
         for k, v in SOURCES.items():
@@ -347,47 +347,47 @@ class PlotTab(QWidget):
         self.sp_samples.setValue(4000)
         self.sp_samples.valueChanged.connect(self._depuis_panneau)
         f1.addRow(t("Source"), self.cb_source)
-        f1.addRow(t("Durée analysée"), self.sp_window)
-        f1.addRow(t("Points tracés"), self.sp_samples)
+        f1.addRow(t("Analysed duration"), self.sp_window)
+        f1.addRow(t("Plotted points"), self.sp_samples)
         pv.addWidget(gsrc)
 
-        gaff = QGroupBox(t("Affichage"))
+        gaff = QGroupBox(t("Display"))
         f2 = QFormLayout(gaff)
         self.cb_style = QComboBox()
         self.cb_style.addItems(STYLES)
         self.cb_style.currentIndexChanged.connect(self._depuis_panneau)
-        self.chk_logx = QCheckBox(t("échelle log en x"))
-        self.chk_logy = QCheckBox(t("échelle log en y"))
-        self.chk_grid = QCheckBox("grille")
+        self.chk_logx = QCheckBox(t("log scale on x"))
+        self.chk_logy = QCheckBox(t("log scale on y"))
+        self.chk_grid = QCheckBox(t("grid"))
         self.chk_grid.setChecked(True)
-        self.chk_key = QCheckBox(t("légende"))
+        self.chk_key = QCheckBox(t("key"))
         self.chk_key.setChecked(True)
         for c in (self.chk_logx, self.chk_logy, self.chk_grid, self.chk_key):
             c.stateChanged.connect(self._depuis_panneau)
         self.ed_title = QLineEdit()
         self.ed_title.editingFinished.connect(self._depuis_panneau)
         f2.addRow(t("Style"), self.cb_style)
-        f2.addRow(t("Titre"), self.ed_title)
+        f2.addRow(t("Title"), self.ed_title)
         f2.addRow(self.chk_logx)
         f2.addRow(self.chk_logy)
         f2.addRow(self.chk_grid)
         f2.addRow(self.chk_key)
         pv.addWidget(gaff)
 
-        gexp = QGroupBox(t("Exportation"))
+        gexp = QGroupBox(t("Export"))
         f3 = QVBoxLayout(gexp)
-        for libelle, genre in ((t("Image PNG…"), "png"), (t("Image SVG…"), "svg"),
-                               (t("Données (texte)…"), "dat"),
-                               (t("Script gnuplot…"), "gp"),
-                               (t("Rapport de mesure…"), "rapport")):
-            b = QPushButton(libelle)
+        for label, genre in ((t("PNG image…"), "png"), (t("SVG image…"), "svg"),
+                               (t("Data (text)…"), "dat"),
+                               (t("gnuplot script…"), "gp"),
+                               (t("Measurement report…"), "report")):
+            b = QPushButton(label)
             b.clicked.connect(lambda _=False, g=genre: self._exporter_dialogue(g))
             f3.addWidget(b)
         pv.addWidget(gexp)
 
         self.lab_info = QLabel("")
         self.lab_info.setWordWrap(True)
-        self.lab_info.setStyleSheet(f"color:{palette['texte2']};font-size:8pt;")
+        self.lab_info.setStyleSheet(f"color:{palette['text2']};font-size:8pt;")
         pv.addWidget(self.lab_info)
         pv.addStretch(1)
 
@@ -397,7 +397,7 @@ class PlotTab(QWidget):
         self.console.setFont(fonts.mono(8))
         self.console.setMaximumHeight(130)
         self.console.setPlainText(
-            "Traceur PhytoScope — tapez « help » pour la liste des commandes.\n")
+            "Traceur PhytoScope — tapez « help » pour la entries des commandes.\n")
         self.entree = QLineEdit()
         self.entree.setPlaceholderText(t("plot spectre with lines title \"bruit\""))
         self.entree.setFont(fonts.mono(9))
@@ -450,7 +450,7 @@ class PlotTab(QWidget):
     def _appliquer_etat(self) -> None:
         """Répercute l'état sur le panneau et sur le graphique."""
         s = self.state
-        for widget, valeur, setter in (
+        for widget, value, setter in (
                 (self.sp_window, s.window_s, "setValue"),
                 (self.sp_samples, s.samples, "setValue"),
                 (self.chk_logx, s.logx, "setChecked"),
@@ -458,7 +458,7 @@ class PlotTab(QWidget):
                 (self.chk_grid, s.grid, "setChecked"),
                 (self.chk_key, s.key, "setChecked")):
             widget.blockSignals(True)
-            getattr(widget, setter)(valeur)
+            getattr(widget, setter)(value)
             widget.blockSignals(False)
         if s.courbes:
             source = s.courbes[0][0]
@@ -500,10 +500,10 @@ class PlotTab(QWidget):
         """Renvoie (x, y, libellé x, libellé y) pour la source demandée."""
         fs = self.engine.settings.acquisition.sample_rate
         s = self.state
-        brut = source == "brut"
+        raw = source == "raw"
 
-        if source in ("signal", "brut"):
-            y = self.engine.recent(s.window_s, raw=brut)
+        if source in ("signal", "raw"):
+            y = self.engine.recent(s.window_s, raw=raw)
             duree = y.size / max(fs, 1e-9)
             if y.size > s.samples:
                 y = decimate(y, int(math.ceil(y.size / s.samples)))
@@ -528,8 +528,8 @@ class PlotTab(QWidget):
             sp = analysis.spectre(x_sig, fs, nperseg=min(8192, x_sig.size))
             if source == "spectre":
                 y = 10 * np.log10(np.maximum(sp.psd_v2_hz, 1e-30))
-                return sp.freqs, y, "fréquence (Hz)", "densité (dB V²/Hz)"
-            return sp.freqs, sp.asd_v_rthz, "fréquence (Hz)", "densité (V/√Hz)"
+                return sp.freqs, y, "frequency (Hz)", "densité (dB V²/Hz)"
+            return sp.freqs, sp.asd_v_rthz, "frequency (Hz)", "densité (V/√Hz)"
 
         if source == "histogramme":
             centres, densite = analysis.histogramme(x_sig, bins=min(128, s.samples))
@@ -544,7 +544,7 @@ class PlotTab(QWidget):
             res = analysis.allan_deviation(x_sig, fs)
             return res.taus, res.deviations, "durée d'intégration (s)", "σ(τ) (V)"
 
-        if source == "evenements":
+        if source == "events":
             rec = getattr(self.engine, "_evenements_recents", None)
             if not rec:
                 return np.zeros(0), np.zeros(0), "temps (s)", "amplitude (V)"
@@ -566,10 +566,10 @@ class PlotTab(QWidget):
             x, y, xl, yl = self._donnees(source)
         except Exception as exc:                       # noqa: BLE001
             log.exception("Calcul de la source « %s » impossible", source)
-            self.lab_info.setText(f"erreur : {exc}")
+            self.lab_info.setText(t("error: {erreur}").format(erreur=exc))
             return
         if x.size == 0:
-            self.lab_info.setText(t("pas encore assez de données"))
+            self.lab_info.setText(t("not enough data yet"))
             return
         self._dernier = (x, y)
         s = self.state
@@ -579,8 +579,8 @@ class PlotTab(QWidget):
         if s.logy:
             y = np.log10(np.maximum(np.abs(y), 1e-30))
         if s.logx:
-            garde = x > 0
-            x, y = x[garde], y[garde]
+            kept = x > 0
+            x, y = x[kept], y[kept]
         self.plot.set_data(x, y)
         if s.yrange[0] is not None and s.yrange[1] is not None:
             self.plot.set_y_range(s.yrange[0], s.yrange[1])
@@ -589,60 +589,60 @@ class PlotTab(QWidget):
         self.lab_info.setText(
             f"{source} — {x.size} points · x ∈ [{x.min():.4g} ; {x.max():.4g}] "
             f"· y ∈ [{y.min():.4g} ; {y.max():.4g}]"
-            + ("  (échelle log en y : valeurs en log₁₀)" if s.logy else ""))
+            + ("  (échelle log en y : values en log₁₀)" if s.logy else ""))
 
     # -- exportation ---------------------------------------------------------
     def _exporter_dialogue(self, genre: str) -> None:
         extensions = {"png": "Image PNG (*.png)", "svg": "Image SVG (*.svg)",
                       "dat": "Données (*.dat *.txt)", "gp": "Script gnuplot (*.gp)",
-                      "rapport": "Rapport (*.txt)"}
-        defaut = {"png": "figure.png", "svg": "figure.svg", "dat": "donnees.dat",
-                  "gp": "figure.gp", "rapport": "rapport.txt"}
-        chemin, _ = QFileDialog.getSaveFileName(
-            self, t("Exporter"), defaut.get(genre, "sortie"),
+                      "report": "Rapport (*.txt)"}
+        fallback = {"png": "figure.png", "svg": "figure.svg", "dat": "donnees.dat",
+                  "gp": "figure.gp", "report": "report.txt"}
+        path, _ = QFileDialog.getSaveFileName(
+            self, t("Export"), fallback.get(genre, "output"),
             extensions.get(genre, "Tous (*)"))
-        if not chemin:
+        if not path:
             return
-        message = self._exporter(genre, chemin)
+        message = self._exporter(genre, path)
         self.console.appendPlainText(message)
 
-    def _exporter(self, genre: str, chemin: str) -> str:
+    def _exporter(self, genre: str, path: str) -> str:
         try:
             if genre == "gp":
-                with open(chemin, "w", encoding="utf-8") as f:
+                with open(path, "w", encoding="utf-8") as f:
                     f.write(self.state.to_gnuplot())
-                dat = os.path.join(os.path.dirname(chemin) or ".", "donnees.dat")
+                dat = os.path.join(os.path.dirname(path) or ".", "donnees.dat")
                 self._ecrire_dat(dat)
-                return f"script écrit : {chemin} (et {os.path.basename(dat)})"
+                return f"script écrit : {path} (et {os.path.basename(dat)})"
             if genre == "dat":
-                self._ecrire_dat(chemin)
-                return f"données écrites : {chemin}"
-            if genre == "rapport":
+                self._ecrire_dat(path)
+                return f"données écrites : {path}"
+            if genre == "report":
                 fs = self.engine.settings.acquisition.sample_rate
                 x = self.engine.recent(self.state.window_s)
-                with open(chemin, "w", encoding="utf-8") as f:
+                with open(path, "w", encoding="utf-8") as f:
                     f.write(analysis.rapport_complet(x, fs) + "\n")
-                return f"rapport écrit : {chemin}"
+                return f"report écrit : {path}"
             if genre in ("png", "svg"):
-                return self._exporter_image(genre, chemin)
+                return self._exporter_image(genre, path)
         except OSError as exc:
             log.error("Exportation impossible : %s", exc)
             return f"erreur d'écriture : {exc}"
         return f"format inconnu : {genre}"
 
-    def _ecrire_dat(self, chemin: str) -> None:
+    def _ecrire_dat(self, path: str) -> None:
         if self._dernier is None:
             raise OSError("aucune donnée à écrire")
         x, y = self._dernier
         s = self.state
         source = s.courbes[0][0] if s.courbes else "signal"
-        with open(chemin, "w", encoding="utf-8") as f:
+        with open(path, "w", encoding="utf-8") as f:
             f.write(f"# PhytoScope — source « {source} »\n")
             f.write(f"# {s.xlabel}\t{s.ylabel}\n")
             for a, b in zip(x.tolist(), y.tolist()):
                 f.write(f"{a:.9g}\t{b:.9g}\n")
 
-    def _exporter_image(self, genre: str, chemin: str) -> str:
+    def _exporter_image(self, genre: str, path: str) -> str:
         if HAVE_PYQTGRAPH and getattr(self.plot, "_pg_plot", None) is not None:
             try:
                 import pyqtgraph.exporters as exporters
@@ -651,11 +651,11 @@ class PlotTab(QWidget):
                     exp.parameters()["width"] = 1600
                 else:
                     exp = exporters.SVGExporter(self.plot._pg_plot.plotItem)
-                exp.export(chemin)
-                return f"image écrite : {chemin}"
+                exp.export(path)
+                return f"image écrite : {path}"
             except Exception as exc:                   # noqa: BLE001
-                log.warning("Exportateur pyqtgraph indisponible : %s", exc)
+                log.warning("Exporter pyqtgraph indisponible : %s", exc)
         pm = self.plot.grab()
-        if pm.save(chemin):
-            return f"image écrite : {chemin}"
+        if pm.save(path):
+            return f"image écrite : {path}"
         return "écriture de l'image impossible"

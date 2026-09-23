@@ -1,312 +1,391 @@
-# Micrologiciel PhytoSense One
+# PhytoSense One firmware
 
-Micrologiciel de la carte d'acquisition décrite dans *La Carte PhytoSense*.
+Firmware for the acquisition board described in *The PhytoSense Board*.
 
-**Cible** : RP2350 (Raspberry Pi) · **SDK** : Pico SDK 2.0 ou plus récent · **Pile USB** : TinyUSB
-**Licence** : MIT · Bretagne Namasté — https://bretagne-namaste.com
+**Target**: RP2350 (Raspberry Pi) · **SDK**: Pico SDK 2.0 or newer · **USB stack**: TinyUSB
+**Licence**: MIT · Bretagne Namasté — https://bretagne-namaste.com
 
 ---
 
-## 1. Ce qu'il fait, et ce qu'il ne fait pas
+## 1. What it does, and what it does not
 
-Il fait quatre choses, et rien d'autre :
+It does four things, and nothing else:
 
-1. il cadence le convertisseur ADS131M04 et lit ses quatre voies ;
-2. il **horodate** chaque échantillon par un compteur 64 bits issu du TCXO ;
-3. il pousse le flux sur USB en **classe audio 2.0**, sans pilote ;
-4. il répond au dialogue de contrôle sur le port série virtuel.
+1. it clocks the ADS131M04 converter and reads its four channels;
+2. it **timestamps** every sample with a 64-bit counter driven by the TCXO;
+3. it pushes the stream over USB as **audio class 2.0**, with no driver;
+4. it answers the control dialogue on the virtual serial port.
 
-Il **n'interprète rien** : aucune détection d'événement, aucune règle musicale,
-aucun filtrage autre que celui du convertisseur. Tout cela est calculé sur
-l'ordinateur, où c'est modifiable, vérifiable et remplaçable.
+It **interprets nothing**: no event detection, no musical rule, no filtering
+beyond the converter's own. All of that is computed on the computer, where it
+can be changed, checked and replaced.
 
-Seule exception : la **sortie MIDI directe**, qui embarque une version réduite du
-moteur de correspondance pour attaquer un synthétiseur matériel sans passer par la
-chaîne audio de l'ordinateur. Elle ne rend pas la carte indépendante : l'ordinateur
-reste requis pour la régler, recevoir le flux et enregistrer.
+The one exception is the **direct MIDI output**, which carries a reduced
+version of the mapping engine so as to drive a hardware synthesizer without
+going through the computer's audio chain. It does not make the board
+independent: the computer is still needed to set it up, to receive the stream
+and to record.
 
-### Répartition des deux cœurs
+### How the two cores divide the work
 
-| Cœur | Tâche | Contrainte |
+| Core | Task | Constraint |
 |---|---|---|
-| 0 | Service du convertisseur, horodatage, tampon circulaire | boucle bornée, aucune allocation, aucune attente |
-| 1 | USB, dialogue de contrôle, capteurs d'ambiance, MIDI, afficheur | peut bloquer sans conséquence pour la mesure |
+| 0 | USB, control dialogue, environmental sensors, MIDI, display | may block without consequence |
+| 1 | Servicing the converter, timestamping, the ring buffer | bounded loop, no allocation, no I/O |
 
-Les deux cœurs ne partagent que le tampon circulaire, par des indices atomiques.
-C'est la raison pour laquelle le flux ne présente aucun trou même lorsque
-l'ordinateur interroge la carte en pleine acquisition.
+`main()` runs on core 0 by definition, and `multicore_launch_core1()` starts
+the measurement loop on core 1. Until 2026-09-23 the function was named
+`coeur0_boucle` and this table said the opposite: the code was right and the
+names were wrong, so the names were changed. Which core does which does not
+matter — that they are separate does.
+
+The two cores share nothing but the ring buffer, through atomic indices. That
+is why the stream has no gaps even while the computer is interrogating the
+board in the middle of an acquisition.
 
 ---
 
-## 2. Où télécharger le SDK pour le RP2350
+## 2. Where to get the SDK for the RP2350
 
-Le RP2350 exige le **Pico SDK version 2.0.0 au minimum** — les versions 1.x ne
-connaissent que le RP2040 et échoueront à la configuration. La version 2.1.x est
-recommandée.
+The RP2350 requires **Pico SDK 2.0.0 as a minimum** — the 1.x versions know
+only the RP2040 and will fail at configuration time. 2.1.x or newer is
+recommended.
 
-### Le SDK
+### The SDK
 
 ```bash
 git clone --branch 2.1.1 https://github.com/raspberrypi/pico-sdk.git
 cd pico-sdk
-git submodule update --init          # indispensable : TinyUSB est un sous-module
-export PICO_SDK_PATH=$PWD            # à mettre dans ~/.bashrc ou ~/.zshrc
+git submodule update --init          # essential: TinyUSB is a submodule
+export PICO_SDK_PATH=$PWD            # put this in ~/.bashrc or ~/.zshrc
 ```
 
-> **L'oubli de `git submodule update --init` est l'erreur numéro un.** Sans lui,
-> `tinyusb` reste vide, et la compilation échoue sur `tusb.h: No such file`.
+> **Forgetting `git submodule update --init` is mistake number one.** Without
+> it, `tinyusb` stays empty and the build fails on `tusb.h: No such file`.
 
-| Élément | Adresse |
+| Item | Address |
 |---|---|
-| Pico SDK (dépôt officiel) | https://github.com/raspberrypi/pico-sdk |
-| Documentation du SDK | https://www.raspberrypi.com/documentation/pico-sdk/ |
-| Fiche technique RP2350 | https://datasheets.raspberrypi.com/rp2350/rp2350-datasheet.pdf |
-| Guide matériel RP2350 | https://datasheets.raspberrypi.com/rp2350/hardware-design-with-rp2350.pdf |
-| Exemples officiels | https://github.com/raspberrypi/pico-examples |
+| Pico SDK (official repository) | https://github.com/raspberrypi/pico-sdk |
+| SDK documentation | https://www.raspberrypi.com/documentation/pico-sdk/ |
+| RP2350 datasheet | https://datasheets.raspberrypi.com/rp2350/rp2350-datasheet.pdf |
+| RP2350 hardware design guide | https://datasheets.raspberrypi.com/rp2350/hardware-design-with-rp2350.pdf |
+| Official examples | https://github.com/raspberrypi/pico-examples |
 | TinyUSB (documentation) | https://docs.tinyusb.org/ |
 
-### La chaîne de compilation croisée
+### The cross toolchain
 
-| Système | Commande |
+| System | Command |
 |---|---|
-| Debian, Ubuntu, Mint | `sudo apt install cmake gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib build-essential git python3` |
+| Debian, Ubuntu, Mint | `sudo apt install cmake gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib git python3` |
 | Fedora, RHEL, Rocky | `sudo dnf install cmake arm-none-eabi-gcc-cs arm-none-eabi-newlib git python3` |
 | Arch, Manjaro | `sudo pacman -S cmake arm-none-eabi-gcc arm-none-eabi-newlib git python` |
-| macOS (Homebrew) | `brew install cmake` puis `brew install --cask gcc-arm-embedded` |
-| Windows | Installateur officiel **Pico SDK for Windows** — https://github.com/raspberrypi/pico-setup-windows/releases |
+| macOS (Homebrew) | `brew install cmake`, then `brew install --cask gcc-arm-embedded` |
+| Windows | The official **Pico SDK for Windows** installer — https://github.com/raspberrypi/pico-setup-windows |
 
-Sous Debian et Ubuntu, vérifiez que la version d'`arm-none-eabi-gcc` est au moins
-la 10 : `arm-none-eabi-gcc --version`. Les versions plus anciennes ne connaissent
-pas le cœur Cortex-M33 du RP2350.
+On Debian and Ubuntu, check that `arm-none-eabi-gcc` is at least version 10:
+`arm-none-eabi-gcc --version`. Older versions do not know the RP2350's
+Cortex-M33 core.
 
-### Le fichier `pico_sdk_import.cmake`
+### The `pico_sdk_import.cmake` file
 
-Il n'est pas fourni ici : il appartient au SDK et doit en être copié, afin de
-rester synchronisé avec lui.
+It is not shipped here: it belongs to the SDK and must be copied from it, so
+that it stays in step with it.
 
 ```bash
 cp "$PICO_SDK_PATH/external/pico_sdk_import.cmake" .
 ```
 
-### Solution sans rien installer
+### Installing nothing at all
 
-L'extension **Raspberry Pi Pico** de Visual Studio Code télécharge le SDK, la
-chaîne de compilation et l'outillage de mise au point toute seule :
+The **Raspberry Pi Pico** extension for Visual Studio Code downloads the SDK,
+the toolchain and the debugging tools by itself:
 https://marketplace.visualstudio.com/items?itemName=raspberry-pi.raspberry-pi-pico
 
 ---
 
-## 3. Construire
+## 3. Building
 
-**Deux scripts, deux usages.**
+**Two scripts, two uses.**
 
-| | Ce qu'il fait | Quand s'en servir |
+| | What it does | When to use it |
 |---|---|---|
-| **`./_make_.sh`** | compile, et rien de plus → `build/phytosense.uf2` | pendant la mise au point, quand on compile vingt fois d'affilée |
-| **`./build.sh`** | compile **puis range le livrable** dans `build/paquets/`, nommé avec sa version, avec ses empreintes et une notice | pour publier, et dans l'intégration continue |
+| **`./_make_.sh`** | builds, and nothing more → `build/phytosense.uf2` | while developing |
+| **`./build.sh`** | builds **and files the deliverable** under `build/packages/`, named with its version | for a release |
 
 ```bash
-./build.sh --deps     # Pico SDK et chaîne ARM dans $HOME, sans sudo — une fois
-./build.sh            # compile et range le livrable
+./build.sh --deps     # Pico SDK and ARM toolchain in $HOME, no sudo — once
+./build.sh            # build and file the deliverable
 ```
 
-La première commande installe le SDK et la chaîne croisée **dans le dossier
-personnel, sans privilèges** (`C-55`). La seconde produit :
+The first command installs the SDK and the cross toolchain **under the home
+directory, without privileges** (`C-55`). The second produces:
 
 ```
-build/phytosense.uf2                        ce que produit la compilation
-build/paquets/<version>-<horodatage>/Firmware/
-    phytosense-<version>.uf2                ce qu'on copie sur la carte
-    phytosense-<version>.elf                pour le débogage
-    phytosense-<version>.bin                image brute
-    phytosense-<version>.sha256             les empreintes
-    LISEZ-MOI.txt                           comment programmer la carte
+build/phytosense.uf2                        what the build produces
+build/packages/<version>-<timestamp>/Firmware/
+    phytosense-<version>.uf2                what you copy onto the board
+    phytosense-<version>.elf                for debugging
+    phytosense-<version>.bin                the raw image
+    phytosense-<version>.sha256             the checksums
+    README.txt                              how to flash the board
 ```
 
-**Pourquoi nommer le fichier avec sa version** : « phytosense.uf2 » tout court,
-sur le disque de quelqu'un six mois plus tard, ne dit pas de quelle version il
-sort. Et le `.uf2` est un livrable à part entière — sans lui, les paquets
-installent un logiciel qui n'a rien à écouter.
+**Why the file carries its version**: a bare "phytosense.uf2" on somebody's
+disk six months later does not say which version it came from. And the `.uf2`
+is a deliverable in its own right — without it, the packages install software
+that has nothing to listen to.
 
-### Les options
+### The options
 
-| Option | Effet |
+| Option | Effect |
 |---|---|
-| `--deps` | installe le Pico SDK et la chaîne ARM dans `$HOME` |
-| `--propre` | repart d'un répertoire de construction vide |
-| `--sortie DOSSIER` | range le livrable ailleurs |
-| `--sans-installer` | compile seulement, comme `./_make_.sh` |
+| `--deps` | installs the Pico SDK and the ARM toolchain under `$HOME` |
+| `--clean` | starts again from an empty build directory |
+| `--output DIR` | files the deliverable somewhere else |
+| `--no-install` | builds only, like `./_make_.sh` |
 
-`build.sh` passe à `_make_.sh` tout ce qu'il ne reconnaît pas : les options de
-compilation restent donc celles de `_make_.sh`.
+The older French names — `--propre`, `--sortie`, `--sans-installer` — are all
+still accepted, so that a script or a habit built on them keeps working.
 
-### À la main, si l'on préfère
+`build.sh` hands `_make_.sh` everything it does not recognise, so the build
+options remain `_make_.sh`'s own.
+
+### By hand, for anyone who prefers it
 
 ```bash
-export PICO_SDK_PATH=/chemin/vers/pico-sdk
+export PICO_SDK_PATH=/path/to/pico-sdk
 cp "$PICO_SDK_PATH/external/pico_sdk_import.cmake" .
 mkdir -p build && cd build
 cmake .. -DPICO_BOARD=pico2 -DCMAKE_BUILD_TYPE=Release
 make -j$(nproc)
-# → phytosense.uf2, phytosense.elf, phytosense.bin
+# -> phytosense.uf2, phytosense.elf, phytosense.bin
 ```
 
-`-DPICO_BOARD=pico2` sélectionne le RP2350. Pour une carte nue, sans définition de
-carte toute faite : `-DPICO_PLATFORM=rp2350 -DPICO_BOARD=none`.
+`-DPICO_BOARD=pico2` selects the RP2350. For a bare board with no ready-made
+board definition: `-DPICO_PLATFORM=rp2350 -DPICO_BOARD=none`.
 
-### Si `cmake` refuse de partir
+### If `cmake` refuses to start
 
 ```
 CMake Error: The current CMakeCache.txt directory … is different than
 the directory … where CMakeCache.txt was created.
 ```
 
-Un cache CMake retient le **chemin absolu** des sources : déplacer ou renommer
-la copie de travail le rend périmé. `_make_.sh` le détecte maintenant et le
-jette de lui-même — ce message ne devrait plus apparaître. Si cela arrive
-quand même : `rm -rf build`.
+A CMake cache remembers the **absolute path** of the sources, so moving or
+renaming the working copy makes it stale. `_make_.sh` now detects that and
+throws the cache away itself — this message should no longer appear. Should it
+happen anyway: `rm -rf build`.
 
 ---
 
-## 4. Programmer la carte
+## 4. Flashing the board
 
-### Voie 1 — glisser-déposer (la plus simple)
+### Route 1 — drag and drop (the simplest)
 
-1. Maintenir **BOOTSEL** enfoncé ;
-2. brancher le câble USB, ou appuyer brièvement sur RESET ;
-3. relâcher BOOTSEL : un volume `RP2350` apparaît ;
-4. y copier `phytosense.uf2` ;
-5. la carte redémarre seule et s'énumère.
+1. hold **BOOTSEL** down;
+2. plug the USB cable in, or press RESET briefly;
+3. release BOOTSEL: a volume named `RP2350` appears;
+4. copy `phytosense.uf2` onto it;
+5. the board restarts by itself and enumerates.
 
-Aucun outil, aucun pilote, aucun droit d'administration. C'est la voie normale.
+No tool, no driver, no administrative rights. This is the normal route.
 
-### Voie 2 — sonde de mise au point (pour développer)
+### Route 2 — a debug probe (for development)
 
-Une seconde carte Pico transformée en sonde suffit. Elle apporte l'exécution pas
-à pas, les points d'arrêt et la console série.
+A second Pico board turned into a probe is enough. It brings single-stepping,
+breakpoints and a serial console.
 
 ```bash
-# téléverser
+# upload
 openocd -f interface/cmsis-dap.cfg -f target/rp2350.cfg \
         -c "adapter speed 5000" -c "program phytosense.elf verify reset exit"
 
-# déboguer
+# debug
 openocd -f interface/cmsis-dap.cfg -f target/rp2350.cfg -c "adapter speed 5000" &
 arm-none-eabi-gdb phytosense.elf -ex "target extended-remote localhost:3333"
 ```
 
-| Élément | Adresse |
+| Item | Address |
 |---|---|
-| Sonde (micrologiciel `debugprobe`) | https://github.com/raspberrypi/debugprobe |
-| OpenOCD, branche Raspberry Pi | https://github.com/raspberrypi/openocd |
+| Probe (the `debugprobe` firmware) | https://github.com/raspberrypi/debugprobe |
+| OpenOCD, Raspberry Pi branch | https://github.com/raspberrypi/openocd |
 
-Le connecteur SWD de la carte est un embase à trois points au pas de 1,27 mm,
-repérée `SWD` sur la sérigraphie : SWCLK, SWDIO, masse.
+The board's SWD connector is a three-pin 1.27 mm header, marked `SWD` in the
+silkscreen: SWCLK, SWDIO, ground.
 
-### Voie 3 — mise à jour par l'utilisateur final
+### Route 3 — an update by the end user
 
-Le logiciel PhytoScope détecte une version de micrologiciel plus ancienne que
-celle qu'il embarque et propose la mise à jour. Elle passe par la même interface
-UF2 : la carte redémarre en mode chargeur, le fichier est copié, la carte revient.
-L'utilisateur ne voit qu'une barre de progression.
-
----
-
-## 5. Les autres composants programmables
-
-| Composant | Ce qu'on y écrit | Comment |
-|---|---|---|
-| **U30** RP2350 | le micrologiciel | UF2 ou SWD, voir ci-dessus |
-| **U31** W25Q128 (flash QSPI) | le micrologiciel et les réglages mémorisés | à travers le RP2350, jamais directement |
-| **EEPROM 24AA02** des cartes filles | type, numéro de série, date et coefficients d'étalonnage | `../outils/provision_eeprom.py`, par le bus I²C de la carte mère |
-| **DS5** afficheur SSD1306 | rien — séquence d'initialisation seulement | envoyée par le micrologiciel au démarrage |
-| **U10** ADS131M04 | registres MODE, CLOCK, GAIN | écrits par `afe_init()` à chaque démarrage |
-| **U63** INA219 | registre de configuration et étalonnage du shunt | écrit par le micrologiciel |
-
-La mémoire de la carte fille est le seul élément à programmer **une fois, en
-fabrication**. Tout le reste est reconstruit à chaque mise sous tension : une
-carte qui perd sa configuration n'existe pas.
-
-### Carte des zones de la mémoire flash
-
-| Adresse | Taille | Contenu |
-|---|---|---|
-| `0x10000000` | 1 Mo | micrologiciel |
-| `0x10100000` | 4 ko | réglages mémorisés (gain, gamme, profil MIDI) |
-| `0x10101000` | 4 ko | étalonnage d'usine — écrit en recette, jamais effacé |
-| `0x10102000` | reste | journal d'événements en anneau |
+The PhytoScope software detects a firmware version older than the one it
+carries and offers to update it. The update goes through the same UF2
+interface: the board restarts in bootloader mode, the file is copied, the board
+comes back. The user sees nothing but a progress bar.
 
 ---
 
-## 6. Fichiers
+## 5. The other programmable parts
 
-| Fichier | Rôle | Lignes |
+| Part | What is written to it | How |
 |---|---|---|
-| `main.c` | boucles des deux cœurs, horodatage, tampon circulaire, remise USB | 246 |
-| `afe.c` / `afe.h` | convertisseur, gain, gamme, auto-test, mémoire de carte fille | 443 + 63 |
-| `protocol.c` / `protocol.h` | dialogue de contrôle, réponses JSON | 276 + 31 |
-| `usb_descriptors.c` | descripteurs du périphérique composite UAC2 + CDC | 221 |
-| `tusb_config.h` | configuration de TinyUSB | 62 |
-| `CMakeLists.txt` | construction | 38 |
-| `_make_.sh` | compile — SDK, chaîne ARM, cmake | — |
-| `build.sh` | compile **et range le livrable** dans `build/paquets/` | — |
+| **U30** RP2350 | the firmware | UF2 or SWD, see above |
+| **U31** W25Q128 (QSPI flash) | the firmware and the stored settings | through the RP2350 |
+| **24AA02 EEPROM** on the daughter boards | type, serial number, date and calibration coefficients | once, in manufacturing |
+| **DS5** SSD1306 display | nothing — an initialisation sequence only | sent by the firmware at every start |
+| **U10** ADS131M04 | the MODE, CLOCK and GAIN registers | written by `afe_init()` at every start |
+| **U63** INA219 | the configuration register and the shunt calibration | written by the firmware |
+
+The daughter board's memory is the only part to be programmed **once, in
+manufacturing**. Everything else is rebuilt at every power-up: a board that
+loses its configuration does not exist.
+
+### Flash memory map
+
+| Address | Size | Content |
+|---|---|---|
+| `0x10000000` | 1 MB | firmware |
+| `0x10100000` | 4 kB | stored settings (gain, range, MIDI profile) |
+| `0x10101000` | 4 kB | factory calibration — written at acceptance, never erased |
+| `0x10102000` | the rest | a ring log of events |
 
 ---
 
-## 7. Vérifier que le micrologiciel fonctionne
+## 6. Files
 
-Sans rien installer d'autre qu'un terminal :
+| File | Role | Lines |
+|---|---|---|
+| `main.c` | the two cores' loops, timestamping, ring buffer, USB hand-off | 274 |
+| `afe.c` / `afe.h` | converter, gain, range, self-test, daughter-board memory | 462 + 80 |
+| `protocol.c` / `protocol.h` | the control dialogue, JSON replies | 301 + 48 |
+| `usb_descriptors.c` | descriptors for the composite UAC2 + CDC device | 254 |
+| `tusb_config.h` | TinyUSB configuration | 88 |
+| `CMakeLists.txt` | the build | 54 |
+| `_make_.sh` | builds — SDK, ARM toolchain, cmake | — |
+| `build.sh` | builds **and files the deliverable** under `build/packages/` | — |
+
+The USB side of all this — every descriptor with its wire bytes, the frame
+layout, the control protocol, and what each host makes of the device — is
+documented in **`sources/usb/reference.html`**, which renders to a 21-page
+`USB-Device-Reference.pdf`.
+
+---
+
+## 7. Checking that the firmware works
+
+With nothing installed but a terminal:
 
 ```bash
-# Linux ou macOS
-screen /dev/ttyACM0 115200        # ou : picocom -b 115200 /dev/ttyACM0
-# Windows : PuTTY, connexion série, 115200 bauds
+# Linux or macOS
+screen /dev/ttyACM0 115200        # or: picocom -b 115200 /dev/ttyACM0
+# Windows: PuTTY, serial connection, 115200 baud
 ```
 
-Taper `?` puis Entrée. La carte doit répondre en une ligne :
+On macOS use `/dev/cu.usbmodem*` and not `/dev/tty.*`: the `tty` node waits for
+carrier detect, which a CDC device never asserts, so opening it blocks.
+
+Type `?` and Enter. The board must answer in one line:
 
 ```
 +{"model":"PhytoSense One","serial":"PS1-4A17C302","firmware":"1.0.0",
   "channels":4,"sample_rate":250.0,"frontend":"FE-Z", ... }
 ```
 
-Si cette ligne apparaît, le microcontrôleur, l'USB, le convertisseur et la mémoire
-de la carte fille fonctionnent tous les quatre. Sinon, le chapitre 10 du document
-indique quoi chercher, dans quel ordre.
+If that line appears, the microcontroller, the USB stack, the converter and the
+daughter board's memory are all four working. If it does not, chapter 10 of the
+board document says what to look for, and in what order. The baud rate is a
+fiction — CDC-ACM carries one because it emulates a UART, and the board ignores
+it; any setting works.
 
 ---
 
-## 8. État de cette publication
+## 8. The state of this publication
 
-**Ces sources compilent.** Elles produisent `phytosense.uf2` (80 ko),
-`phytosense.elf` (764 ko) et `phytosense.bin` (40 ko), pour 44 776 octets de
-code et 106 508 de données. L'intégration continue les compile à chaque
-passage — `.github/workflows/paquets.yml`, job « micrologiciel » — et joint le
-livrable aux artéfacts avec ses empreintes.
+**These sources build.** They produce `phytosense.uf2` (80 kB),
+`phytosense.elf` (764 kB) and `phytosense.bin` (40 kB), for 44,784 bytes of
+code and 106,508 of data. Continuous integration builds them on every push —
+`.github/workflows/packages.yml`, the `firmware` job — and attaches the
+deliverable to the artefacts with its checksums.
 
-> Cette section disait jusqu'au 2026-09-18 que les sources « n'avaient pas été
-> compilées ici ». C'était vrai quand elle a été écrite, et c'est ce que
-> corrige la contrainte `C-3` : **vérifier avant d'affirmer.** La compilation
-> est désormais automatique, et le décompte ci-dessus vient de
-> `arm-none-eabi-size`.
+> Until 2026-09-18 this section said the sources "had not been built here".
+> That was true when it was written, and it is what constraint `C-3` exists to
+> correct: **verify before asserting.** The build is now automatic, and the
+> figures above come from `arm-none-eabi-size`.
 
-### Ce qui reste à éprouver, et qui ne peut pas l'être ici
+### What remains to be proven, and cannot be proven here
 
-**Aucune carte n'a été branchée.** Ce qui compile n'est pas ce qui fonctionne :
-la configuration du convertisseur, le brochage et les temps de réponse
-demandent le matériel. Attendez-vous donc à ajuster :
+**No board has been plugged in.** What builds is not what works: the
+converter's configuration, the pin assignment and the response times all need
+the hardware. So expect to adjust:
 
-- une broche, selon le brochage définitif de votre carte ;
-- les constantes de gain de l'étage d'entrée ;
-- les délais du dialogue avec le convertisseur.
+- a pin, depending on your board's final assignment;
+- the input stage's gain constants;
+- the timings of the dialogue with the converter.
 
-Ce qui est juste, en revanche, et ce qui a demandé le travail : la discipline
-d'horodatage, la séparation des deux cœurs, et le dialogue de contrôle — que
-l'on peut éprouver sans carte, par un terminal série (voir le § 7).
+What is sound, on the other hand, and what took the work: the timestamping
+discipline, the separation of the two cores, and the control dialogue — all of
+which can be exercised without a board, through a serial terminal (see § 7).
 
-### Une dépendance à surveiller
+### Divergences between the descriptors and the behaviour
 
-`usb_descriptors.c` dépend de la macro `TUD_AUDIO_MIC_FOUR_CH_DESCRIPTOR`,
-présente dans TinyUSB depuis la version fournie avec le SDK 2.0. Le SDK utilisé
-est figé dans `_make_.sh` (`SDK_VERSION`), et `tools/sbom.py` le lit là :
-la nomenclature du projet dit donc toujours quelle version est en service.
+Found on 2026-09-23 while writing the USB reference, recorded in its section
+11, and **all three settled the same day**. They are kept here because a board
+flashed with an earlier firmware still shows them.
+
+1. **The UAC2 clock source: settled.** The descriptor advertises a readable
+   sample frequency, and until 2026-09-23 the board stalled the request —
+   `tud_audio_get_req_entity_cb` was not defined, and TinyUSB's weak default
+   logs a line and returns `false`. `usb_descriptors.c` now defines both
+   entity callbacks and answers **250 Hz**, the rate the converter really
+   runs at, with a `RANGE` of one sub-range (`bMin = bMax = 250`, `bRes = 0`)
+   — which is how UAC2 says a value is fixed, and agrees with
+   `AUDIO_CLOCK_SOURCE_ATT_INT_FIX_CLK` in the descriptor.
+
+   A host whose audio stack refuses rates below 8 kHz may still refuse the
+   stream. **That refusal is the correct outcome**: reporting a rate the board
+   does not use would make every timestamp the host derives silently wrong,
+   for as long as the recording lasts. A host that refuses says so at plug-in.
+   The control port (CDC) describes the same stream and owes nothing to the
+   audio class's rate conventions.
+
+   The rate now has **one** home, `AFE_RATE_HZ` in `afe.h`: `main.c` starts
+   the converter with it, `protocol.c` reports it to `identify`, and
+   `usb_descriptors.c` answers the host with it. It had been written down
+   three times, independently.
+
+2. **The isochronous packet: settled.** It was 256 bytes, with a comment
+   claiming it covered the 32 kHz mode. It did not: the drain loop fills a
+   frame with *whole* sample sets, so 256 bytes gave 21 sets — 252 used, four
+   wasted every frame — and a ceiling near 21 kHz, above which samples stayed
+   in the ring and were counted as lost.
+
+   `CFG_TUD_AUDIO_EP_SZ_IN` is now **384**, which is 32 × 12 exactly. A
+   `TU_VERIFY_STATIC` in `main.c` makes a packet that is not a whole number of
+   sample sets a build error. The cost: a host reserves 384 bytes of every
+   frame once it selects alternate setting 1, used or not — 37 % of what one
+   isochronous endpoint may claim at full speed, on a bus running at three
+   parts in a thousand. Alternate setting 0 reserves nothing.
+
+3. **The phantom mute and volume: settled.** The feature unit declared mute
+   and volume read/write on the master and all four channels, because
+   TinyUSB's microphone template declares them, and nothing was wired to
+   them — a host offered a slider that did nothing, and an application could
+   set it, read it back unchanged, and believe it.
+
+   **The audio function is now written out by hand** in `usb_descriptors.c`,
+   thirteen descriptors instead of `TUD_AUDIO_MIC_FOUR_CH_DESCRIPTOR`, and the
+   feature unit declares `AUDIO_CTRL_NONE` everywhere. A host shows no slider,
+   and a request about a control that was never advertised is stalled — which
+   is the right answer to it. The entity graph and the 219-byte length are
+   unchanged: entity numbers are what a host addresses, and the USB reference
+   documents them.
+
+   Gain is *not* a volume control. It changes the measurement's **full
+   scale**, and the control port's `gain` command exists because the change
+   has to be recorded in the session metadata next to the samples it applies
+   to. A mixer slider has nowhere to write that.
+
+### A dependency worth watching
+
+`usb_descriptors.c` relies on the `TUD_AUDIO_MIC_FOUR_CH_DESCRIPTOR` macro,
+present in TinyUSB since the version shipped with SDK 2.0. The SDK in use is
+pinned in `_make_.sh` (`SDK_VERSION`), and `tools/sbom.py` reads it from there:
+the project's bill of materials therefore always says which version is in
+service.

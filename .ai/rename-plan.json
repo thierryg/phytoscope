@@ -276,8 +276,8 @@
       "Not paths, so not applied by tools/apply_renames.py.",
       "Renamed together with the Makefile prose, in one pass that also",
       "updates the seven workflows and every document that calls them.",
-      "Counted references at the time of writing: make tout 26,",
-      "make verifier 18, make deps 18, make outils 9, make certificat 9."
+      "Counted references at the time of writing: make all 26,",
+      "make verify 18, make deps 18, make tools 9, make certificate 9."
     ],
     "packaging/Makefile": {
       "aide": "help",
@@ -304,5 +304,82 @@
     "src/phytoscope/Makefile": {
       "run-silencieux": "run-quiet"
     }
+  },
+  "stage-8-remaining-french-names": [
+    [
+      "src/phytoscope/phytoscope/AUTEURS",
+      "src/phytoscope/phytoscope/AUTHORS"
+    ],
+    [
+      "src/phytoscope/LICENCE.txt",
+      "src/phytoscope/LICENSE.txt"
+    ],
+    [
+      "certificate/LISEZ-MOI.md",
+      "certificate/README.md"
+    ],
+    [
+      "certificate/phytoscope-certificat.pem",
+      "certificate/phytoscope-certificate.pem"
+    ],
+    [
+      "hardware/accessoires.csv",
+      "hardware/accessories.csv"
+    ],
+    [
+      "pdf-src/arbre.css",
+      "pdf-src/tree.css"
+    ],
+    [
+      "pdf-src/carte.css",
+      "pdf-src/board.css"
+    ],
+    [
+      "sources/README-arbre-qui-parle.md",
+      "sources/README-the-talking-tree.md"
+    ],
+    [
+      "sources/documents/domaine-public/LISEZ-MOI.md",
+      "sources/documents/domaine-public/README.md"
+    ],
+    [
+      "sources/manuels-constructeurs",
+      "sources/manufacturer-manuals"
+    ],
+    [
+      "sources/documents/articles-scientifiques/texte-integral",
+      "sources/documents/articles-scientifiques/full-text"
+    ],
+    [
+      "sources/documents/articles-scientifiques",
+      "sources/documents/scientific-articles"
+    ],
+    [
+      "sources/documents/domaine-public",
+      "sources/documents/public-domain"
+    ],
+    [
+      "sources/documents/presse",
+      "sources/documents/press"
+    ],
+    [
+      "sources/schemas",
+      "sources/schematics"
+    ]
+  ],
+  "_deferred-to-the-publications-pass": {
+    "_about": [
+      "234 photographs (arbre-*.jpg, foret-*.jpg, electronique-*.jpg),",
+      "104 generated SVG figures (carte-*.svg, gabarit-carte.svg) and the",
+      "generated HTML fragments (_carte-*.html, _annexe-tech.html,",
+      "_accessoires-table.html).",
+      "",
+      "These are renamed with the publications, not before, for two",
+      "reasons. The figures and fragments are GENERATED (C-45): their names",
+      "come from gen_board.py, gen_sch.py and the build scripts, so the",
+      "generator changes first and the files follow. And every one of them",
+      "is referenced from the HTML fragments that the publications pass",
+      "rewrites anyway — renaming them twice would be work done twice."
+    ]
   }
 }

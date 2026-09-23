@@ -1,0 +1,186 @@
+#!/bin/bash
+#  ==========================================================================
+#  PhytoScope — attribution — packaging/templates/macos/postinstall
+#
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
+#
+#  SPDX-License-Identifier: MIT
+#  end of attribution
+#  ==========================================================================
+
+# ===========================================================================
+#  PhytoScope — after the .pkg has been installed (macOS)
+#
+#  This script runs as root, but its questions must appear to the USER doing
+#  the installing: hence `launchctl asuser` to reach them. Without it the
+#  window would open in root's session, which is to say nowhere.
+#
+#  The FIRST question is the language, as it is in the Linux installer, and
+#  for the same reason: every later question is then asked in the language
+#  the user picked, and the software starts in it too. That is why this runs
+#  here rather than at first launch — an installer that asks nothing and
+#  leaves the question to the application would ask it too late.
+# ===========================================================================
+set -u
+
+APP="/Applications/PhytoScope.app"
+RESSOURCES="$APP/Contents/Resources"
+UTILISATEUR="$(stat -f '%Su' /dev/console 2>/dev/null || echo "$USER")"
+UID_UTILISATEUR="$(id -u "$UTILISATEUR" 2>/dev/null || echo 0)"
+MAISON="$(/usr/bin/dscl . -read "/Users/$UTILISATEUR" NFSHomeDirectory 2>/dev/null \
+          | /usr/bin/awk '{print $2}')"
+[ -n "$MAISON" ] || MAISON="/Users/$UTILISATEUR"
+REGLAGES="$MAISON/Library/Application Support/PhytoScope/reglages.json"
+
+if [ -f "$RESSOURCES/labels.sh" ]; then
+    # shellcheck disable=SC1091
+    . "$RESSOURCES/labels.sh"
+else
+    tl() { _d="$2"; shift 2; while [ "$#" -ge 2 ]; do
+               _d="$(printf '%s' "$_d" | sed "s|{$1}|$2|g")"; shift 2; done
+           printf '%s' "$_d"; }
+    demander_la_langue() { return 1; }
+    ecrire_la_langue() { return 1; }
+    charger_libelles() { return 1; }
+fi
+
+# --- 1. the language, before anything else ---------------------------------
+#  Only when there is nothing recorded yet: reinstalling over an existing
+#  installation must not silently undo a choice made since.
+LANGUE=""
+if [ ! -f "$REGLAGES" ]; then
+    LANGUE="$(demander_la_langue "$RESSOURCES/languages" "$UID_UTILISATEUR" || true)"
+    if [ -n "$LANGUE" ]; then
+        ecrire_la_langue "$LANGUE" "$REGLAGES" || true
+        #  Written as root, so it must be handed over, or the software cannot
+        #  save anything next to it.
+        chown -R "$UTILISATEUR" "$MAISON/Library/Application Support/PhytoScope" \
+            2>/dev/null || true
+    fi
+else
+    LANGUE="$(_valeur_json "$REGLAGES" language 2>/dev/null || true)"
+fi
+[ -n "$LANGUE" ] || LANGUE="en"
+PHYTOSCOPE_LANGUAGE="$LANGUE"
+export PHYTOSCOPE_LANGUAGE
+charger_libelles "$RESSOURCES/languages" || true
+
+#  Ask a question in the user's session and answer "oui" or "non". With a
+#  non-interactive install (`installer -pkg`) osascript fails: we then answer
+#  "non", which gets in nobody's way.
+demander() {
+    reponse="$(launchctl asuser "$UID_UTILISATEUR" sudo -u "$UTILISATEUR" \
+        /usr/bin/osascript -e "display dialog \"$1\" \
+        buttons {\"$(tl T_NON "No")\", \"$(tl T_OUI "Yes")\"} \
+        default button \"$(tl T_OUI "Yes")\" with title \"PhytoScope\" \
+        with icon note" 2>/dev/null)"
+    case "$reponse" in *"$(tl T_OUI "Yes")"*) echo "oui" ;; *) echo "non" ;; esac
+}
+
+# --- 2. the uninstaller -----------------------------------------------------
+#  Written BEFORE any question: even if the user answers nothing, they must be
+#  able to remove the software.
+#
+#  The here-document is QUOTED, so nothing is substituted now. The uninstaller
+#  reads the catalogue itself, when it runs — which is what we want, because
+#  the user may have changed language in the meantime.
+cat > "$RESSOURCES/uninstall.sh" <<'DESINSTALL'
+#!/bin/bash
+# ===========================================================================
+#  Remove PhytoScope from this Mac.
+#
+#  DOES NOT TOUCH your settings or your sessions: uninstalling is not a
+#  request to be forgotten. They stay in
+#      ~/Library/Application Support/PhytoScope   settings, log, venv
+#      ~/Documents/PhytoScope                     recorded sessions
+#
+#      ./uninstall.sh        with confirmation
+#      ./uninstall.sh -y     without asking
+# ===========================================================================
+set -e
+ICI="$(cd "$(dirname "$0")" && pwd)"
+if [ -f "$ICI/labels.sh" ]; then
+    # shellcheck disable=SC1091
+    . "$ICI/labels.sh"
+    charger_libelles "$ICI/languages" || true
+else
+    tl() { _d="$2"; shift 2; while [ "$#" -ge 2 ]; do
+               _d="$(printf '%s' "$_d" | sed "s|{$1}|$2|g")"; shift 2; done
+           printf '%s' "$_d"; }
+fi
+
+SANS_QUESTION=0
+[ "${1:-}" = "-y" ] && SANS_QUESTION=1
+
+#  The version belongs in the message, and the bundle already carries it:
+#  reading it beats baking it in, because this script is written once and the
+#  bundle around it may be updated in place.
+VERSION="$(/usr/bin/defaults read "$ICI/../Info" CFBundleShortVersionString \
+           2>/dev/null || true)"
+
+echo ""
+echo "  $(tl T_RETRAIT_DE "PhytoScope {version} will be removed from:" version "$VERSION")"
+echo "      /Applications/PhytoScope.app"
+echo "      ~/Desktop/PhytoScope $(tl T_ALIAS_SI_EXISTE "(alias, if present)")"
+echo ""
+if [ "$SANS_QUESTION" -eq 0 ]; then
+    printf '  %s %s ' "$(tl T_CONTINUER "Continue?")" "${T_INVITE_NON_DEFAUT:-[y/N]}"
+    read -r r
+    _oui=non
+    for _l in ${T_LETTRES_OUI:-yY}; do
+        case "$r" in [$_l]*) _oui=oui ;; esac
+    done
+    [ "$_oui" = oui ] || { echo "  $(tl T_ANNULE "Cancelled.")"; exit 0; }
+fi
+
+rm -f "$HOME/Desktop/PhytoScope"
+#  /Applications belongs to root: the password is asked only here, and only
+#  when it is needed.
+if [ -w /Applications ]; then
+    rm -rf /Applications/PhytoScope.app
+else
+    sudo rm -rf /Applications/PhytoScope.app
+fi
+#  The installation receipt, so that macOS stops announcing the package.
+pkgutil --forget com.bretagne-namaste.phytoscope >/dev/null 2>&1 || true
+
+echo ""
+echo "  $(tl T_RETIRE "PhytoScope has been removed.")"
+echo ""
+echo "  $(tl T_DONNEES_CONSERVEES "YOUR DATA IS KEPT:")"
+echo "      ~/Library/Application Support/PhytoScope   $(tl T_DONNEES_REGLAGES "settings and log")"
+echo "      ~/Documents/PhytoScope                     $(tl T_DONNEES_SEANCES "recorded sessions")"
+echo ""
+echo "  $(tl T_POUR_EFFACER_AUSSI "To erase them as well:")"
+echo "      rm -rf ~/Library/Application\ Support/PhytoScope ~/Documents/PhytoScope"
+echo ""
+DESINSTALL
+chmod +x "$RESSOURCES/uninstall.sh"
+
+# --- 3. the desktop icon ----------------------------------------------------
+if [ "$(demander "$(tl T_ICONE_QUESTION "Add a PhytoScope icon to the Desktop?")")" = "oui" ]; then
+    BUREAU="$MAISON/Desktop"
+    if [ -d "$BUREAU" ]; then
+        #  An ALIAS, not a copy: a 500 MB copy on the desktop would be an
+        #  unpleasant surprise.
+        ln -sf "$APP" "$BUREAU/PhytoScope"
+        chown -h "$UTILISATEUR" "$BUREAU/PhytoScope" 2>/dev/null || true
+    fi
+fi
+
+# --- 4. start now? ----------------------------------------------------------
+if [ "$(demander "$(tl T_LANCER_MAINTENANT "Start PhytoScope now?")
+
+$(tl T_PREMIERE_OUVERTURE "First run: PhytoScope will prepare its Python environment.")
+$(tl T_PREMIERE_OUVERTURE_DUREE "This takes a minute or two and happens only once.")")" = "oui" ]; then
+    launchctl asuser "$UID_UTILISATEUR" sudo -u "$UTILISATEUR" \
+        /usr/bin/open "$APP" >/dev/null 2>&1 || true
+fi
+
+exit 0

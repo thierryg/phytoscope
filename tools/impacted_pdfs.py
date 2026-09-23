@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — tools/impacted_pdfs.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Dit quelles publications il faut refaire, au vu des fichiers modifiés.
@@ -58,12 +58,12 @@ CIBLES = {
     "serie-v2": {
         "commande": "python3 pdf-src/build_tree.py v2",
         "prealables": ["python3 pdf-src/assets/svg/gen_tt.py"],
-        "pdf": ["biocommunication-vegetale-et-ia.pdf"],
+        "pdf": ["plant-biocommunication-and-ai.pdf"],
     },
     "serie-v3": {
         "commande": "python3 pdf-src/build_tree.py v3",
         "prealables": ["python3 pdf-src/assets/svg/gen_tt.py"],
-        "pdf": ["atelier-creer-arbre-parlant.pdf"],
+        "pdf": ["workshop-build-a-talking-tree.pdf"],
     },
     "annexe": {
         "commande": "python3 pdf-src/build_appendix.py",
@@ -78,15 +78,28 @@ CIBLES = {
         ],
         "pdf": [
             "La-Carte-PhytoSense.pdf",
-            "PhytoSense-schemas.pdf",
-            "PhytoSense-bom-accessoires.pdf",
+            "PhytoSense-schematics.pdf",
+            "PhytoSense-bom-accessories.pdf",
             "PhytoSense-pcb.pdf",
         ],
     },
     "sdk": {
         "commande": "python3 pdf-src/build_sdk.py",
         "prealables": ["python3 pdf-src/assets/svg/gen_sdk.py"],
-        "pdf": ["Ecrire-un-module-PhytoScope.pdf"],
+        "pdf": ["writing-a-phytoscope-module.pdf"],
+    },
+    #  Les documents de référence de `sources/` : un dossier, un HTML, un
+    #  PDF, sans illustration à produire au préalable. Ils ne partagent ni
+    #  charte ni fragment avec les publications, d'où des cibles à part.
+    "reference-midi": {
+        "commande": "python3 sources/build_references.py midi",
+        "prealables": [],
+        "pdf": ["MIDI-Protocol-Reference.pdf"],
+    },
+    "reference-usb": {
+        "commande": "python3 sources/build_references.py usb",
+        "prealables": [],
+        "pdf": ["USB-Device-Reference.pdf"],
     },
 }
 
@@ -94,11 +107,11 @@ TOUT = tuple(CIBLES)
 SERIE = ("serie-v1", "serie-v2", "serie-v3")
 
 #  Ce qui partage la charte : book.css sert à l'ouvrage, au hors-série et au
-#  guide du SDK ; arbre.css n'appartient qu'à la série.
+#  guide du SDK ; tree.css n'appartient qu'à la série.
 CSS = {
     "pdf-src/book.css": ("ouvrage", "carte", "sdk", "annexe"),
-    "pdf-src/carte.css": ("carte", "sdk"),
-    "pdf-src/arbre.css": SERIE + ("annexe",),
+    "pdf-src/board.css": ("carte", "sdk"),
+    "pdf-src/tree.css": SERIE + ("annexe",),
     "pdf-src/fonts.css": TOUT,
 }
 
@@ -160,8 +173,18 @@ def cibles_pour(chemin: str) -> tuple[str, ...]:
     if c.startswith("hardware/"):
         return ("carte", "annexe")
 
+    # --- les documents de référence de sources/ ---------------------------
+    #  Avant les règles `sources/` plus larges, parce que ces deux dossiers
+    #  ne nourrissent aucune publication : ils SONT leur propre publication.
+    if c == "sources/build_references.py":
+        return ("reference-midi", "reference-usb")
+    if c.startswith("sources/midi/"):
+        return ("reference-midi",)
+    if c.startswith("sources/usb/"):
+        return ("reference-usb",)
+
     # --- les listings de programmes de l'annexe de codes -------------------
-    if c.startswith("sources/reverse/") or c.startswith("sources/schemas/"):
+    if c.startswith("sources/reverse/") or c.startswith("sources/schematics/"):
         return ("ouvrage",)
 
     # --- les chartes graphiques -------------------------------------------
@@ -170,19 +193,19 @@ def cibles_pour(chemin: str) -> tuple[str, ...]:
 
     # --- les fragments : un dossier par publication -----------------------
     DOSSIERS = {
-        "pdf-src/la-musique-des-plantes/": ("ouvrage",),
-        "pdf-src/arbre-parlant-dublin/": ("serie-v1",),
-        "pdf-src/biocommunication-vegetale-et-ia/": ("serie-v2",),
-        "pdf-src/atelier-creer-arbre-parlant/": ("serie-v3",),
-        "pdf-src/arbre-parlant-annexe/": ("annexe",),
-        "pdf-src/la-carte-phytosense/": ("carte",),
-        "pdf-src/phytosense-schemas/": ("carte",),
-        "pdf-src/phytosense-bom-accessoires/": ("carte",),
+        "pdf-src/the-music-of-plants/": ("ouvrage",),
+        "pdf-src/talking-tree-dublin/": ("serie-v1",),
+        "pdf-src/plant-biocommunication-and-ai/": ("serie-v2",),
+        "pdf-src/workshop-build-a-talking-tree/": ("serie-v3",),
+        "pdf-src/talking-tree-appendix/": ("annexe",),
+        "pdf-src/the-phytosense-board/": ("carte",),
+        "pdf-src/phytosense-schematics/": ("carte",),
+        "pdf-src/phytosense-bom-accessories/": ("carte",),
         "pdf-src/phytosense-pcb/": ("carte",),
-        "pdf-src/ecrire-un-module-phytoscope/": ("sdk",),
+        "pdf-src/writing-a-phytoscope-module/": ("sdk",),
         #  Les tableaux partagés servent au hors-série et à ses fascicules,
         #  et l'annexe technique reprend la même nomenclature.
-        "pdf-src/commun/": ("carte", "annexe"),
+        "pdf-src/common/": ("carte", "annexe"),
     }
     for prefixe, cibles in DOSSIERS.items():
         if c.startswith(prefixe):

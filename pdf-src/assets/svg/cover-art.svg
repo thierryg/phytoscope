@@ -1,20 +1,3 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/cover-art.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 960" width="680" height="960">
 
 <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#05120F"/><stop offset="40%" stop-color="#0B231C"/><stop offset="100%" stop-color="#16382D"/></linearGradient><radialGradient id="halo" cx="50%" cy="74%" r="46%"><stop offset="0%" stop-color="#6FA98A" stop-opacity=".34"/><stop offset="60%" stop-color="#3F7D5A" stop-opacity=".09"/><stop offset="100%" stop-color="#0E2A22" stop-opacity="0"/></radialGradient><linearGradient id="scrim" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#05120F" stop-opacity=".88"/><stop offset="52%" stop-color="#05120F" stop-opacity=".62"/><stop offset="78%" stop-color="#05120F" stop-opacity="0"/></linearGradient><linearGradient id="scrimb" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#05120F" stop-opacity="0"/><stop offset="46%" stop-color="#05120F" stop-opacity=".58"/><stop offset="100%" stop-color="#05120F" stop-opacity=".90"/></linearGradient><radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#E0C073" stop-opacity=".8"/><stop offset="100%" stop-color="#E0C073" stop-opacity="0"/></radialGradient></defs>

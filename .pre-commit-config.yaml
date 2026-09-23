@@ -1,47 +1,46 @@
 #  ==========================================================================
 #  PhytoScope — attribution — .pre-commit-config.yaml
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 # ===========================================================================
-#  PhytoScope — garde-fous posés avant chaque commit
+#  PhytoScope — the guards run before every commit
 # ===========================================================================
-#  Installation, une fois :
+#  Install once:
 #
 #      python3 -m pip install --user pre-commit
 #      pre-commit install
 #
-#  Pour tout repasser sur le dépôt entier :
+#  To run everything over the whole repository:
 #
 #      pre-commit run --all-files
 #
-#  Le garde-fou qui compte est le dernier : « detect-signing-key ». Les
-#  autres rattrapent des étourderies ; celui-là évite de publier la clé qui
-#  signe les paquets. Voir SECURITY.md et certificat/LISEZ-MOI.md.
+#  The guard that matters is the last one, "detect-signing-key". The others
+#  catch slips; that one stops the key that signs the packages from being
+#  published. See SECURITY.md and certificate/README.md.
 # ===========================================================================
 exclude: |
   (?x)^(
-      sources/.*          |   # code tiers : ses conventions, pas les nôtres
-      LICENSES/.*         |   # textes officiels, non modifiables
-      pdf-src/_.*\.html$      |   # assemblages générés
+      sources/.*          |   # third-party code: its conventions, not ours
+      LICENSES/.*         |   # official texts, not to be modified
+      pdf-src/_.*\.html$      |   # generated assemblies
       pdf-src/assets/svg/.*\.svg$ |
-      \.ecarte/.*         |
       build/.*
   )$
 
 repos:
 
-  # --- Étourderies de base -------------------------------------------------
+  # --- Basic slips ---------------------------------------------------------
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
@@ -55,12 +54,12 @@ repos:
       - id: check-case-conflict
       - id: mixed-line-ending
         args: [--fix=lf]
-      #  Une recette de Makefile indentée par des espaces est muette : make
-      #  l'ignore sans rien dire. C'est arrivé, d'où ce contrôle.
+      #  A Makefile recipe indented with spaces is mute: make ignores it
+      #  without a word. It happened, hence this check.
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
-      #  Un gros fichier entré par mégarde reste dans l'historique pour
-      #  toujours. Les PDF produits et les archives tierces sont hors dépôt.
+      #  A large file committed by mistake stays in the history for ever.
+      #  The produced PDFs and the third-party archives are out of tree.
       - id: check-added-large-files
         args: [--maxkb=2048]
       - id: detect-private-key
@@ -80,32 +79,32 @@ repos:
       - id: shellcheck
         args: [--shell=bash, --severity=warning]
 
-  # --- Contrôles propres au projet -----------------------------------------
+  # --- Checks particular to this project -----------------------------------
   - repo: local
     hooks:
 
-      #  La clé privée de signature ne doit JAMAIS être indexée (C-2R).
-      #  detect-private-key ci-dessus cherche un bloc PEM dans le contenu ;
-      #  celui-ci refuse le fichier sur son seul nom, même vide, même
-      #  renommé — c'est le cas qui nous est arrivé de près.
+      #  The private signing key must NEVER be staged (C-2R).
+      #  detect-private-key above looks for a PEM block in the content; this
+      #  one refuses the file on its name alone — even empty, even renamed,
+      #  which is the case that came close to happening here.
       - id: detect-signing-key
         name: the private signing key stays out of the repository
         entry: >
           bash -c '
-          fautifs=$(printf "%s\n" "$@" | grep -Ei "\.(key|p12|pfx|jks|keystore|kdbx)$" || true);
-          if [ -n "$fautifs" ]; then
-            echo "refusé — ces fichiers ne doivent pas être versionnés :";
-            echo "$fautifs";
-            echo "la clé de signature vit dans ~/.local/share/phytoscope-signature/";
+          offenders=$(printf "%s\n" "$@" | grep -Ei "\.(key|p12|pfx|jks|keystore|kdbx)$" || true);
+          if [ -n "$offenders" ]; then
+            echo "refused — these files must not be version-controlled:";
+            echo "$offenders";
+            echo "the signing key lives in ~/.local/share/phytoscope-signature/";
             exit 1;
           fi' --
         language: system
         pass_filenames: true
         always_run: true
 
-      #  Les en-têtes d'attribution portent le chemin du fichier : un
-      #  déplacement les périme, et un fichier qui voyage seul mentirait
-      #  sur sa provenance.
+      #  An attribution header carries the file's path: moving the file
+      #  makes it stale, and a file that travels alone would then lie about
+      #  where it came from.
       - id: attribution-headers
         name: attribution headers are up to date
         entry: python3 tools/headers.py --verifier
@@ -113,10 +112,10 @@ repos:
         pass_filenames: false
         files: ^(src|pdf|tools|packaging|hardware|sources/reverse)/
 
-      #  Une illustration qui n'est pas du XML bien formé fait un cadre vide
-      #  dans le PDF sans que rien ne le signale. Le défaut a existé :
-      #  timeline.svg portait un « & » nu, produit par un générateur qui
-      #  n'échappait pas le texte (journal du 2026-09-18).
+      #  An illustration that is not well-formed XML gives an empty frame in
+      #  the PDF with nothing to say so. The defect has happened:
+      #  timeline.svg carried a bare "&", written by a generator that did not
+      #  escape its text (journal, 2026-09-18).
       - id: svg-well-formed
         name: figures are well-formed XML
         entry: python3 tools/verify_svg.py

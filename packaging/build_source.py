@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — packaging/build_source.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Génère l'archive source (.tar.gz), valable sur tous les systèmes.
@@ -43,7 +43,7 @@ from typing import List, Optional
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from common import (  # noqa: E402
-    GRIS, LOGICIEL, RACINE_SORTIE, VERT, Identite, appliquer_les_arguments,
+    GRIS, LOGICIEL, OUTPUT_ROOT, VERT, Identite, appliquer_les_arguments,
     arguments_communs, bien, copier_le_logiciel, dire, dossier_sortie,
     ecrire_les_documents, ecrire_les_empreintes, lisible,
     JAUNE)
@@ -85,7 +85,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ecrire_les_empreintes(id_)
         ecrire_les_documents(id_)
     for f in produits:
-        dire(f"    {os.path.relpath(f, RACINE_SORTIE)}", GRIS)
+        dire(f"    {os.path.relpath(f, OUTPUT_ROOT)}", GRIS)
     return 0 if produits else 1
 
 

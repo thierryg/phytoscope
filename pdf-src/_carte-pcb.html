@@ -2,107 +2,108 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8"/>
-<title>PhytoSense One — circuit imprimé</title>
+<title>PhytoSense One — printed circuit board</title>
 <meta name="author" content="Bretagne Namasté"/>
 <meta name="publisher" content="Bretagne Namasté"/>
 <meta name="copyright" content="© 2026 Bretagne Namasté — https://bretagne-namaste.com"/>
 <meta name="contact" content="contact@bretagne-namaste.com"/>
 <meta name="source" content="https://bretagne-namaste.com"/>
-<meta name="description" content="Routage quatre couches, implantation, empilage et dossier de fabrication de la carte PhytoSense One."/>
-<meta name="keywords" content="circuit imprimé, routage, quatre couches, Gerber, PhytoSense"/>
+<meta name="description" content="Four-layer routing, placement, stack-up and fabrication package of the PhytoSense One board."/>
+<meta name="keywords" content="printed circuit, routing, four layers, Gerber, PhytoSense"/>
 <meta name="dcterms.created" content="2026-09-17"/>
 <meta name="generator" content="WeasyPrint"/>
 <link rel="stylesheet" href="fonts.css"/>
 <link rel="stylesheet" href="book.css"/>
-<link rel="stylesheet" href="carte.css"/>
-<style>body{ string-set: booktitle "PhytoSense One — circuit imprimé"; }</style>
+<link rel="stylesheet" href="board.css"/>
+<style>body{ string-set: booktitle "PhytoSense One — printed circuit board"; }</style>
 </head>
 <body>
 <section class="cover">
-  <img class="cover-art" src="assets/svg/carte-cover-pcb.svg" alt="Couverture du fascicule circuit imprimé"/>
+  <img class="cover-art" src="assets/svg/carte-cover-pcb.svg" alt="Cover of the printed-circuit fascicle"/>
 </section>
 
 <section class="frontpage notice">
-  <h2 id="p-intro">Circuit imprimé — PhytoSense One</h2>
-  <p class="lettrine noindent">Quatre couches, cent par soixante millimètres, FR4 de 1,6 mm,
-  cuivre de 35 µm, finition ENIG. Ce fascicule contient les planches de routage au format paysage
-  et le dossier de fabrication. Les explications figurent au chapitre 8 de l'ouvrage.</p>
+  <h2 id="p-intro">Printed circuit board — PhytoSense One</h2>
+  <p class="lettrine noindent">Four layers, one hundred by sixty millimetres, 1.6 mm FR4,
+  35 µm copper, ENIG finish. This fascicle holds the routing plates in landscape format
+  and the fabrication package. The explanations are in chapter 8 of the book.</p>
 
   <div class="callout caution">
-    <div class="callout-title">⚠️ Les trois règles absolues</div>
-    <p class="noindent"><strong>1.</strong> L'anneau de garde entoure l'entrée sur les quatre
-    couches. <strong>2.</strong> Le vernis est épargné dans la zone d'entrée, et cette option doit
-    être demandée explicitement au fabricant. <strong>3.</strong> Aucune piste ne franchit la fente
-    du plan de masse — une seule suffirait à annuler l'isolement sans empêcher la carte de
-    fonctionner.</p>
+    <div class="callout-title">⚠️ The three absolute rules</div>
+    <p class="noindent"><strong>1.</strong> The guard ring surrounds the input on all four
+    layers. <strong>2.</strong> Solder mask is kept clear over the input area, and that option
+    has to be asked for explicitly when ordering. <strong>3.</strong> No trace crosses the slot
+    in the ground plane — a single one would be enough to defeat the isolation without stopping
+    the board from working.</p>
   </div>
 </section>
 
 <section class="planche-page"><figure class="planche">
-  <img src="assets/svg/pcb-couches.svg" alt="Routage des quatre couches"/>
-  <figcaption><span class="fig-n">PLANCHE 1 / 3</span> — Routage des quatre couches, vues de
-  dessus, couche 4 non miroitée. La fente du plan de masse traverse la carte à 56 mm du bord
-  gauche.</figcaption>
+  <img src="assets/svg/pcb-couches.svg" alt="Routing of the four layers"/>
+  <figcaption><span class="fig-n">PLATE 1 / 3</span> — Routing of the four layers, seen from
+  above, layer 4 not mirrored. The slot in the ground plane crosses the board 56 mm from the
+  left edge.</figcaption>
 </figure></section>
 
 <section class="planche-page"><figure class="planche">
-  <img src="assets/svg/pcb-implantation.svg" alt="Implantation et sérigraphie"/>
-  <figcaption><span class="fig-n">PLANCHE 2 / 3</span> — Implantation et sérigraphie. Les quatre
-  zones fonctionnelles sont physiquement séparées, afin que les courants de retour ne se mélangent
-  pas.</figcaption>
+  <img src="assets/svg/pcb-implantation.svg" alt="Placement and silkscreen"/>
+  <figcaption><span class="fig-n">PLATE 2 / 3</span> — Placement and silkscreen. The four
+  functional areas are physically separated, so that return currents do not mix.</figcaption>
 </figure></section>
 
 <section class="chapter">
-  <h2 id="p-fabrication" data-toc="chapter">Dossier de fabrication</h2>
+  <h2 id="p-fabrication" data-toc="chapter">Fabrication package</h2>
 
   <figure class="figframe">
-    <img src="assets/svg/pcb-empilage.svg" alt="Empilage et règles de fabrication"/>
-    <figcaption><span class="fig-n">PLANCHE 3 / 3</span> — Empilage, impédances contrôlées et
-    règles de perçage.</figcaption>
+    <img src="assets/svg/pcb-empilage.svg" alt="Stack-up and fabrication rules"/>
+    <figcaption><span class="fig-n">PLATE 3 / 3</span> — Stack-up, controlled impedances and
+    drilling rules.</figcaption>
   </figure>
 
-  <h3 id="p-commande" data-toc="sub">Ce qu'il faut indiquer au fabricant</h3>
+  <h3 id="p-commande" data-toc="sub">What to tell the fabricator</h3>
   <table class="tight">
-    <thead><tr><th>Paramètre</th><th>Valeur</th></tr></thead>
+    <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
     <tbody>
-      <tr><td>Nombre de couches</td><td>4</td></tr>
+      <tr><td>Layer count</td><td>4</td></tr>
       <tr><td>Dimensions</td><td>100 × 60 mm</td></tr>
-      <tr><td>Épaisseur</td><td>1,6 mm</td></tr>
-      <tr><td>Cuivre</td><td>35 µm (1 oz), toutes couches</td></tr>
-      <tr><td>Matériau</td><td>FR4 Tg 150</td></tr>
-      <tr><td>Finition de surface</td><td><strong>ENIG</strong> (or chimique sur nickel)</td></tr>
-      <tr><td>Vernis</td><td>vert, deux faces — <strong>ne pas modifier les ouvertures</strong></td></tr>
-      <tr><td>Sérigraphie</td><td>blanche, deux faces</td></tr>
-      <tr><td>Percements</td><td>traversants uniquement, 0,30 mm minimum</td></tr>
-      <tr><td>Classe</td><td>IPC 2</td></tr>
-      <tr><td>Test électrique</td><td>oui</td></tr>
+      <tr><td>Thickness</td><td>1.6 mm</td></tr>
+      <tr><td>Copper</td><td>35 µm (1 oz), all layers</td></tr>
+      <tr><td>Material</td><td>FR4 Tg 150</td></tr>
+      <tr><td>Surface finish</td><td><strong>ENIG</strong> (immersion gold over nickel)</td></tr>
+      <tr><td>Solder mask</td><td>green, both sides — <strong>do not alter the openings</strong></td></tr>
+      <tr><td>Silkscreen</td><td>white, both sides</td></tr>
+      <tr><td>Drilling</td><td>through-hole only, 0.30 mm minimum</td></tr>
+      <tr><td>Class</td><td>IPC 2</td></tr>
+      <tr><td>Electrical test</td><td>yes</td></tr>
     </tbody>
   </table>
 
-  <h3 id="p-fichiers" data-toc="sub">Les fichiers</h3>
+  <h3 id="p-fichiers" data-toc="sub">The files</h3>
   <table class="tight">
-    <thead><tr><th>Fichier</th><th>Contenu</th></tr></thead>
+    <thead><tr><th>File</th><th>Contents</th></tr></thead>
     <tbody>
-      <tr><td><span class="phon">F_Cu · In1_Cu · In2_Cu · B_Cu</span></td><td>les quatre couches de cuivre</td></tr>
-      <tr><td><span class="phon">F_Mask · B_Mask</span></td><td>vernis épargné, <em>y compris la zone d'entrée</em></td></tr>
-      <tr><td><span class="phon">F_Silkscreen · B_Silkscreen</span></td><td>sérigraphie</td></tr>
-      <tr><td><span class="phon">Edge_Cuts</span></td><td>contour</td></tr>
-      <tr><td><span class="phon">phytosense.drl</span></td><td>percements</td></tr>
-      <tr><td><span class="phon">top-pos.csv</span></td><td>positions pour placement automatique</td></tr>
+      <tr><td><span class="phon">F_Cu · In1_Cu · In2_Cu · B_Cu</span></td><td>the four copper layers</td></tr>
+      <tr><td><span class="phon">F_Mask · B_Mask</span></td><td>solder mask, <em>including the input area</em></td></tr>
+      <tr><td><span class="phon">F_Silkscreen · B_Silkscreen</span></td><td>silkscreen</td></tr>
+      <tr><td><span class="phon">Edge_Cuts</span></td><td>board outline</td></tr>
+      <tr><td><span class="phon">phytosense.drl</span></td><td>drill file</td></tr>
+      <tr><td><span class="phon">top-pos.csv</span></td><td>positions for pick and place</td></tr>
     </tbody>
   </table>
 
-  <h3 id="p-controle" data-toc="sub">Contrôle à réception</h3>
+  <h3 id="p-controle" data-toc="sub">Incoming inspection</h3>
   <ul class="steps">
-    <li>Vérifier <strong>à l'œil</strong> que le vernis est bien absent autour des pastilles
-    d'entrée J1 et J2. C'est le défaut le plus fréquent, et le plus silencieux.</li>
-    <li>Vérifier que la fente du plan de masse est nette et continue, sur les deux faces visibles.</li>
-    <li>À l'ohmmètre, contrôler l'isolement entre les deux plans de masse : il doit être infini.</li>
-    <li>Contrôler la planéité : une carte gauchie rend le placement des boîtiers QFN aléatoire.</li>
+    <li>Check <strong>by eye</strong> that the solder mask really is absent around the input
+    pads J1 and J2. This is the most frequent defect, and the most silent.</li>
+    <li>Check that the slot in the ground plane is clean and continuous, on both visible
+    sides.</li>
+    <li>With an ohmmeter, check the isolation between the two ground planes: it must be
+    infinite.</li>
+    <li>Check flatness: a warped board makes placing the QFN packages a matter of luck.</li>
   </ul>
 
-  <p class="copyright">Dessin publié sous licence CERN-OHL-P v2. Révision B, septembre 2026.
-  Bretagne Namasté — bretagne-namaste.com — contact@bretagne-namaste.com</p>
+  <p class="copyright">Design published under the CERN-OHL-P v2 licence. Revision B, September
+  2026. Bretagne Namasté — bretagne-namaste.com — contact@bretagne-namaste.com</p>
 </section>
 
 </body>

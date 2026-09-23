@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/core/features.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Descripteurs avancés : FFT, ondelettes, MFCC, LPC, cepstre.
@@ -19,12 +19,12 @@
 Ce module ajoute au logiciel les représentations qu'on emploie couramment en
 traitement de la parole. Il faut dire d'emblée pourquoi elles ne s'appliquent
 pas telles quelles à un signal végétal, et ce qu'on a fait pour qu'elles aient
-malgré tout un sens.
+malgré tout un meaning.
 
 Un signal de parole est échantillonné à 16 000 Hz et occupe la bande 80 Hz –
 8 kHz. Le nôtre est échantillonné à 250 Hz et occupe la bande 0,001 Hz – 40 Hz :
 **cinq décades plus bas**. Toutes les constantes des outils de la parole —
-largeur des fenêtres, bornes du banc de Mel, ordre de prédiction — sont donc
+largeur des fenêtres, bornes du banc de Mel, order de prédiction — sont donc
 transposées d'après la fréquence d'échantillonnage réelle, jamais recopiées.
 
 Ce qui survit à la transposition, et ce qui n'y survit pas :
@@ -36,7 +36,7 @@ FFT / spectre              Directement valable. C'est la représentation de
                            référence pour repérer le réseau et les périodicités.
 Ondelettes (CWT)           **Le mieux adapté.** Le signal végétal est non
                            stationnaire par nature : une bouffée d'activité dure
-                           quelques secondes dans un fond qui dérive sur des
+                           quelques seconds dans un fond qui dérive sur des
                            heures. La FFT moyenne cela ; l'ondelette le montre.
 MFCC                       Transposable, mais l'échelle de Mel modélise
                            l'audition humaine, qui ne dit rien d'une plante. On
@@ -45,7 +45,7 @@ MFCC                       Transposable, mais l'échelle de Mel modélise
                            elles, non comme mesure physiologique.
 LPC                        Mathématiquement valable (c'est une prédiction
                            linéaire), mais son interprétation habituelle — le
-                           conduit vocal — n'a **aucun sens** ici : une plante
+                           conduit vocal — n'a **aucun meaning** ici : une plante
                            n'a pas de résonateur. Reste un bon estimateur
                            d'enveloppe spectrale et un détecteur de résonances.
 Cepstre                    Valable. Sépare l'excitation de l'enveloppe, donc
@@ -73,32 +73,32 @@ __all__ = [
     "MFCC", "mfcc",
     "LPC", "lpc",
     "Cepstre", "cepstre",
-    "DESCRIPTEURS",
+    "DESCRIPTORS",
 ]
 
 
 # ---------------------------------------------------------------------------
 #  Utilitaires communs
 # ---------------------------------------------------------------------------
-def _fenetre(n: int, nom: str = "hann") -> np.ndarray:
+def _fenetre(n: int, name: str = "hann") -> np.ndarray:
     """Fenêtre d'apodisation. Hann par défaut : le meilleur compromis entre
-    largeur du lobe principal et niveau des lobes secondaires pour un signal
+    largeur du lobe principal et level des lobes secondaires pour un signal
     dont on ne connaît pas la structure à l'avance."""
     if n <= 1:
         return np.ones(max(n, 1))
     k = np.arange(n)
-    if nom == "hamming":
+    if name == "hamming":
         return 0.54 - 0.46 * np.cos(2 * np.pi * k / (n - 1))
-    if nom == "blackman":
+    if name == "blackman":
         return (0.42 - 0.5 * np.cos(2 * np.pi * k / (n - 1))
                 + 0.08 * np.cos(4 * np.pi * k / (n - 1)))
-    if nom == "rectangulaire":
+    if name == "rectangulaire":
         return np.ones(n)
     return 0.5 - 0.5 * np.cos(2 * np.pi * k / (n - 1))          # hann
 
 
 def _preparer(x: np.ndarray, retirer_moyenne: bool = True) -> np.ndarray:
-    """Met le signal en flottant, retire les valeurs non finies et, par défaut,
+    """Met le signal en flottant, retire les values non finies et, par défaut,
     la composante continue — qui écrase tout le reste sur un signal végétal où
     l'offset d'électrode vaut mille fois le signal."""
     x = np.asarray(x, dtype=float).ravel()
@@ -122,12 +122,12 @@ class SpectreInstantane:
     pic_hz: float
     pic_amplitude: float
     fenetre: str
-    duree_s: float
+    duration_s: float
 
     @property
     def resolution_hz(self) -> float:
         """Écart entre deux points du spectre : 1 / durée analysée."""
-        return 1.0 / self.duree_s if self.duree_s > 0 else float("nan")
+        return 1.0 / self.duration_s if self.duration_s > 0 else float("nan")
 
 
 def spectre_instantane(x: np.ndarray, fs: float, fenetre: str = "hann",
@@ -201,12 +201,12 @@ def ondelettes_morlet(x: np.ndarray, fs: float,
 
     C'est la représentation la mieux adaptée à un signal végétal, pour une
     raison de fond : **l'analyse de Fourier suppose la stationnarité**, que ce
-    signal n'a jamais. Une bouffée d'activité de trois secondes dans une heure
+    signal n'a jamais. Une bouffée d'activité de trois seconds dans une heure
     d'enregistrement disparaît dans une FFT globale ; l'ondelette la situe dans
     le temps et en donne l'étendue fréquentielle.
 
     L'ondelette de Morlet est une sinusoïde enveloppée d'une gaussienne. Son
-    paramètre ``omega0`` règle le compromis temps/fréquence : 6 est la valeur
+    paramètre ``omega0`` règle le compromis temps/fréquence : 6 est la value
     usuelle, qui satisfait presque exactement la condition d'admissibilité tout
     en gardant une bonne localisation temporelle. L'augmenter affine la
     fréquence et brouille le temps ; le diminuer fait l'inverse.
@@ -329,10 +329,10 @@ def mfcc(x: np.ndarray, fs: float, n_coef: int = 13, n_filtres: int = 26,
     La chaîne est la chaîne canonique : découpage en trames, fenêtre de Hamming,
     spectre de puissance, banc de Mel, logarithme, transformée en cosinus
     discrète. Seules les constantes changent — la trame vaut ici **huit
-    secondes** au lieu de vingt-cinq millisecondes, parce que la stationnarité
-    locale d'un signal végétal se mesure en secondes, non en millisecondes.
+    seconds** au lieu de vingt-cinq millisecondes, parce que la stationnarité
+    locale d'un signal végétal se mesure en seconds, non en millisecondes.
 
-    Les coefficients d'ordre élevé décrivent les détails de l'enveloppe
+    Les coefficients d'order élevé décrivent les détails de l'enveloppe
     spectrale, les premiers sa forme générale. Le coefficient 0, qui n'est que
     l'énergie totale, est conservé : sur un signal végétal il porte une
     information réelle, contrairement à la parole où on le jette.
@@ -384,7 +384,7 @@ def _dct2(v: np.ndarray) -> np.ndarray:
     """Transformée en cosinus discrète de type II, normalisée en orthogonalité.
 
     Implémentée par une FFT sur le signal réfléchi : c'est exact, et cela évite
-    d'exiger SciPy pour huit lignes de code.
+    d'exiger SciPy pour huit rows de code.
     """
     n = v.size
     if n == 0:
@@ -412,7 +412,7 @@ class LPC:
     enveloppe_db: np.ndarray
     formants_hz: np.ndarray               # résonances : pôles proches du cercle
     formants_largeur_hz: np.ndarray
-    ordre: int
+    order: int
 
     @property
     def gain_prediction_db(self) -> float:
@@ -423,7 +423,7 @@ class LPC:
         return 10.0 * math.log10(max(self.gain, 1e-30) / self.erreur_residuelle)
 
 
-def lpc(x: np.ndarray, fs: float, ordre: Optional[int] = None,
+def lpc(x: np.ndarray, fs: float, order: Optional[int] = None,
         n_points: int = 512) -> LPC:
     """Prédiction linéaire par l'algorithme de Levinson-Durbin.
 
@@ -435,13 +435,13 @@ def lpc(x: np.ndarray, fs: float, ordre: Optional[int] = None,
     pôles du filtre obtenu s'interprètent comme les résonances du conduit vocal,
     et on les appelle formants. Ici, *il n'y a pas de conduit vocal* : une plante
     n'a aucun résonateur acoustique, et parler de formants végétaux serait une
-    faute. Ce que les pôles décrivent réellement, ce sont les **résonances du
+    fault. Ce que les pôles décrivent réellement, ce sont les **résonances du
     système de mesure et du milieu** : la constante de temps de l'électrode, le
     filtrage de la carte, les oscillations lentes du potentiel. C'est utile — et
-    c'est autre chose que ce que le nom suggère. Le mot « résonance » est donc
+    c'est autre chose que ce que le name suggère. Le mot « résonance » est donc
     employé ici de préférence à « formant ».
 
-    L'ordre par défaut suit la règle usuelle ``2 + fs/1000`` transposée : deux
+    L'order par défaut suit la règle usuelle ``2 + fs/1000`` transposée : deux
     pôles par résonance attendue, plus deux pour la pente générale.
     """
     x = _preparer(x)
@@ -450,7 +450,7 @@ def lpc(x: np.ndarray, fs: float, ordre: Optional[int] = None,
         v = np.zeros(0)
         return LPC(v, 0.0, 0.0, v, v, v, v, 0)
 
-    p = int(ordre) if ordre else max(4, min(int(2 + fs / 25.0), 24))
+    p = int(order) if order else max(4, min(int(2 + fs / 25.0), 24))
     p = min(p, n - 2)
 
     w = _fenetre(n, "hamming")
@@ -513,7 +513,7 @@ def lpc(x: np.ndarray, fs: float, ordre: Optional[int] = None,
 # ---------------------------------------------------------------------------
 @dataclass
 class Cepstre:
-    """Le spectre du logarithme du spectre — en « quéfrence », des secondes."""
+    """Le spectre du logarithme du spectre — en « quéfrence », des seconds."""
     quefrence_s: np.ndarray
     cepstre: np.ndarray
     pic_quefrence_s: float
@@ -531,7 +531,7 @@ def cepstre(x: np.ndarray, fs: float, q_min_s: Optional[float] = None,
     logarithme du spectre puis sa transformée inverse, cette régularité devient
     un **pic unique**, situé à la période du signal. La variable obtenue n'est
     ni un temps ni une fréquence ; on l'appelle quéfrence, et elle se mesure en
-    secondes.
+    seconds.
 
     Sur un signal végétal, c'est ce qui permet de détecter une périodicité lente
     — un cycle jour/nuit, une modulation d'arrosage, un rythme d'une dizaine de
@@ -572,39 +572,29 @@ def cepstre(x: np.ndarray, fs: float, q_min_s: Optional[float] = None,
 # ---------------------------------------------------------------------------
 #  Table des descripteurs — pour l'interface et la documentation
 # ---------------------------------------------------------------------------
-DESCRIPTEURS = {
+DESCRIPTORS = {
     "temporel": (
-        "Domaine temporel",
-        "amplitude en fonction du temps — la forme d'onde brute",
-        "La représentation de référence : rien n'y est calculé, donc rien n'y "
-        "est perdu. Tout diagnostic commence ici."),
+        "Time domain",
+        "amplitude against time — the raw waveform",
+        "The reference representation: nothing is computed, so nothing is lost. Every diagnosis starts here."),
     "frequentiel": (
-        "Domaine fréquentiel (FFT)",
-        "amplitude en fonction de la fréquence — spectre instantané",
-        "Montre les périodicités et le réseau à 50 Hz. Suppose le signal "
-        "stationnaire sur la fenêtre analysée, ce qui est rarement vrai "
-        "longtemps."),
+        "Frequency domain (FFT)",
+        "amplitude against frequency — instantaneous spectrum",
+        "Shows the periodicities and the 50 Hz mains. Assumes the signal is stationary over the analysed window, which is rarely true for long."),
     "ondelettes": (
-        "Ondelettes (scalogramme)",
-        "énergie en fonction du temps ET de la fréquence",
-        "La mieux adaptée aux signaux non stationnaires : situe dans le temps "
-        "ce que la FFT se contente de moyenner. Résolution multi-échelle."),
+        "Wavelets (scalogram)",
+        "energy against time AND frequency",
+        "The best suited to non-stationary signals: it places in time what the FFT merely averages. Multi-scale resolution."),
     "mfcc": (
         "MFCC",
-        "coefficients cepstraux sur échelle de Mel",
-        "Compresse le spectre en une poignée de nombres comparables entre eux. "
-        "L'échelle de Mel modélise l'audition humaine, pas la plante : c'est un "
-        "outil de comparaison, non une mesure physiologique."),
+        "mel-frequency cepstral coefficients",
+        "Compresses the spectrum into a handful of numbers that can be compared with one another. The mel scale models human hearing, not the plant: it is a tool for comparison, not a physiological measurement."),
     "lpc": (
-        "LPC (prédiction linéaire)",
-        "enveloppe spectrale et résonances du système",
-        "Modélise le signal comme la sortie d'un filtre. Les résonances "
-        "trouvées sont celles de l'électrode et du milieu — une plante n'a pas "
-        "de conduit vocal."),
+        "LPC (linear prediction)",
+        "spectral envelope and resonances of the system",
+        "Models the signal as the output of a filter. The resonances found are those of the electrode and the medium — a plant has no vocal tract."),
     "cepstre": (
-        "Cepstre",
-        "spectre du logarithme du spectre — l'abscisse est une quéfrence, "
-        "anagramme de « fréquence », qui se mesure en secondes",
-        "Sépare l'excitation de l'enveloppe et révèle les périodicités lentes "
-        "qu'une dérive de fond masque."),
+        "Cepstrum",
+        "the spectrum of the logarithm of the spectrum — the abscissa is a quefrency, an anagram of “frequency”, measured in seconds",
+        "Separates the excitation from the envelope and reveals the slow periodicities that a drifting background hides."),
 }

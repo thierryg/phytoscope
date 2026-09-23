@@ -3,22 +3,22 @@
 #  ==========================================================================
 #  PhytoScope — attribution — pdf-src/build_tree.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """
 Build de la série « L'Arbre qui Parle » — Ateliers BN.
 
-Trois ouvrages partagent la même charte graphique (pdf-src/arbre.css) et le même
+Trois ouvrages partagent la même charte graphique (pdf-src/tree.css) et le même
 moteur de rendu. Chaque volume possède son propre répertoire de fragments
 dans pdf-src/parts/<volume>/ et sa propre liste ORDER.
 
@@ -43,7 +43,7 @@ AUTEUR = "Ateliers BN"
 # =============================================================================
 BOOKS = {
     "v1": {
-        "dir": "arbre-parlant-dublin",
+        "dir": "talking-tree-dublin",
         "out": "arbre-parlant-dublin-analyse-scientifique.pdf",
         "title": "L'Arbre qui Parle — Dublin, anatomie d'un arbre connecté",
         "running": "L'Arbre qui Parle",
@@ -75,8 +75,8 @@ BOOKS = {
         ],
     },
     "v2": {
-        "dir": "biocommunication-vegetale-et-ia",
-        "out": "biocommunication-vegetale-et-ia.pdf",
+        "dir": "plant-biocommunication-and-ai",
+        "out": "plant-biocommunication-and-ai.pdf",
         "title": "Biocommunication Végétale et Intelligence Artificielle",
         "running": "Biocommunication Végétale & IA",
         "description": (
@@ -106,8 +106,8 @@ BOOKS = {
         ],
     },
     "v3": {
-        "dir": "atelier-creer-arbre-parlant",
-        "out": "atelier-creer-arbre-parlant.pdf",
+        "dir": "workshop-build-a-talking-tree",
+        "out": "workshop-build-a-talking-tree.pdf",
         "title": "Créer un Arbre Parlant — Manuel d'atelier",
         "running": "Créer un Arbre Parlant",
         "description": (
@@ -313,7 +313,7 @@ def build_one(key):
 <meta name="dcterms.created" content="{DATE}"/>
 <meta name="generator" content="WeasyPrint"/>
 <link rel="stylesheet" href="fonts.css"/>
-<link rel="stylesheet" href="arbre.css"/>
+<link rel="stylesheet" href="tree.css"/>
 <style>body{{ string-set: booktitle "{book['running']}"; }}</style>
 </head>
 <body>

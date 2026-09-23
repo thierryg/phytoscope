@@ -3,40 +3,39 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/tools/sbom.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
-"""Nomenclature logicielle (SBOM) de PhytoScope.
+"""PhytoScope's software bill of materials (SBOM).
 
-Une carte a sa nomenclature de composants ; un logiciel a la sienne. Elle
-répond aux mêmes questions : qu'est-ce qui entre dans le produit, d'où cela
-vient, sous quelle licence, et dans quelle version exacte.
+A board has its bill of materials; software has one too. It answers the same
+questions: what goes into the product, where it comes from, under which
+licence, and in exactly which version.
 
-Deux formats sont produits :
+Two formats are produced:
 
-* **CycloneDX 1.5**, en JSON — c'est le format que lisent les outils d'analyse
-  de vulnérabilités et de conformité ;
-* **texte**, lisible par un être humain, destiné au fascicule imprimé.
+* **CycloneDX 1.5**, as JSON — the format that vulnerability and compliance
+  tooling reads;
+* **text**, readable by a human, intended for the printed fascicle.
 
-Aucune dépendance : l'inventaire est établi par introspection des modules
-réellement importables, complété par la table de référence ci-dessous. Cela
-signifie que le SBOM décrit **ce qui est installé sur cette machine**, et non
-ce que le fichier des dépendances prétend — ce qui est précisément l'intérêt
-de l'exercice.
+No dependencies: the inventory is established by introspecting the modules
+that are actually importable, completed by the reference table below. That
+means the SBOM describes **what is installed on this machine**, not what the
+requirements file claims — which is precisely the point of the exercise.
 
-Usage :
-    python3 tools/sbom.py            texte sur la sortie standard
+Usage:
+    python3 tools/sbom.py            text on standard output
     python3 tools/sbom.py --json     CycloneDX
-    python3 tools/sbom.py --html     fragment pour le fascicule
+    python3 tools/sbom.py --html     a fragment for the fascicle
 """
 from __future__ import annotations
 
@@ -54,47 +53,47 @@ sys.path.insert(0, ROOT)
 
 from phytoscope import version as V                   # noqa: E402
 
-# (module importable, nom du paquet, licence, éditeur, rôle, obligatoire)
+# (importable module, package name, licence, publisher, role, required)
 COMPOSANTS = [
     ("numpy", "numpy", "BSD-3-Clause", "NumPy Developers",
-     "calcul numérique et traitement du signal", True),
+     "numerical computation and signal processing", True),
     ("PySide6", "PySide6", "LGPL-3.0-only", "The Qt Company",
-     "interface graphique Qt 6", True),
+     "the Qt 6 graphical interface", True),
     ("shiboken6", "shiboken6", "LGPL-3.0-only", "The Qt Company",
-     "liaison C++/Python de Qt", True),
-    ("pyqtgraph", "pyqtgraph", "MIT", "Luke Campagnola et contributeurs",
-     "tracés scientifiques temps réel", False),
+     "Qt's C++/Python binding", True),
+    ("pyqtgraph", "pyqtgraph", "MIT", "Luke Campagnola and contributors",
+     "real-time scientific plotting", False),
     ("sounddevice", "sounddevice", "MIT", "Matthias Geier",
-     "entrée et sortie audio (liaison PortAudio)", False),
+     "audio input and output (PortAudio binding)", False),
     ("serial", "pyserial", "BSD-3-Clause", "Chris Liechti",
-     "port série : contrôle de la carte", False),
+     "serial port: controlling the board", False),
     ("rtmidi", "python-rtmidi", "MIT", "Christopher Arndt",
-     "sortie MIDI (liaison RtMidi)", False),
+     "MIDI output (RtMidi binding)", False),
     ("usb.core", "pyusb", "BSD-3-Clause", "PyUSB Developers",
-     "descripteurs USB détaillés", False),
+     "detailed USB descriptors", False),
     ("cffi", "cffi", "MIT", "Armin Rigo, Maciej Fijalkowski",
-     "interface C, requise par sounddevice", False),
+     "C interface, required by sounddevice", False),
 ]
 
-# Bibliothèques natives atteintes à travers ces paquets : elles font partie du
-# produit livré à l'utilisateur, et doivent donc figurer à l'inventaire.
+# Native libraries reached through those packages: they are part of the product
+# delivered to the user, and so they belong in the inventory.
 NATIVES = [
-    ("PortAudio", "MIT", "portaudio.com", "couche audio multiplateforme"),
-    ("RtMidi", "MIT modifiée", "rtmidi (McGill)", "couche MIDI multiplateforme"),
-    ("Qt", "LGPL-3.0", "The Qt Company", "boîte à outils graphique"),
+    ("PortAudio", "MIT", "portaudio.com", "cross-platform audio layer"),
+    ("RtMidi", "modified MIT", "rtmidi (McGill)", "cross-platform MIDI layer"),
+    ("Qt", "LGPL-3.0", "The Qt Company", "graphical toolkit"),
     ("libasound (ALSA)", "LGPL-2.1", "alsa-project.org",
-     "couche audio du noyau Linux — système, non redistribuée"),
+     "the Linux kernel's audio layer — system, not redistributed"),
 ]
 
 
 def inventaire():
-    """Relève la version réellement installée de chaque composant."""
+    """Record the version of each component as actually installed."""
     lignes = []
     for module, paquet, licence, editeur, role, obligatoire in COMPOSANTS:
         try:
             m = importlib.import_module(module)
-            version = str(getattr(m, "__version__", "") or "présent")
-            etat = "installé"
+            version = str(getattr(m, "__version__", "") or "present")
+            etat = "installed"
         except Exception:
             version, etat = "—", "absent"
         lignes.append({
@@ -135,8 +134,8 @@ def en_texte(lignes) -> str:
     out += [
         "", "PORTÉE", "-" * 74,
         "  PhytoScope n'incorpore aucun code tiers : il s'appuie sur ces",
-        "  bibliothèques à l'exécution. Distribué sous forme de sources, il",
-        "  satisfait de fait l'obligation de substituabilité de la LGPL.",
+        "  libraries at run time. Distributed as sources, it satisfies in",
+        "  practice the substitutability obligation that the LGPL imposes.",
         "",
         f"  {V.AUTHOR} — {V.WEBSITE} — {V.CONTACT}",
     ]
@@ -144,7 +143,7 @@ def en_texte(lignes) -> str:
 
 
 def en_cyclonedx(lignes) -> dict:
-    """Document CycloneDX 1.5, format d'échange des nomenclatures logicielles."""
+    """A CycloneDX 1.5 document, the interchange format for software BOMs."""
     composants = []
     for d in lignes:
         if d["etat"] == "absent":
@@ -161,7 +160,7 @@ def en_cyclonedx(lignes) -> dict:
         })
     for nom, licence, editeur, role in NATIVES:
         composants.append({
-            "type": "library", "name": nom, "version": "système",
+            "type": "library", "name": nom, "version": "system",
             "publisher": editeur, "description": role,
             "licenses": [{"license": {"name": licence}}], "scope": "optional",
         })
@@ -191,27 +190,27 @@ def en_cyclonedx(lignes) -> dict:
 def en_html(lignes) -> str:
     """Fragment pour le fascicule de nomenclature."""
     out = [f'<div class="origine"><b>{V.APP_NAME} {V.VERSION}</b> — '
-           f'nomenclature logicielle (SBOM)<br/>'
+           f'software bill of materials (SBOM)<br/>'
            f'<span>{V.AUTHOR} · <a href="{V.WEBSITE}">'
            f'{V.WEBSITE.replace("https://", "")}</a> · {V.CONTACT}</span><br/>'
-           f'<span>licence {V.LICENSE} · établie le '
+           f'<span>{V.LICENSE} licence · established on '
            f'{datetime.date.today().isoformat()}</span></div>',
-           '<table class="bom tight"><thead><tr><th>Composant</th>'
-           '<th>Version</th><th>Licence</th><th>Éditeur</th><th>Rôle</th>'
+           '<table class="bom tight"><thead><tr><th>Component</th>'
+           '<th>Version</th><th>Licence</th><th>Publisher</th><th>Role</th>'
            '</tr></thead><tbody>',
-           '<tr class="groupe"><td colspan="5">Bibliothèques Python</td></tr>']
+           '<tr class="groupe"><td colspan="5">Python libraries</td></tr>']
     for d in lignes:
-        version = d["version"] if d["etat"] == "installé" else "non installé"
+        version = d["version"] if d["etat"] == "installed" else "not installed"
         out.append(f'<tr><td>{d["paquet"]}</td><td class="num">{version}</td>'
                    f'<td>{d["licence"]}</td><td>{d["editeur"]}</td>'
                    f'<td>{d["role"]}'
                    + ('' if d["obligatoire"] else
                       '<br/><span class="small">facultatif</span>')
                    + '</td></tr>')
-    out.append('<tr class="groupe"><td colspan="5">Bibliothèques natives '
+    out.append('<tr class="groupe"><td colspan="5">Native libraries '
                'atteintes</td></tr>')
     for nom, licence, editeur, role in NATIVES:
-        out.append(f'<tr><td>{nom}</td><td class="num">système</td>'
+        out.append(f'<tr><td>{nom}</td><td class="num">system</td>'
                    f'<td>{licence}</td><td>{editeur}</td><td>{role}</td></tr>')
     out.append(f'<tr class="origine-pied"><td colspan="5">'
                f'{V.APP_NAME} {V.VERSION} · {V.AUTHOR} · '
@@ -240,7 +239,7 @@ def main(argv=None) -> int:
         os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
         with open(args.output, "w", encoding="utf-8") as f:
             f.write(texte + "\n")
-        print(f"✓ écrit : {args.output}")
+        print(f"✓ written: {args.output}")
     else:
         print(texte)
     return 0

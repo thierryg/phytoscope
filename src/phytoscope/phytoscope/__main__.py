@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/__main__.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Point d'entrée : `python -m phytoscope`, ou `python run.py`.
@@ -52,7 +52,7 @@ def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="phytoscope",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description="Écoute, mesure et enregistrement des signaux végétaux.",
+        description="Listen to, measure and record plant signals.",
         epilog="""exemples :
   phytoscope                          lancement normal
   phytoscope --simulation             découverte sans matériel
@@ -230,13 +230,13 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     # -- 4. options de ligne de commande sur les réglages -------------------
     if args.simulation:
-        settings.forcer("acquisition", "source", "simulation")
+        settings.forcer("acquiring", "source", "simulation")
     if args.device:
-        settings.forcer("acquisition", "device", args.device)
+        settings.forcer("acquiring", "device", args.device)
         if settings.acquisition.source == "auto":
-            settings.forcer("acquisition", "source", "audio")
+            settings.forcer("acquiring", "source", "audio")
     if args.rate:
-        settings.forcer("acquisition", "sample_rate", args.rate)
+        settings.forcer("acquiring", "sample_rate", args.rate)
     if args.record:
         settings.forcer("recording", "auto_start", True)
     if args.theme:
@@ -368,13 +368,13 @@ def _bilan(settings, rapport=None) -> None:
     print(C.ligne_statut("info", "Source demandée",
                          f"{a.source} · {a.sample_rate:g} Hz · "
                          f"{max(a.channels, 1)} voie(s)", 20))
-    print(C.ligne_statut("info", "Musique",
+    print(C.ligne_statut("info", "Music",
                          f"{m.scale} sur {m.root} · {m.diapason_hz:g} Hz · "
                          f"{m.instrument}", 20))
 
     # 6. fichiers
-    print(C.ligne_statut("info", "Séances", settings.recording.directory, 20))
-    print(C.ligne_statut("info", "Journal",
+    print(C.ligne_statut("info", "Sessions", settings.recording.directory, 20))
+    print(C.ligne_statut("info", "Log",
                          f"{log_path() or '(aucun)'}  [{settings.logging.level}]", 20))
     print(C.discret("  " + ligne))
     if rapport is not None and rapport.commande_systeme():
@@ -521,8 +521,10 @@ def _graphique(settings, rapport=None, langue_imposee: bool = False) -> int:
         log.critical("Erreur fatale au lancement de l'interface", exc_info=True)
         try:
             from PySide6.QtWidgets import QMessageBox
-            QMessageBox.critical(None, "PhytoScope — erreur fatale",
-                                 f"{exc}\n\nDétails dans le journal.")
+            from .i18n import t
+            QMessageBox.critical(None, t("PhytoScope — fatal error"),
+                                 f"{exc}\n\n"
+                                 + t("Details are in the log."))
         except Exception:                              # pragma: no cover
             print(C.erreur(f"Erreur fatale : {exc}"))
         return int(ExitCode.ERREUR_GENERALE)

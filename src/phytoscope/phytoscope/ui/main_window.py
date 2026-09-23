@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/ui/main_window.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Fenêtre principale : barre d'outils, onglets, bandeau d'état.
@@ -117,30 +117,30 @@ class MainWindow(QMainWindow):
         self.tab_diag = DiagTab(self.engine, self.p, self._settings_changed)
         self.tab_settings = SettingsTab(self.engine, self.p, self._settings_changed)
         for w, name in ((self.tab_scope, t("Oscilloscope")),
-                        (self.tab_meter, t("Multimètre")),
-                        (self.tab_spectrum, t("Analyseur")),
-                        (self.tab_features, t("Descripteurs")),
-                        (self.tab_plot, t("Traceur")),
-                        (self.tab_listen, t("Écoute")),
-                        (self.tab_voice, t("Parole")),
-                        (self.tab_library, t("Bibliothèque")),
-                        (self.tab_diag, t("Diagnostic")),
-                        (self.tab_settings, t("Réglages"))):
+                        (self.tab_meter, t("Multimeter")),
+                        (self.tab_spectrum, t("Analyser")),
+                        (self.tab_features, t("Descriptors")),
+                        (self.tab_plot, t("Plotter")),
+                        (self.tab_listen, t("Listening")),
+                        (self.tab_voice, t("Speech")),
+                        (self.tab_library, t("Library")),
+                        (self.tab_diag, t("Diagnostics")),
+                        (self.tab_settings, t("Settings"))):
             self.tabs.addTab(w, name)
 
         #  À gauche la clé interne, à droite le libellé traduit : le reste du
         #  code désigne les cases par la clé, qui ne change jamais de langue.
-        cases = {"état": t("état"), "source": t("source"), "durée": t("durée"),
-                 "horloge": t("horloge"), "saturation": t("saturation"),
-                 "dérive": t("dérive"), "événements": t("événements"),
-                 "sortie": t("sortie"), "enregistrement": t("enregistrement")}
+        cases = {"state": t("state"), "source": t("source"), "duration": t("duration"),
+                 "clock": t("clock"), "saturation": t("saturation"),
+                 "drift": t("drift"), "events": t("events"),
+                 "output": t("output"), "recording": t("recording")}
         self.strip = StatusStrip(self.p, list(cases), libelles=cases)
 
         self.banniere = QLabel("")
         self.banniere.setVisible(False)
         self.banniere.setStyleSheet(
-            f"background:{self.p['fond3']};color:{self.p['or']};"
-            f"border:1px solid {self.p['or']};border-radius:5px;padding:6px;")
+            f"background:{self.p['background3']};color:{self.p['gold']};"
+            f"border:1px solid {self.p['gold']};border-radius:5px;padding:6px;")
 
         central = QWidget()
         lay = QVBoxLayout(central)
@@ -151,7 +151,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central)
 
         self.setStatusBar(QStatusBar())
-        self.statusBar().showMessage(t("Prêt."))
+        self.statusBar().showMessage(t("Ready."))
         self._etape("démarrage de l'acquisition…")
 
         self.apply_theme()
@@ -168,32 +168,31 @@ class MainWindow(QMainWindow):
         changer d'onglet pendant une séance : volume, coupure du son, timbre,
         gamme et profil sont donc ici, et agissent à chaud.
         """
-        tb = QToolBar(t("Principal"))
+        tb = QToolBar(t("Main"))
         tb.setMovable(False)
         tb.setObjectName("barre-principale")
         self.addToolBar(tb)
 
-        self.act_record = QAction(t("● Enregistrer"), self)
+        self.act_record = QAction(t("● Record"), self)
         self.act_record.setCheckable(True)
         self.act_record.setShortcut(QKeySequence("Ctrl+R"))
-        self.act_record.setToolTip(t("Démarrer ou arrêter l'enregistrement (Ctrl+R)"))
+        self.act_record.setToolTip(t("Start or stop recording (Ctrl+R)"))
         self.act_record.triggered.connect(self._toggle_record)
         tb.addAction(self.act_record)
 
-        self.act_mark = QAction(t("Marqueur…"), self)
+        self.act_mark = QAction(t("Marker…"), self)
         self.act_mark.setShortcut(QKeySequence("Ctrl+M"))
-        self.act_mark.setToolTip(t("Poser une annotation horodatée (Ctrl+M)"))
+        self.act_mark.setToolTip(t("Drop a time-stamped annotation (Ctrl+M)"))
         self.act_mark.triggered.connect(self._mark)
         tb.addAction(self.act_mark)
 
         #  La capture d'échantillon : un geste, et la minute écoulée est gardée.
         #  Elle vit à côté de l'enregistrement parce qu'elle répond à la même
         #  question — « garder ce qui vient de se passer » — sans rien engager.
-        self.act_sample = QAction(t("⧉ Échantillon"), self)
+        self.act_sample = QAction(t("⧉ Sample"), self)
         self.act_sample.setShortcut(QKeySequence("Ctrl+E"))
         self.act_sample.setToolTip(
-            t("Garde sur le disque le signal qui vient de passer, sans "
-              "démarrer d'enregistrement (Ctrl+E)"))
+            t("Keeps on disk the signal that has just gone by, without starting a recording (Ctrl+E)"))
         self.act_sample.triggered.connect(self._capturer_echantillon)
         tb.addAction(self.act_sample)
 
@@ -204,10 +203,10 @@ class MainWindow(QMainWindow):
         from ..music.profiles import profile_list
         from ..music.scales import diapason_list, scale_names
 
-        tb.addWidget(QLabel(t(" Profil ")))
+        tb.addWidget(QLabel(t(" Preset ")))
         self.cb_profil = QComboBox()
-        self.cb_profil.setToolTip(t("Réglage musical complet, rappelé d'un geste"))
-        self.cb_profil.addItem(t("— personnalisé —"), "")
+        self.cb_profil.setToolTip(t("A complete musical setting, recalled in one gesture"))
+        self.cb_profil.addItem(t("— custom —"), "")
         for cle, libelle in profile_list():
             self.cb_profil.addItem(t(libelle), cle)
         self.cb_profil.currentIndexChanged.connect(self._profil_change)
@@ -215,14 +214,14 @@ class MainWindow(QMainWindow):
 
         tb.addWidget(QLabel(t(" Timbre ")))
         self.cb_instrument = QComboBox()
-        self.cb_instrument.setToolTip(t("Timbre du synthétiseur interne"))
+        self.cb_instrument.setToolTip(t("Timbre of the internal synthesiser"))
         for cle, libelle in instrument_list():
             self.cb_instrument.addItem(t(libelle), cle)
         _choisir(self.cb_instrument, self.settings.music.instrument)
         self.cb_instrument.currentIndexChanged.connect(self._musique_change)
         tb.addWidget(self.cb_instrument)
 
-        tb.addWidget(QLabel(t(" Gamme ")))
+        tb.addWidget(QLabel(t(" Scale ")))
         self.cb_gamme = QComboBox()
         for cle, libelle in scale_names():
             self.cb_gamme.addItem(t(libelle), cle)
@@ -230,9 +229,9 @@ class MainWindow(QMainWindow):
         self.cb_gamme.currentIndexChanged.connect(self._musique_change)
         tb.addWidget(self.cb_gamme)
 
-        tb.addWidget(QLabel(t(" Diapason ")))
+        tb.addWidget(QLabel(t(" Tuning ")))
         self.cb_diapason = QComboBox()
-        self.cb_diapason.setToolTip(t("Fréquence du la de référence"))
+        self.cb_diapason.setToolTip(t("Frequency of the reference A"))
         for cle, libelle in diapason_list():
             self.cb_diapason.addItem(cle + " Hz", float(cle))
         _choisir(self.cb_diapason, float(self.settings.music.diapason_hz))
@@ -242,10 +241,10 @@ class MainWindow(QMainWindow):
         tb.addSeparator()
 
         # --- volume, toujours accessible -----------------------------------
-        self.act_mute = QAction(t("🔇 Muet"), self)
+        self.act_mute = QAction(t("🔇 Mute"), self)
         self.act_mute.setCheckable(True)
         self.act_mute.setShortcut(QKeySequence("Ctrl+K"))
-        self.act_mute.setToolTip(t("Couper le son sans arrêter la mesure (Ctrl+K)"))
+        self.act_mute.setToolTip(t("Mute without stopping the measurement (Ctrl+K)"))
         self.act_mute.triggered.connect(self._muet)
         tb.addAction(self.act_mute)
 
@@ -254,25 +253,25 @@ class MainWindow(QMainWindow):
         self.sl_volume.setRange(-40, 12)
         self.sl_volume.setValue(int(self.settings.music.master_gain_db))
         self.sl_volume.setFixedWidth(130)
-        self.sl_volume.setToolTip(t("Volume de sortie, en décibels"))
+        self.sl_volume.setToolTip(t("Output volume, in decibels"))
         self.sl_volume.valueChanged.connect(self._volume_change)
         tb.addWidget(self.sl_volume)
         self.lab_volume = QLabel(f"{self.settings.music.master_gain_db:+.0f} dB")
         self.lab_volume.setFixedWidth(52)
         tb.addWidget(self.lab_volume)
 
-        self.act_test_hp = QAction(t("Essai HP"), self)
-        self.act_test_hp.setToolTip(t("Émet un bip à 1 kHz pour vérifier la sortie"))
+        self.act_test_hp = QAction(t("Speaker test"), self)
+        self.act_test_hp.setToolTip(t("Emits a 1 kHz beep to check the output"))
         self.act_test_hp.triggered.connect(self._test_hp)
         tb.addAction(self.act_test_hp)
 
         tb.addSeparator()
-        self.act_restart = QAction(t("Redémarrer"), self)
-        self.act_restart.setToolTip(t("Relance l'acquisition et redétecte la source"))
+        self.act_restart = QAction(t("Restart"), self)
+        self.act_restart.setToolTip(t("Restarts acquisition and detects the source again"))
         self.act_restart.triggered.connect(self._restart)
         tb.addAction(self.act_restart)
 
-        self.act_auto = QAction(t("Auto-config"), self)
+        self.act_auto = QAction(t("Auto-setup"), self)
         self.act_auto.setShortcut(QKeySequence("Ctrl+A"))
         self.act_auto.triggered.connect(self._goto_auto)
         tb.addAction(self.act_auto)
@@ -280,11 +279,10 @@ class MainWindow(QMainWindow):
         #  Le zoom est une fonction de pyqtgraph ; le retour à l'origine, lui,
         #  doit être à portée de main, sinon l'utilisateur croit l'acquisition
         #  arrêtée alors qu'il a simplement zoomé hors du signal.
-        self.act_zoom = QAction(t("⟲ Zoom d'origine"), self)
+        self.act_zoom = QAction(t("⟲ Reset zoom"), self)
         self.act_zoom.setShortcut(QKeySequence("Ctrl+0"))
         self.act_zoom.setToolTip(
-            t("Ramène tous les tracés de l'onglet à leur cadrage d'origine "
-              "(Ctrl+0)"))
+            t("Brings every plot in this tab back to its original framing (Ctrl+0)"))
         self.act_zoom.triggered.connect(self._reinitialiser_zoom)
         #  Grisée tant qu'aucun tracé n'est déplacé : l'état du bouton dit
         #  quelque chose de vrai sur l'écran.
@@ -298,7 +296,7 @@ class MainWindow(QMainWindow):
         self.act_panic.setShortcut(QKeySequence(
             "Ctrl+Shift+." if sys.platform == "darwin" else "Ctrl+."))
         self.act_panic.setToolTip(
-            t("Coupe toutes les notes en cours ({touches})").format(
+            t("Silences every note being played ({touches})").format(
                 touches=self.act_panic.shortcut().toString()))
         self.act_panic.triggered.connect(self._panic)
         tb.addAction(self.act_panic)
@@ -313,8 +311,7 @@ class MainWindow(QMainWindow):
         from ..i18n import LANGUE_SOURCE, langues_disponibles
         tb.addWidget(QLabel(" 🌐 "))
         self.cb_langue = QComboBox()
-        self.cb_langue.setToolTip(t("Langue de l'interface — prend effet au "
-                                    "redémarrage"))
+        self.cb_langue.setToolTip(t("Interface language — takes effect on restart"))
         for code, nom, nom_fr, n, sens in langues_disponibles():
             self.cb_langue.addItem(nom, code)
         _choisir(self.cb_langue, self.settings.ui.language)
@@ -325,34 +322,31 @@ class MainWindow(QMainWindow):
         #  une barre d'outils qui déborde les escamote sans prévenir, et c'est
         #  exactement ce qui s'est produit. Les raccourcis, eux, restent
         #  attachés aux mêmes actions et fonctionnent partout.
-        self.act_help = QAction(t("Aide"), self)
+        self.act_help = QAction(t("Help"), self)
         self.act_help.setShortcut(QKeySequence("F1"))
         self.act_help.setShortcutContext(Qt.ApplicationShortcut)
-        self.act_help.setToolTip(t("Prise en main, raccourcis, description des "
-                                 "onglets (F1)"))
+        self.act_help.setToolTip(t("Getting started, shortcuts, description of the tabs (F1)"))
         self.act_help.triggered.connect(self._aide)
         tb.addAction(self.act_help)
 
-        self.act_about = QAction(t("À propos"), self)
+        self.act_about = QAction(t("About"), self)
         self.act_about.setShortcut(QKeySequence("Shift+F1"))
         self.act_about.setShortcutContext(Qt.ApplicationShortcut)
-        self.act_about.setToolTip(t("Version, auteur, composants installés "
-                                  "(Maj+F1)"))
+        self.act_about.setToolTip(t("Version, author, installed components (Shift+F1)"))
         self.act_about.triggered.connect(self._about)
 
         #  Le journal : accessible sans terminal et sans chercher où le
         #  fichier se trouve — c'est la première chose qu'on demande quand
         #  quelque chose s'est mal passé.
-        self.act_journal = QAction(t("Journal du logiciel…"), self)
+        self.act_journal = QAction(t("Application log…"), self)
         self.act_journal.setShortcut(QKeySequence("Ctrl+L"))
         self.act_journal.setShortcutContext(Qt.ApplicationShortcut)
         self.act_journal.setToolTip(
-            t("Affiche le fichier de journal en direct, dit où il se trouve "
-              "et permet d'en enregistrer une copie (Ctrl+L)"))
+            t("Shows the log file live, says where it is, and lets you save a copy of it (Ctrl+L)"))
         self.act_journal.triggered.connect(self._journal)
         self.addAction(self.act_journal)
 
-        self.act_quit = QAction(t("Quitter"), self)
+        self.act_quit = QAction(t("Quit"), self)
         self.act_quit.setShortcut(QKeySequence("Ctrl+Q"))
         self.act_quit.setShortcutContext(Qt.ApplicationShortcut)
         self.act_quit.triggered.connect(self._quitter)
@@ -374,14 +368,13 @@ class MainWindow(QMainWindow):
         barre = self.menuBar()
         barre.setNativeMenuBar(False)      # même disposition sur les trois systèmes
 
-        seance = barre.addMenu(t("&Séance"))
+        seance = barre.addMenu(t("&Session"))
         seance.addAction(self.act_record)
         seance.addAction(self.act_mark)
         seance.addAction(self.act_sample)
-        self.act_charger = QAction(t("Charger un enregistrement…"), self)
+        self.act_charger = QAction(t("Load a recording…"), self)
         self.act_charger.setToolTip(
-            t("Rejoue un fichier pris n'importe où ; l'acquisition en direct "
-              "est alors suspendue."))
+            t("Replays a file taken from anywhere; live acquisition is then suspended."))
         self.act_charger.triggered.connect(self._charger_enregistrement)
         seance.addAction(self.act_charger)
         seance.addSeparator()
@@ -390,30 +383,29 @@ class MainWindow(QMainWindow):
         seance.addSeparator()
         seance.addAction(self.act_quit)
 
-        affichage = barre.addMenu(t("&Affichage"))
+        affichage = barre.addMenu(t("&View"))
         affichage.addAction(self.act_zoom)
         affichage.addSeparator()
         affichage.addAction(self.act_mute)
         affichage.addAction(self.act_panic)
         affichage.addAction(self.act_test_hp)
         affichage.addSeparator()
-        self.menu_langue = affichage.addMenu(t("Langue"))
+        self.menu_langue = affichage.addMenu(t("Language"))
         self._remplir_menu_langue()
 
-        aide = barre.addMenu(t("Ai&de"))
+        aide = barre.addMenu(t("&Help"))
         aide.addAction(self.act_help)
         aide.addAction(self.act_about)
         aide.addSeparator()
         aide.addAction(self.act_journal)
         aide.addSeparator()
-        self.act_maj = QAction(t("Mises à jour des bibliothèques…"), self)
+        self.act_maj = QAction(t("Library updates…"), self)
         self.act_maj.setToolTip(
-            t("Compare les bibliothèques Python installées à ce que publie "
-              "l'index des paquets. N'installe rien sans votre demande."))
+            t("Compares the installed Python libraries with what the package index publishes. Installs nothing unless you ask."))
         self.act_maj.triggered.connect(self._mises_a_jour)
         aide.addAction(self.act_maj)
         aide.addSeparator()
-        self.act_site = QAction(t("Ouvrir le site"), self)
+        self.act_site = QAction(t("Open the website"), self)
         self.act_site.triggered.connect(self._ouvrir_site)
         aide.addAction(self.act_site)
 
@@ -535,7 +527,7 @@ class MainWindow(QMainWindow):
         chemin = self.engine.capturer_echantillon()
         if chemin:
             self.statusBar().showMessage(
-                t("Échantillon gardé : {fichier}").format(
+                t("Sample kept: {fichier}").format(
                     fichier=os.path.basename(chemin)), 8000)
             recharger = getattr(self.tab_library, "recharger_echantillons", None)
             if callable(recharger):
@@ -548,7 +540,7 @@ class MainWindow(QMainWindow):
         for trace in traces:
             trace.reinitialiser_zoom()
         self.statusBar().showMessage(
-            t("Zoom réinitialisé ({n} tracé(s))").format(
+            t("Zoom reset ({n} plot(s))").format(
                 n=len(deplaces) or len(traces)), 4000)
         self._maj_bouton_zoom()
 
@@ -589,20 +581,19 @@ class MainWindow(QMainWindow):
         """Coupe le son sans rien interrompre : la mesure continue."""
         if coche:
             self.engine.synth.master = 0.0
-            self.act_mute.setText(t("🔈 Rétablir"))
+            self.act_mute.setText(t("🔈 Unmute"))
             self.statusBar().showMessage(
-                t("Son coupé — la mesure et l'enregistrement continuent."), 5000)
+                t("Sound muted — measurement and recording continue."), 5000)
         else:
             self.engine.synth.master = 10 ** (self.sl_volume.value() / 20.0)
-            self.act_mute.setText(t("🔇 Muet"))
+            self.act_mute.setText(t("🔇 Mute"))
 
     def _quitter(self) -> None:
         """Fermeture propre : l'enregistrement en cours est clos d'abord."""
         if self.engine.state.recording:
             reponse = QMessageBox.question(
-                self, t("Quitter"),
-                t("Un enregistrement est en cours.\n\n"
-                "Voulez-vous le clore et quitter ?"),
+                self, t("Quit"),
+                t("A recording is in progress.\n\nDo you want to close it and quit?"),
                 QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
             if reponse != QMessageBox.Yes:
                 return
@@ -630,8 +621,7 @@ class MainWindow(QMainWindow):
             self.banniere.setVisible(False)
             return
         self.banniere.setText(
-            t("  En attente d'une carte PhytoSense sur le port USB-C — "
-              "l'écoute fonctionne en attendant sur : {source}").format(
+            t("  Waiting for a PhytoSense board on the USB-C port — meanwhile listening works on: {source}").format(
                   source=st.source_name or "—"))
         self.banniere.setVisible(True)
         self.engine.monitor.on_change = self._carte_detectee
@@ -653,9 +643,7 @@ class MainWindow(QMainWindow):
         self._bandeau_relecture = True
         reste = max(st.replay_length - st.replay_position, 0.0)
         self.banniere.setText(t(
-            "⏵ Relecture de « {nom} » — l'acquisition en direct est suspendue. "
-            "{position:.0f} s sur {duree:.0f} s, il reste {reste:.0f} s. "
-            "« Revenir en direct » rend la main à la plante.").format(
+            "⏵ Replaying “{nom}” — live acquisition is suspended. {position:.0f} s of {duree:.0f} s, {reste:.0f} s to go. “Back to live” hands control back to the plant.").format(
                 nom=st.replay_name or "—", position=st.replay_position,
                 duree=st.replay_length, reste=reste))
         self.banniere.setVisible(True)
@@ -666,8 +654,8 @@ class MainWindow(QMainWindow):
             self.carte_arrivee.emit()
 
     def _basculer_sur_carte(self) -> None:
-        self.banniere.setText(t("  Carte détectée — bascule de la source en cours…"))
-        self.statusBar().showMessage(t("Carte PhytoSense détectée : bascule."), 6000)
+        self.banniere.setText(t("  Board detected — switching source…"))
+        self.statusBar().showMessage(t("PhytoSense board detected: switching."), 6000)
         enregistrait = self.engine.state.recording
         try:
             self.engine.stop()
@@ -693,10 +681,10 @@ class MainWindow(QMainWindow):
             if path is None:
                 self.act_record.setChecked(False)
                 return
-            self.act_record.setText(t("■ Arrêter"))
+            self.act_record.setText(t("■ Stop"))
         else:
             self.engine.stop_recording()
-            self.act_record.setText(t("● Enregistrer"))
+            self.act_record.setText(t("● Record"))
             self.tab_library.reload()
 
     def _mark(self) -> None:
@@ -719,14 +707,13 @@ class MainWindow(QMainWindow):
         self.engine.synth.all_off()
         if self.engine.midi.is_open:
             self.engine.midi.panic()
-        self.statusBar().showMessage(t("Toutes les notes coupées."), 3000)
+        self.statusBar().showMessage(t("All notes cut."), 3000)
 
     def _test_hp(self) -> None:
         """Bip d'essai — la façon la plus rapide de savoir si le son sort."""
         self.engine.test_haut_parleur()
         self.statusBar().showMessage(
-            t("Bip d'essai à 1 kHz émis. Si vous n'entendez rien : "
-            "onglet Diagnostic → Sortie sonore."), 6000)
+            t("1 kHz test beep emitted. If you hear nothing: Diagnostics tab → Audio output."), 6000)
 
     def _aide(self) -> None:
         """Fenêtre d'aide — un seul bouton, OK."""
@@ -767,15 +754,15 @@ class MainWindow(QMainWindow):
         #  Les modules sont prévenus DEPUIS LE FIL DE L'INTERFACE, jamais
         #  depuis celui des données : un module lent ralentit l'affichage, il
         #  ne fait pas tomber un échantillon (`C-20`, `C-28`).
-        from ..api import NOTE_JOUEE
-        self.engine.publier(NOTE_JOUEE, int(getattr(note, "midi", 0)),
+        from ..api import NOTE_PLAYED
+        self.engine.publish(NOTE_PLAYED, int(getattr(note, "midi", 0)),
                             int(getattr(note, "velocity", 0)))
 
     def _on_enonce(self, enonce) -> None:
         self.tab_voice.ajouter_enonce(enonce)
         self.statusBar().showMessage(f"« {enonce.texte} »", 6000)
-        from ..api import ENONCE_PRODUIT
-        self.engine.publier(ENONCE_PRODUIT, str(enonce.texte))
+        from ..api import UTTERANCE_PRODUCED
+        self.engine.publish(UTTERANCE_PRODUCED, str(enonce.texte))
 
     def _on_message(self, text: str) -> None:
         self.statusBar().showMessage(text, 8000)
@@ -794,19 +781,19 @@ class MainWindow(QMainWindow):
         cela vaut mieux que de laisser un module inconnu s'exécuter sur le
         chemin des données.
         """
-        from ..api import (ALERTE_DISQUE, EVENEMENT_DETECTE, MESURE_ARRETEE,
-                           MESURE_DEMARREE, SEANCE_COMMENCEE, SEANCE_TERMINEE,
-                           SOURCE_CHANGEE)
+        from ..api import (DISK_ALERT, EVENT_DETECTED, MEASUREMENT_STOPPED,
+                           MEASUREMENT_STARTED, SESSION_STARTED, SESSION_ENDED,
+                           SOURCE_CHANGED)
         precedent = self._dernier_etat_modules
 
         if st.running != precedent.get("running"):
-            self.engine.publier(
-                MESURE_DEMARREE if st.running else MESURE_ARRETEE,
+            self.engine.publish(
+                MEASUREMENT_STARTED if st.running else MEASUREMENT_STOPPED,
                 self.engine.modules.modules and
-                next(iter(self.engine.modules.modules.values())).contexte.etat()
+                next(iter(self.engine.modules.modules.values())).context.state()
                 if self.engine.modules.modules else None)
         if st.source_name != precedent.get("source"):
-            self.engine.publier(SOURCE_CHANGEE, str(st.source_name))
+            self.engine.publish(SOURCE_CHANGED, str(st.source_name))
 
         #  Les événements : on en publie autant qu'il en est apparu, avec leur
         #  instant et leur amplitude réels quand on les a.
@@ -814,18 +801,18 @@ class MainWindow(QMainWindow):
         if 0 < nouveaux <= 32:
             ev = st.last_event
             for _ in range(nouveaux):
-                self.engine.publier(
-                    EVENEMENT_DETECTE,
+                self.engine.publish(
+                    EVENT_DETECTED,
                     float(getattr(ev, "time_s", st.elapsed_s)),
                     float(getattr(ev, "amplitude_v", 0.0)))
 
         if st.recording != precedent.get("recording"):
-            self.engine.publier(
-                SEANCE_COMMENCEE if st.recording else SEANCE_TERMINEE,
+            self.engine.publish(
+                SESSION_STARTED if st.recording else SESSION_ENDED,
                 str(st.record_dir or ""))
 
         if st.disk_alert and not precedent.get("disk_alert"):
-            self.engine.publier(ALERTE_DISQUE, float(st.disk_free_mb))
+            self.engine.publish(DISK_ALERT, float(st.disk_free_mb))
 
         self._dernier_etat_modules = {
             "running": st.running, "source": st.source_name,
@@ -844,22 +831,22 @@ class MainWindow(QMainWindow):
         self._maj_bouton_zoom()
         self._maj_bandeau_relecture(st)
         if st.replaying:
-            self.strip.set("état", t("relecture"), "warn")
+            self.strip.set("state", t("replay"), "warn")
         else:
-            self.strip.set("état", t("acquisition") if st.running else t("arrêté"),
+            self.strip.set("state", t("acquiring") if st.running else t("stopped"),
                            "ok" if st.running else "err")
         self.strip.set("source", st.source_name[:26] or "—")
-        self.strip.set("durée", _hms(st.elapsed_s))
+        self.strip.set("duration", _hms(st.elapsed_s))
         board = st.board
-        self.strip.set("horloge", t("CAN ±1 ppm") if board else t("hôte"),
+        self.strip.set("clock", t("ADC ±1 ppm") if board else t("host"),
                        "ok" if board else "warn")
-        self.strip.set("saturation", t("OUI") if st.saturated else t("non"),
+        self.strip.set("saturation", t("YES") if st.saturated else t("no"),
                        "err" if st.saturated else "ok")
-        self.strip.set("dérive", f"{st.drift_v_per_min * 1e6:+.0f} µV/min",
+        self.strip.set("drift", f"{st.drift_v_per_min * 1e6:+.0f} µV/min",
                        "warn" if abs(st.drift_v_per_min) > 3e-4 else "normal")
-        self.strip.set("événements", t("{n} / {m} notes").format(
+        self.strip.set("events", t("{n} / {m} notes").format(
             n=st.events_total, m=st.notes_total))
-        self.strip.set("sortie", f"{st.audio_peak_db:+.0f} dB",
+        self.strip.set("output", f"{st.audio_peak_db:+.0f} dB",
                        "err" if st.audio_peak_db > -1.0 else "normal")
         if st.recording:
             #  Pendant l'enregistrement, l'espace restant compte autant que la
@@ -868,10 +855,10 @@ class MainWindow(QMainWindow):
             texte = "● " + _hms(st.record_elapsed)
             if st.disk_free_mb > 0:
                 texte += " · " + formater_mo(st.disk_free_mb)
-            self.strip.set("enregistrement", texte,
+            self.strip.set("recording", texte,
                            "warn" if st.disk_alert else "err")
         else:
-            self.strip.set("enregistrement", t("arrêté"))
+            self.strip.set("recording", t("stopped"))
 
     # --------------------------------------------------------------- sortie
     def arret_immediat(self) -> None:

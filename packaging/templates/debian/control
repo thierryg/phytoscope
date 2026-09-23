@@ -1,0 +1,30 @@
+Package: phytoscope
+Version: @VERSION@
+Section: science
+Priority: optional
+Architecture: @ARCH@
+Depends: python3 (>= 3.9), python3-venv, python3-pip, libgl1, libegl1,
+ libglx0, libopengl0, libxkbcommon-x11-0, libxcb-cursor0, libxcb-icccm4,
+ libxcb-keysyms1, libxcb-image0, libxcb-render-util0, libxcb-shape0,
+ libxcb-randr0, libxcb-xinerama0, libxcb-xkb1, libfontconfig1, libfreetype6,
+ libdbus-1-3, libportaudio2
+Recommends: python3-numpy, espeak-ng
+Suggests: python3-serial
+Installed-Size: @TAILLE@
+Maintainer: @RESPONSABLE@
+Homepage: @SITE@
+Description: Listen to, measure and record plant signals
+ PhytoScope measures the variations in a plant's electrical potential and
+ makes them audible. It brings together an oscilloscope, a multimeter, a
+ spectrum analyzer, a plotter, musical sonification and a speech mode.
+ .
+ The software starts with no hardware attached: an internal generator takes
+ over, so you can explore the whole thing before buying anything. With a
+ PhytoSense One board, a sound card or a plain serial rig, it measures for
+ real.
+ .
+ Every representation states what it assumes and what it does not let you
+ conclude. The software claims neither to translate a plant nor to
+ identify one.
+ .
+ Published by @EDITEUR@ (@SITE@), written by @AUTEUR@.

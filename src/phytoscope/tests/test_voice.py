@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/tests/test_voice.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Tests du mode vocal : dictionnaire, moteur lexical, sortie parlée.
@@ -147,7 +147,7 @@ class TestVocalMapper:
 
     def test_regles_expliquees(self):
         lignes = VocalMapper(reglages()).describe_rules()
-        assert any("traduit" in l for l in lignes)      # l'avertissement y est
+        assert any("translates" in l for l in lignes)   # the warning is in there
         assert len(lignes) >= 6
 
     def test_dictionnaire_externe_est_charge(self, tmp_path):
@@ -200,7 +200,7 @@ class TestVoiceOutput:
         assert sortie.demarrer() is False               # silencieuse = pas de voix
         assert sortie.actif is True
         assert sortie.backend == "silencieuse"
-        assert "aucune synthèse" in sortie.etat()
+        assert "no synthesis" in sortie.etat()
         sortie.arreter()
         assert sortie.actif is False
 
@@ -220,7 +220,7 @@ class TestVoiceOutput:
         assert VoiceOutput(reglages()).dire("bonjour") is False
 
     def test_etat_lisible_a_l_arret(self):
-        assert VoiceOutput(reglages()).etat() == "arrêtée"
+        assert VoiceOutput(reglages()).etat() == "stopped"
 
 
 class TestInterruption:

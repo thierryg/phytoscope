@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/core/autoconfig.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Auto-configuration : le logiciel se règle tout seul, et dit ce qu'il a fait.
@@ -149,7 +149,7 @@ def analyse(signal: np.ndarray, fs: float, full_scale_v: float = 2.5,
         span = max(res.noise_pp_v, 1e-9)
         factor = target / span
         gains = [1, 2, 5, 10, 20, 50, 100, 200]
-        cur = getattr(getattr(settings, "acquisition", None), "hardware_gain", 0) or 1
+        cur = getattr(getattr(settings, "acquiring", None), "hardware_gain", 0) or 1
         want = cur * factor
         best = min(gains, key=lambda g: abs(math.log(max(g, 1) / max(want, 1e-6))))
         sug["hardware_gain"] = best

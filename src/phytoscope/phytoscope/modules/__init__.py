@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/modules/__init__.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Les modules livrés avec le logiciel.
@@ -24,8 +24,8 @@ monde, et c'est ce qui garantit que cette API suffit réellement.
 Cette règle a une conséquence agréable : pour savoir comment écrire un module,
 il suffit d'en lire un.
 
-    descripteurs-avances   les six représentations du signal
-    empreinte-montage      les descripteurs du montage et le registre
+    advanced-descriptors   les six représentations du signal
+    rig-fingerprint      les descripteurs du montage et le registre
     export-csv             une séance en CSV, lisible par un tableur
-    grandeurs-scientifiques  quinze quantités et ce qu'elles disent
+    scientific-quantities  quinze quantités et ce qu'elles disent
 """

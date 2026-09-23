@@ -1,0 +1,240 @@
+/*
+ *  ==========================================================================
+ *  PhytoScope — attribution — sources/midi/reference.css
+ *
+ *  Version   : 1.6.0
+ *  Date      : 2026-09-23
+ *  Publisher : Bretagne Namasté
+ *  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+ *  Website   : https://bretagne-namaste.com
+ *  Contact   : contact@bretagne-namaste.com
+ *  License   : MIT — see LICENSE.txt
+ *
+ *  SPDX-License-Identifier: MIT
+ *  end of attribution
+ *  ==========================================================================
+ */
+
+/* ==========================================================================
+ *  Paged media for the MIDI protocol reference.
+ *
+ *  Deliberately plain: this is a working reference, read on screen and
+ *  printed to be annotated, not a book. No ornaments, no display faces, and
+ *  no web fonts — the document has to render identically on a machine that
+ *  has none of the project's typefaces installed.
+ * ========================================================================== */
+
+@page {
+  size: A4;
+  margin: 20mm 18mm 18mm 18mm;
+
+  @top-center {
+    content: "MIDI Protocol Reference — PhytoScope";
+    font-family: "DejaVu Sans", sans-serif;
+    font-size: 7.5pt;
+    color: #667;
+    padding-bottom: 2mm;
+    border-bottom: 0.2pt solid #ccd;
+  }
+  @bottom-right {
+    content: counter(page) " / " counter(pages);
+    font-family: "DejaVu Sans", sans-serif;
+    font-size: 8pt;
+    color: #667;
+  }
+  @bottom-left {
+    content: "Bretagne Namasté — MIT";
+    font-family: "DejaVu Sans", sans-serif;
+    font-size: 7pt;
+    color: #99a;
+  }
+}
+
+/*  The cover carries no running head. */
+@page :first {
+  @top-center { content: none; }
+  @bottom-left { content: none; }
+  @bottom-right { content: none; }
+}
+
+html { font-size: 10pt; }
+
+body {
+  font-family: "DejaVu Serif", Georgia, serif;
+  line-height: 1.42;
+  color: #1a1a20;
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* --- headings ----------------------------------------------------------- */
+h1, h2, h3, h4 {
+  font-family: "DejaVu Sans", sans-serif;
+  color: #14304a;
+  text-align: left;
+  hyphens: none;
+}
+
+h1.cover-title {
+  font-size: 26pt;
+  line-height: 1.15;
+  margin: 55mm 0 4mm 0;
+  color: #0e2336;
+}
+
+p.cover-sub {
+  font-family: "DejaVu Sans", sans-serif;
+  font-size: 12pt;
+  color: #46586a;
+  margin: 0 0 22mm 0;
+  text-align: left;
+}
+
+p.cover-meta {
+  font-family: "DejaVu Sans", sans-serif;
+  font-size: 8.5pt;
+  color: #66707a;
+  text-align: left;
+  line-height: 1.6;
+}
+
+h2 {
+  font-size: 15pt;
+  margin: 9mm 0 3mm 0;
+  padding-bottom: 1.5mm;
+  border-bottom: 0.6pt solid #14304a;
+  break-after: avoid;
+}
+
+h2.newpage { break-before: page; margin-top: 0; }
+
+h3 {
+  font-size: 11.5pt;
+  margin: 6mm 0 2mm 0;
+  break-after: avoid;
+}
+
+h4 {
+  font-size: 10pt;
+  margin: 4mm 0 1.5mm 0;
+  color: #2b4a66;
+  break-after: avoid;
+}
+
+p { margin: 0 0 2.6mm 0; orphans: 3; widows: 3; }
+
+/* --- code and byte diagrams --------------------------------------------- */
+code, pre, .bytes {
+  font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+}
+
+code {
+  font-size: 0.88em;
+  background: #f2f4f7;
+  padding: 0.3mm 0.9mm;
+  border-radius: 0.6mm;
+}
+
+pre {
+  font-size: 8pt;
+  line-height: 1.35;
+  background: #f7f8fa;
+  border-left: 1.2pt solid #9db0c4;
+  padding: 2.2mm 3mm;
+  margin: 2.5mm 0 3.5mm 0;
+  white-space: pre-wrap;
+  break-inside: avoid;
+}
+
+/* --- tables ------------------------------------------------------------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "DejaVu Sans", sans-serif;
+  font-size: 8.2pt;
+  margin: 2.5mm 0 4mm 0;
+}
+
+/*  Long tables must be allowed to break, or a 47-row key map would push a
+ *  whole page of white space ahead of it. Short ones stay whole. */
+table.long { break-inside: auto; }
+table.short { break-inside: avoid; }
+
+thead { display: table-header-group; }
+
+th, td {
+  border: 0.2pt solid #c8d0d8;
+  padding: 1mm 1.6mm;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #e8edf2;
+  color: #14304a;
+  font-weight: bold;
+}
+
+td.hex, th.hex { font-family: "DejaVu Sans Mono", monospace; white-space: nowrap; }
+
+tbody tr:nth-child(even) td { background: #fafbfc; }
+
+/* --- callouts ----------------------------------------------------------- */
+.note, .warn, .ps {
+  font-family: "DejaVu Sans", sans-serif;
+  font-size: 8.6pt;
+  padding: 2.2mm 3mm;
+  margin: 3mm 0;
+  break-inside: avoid;
+  text-align: left;
+}
+
+.note { background: #eef4fa; border-left: 1.6pt solid #4a7fae; }
+.warn { background: #fdf3ec; border-left: 1.6pt solid #c07a3e; }
+.ps   { background: #eef7f1; border-left: 1.6pt solid #4f9068; }
+
+.note .label, .warn .label, .ps .label {
+  display: block;
+  font-weight: bold;
+  font-size: 7.6pt;
+  letter-spacing: 0.4pt;
+  text-transform: uppercase;
+  margin-bottom: 1mm;
+}
+
+.note .label { color: #2d5f8a; }
+.warn .label { color: #9c5a1f; }
+.ps .label   { color: #2f6b47; }
+
+/* --- lists -------------------------------------------------------------- */
+ul, ol { margin: 0 0 3mm 0; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+
+dl { margin: 0 0 3mm 0; }
+dt {
+  font-family: "DejaVu Sans", sans-serif;
+  font-weight: bold;
+  font-size: 9pt;
+  margin-top: 2.2mm;
+  color: #24405c;
+}
+dd { margin: 0 0 0 6mm; }
+
+/* --- table of contents -------------------------------------------------- */
+nav#toc { break-after: page; }
+nav#toc ol { list-style: none; padding-left: 0; }
+nav#toc li {
+  font-family: "DejaVu Sans", sans-serif;
+  font-size: 9.5pt;
+  margin-bottom: 1.4mm;
+}
+nav#toc li.sub { padding-left: 6mm; font-size: 8.8pt; color: #445; }
+nav#toc a { text-decoration: none; color: #1a2c3e; }
+nav#toc a::after {
+  content: target-counter(attr(href), page);
+  float: right;
+  font-family: "DejaVu Sans Mono", monospace;
+  color: #778;
+}
+
+small { font-size: 0.86em; color: #556; }

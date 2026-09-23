@@ -1,0 +1,47 @@
+<section class="frontpage notice">
+  <h2 id="s-notice">Schematic package — PhytoSense One</h2>
+  <p class="lettrine noindent">This fascicle gathers the eight schematic sheets of the
+  PhytoSense One board, in landscape format, to be printed and taken to the bench. It contains
+  no explanations: those are in the book <em>The PhytoSense Board</em>, and each sheet says
+  which chapter to turn to.</p>
+
+  <table class="tight">
+    <thead><tr><th>Sheet</th><th>Block</th><th>Contents</th><th>Commentary in the book</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>FE-Z daughterboard</td>
+        <td>Electrometer input, guard buffer, common-mode feedback</td>
+        <td>chapter 3</td></tr>
+      <tr><td class="num">2</td><td>FE-B daughterboard</td>
+        <td>AC-excited bridge, instrumentation amplifier, synchronous demodulation</td>
+        <td>chapter 4</td></tr>
+      <tr><td class="num">3</td><td>Motherboard</td>
+        <td>Programmable gain, Bessel filter, differential drive, converter</td>
+        <td>chapter 5</td></tr>
+      <tr><td class="num">4</td><td>Motherboard</td>
+        <td>Isolated supplies, low-noise regulators, digital isolators</td>
+        <td>chapter 5</td></tr>
+      <tr><td class="num">5</td><td>Motherboard</td>
+        <td>Microcontroller, USB-C, MIDI, user interface</td><td>chapter 7</td></tr>
+      <tr><td class="num">6</td><td>Interconnect</td>
+        <td>Mezzanine connector pinout</td><td>chapter 2</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="s-conventions">Conventions</h3>
+  <p>Symbols follow IEC 60617. Analog ground is a solid triangle, digital ground a comb. The
+  pentagonal labels mark inter-sheet signals. The copper dash-dot line is the galvanic isolation
+  barrier: <strong>no conductor crosses it</strong>.</p>
+
+  <div class="securite">
+    <div class="s-h">Before connecting anything</div>
+    <p class="noindent">The board runs on USB 5 V, on a battery, or on an external 7 to 24 V
+    supply at safety extra-low voltage. It has no part connected directly to the mains, and must
+    never have one: isolating from the mains is the external supply's job, and that supply must
+    carry CE marking and double insulation. Never connect an earthed oscilloscope to a rig
+    connected to a living being. The 22 kΩ resistor in series with the reference electrode is a
+    safety limitation: it is not a substitute for one.</p>
+  </div>
+
+  <p class="copyright">Schematics published under the CERN-OHL-P v2 licence. Revision B,
+  September 2026. Bretagne Namasté — bretagne-namaste.com — contact@bretagne-namaste.com</p>
+</section>

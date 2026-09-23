@@ -1,0 +1,31 @@
+#!/bin/sh
+#  ==========================================================================
+#  PhytoScope — attribution — packaging/templates/debian/prerm
+#
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
+#
+#  SPDX-License-Identifier: MIT
+#  end of attribution
+#  ==========================================================================
+
+#  Avant la suppression : retirer ce que le postinst a créé.
+#  dpkg ne connaît pas l'environnement virtuel — il ne figure dans aucune
+#  liste de fichiers —, c'est donc à nous de le nettoyer, faute de quoi
+#  /usr/share/phytoscope resterait après « apt remove ».
+set -e
+case "$1" in
+  remove|purge)
+    rm -rf /usr/share/phytoscope/venv
+    #  Même raisonnement pour le cache de bytecode : produit après coup, il ne
+    #  figure dans aucune liste de fichiers, et survivrait à « apt remove ».
+    find /usr/share/phytoscope -name '__pycache__' -type d \
+        -exec rm -rf {} + 2>/dev/null || true
+    ;;
+esac
+exit 0

@@ -5,14 +5,14 @@ un Makefile pour les enchaîner.
 
 ```bash
 cd packaging
-make outils      # ce qui est installé, ce qui manque
+make tools      # ce qui est installé, ce qui manque
 make deps        # installe NSIS et msitools sans mot de passe
-make tout        # les cinq systèmes
+make all        # les cinq systèmes
 make windows     # un seul
-make verifier    # rouvre et contrôle ce qui a été produit
+make verify    # rouvre et contrôle ce qui a été produit
 ```
 
-Les paquets sortent dans `build/paquets/`, avec un fichier `.sha256`
+Les paquets sortent dans `build/packages/`, avec un fichier `.sha256`
 vérifiable par `sha256sum -c`.
 
 ---
@@ -96,13 +96,13 @@ Les trois mêmes choses, partout où c'est possible :
 | `.exe` NSIS | case à cocher | case à cocher | « Applications et fonctionnalités » |
 | `.msi` | fonctionnalité `IconeBureau` | — (déploiement sans interface) | `msiexec /x` |
 | `.pkg` | fenêtre de l'assistant | fenêtre de l'assistant | `uninstall.sh` dans le `.app` |
-| `.deb` `.rpm` | `phytoscope-icone-bureau` | — | `phytoscope-desinstaller` |
+| `.deb` `.rpm` | `phytoscope-desktop-icon` | — | `phytoscope-uninstall` |
 
 **Pourquoi `.deb` et `.rpm` ne demandent rien.** `apt` et `dnf` installent sans
 interaction, souvent sans session graphique, et parfois pour un autre compte
 que celui qui s'en servira. Poser la question là serait la poser à la mauvaise
 personne, au mauvais moment. Les deux paquets livrent donc
-`phytoscope-icone-bureau`, que l'utilisateur appelle quand il le décide.
+`phytoscope-desktop-icon`, que l'utilisateur appelle quand il le décide.
 
 **Aucune désinstallation n'efface vos données.** Réglages et séances sont
 conservés, et chaque désinstallateur dit où ils sont et comment les effacer si
@@ -112,9 +112,9 @@ on le veut vraiment. Une désinstallation n'est pas une demande d'oubli.
 ## Signature
 
 ```bash
-make certificat            une seule fois — crée la clé et le certificat
-make signer                signe la fabrication en cours
-make empreinte-certificat  l'empreinte SHA-256 à publier
+make certificate            une seule fois — crée la clé et le certificat
+make sign                signe la fabrication en cours
+make certificate-fingerprint  l'empreinte SHA-256 à publier
 ```
 
 Chaque paquet reçoit une signature **CMS détachée** (`.p7s`), et les
@@ -142,16 +142,16 @@ empreinte publiable que chacun peut comparer.
 ### Où vivent les clés
 
 La clé de référence est dans `~/.local/share/phytoscope-signature/`, en 0600,
-**hors du dépôt**. Une copie de travail vit dans `certificat/`, où
+**hors du dépôt**. Une copie de travail vit dans `certificate/`, où
 `.gitignore` écarte la clé privée — mais `.gitignore` protège de Git, pas
-d'une sauvegarde ni d'une archive du dossier. Voir `certificat/LISEZ-MOI.md`.
+d'une sauvegarde ni d'une archive du dossier. Voir `certificate/README.md`.
 
 
 ## Organisation du dossier
 
 ```
 packaging/
-  Makefile                 enchaîne les cibles — « make tout », « make macos »
+  Makefile                 enchaîne les cibles — « make all », « make macos »
   build.py            aiguillage : appelle les générateurs dans l'ordre
   common.py                ce qui ne dépend d'aucun système
   verify.py              rouvre les paquets produits et les contrôle
@@ -182,7 +182,7 @@ panne sur l'un n'emporte pas les autres.
 ## La version et l'attribution
 
 Deux fichiers, dans le paquet Python, et nulle part ailleurs :
-**`phytoscope/VERSION`** et **`phytoscope/AUTEURS`**.
+**`phytoscope/VERSION`** et **`phytoscope/AUTHORS`**.
 
 ```
 version = 1.5.1
@@ -272,7 +272,7 @@ systèmes afficheront donc un avertissement à la première ouverture :
 Le `LISEZ-MOI.txt` de chaque paquet l'explique à l'utilisateur. C'est honnête,
 et cela vaut mieux qu'un faux sentiment de sécurité.
 
-**Elle n'installe rien pour vérifier.** `make verifier` rouvre chaque paquet et
+**Elle n'installe rien pour vérifier.** `make verify` rouvre chaque paquet et
 contrôle sa structure — métadonnées, contenu, cohérence interne, droits
 d'exécution, empreintes. Mais **aucun paquet n'a été installé** : il n'y a sur
 cette machine ni Windows, ni macOS, ni Fedora. Le script le dit à chaque
@@ -295,7 +295,7 @@ sans risquer de casser un autre logiciel installé.
 
 Par défaut le paquet est **léger** (340 ko) et l'installation va chercher les
 bibliothèques — c'est le cas courant, puisqu'on installe un `.deb` par `apt`,
-donc en ligne. Avec `make hors-ligne`, elles sont **embarquées** et le paquet
+donc en ligne. Avec `make offline`, elles sont **embarquées** et le paquet
 passe à 335 Mo : ce qu'il faut pour un atelier sans réseau, où trente machines
 s'installent depuis une clé USB. Le paquet couvre alors Python 3.9 à 3.13 —
 une roue de NumPy ne valant que pour une version mineure — et son nom porte la
@@ -313,15 +313,15 @@ demande d'oubli.
 
 | Cible | Effet |
 |---|---|
-| `make outils` | dit ce qui est installé et ce qui manque |
+| `make tools` | dit ce qui est installé et ce qui manque |
 | `make deps` | installe NSIS et msitools dans `~/.local/opt`, sans `sudo` |
 | `make debian` `fedora` `windows` `macos` `source` | un système |
 | `make linux` | `.deb` et `.rpm` |
-| `make tout` | les cinq, du plus rapide au plus long |
-| `make hors-ligne` | les paquets qui embarquent leurs bibliothèques |
-| `make verifier` | rouvre et contrôle ce qui a été produit |
-| `make empreintes` | recalcule le fichier `.sha256` |
-| `make propre` | vide `build/paquets` |
+| `make all` | les cinq, du plus rapide au plus long |
+| `make offline` | les paquets qui embarquent leurs bibliothèques |
+| `make verify` | rouvre et contrôle ce qui a été produit |
+| `make checksums` | recalcule le fichier `.sha256` |
+| `make clean` | vide `build/packages` |
 | `make version` | affiche le numéro de version |
 
 Chaque générateur accepte en outre ses propres options :
@@ -329,7 +329,7 @@ Chaque générateur accepte en outre ses propres options :
 ```bash
 python3 build_windows.py --msi         # seulement le MSI
 python3 build_macos.py   --pkg         # seulement l'installateur
-python3 build_debian.py  --hors-ligne  # avec les bibliothèques
+python3 build_debian.py  --offline  # avec les bibliothèques
 ```
 
 ---
@@ -337,11 +337,11 @@ python3 build_debian.py  --hors-ligne  # avec les bibliothèques
 ## Vérifier un paquet à la main
 
 ```bash
-dpkg-deb -I build/paquets/phytoscope_*.deb        # métadonnées Debian
-rpm -qip  build/paquets/phytoscope-*.rpm          # métadonnées Red Hat
-msiinfo tables build/paquets/PhytoScope-*.msi     # tables du MSI
-unzip -l build/paquets/PhytoScope-*.zip | head
-cd build/paquets && sha256sum -c phytoscope-*.sha256
+dpkg-deb -I build/packages/phytoscope_*.deb        # métadonnées Debian
+rpm -qip  build/packages/phytoscope-*.rpm          # métadonnées Red Hat
+msiinfo tables build/packages/PhytoScope-*.msi     # tables du MSI
+unzip -l build/packages/PhytoScope-*.zip | head
+cd build/packages && sha256sum -c phytoscope-*.sha256
 ```
 
 ---

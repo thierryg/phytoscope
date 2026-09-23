@@ -1,0 +1,75 @@
+#!/bin/sh
+#  ==========================================================================
+#  PhytoScope — attribution — packaging/templates/debian/postinst
+#
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
+#
+#  SPDX-License-Identifier: MIT
+#  end of attribution
+#  ==========================================================================
+
+#  After installation: prepare the application's Python environment.
+#
+#  Why a private environment rather than the distribution's packages: PySide6
+#  is not packaged by every version of Ubuntu or Debian, and where it is, the
+#  version ranges from 6.2 to 6.7 depending on the repository. A dedicated
+#  environment guarantees the same thing everywhere, without touching the
+#  system Python — and without risking breaking another program.
+#
+#  Everything printed here goes to the package manager's log and is read by
+#  whoever ran `apt`, so it stays in English. The scripts the end user runs —
+#  the launcher, the desktop icon, the uninstall wrapper — speak the language
+#  chosen at installation instead.
+set -e
+
+CIBLE="/usr/share/phytoscope"
+VENV="$CIBLE/venv"
+ROUES="$CIBLE/roues"
+
+case "$1" in
+  configure)
+    if [ ! -d "$VENV" ]; then
+        echo "PhytoScope: preparing the Python environment..."
+        python3 -m venv "$VENV" || {
+            echo "PhytoScope: cannot create the environment." >&2
+            echo "  Install “python3-venv”, then: sudo dpkg-reconfigure phytoscope" >&2
+            exit 0        # NEVER fail the installation over this
+        }
+    fi
+    #  The bundled wheels first, which keeps the installation offline. Without
+    #  them — or when they do not suit this Python — we fetch them from the
+    #  network. Failure is not fatal: the software will say so at startup,
+    #  with the command to type.
+    if [ -d "$ROUES" ] && [ -n "$(ls -A "$ROUES" 2>/dev/null)" ]; then
+        "$VENV/bin/pip" install --quiet --no-index --find-links "$ROUES" \
+            -r "$CIBLE/requirements.txt" 2>/dev/null \
+        || "$VENV/bin/pip" install --quiet -r "$CIBLE/requirements.txt" \
+        || echo "PhytoScope: dependencies not installed - run “phytoscope --check”." >&2
+    else
+        "$VENV/bin/pip" install --quiet -r "$CIBLE/requirements.txt" \
+        || echo "PhytoScope: dependencies not installed - run “phytoscope --check”." >&2
+    fi
+    #  The optional ones: their failure is inconsequential by construction.
+    "$VENV/bin/pip" install --quiet -r "$CIBLE/requirements-optionnel.txt" \
+        >/dev/null 2>&1 || true
+
+    #  Bytecode cache. /usr/share is not writable by whoever runs the
+    #  software: without this cache, Python recompiles every module at each
+    #  start and throws the result away, and the wait shows. We build it here,
+    #  once, while we hold root.
+    "$VENV/bin/python" -m compileall -q "$CIBLE/phytoscope" >/dev/null 2>&1 || true
+    "$VENV/bin/python" -m compileall -q "$CIBLE/run.py" >/dev/null 2>&1 || true
+    "$VENV/bin/python" -m compileall -q "$VENV/lib" >/dev/null 2>&1 || true
+    ;;
+esac
+
+if [ -x /usr/bin/update-desktop-database ]; then
+    update-desktop-database -q /usr/share/applications || true
+fi
+exit 0

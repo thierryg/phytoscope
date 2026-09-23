@@ -2,78 +2,79 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/firmware/build.sh
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 # ===========================================================================
-#  PhytoScope — micrologiciel PhytoSense : compiler et ranger le livrable
+#  PhytoScope — PhytoSense firmware: build it, and file the deliverable
 # ===========================================================================
-#  La chaîne complète, en une commande : ce script compile par `_make_.sh`,
-#  puis **range le résultat dans build/paquets/**, au même endroit et de la
-#  même façon que les paquets d'installation.
+#  The whole chain in one command: this script compiles through `_make_.sh`,
+#  then **files the result under build/packages/**, in the same place and the
+#  same way as the installation packages.
 #
-#  Pourquoi deux scripts
-#  ---------------------
+#  Why two scripts
+#  ---------------
 #
-#  `_make_.sh` ne fait qu'une chose : produire `build/phytosense.uf2`. C'est
-#  ce qu'on veut pendant la mise au point — on compile vingt fois d'affilée,
-#  et ranger un livrable à chaque fois n'a aucun sens.
+#  `_make_.sh` does one thing: produce `build/phytosense.uf2`. That is
+#  what you want while developing — you build twenty times in a row, and
+#  filing a deliverable each time makes no sense.
 #
-#  Ce script-ci est pour la publication : il nomme le fichier avec sa
-#  version — « phytosense.uf2 » tout court, sur le disque de quelqu'un, ne
-#  dit pas de quelle version il sort —, calcule ses empreintes, et le dépose
-#  là où la fabrique de paquets dépose les siens. Le `.uf2` est un livrable
-#  à part entière : sans lui, les paquets installent un logiciel qui n'a
-#  rien à écouter.
+#  This script is for release: it names the file with its version — a bare
+#  "phytosense.uf2" on somebody's disk does not say which version it came
+#  from — computes its checksums, and
+#  puts it where the package factory puts its own. The `.uf2` is a
+#  deliverable in its own right: without it, the packages install software
+#  that has nothing to listen to.
 #
-#  Où le livrable est rangé
-#  ------------------------
+#  Where the deliverable is filed
+#  ------------------------------
 #
-#      build/paquets/<version>-<horodatage>/Firmware/
-#          phytosense-<version>.uf2      ce qu'on copie sur la carte
-#          phytosense-<version>.elf      pour le débogage
-#          phytosense-<version>.bin      image brute
-#          phytosense-<version>.sha256   les empreintes
-#          LISEZ-MOI.txt                 comment programmer la carte
+#      build/packages/<version>-<timestamp>/Firmware/
+#          phytosense-<version>.uf2      what you copy onto the board
+#          phytosense-<version>.elf      for debugging
+#          phytosense-<version>.bin      the raw image
+#          phytosense-<version>.sha256   the checksums
+#          README.txt                    how to flash the board
 #
-#  Trois cas pour choisir ce dossier, dans cet ordre :
+#  Three cases decide that directory, in this order:
 #
-#    1. `--sortie DOSSIER` — imposé ;
-#    2. `PHYTOSCOPE_SORTIE` — la variable que pose la fabrique de paquets.
-#       C'est ainsi que le micrologiciel se range dans la MÊME fabrication
-#       que les .deb et les .msi, même lancé séparément ;
-#    3. sinon, un dossier neuf horodaté, et le lien « dernier » suit.
+#    1. `--output DIR` — forced;
+#    2. `PHYTOSCOPE_OUTPUT` — the variable the package factory sets. That
+#       is how the firmware is filed under the SAME build
+#       as the .deb and the .msi, even when run on its own;
+#    3. otherwise a fresh timestamped directory, and the "latest" link
+#       follows.
 #
-#  Usage :
-#      ./build.sh                  compile et range
-#      ./build.sh --deps           installe SDK et chaîne ARM, puis compile
-#      ./build.sh --propre         repart d'un répertoire de construction vide
+#  Usage:
+#      ./build.sh                  build it and file it
+#      ./build.sh --deps           install SDK and ARM toolchain, then build
+#      ./build.sh --clean          start again from an empty build directory
 #      ./build.sh --sortie DOSSIER range ailleurs
-#      ./build.sh --sans-installer compile seulement (comme ./_make_.sh)
+#      ./build.sh --no-install     build only (like ./_make_.sh)
 #      ./build.sh --help
 #
-#  Bretagne Namasté — https://bretagne-namaste.com — licence MIT
+#  Bretagne Namasté — https://bretagne-namaste.com — MIT licence
 # ===========================================================================
 set -eu
 
 ICI="$(cd "$(dirname "$0")" && pwd)"
-#  src/firmware → src → la racine du dépôt.
+#  src/firmware -> src -> the repository root.
 RACINE="$(cd "$ICI/../.." && pwd)"
 VERSION_FICHIER="$RACINE/src/phytoscope/phytoscope/VERSION"
-AUTEURS_FICHIER="$RACINE/src/phytoscope/phytoscope/AUTEURS"
+AUTHORS_FICHIER="$RACINE/src/phytoscope/phytoscope/AUTHORS"
 
-#  L'identité vient d'AUTEURS, seule source : le logiciel la lit pour sa
-#  fenêtre « À propos », la fabrique de paquets pour estampiller le .deb, et
-#  ce script pour la notice. Une quatrième copie finirait par diverger.
+#  The identity comes from AUTHORS, the single source: the software reads it
+#  for its About window, the package factory to stamp the .deb, and this
+#  script for the README. A fourth copy would end up diverging.
 lire_cle() {
     sed -n "s/^ *$1 *= *//p" "$2" 2>/dev/null | head -1
 }
@@ -95,24 +96,24 @@ aide() {
 }
 
 # ------------------------------------------------------------------ options
-SORTIE=""
+OUTPUT=""
 INSTALLER=1
 ARGS_MAKE=""
 
 while [ "$#" -gt 0 ]; do
     case "$1" in
-        --sortie)          SORTIE="${2:?--sortie demande un dossier}"; shift 2 ;;
-        --sans-installer)  INSTALLER=0; shift ;;
+        --output|--sortie) OUTPUT="${2:?--output needs a directory}"; shift 2 ;;
+        --no-install|--sans-installer)  INSTALLER=0; shift ;;
         -h|--help)         aide ;;
-        #  Tout le reste va à `_make_.sh` : --deps, --propre, et ce qu'il
-        #  apprendra à comprendre plus tard sans qu'on touche ici.
+        #  Everything else goes to `_make_.sh`: --deps, --clean, and
+        #  whatever it learns to understand later without a change here.
         *)                 ARGS_MAKE="$ARGS_MAKE $1"; shift ;;
     esac
 done
 
-# ------------------------------------------------------------ la compilation
+# ------------------------------------------------------------- the build
 if [ ! -x "$ICI/_make_.sh" ]; then
-    rouge "  _make_.sh introuvable dans $ICI"
+    rouge "  _make_.sh not found in $ICI"
     exit 1
 fi
 
@@ -121,50 +122,50 @@ fi
 
 UF2="$ICI/build/phytosense.uf2"
 if [ ! -f "$UF2" ]; then
-    rouge "  la compilation n'a pas produit phytosense.uf2"
+    rouge "  the build did not produce phytosense.uf2"
     exit 1
 fi
 
 if [ "$INSTALLER" -eq 0 ]; then
-    gris "  (--sans-installer : le livrable n'est pas rangé)"
+    gris "  (--no-install: the deliverable is not filed)"
     exit 0
 fi
 
-# ------------------------------------------------------------- la version
-#  Lue dans le fichier qui fait foi, jamais écrite ici. Format « clé =
-#  valeur », volontairement pauvre : voir l'en-tête de VERSION.
+# ------------------------------------------------------------- the version
+#  Read from the file of record, never written here. A deliberately poor
+#  "key = value" format: see the header of VERSION.
 VERSION="$(sed -n 's/^ *version *= *//p' "$VERSION_FICHIER" 2>/dev/null \
            | head -1 | tr -d ' ')"
 if [ -z "$VERSION" ]; then
-    jaune "  version indéterminée dans $VERSION_FICHIER — on écrit « inconnue »"
+    jaune "  version undetermined in $VERSION_FICHIER — writing \"unknown\""
     VERSION="inconnue"
 fi
 
-EDITEUR="$(lire_cle editeur "$AUTEURS_FICHIER")"
-AUTEUR="$(lire_cle auteur "$AUTEURS_FICHIER")"
-SITE="$(lire_cle site "$AUTEURS_FICHIER")"
-COURRIEL="$(lire_cle contact "$AUTEURS_FICHIER")"
-LICENCE="$(lire_cle licence "$AUTEURS_FICHIER")"
+EDITEUR="$(lire_cle editeur "$AUTHORS_FICHIER")"
+AUTEUR="$(lire_cle auteur "$AUTHORS_FICHIER")"
+SITE="$(lire_cle site "$AUTHORS_FICHIER")"
+COURRIEL="$(lire_cle contact "$AUTHORS_FICHIER")"
+LICENCE="$(lire_cle licence "$AUTHORS_FICHIER")"
 [ -n "$EDITEUR" ]  || EDITEUR="Bretagne Namasté"
 [ -n "$SITE" ]     || SITE="https://bretagne-namaste.com"
 [ -n "$LICENCE" ]  || LICENCE="MIT"
 
-# ------------------------------------------------------------- la destination
-if [ -z "$SORTIE" ]; then
-    if [ -n "${PHYTOSCOPE_SORTIE:-}" ]; then
-        #  La fabrique de paquets a déjà choisi : on la suit, pour que tout
-        #  se retrouve dans la même fabrication.
-        SORTIE="$PHYTOSCOPE_SORTIE"
+# ------------------------------------------------------------- where it goes
+if [ -z "$OUTPUT" ]; then
+    if [ -n "${PHYTOSCOPE_OUTPUT:-}" ]; then
+        #  The package factory has already chosen: follow it, so that
+        #  everything lands in the same build.
+        OUTPUT="$PHYTOSCOPE_OUTPUT"
     else
-        SORTIE="$RACINE/build/paquets/$VERSION-$(date +%Y%m%d-%H%M)"
+        OUTPUT="$RACINE/build/packages/$VERSION-$(date +%Y%m%d-%H%M)"
     fi
 fi
-CIBLE="$SORTIE/Firmware"
+CIBLE="$OUTPUT/Firmware"
 mkdir -p "$CIBLE"
 
-# ------------------------------------------------------------- le rangement
+# ------------------------------------------------------------- filing it
 echo
-vert "· Rangement du livrable"
+vert "· Filing the deliverable"
 
 for ext in uf2 elf bin; do
     src="$ICI/build/phytosense.$ext"
@@ -173,85 +174,87 @@ for ext in uf2 elf bin; do
     gris "    phytosense-$VERSION.$ext  ($(du -h "$src" | cut -f1))"
 done
 
-#  Les empreintes, calculées sur les fichiers RANGÉS et non sur ceux du
-#  répertoire de construction : c'est ce qui est diffusé qu'on vérifie.
+#  The checksums, computed over the FILED files and not those in the build
+#  directory: what gets verified must be what gets distributed.
 if command -v sha256sum >/dev/null 2>&1; then
     ( cd "$CIBLE" && sha256sum phytosense-"$VERSION".* \
         > "phytosense-$VERSION.sha256" )
     gris "    phytosense-$VERSION.sha256"
 else
-    jaune "    sha256sum absent : pas d'empreintes"
+    jaune "    sha256sum missing: no checksums"
 fi
 
-# ------------------------------------------------------------- la notice
-cat > "$CIBLE/LISEZ-MOI.txt" <<NOTICE
-PhytoScope $VERSION — micrologiciel de la carte PhytoSense One
-================================================================
+# ------------------------------------------------------------- the README
+cat > "$CIBLE/README.txt" <<NOTICE
+PhytoScope $VERSION — firmware for the PhytoSense One board
+============================================================
 
-Ce dossier contient le micrologiciel du RP2350. Il n'a rien à voir avec les
-paquets d'installation du logiciel, qui sont dans les dossiers voisins : le
-logiciel tourne sur l'ordinateur, celui-ci tourne sur la carte.
+This directory holds the RP2350's firmware. It has nothing to do with the
+software's installation packages, which sit in the neighbouring directories:
+the software runs on the computer, this runs on the board.
 
-  phytosense-$VERSION.uf2      ce qu'on copie sur la carte
-  phytosense-$VERSION.elf      pour le débogage (GDB, openocd)
-  phytosense-$VERSION.bin      image brute
-  phytosense-$VERSION.sha256   les empreintes
+  phytosense-$VERSION.uf2      what you copy onto the board
+  phytosense-$VERSION.elf      for debugging (GDB, openocd)
+  phytosense-$VERSION.bin      the raw image
+  phytosense-$VERSION.sha256   the checksums
 
-PROGRAMMER LA CARTE
--------------------
+FLASHING THE BOARD
+------------------
 
-  1. débrancher la carte ;
-  2. la rebrancher EN MAINTENANT le bouton BOOTSEL ;
-  3. elle apparaît comme un disque amovible nommé RP2350 ;
-  4. y copier phytosense-$VERSION.uf2.
+  1. unplug the board;
+  2. plug it back in WHILE HOLDING the BOOTSEL button;
+  3. it appears as a removable disk named RP2350;
+  4. copy phytosense-$VERSION.uf2 onto it.
 
-La carte redémarre d'elle-même dès que la copie est finie, et le disque
-disparaît. C'est normal, et c'est le signe que cela a fonctionné.
+The board restarts by itself as soon as the copy finishes, and the disk
+disappears. That is normal, and it is the sign that it worked.
 
   Debian, Ubuntu, Mint  cp phytosense-$VERSION.uf2 /media/\$USER/RP2350/
   Fedora, Red Hat       cp phytosense-$VERSION.uf2 /run/media/\$USER/RP2350/
   macOS                 cp phytosense-$VERSION.uf2 /Volumes/RP2350/
-  Windows               glisser le fichier sur le disque amovible
+  Windows               drag the file onto the removable disk
 
-VÉRIFIER LE FICHIER
--------------------
+VERIFYING THE FILE
+------------------
 
   sha256sum -c phytosense-$VERSION.sha256
 
-CE QUE CE MICROLOGICIEL FAIT, ET CE QU'IL NE FAIT PAS
-----------------------------------------------------
+WHAT THIS FIRMWARE DOES, AND WHAT IT DOES NOT
+---------------------------------------------
 
-Il mesure et il horodate. Il n'interprète rien : aucune détection
-d'événement, aucune règle musicale, aucun filtrage autre que celui du
-convertisseur. Tout le raisonnement est calculé sur l'ordinateur, où il est
-modifiable, vérifiable et remplaçable.
+It measures and it timestamps. It interprets nothing: no event detection, no
+musical rule, no filtering beyond the converter's own. All the reasoning is
+computed on the computer, where it can be changed, checked and replaced.
 
-Seule exception : la sortie MIDI directe, qui embarque une version réduite du
-moteur de correspondance pour attaquer un synthétiseur matériel sans passer
-par la chaîne audio de l'ordinateur. Elle ne rend pas la carte indépendante —
-l'ordinateur reste requis pour la régler et pour enregistrer.
+The one exception is the direct MIDI output, which carries a reduced version
+of the mapping engine so as to drive a hardware synthesizer without going
+through the computer's audio chain. It does not make the board independent —
+the computer is still needed to set it up and to record.
+
+The USB side of the board — its descriptors, the frames it sends and the
+control protocol — is documented in sources/usb/reference.html.
 
 --
 $EDITEUR — $AUTEUR
 $SITE — $COURRIEL — licence $LICENCE
 NOTICE
-gris "    LISEZ-MOI.txt"
+gris "    README.txt"
 
-# --------------------------------------------------- le lien « dernier »
-#  La fabrique de paquets pose ce lien ; on fait de même quand on a créé le
-#  dossier nous-mêmes, pour que « build/paquets/dernier » désigne toujours la
-#  fabrication la plus récente, d'où qu'elle vienne.
-#  Seulement si la sortie est BIEN dans build/paquets/ : avec « --sortie
-#  /tmp/essai », un lien relatif vers « essai » y pointerait dans le vide.
-#  Le défaut a existé, le temps d'un essai.
-if [ -z "${PHYTOSCOPE_SORTIE:-}" ] \
-   && [ "$(dirname "$SORTIE")" = "$RACINE/build/paquets" ]; then
-    ln -sfn "$(basename "$SORTIE")" "$RACINE/build/paquets/dernier"
+# ------------------------------------------------- the "latest" symlink
+#  The package factory lays this link down; we do the same when we created
+#  the directory ourselves, so that "build/packages/latest" always names the
+#  most recent build, wherever it came from.
+#  Only when the output really is under build/packages/: with
+#  "--output /tmp/trial", a relative link to "trial" would point nowhere.
+#  The defect did happen, for the length of one trial.
+if [ -z "${PHYTOSCOPE_OUTPUT:-}" ] \
+   && [ "$(dirname "$OUTPUT")" = "$RACINE/build/packages" ]; then
+    ln -sfn "$(basename "$OUTPUT")" "$RACINE/build/packages/latest"
 fi
 
 echo
-vert "✓ Livrable rangé"
+vert "✓ Deliverable filed"
 gris "    $(printf '%s' "$CIBLE" | sed "s|$RACINE/||")"
 echo
-gris "  Pour programmer la carte : voir LISEZ-MOI.txt à côté du .uf2"
+gris "  To flash the board: see README.txt next to the .uf2"
 echo

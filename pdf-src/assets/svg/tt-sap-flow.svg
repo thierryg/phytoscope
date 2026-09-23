@@ -1,20 +1,3 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/tt-sap-flow.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 440" width="820" height="440">
 
 <defs>
@@ -29,8 +12,8 @@
    <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
 </defs>
 <rect width="820" height="440" fill="#FBF9F1"/>
-<text x="410" y="34" font-family="Cormorant Garamond, serif" font-size="15.95" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2">MESURER LE FLUX DE SÈVE — MÉTHODE DE DISSIPATION THERMIQUE</text>
-<text x="410" y="55" font-family="Lato, sans-serif" font-size="11.89" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Principe de Granier (1985)</text>
+<text x="410" y="34" font-family="Cormorant Garamond, serif" font-size="15.95" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2">MEASURING SAP FLOW — THE THERMAL DISSIPATION METHOD</text>
+<text x="410" y="55" font-family="Lato, sans-serif" font-size="11.89" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">The Granier principle (1985)</text>
 <circle cx="250" cy="250" r="132" fill="#D9CDB4" stroke="#6B5A42" stroke-width="3"/>
 <circle cx="250" cy="250" r="120" fill="#E8DFC8"/>
 <circle cx="250" cy="250" r="118" fill="#7A6B4E" opacity="0.9"/>
@@ -39,31 +22,32 @@
 <circle cx="250" cy="250" r="46" fill="#B39A6E" opacity="0.9"/>
 <circle cx="250" cy="250" r="46" fill="#A88E62"/>
 <line x1="250" y1="126" x2="440" y2="126" stroke="#6B7A72" stroke-width="1" stroke-dasharray="3 3"/>
-<text x="446" y="129.5" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">écorce</text>
+<text x="446" y="129.5" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">bark</text>
 <line x1="250" y1="154" x2="440" y2="154" stroke="#6B7A72" stroke-width="1" stroke-dasharray="3 3"/>
-<text x="446" y="157.5" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">aubier — c'est ici que l'eau monte</text>
+<text x="446" y="157.5" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">sapwood — this is where the water rises</text>
 <line x1="250" y1="230" x2="440" y2="230" stroke="#6B7A72" stroke-width="1" stroke-dasharray="3 3"/>
-<text x="446" y="233.5" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">duramen (inerte)</text>
+<text x="446" y="233.5" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">heartwood (inert)</text>
 <rect x="244" y="212" width="96" height="8" rx="4" fill="#A8552E"/>
 <circle cx="340" cy="216" r="6" fill="#A8552E"/>
-<text x="354" y="219.5" font-family="Lato, sans-serif" font-size="11.02" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">sonde chauffée</text>
+<text x="354" y="219.5" font-family="Lato, sans-serif" font-size="11.02" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">heated probe</text>
 <rect x="244" y="280" width="96" height="8" rx="4" fill="#2F5E86"/>
 <circle cx="340" cy="284" r="6" fill="#2F5E86"/>
-<text x="354" y="287.5" font-family="Lato, sans-serif" font-size="11.02" fill="#2F5E86" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">sonde de référence</text>
+<text x="354" y="287.5" font-family="Lato, sans-serif" font-size="11.02" fill="#2F5E86" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">reference probe</text>
 <text x="250" y="256" font-family="Lato, sans-serif" font-size="10.73" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Δ 10 cm</text>
 <line x1="320" y1="220" x2="320" y2="280" stroke="#0E2A22" stroke-width="1.2" stroke-dasharray="3 3"/>
 <rect x="520" y="118" width="268" height="250" rx="8" fill="#FFFFFF" stroke="#B08528" stroke-width="1.6"/>
-<text x="654" y="142" font-family="Lato, sans-serif" font-size="15.08" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Ce que l'on calcule</text>
+<text x="654" y="142" font-family="Lato, sans-serif" font-size="15.08" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">What is computed</text>
 <line x1="538" y1="154" x2="770" y2="154" stroke="#D9D9C6" stroke-width="1.3" stroke-dasharray="5 4"/>
 <text x="538" y="176" font-family="DejaVu Sans Mono, monospace" font-size="13.34" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">ΔT</text>
-<text x="538" y="190.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">écart de température entre les deux</text>
-<text x="538" y="200.5" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">sondes</text>
+<text x="538" y="190.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">the temperature gap between the two</text>
+<text x="538" y="200.5" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">probes</text>
 <text x="538" y="224" font-family="DejaVu Sans Mono, monospace" font-size="13.34" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">ΔTₘ</text>
-<text x="538" y="238.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">écart maximal, mesuré de nuit à flux nul</text>
+<text x="538" y="238.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">the maximum gap, measured at night at</text>
+<text x="538" y="248.5" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">zero flow</text>
 <text x="538" y="272" font-family="DejaVu Sans Mono, monospace" font-size="13.34" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">K = (ΔTₘ − ΔT) / ΔT</text>
-<text x="538" y="286.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">indice de flux, sans dimension</text>
+<text x="538" y="286.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">the flow index, dimensionless</text>
 <text x="538" y="320" font-family="DejaVu Sans Mono, monospace" font-size="13.34" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">u = 119 × K^1,231</text>
-<text x="538" y="334.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">densité de flux, en cm·h⁻¹</text>
-<text x="654" y="356" font-family="Lato, sans-serif" font-size="11.02" fill="#3F7D5A" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Plus la sève monte, plus elle refroidit la sonde chauffée.</text>
-<text x="410" y="412" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">La sonde de référence annule la dérive thermique ambiante : c'est l'écart, jamais la valeur absolue, qui porte l'information.</text>
+<text x="538" y="334.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">the flux density, in cm·h⁻¹</text>
+<text x="654" y="356" font-family="Lato, sans-serif" font-size="11.02" fill="#3F7D5A" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">The faster the sap rises, the more it cools the heated probe.</text>
+<text x="410" y="412" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">The reference probe cancels the ambient thermal drift: it is the gap, never the absolute value, that carries the information.</text>
 </svg>

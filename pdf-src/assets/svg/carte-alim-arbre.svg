@@ -2,16 +2,16 @@
   ==========================================================================
   PhytoScope — attribution — pdf-src/assets/svg/carte-alim-arbre.svg
 
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
+  Version   : 1.6.0
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
 
   SPDX-License-Identifier: MIT
-  fin de l'attribution
+  end of attribution
   ==========================================================================
 -->
 
@@ -40,11 +40,11 @@
    <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
 </defs>
 <rect width="980" height="700" fill="#FFFFFF"/>
-<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Arbre d'alimentation et protections</text>
-<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Deux sources, une priorité, cinq barrières de protection</text>
+<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Power tree and protections</text>
+<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Two sources, one priority, five protective barriers</text>
 <rect x="40" y="110" width="200" height="66" rx="7" fill="#F7F0DC" stroke="#B08528" stroke-width="1.6"/>
 <text x="140.0" y="142" font-family="Cormorant Garamond, serif" font-size="22.13" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Bloc secteur</text>
-<text x="140.0" y="162" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">7 à 24 V · 1 A</text>
+<text x="140.0" y="162" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">7 to 24 V · 1 A</text>
 <rect x="40" y="230" width="200" height="66" rx="7" fill="#EAF1FB" stroke="#2F5E86" stroke-width="1.6"/>
 <text x="140.0" y="262" font-family="Cormorant Garamond, serif" font-size="22.13" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Port USB</text>
 <text x="140.0" y="282" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">5 V · 500 mA</text>
@@ -52,12 +52,12 @@
 <text x="365.0" y="142" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Anti-inversion</text>
 <text x="365.0" y="162" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Q30 · MOS canal P</text>
 <rect x="470" y="110" width="170" height="66" rx="7" fill="#fff" stroke="#B08528" stroke-width="1.3"/>
-<text x="555.0" y="142" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Écrêtage 18 V</text>
+<text x="555.0" y="142" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">18 V clamp</text>
 <text x="555.0" y="162" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">D30 · transil 400 W</text>
 <line x1="460" y1="143" x2="466" y2="143" stroke="#B08528" stroke-width="1.6" marker-end="url(#ah)"/>
 <rect x="660" y="110" width="170" height="66" rx="7" fill="#fff" stroke="#B08528" stroke-width="1.3"/>
 <text x="745.0" y="142" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Abaisseur 5,2 V</text>
-<text x="745.0" y="162" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">U60 · protégé</text>
+<text x="745.0" y="162" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">U60 · protected</text>
 <line x1="650" y1="143" x2="656" y2="143" stroke="#B08528" stroke-width="1.6" marker-end="url(#ah)"/>
 <line x1="240" y1="143" x2="276" y2="143" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
 <rect x="280" y="230" width="170" height="66" rx="7" fill="#fff" stroke="#2F5E86" stroke-width="1.3"/>
@@ -68,31 +68,31 @@
 <text x="555.0" y="282" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">U61 · coupe en 2 µs</text>
 <line x1="460" y1="263" x2="466" y2="263" stroke="#2F5E86" stroke-width="1.6" marker-end="url(#ah)"/>
 <rect x="660" y="230" width="170" height="66" rx="7" fill="#fff" stroke="#2F5E86" stroke-width="1.3"/>
-<text x="745.0" y="262" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Signal de défaut</text>
-<text x="745.0" y="282" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">vers le voyant rouge</text>
+<text x="745.0" y="262" font-family="Cormorant Garamond, serif" font-size="19.91" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Fault signal</text>
+<text x="745.0" y="282" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">to the red indicator</text>
 <line x1="650" y1="263" x2="656" y2="263" stroke="#2F5E86" stroke-width="1.6" marker-end="url(#ah)"/>
 <line x1="240" y1="263" x2="276" y2="263" stroke="#2F5E86" stroke-width="1.8" marker-end="url(#ah)"/>
 <rect x="380" y="350" width="220" height="76" rx="7" fill="#E9F2EC" stroke="#3F7D5A" stroke-width="1.8"/>
-<text x="490.0" y="382" font-family="Cormorant Garamond, serif" font-size="22.13" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Aiguilleur à priorité</text>
-<text x="490.0" y="402" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">U62 · TPS2116 · sans coupure</text>
+<text x="490.0" y="382" font-family="Cormorant Garamond, serif" font-size="22.13" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Priority selector</text>
+<text x="490.0" y="402" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">U62 · TPS2116 · break-free</text>
 <line x1="470" y1="176" x2="470" y2="346" stroke="#B08528" stroke-width="1.8" marker-end="url(#ah)"/>
 <line x1="520" y1="296" x2="520" y2="346" stroke="#2F5E86" stroke-width="1.8" marker-end="url(#ah)"/>
-<text x="620" y="372" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">le bloc secteur l'emporte quand il est présent</text>
-<text x="620" y="388" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">la bascule est indolore : aucun échantillon perdu</text>
+<text x="620" y="372" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">the mains adapter wins whenever it is present</text>
+<text x="620" y="388" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">the changeover is painless: no sample is lost</text>
 <rect x="380" y="450" width="220" height="66" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.4"/>
-<text x="490.0" y="482" font-family="Cormorant Garamond, serif" font-size="21.02" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Mesure de consommation</text>
+<text x="490.0" y="482" font-family="Cormorant Garamond, serif" font-size="21.02" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Current measurement</text>
 <text x="490.0" y="502" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">U63 · INA219</text>
 <line x1="490" y1="426" x2="490" y2="446" stroke="#3F7D5A" stroke-width="1.8" marker-end="url(#ah)"/>
 <rect x="380" y="546" width="220" height="62" rx="7" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.4"/>
-<text x="490.0" y="578" font-family="Cormorant Garamond, serif" font-size="21.02" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Fusible réarmable</text>
+<text x="490.0" y="578" font-family="Cormorant Garamond, serif" font-size="21.02" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Resettable fuse</text>
 <text x="490.0" y="598" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">F30 · 0,5 A</text>
 <line x1="490" y1="516" x2="490" y2="542" stroke="#3F7D5A" stroke-width="1.8" marker-end="url(#ah)"/>
 <rect x="660" y="450" width="280" height="60" rx="7" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
-<text x="800.0" y="482" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">+3V3 numérique</text>
+<text x="800.0" y="482" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">+3V3 digital</text>
 <text x="800.0" y="502" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">U23</text>
 <line x1="604" y1="577" x2="656" y2="480" stroke="#3F7D5A" stroke-width="1.4" marker-end="url(#ah)"/>
 <rect x="660" y="524" width="280" height="60" rx="7" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
-<text x="800.0" y="556" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">±5 V analogiques isolés</text>
+<text x="800.0" y="556" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">isolated ±5 V analog</text>
 <text x="800.0" y="576" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">T1, U21, U22</text>
 <line x1="604" y1="577" x2="656" y2="554" stroke="#3F7D5A" stroke-width="1.4" marker-end="url(#ah)"/>
 <rect x="660" y="598" width="280" height="60" rx="7" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
@@ -101,9 +101,9 @@
 <line x1="604" y1="577" x2="656" y2="628" stroke="#3F7D5A" stroke-width="1.4" marker-end="url(#ah)"/>
 <rect x="40" y="620" width="900" height="116" rx="5" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.1"/>
 <text x="54" y="648" font-family="Lato, sans-serif" font-size="19.08" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">LES CINQ ACCIDENTS COUVERTS</text>
-<text x="54" y="672" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Inversion de polarité, court-circuit, surtension, surintensité, décharge</text>
-<text x="54" y="694" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">électrostatique : chacun de ces cinq accidents rencontre une barrière avant</text>
-<text x="54" y="716" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">d'atteindre un composant coûteux. Aucun fusible à remplacer : tout se réarme.</text>
+<text x="54" y="672" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Reverse polarity, short circuit, overvoltage, overcurrent, electrostatic</text>
+<text x="54" y="694" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">discharge: each of these five accidents meets a barrier before it</text>
+<text x="54" y="716" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">reaches an expensive part. No fuse to replace: everything resets itself.</text>
 <text x="28" y="692" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
 <text x="952" y="692" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
 </svg>

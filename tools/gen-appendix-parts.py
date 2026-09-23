@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — tools/gen-appendix-parts.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """
@@ -32,7 +32,7 @@ import re
 import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PARTS = os.path.join(ROOT, "pdf-src", "arbre-parlant-annexe")
+PARTS = os.path.join(ROOT, "pdf-src", "talking-tree-appendix")
 CODE = os.path.join(ROOT, "sources", "code")
 SOFT = os.path.join(ROOT, "sources", "software")
 os.makedirs(PARTS, exist_ok=True)

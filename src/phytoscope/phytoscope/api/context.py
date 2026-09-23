@@ -2,50 +2,50 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/api/context.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
-"""Le contexte — tout ce qu'un module reçoit de l'hôte, et rien d'autre.
+"""The context — everything a module receives from the host, and nothing else.
 
-Un module **ne reçoit jamais l'objet `Engine`**. C'est délibéré, et c'est ce
-qui rend l'API tenable dans le temps : le moteur change à chaque version — on
-y a ajouté la relecture, la surveillance du disque, les échantillons — et un
-module qui s'appuierait dessus casserait à chaque fois.
+A module **never receives the `Engine` object**. That is deliberate, and it
+is what makes the API sustainable over time: the engine changes with every
+release — replay, disk monitoring and quick samples were all added to it —
+and a module leaning on it would break every time.
 
-Il reçoit donc cet objet-ci, dont la forme est figée par le contrat. Il y
-trouve :
+So it receives this object instead, whose shape is frozen by the contract. In
+it there is:
 
-* de quoi **lire** le signal et l'état de la mesure ;
-* de quoi **écrire** ses propres réglages et ses propres fichiers, à un endroit
-  qui lui appartient ;
-* de quoi **dire** quelque chose — journal, message à l'utilisateur ;
-* de quoi **traduire** ses libellés ;
-* de quoi **s'abonner** à ce qui se passe.
+* what it needs to **read** the signal and the state of the measurement;
+* what it needs to **write** its own settings and its own files, in a place
+  that belongs to it;
+* what it needs to **say** something — the log, a message to the user;
+* what it needs to **translate** its labels;
+* what it needs to **subscribe** to what is happening.
 
-Ce qu'il n'y trouve pas, et pourquoi
-------------------------------------
+What is not in it, and why
+--------------------------
 
-**Aucun moyen d'écrire dans le signal.** Un module ne modifie pas la mesure.
-Il l'observe, il en tire des nombres, il propose des notes. Laisser un module
-altérer ce qui sera enregistré ferait de chaque séance une donnée dont on ne
-pourrait plus rien conclure.
+**No way to write into the signal.** A module does not alter the
+measurement. It observes it, draws numbers from it, proposes notes. Letting a
+module change what is about to be recorded would turn every session into data
+you can no longer conclude anything from.
 
-**Aucun accès aux réglages des autres modules ni à ceux du logiciel en
-écriture.** Un module lit la fréquence d'échantillonnage ; il ne la change pas.
+**No write access to other modules' settings, or to the software's.** A
+module reads the sampling rate; it does not change it.
 
-**Aucun chemin en dehors du sien.** `dossier()` rend un répertoire qui lui
-appartient, et c'est là qu'il écrit. Rien ne l'empêche techniquement d'écrire
-ailleurs — c'est du Python, pas une prison — mais ce serait une faute, et la
-documentation du SDK le dit.
+**No path outside its own.** `directory()` returns a directory that belongs to
+it, and that is where it writes. Nothing technically prevents it from writing
+elsewhere — this is Python, not a prison — but it would be a fault, and the
+SDK documentation says so.
 """
 from __future__ import annotations
 
@@ -55,199 +55,244 @@ from typing import Any, Callable, Dict, List, Optional
 
 import numpy as np
 
-__all__ = ["Contexte", "EtatMesure"]
+__all__ = ["Context", "MeasurementState"]
 
 
 @dataclass
-class EtatMesure:
-    """Un instantané de la mesure, recopié — non partagé.
+class MeasurementState:
+    """A snapshot of the measurement, copied — not shared.
 
-    Recopié, et non une référence à l'état du moteur : un module qui garderait
-    la référence verrait ses valeurs changer sous lui au milieu d'un calcul.
+    Copied, rather than a reference to the engine's state: a module holding
+    the reference would see its values shift underneath it in the middle of a
+    computation.
     """
-    en_marche: bool = False
+    running: bool = False
     source: str = ""
-    duree_s: float = 0.0
-    frequence_hz: float = 250.0
-    tension_v: float = 0.0
-    ligne_de_base_v: float = 0.0
-    bruit_efficace_v: float = 0.0
-    crete_a_crete_v: float = 0.0
-    derive_v_par_min: float = 0.0
-    sature: bool = False
-    evenements: int = 0
+    duration_s: float = 0.0
+    rate_hz: float = 250.0
+    value_v: float = 0.0
+    baseline_v: float = 0.0
+    rms_v: float = 0.0
+    pp_v: float = 0.0
+    drift_v_per_min: float = 0.0
+    saturated: bool = False
+    events: int = 0
     notes: int = 0
-    enregistre: bool = False
-    #  Vrai pendant la relecture d'un enregistrement : un module qui écrit
-    #  quelque part doit savoir qu'il ne mesure pas, il rejoue.
-    relecture: bool = False
+    recording: bool = False
+    #  True while an existing recording is being replayed: a module that
+    #  writes somewhere has to know it is not measuring, it is replaying.
+    replaying: bool = False
 
 
-class Contexte:
-    """Ce qu'un module reçoit. Créé par l'hôte, un par module.
+class Context:
+    """What a module receives. Created by the host, one per module.
 
-    Un contexte est **propre à un module** : son journal porte son nom, ses
-    réglages sont les siens, son dossier lui appartient. Deux modules ne se
-    marchent pas dessus.
+    A context **belongs to one module**: its log carries that module's name,
+    its settings are its own, its directory belongs to it. Two modules do not
+    tread on each other.
     """
 
-    def __init__(self, nom_module: str, moteur: Any, reglages_hote: Any,
-                 dossier_modules: str) -> None:
-        self._nom = nom_module
-        self._moteur = moteur              # jamais exposé tel quel
-        self._reglages_hote = reglages_hote
-        self._dossier_modules = dossier_modules
-        self._reglages: Dict[str, Any] = {}
-        self._abonnements: List[tuple] = []
+    def __init__(self, module_name: str, engine: Any, host_settings: Any,
+                 modules_directory: str, api_required: str = "") -> None:
+        self._name = module_name
+        self._engine = engine              # never exposed as such
+        self._host_settings = host_settings
+        self._modules_directory = modules_directory
+        self._settings: Dict[str, Any] = {}
+        self._subscriptions: List[tuple] = []
+        #  What the module's manifest asked for. Empty when a context is
+        #  built outside the registry — a test, say — which is why
+        #  `api_required` is documented as "as the host read it".
+        self._api_required = api_required
 
-    # -- identité ------------------------------------------------------------
+    # -- identity ------------------------------------------------------------
     @property
-    def nom(self) -> str:
-        """Le nom du module à qui appartient ce contexte."""
-        return self._nom
+    def name(self) -> str:
+        """The name of the module this context belongs to."""
+        return self._name
 
-    # -- lire le signal ------------------------------------------------------
-    def signal(self, secondes: float = 60.0, brut: bool = False) -> np.ndarray:
-        """Les N dernières secondes de signal, **en volts**.
+    # -- the two sides of the version contract -------------------------------
+    #
+    #  The manifest says the MINIMUM the module needs, and the host refuses it
+    #  at discovery if it cannot honour that (`Manifest.api`,
+    #  `compatible()`). The three members below are the other direction: once
+    #  loaded, a module can ask what it is actually running on, and adapt.
+    #
+    #  Why a module would want to: a manifest declares one minimum, for the
+    #  whole module. A module that needs 3.0 to work at all but would use one
+    #  field added in 3.2 should declare `api="3.0"` — the lowest that
+    #  suffices — and ask here at run time whether that field is there.
+    #  Declaring 3.2 instead would refuse the module on every 3.0 and 3.1
+    #  host, to gain one optional field. This is how "aim for the lowest that
+    #  will do", in the SDK, is meant to be possible.
+    @property
+    def api_version(self) -> str:
+        """The API version this host offers, "major.minor"."""
+        from .contract import API_VERSION
+        return API_VERSION
 
-        :param brut: vrai pour le signal avant réjecteur et passe-bas. À
-            employer pour toute mesure de bruit : filtrer avant de mesurer le
-            bruit revient à mesurer son propre filtre (`C-1B`).
+    @property
+    def api_required(self) -> str:
+        """The minimum this module declared, as the host read it.
 
-        Rend un tableau vide s'il n'y a rien encore — ce n'est pas une erreur,
-        c'est le cas au démarrage, et le module doit le prévoir.
+        Handed back so a module can check what it asked for against what it
+        got — and so that a test can assert the two agree without importing
+        the registry.
+        """
+        return self._api_required
+
+    def api_at_least(self, version: str) -> bool:
+        """Is the host's API at least `version`? Same major, minor at least.
+
+        .. code-block:: python
+
+            if self.context.api_at_least("3.2"):
+                self._use_the_new_field()
+        """
+        from .contract import compatible
+        return compatible(version, self.api_version)
+
+    # -- reading the signal --------------------------------------------------
+    def signal(self, seconds: float = 60.0, raw: bool = False) -> np.ndarray:
+        """The last N seconds of signal, **in volts**.
+
+        :param raw: true for the signal before the notch and low-pass
+            filters. Use it for any noise measurement: filtering before
+            measuring noise amounts to measuring your own filter (`C-1B`).
+
+        Returns an empty array if there is nothing yet — that is not an
+        error, it is the situation at startup, and the module must expect it.
         """
         try:
-            x = self._moteur.recent(max(float(secondes), 0.1), raw=bool(brut))
+            x = self._engine.recent(max(float(seconds), 0.1), raw=bool(raw))
         except Exception:                                  # noqa: BLE001
             return np.zeros(0, dtype=np.float64)
         return np.asarray(x, dtype=np.float64).ravel()
 
     @property
-    def frequence_hz(self) -> float:
-        """La cadence réelle d'échantillonnage."""
+    def rate_hz(self) -> float:
+        """The actual sampling rate."""
         try:
-            return float(self._reglages_hote.acquisition.sample_rate)
+            return float(self._host_settings.acquisition.sample_rate)
         except Exception:                                  # noqa: BLE001
             return 250.0
 
     @property
-    def pleine_echelle_v(self) -> float:
-        """La pleine échelle du convertisseur, en volts."""
+    def full_scale_v(self) -> float:
+        """The converter's full scale, in volts."""
         try:
-            return float(self._reglages_hote.acquisition.input_range_v)
+            return float(self._host_settings.acquisition.input_range_v)
         except Exception:                                  # noqa: BLE001
             return 2.5
 
     @property
-    def reseau_hz(self) -> float:
-        """La fréquence du secteur déclarée dans les réglages : 50 ou 60."""
+    def mains_hz(self) -> float:
+        """The mains frequency declared in the settings: 50 or 60."""
         try:
-            return float(self._reglages_hote.processing.notch_hz or 50.0)
+            return float(self._host_settings.processing.notch_hz or 50.0)
         except Exception:                                  # noqa: BLE001
             return 50.0
 
-    def etat(self) -> EtatMesure:
-        """Un instantané de la mesure. Recopié, jamais partagé."""
-        e = EtatMesure(frequence_hz=self.frequence_hz)
-        s = getattr(self._moteur, "state", None)
+    def state(self) -> MeasurementState:
+        """A snapshot of the measurement. Copied, never shared."""
+        e = MeasurementState(rate_hz=self.rate_hz)
+        s = getattr(self._engine, "state", None)
         if s is None:
             return e
-        e.en_marche = bool(getattr(s, "running", False))
+        e.running = bool(getattr(s, "running", False))
         e.source = str(getattr(s, "source_name", ""))
-        e.duree_s = float(getattr(s, "elapsed_s", 0.0))
-        e.tension_v = float(getattr(s, "value_v", 0.0))
-        e.ligne_de_base_v = float(getattr(s, "baseline_v", 0.0))
-        e.bruit_efficace_v = float(getattr(s, "rms_v", 0.0))
-        e.crete_a_crete_v = float(getattr(s, "pp_v", 0.0))
-        e.derive_v_par_min = float(getattr(s, "drift_v_per_min", 0.0))
-        e.sature = bool(getattr(s, "saturated", False))
-        e.evenements = int(getattr(s, "events_total", 0))
+        e.duration_s = float(getattr(s, "elapsed_s", 0.0))
+        e.value_v = float(getattr(s, "value_v", 0.0))
+        e.baseline_v = float(getattr(s, "baseline_v", 0.0))
+        e.rms_v = float(getattr(s, "rms_v", 0.0))
+        e.pp_v = float(getattr(s, "pp_v", 0.0))
+        e.drift_v_per_min = float(getattr(s, "drift_v_per_min", 0.0))
+        e.saturated = bool(getattr(s, "saturated", False))
+        e.events = int(getattr(s, "events_total", 0))
         e.notes = int(getattr(s, "notes_total", 0))
-        e.enregistre = bool(getattr(s, "recording", False))
-        e.relecture = bool(getattr(s, "replaying", False))
+        e.recording = bool(getattr(s, "recording", False))
+        e.replaying = bool(getattr(s, "replaying", False))
         return e
 
-    def instants_evenements(self) -> List[float]:
-        """Les instants des événements récents, en secondes depuis le début."""
+    def event_times(self) -> List[float]:
+        """The times of recent events, in seconds since the start."""
         try:
-            return list(getattr(self._moteur, "_evenements_recents", []))
+            return list(getattr(self._engine, "_evenements_recents", []))
         except Exception:                                  # noqa: BLE001
             return []
 
-    # -- écrire quelque part -------------------------------------------------
-    def dossier(self) -> str:
-        """Le répertoire du module, créé au besoin. **Écrire ici, et ici seul.**
+    # -- writing somewhere ---------------------------------------------------
+    def directory(self) -> str:
+        """The module's directory, created as needed. **Write here, only here.**
 
-        ``<configuration>/modules/<nom-du-module>/``
+        ``<configuration>/modules/<module-name>/``
 
-        Il survit aux mises à jour et n'est jamais effacé par le logiciel. Un
-        module qui écrit ailleurs — dans le dossier des séances, par exemple —
-        se mêle de ce qui ne le regarde pas.
+        It survives updates and is never erased by the software. A module
+        writing anywhere else — in the sessions directory, say — is meddling
+        with what is none of its business.
         """
-        chemin = os.path.join(self._dossier_modules, self._nom)
-        os.makedirs(chemin, exist_ok=True)
-        return chemin
+        path = os.path.join(self._modules_directory, self._name)
+        os.makedirs(path, exist_ok=True)
+        return path
 
-    # -- réglages ------------------------------------------------------------
+    # -- settings ------------------------------------------------------------
     @property
-    def reglages(self) -> Dict[str, Any]:
-        """Les réglages du module, tels que l'utilisateur les a laissés.
+    def settings(self) -> Dict[str, Any]:
+        """The module's settings, as the user left them.
 
-        Modifiables ; l'hôte les conserve à la fermeture. Ce sont ceux
-        déclarés par `reglages_par_defaut()`, complétés par ce qui avait été
-        enregistré.
+        Mutable; the host saves them at shutdown. They are the ones declared
+        by `default_settings()`, filled in with whatever had been stored.
         """
-        return self._reglages
+        return self._settings
 
-    def _poser_reglages(self, valeurs: Dict[str, Any]) -> None:
-        """Réservé à l'hôte."""
-        self._reglages = dict(valeurs)
+    def _set_settings(self, values: Dict[str, Any]) -> None:
+        """Host only."""
+        self._settings = dict(values)
 
-    # -- dire quelque chose --------------------------------------------------
-    def journal(self, message: str, niveau: str = "info") -> None:
-        """Inscrit une ligne au journal du logiciel, sous le nom du module."""
+    # -- saying something ----------------------------------------------------
+    def log(self, message: str, level: str = "info") -> None:
+        """Writes a line to the software's log, under the module's name."""
         from ..core.logging_setup import get_logger
-        log = get_logger(f"module.{self._nom}")
-        getattr(log, niveau if niveau in
+        log = get_logger(f"module.{self._name}")
+        getattr(log, level if level in
                 ("debug", "info", "warning", "error") else "info")("%s", message)
 
-    def message(self, texte: str) -> None:
-        """Fait passer un message à l'utilisateur, dans la barre d'état.
+    def message(self, text: str) -> None:
+        """Passes a message to the user, in the status bar.
 
-        À employer avec parcimonie : un module qui parle sans cesse finit par
-        n'être plus lu.
+        Use sparingly: a module that talks incessantly ends up not being read
+        at all.
         """
         try:
-            self._moteur._message(f"[{self._nom}] {texte}")
+            self._engine._message(f"[{self._name}] {text}")
         except Exception:                                  # noqa: BLE001
-            self.journal(texte)
+            self.log(text)
 
-    def traduire(self, texte: str) -> str:
-        """La traduction d'un libellé dans la langue courante.
+    def translate(self, text: str) -> str:
+        """The translation of a label in the current language.
 
-        Un module fournit ses propres catalogues dans `langues/` de son
-        dossier ; à défaut, le texte source est rendu tel quel, ce qui est un
-        comportement acceptable et non une erreur.
+        A module supplies its own catalogs in the `languages/` directory of
+        its own folder; failing that, the source text is returned as is,
+        which is acceptable behavior and not an error.
         """
         from ..i18n import t
-        return t(texte)
+        return t(text)
 
-    # -- s'abonner -----------------------------------------------------------
-    def abonner(self, evenement: str, rappel: Callable) -> None:
-        """S'abonne à un événement du logiciel.
+    # -- subscribing ---------------------------------------------------------
+    def subscribe(self, event: str, callback: Callable) -> None:
+        """Subscribes to one of the software's events.
 
-        Les événements sont listés dans `api.evenements`. Un rappel qui lève
-        est désabonné et l'incident inscrit au journal : un module fautif ne
-        noie pas la séance sous les erreurs.
+        The events are listed in `api.events`. A callback that raises is
+        unsubscribed and the incident recorded in the log: a faulty module
+        does not drown the session in errors.
         """
         from .events import BUS
-        BUS.abonner(evenement, rappel, module=self._nom)
-        self._abonnements.append((evenement, rappel))
+        BUS.subscribe(event, callback, module=self._name)
+        self._subscriptions.append((event, callback))
 
-    def _desabonner_tout(self) -> None:
-        """Réservé à l'hôte, appelé à l'arrêt du module."""
+    def _unsubscribe_all(self) -> None:
+        """Host only, called when the module stops."""
         from .events import BUS
-        for evenement, rappel in self._abonnements:
-            BUS.desabonner(evenement, rappel)
-        self._abonnements.clear()
+        for event, callback in self._subscriptions:
+            BUS.unsubscribe(event, callback)
+        self._subscriptions.clear()

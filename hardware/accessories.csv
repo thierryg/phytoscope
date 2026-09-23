@@ -1,0 +1,26 @@
+group;description;part;distributor;unit_eur;need;note
+Enclosure;Extruded aluminium enclosure 110 × 70 × 30 mm, machined panels;Hammond 1455J1201;Mouser;22.50;recommended;The metal acts as a shield: an electrical choice, not a cosmetic one
+Enclosure;ABS enclosure 120 × 80 × 35 mm;Hammond 1591BSBK;Mouser;8.40;alternative;Cheaper, but needs a shield glued inside
+Enclosure;Adhesive silicone feet (set of 4);—;hardware shop;1.20;optional;Keeps the instrument from sliding during a session
+Enclosure;PTFE spacers 6 mm for the inputs;—;RS;2.80;recommended;PTFE does not conduct across its surface, unlike damp nylon
+Cabling;USB-C to USB-C cable, 1 m, shielded, data;Anker 543 or equivalent;general retail;9.90;required;Check for “data”: many cables carry power only
+Cabling;USB-C to USB-A cable, 1 m, shielded, data;—;general retail;7.50;alternative;For computers with no USB-C port
+Cabling;USB-C female to USB-A male adapter;—;general retail;4.50;alternative;The most flexible option in a workshop
+Cabling;5 mm clip-on ferrite for the USB cable;Würth 74271132;Mouser;2.10;recommended;Attenuates the noise conducted by the computer
+Electrodes;Adhesive Ag/AgCl electrodes (pack of 50);Ambu WhiteSensor 4535M;medical supply;18.00;required;The same ones used for electrocardiography
+Electrodes;Chloride-free conductive gel, 250 ml;Signa Gel;medical supply;9.00;recommended;Extends the contact's stability by several hours
+Electrodes;Insulated copper-jawed crocodile clips (pack of 10);—;general retail;6.50;alternative;For thick leaves
+Electrodes;Low-noise shielded RG-174 coaxial cable, 2 m;Belden 8216;Mouser;4.20;required;The shield goes to the guard, never to ground
+Electrodes;Gold-plated brass earth electrode, 80 mm rod;—;horticole;5.80;required;Goes into the substrate, at the foot of the plant
+Power;USB-C power bank 10,000 mAh, 5 V 2 A output;Anker PowerCore;general retail;24.90;recommended;On battery there is no ground loop left: the best supply there is
+Power;USB-C mains charger, 20 W;—;general retail;12.90;alternative;To be avoided during fine measurements
+Power;Li-Po cell 3.7 V 2000 mAh with protection;—;general retail;11.50;optional;Powers the board without drawing on the laptop or the mains
+Power;USB-C Li-Po charging module;TP4056 USB-C;general retail;2.40;optional;To be paired with the cell above
+Test equipment;6,000-count multimeter with capacitance measurement;Brymen BM235;instrumentation;135.00;recommended;Essential for the board's acceptance testing
+Test equipment;USB oscilloscope, 2 channels, 20 MHz;Hantek 6022BE;instrumentation;65.00;optional;Useful when tuning the excitation
+Test equipment;Reference resistors 1 MΩ / 10 MΩ / 100 MΩ 0.05 %;—;instrumentation;28.00;recommended;An independent check on the self-test
+Workshop;Temperature-controlled soldering iron, 0.4 mm tip;Pinecil V2;general retail;38.00;required;QFN packages need a fine tip
+Workshop;Lead-free SAC305 solder paste, syringe;—;general retail;16.00;required;For surface-mount assembly
+Workshop;Hotplate or reflow oven;—;general retail;45.00;recommended;The RP2350 in QFN-80 solders poorly with an iron
+Workshop;Cleaning flux and 99 % isopropyl alcohol;—;general retail;12.00;required;Residual flux conducts: it ruins a 10¹⁵ Ω input
+Workshop;Binocular loupe or USB microscope;—;general retail;35.00;recommended;Checking for solder bridges

@@ -1,20 +1,3 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/mapping.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250">
 
 <defs>
@@ -29,9 +12,9 @@
    <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
 </defs>
 <rect width="800" height="250" fill="#FFFFFF"/>
-<text x="400.0" y="34" font-family="Lato, sans-serif" font-size="17.4" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2">DU NOMBRE À LA NOTE : LE MAPPING</text>
+<text x="400.0" y="34" font-family="Lato, sans-serif" font-size="17.4" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2">FROM NUMBER TO NOTE: THE MAPPING</text>
 <rect x="24" y="64" width="226" height="150" rx="8" fill="#F2F7FB" stroke="#2F5E86" stroke-width="1.6"/>
-<text x="137" y="90" font-family="Lato, sans-serif" font-size="11.89" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">① FENÊTRE D'ANALYSE</text>
+<text x="137" y="90" font-family="Lato, sans-serif" font-size="11.89" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">① ANALYSIS WINDOW</text>
 <rect x="42" y="173" width="15" height="15" rx="2" fill="#2F5E86" opacity="0.42"/>
 <rect x="65" y="168" width="15" height="20" rx="2" fill="#2F5E86" opacity="0.42"/>
 <rect x="88" y="175" width="15" height="13" rx="2" fill="#2F5E86" opacity="0.42"/>
@@ -42,32 +25,32 @@
 <rect x="203" y="174" width="15" height="14" rx="2" fill="#2F5E86" opacity="0.42"/>
 <rect x="226" y="166" width="15" height="22" rx="2" fill="#2F5E86" opacity="0.42"/>
 <line x1="38" y1="188" x2="240" y2="188" stroke="#6B7A72" stroke-width="1"/>
-<text x="137" y="206" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">9 périodes successives (µs)</text>
+<text x="137" y="206" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">9 successive periods (µs)</text>
 <rect x="288" y="64" width="224" height="150" rx="8" fill="#FDF7E6" stroke="#B08528" stroke-width="1.6"/>
-<text x="400" y="90" font-family="Lato, sans-serif" font-size="11.89" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">② DÉTECTION</text>
+<text x="400" y="90" font-family="Lato, sans-serif" font-size="11.89" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">② DETECTION</text>
 <text x="400" y="114" font-family="DejaVu Sans Mono, monospace" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">μ = 438 µs</text>
 <text x="400" y="134" font-family="DejaVu Sans Mono, monospace" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">σ = 41 µs</text>
 <text x="400" y="154" font-family="DejaVu Sans Mono, monospace" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">delta = 113 µs</text>
-<text x="400" y="174" font-family="DejaVu Sans Mono, monospace" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">seuil = σ × 2,3 = 94</text>
-<text x="400" y="194" font-family="DejaVu Sans Mono, monospace" font-size="11.02" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">113 > 94 → ÉVÉNEMENT</text>
+<text x="400" y="174" font-family="DejaVu Sans Mono, monospace" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">threshold = σ × 2.3 = 94</text>
+<text x="400" y="194" font-family="DejaVu Sans Mono, monospace" font-size="11.02" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">113 > 94 → EVENT</text>
 <rect x="550" y="64" width="226" height="150" rx="8" fill="#EDF6F0" stroke="#3F7D5A" stroke-width="1.6"/>
-<text x="663" y="90" font-family="Lato, sans-serif" font-size="11.89" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">③ QUANTIFICATION</text>
+<text x="663" y="90" font-family="Lato, sans-serif" font-size="11.89" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">③ QUANTIZATION</text>
 <rect x="570" y="116" width="23" height="48" rx="3" fill="#FFF" stroke="#3F7D5A" stroke-width="1.2"/>
-<text x="581" y="146" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">do</text>
+<text x="581" y="146" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">C</text>
 <rect x="599" y="116" width="23" height="48" rx="3" fill="#FFF" stroke="#3F7D5A" stroke-width="1.2"/>
-<text x="610" y="146" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ré</text>
+<text x="610" y="146" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">D</text>
 <rect x="628" y="116" width="23" height="48" rx="3" fill="#FFF" stroke="#3F7D5A" stroke-width="1.2"/>
-<text x="639" y="146" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">mi</text>
+<text x="639" y="146" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">E</text>
 <rect x="657" y="116" width="23" height="48" rx="3" fill="#FFF" stroke="#3F7D5A" stroke-width="1.2"/>
-<text x="668" y="146" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">fa</text>
+<text x="668" y="146" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">F</text>
 <rect x="686" y="116" width="23" height="48" rx="3" fill="#F2E2B8" stroke="#3F7D5A" stroke-width="1.2"/>
-<text x="697" y="146" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">sol</text>
+<text x="697" y="146" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">G</text>
 <rect x="715" y="116" width="23" height="48" rx="3" fill="#FFF" stroke="#3F7D5A" stroke-width="1.2"/>
-<text x="726" y="146" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">la</text>
+<text x="726" y="146" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">A</text>
 <rect x="744" y="116" width="23" height="48" rx="3" fill="#FFF" stroke="#3F7D5A" stroke-width="1.2"/>
-<text x="755" y="146" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">si</text>
-<text x="663" y="186" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">note brute 63 → sol</text>
+<text x="755" y="146" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">B</text>
+<text x="663" y="186" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">raw note 63 → G</text>
 <line x1="252" y1="139" x2="284" y2="139" stroke="#B08528" stroke-width="2.2" marker-end="url(#ah)"/>
 <line x1="514" y1="139" x2="546" y2="139" stroke="#B08528" stroke-width="2.2" marker-end="url(#ah)"/>
-<text x="400.0" y="238" font-family="Cormorant Garamond, serif" font-size="12.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Le mapping est un CHOIX humain : il décide de ce que l'on entendra.</text>
+<text x="400.0" y="238" font-family="Cormorant Garamond, serif" font-size="12.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">The mapping is a human CHOICE: it decides what will be heard.</text>
 </svg>

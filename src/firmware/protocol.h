@@ -2,26 +2,26 @@
  *  ==========================================================================
  *  PhytoScope — attribution — src/firmware/protocol.h
  *
- *  Version  : 1.5.1
- *  Date     : 2026-09-18
- *  Éditeur  : Bretagne Namasté
- *  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
- *  Site     : https://bretagne-namaste.com
- *  Contact  : contact@bretagne-namaste.com
- *  Licence  : MIT — voir LICENCE.txt
+ *  Version   : 1.6.0
+ *  Date      : 2026-09-23
+ *  Publisher : Bretagne Namasté
+ *  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+ *  Website   : https://bretagne-namaste.com
+ *  Contact   : contact@bretagne-namaste.com
+ *  License   : MIT — see LICENSE.txt
  *
  *  SPDX-License-Identifier: MIT
- *  fin de l'attribution
+ *  end of attribution
  *  ==========================================================================
  */
 
 /* ---------------------------------------------------------------------------
- *  protocol.h — dialogue de contrôle sur le port série virtuel.
+ *  protocol.h — the control dialogue on the virtual serial port.
  *
- *  Les commandes sont en texte, terminées par CR-LF ; les réponses tiennent
- *  sur une ligne et commencent par '+' (succès) ou '-' (erreur), suivi d'un
- *  objet JSON. Ce choix délibérément archaïque permet d'interroger et de
- *  dépanner la carte avec n'importe quel terminal, sans logiciel.
+ *  Commands are plain text terminated by CR-LF; replies fit on one line and
+ *  open with '+' (success) or '-' (failure) followed by a JSON object. The
+ *  choice is deliberately archaic: it means the board can be interrogated and
+ *  repaired with any terminal, with no software at all.
  *
  *  Licence MIT — Bretagne Namasté
  * ------------------------------------------------------------------------ */
@@ -31,18 +31,18 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define PROTO_LIGNE_MAX   256
-#define PROTO_REPONSE_MAX 512
+#define PROTO_LINE_MAX   256
+#define PROTO_REPLY_MAX 512
 
 void protocol_init(void);
 
-/* Absorbe les octets reçus ; appelle protocol_emettre() sur ligne complète. */
-void protocol_recevoir(const uint8_t *octets, uint32_t n);
+/* Absorb received bytes; emits a reply once a complete line has arrived. */
+void protocol_receive(const uint8_t *bytes, uint32_t n);
 
-/* Émission périodique de la balise d'état (numéro d'échantillon, gain…). */
-void protocol_balise(uint64_t index, uint32_t perdus);
+/* Periodic state beacon: sample index, lost count, gain, range, saturation. */
+void protocol_beacon(uint64_t index, uint32_t lost);
 
-/* Insère un marqueur, depuis le bouton de la carte. */
-void protocol_marqueur(const char *etiquette, uint64_t index);
+/* Insert a mark, from the board's button. */
+void protocol_mark(const char *label, uint64_t index);
 
 #endif /* PHYTOSENSE_PROTOCOL_H */

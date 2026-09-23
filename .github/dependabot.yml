@@ -1,14 +1,14 @@
 # ===========================================================================
-#  PhytoScope — mises à jour de dépendances
+#  PhytoScope — dependency updates
 # ===========================================================================
-#  Pourquoi hebdomadaire et groupé : le projet s'interdit d'ajouter une
-#  dépendance obligatoire à la légère (C-40), et n'en a donc que quelques
-#  unes. Un lot par semaine se relit ; un lot par jour ne se relit pas.
+#  Why weekly and grouped: the project will not add a mandatory dependency
+#  lightly (C-40), and therefore has only a few. One batch a week gets read;
+#  one batch a day does not.
 # ===========================================================================
 version: 2
 updates:
 
-  # --- Le logiciel ---------------------------------------------------------
+  # --- The software --------------------------------------------------------
   - package-ecosystem: pip
     directory: /src/phytoscope
     schedule:
@@ -17,22 +17,22 @@ updates:
       time: '05:00'
       timezone: Europe/Paris
     open-pull-requests-limit: 5
-    labels: [dépendances, logiciel]
+    labels: [dependencies, software]
     commit-message:
-      prefix: 'dépendances'
+      prefix: 'dependencies'
     groups:
-      outils-de-developpement:
+      development-tools:
         patterns: ['pytest*', 'ruff', 'bandit', 'pip-audit', 'pre-commit']
         dependency-type: development
-    #  Un changement majeur d'une dépendance d'exécution se décide à la main :
-    #  il peut casser la portabilité, que .ai/portabilite.md tient à jour.
+    #  A major change to a runtime dependency is decided by hand: it can
+    #  break the portability that .ai/portability.md keeps up to date.
     ignore:
       - dependency-name: '*'
         update-types: [version-update:semver-major]
 
-  # --- Les actions de l'intégration continue -------------------------------
-  #  Une action épinglée à une version qui disparaît casse toute la CI sans
-  #  qu'on ait touché au code.
+  # --- The continuous-integration actions ----------------------------------
+  #  An action pinned to a version that disappears breaks the whole CI
+  #  without anybody having touched the code.
   - package-ecosystem: github-actions
     directory: /
     schedule:
@@ -40,7 +40,7 @@ updates:
       day: monday
       time: '05:00'
       timezone: Europe/Paris
-    labels: [dépendances, ci]
+    labels: [dependencies, ci]
     commit-message:
       prefix: 'ci'
     groups:

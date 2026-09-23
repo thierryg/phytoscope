@@ -2,16 +2,16 @@
   ==========================================================================
   PhytoScope — attribution — pdf-src/assets/svg/carte-alim.svg
 
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
+  Version   : 1.6.0
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
 
   SPDX-License-Identifier: MIT
-  fin de l'attribution
+  end of attribution
   ==========================================================================
 -->
 
@@ -92,28 +92,28 @@
 <line x1="1165.24" y1="690" x2="1165.24" y2="742" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
 <line x1="1040.62" y1="742" x2="1040.62" y2="788" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
 <line x1="1241.62" y1="742" x2="1241.62" y2="788" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
-<text x="1117.0" y="677" font-family="Cormorant Garamond, serif" font-size="20.37" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Alimentations et isolement</text>
+<text x="1117.0" y="677" font-family="Cormorant Garamond, serif" font-size="20.37" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Power supplies and isolation</text>
 <text x="1040.62" y="708" font-family="Lato, sans-serif" font-size="16.75" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">PhytoSense One</text>
 <text x="1040.62" y="722" font-family="Cormorant Garamond, serif" font-size="14.48" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
 <text x="1040.62" y="735" font-family="DejaVu Sans Mono, monospace" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
-<text x="1241.62" y="710" font-family="Lato, sans-serif" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Carte mère</text>
+<text x="1241.62" y="710" font-family="Lato, sans-serif" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Main board</text>
 <text x="1241.62" y="726" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">CERN-OHL-P v2</text>
 <text x="1241.62" y="737" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">diffusion libre</text>
-<text x="978.31" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">FEUILLE</text>
+<text x="978.31" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">SHEET</text>
 <text x="978.31" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">4/8</text>
-<text x="1102.93" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">RÉVISION</text>
+<text x="1102.93" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">REVISION</text>
 <text x="1102.93" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">B</text>
 <text x="1203.43" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">DATE</text>
 <text x="1203.43" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2026-09</text>
-<text x="1279.81" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">ÉCHELLE</text>
+<text x="1279.81" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">SCALE</text>
 <text x="1279.81" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">—</text>
-<text x="90" y="76" font-family="Cormorant Garamond, serif" font-size="19.01" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Deux masses, une seule barrière — production des rails ±5 V analogiques isolés</text>
+<text x="90" y="76" font-family="Cormorant Garamond, serif" font-size="19.01" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Two grounds, one barrier — generating the isolated ±5 V analog rails</text>
 <rect x="60" y="100" width="620" height="560" rx="8" fill="#F2F6FC" stroke="#2F5E86" stroke-width="1.1" stroke-dasharray="7 5"/>
-<text x="370" y="122" font-family="Lato, sans-serif" font-size="14.94" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">CÔTÉ USB — masse DGND</text>
+<text x="370" y="122" font-family="Lato, sans-serif" font-size="14.94" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">USB SIDE — DGND ground</text>
 <rect x="760" y="100" width="550" height="520" rx="8" fill="#F3F8F5" stroke="#3F7D5A" stroke-width="1.1" stroke-dasharray="7 5"/>
-<text x="1035" y="122" font-family="Lato, sans-serif" font-size="14.94" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">CÔTÉ MESURE — masse AGND, flottante</text>
+<text x="1035" y="122" font-family="Lato, sans-serif" font-size="14.94" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">MEASUREMENT SIDE — AGND ground, floating</text>
 <line x1="720" y1="120" x2="720" y2="660" stroke="#A8552E" stroke-width="2.0" stroke-linecap="round" stroke-dasharray="12 6 3 6"/>
-<text x="720" y="104" font-family="Lato, sans-serif" font-size="14.26" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.4">BARRIÈRE GALVANIQUE</text>
+<text x="720" y="104" font-family="Lato, sans-serif" font-size="14.26" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.4">GALVANIC BARRIER</text>
 <polygon points="164,177.0 92,177.0 80,190 92,203.0 164,203.0" fill="#fff" stroke="#2F5E86" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="126.0" y="194" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">VBUS 5 V</text>
 <path d="M 164,190 L 190,190" fill="none" stroke="#23302C" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="round"/>
@@ -144,8 +144,8 @@
 <polygon points="466,287.0 412,287.0 400,300 412,313.0 466,313.0" fill="#fff" stroke="#2F5E86" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="437.0" y="304" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">SYNC</text>
 <path d="M 466,300 L 475,300 L 475,246" fill="none" stroke="#2F5E86" stroke-width="1.2" stroke-linecap="square" stroke-linejoin="round" stroke-dasharray="5 4"/>
-<text x="500" y="296" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">synchronisé sur SYNC : le résidu de découpage</text>
-<text x="500" y="310" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">tombe à 410 kHz, hors de la bande de mesure</text>
+<text x="500" y="296" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">locked to SYNC: the switching residue</text>
+<text x="500" y="310" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">lands at 410 kHz, outside the measurement band</text>
 <path d="M684,160  A 13,18.333333333333332 0 0 1 684,196.66666666666666 A 13,18.333333333333332 0 0 1 684,233.33333333333331 A 13,18.333333333333332 0 0 1 684,270.0" fill="none" stroke="#23302C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M760,160  A 13,18.333333333333332 0 0 0 760,196.66666666666666 A 13,18.333333333333332 0 0 0 760,233.33333333333331 A 13,18.333333333333332 0 0 0 760,270.0" fill="none" stroke="#23302C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 <line x1="716" y1="152" x2="716" y2="278" stroke="#23302C" stroke-width="1.6" stroke-linecap="round"/>
@@ -178,15 +178,15 @@
 <line x1="1250" y1="305" x2="1250" y2="325" stroke="#A8552E" stroke-width="1.4" stroke-linecap="round"/>
 <line x1="1231" y1="325" x2="1269" y2="325" stroke="#A8552E" stroke-width="2.4" stroke-linecap="round"/>
 <text x="1250" y="350" font-family="DejaVu Sans Mono, monospace" font-size="14.71" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">−5 VA</text>
-<text x="1090" y="380" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">PSRR 76 dB à 1 MHz — le résidu de</text>
-<text x="1090" y="394" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">découpage est enterré sous le bruit</text>
+<text x="1090" y="380" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">PSRR 76 dB at 1 MHz — the switching</text>
+<text x="1090" y="394" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">residue is buried under the noise</text>
 <line x1="1090" y1="420" x2="1090" y2="438" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
 <polygon points="1068,438 1112,438 1090,460" fill="#fff" stroke="#23302C" stroke-width="2.0" stroke-linejoin="round"/>
 <text x="1090" y="478" font-family="DejaVu Sans Mono, monospace" font-size="14.26" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">AGND (flottante)</text>
 <rect x="620" y="420" width="200" height="120" rx="3" fill="#FBFBF7" stroke="#23302C" stroke-width="1.8"/>
 <text x="720.0" y="442" font-family="Lato, sans-serif" font-size="17.2" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U24</text>
 <text x="720.0" y="460" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ADuM4151</text>
-<text x="720.0" y="478" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">6 voies · 17 Mb/s</text>
+<text x="720.0" y="478" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">6 channels · 17 Mb/s</text>
 <polygon points="400,427.0 460,427.0 472,440 460,453.0 400,453.0" fill="#fff" stroke="#A8552E" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="432.0" y="444" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">SCLK</text>
 <path d="M 472,440 L 620,440" fill="none" stroke="#A8552E" stroke-width="1.1" stroke-linecap="square" stroke-linejoin="round"/>
@@ -199,12 +199,12 @@
 <polygon points="400,517.0 460,517.0 472,530 460,543.0 400,543.0" fill="#fff" stroke="#A8552E" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="432.0" y="534" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">DRDY</text>
 <path d="M 472,530 L 620,530" fill="none" stroke="#A8552E" stroke-width="1.1" stroke-linecap="square" stroke-linejoin="round"/>
-<text x="900" y="448" font-family="Lato, sans-serif" font-size="13.58" fill="#A8552E" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">vers le CAN (feuille 3)</text>
+<text x="900" y="448" font-family="Lato, sans-serif" font-size="13.58" fill="#A8552E" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">to the ADC (sheet 3)</text>
 <path d="M 820,470 L 890,470" fill="none" stroke="#A8552E" stroke-width="1.4" stroke-linecap="square" stroke-linejoin="round"/>
 <rect x="620" y="570" width="200" height="84" rx="3" fill="#FBFBF7" stroke="#23302C" stroke-width="1.8"/>
 <text x="720.0" y="592" font-family="Lato, sans-serif" font-size="17.2" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U25</text>
 <text x="720.0" y="610" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ADuM1251</text>
-<text x="720.0" y="628" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">I²C isolé</text>
+<text x="720.0" y="628" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">isolated I²C</text>
 <polygon points="400,599.0 472,599.0 484,612 472,625.0 400,625.0" fill="#fff" stroke="#A8552E" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="438.0" y="616" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">SDA/SCL</text>
 <path d="M 484,612 L 620,612" fill="none" stroke="#A8552E" stroke-width="1.1" stroke-linecap="square" stroke-linejoin="round"/>
@@ -213,14 +213,14 @@
 <rect x="120" y="380" width="150" height="90" rx="3" fill="#FBFBF7" stroke="#23302C" stroke-width="1.8"/>
 <text x="195.0" y="402" font-family="Lato, sans-serif" font-size="17.2" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U23</text>
 <text x="195.0" y="420" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">TPS7A2033</text>
-<text x="195.0" y="438" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">3,3 V numérique</text>
+<text x="195.0" y="438" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">3.3 V digital</text>
 <path d="M 330,190 L 330,340 L 195,340 L 195,380" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
 <path d="M 195,470 L 195,510" fill="none" stroke="#A8552E" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="round"/>
 <line x1="195" y1="510" x2="195" y2="530" stroke="#A8552E" stroke-width="1.4" stroke-linecap="round"/>
 <line x1="176" y1="530" x2="214" y2="530" stroke="#A8552E" stroke-width="2.4" stroke-linecap="round"/>
 <text x="195" y="555" font-family="DejaVu Sans Mono, monospace" font-size="14.71" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">+3V3</text>
 <rect x="60" y="690" width="840" height="94" rx="5" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.1"/>
-<text x="74" y="718" font-family="Lato, sans-serif" font-size="15.62" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">CE QUE LA BARRIÈRE GARANTIT</text>
-<text x="74" y="742" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Aucun chemin conducteur ne relie la plante à la terre du bâtiment : le seul lien est le champ</text>
-<text x="74" y="764" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">magnétique de T1 et les capacités de couplage des isolateurs, soit moins de 3 pF au total.</text>
+<text x="74" y="718" font-family="Lato, sans-serif" font-size="15.62" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">WHAT THE BARRIER GUARANTEES</text>
+<text x="74" y="742" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">No conductive path links the plant to the building's earth: the only coupling is T1's magnetic</text>
+<text x="74" y="764" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">field and the isolators' coupling capacitance, less than 3 pF in total.</text>
 </svg>

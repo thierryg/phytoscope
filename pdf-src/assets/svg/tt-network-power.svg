@@ -1,20 +1,3 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/tt-network-power.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" width="900" height="480">
 
 <defs>
@@ -29,10 +12,10 @@
    <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
 </defs>
 <rect width="900" height="480" fill="#FBF9F1"/>
-<text x="450" y="34" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="3">AUTONOMIE ET LIAISON RADIO</text>
+<text x="450" y="34" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="3">SELF-SUFFICIENCY AND THE RADIO LINK</text>
 <rect x="40" y="70" width="420" height="200" rx="7" fill="none" stroke="#2F5E86" stroke-width="1.2" stroke-dasharray="5 4" opacity="0.55"/>
-<rect x="50" y="61" width="66.4" height="18" rx="9" fill="#2F5E86"/>
-<text x="83.2" y="73.5" font-family="Lato, sans-serif" font-size="11.6" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">TOPOLOGIE</text>
+<rect x="50" y="61" width="60.8" height="18" rx="9" fill="#2F5E86"/>
+<text x="80.4" y="73.5" font-family="Lato, sans-serif" font-size="11.6" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">TOPOLOGY</text>
 <line x1="120" y1="232" x2="120" y2="184.4" stroke="#3C6B50" stroke-width="11.9" stroke-linecap="round"/>
 <line x1="120.0" y1="184.4" x2="93.9" y2="136.6" stroke="#3C6B50" stroke-width="7.85" stroke-linecap="round"/>
 <line x1="93.9" y1="136.6" x2="61.8" y2="110.2" stroke="#3C6B50" stroke-width="5.18" stroke-linecap="round"/>
@@ -1544,45 +1527,45 @@
 <circle cx="311.4" cy="130.4" r="5.1" fill="#6FA98A" opacity="0.34"/>
 <circle cx="308.0" cy="122.5" r="4.0" fill="#6FA98A" opacity="0.61"/>
 <rect x="106" y="236" width="28" height="18" rx="3" fill="#B08528"/>
-<text x="120" y="264" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">nœud A</text>
+<text x="120" y="264" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">node A</text>
 <rect x="196" y="236" width="28" height="18" rx="3" fill="#B08528"/>
-<text x="210" y="264" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">nœud B</text>
+<text x="210" y="264" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">node B</text>
 <rect x="316" y="158" width="120" height="54" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
-<text x="376.0" y="175" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Passerelle</text>
+<text x="376.0" y="175" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Gateway</text>
 <text x="376.0" y="190.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">LoRaWAN</text>
-<text x="376.0" y="202.5" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">→ Internet</text>
+<text x="376.0" y="202.5" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">→ the Internet</text>
 <path d="M136,230 q28,-14 74,-44" fill="none" stroke="#2F5E86" stroke-width="1.2" opacity="0.60"/>
 <path d="M136,223 q28,-20 74,-50" fill="none" stroke="#2F5E86" stroke-width="1.2" opacity="0.44"/>
 <path d="M136,216 q28,-26 74,-56" fill="none" stroke="#2F5E86" stroke-width="1.2" opacity="0.28"/>
 <path d="M226,230 q28,-14 -16,-44" fill="none" stroke="#2F5E86" stroke-width="1.2" opacity="0.60"/>
 <path d="M226,223 q28,-20 -16,-50" fill="none" stroke="#2F5E86" stroke-width="1.2" opacity="0.44"/>
 <path d="M226,216 q28,-26 -16,-56" fill="none" stroke="#2F5E86" stroke-width="1.2" opacity="0.28"/>
-<text x="250" y="128" font-family="Lato, sans-serif" font-size="10.73" fill="#2F5E86" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">868 MHz · SF9 · 1 message / 15 min</text>
+<text x="250" y="128" font-family="Lato, sans-serif" font-size="10.73" fill="#2F5E86" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">868 MHz · SF9 · one message / 15 min</text>
 <rect x="486" y="70" width="380" height="200" rx="7" fill="none" stroke="#B08528" stroke-width="1.2" stroke-dasharray="5 4" opacity="0.55"/>
-<rect x="496" y="61" width="178.39999999999998" height="18" rx="9" fill="#B08528"/>
-<text x="585.2" y="73.5" font-family="Lato, sans-serif" font-size="11.6" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">BUDGET ÉNERGÉTIQUE JOURNALIER</text>
-<text x="500" y="112" font-family="Lato, sans-serif" font-size="10.73" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Veille profonde (23 h 50)</text>
+<rect x="496" y="61" width="144.79999999999998" height="18" rx="9" fill="#B08528"/>
+<text x="568.4" y="73.5" font-family="Lato, sans-serif" font-size="11.6" fill="#E0C073" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">THE DAILY ENERGY BUDGET</text>
+<text x="500" y="112" font-family="Lato, sans-serif" font-size="10.73" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Deep sleep (23 h 50)</text>
 <rect x="500" y="116" width="8" height="11" rx="3" fill="#3F7D5A" opacity="0.75"/>
 <text x="516.1600000000001" y="125" font-family="Lato, sans-serif" font-size="10.15" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">7 mAh</text>
-<text x="500" y="145" font-family="Lato, sans-serif" font-size="10.73" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Mesures (96 réveils × 4 s)</text>
+<text x="500" y="145" font-family="Lato, sans-serif" font-size="10.73" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Measurements (96 wake-ups × 4 s)</text>
 <rect x="500" y="149" width="57" height="11" rx="3" fill="#2F5E86" opacity="0.75"/>
 <text x="565.12" y="158" font-family="Lato, sans-serif" font-size="10.15" fill="#2F5E86" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">50 mAh</text>
-<text x="500" y="178" font-family="Lato, sans-serif" font-size="10.73" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Émissions radio (96 trames)</text>
+<text x="500" y="178" font-family="Lato, sans-serif" font-size="10.73" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Radio transmissions (96 frames)</text>
 <rect x="500" y="182" width="15" height="11" rx="3" fill="#A8552E" opacity="0.75"/>
 <text x="522.5066666666667" y="191" font-family="Lato, sans-serif" font-size="10.15" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">13 mAh</text>
-<text x="500" y="211" font-family="Lato, sans-serif" font-size="10.73" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Total consommé</text>
+<text x="500" y="211" font-family="Lato, sans-serif" font-size="10.73" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Total consumed</text>
 <rect x="500" y="215" width="80" height="11" rx="3" fill="#0E2A22" opacity="0.95"/>
 <text x="587.7866666666666" y="224" font-family="Lato, sans-serif" font-size="10.15" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">70 mAh</text>
-<text x="500" y="244" font-family="Lato, sans-serif" font-size="10.73" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Apport solaire 2 W (hiver, 1,5 h éq.)</text>
+<text x="500" y="244" font-family="Lato, sans-serif" font-size="10.73" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Solar input 2 W (winter, 1.5 h equivalent)</text>
 <rect x="500" y="248" width="340" height="11" rx="3" fill="#B08528" opacity="0.95"/>
 <text x="848.0" y="257" font-family="Lato, sans-serif" font-size="10.15" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">300 mAh</text>
 <rect x="40" y="298" width="826" height="66" rx="6" fill="#FFFFFF" stroke="#D9D9C6" stroke-width="1.2"/>
-<text x="453" y="318" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Règle de dimensionnement</text>
-<text x="453" y="336.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Dimensionner l'accumulateur pour dix jours sans soleil, et le panneau pour recharger en un jour d'hiver couvert. Un</text>
-<text x="453" y="347.5" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">LiFePO₄ de 6 Ah et un panneau de 5 W tiennent confortablement ce budget ; c'est la marge, non la moyenne, qui fait</text>
-<text x="453" y="359.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">survivre l'installation à décembre.</text>
-<text x="450" y="398" font-family="Lato, sans-serif" font-size="13.63" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Pourquoi LoRaWAN plutôt que Wi-Fi</text>
-<text x="450" y="416.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Portée de plusieurs kilomètres en zone dégagée, consommation d'émission dix à cent fois moindre, et aucune dépendance à</text>
-<text x="450" y="427.5" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">une borne à proximité de l'arbre. Le prix à payer : un débit minuscule (quelques dizaines d'octets par message) — ce qui</text>
-<text x="450" y="439.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">interdit d'envoyer un signal brut et oblige à extraire les descripteurs sur le nœud lui-même.</text>
+<text x="453" y="318" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">The sizing rule</text>
+<text x="453" y="336.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Size the battery for ten days without sun, and the panel to recharge in one overcast winter day. A 6 Ah LiFePO₄ and</text>
+<text x="453" y="347.5" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">a 5 W panel hold this budget comfortably; it is the margin, not the average, that carries the installation through</text>
+<text x="453" y="359.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">December.</text>
+<text x="450" y="398" font-family="Lato, sans-serif" font-size="13.63" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Why LoRaWAN rather than Wi-Fi</text>
+<text x="450" y="416.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">A range of several kilometres in open ground, a transmit power ten to a hundred times lower, and no dependence on an</text>
+<text x="450" y="427.5" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">access point near the tree. The price: a tiny throughput (a few tens of bytes per message) — which rules out sending a raw</text>
+<text x="450" y="439.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">signal and forces the descriptors to be extracted on the node itself.</text>
 </svg>

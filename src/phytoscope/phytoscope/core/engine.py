@@ -2,19 +2,19 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/core/engine.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
-"""Le moteur : ce qui relie la source, le traitement, la musique et le disque.
+"""Le engine : ce qui relie la source, le traitement, la musique et le disque.
 
 Trois fils d'exécution, deux files, aucune dépendance à l'interface :
 
@@ -22,16 +22,16 @@ Trois fils d'exécution, deux files, aucune dépendance à l'interface :
                                     │
                                     ├──▶ synthétiseur (fil audio de PortAudio)
                                     ├──▶ sortie MIDI
-                                    ├──▶ moteur lexical ──▶ synthèse vocale
+                                    ├──▶ engine lexical ──▶ synthèse vocale
                                     └──▶ enregistreur (disque)
 
-Le moteur lexical est le jumeau du moteur musical : mêmes événements en
-entrée, mêmes garde-fous de densité, une phrase au lieu d'une note en sortie.
+Le engine lexical est le jumeau du engine musical : mêmes événements en
+entrée, mêmes kept-fous de densité, une phrase au lieu d'une note en sortie.
 Les deux peuvent tourner ensemble ou séparément.
 
-L'interface graphique ne fait que **lire** l'état partagé à sa propre
+L'interface graphique ne fait que **read** l'état partagé à sa propre
 cadence (30 im/s). Elle ne peut donc jamais ralentir l'acquisition : c'est
-la règle qui rend l'application utilisable sur une machine modeste pendant
+la règle qui rend l'application usable sur une machine modeste pendant
 une séance de plusieurs heures.
 """
 from __future__ import annotations
@@ -74,7 +74,7 @@ def asdict_leger(section) -> Dict[str, Any]:
 
 @dataclass
 class EngineState:
-    """Instantané de l'état du moteur, lu par l'interface."""
+    """Instantané de l'état du engine, lu par l'interface."""
     running: bool = False
     source_name: str = ""
     source_kind: str = ""
@@ -100,7 +100,7 @@ class EngineState:
     disk_free_mb: float = 0.0
     disk_total_mb: float = 0.0
     disk_hours_left: float = 0.0     # au débit d'écriture courant
-    disk_alert: bool = False         # il reste moins que le seuil d'alerte
+    disk_alert: bool = False         # il reste moins que le seuil d'alert
     dropped_blocks: int = 0
     cpu_load: float = 0.0
     board: Optional[BoardInfo] = None
@@ -119,10 +119,10 @@ class EngineState:
     voice_spoken: int = 0
     voice_dropped: int = 0
     centroid_hz: float = 0.0
-    # -- relecture ----------------------------------------------------------
-    replaying: bool = False          # le signal vient d'un fichier, pas d'une plante
+    # -- replaying ----------------------------------------------------------
+    replaying: bool = False          # le signal vient d'un file_path, pas d'une plante
     replay_name: str = ""
-    replay_position: float = 0.0     # secondes écoulées dans l'enregistrement
+    replay_position: float = 0.0     # seconds écoulées dans l'enregistrement
     replay_length: float = 0.0
     # -- échantillons -------------------------------------------------------
     samples_total: int = 0
@@ -155,11 +155,11 @@ class Engine:
         self.vocal = VocalMapper(settings)
 
         #  Le registre des modules. Créé ici, chargé au démarrage : un module
-        #  doit pouvoir s'abonner avant que la première mesure n'arrive.
-        #  `charger_au_demarrage = False` permet d'ouvrir le logiciel sans eux
+        #  doit pouvoir s'subscribe avant que la première mesure n'arrive.
+        #  `charger_au_demarrage = False` permet d'open le logiciel sans eux
         #  quand l'un d'eux empêche de démarrer — le mode sans échec.
-        from ..api import Registre
-        self.modules = Registre(self, settings)
+        from ..api import Registry
+        self.modules = Registry(self, settings)
         self.voice = VoiceOutput(settings)
         self.sampler = Sampler(settings)
         self.capture = FrameCapture(settings)
@@ -216,7 +216,7 @@ class Engine:
         pour l'oscilloscope, l'analyseur et les descripteurs sont remises à
         zéro, et les filtres repartent de leur état initial. Le faire à chaque
         mouvement d'un curseur de volume — ce qui arrivait, tous les réglages
-        passant par le même rappel — effaçait donc ce qu'on était en train de
+        passant par le même callback — effaçait donc ce qu'on était en train de
         regarder. On ne reconstruit plus que si un réglage de la chaîne a
         réellement changé ; le reste ne fait que se resynchroniser.
         """
@@ -245,7 +245,7 @@ class Engine:
         self.vocal.refresh()
 
     def apply_settings(self) -> None:
-        """À appeler après toute modification des réglages."""
+        """À call après toute modification des réglages."""
         self._rebuild_processing()
         m = self.settings.music
         self.synth.reverb_amount = m.reverb
@@ -283,11 +283,10 @@ class Engine:
         veut_parler = bool(v.enabled and v.spoken)
         if veut_parler and not self.voice.actif:
             if self.voice.demarrer():
-                self._message(t("Synthèse vocale : {moteur}").format(
-                    moteur=self.voice.backend))
+                self._message(t("Speech synthesis: {engine}").format(
+                    engine=self.voice.backend))
             else:
-                self._message(t("Aucune synthèse vocale installée : les énoncés "
-                                "seront écrits mais non prononcés."))
+                self._message(t("No speech synthesis installed: utterances will be written but not spoken."))
         elif not veut_parler and self.voice.actif:
             self.voice.arreter()
         with self.lock:
@@ -302,14 +301,13 @@ class Engine:
 
         self.source = autodetect(self.raw_q, self.settings)
         if not self.source.start():
-            self._message(self.source.last_error or t("source indisponible"))
+            self._message(self.source.last_error or t("source unavailable"))
             from .sources import SimulatedSource
             self.source = SimulatedSource(self.raw_q,
                                           self.settings.acquisition.sample_rate,
                                           max(self.settings.acquisition.channels, 1))
             self.source.start()
-            self._message(t("Repli sur le générateur interne : "
-                            "vous pouvez travailler sans matériel."))
+            self._message(t("Falling back to the internal generator: you can work with no hardware."))
 
         # contrôle de la carte, facultatif
         if self.source.info.kind in ("audio", "serie"):
@@ -319,13 +317,13 @@ class Engine:
                     with self.lock:
                         self.state.board = info
                     self.source.info.board = info
-                    self._message(t("Carte détectée : {carte}").format(
+                    self._message(t("Board detected: {carte}").format(
                         carte=info.describe()))
             elif self.control.last_error:
                 self._message(self.control.last_error)
 
         if not self.audio.start():
-            self._message(self.audio.last_error or t("sortie audio indisponible"))
+            self._message(self.audio.last_error or t("audio output unavailable"))
         else:
             self.audio.tap = self._audio_tap
 
@@ -333,16 +331,16 @@ class Engine:
             if self.midi.open(self.settings.music.midi_port):
                 self.midi.program(self.mapper.gm_program(),
                                   self.settings.music.midi_channel)
-                self._message(t("Sortie MIDI : {port}").format(port=self.midi.port_name))
+                self._message(t("MIDI output: {port}").format(port=self.midi.port_name))
             else:
                 self._message(self.midi.last_error)
 
         self.apply_settings()
 
         if self.settings.diagnostics.capture_usb_frames:
-            chemin = self.capture.start()
-            if chemin:
-                self._message(t("Capture de trames : {chemin}").format(chemin=chemin))
+            path = self.capture.start()
+            if path:
+                self._message(t("Frame capture: {path}").format(path=path))
         if self.settings.diagnostics.debug_mode:
             self.monitor.on_change = self._usb_change
             self.monitor.start()
@@ -357,12 +355,12 @@ class Engine:
             self.start_recording()
         return True
 
-    def _demarrer_traitement(self, nom: str = "traitement") -> None:
+    def _demarrer_traitement(self, name: str = "traitement") -> None:
         """Lance le fil qui filtre, mesure et sonifie. Idempotent."""
         if self._running and self._thread is not None:
             return
         self._running = True
-        self._thread = threading.Thread(target=self._run, name=nom, daemon=True)
+        self._thread = threading.Thread(target=self._run, name=name, daemon=True)
         self._thread.start()
 
     def _arreter_traitement(self) -> None:
@@ -374,7 +372,7 @@ class Engine:
     def stop(self) -> None:
         self.stop_recording()
         #  Les modules d'abord : l'un d'eux peut vouloir écrire quelque chose
-        #  en se refermant, et il lui faut un moteur encore debout pour cela.
+        #  en se refermant, et il lui faut un engine encore debout pour cela.
         self._arreter_les_modules()
         self._arreter_traitement()
         if self.source is not None:
@@ -396,24 +394,24 @@ class Engine:
     def _charger_les_modules(self) -> None:
         """Découvre et installe les modules. Jamais fatal.
 
-        Un module qui échoue est désactivé et inscrit au journal ; le logiciel
+        Un module qui échoue est désactivé et inscrit au log ; le logiciel
         continue. Une panne du registre lui-même — ce qui ne devrait pas
-        arriver — n'empêche pas non plus la mesure de commencer : mesurer est
+        arriver — n'empêche pas non plus la mesure de commencer : measure est
         la raison d'être du logiciel, les modules en sont l'agrément.
         """
         if not getattr(self.settings.modules, "charger_au_demarrage", True):
             log.info("Modules non chargés : désactivés dans les réglages.")
             return
         try:
-            self.modules.decouvrir()
-            actifs = self.modules.charger_tout()
+            self.modules.discover()
+            active = self.modules.load_all()
             total = len(self.modules.modules)
-            log.info("Modules : %d actif(s) sur %d découvert(s).", actifs, total)
+            log.info("Modules : %d actif(s) sur %d découvert(s).", active, total)
             en_faute = [m for m in self.modules.modules.values()
-                        if m.faute]
+                        if m.fault]
             for m in en_faute:
-                self._message(t("Module « {nom} » désactivé : {raison}").format(
-                    nom=m.nom, raison=m.faute))
+                self._message(t("Module « {name} » disabled: {raison}").format(
+                    name=m.name, raison=m.fault))
         except Exception as exc:                           # noqa: BLE001
             log.error("Chargement des modules impossible : %s: %s",
                       type(exc).__name__, exc)
@@ -421,12 +419,12 @@ class Engine:
     def _arreter_les_modules(self) -> None:
         try:
             self.settings.modules.reglages.update(
-                self.modules.collecter_reglages())
-            self.modules.arreter_tout()
+                self.modules.collect_settings())
+            self.modules.shutdown_all()
         except Exception as exc:                           # noqa: BLE001
             log.error("Arrêt des modules : %s: %s", type(exc).__name__, exc)
 
-    def publier(self, evenement: str, *args, **kwargs) -> None:
+    def publish(self, event: str, *args, **kwargs) -> None:
         """Annonce un événement aux modules abonnés.
 
         Appelé depuis le fil de l'interface, jamais depuis celui des données :
@@ -435,9 +433,9 @@ class Engine:
         """
         try:
             from ..api.events import BUS
-            BUS.publier(evenement, *args, **kwargs)
+            BUS.publish(event, *args, **kwargs)
         except Exception as exc:                           # noqa: BLE001
-            log.error("Publication de « %s » : %s", evenement, exc)
+            log.error("Publication de « %s » : %s", event, exc)
 
     # ------------------------------------------------------------- traitement
     def _run(self) -> None:
@@ -498,7 +496,7 @@ class Engine:
                 pass
         if self.settings.audio_out.beep_enabled and \
                 self.settings.audio_out.beep_on_event:
-            self.output.bip("evenement")
+            self.output.bip("event")
 
         self._handle_enonce(ev)
 
@@ -527,7 +525,7 @@ class Engine:
     def _handle_enonce(self, ev: Event) -> None:
         """Le versant lexical de l'événement : une phrase, peut-être.
 
-        Peut-être seulement : le moteur lexical a sa propre limite de densité,
+        Peut-être seulement : le engine lexical a sa propre limite de densité,
         volontairement plus basse que celle de la musique. Une plante qui
         « parlerait » vingt fois par minute ne serait pas écoutée.
         """
@@ -542,7 +540,7 @@ class Engine:
         if self.recorder is not None:
             self.recorder.write_enonce(enonce)
         if self.settings.voice.spoken and not self.settings.voice.muted:
-            self.voice.dire(enonce.texte)
+            self.voice.dire(enonce.text)
         if self.on_enonce:
             try:
                 self.on_enonce(enonce)
@@ -552,10 +550,10 @@ class Engine:
     def _surveiller_disque(self) -> None:
         """Mesure l'espace restant et clôt la séance avant la saturation.
 
-        Toutes les cinq secondes : l'appel système est court, mais le faire à
+        Toutes les cinq seconds : l'appel système est court, mais le faire à
         chaque bloc serait trois cents fois trop souvent. Deux seuils — un pour
         prévenir tant qu'on peut encore faire de la place, un pour s'arrêter —
-        parce qu'une alerte qui arrive en même temps que la coupure ne sert à
+        parce qu'une alert qui arrive en même temps que la coupure ne sert à
         personne.
         """
         r = self.settings.recording
@@ -566,50 +564,46 @@ class Engine:
             return
         self._disque_t = maintenant
 
-        enregistre = self.recorder is not None and self.recorder.active
-        chemin = self.recorder.dir if enregistre else r.directory
-        etat = disk_space.mesurer(chemin)
-        if not etat.mesure:
+        recording = self.recorder is not None and self.recorder.active
+        path = self.recorder.dir if recording else r.directory
+        state = disk_space.mesurer(path)
+        if not state.mesure:
             return
         debit = disk_space.debit_mo_par_heure(self.settings)
-        reste = disk_space.autonomie_heures(etat.libre_mo, r.reserve_mb, debit)
-        alerte = enregistre and reste * 60.0 <= max(r.warn_minutes, 1.0)
+        reste = disk_space.autonomie_heures(state.libre_mo, r.reserve_mb, debit)
+        alert = recording and reste * 60.0 <= max(r.warn_minutes, 1.0)
 
         with self.lock:
-            self.state.disk_free_mb = etat.libre_mo
-            self.state.disk_total_mb = etat.total_mo
+            self.state.disk_free_mb = state.libre_mo
+            self.state.disk_total_mb = state.total_mo
             self.state.disk_hours_left = reste
-            self.state.disk_alert = alerte
+            self.state.disk_alert = alert
 
-        if not enregistre:
+        if not recording:
             self._disque_prevenu = False
             return
 
-        if etat.libre_mo <= r.reserve_mb:
+        if state.libre_mo <= r.reserve_mb:
             chemin_clos = self.stop_recording()
-            self._message(t("Disque plein : enregistrement clos à {reste} "
-                            "libres. La séance est complète et refermée : "
-                            "{chemin}").format(
-                                reste=disk_space.formater_mo(etat.libre_mo),
-                                chemin=chemin_clos or "—"))
+            self._message(t("Disk full: recording closed with {reste} free. The session is complete and properly closed: {path}").format(
+                                reste=disk_space.formater_mo(state.libre_mo),
+                                path=chemin_clos or "—"))
             self._disque_prevenu = False
             return
 
-        if alerte and not self._disque_prevenu:
+        if alert and not self._disque_prevenu:
             self._disque_prevenu = True
-            self._message(t("Espace disque : {reste} libres, soit environ "
-                            "{duree} d'enregistrement. L'enregistrement sera "
-                            "clos automatiquement à {reserve}.").format(
-                                reste=disk_space.formater_mo(etat.libre_mo),
+            self._message(t("Disk space: {reste} free, about {duree} of recording. Recording will be closed automatically at {reserve}.").format(
+                                reste=disk_space.formater_mo(state.libre_mo),
                                 duree=disk_space.formater_duree(reste),
                                 reserve=disk_space.formater_mo(r.reserve_mb)))
 
     def _maj_centroide(self) -> None:
         """Centre de gravité spectral du signal récent, en hertz.
 
-        C'est l'axe « couleur » du moteur lexical. Il est calculé ici, une
-        fois toutes les deux secondes et pour tout le monde, plutôt que dans
-        le moteur lexical : recalculer un spectre à chaque événement coûterait
+        C'est l'axe « couleur » du engine lexical. Il est calculé ici, une
+        fois toutes les deux seconds et pour tout le monde, plutôt que dans
+        le engine lexical : recalculer un spectre à chaque événement coûterait
         cher et donnerait le même résultat.
         """
         maintenant = time.monotonic()
@@ -623,14 +617,14 @@ class Engine:
         freqs, psd = welch_psd(x, fs, nperseg=min(1024, x.size))
         # On écarte le continu et ce qui dépasse la bande utile : sans cela le
         # centroïde ne mesurerait que la dérive de la ligne de base.
-        garde = (freqs > 0.01) & (freqs < fs / 2.5)
-        if not garde.any():
+        kept = (freqs > 0.01) & (freqs < fs / 2.5)
+        if not kept.any():
             return
-        poids = psd[garde]
+        poids = psd[kept]
         somme = float(poids.sum())
         if somme <= 0:
             return
-        centroide = float((freqs[garde] * poids).sum() / somme)
+        centroide = float((freqs[kept] * poids).sum() / somme)
         self.vocal.set_couleur_hz(centroide)
         with self.lock:
             self.state.centroid_hz = centroide
@@ -657,12 +651,12 @@ class Engine:
                 s.rms_v, s.pp_v, s.sigma_v = st.rms, st.peak_to_peak, st.std
             if drift:
                 s.drift_v_per_min = drift
-            sature = bool(np.max(np.abs(raw)) > 0.95 * full_scale) if raw.size else False
-            if sature and not s.saturated and \
+            saturated = bool(np.max(np.abs(raw)) > 0.95 * full_scale) if raw.size else False
+            if saturated and not s.saturated and \
                     self.settings.audio_out.beep_on_saturation and \
                     self.settings.audio_out.beep_enabled:
                 self.output.bip("saturation")
-            s.saturated = sature
+            s.saturated = saturated
             m = self.output.metrics
             s.audio_peak_db = m.peak_db
             s.audio_reduction_db = m.reduction_db
@@ -712,7 +706,7 @@ class Engine:
         self._ring_filled = min(self._ring_filled + k, n)
 
     def recent(self, seconds: float, raw: bool = False) -> np.ndarray:
-        """Les N dernières secondes de signal, dans l'ordre chronologique."""
+        """Les N dernières seconds de signal, dans l'order chronologique."""
         if self._ring is None or self._ring_filled == 0:
             return np.zeros(0)
         src = self._ring_raw if raw else self._ring
@@ -737,10 +731,10 @@ class Engine:
                                  self.state.board, self.synth.fs)
         path = self.recorder.start(label)
         if path is None:
-            self._message(self.recorder.last_error or t("enregistrement impossible"))
+            self._message(self.recorder.last_error or t("recording impossible"))
             self.recorder = None
             return None
-        self._message(t("Enregistrement démarré : {chemin}").format(chemin=path))
+        self._message(t("Recording started: {path}").format(path=path))
         return path
 
     def stop_recording(self) -> Optional[str]:
@@ -749,7 +743,7 @@ class Engine:
         path = self.recorder.stop()
         self.recorder = None
         if path:
-            self._message(t("Séance enregistrée : {chemin}").format(chemin=path))
+            self._message(t("Session recorded: {path}").format(path=path))
         with self.lock:
             self.state.recording = False
         return path
@@ -760,26 +754,26 @@ class Engine:
             self.recorder.write_mark(label, instant)
         if self.control.is_open:
             self.control.mark(label)
-        self._message(t("Marqueur « {etiquette} » à {temps:.1f} s").format(
+        self._message(t("Marker “{etiquette}” at {temps:.1f} s").format(
             etiquette=label, temps=instant))
 
     # ------------------------------------------------------- échantillons
-    def capturer_echantillon(self, secondes: float = 0.0, etiquette: str = "",
-                             brut: bool = False) -> Optional[str]:
-        """Écrit sur le disque le signal qui vient de passer. Retourne le chemin.
+    def capturer_echantillon(self, seconds: float = 0.0, etiquette: str = "",
+                             raw: bool = False) -> Optional[str]:
+        """Écrit sur le disque le signal qui vient de passer. Retourne le path.
 
-        Le logiciel garde dix minutes de signal en mémoire ; l'essentiel arrive
-        souvent **avant** qu'on ait pensé à enregistrer. Un geste, et la minute
+        Le logiciel kept dix minutes de signal en mémoire ; l'essentiel arrive
+        souvent **avant** qu'on ait pensé à save. Un geste, et la minute
         écoulée est sauvée — sans rien démarrer, sans rien arrêter.
 
-        :param secondes: durée à garder ; 0 prend la valeur des réglages.
-        :param brut: le signal avant filtrage plutôt que le signal affiché.
+        :param seconds: durée à garder ; 0 prend la value des réglages.
+        :param raw: le signal avant filtrage plutôt que le signal affiché.
         """
         r = self.settings.recording
-        duree = float(secondes) if secondes > 0 else float(r.sample_seconds)
-        x = self.recent(duree, raw=brut)
+        duree = float(seconds) if seconds > 0 else float(r.sample_seconds)
+        x = self.recent(duree, raw=raw)
         if x.size < 16:
-            self._message(t("Pas encore assez de signal pour un échantillon."))
+            self._message(t("Not enough signal yet for a sample."))
             return None
         fs = float(self.settings.acquisition.sample_rate)
         meta = {
@@ -787,38 +781,38 @@ class Engine:
             "lieu": self.settings.metadata.get("lieu", ""),
             "operateur": self.settings.metadata.get("operateur", ""),
             "source": self.state.source_name,
-            "signal_brut": bool(brut),
+            "signal_brut": bool(raw),
             "evenements_dans_la_fenetre": sum(
                 1 for t_ev in self._evenements_recents
                 if self.state.elapsed_s - t_ev <= duree),
-            "reglages": {
-                "acquisition": asdict_leger(self.settings.acquisition),
+            "settings": {
+                "acquiring": asdict_leger(self.settings.acquisition),
                 "processing": asdict_leger(self.settings.processing),
             },
         }
         try:
-            chemin = samples.ecrire(
+            path = samples.ecrire(
                 x, fs, samples.dossier_par_defaut(self.settings),
                 etiquette=etiquette or self.settings.metadata.get("plante", ""),
-                metadonnees=meta)
+                metadata=meta)
         except (OSError, ValueError) as exc:
-            self._message(t("Échantillon impossible : {erreur}").format(erreur=exc))
+            self._message(t("Sample failed: {erreur}").format(erreur=exc))
             return None
         with self.lock:
-            self.state.last_sample = chemin
+            self.state.last_sample = path
             self.state.samples_total += 1
-        self._message(t("Échantillon gardé : {duree:.0f} s dans {fichier}").format(
-            duree=x.size / fs, fichier=os.path.basename(chemin)))
-        return chemin
+        self._message(t("Sample kept: {duree:.0f} s in {file_path}").format(
+            duree=x.size / fs, file_path=os.path.basename(path)))
+        return path
 
-    # ---------------------------------------------------------- relecture
-    def rejouer(self, data, fs: float, vitesse: float = 1.0, nom: str = "",
+    # ---------------------------------------------------------- replaying
+    def rejouer(self, data, fs: float, vitesse: float = 1.0, name: str = "",
                 boucle: bool = False) -> bool:
         """Remplace la source vivante par un enregistrement.
 
         Tout le reste du logiciel continue de fonctionner comme si la plante
         était là : filtres, détection, descripteurs, musique, mode vocal. C'est
-        l'intérêt de rejouer dans le moteur plutôt que de tracer une courbe.
+        l'intérêt de rejouer dans le engine plutôt que de tracer une courbe.
         """
         from .sources import FileSource
         import numpy as _np
@@ -834,32 +828,32 @@ class Engine:
         if self.source is not None:
             self.source.stop()
 
-        #  La chaîne doit tourner à la cadence du fichier, pas à celle réglée
-        #  pour la carte. On retient la valeur pour la rendre au retour.
+        #  La chaîne doit tourner à la cadence du file_path, pas à celle réglée
+        #  pour la carte. On retient la value pour la rendre au retour.
         if self._fs_avant_relecture is None:
             self._fs_avant_relecture = float(self.settings.acquisition.sample_rate)
         self.settings.acquisition.sample_rate = float(fs)
         self._rebuild_processing(force=True)
 
         self.source = FileSource(self.raw_q, x, float(fs), max(vitesse, 0.01),
-                                 loop=boucle, name=nom or t("enregistrement"))
-        self._demarrer_traitement("relecture")
+                                 loop=boucle, name=name or t("recording"))
+        self._demarrer_traitement("replay")
         self.audio.start()          # sans effet si la sortie est déjà ouverte
         self.source.start()
         with self.lock:
             self.state.running = True
             self.state.replaying = True
-            self.state.replay_name = nom
+            self.state.replay_name = name
             self.state.replay_length = x.shape[0] / fs
             self.state.replay_position = 0.0
-            self.state.source_name = nom or t("enregistrement")
-            self.state.source_kind = "fichier"
-        self._message(t("Relecture : {nom} — {duree:.0f} s à ×{vitesse:g}").format(
-            nom=nom or "—", duree=x.shape[0] / fs, vitesse=vitesse))
+            self.state.source_name = name or t("recording")
+            self.state.source_kind = "file_path"
+        self._message(t("Replay: {name} — {duree:.0f} s at ×{vitesse:g}").format(
+            name=name or "—", duree=x.shape[0] / fs, vitesse=vitesse))
         return True
 
     def arreter_relecture(self, revenir_en_direct: bool = True) -> None:
-        """Ferme la relecture et, si on le demande, rend la main à la plante."""
+        """Ferme la replaying et, si on le requested, rend la main à la plante."""
         if not self.state.replaying:
             return
         self._arreter_traitement()
@@ -887,26 +881,26 @@ class Engine:
 
     @resilient(message="Changement d'état USB")
     def _usb_change(self, present: bool) -> None:
-        self._message(t("Carte USB reconnectée.") if present
-                      else t("ATTENTION : carte USB disparue du bus."))
+        self._message(t("USB board reconnected.") if present
+                      else t("WARNING: USB board has vanished from the bus."))
         if not present and self.settings.audio_out.beep_enabled:
             self.output.bip("erreur")
 
     # ------------------------------------------------------- mise au point
     def start_capture(self, label: str = "") -> Optional[str]:
         """Démarre la capture des trames (mode de mise au point)."""
-        chemin = self.capture.start(label)
-        if chemin:
-            self._message(t("Capture de trames : {chemin}").format(chemin=chemin))
+        path = self.capture.start(label)
+        if path:
+            self._message(t("Frame capture: {path}").format(path=path))
         else:
             self._message(self.capture.last_error or t("capture impossible"))
-        return chemin
+        return path
 
     def stop_capture(self) -> Optional[str]:
-        chemin = self.capture.stop()
-        if chemin:
-            self._message(t("Capture arrêtée : {n} trames").format(n=self.capture.count))
-        return chemin
+        path = self.capture.stop()
+        if path:
+            self._message(t("Capture stopped: {n} frames").format(n=self.capture.count))
+        return path
 
     def test_haut_parleur(self) -> None:
         """Émet un bip d'essai — vérifie la sortie sans lancer d'acquisition."""

@@ -3,47 +3,49 @@
 #  ==========================================================================
 #  PhytoScope — attribution — pdf-src/assets/svg/gen_sch.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """
-Générateur de SCHÉMAS ÉLECTRONIQUES — « L'Arbre qui Parle ».
+ELECTRONIC SCHEMATIC generator — "The Talking Tree".
 
-Symboles à l'européenne (CEI 60617) : résistances rectangulaires, masses en
-peigne, sauts de fil (« hops ») aux croisements sans connexion.
+European symbols (IEC 60617): rectangular resistors, comb grounds, wire hops
+at crossings that carry no connection.
 
-Autonome : ne dépend pas de gen.py, afin que les deux générateurs évoluent
-séparément sans risque de collision.
+Standalone: it does not depend on gen.py, so that the two generators can move
+apart without any risk of collision.
 
-PROVENANCE DES SCHÉMAS
-  · sch-biodata-555 .......... relevé FIDÈLE du netlist GalvShield_005.sch
-                               (Eagle) du dépôt electricityforprogress/
-                               BiodataSonificationBreadboardKit — licence MIT.
-                               Netlist extraite par analyse du XML Eagle.
-  · sch-electrophysio-ina333 . schéma d'application composé d'après les
-                               datasheets TI INA333 / ADS1115 et ADI ADuM1251.
-  · sch-bus-capteurs-esp32 ... schéma d'application (datasheets BME280,
-                               BH1750, SCD41, DS18B20).
-  · sch-alim-solaire ......... schéma d'application (CN3791, TPS63020).
-  · sch-granier-tdp .......... principe Granier 1985 + ADS1220.
+WHERE THE SCHEMATICS COME FROM
+  · sch-biodata-555 .......... a FAITHFUL transcription of the
+                               GalvShield_005.sch (Eagle) netlist from the
+                               electricityforprogress/
+                               BiodataSonificationBreadboardKit repository —
+                               MIT licence. The netlist was extracted by
+                               reading the Eagle XML.
+  · sch-electrophysio-ina333 . an application schematic drawn from the TI
+                               INA333 / ADS1115 and ADI ADuM1251 datasheets.
+  · sch-bus-capteurs-esp32 ... an application schematic (BME280, BH1750,
+                               SCD41, DS18B20 datasheets).
+  · sch-alim-solaire ......... an application schematic (CN3791, TPS63020).
+  · sch-granier-tdp .......... the Granier 1985 principle + ADS1220.
 
-Usage : python3 gen_sch.py
+Usage: python3 gen_sch.py
 """
 import os
 import re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# ---- Palette (identique à book.css) -----------------------------------------
+# ---- Palette (the same one as book.css) -------------------------------------
 NUIT   = "#0E2A22"
 SEVE   = "#3F7D5A"
 SEVE_C = "#6FA98A"
@@ -53,11 +55,11 @@ GRIS   = "#6B7A72"
 TRAIT  = "#D9D9C6"
 BLEU   = "#2F5E86"
 CUIVRE = "#A8552E"
-FIL    = "#23302C"
+WIRE    = "#23302C"
 
 TEXT_SCALE = 1.30
 TEXT_MIN   = 9.6
-HEAD       = 56       # hauteur du bandeau de titre d'un boîtier
+HEAD       = 56       # the height of a package's title band
 
 
 def esc(s):
@@ -88,27 +90,27 @@ def title(x, y, s):
 # =============================================================================
 #  PRIMITIVES
 # =============================================================================
-def w_(pts, color=FIL, sw=1.7, dash=None):
+def w_(pts, color=WIRE, sw=1.7, dash=None):
     d = f' stroke-dasharray="{dash}"' if dash else ""
     p = " ".join(f"{x},{y}" for x, y in pts)
     return (f'<polyline points="{p}" fill="none" stroke="{color}" stroke-width="{sw}" '
             f'stroke-linecap="round" stroke-linejoin="round"{d}/>')
 
 
-def dot(x, y, color=FIL, r=3.6):
+def dot(x, y, color=WIRE, r=3.6):
     return f'<circle cx="{x}" cy="{y}" r="{r}" fill="{color}"/>'
 
 
 def hop(x, y, r=7):
-    """Saut de fil : croisement SANS connexion, sur un fil horizontal."""
+    "A wire hop: a crossing WITHOUT a connection, on a horizontal wire."
     return (f'<path d="M{x-r},{y} A{r},{r} 0 0 1 {x+r},{y}" fill="none" '
-            f'stroke="{FIL}" stroke-width="1.7"/>')
+            f'stroke="{WIRE}" stroke-width="1.7"/>')
 
 
 def res_h(x, y, ref="", val="", w=48, h=17):
-    """Résistance horizontale ; (x,y) = extrémité gauche du corps."""
+    "A horizontal resistor; (x,y) = the left end of the body."
     o = [f'<rect x="{x}" y="{y-h/2}" width="{w}" height="{h}" rx="1.5" '
-         f'fill="#FFFFFF" stroke="{FIL}" stroke-width="1.7"/>']
+         f'fill="#FFFFFF" stroke="{WIRE}" stroke-width="1.7"/>']
     if ref:
         o.append(txt(x + w / 2, y - h / 2 - 7, ref, size=8.4, fill=BLEU, weight="700"))
     if val:
@@ -117,10 +119,12 @@ def res_h(x, y, ref="", val="", w=48, h=17):
 
 
 def res_v(x, y, ref="", val="", h=48, w=17, side=1):
-    """Résistance verticale ; (x,y) = extrémité HAUTE du corps.
-    side = +1 → étiquettes à droite, −1 → à gauche."""
+    """A vertical resistor; (x,y) = the TOP end of the body.
+
+    side = +1 → labels on the right, −1 → on the left.
+    """
     o = [f'<rect x="{x-w/2}" y="{y}" width="{w}" height="{h}" rx="1.5" '
-         f'fill="#FFFFFF" stroke="{FIL}" stroke-width="1.7"/>']
+         f'fill="#FFFFFF" stroke="{WIRE}" stroke-width="1.7"/>']
     dx, a = w / 2 + 8, ("start" if side > 0 else "end")
     if ref:
         o.append(txt(x + side * dx, y + h / 2 - 3, ref, size=8.4, fill=BLEU,
@@ -131,19 +135,19 @@ def res_v(x, y, ref="", val="", h=48, w=17, side=1):
 
 
 def cap_v(x, y, ref="", val="", side=1, pol=False, pw=26):
-    """Condensateur vertical ; (x,y) = haut. Hauteur totale = 30."""
+    "A vertical capacitor; (x,y) = the top. Total height = 30."
     ya, yb = y + 12, y + 20
     o = [w_([(x, y), (x, ya)]),
-         f'<line x1="{x-pw/2}" y1="{ya}" x2="{x+pw/2}" y2="{ya}" stroke="{FIL}" '
+         f'<line x1="{x-pw/2}" y1="{ya}" x2="{x+pw/2}" y2="{ya}" stroke="{WIRE}" '
          f'stroke-width="2.4"/>']
     if pol:
         o.append(f'<path d="M{x-pw/2},{yb+4} Q{x},{yb-5} {x+pw/2},{yb+4}" fill="none" '
-                 f'stroke="{FIL}" stroke-width="2.4"/>')
-        # le « + » se place à l'OPPOSÉ des étiquettes, sinon il les chevauche
-        o.append(txt(x - side * (pw / 2 + 8), ya - 4, "+", size=9.5, fill=FIL))
+                 f'stroke="{WIRE}" stroke-width="2.4"/>')
+        # the “+” goes OPPOSITE the labels, or it sits on top of them
+        o.append(txt(x - side * (pw / 2 + 8), ya - 4, "+", size=9.5, fill=WIRE))
     else:
         o.append(f'<line x1="{x-pw/2}" y1="{yb}" x2="{x+pw/2}" y2="{yb}" '
-                 f'stroke="{FIL}" stroke-width="2.4"/>')
+                 f'stroke="{WIRE}" stroke-width="2.4"/>')
     o.append(w_([(x, yb + 4), (x, y + 30)]))
     dx, a = pw / 2 + 8, ("start" if side > 0 else "end")
     if ref:
@@ -158,14 +162,14 @@ def gnd(x, y, label=None):
     for i, hw in enumerate((13, 8.5, 4)):
         yy = y + 10 + i * 4.5
         o.append(f'<line x1="{x-hw}" y1="{yy}" x2="{x+hw}" y2="{yy}" '
-                 f'stroke="{FIL}" stroke-width="2.2"/>')
+                 f'stroke="{WIRE}" stroke-width="2.2"/>')
     if label:
         o.append(txt(x, y + 40, label, size=7.8, fill=GRIS))
     return "".join(o)
 
 
 def vcc(x, y, label="+3V3"):
-    """Rail d'alimentation ; (x,y) = point de connexion, le symbole monte."""
+    "A supply rail; (x,y) = the connection point, the symbol goes up."
     return "".join([
         w_([(x, y), (x, y - 13)], CUIVRE),
         f'<line x1="{x-14}" y1="{y-13}" x2="{x+14}" y2="{y-13}" stroke="{CUIVRE}" '
@@ -176,16 +180,16 @@ def vcc(x, y, label="+3V3"):
 
 def ic(x, y, w, name, sub="", left=(), right=(), top=(), bottom=(), lead=26,
        fill="#FBFAF4", pad=42):
-    """Boîtier. left/right = [(broche, nom, y_absolu)] ; top/bottom = [(br, nom, x)].
+    """A package. left/right = [(pin, name, y_abs)]; top/bottom = [(pin, name, x)].
 
-    Garde-fou : toute broche latérale placée dans le bandeau de titre lève une
-    erreur — c'est la cause n°1 de chevauchement dans les planches.
-    Renvoie (svg, pins) ; pins[nom] = (x, y) du BOUT de la patte.
+    The guard rail: any side pin placed inside the title band raises an error
+    — it is the commonest cause of overlap in the plates.
+    Returns (svg, pins); pins[name] = (x, y) of the END of the lead.
     """
     ys = [p[2] for p in left] + [p[2] for p in right]
     for py in ys:
         if py < y + HEAD:
-            raise ValueError(f"{name}: broche à y={py} dans le bandeau "
+            raise ValueError(f"{name}: pin at y={py} is inside the title band "
                              f"(minimum {y + HEAD})")
     h = (max(ys) - y + pad) if ys else 90
     o = [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="4" fill="{fill}" '
@@ -221,25 +225,27 @@ def ic(x, y, w, name, sub="", left=(), right=(), top=(), bottom=(), lead=26,
 
 
 def pot_v(x, y, ref="", val="", h=52):
-    """Potentiomètre : corps vertical (x,y=haut) + curseur à gauche.
-    Renvoie (svg, {'haut':…, 'bas':…, 'curseur':…})."""
+    """A potentiometer: a vertical body (x,y = the top) + a wiper on the left.
+
+    Returns (svg, {'top':…, 'bottom':…, 'wiper':…}).
+    """
     o = [f'<rect x="{x-9}" y="{y}" width="18" height="{h}" rx="1.5" fill="#FFFFFF" '
-         f'stroke="{FIL}" stroke-width="1.7"/>']
+         f'stroke="{WIRE}" stroke-width="1.7"/>']
     ym = y + h / 2
     o.append(w_([(x - 34, ym), (x - 16, ym)]))
-    o.append(f'<path d="M{x-16},{ym-6} L{x-16},{ym+6} L{x-9},{ym} z" fill="{FIL}"/>')
+    o.append(f'<path d="M{x-16},{ym-6} L{x-16},{ym+6} L{x-9},{ym} z" fill="{WIRE}"/>')
     if ref:
         o.append(txt(x + 15, ym - 3, ref, size=8.4, fill=BLEU, weight="700", anchor="start"))
     if val:
         o.append(txt(x + 15, ym + 11, val, size=8.4, anchor="start"))
-    return "".join(o), {"haut": (x, y), "bas": (x, y + h), "curseur": (x - 34, ym)}
+    return "".join(o), {"top": (x, y), "bottom": (x, y + h), "wiper": (x - 34, ym)}
 
 
 def switch_v(x, y, ref=""):
-    """Interrupteur (contact travail) vertical ; (x,y)=haut, hauteur 34."""
+    "A vertical switch (normally open); (x,y) = the top, height 34."
     o = [w_([(x, y), (x, y + 6)]),
-         f'<circle cx="{x}" cy="{y+8}" r="2.6" fill="{FIL}"/>',
-         f'<circle cx="{x}" cy="{y+26}" r="2.6" fill="{FIL}"/>',
+         f'<circle cx="{x}" cy="{y+8}" r="2.6" fill="{WIRE}"/>',
+         f'<circle cx="{x}" cy="{y+26}" r="2.6" fill="{WIRE}"/>',
          w_([(x, y + 28), (x, y + 34)]),
          w_([(x, y + 26), (x + 13, y + 6)])]
     if ref:
@@ -248,11 +254,11 @@ def switch_v(x, y, ref=""):
 
 
 def reed(x, y, ref=""):
-    """Contact ILS (reed) horizontal ; (x,y) = borne gauche, longueur 56."""
+    "A horizontal reed contact; (x,y) = the left terminal, length 56."
     o = [w_([(x, y), (x + 12, y)]),
          w_([(x + 44, y), (x + 56, y)]),
-         f'<circle cx="{x+14}" cy="{y}" r="2.6" fill="{FIL}"/>',
-         f'<circle cx="{x+42}" cy="{y}" r="2.6" fill="{FIL}"/>',
+         f'<circle cx="{x+14}" cy="{y}" r="2.6" fill="{WIRE}"/>',
+         f'<circle cx="{x+42}" cy="{y}" r="2.6" fill="{WIRE}"/>',
          w_([(x + 14, y), (x + 42, y - 11)]),
          f'<ellipse cx="{x+28}" cy="{y-2}" rx="24" ry="13" fill="none" '
          f'stroke="{GRIS}" stroke-width="1.1"/>']
@@ -262,11 +268,11 @@ def reed(x, y, ref=""):
 
 
 def diode(x, y, ref=""):
-    """Diode horizontale (anode à gauche) ; (x,y) = anode, longueur 34."""
+    "A horizontal diode (anode on the left); (x,y) = the anode, length 34."
     o = [w_([(x, y), (x + 10, y)]),
          f'<path d="M{x+10},{y-10} L{x+10},{y+10} L{x+26},{y} z" fill="#FFFFFF" '
-         f'stroke="{FIL}" stroke-width="1.8"/>',
-         f'<line x1="{x+26}" y1="{y-10}" x2="{x+26}" y2="{y+10}" stroke="{FIL}" '
+         f'stroke="{WIRE}" stroke-width="1.8"/>',
+         f'<line x1="{x+26}" y1="{y-10}" x2="{x+26}" y2="{y+10}" stroke="{WIRE}" '
          f'stroke-width="2.4"/>',
          w_([(x + 26, y), (x + 34, y)])]
     if ref:
@@ -275,11 +281,11 @@ def diode(x, y, ref=""):
 
 
 def led_v(x, y, ref="", color=OR):
-    """LED verticale (anode en haut) ; (x,y) = anode, hauteur 36."""
+    "A vertical LED (anode at the top); (x,y) = the anode, height 36."
     o = [w_([(x, y), (x, y + 10)]),
          f'<path d="M{x-10},{y+10} L{x+10},{y+10} L{x},{y+26} z" fill="#FFFFFF" '
-         f'stroke="{FIL}" stroke-width="1.7"/>',
-         f'<line x1="{x-10}" y1="{y+26}" x2="{x+10}" y2="{y+26}" stroke="{FIL}" '
+         f'stroke="{WIRE}" stroke-width="1.7"/>',
+         f'<line x1="{x-10}" y1="{y+26}" x2="{x+10}" y2="{y+26}" stroke="{WIRE}" '
          f'stroke-width="2.4"/>',
          w_([(x, y + 26), (x, y + 36)])]
     for k in (0, 1):
@@ -293,7 +299,7 @@ def led_v(x, y, ref="", color=OR):
 
 
 def pad(x, y, label="", side="left"):
-    """Pastille d'électrode + étiquette déportée."""
+    "An electrode pad, with its label set off to one side."
     o = [f'<circle cx="{x}" cy="{y}" r="7.5" fill="{OR_CL}" stroke="{OR}" stroke-width="1.8"/>']
     if label:
         dx, a = (-14, "end") if side == "left" else (14, "start")
@@ -302,7 +308,7 @@ def pad(x, y, label="", side="left"):
 
 
 def note(x, y, lines, w=300, kind="info", size=8.2):
-    """Cartouche : kind = info (bleu) | warn (cuivre) | ok (vert)."""
+    "A note box: kind = info (blue) | warn (copper) | ok (green)."
     fill, stroke = {"info": ("#F5F8FB", BLEU),
                     "warn": ("#FBF0E8", CUIVRE),
                     "ok":   ("#EAF4ED", SEVE)}[kind]
@@ -336,29 +342,29 @@ def frame(w, h, l1, l2):
 
 
 # =============================================================================
-#  PLANCHE 1 — FRONT-END BIODATA À LMC555
+#  PLATE 1 — THE LMC555 BIODATA FRONT END
 # =============================================================================
 def sch_biodata_555():
     W, H = 1200, 750
-    o = [frame(W, H, "PLANCHE 1 — Front-end biodata à LMC555",
-               "relevé du netlist GalvShield_005.sch · licence MIT"),
-         title(W / 2, 42, "CAPTEUR DE CONDUCTANCE À OSCILLATEUR ASTABLE")]
+    o = [frame(W, H, "PLATE 1 — The LMC555 biodata front end",
+               "taken from the GalvShield_005.sch netlist · MIT licence"),
+         title(W / 2, 42, "A CONDUCTANCE SENSOR BUILT ON AN ASTABLE OSCILLATOR")]
 
     # ---- LMC555 -------------------------------------------------------------
-    u1, p = ic(380, 232, 160, "LMC555", "multivibrateur astable",
+    u1, p = ic(380, 232, 160, "LMC555", "astable multivibrator",
                left=[(7, "DIS", 290), (6, "THR", 325), (2, "TR", 360)],
                right=[(3, "Q", 290), (8, "V+", 325), (4, "RST", 360)],
                bottom=[(1, "GND", 460)])
     o.append(u1)
     o.append(gnd(460, p["GND"][1]))
 
-    # V+ et RST sur le même rail local
+    # V+ and RST on the same local rail
     o.append(w_([(566, 325), (600, 325)]))
     o.append(w_([(566, 360), (600, 360), (600, 325)]))
     o.append(dot(600, 325))
     o.append(vcc(600, 325, "+5 V"))
 
-    # ---- Réseau de temporisation : R2, la plante, C1 ------------------------
+    # ---- The timing network: R2, the plant, C1 -------------------------------
     o.append(vcc(300, 150, "+5 V"))
     o.append(res_v(300, 150, "R2", "100 kΩ"))
     o.append(w_([(300, 198), (300, 290)]))
@@ -378,18 +384,18 @@ def sch_biodata_555():
     # ---- La plante ----------------------------------------------------------
     o.append(f'<rect x="52" y="250" width="158" height="184" rx="8" fill="#EAF4ED" '
              f'stroke="{SEVE}" stroke-width="1.8" stroke-dasharray="6 4"/>')
-    o.append(txt(131, 274, "FEUILLE / RAMEAU", size=8.8, fill=SEVE, weight="700", spacing="1"))
-    o.append(pad(210, 290, "électrode A", "left"))
-    o.append(pad(210, 390, "électrode B", "left"))
+    o.append(txt(131, 274, "LEAF / TWIG", size=8.8, fill=SEVE, weight="700", spacing="1"))
+    o.append(pad(210, 290, "electrode A", "left"))
+    o.append(pad(210, 390, "electrode B", "left"))
     o.append(txt(131, 340, "R", size=17, fill=NUIT, weight="700",
                  family="Cormorant Garamond, serif"))
-    o.append(txt(143, 344, "plante", size=8, fill=NUIT, anchor="start"))
+    o.append(txt(143, 344, "plant", size=8, fill=NUIT, anchor="start"))
     o.append(txt(131, 362, "0,3 – 5 MΩ", size=9.4, fill=NUIT))
-    o.append(txt(131, 416, "c\u2019est ELLE la résistance RB", size=7.8, fill=SEVE,
+    o.append(txt(131, 416, "IT is resistance RB", size=7.8, fill=SEVE,
                  style="italic"))
 
-    # ---- Microcontrôleur ----------------------------------------------------
-    u2, m = ic(700, 232, 190, "ATmega328P", "carte Arduino Uno",
+    # ---- The microcontroller -------------------------------------------------
+    u2, m = ic(700, 232, 190, "ATmega328P", "Arduino Uno board",
                left=[("", "D2 / INT0", 290)],
                right=[("", "D1 / TX", 290), ("", "A0", 370), ("", "A1", 420),
                       ("", "D11 (PWM)", 470)],
@@ -397,7 +403,7 @@ def sch_biodata_555():
     o.append(u2)
     o.append(vcc(795, 206, "+5 V"))
 
-    # Sortie Q → D2, avec LED témoin sur la branche
+    # The Q output → D2, with an indicator LED on the branch
     o.append(w_([(566, 290), (674, 290)]))
     o.append(netlabel(596, 282, "OUTPUT"))
     o.append(dot(620, 290))
@@ -407,12 +413,12 @@ def sch_biodata_555():
     o.append(led_v(620, 382, "LED6"))
     o.append(gnd(620, 418))
 
-    # ---- Sortie MIDI --------------------------------------------------------
+    # ---- The MIDI output -----------------------------------------------------
     o.append(w_([(916, 290), (964, 290)]))
     o.append(f'<circle cx="1000" cy="290" r="36" fill="#FBFAF4" stroke="{NUIT}" '
              f'stroke-width="2"/>')
     for a in (-1, 0, 1):
-        o.append(f'<circle cx="{1000 + a*13}" cy="{284 + abs(a)*9}" r="2.6" fill="{FIL}"/>')
+        o.append(f'<circle cx="{1000 + a*13}" cy="{284 + abs(a)*9}" r="2.6" fill="{WIRE}"/>')
     o.append(txt(1000, 348, "DIN-5 · MIDI OUT", size=8.2, fill=NUIT, weight="700"))
     o.append(txt(958, 282, "5", size=7.4, fill=GRIS, anchor="end"))
     o.append(w_([(1000, 254), (1000, 244)]))
@@ -420,20 +426,20 @@ def sch_biodata_555():
     o.append(res_v(1000, 196, "R1", "220 Ω", h=48, side=1))
     o.append(vcc(1000, 196, "+5 V"))
 
-    # ---- Potentiomètre de seuil (A0) ---------------------------------------
+    # ---- The threshold potentiometer (A0) ------------------------------------
     o.append(w_([(916, 370), (1090, 370), (1090, 476)]))
     pt, pp = pot_v(1124, 450, "R9", "10 kΩ lin.")
     o.append(pt)
-    o.append(w_([(1090, 476), (pp["curseur"][0], 476)]))
+    o.append(w_([(1090, 476), (pp["wiper"][0], 476)]))
     o.append(vcc(1124, 450, "+5 V"))
     o.append(gnd(1124, 502))
 
-    # ---- Bouton de menu (A1) -----------------------------------------------
+    # ---- The menu button (A1) ------------------------------------------------
     o.append(w_([(916, 420), (1000, 420), (1000, 456)]))
     o.append(switch_v(1000, 456, "S1"))
     o.append(gnd(1000, 490))
 
-    # ---- Sortie CV / audio (D11) -------------------------------------------
+    # ---- The CV / audio output (D11) -----------------------------------------
     o.append(w_([(916, 470), (952, 470), (952, 530)]))
     o.append(netlabel(920, 462, "PWM"))
     o.append(cap_v(952, 530, "C3", "1 µF", side=-1, pol=True))
@@ -446,41 +452,41 @@ def sch_biodata_555():
     o.append(gnd(1086, 628))
     o.append(f'<rect x="1112" y="536" width="78" height="48" rx="6" fill="#FBFAF4" '
              f'stroke="{NUIT}" stroke-width="2"/>')
-    o.append(txt(1151, 556, "JACK 3,5", size=8.6, fill=NUIT, weight="700"))
+    o.append(txt(1151, 556, "3.5 mm JACK", size=8.6, fill=NUIT, weight="700"))
     o.append(txt(1151, 571, "CV / audio", size=7.8, fill=GRIS))
 
     # ---- Cartouches ---------------------------------------------------------
     o.append(note(52, 496, [
-        "*PRINCIPE — la plante EST le composant",
-        "Le tissu ferme le réseau RC de l\u2019astable :",
-        "f ≈ 1,44 / ((R2 + 2·R_plante) · C1)",
+        "*THE PRINCIPLE — the plant IS the component",
+        "The tissue closes the astable's RC network:",
+        "f ≈ 1.44 / ((R2 + 2·R_plant) · C1)",
         "0,3 MΩ → ≈ 480 Hz        5 MΩ → ≈ 29 Hz",
-        "Le firmware mesure la PÉRIODE sur INT0, pas",
-        "une tension : voir le listing 1 de l\u2019annexe.",
+        "The firmware measures the PERIOD on INT0, not",
+        "a voltage: see listing 1 in the appendix.",
     ], w=392, kind="info"))
 
     o.append(note(52, 616, [
-        "*CE QUE LE SIGNAL N\u2019EST PAS",
-        "Aucune tension n\u2019est « lue » dans la plante : le",
-        "montage INJECTE un courant et mesure une impédance",
-        "de surface — analogue de la réponse électrodermale.",
-        "Humidité de l\u2019air, appui de l\u2019électrode et température",
-        "y pèsent autant que l\u2019état physiologique du végétal.",
+        "*WHAT THE SIGNAL IS NOT",
+        "No voltage is “read” inside the plant: the circuit",
+        "INJECTS a current and measures a surface impedance —",
+        "the analogue of the electrodermal response.",
+        "Air humidity, electrode pressure and temperature weigh",
+        "on it as much as the plant's physiological state.",
     ], w=392, kind="warn"))
 
     write("sch-biodata-555.svg", "\n".join(o), W, H)
 
 
 # =============================================================================
-#  PLANCHE 2 — ÉLECTROPHYSIOLOGIE HAUTE IMPÉDANCE
+#  PLATE 2 — HIGH-IMPEDANCE ELECTROPHYSIOLOGY
 # =============================================================================
 def sch_electrophysio():
     W, H = 1160, 720
-    o = [frame(W, H, "PLANCHE 2 — Voie d'électrophysiologie extracellulaire",
-               "schéma d'application · datasheets TI INA333 / ADS1115, ADI ADuM1251"),
-         title(W / 2, 42, "ÉLECTRODES → INA333 → ADS1115 → LIAISON I²C ISOLÉE")]
+    o = [frame(W, H, "PLATE 2 — The extracellular electrophysiology channel",
+               "an application schematic · TI INA333 / ADS1115, ADI ADuM1251 datasheets"),
+         title(W / 2, 42, "ELECTRODES → INA333 → ADS1115 → AN ISOLATED I²C LINK")]
 
-    # ---- Tronc et électrodes ------------------------------------------------
+    # ---- The trunk and the electrodes ----------------------------------------
     o.append(f'<rect x="36" y="212" width="120" height="300" rx="10" fill="#EAF4ED" '
              f'stroke="{SEVE}" stroke-width="1.8" stroke-dasharray="6 4"/>')
     o.append(txt(96, 236, "TRONC", size=9.4, fill=SEVE, weight="700", spacing="1.4"))
@@ -488,10 +494,10 @@ def sch_electrophysio():
     o.append(pad(156, 390, "E2", "left"))
     o.append(pad(156, 470, "REF", "left"))
     o.append(txt(96, 496, "Pb/PbCl₂, −80 cm", size=7.6, fill=GRIS))
-    o.append(txt(96, 312, "aubier", size=7.6, fill=GRIS))
-    o.append(txt(96, 412, "aubier", size=7.6, fill=GRIS))
+    o.append(txt(96, 312, "sapwood", size=7.6, fill=GRIS))
+    o.append(txt(96, 412, "sapwood", size=7.6, fill=GRIS))
 
-    # Résistances de limitation + filtrage RF
+    # Limiting resistors + RF filtering
     o.append(w_([(164, 290), (200, 290)]))
     o.append(res_h(200, 290, "R1", "10 kΩ"))
     o.append(w_([(248, 290), (314, 290)]))
@@ -506,7 +512,7 @@ def sch_electrophysio():
     o.append(gnd(292, 420))
 
     # ---- INA333 -------------------------------------------------------------
-    u1, p = ic(340, 228, 170, "INA333", "ampli d'instrumentation",
+    u1, p = ic(340, 228, 170, "INA333", "instrumentation amp",
                left=[(2, "IN−", 290), (3, "IN+", 390)],
                right=[(6, "OUT", 290), (5, "REF", 390)],
                top=[(7, "V+", 465)], bottom=[(4, "V−", 425)])
@@ -516,7 +522,7 @@ def sch_electrophysio():
     o.append(txt(425, 330, "R_G = 1 kΩ  →  G = 101", size=8.6, fill=BLEU, weight="700"))
     o.append(txt(425, 346, "G = 1 + 100 kΩ / R_G", size=8, fill=GRIS))
 
-    # Référence à mi-alimentation
+    # The mid-supply reference
     o.append(w_([(536, 390), (536, 470), (596, 470)]))
     o.append(dot(596, 470))
     o.append(res_v(596, 428, "R4", "100 kΩ", h=42, side=1))
@@ -532,10 +538,10 @@ def sch_electrophysio():
     o.append(dot(646, 290))
     o.append(cap_v(646, 290, "C3", "100 nF", side=-1))
     o.append(gnd(646, 320))
-    o.append(txt(596, 246, "passe-bas 1ᵉʳ ordre, f_c ≈ 100 Hz", size=8, fill=GRIS))
+    o.append(txt(596, 246, "first-order low-pass, f_c ≈ 100 Hz", size=8, fill=GRIS))
 
     # ---- ADS1115 ------------------------------------------------------------
-    u2, a = ic(690, 232, 170, "ADS1115", "ΔΣ 16 bits · PGA · I²C",
+    u2, a = ic(690, 232, 170, "ADS1115", "ΔΣ 16-bit · PGA · I²C",
                left=[(4, "AIN0", 290), (5, "AIN1", 330)],
                right=[(10, "SCL", 290), (9, "SDA", 330), (11, "ADDR", 370)])
     o.append(u2)
@@ -547,62 +553,62 @@ def sch_electrophysio():
     # ---- Isolation galvanique ----------------------------------------------
     o.append(f'<line x1="1000" y1="150" x2="1000" y2="600" stroke="{CUIVRE}" '
              f'stroke-width="1.6" stroke-dasharray="9 6"/>')
-    o.append(txt(1000, 142, "BARRIÈRE D'ISOLATION", size=8, fill=CUIVRE,
+    o.append(txt(1000, 142, "ISOLATION BARRIER", size=8, fill=CUIVRE,
                  weight="700", spacing="0.8"))
-    u3, s = ic(940, 232, 120, "ADuM1251", "isolateur I²C",
+    u3, s = ic(940, 232, 120, "ADuM1251", "I²C isolator",
                left=[("", "SCL1", 290), ("", "SDA1", 330)],
                right=[("", "SCL2", 290), ("", "SDA2", 330)])
     o.append(u3)
     o.append(w_([(886, 290), (914, 290)]))
     o.append(w_([(886, 330), (914, 330)]))
-    o.append(txt(1092, 296, "vers ESP32", size=8.4, fill=GRIS, anchor="start"))
-    o.append(txt(1092, 310, "(côté réseau)", size=7.6, fill=GRIS, anchor="start"))
+    o.append(txt(1092, 296, "to the ESP32", size=8.4, fill=GRIS, anchor="start"))
+    o.append(txt(1092, 310, "(mains side)", size=7.6, fill=GRIS, anchor="start"))
 
     # Blindage
     o.append(f'<rect x="180" y="250" width="350" height="202" rx="8" fill="none" '
              f'stroke="{BLEU}" stroke-width="1.3" stroke-dasharray="3 4"/>')
-    o.append(txt(188, 466, "blindage relié à REF (garde active)", size=7.6, fill=BLEU,
+    o.append(txt(188, 466, "the shield tied to REF (an active guard)", size=7.6, fill=BLEU,
                  anchor="start", style="italic"))
 
     # ---- Cartouches ---------------------------------------------------------
     o.append(note(46, 540, [
-        "*POURQUOI UN INA333 (et pas un AD620)",
-        "I_bias ≈ 200 pA. Sur une source de 10 MΩ cela",
-        "ne fait que 2 mV d'erreur. L'AD620 (1 nA typ.)",
-        "en ferait 10 mV, un ampli bipolaire bien plus.",
-        "Le tissu végétal est une source à très haute",
-        "impédance : le courant d'entrée est LE critère.",
+        "*WHY AN INA333 (and not an AD620)",
+        "I_bias ≈ 200 pA. Across a 10 MΩ source that is",
+        "only 2 mV of error. The AD620 (1 nA typ.) would",
+        "make 10 mV of it, a bipolar amp far more.",
+        "Plant tissue is a very high impedance source:",
+        "the input current is THE criterion.",
     ], w=352, kind="info"))
 
     o.append(note(414, 540, [
-        "*POURQUOI PAS L'ADC TOUT SEUL",
-        "L'ADS1115 présente 6 MΩ en mode commun (PGA ×1)",
-        "et seulement 710 kΩ à PGA ×16 : brancher",
-        "l'électrode dessus forme un pont diviseur avec",
-        "le tissu. La mesure devient une fonction de",
-        "l'impédance de contact, pas du potentiel.",
+        "*WHY NOT THE ADC ON ITS OWN",
+        "The ADS1115 presents 6 MΩ common mode (PGA ×1)",
+        "and only 710 kΩ at PGA ×16: wiring the",
+        "electrode straight to it forms a divider with",
+        "the tissue. The measurement becomes a function",
+        "of the contact impedance, not of the potential.",
     ], w=352, kind="warn"))
 
     o.append(note(782, 540, [
-        "*RÉJECTION DU 50 Hz",
-        "Échantillonner à un multiple entier de 20 ms",
-        "(ex. 8 SPS) annule le secteur par intégration,",
-        "puis notch IIR numérique en secours.",
-        "L'isolateur coupe la boucle de masse : sans lui,",
-        "le secteur revient par la terre du réseau.",
+        "*REJECTING THE 50 Hz",
+        "Sampling at a whole multiple of 20 ms cancels",
+        "the mains by integration (8 SPS, say), with a",
+        "digital IIR notch held in reserve.",
+        "The isolator breaks the ground loop: without it",
+        "the mains comes back through the earth wire.",
     ], w=332, kind="ok"))
 
     write("sch-electrophysio-ina333.svg", "\n".join(o), W, H)
 
 
 # =============================================================================
-#  PLANCHE 3 — NŒUD ENVIRONNEMENTAL ESP32
+#  PLATE 3 — THE ESP32 ENVIRONMENTAL NODE
 # =============================================================================
-def sch_bus_capteurs():
+def sch_sensor_bus():
     W, H = 1140, 740
-    o = [frame(W, H, "PLANCHE 3 — Nœud environnemental ESP32",
-               "bus I²C · 1-Wire · entrée analogique · comptage d'impulsions"),
-         title(W / 2, 42, "BUS DE CAPTEURS : I²C, 1-WIRE, ANALOGIQUE, COMPTAGE")]
+    o = [frame(W, H, "PLATE 3 — The ESP32 environmental node",
+               "I²C bus · 1-Wire · analog input · pulse counting"),
+         title(W / 2, 42, "THE SENSOR BUS: I²C, 1-WIRE, ANALOG, COUNTING")]
 
     # ---- ESP32 --------------------------------------------------------------
     u1, p = ic(560, 180, 210, "ESP32-S3", "Wi-Fi / BLE · deep sleep ≈ 13 µA",
@@ -614,13 +620,13 @@ def sch_bus_capteurs():
     o.append(vcc(796, 240, "+3V3"))
     o.append(gnd(796, 540))
 
-    # ---- Bus I²C (SCL en haut, SDA en dessous) ------------------------------
+    # ---- The I²C bus (SCL above, SDA below) ----------------------------------
     o.append(w_([(80, 240), (534, 240)]))
     o.append(w_([(80, 280), (534, 280)]))
     o.append(netlabel(90, 232, "SCL"))
     o.append(netlabel(90, 272, "SDA"))
 
-    # Résistances de tirage, à l'extrémité du bus
+    # The pull-up resistors, at the end of the bus
     o.append(hop(140, 240))                       # SDA franchit SCL sans contact
     o.append(w_([(140, 280), (140, 248)]))
     o.append(w_([(140, 232), (140, 198)]))
@@ -632,9 +638,9 @@ def sch_bus_capteurs():
     o.append(w_([(110, 150), (140, 150)]))
     o.append(vcc(125, 150, "+3V3"))
 
-    # ---- Périphériques I²C --------------------------------------------------
-    for cx, nm, adr, rol in ((190, "BME280", "0x76", "T · HR · pression"),
-                             (330, "BH1750", "0x23", "éclairement (lux)"),
+    # ---- The I²C peripherals -------------------------------------------------
+    for cx, nm, adr, rol in ((190, "BME280", "0x76", "T · RH · pressure"),
+                             (330, "BH1750", "0x23", "illuminance (lux)"),
                              (470, "SCD41",  "0x62", "CO₂ · T · HR")):
         o.append(f'<rect x="{cx-65}" y="350" width="130" height="80" rx="5" '
                  f'fill="#FBFAF4" stroke="{NUIT}" stroke-width="2"/>')
@@ -642,23 +648,23 @@ def sch_bus_capteurs():
                      family="Cormorant Garamond, serif"))
         o.append(txt(cx, 396, adr + " · I²C", size=7.8, fill=SEVE, weight="700"))
         o.append(txt(cx, 412, rol, size=7.6, fill=GRIS))
-        # SCL : monte jusqu'au bus du haut, saute le bus SDA
+        # SCL: it climbs to the upper bus, hopping over the SDA bus
         o.append(w_([(cx - 26, 350), (cx - 26, 288)]))
         o.append(hop(cx - 26, 280))
         o.append(w_([(cx - 26, 272), (cx - 26, 240)]))
         o.append(dot(cx - 26, 240))
-        # SDA : se raccorde au bus du bas
+        # SDA: it joins the lower bus
         o.append(w_([(cx + 26, 350), (cx + 26, 280)]))
         o.append(dot(cx + 26, 280))
 
-    # ---- Sonde capacitive d'humidité du sol --------------------------------
+    # ---- The capacitive soil-moisture probe ----------------------------------
     o.append(w_([(534, 440), (534, 470), (250, 470), (250, 510)]))
     o.append(f'<rect x="170" y="510" width="160" height="74" rx="5" fill="#FBFAF4" '
              f'stroke="{NUIT}" stroke-width="2"/>')
-    o.append(txt(250, 536, "Sonde capacitive", size=11, fill=NUIT, weight="700",
+    o.append(txt(250, 536, "Capacitive probe", size=11, fill=NUIT, weight="700",
                  family="Cormorant Garamond, serif"))
-    o.append(txt(250, 552, "v2.0 · sortie 0–3 V", size=7.8, fill=GRIS))
-    o.append(txt(250, 568, "alimentée en 3,3 V", size=7.6, fill=SEVE))
+    o.append(txt(250, 552, "v2.0 · 0–3 V output", size=7.8, fill=GRIS))
+    o.append(txt(250, 568, "powered from 3.3 V", size=7.6, fill=SEVE))
     o.append(dot(400, 470))
     o.append(cap_v(400, 470, "C1", "100 nF", side=1))
     o.append(gnd(400, 500))
@@ -673,10 +679,10 @@ def sch_bus_capteurs():
              f'stroke="{NUIT}" stroke-width="2"/>')
     o.append(txt(990, 334, "DS18B20 ×3", size=12, fill=NUIT, weight="700",
                  family="Cormorant Garamond, serif"))
-    o.append(txt(990, 351, "air · sol −10 cm · tronc", size=7.8, fill=GRIS))
-    o.append(txt(990, 368, "1-Wire, adresse 64 bits", size=7.6, fill=SEVE))
+    o.append(txt(990, 351, "air · soil −10 cm · trunk", size=7.8, fill=GRIS))
+    o.append(txt(990, 368, "1-Wire, 64-bit address", size=7.6, fill=SEVE))
 
-    # ---- Entrée à impulsions (anémomètre / pluviomètre) ---------------------
+    # ---- The pulse input (anemometer / rain gauge) ---------------------------
     o.append(w_([(796, 470), (960, 470)]))
     o.append(dot(840, 470))
     o.append(w_([(840, 470), (840, 436)]))
@@ -685,45 +691,45 @@ def sch_bus_capteurs():
     o.append(dot(900, 470))
     o.append(cap_v(900, 470, "C2", "100 nF", side=1))
     o.append(gnd(900, 500))
-    o.append(reed(960, 470, "ILS — augets / coupelles"))
+    o.append(reed(960, 470, "reed — tipping buckets / cups"))
     o.append(w_([(1016, 470), (1040, 470)]))
     o.append(gnd(1040, 470))
 
     # ---- Cartouches ---------------------------------------------------------
     o.append(note(788, 556, [
-        "*ANTI-REBOND MATÉRIEL, PAS LOGICIEL",
-        "Un contact ILS rebondit 1 à 5 ms. Sans le RC,",
-        "une bascule de pluviomètre est comptée 3 fois",
-        "et la pluie est surestimée d'un facteur 3.",
-        "R4·C2 = 10 kΩ × 100 nF = 1 ms de constante.",
+        "*DEBOUNCE IN HARDWARE, NOT IN SOFTWARE",
+        "A reed contact bounces for 1 to 5 ms. Without",
+        "the RC, one tip of a rain gauge is counted three",
+        "times and the rainfall is overstated threefold.",
+        "R4·C2 = 10 kΩ × 100 nF = a 1 ms constant.",
     ], w=334, kind="warn"))
 
     o.append(note(56, 596, [
-        "*UN SEUL JEU DE RÉSISTANCES DE TIRAGE",
-        "Beaucoup de cartes capteurs embarquent déjà",
-        "leurs 10 kΩ. Trois modules en parallèle →",
-        "tirage résultant trop fort, fronts déformés,",
-        "bus instable. Dessouder les tirages des",
-        "modules esclaves, n'en garder qu'un seul.",
+        "*ONE SET OF PULL-UP RESISTORS, AND ONE ONLY",
+        "Many sensor boards already carry their own",
+        "10 kΩ. Three modules in parallel → the resulting",
+        "pull-up is too strong, the edges are misshapen,",
+        "the bus is unstable. Unsolder the pull-ups of",
+        "the follower modules and keep a single set.",
     ], w=340, kind="info"))
 
     o.append(note(424, 596, [
-        "*CONVENTION DE LECTURE",
-        "L\u2019arceau signale un croisement SANS connexion ;",
-        "le point plein signale une connexion.",
+        "*HOW TO READ THE PLATE",
+        "The hop marks a crossing WITHOUT a connection;",
+        "the filled dot marks a connection.",
     ], w=330, kind="ok"))
 
     write("sch-bus-capteurs-esp32.svg", "\n".join(o), W, H)
 
 
 # =============================================================================
-#  PLANCHE 4 — ALIMENTATION SOLAIRE
+#  PLATE 4 — THE SOLAR SUPPLY
 # =============================================================================
-def sch_alimentation():
+def sch_solar_supply():
     W, H = 1080, 640
-    o = [frame(W, H, "PLANCHE 4 — Alimentation solaire LiFePO₄",
-               "chaîne MPPT · protections · budget d'énergie"),
-         title(W / 2, 42, "AUTONOMIE : PANNEAU → MPPT → LiFePO₄ → 3,3 V")]
+    o = [frame(W, H, "PLATE 4 — The LiFePO₄ solar supply",
+               "the MPPT chain · protections · the energy budget"),
+         title(W / 2, 42, "SELF-SUFFICIENCY: PANEL → MPPT → LiFePO₄ → 3.3 V")]
 
     # ---- Panneau ------------------------------------------------------------
     o.append(f'<rect x="50" y="160" width="130" height="92" rx="4" fill="#EAF0F7" '
@@ -731,8 +737,8 @@ def sch_alimentation():
     for i in range(1, 5):
         o.append(f'<line x1="{50+26*i}" y1="160" x2="{50+26*i}" y2="252" '
                  f'stroke="{BLEU}" stroke-width="1"/>')
-    o.append(txt(115, 274, "Panneau PV 6 V / 5 W", size=9, fill=NUIT, weight="700"))
-    o.append(txt(115, 289, "orienté sud, hors couvert", size=7.8, fill=GRIS))
+    o.append(txt(115, 274, "PV panel 6 V / 5 W", size=9, fill=NUIT, weight="700"))
+    o.append(txt(115, 289, "facing south, out of the canopy", size=7.8, fill=GRIS))
     o.append(w_([(180, 186), (212, 186)]))
     o.append(w_([(180, 226), (240, 226), (240, 330)]))
     o.append(gnd(240, 330))
@@ -741,77 +747,77 @@ def sch_alimentation():
     o.append(diode(212, 186, "D1  SS34"))
     o.append(w_([(246, 186), (300, 186)]))
 
-    # ---- Contrôleur de charge MPPT -----------------------------------------
-    u1, p = ic(300, 130, 170, "CN3791", "chargeur MPPT 1 cellule",
+    # ---- The MPPT charge controller ------------------------------------------
+    u1, p = ic(300, 130, 170, "CN3791", "MPPT charger, one cell",
                left=[("", "VIN", 186)],
                right=[("", "BAT", 186), ("", "STAT", 226)])
     o.append(u1)
-    o.append(txt(385, 268, "point MPP fixé par pont résistif", size=7.8, fill=GRIS))
-    o.append(txt(385, 283, "→ régler sur 0,76 × Voc du panneau", size=7.8, fill=GRIS))
+    o.append(txt(385, 268, "the MPP point set by a resistive divider", size=7.8, fill=GRIS))
+    o.append(txt(385, 283, "→ set it to 0.76 × the panel's Voc", size=7.8, fill=GRIS))
 
     # ---- Batterie -----------------------------------------------------------
     o.append(w_([(496, 186), (570, 186)]))
     for i, (dx, hh, sw) in enumerate(((0, 24, 2.6), (14, 13, 5), (28, 24, 2.6), (42, 13, 5))):
         o.append(f'<line x1="{570+dx}" y1="{186-hh}" x2="{570+dx}" y2="{186+hh}" '
-                 f'stroke="{FIL}" stroke-width="{sw}"/>')
-    o.append(txt(591, 140, "LiFePO₄ 3,2 V", size=9.4, fill=NUIT, weight="700"))
+                 f'stroke="{WIRE}" stroke-width="{sw}"/>')
+    o.append(txt(591, 140, "LiFePO₄ 3.2 V", size=9.4, fill=NUIT, weight="700"))
     o.append(txt(591, 155, "6 000 mA·h", size=8.4, fill=GRIS))
     o.append(w_([(612, 186), (680, 186)]))
     o.append(w_([(570, 210), (570, 330)]))
     o.append(gnd(570, 330))
 
-    # ---- Régulateur ---------------------------------------------------------
-    u2, r = ic(680, 130, 170, "TPS63020", "buck-boost 3,3 V",
+    # ---- The regulator -------------------------------------------------------
+    u2, r = ic(680, 130, 170, "TPS63020", "buck-boost 3.3 V",
                left=[("", "VIN", 186)],
                right=[("", "VOUT", 186), ("", "EN", 226)])
     o.append(u2)
     o.append(w_([(876, 186), (940, 186)]))
     o.append(vcc(940, 186, "+3V3"))
     o.append(w_([(876, 226), (920, 226)]))
-    o.append(txt(926, 222, "commandé par le MCU :", size=7.8, fill=GRIS, anchor="start"))
-    o.append(txt(926, 236, "coupe les capteurs", size=7.8, fill=GRIS, anchor="start"))
-    o.append(txt(926, 250, "pendant le deep sleep", size=7.8, fill=GRIS, anchor="start"))
+    o.append(txt(926, 222, "driven by the MCU:", size=7.8, fill=GRIS, anchor="start"))
+    o.append(txt(926, 236, "it cuts the sensors off", size=7.8, fill=GRIS, anchor="start"))
+    o.append(txt(926, 250, "during deep sleep", size=7.8, fill=GRIS, anchor="start"))
 
     # ---- Cartouches ---------------------------------------------------------
     o.append(note(50, 350, [
-        "*BUDGET D'ÉNERGIE — 1 relevé toutes les 15 min",
-        "veille .............. 15 µA × 899 s  =  13,5 mA·s",
-        "réveil + mesures .... 40 mA × 0,9 s  =  36,0 mA·s",
-        "émission LoRa ....... 120 mA × 0,1 s =  12,0 mA·s",
-        "total par cycle ..................... ≈ 61,5 mA·s",
-        "soit 0,0171 mA·h × 96 cycles ≈ 1,64 mA·h / jour",
+        "*THE ENERGY BUDGET — one reading every 15 min",
+        "idle ................ 15 µA × 899 s  =  13.5 mA·s",
+        "wake + measure ...... 40 mA × 0.9 s  =  36.0 mA·s",
+        "LoRa transmit ....... 120 mA × 0.1 s =  12.0 mA·s",
+        "total per cycle ..................... ≈ 61.5 mA·s",
+        "i.e. 0.0171 mA·h × 96 cycles ≈ 1.64 mA·h / day",
         "",
-        "Une cellule de 6 000 mA·h tiendrait ≈ 3 600 jours",
-        "SANS aucun apport solaire. La vraie limite n'est",
-        "donc pas la capacité mais le vieillissement",
-        "calendaire et l'autodécharge.",
+        "A 6,000 mA·h cell would last ≈ 3,600 days with NO",
+        "solar input at all. The real limit is therefore not",
+        "the capacity but calendar ageing and",
+        "self-discharge.",
     ], w=470, kind="ok"))
 
     o.append(note(560, 350, [
-        "*POURQUOI LiFePO₄ PLUTÔT QUE Li-ion",
-        "· 3,2 V nominal : alimente le 3,3 V sur presque",
-        "  toute la décharge, sans élévateur",
-        "· −20 … +60 °C en décharge",
-        "· chimie LFP : pas d'emballement thermique",
+        "*WHY LiFePO₄ RATHER THAN Li-ion",
+        "· 3.2 V nominal: it feeds the 3.3 V over almost",
+        "  the whole discharge, with no boost converter",
+        "· −20 … +60 °C when discharging",
+        "· LFP chemistry: no thermal runaway",
         "",
-        "*⚠ INTERDICTION DE CHARGE SOUS 0 °C",
-        "Sous 0 °C la charge dépose du lithium métallique",
-        "de façon irréversible. Placer un DS18B20 CONTRE",
-        "la cellule et verrouiller la charge par logiciel :",
-        "c'est l'erreur n°1 des stations hivernales.",
+        "*⚠ NEVER CHARGE BELOW 0 °C",
+        "Below 0 °C charging plates metallic lithium, and",
+        "does so irreversibly. Put a DS18B20 AGAINST the",
+        "cell and lock the charge out in software:",
+        "it is the commonest mistake of winter stations.",
     ], w=470, kind="warn"))
 
     write("sch-alim-solaire.svg", "\n".join(o), W, H)
 
 
 # =============================================================================
-#  PLANCHE 5 — SONDE DE FLUX DE SÈVE (GRANIER / TDP)
+#  PLATE 5 — THE SAP-FLOW PROBE (GRANIER / TDP)
 # =============================================================================
 def sch_granier():
     W, H = 1080, 700
-    o = [frame(W, H, "PLANCHE 5 — Sonde de flux de sève (Granier / TDP)",
-               "chauffage constant · couple thermoélectrique différentiel"),
-         title(W / 2, 42, "DISSIPATION THERMIQUE : SONDE CHAUFFÉE ET SONDE DE RÉFÉRENCE")]
+    o = [frame(W, H, "PLATE 5 — The sap-flow probe (Granier / TDP)",
+               "constant heating · a differential thermocouple"),
+         title(W / 2, 42, "THERMAL DISSIPATION: A HEATED PROBE AND A REFERENCE PROBE")]
 
     cx, cy = 200, 330
     o.append(f'<circle cx="{cx}" cy="{cy}" r="122" fill="#F2EFE2" stroke="{NUIT}" '
@@ -821,27 +827,27 @@ def sch_granier():
     o.append(f'<circle cx="{cx}" cy="{cy}" r="54" fill="#E4DFCB" stroke="{GRIS}" '
              f'stroke-width="1.4"/>')
 
-    # Aiguilles implantées dans l\u2019aubier
+    # The needles driven into the sapwood
     o.append(f'<rect x="{cx-5}" y="{cy-92}" width="10" height="44" rx="3" '
-             f'fill="{CUIVRE}" stroke="{FIL}" stroke-width="1.4"/>')
+             f'fill="{CUIVRE}" stroke="{WIRE}" stroke-width="1.4"/>')
     o.append(f'<rect x="{cx-5}" y="{cy+48}" width="10" height="44" rx="3" '
-             f'fill="{BLEU}" stroke="{FIL}" stroke-width="1.4"/>')
+             f'fill="{BLEU}" stroke="{WIRE}" stroke-width="1.4"/>')
 
-    # Étiquettes des aiguilles, posées hors du disque
-    o.append(txt(cx, 150, "aiguille CHAUFFÉE — amont", size=8.4, fill=CUIVRE, weight="700"))
-    o.append(txt(cx, 490, "aiguille de RÉFÉRENCE — aval, non chauffée", size=8.4,
+    # The needle labels, placed outside the disc
+    o.append(txt(cx, 150, "the HEATED needle — upstream", size=8.4, fill=CUIVRE, weight="700"))
+    o.append(txt(cx, 490, "the REFERENCE needle — downstream, unheated", size=8.4,
                  fill=BLEU, weight="700"))
-    o.append(txt(cx, 512, "coupe transversale · les deux aiguilles sur la même",
+    o.append(txt(cx, 512, "cross-section · both needles on the same vertical,",
                  size=7.6, fill=GRIS, style="italic"))
-    o.append(txt(cx, 526, "verticale, 40 mm d\u2019écart, insertion 20 mm", size=7.6,
+    o.append(txt(cx, 526, "40 mm apart, inserted 20 mm", size=7.6,
                  fill=GRIS, style="italic"))
 
-    # Légende des cernes
+    # The key to the rings
     o.append(f'<rect x="40" y="556" width="320" height="86" rx="4" fill="#FBFAF4" '
              f'stroke="{TRAIT}" stroke-width="1.2"/>')
-    for i, (col, lbl) in enumerate((("#F2EFE2", "écorce + liber"),
-                                    ("#EAF4ED", "aubier — seul tissu conducteur"),
-                                    ("#E4DFCB", "duramen — hydrauliquement mort"))):
+    for i, (col, lbl) in enumerate((("#F2EFE2", "bark + phloem"),
+                                    ("#EAF4ED", "sapwood — the only conducting tissue"),
+                                    ("#E4DFCB", "heartwood — hydraulically dead"))):
         yy = 580 + i * 22
         o.append(f'<rect x="56" y="{yy-9}" width="16" height="14" rx="2" fill="{col}" '
                  f'stroke="{GRIS}" stroke-width="1"/>')
@@ -849,19 +855,19 @@ def sch_granier():
 
     # ---- Chauffage constant -------------------------------------------------
     o.append(w_([(cx, cy - 92), (cx, 172), (470, 172)]))
-    o.append(res_h(470, 172, "R_ch", "≈ 25 Ω · 0,2 W constant", w=92))
+    o.append(res_h(470, 172, "R_ch", "≈ 25 Ω · 0.2 W constant", w=92))
     o.append(w_([(562, 172), (650, 172)]))
-    o.append(vcc(650, 172, "+5 V régulé"))
-    o.append(txt(516, 134, "cartouche chauffante", size=7.8, fill=GRIS))
+    o.append(vcc(650, 172, "+5 V regulated"))
+    o.append(txt(516, 134, "heating cartridge", size=7.8, fill=GRIS))
 
-    # ---- Couple thermoélectrique différentiel ------------------------------
+    # ---- The differential thermocouple ---------------------------------------
     o.append(w_([(cx + 5, cy - 70), (372, cy - 70), (372, 300), (494, 300)]))
     o.append(w_([(cx + 5, cy + 70), (420, cy + 70), (420, 340), (494, 340)]))
-    o.append(txt(384, 232, "constantan / cuivre —", size=7.6, fill=GRIS, anchor="start"))
-    o.append(txt(384, 246, "soudure différentielle", size=7.6, fill=GRIS, anchor="start"))
+    o.append(txt(384, 232, "constantan / copper —", size=7.6, fill=GRIS, anchor="start"))
+    o.append(txt(384, 246, "the differential junction", size=7.6, fill=GRIS, anchor="start"))
 
-    # ---- Numérisation -------------------------------------------------------
-    u1, p = ic(520, 242, 170, "ADS1220", "ΔΣ 24 bits · PGA ×128",
+    # ---- Digitisation --------------------------------------------------------
+    u1, p = ic(520, 242, 170, "ADS1220", "ΔΣ 24-bit · PGA ×128",
                left=[("", "AIN0", 300), ("", "AIN1", 340)],
                right=[("", "SPI", 320)])
     o.append(u1)
@@ -870,46 +876,46 @@ def sch_granier():
              f'stroke="{BLEU}" stroke-width="2"/>')
     o.append(txt(851, 316, "ESP32", size=12, fill=BLEU, weight="700",
                  family="Cormorant Garamond, serif"))
-    o.append(txt(851, 334, "1 relevé / 10 min", size=7.8, fill=GRIS))
+    o.append(txt(851, 334, "one reading / 10 min", size=7.8, fill=GRIS))
 
     # ---- Cartouches ---------------------------------------------------------
     o.append(note(400, 416, [
-        "*ÉQUATION DE GRANIER (1985)",
+        "*THE GRANIER EQUATION (1985)",
         "K = (ΔT_max − ΔT) / ΔT",
         "u = 118,99·10⁻⁶ · K^1,231       [m³ m⁻² s⁻¹]",
-        "ΔT_max = écart relevé à flux nul, en fin de nuit.",
+        "ΔT_max = the gap measured at zero flow, at the end of the night.",
     ], w=400, kind="info"))
 
     o.append(note(400, 500, [
-        "*⚠ LA CALIBRATION D\u2019ORIGINE EST BIAISÉE",
-        "La littérature documente une sous-estimation de 30 à",
-        "60 % du flux réel selon l\u2019espèce et la profondeur",
-        "d\u2019insertion. Sans recalibration par espèce, ce montage",
-        "ne donne PAS un débit absolu : il donne un INDICE",
-        "relatif, à n\u2019interpréter que dans sa propre dynamique",
-        "jour / nuit, sur un même arbre et une même saison.",
+        "*⚠ THE ORIGINAL CALIBRATION IS BIASED",
+        "The literature documents an underestimate of 30 to 60 %",
+        "of the real flow, depending on the species and the depth of",
+        "insertion. Without recalibrating per species, this circuit",
+        "does NOT give an absolute flow rate: it gives a relative",
+        "INDEX, to be read only within its own day / night",
+        "dynamics, on one tree and one season.",
     ], w=400, kind="warn"))
 
     o.append(note(824, 416, [
-        "*CONTRAINTE MÉTROLOGIQUE",
-        "Le gradient utile va de 0 à 10 K.",
-        "Il faut résoudre 0,01 K, soit",
-        "environ 0,4 µV sur un couple",
-        "cuivre-constantan (≈ 40 µV/K).",
-        "D\u2019où 24 bits ET un PGA ×128 :",
-        "un ADC 12 bits intégré au MCU",
-        "est ici totalement hors-jeu.",
+        "*THE METROLOGICAL CONSTRAINT",
+        "The useful gradient runs from 0 to 10 K.",
+        "It has to resolve 0.01 K, about",
+        "0.4 µV across a type-T",
+        "copper-constantan (≈ 40 µV/K).",
+        "Hence 24 bits AND a PGA ×128:",
+        "a 12-bit ADC built into the MCU",
+        "is out of the question here.",
     ], w=228, kind="ok"))
 
     write("sch-granier-tdp.svg", "\n".join(o), W, H)
 
 
 def main():
-    print("Génération des planches de schémas :")
-    for f in (sch_biodata_555, sch_electrophysio, sch_bus_capteurs,
-              sch_alimentation, sch_granier):
+    print("Generating the schematic plates:")
+    for f in (sch_biodata_555, sch_electrophysio, sch_sensor_bus,
+              sch_solar_supply, sch_granier):
         f()
-    print("Terminé.")
+    print("Done.")
 
 
 if __name__ == "__main__":

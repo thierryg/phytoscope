@@ -1,16 +1,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/pyproject.toml
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 [build-system]
@@ -23,10 +23,10 @@ name = "phytoscope"
 #  `tools/release.py` est le seul à l'écrire. La déclarer ici aussi la faisait
 #  dériver : elle est restée à 1.0.0 pendant cinq versions.
 dynamic = ["version"]
-description = "Écoute, mesure et enregistrement des signaux végétaux"
+description = "Listen to, measure and record plant signals"
 readme = "README.txt"
 requires-python = ">=3.9"
-license = { file = "LICENCE.txt" }
+license = { file = "LICENSE.txt" }
 authors = [{ name = "Bretagne Namasté", email = "contact@bretagne-namaste.com" }]
 keywords = ["plante", "biosignal", "sonification", "electrophysiologie",
             "oscilloscope", "MIDI"]
@@ -65,7 +65,7 @@ include = ["phytoscope*"]
 #  numéro de version, les catalogues de traduction et les dictionnaires du
 #  mode vocal. Sans cette déclaration, une roue les laisserait derrière elle.
 [tool.setuptools.package-data]
-phytoscope = ["VERSION", "AUTEURS", "langues/*.json", "lexiques/*.json"]
+phytoscope = ["VERSION", "AUTHORS", "langues/*.json", "lexiques/*.json"]
 
 [tool.ruff]
 line-length = 90

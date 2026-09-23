@@ -1,23 +1,22 @@
 # ===========================================================================
-#  PhytoScope — fabrication des publications touchées
+#  PhytoScope — building the publications that were touched
 # ===========================================================================
-#  Se déclenche sur ce dont un PDF dépend : les sources d'édition
-#  (« pdf-src/ »), la nomenclature (« hardware/ ») qui alimente la BOM du
-#  hors-série, les listings de programmes de l'annexe de codes, et les outils
-#  qui écrivent des fragments.
+#  Triggered by whatever a PDF depends on: the publishing sources
+#  (`pdf-src/`), the bill of materials (`hardware/`) that feeds the companion
+#  volume's BOM, the program listings of the code appendix, and the tools
+#  that write fragments.
 #
-#  Elle ne refait PAS les dix publications à chaque fois. Refaire la série
-#  coûte une douzaine de minutes et 84 Mo pour rien quand on a corrigé une
-#  coquille dans le hors-série. « tools/impacted_pdfs.py » prend la liste des
-#  fichiers modifiés et rend les commandes à lancer — et rien d'autre.
+#  It does NOT remake all ten publications every time. Remaking the series
+#  costs a dozen minutes and 84 MB for nothing when a typo has been fixed in
+#  the companion volume. `tools/impacted_pdfs.py` takes the list of changed
+#  files and returns the commands to run — and nothing else.
 #
-#  L'outil est volontairement prudent : un chemin qu'il ne sait pas rattacher
-#  déclenche tout. Se tromper en refaisant trop coûte des minutes ; se
-#  tromper en refaisant trop peu publie un PDF périmé, et cela ne se voit
-#  pas.
+#  The tool is deliberately cautious: a path it cannot attribute triggers
+#  everything. Being wrong by rebuilding too much costs minutes; being wrong
+#  by rebuilding too little publishes a stale PDF, and that does not show.
 #
-#  Sur « main », et sur demande manuelle, tout est refait : c'est là que la
-#  cohérence de l'ensemble se vérifie.
+#  On `main`, and on manual request, everything is remade: that is where the
+#  consistency of the whole is checked.
 # ===========================================================================
 name: Publications
 
@@ -52,12 +51,12 @@ concurrency:
 
 jobs:
   publications:
-    name: Publications touchées
+    name: Impacted publications
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      #  fetch-depth: 0 — il faut l'historique pour savoir ce qui a changé
-      #  par rapport à la base de la demande de fusion.
+      #  fetch-depth: 0 — the history is needed in order to know what
+      #  changed with respect to the pull request's base.
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -67,9 +66,9 @@ jobs:
           python-version: '3.12'
           cache: pip
 
-      #  WeasyPrint s'appuie sur Pango, Cairo et HarfBuzz : ce sont des
-      #  bibliothèques système, pip ne les apporte pas.
-      - name: Bibliothèques de rendu
+      #  WeasyPrint leans on Pango, Cairo and HarfBuzz: those are system
+      #  libraries, and pip does not bring them.
+      - name: Rendering libraries
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
@@ -78,9 +77,9 @@ jobs:
           python -m pip install --upgrade pip weasyprint pillow
 
       # ---------------------------------------------------------------------
-      #  Qu'est-ce qui a changé, et qu'est-ce que cela périme ?
+      #  What changed, and what does that make stale?
       # ---------------------------------------------------------------------
-      - name: Fichiers modifiés
+      - name: Changed files
         id: modifies
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
@@ -99,14 +98,14 @@ jobs:
             : > modifies.txt
             echo 'tout=oui' >> "$GITHUB_OUTPUT"
           fi
-          echo "── fichiers modifiés"
+          echo "── changed files"
           sed 's/^/  · /' modifies.txt || true
 
-      - name: Publications à refaire
+      - name: Publications to rebuild
         id: cibles
         run: |
-          #  Sur main et sur demande manuelle : tout, pour vérifier la
-          #  cohérence de l'ensemble.
+          #  On main and on manual request: everything, to check the
+          #  consistency of the whole.
           if [ '${{ github.ref }}' = 'refs/heads/main' ] \
              || [ '${{ steps.modifies.outputs.tout }}' = 'oui' ] \
              || [ '${{ inputs.tout }}' = 'true' ]; then
@@ -123,23 +122,24 @@ jobs:
             printf 'python3 tools/build-annexe.py\n' >> commandes.sh
             printf 'python3 pdf-src/build_board.py\n' >> commandes.sh
             printf 'python3 pdf-src/build_sdk.py\n' >> commandes.sh
+            printf 'python3 sources/build_references.py\n' >> commandes.sh
           else
             python3 tools/impacted_pdfs.py - < modifies.txt > commandes.sh
           fi
-          echo "── à lancer"
+          echo "── to run"
           sed 's/^/  · /' commandes.sh
-          echo "── PDF qui seront réécrits"
+          echo "── the PDFs that will be rewritten"
           python3 tools/impacted_pdfs.py - < modifies.txt --pdf 2>/dev/null \
             | sed 's/^/  · /' || true
           if [ ! -s commandes.sh ]; then
             echo "rien=oui" >> "$GITHUB_OUTPUT"
-            echo "  · aucune publication touchée — rien à faire"
+            echo "  · no publication touched — nothing to do"
           fi
 
       # ---------------------------------------------------------------------
-      #  Fabriquer, et seulement ce qu'il faut
+      #  Build, and only what needs building
       # ---------------------------------------------------------------------
-      - name: Illustrations et fragments, puis les publications touchées
+      - name: Illustrations and fragments, then the impacted publications
         if: steps.cibles.outputs.rien != 'oui'
         run: |
           set -euo pipefail
@@ -149,36 +149,52 @@ jobs:
             eval "$commande"
           done < commandes.sh
 
-      #  Une illustration qui n'est pas du XML bien formé passe inaperçue à
-      #  l'écran et fait un cadre vide dans le PDF. Le défaut a existé :
-      #  timeline.svg portait un « & » nu, parce que le générateur
-      #  n'échappait pas le texte (journal du 2026-09-18).
-      - name: Toutes les illustrations sont-elles du XML bien formé ?
+      #  The reference documents are written next to their source, because
+      #  that is where a reader of the repository looks for them. Collected
+      #  into build/ here so that the page-count check below and the artefact
+      #  treat them exactly like the ten publications.
+      - name: Collect the reference documents alongside the publications
+        if: steps.cibles.outputs.rien != 'oui'
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          for f in sources/*/*.pdf; do
+            [ -e "$f" ] || continue
+            cp -v "$f" build/
+          done
+
+      #  An illustration that is not well-formed XML goes unnoticed on screen
+      #  and leaves an empty frame in the PDF. The defect has happened:
+      #  timeline.svg carried a bare "&", because the generator did not escape
+      #  its text (journal entry of 2026-09-18).
+      - name: Is every illustration well-formed XML?
         if: steps.cibles.outputs.rien != 'oui'
         run: python3 tools/verify_svg.py
 
-      - name: Les en-têtes d'attribution sont-ils à jour ?
+      - name: Are the attribution headers up to date?
         if: steps.cibles.outputs.rien != 'oui'
         run: python3 tools/headers.py --verifier
 
-      #  Le contrôle utile ici n'est pas « ça compile » mais « ça n'a pas
-      #  rétréci » : un fragment mal fermé ne casse pas WeasyPrint, il
-      #  produit un PDF plus court. Les seuils sont volontairement bas : ils
-      #  attrapent l'effondrement, pas la variation d'une page.
-      - name: Aucune publication ne s'est effondrée
+      #  The useful check here is not "it compiles" but "it has not shrunk":
+      #  an unclosed fragment does not break WeasyPrint, it produces a shorter
+      #  PDF. The thresholds are deliberately low — they catch a collapse, not
+      #  a one-page variation.
+      - name: No publication has collapsed
         if: steps.cibles.outputs.rien != 'oui'
         run: |
           declare -A seuil=(
             ['La-Musique-des-Plantes.pdf']=400
             ['La-Carte-PhytoSense.pdf']=150
             ['arbre-parlant-dublin-analyse-scientifique.pdf']=150
-            ['biocommunication-vegetale-et-ia.pdf']=120
-            ['atelier-creer-arbre-parlant.pdf']=150
+            ['plant-biocommunication-and-ai.pdf']=120
+            ['workshop-build-a-talking-tree.pdf']=150
             ['arbre-parlant-annexe-schemas-bom-programmes.pdf']=40
-            ['Ecrire-un-module-PhytoScope.pdf']=20
-            ['PhytoSense-schemas.pdf']=8
-            ['PhytoSense-bom-accessoires.pdf']=12
+            ['writing-a-phytoscope-module.pdf']=20
+            ['PhytoSense-schematics.pdf']=8
+            ['PhytoSense-bom-accessories.pdf']=12
             ['PhytoSense-pcb.pdf']=5
+            ['MIDI-Protocol-Reference.pdf']=18
+            ['USB-Device-Reference.pdf']=16
           )
           ec=0
           total=0
@@ -205,3 +221,58 @@ jobs:
           path: build/*.pdf
           if-no-files-found: error
           retention-days: 14
+
+  # -------------------------------------------------------------------------
+  #  "latest": the PDFs, downloadable, on every push to main
+  # -------------------------------------------------------------------------
+  #  Same reason as in packages.yml: a CI artefact expires and requires an
+  #  account. The ten publications come to 1,378 pages; making them readable
+  #  from a link, with no account, is half the point of building them.
+  #
+  #  This job drops its files into the SAME rolling `latest` release as the
+  #  packages. softprops/action-gh-release adds or replaces the files it is
+  #  given and leaves the others in place: the two workflows therefore share
+  #  one page, each keeping its own files up to date.
+  latest-pdf:
+    name: Publish the PDFs to “latest”
+    needs: publications
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: publications-pdf
+          path: latest
+        continue-on-error: true
+
+      - name: Publication checksums
+        id: pret
+        run: |
+          if [ ! -d latest ] || [ -z "$(ls -A latest 2>/dev/null)" ]; then
+            echo "  no PDF remade by this push — nothing to publish."
+            echo "rien=oui" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          cd latest
+          sha256sum -- *.pdf > SHA256SUMS-pdf.txt
+          echo "  $(ls -1 *.pdf | wc -l) publication(s) :"
+          pdfinfo=$(command -v pdfinfo || true)
+          for f in *.pdf; do
+            n=""
+            [ -n "$pdfinfo" ] && n=$(pdfinfo "$f" | awk '/^Pages/ {print $2}')
+            printf '      %-52s %s %s\n' "$f" "${n:-?}" "pages"
+          done
+
+      - name: Publish
+        if: steps.pret.outputs.rien != 'oui'
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65  # v2.6.2
+        with:
+          tag_name: latest
+          name: Latest build of main
+          prerelease: true
+          make_latest: false
+          files: |
+            latest/*.pdf
+            latest/SHA256SUMS-pdf.txt

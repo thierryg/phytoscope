@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/music/instruments.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Instruments : le timbre et son enveloppe.
@@ -58,42 +58,42 @@ def _add(inst: Instrument) -> None:
 _add(Instrument(
     "kalimba", "Kalimba", [(1, 1.0), (2.01, 0.34), (3.04, 0.12), (5.1, 0.05)],
     0.004, 0.55, 0.06, 0.9, 108, 2.0,
-    "Attaque nette, extinction rapide : chaque événement reste distinct."))
+    "Sharp attack, quick decay: every event stays distinct."))
 _add(Instrument(
-    "piano_feutre", "Piano feutré", [(1, 1.0), (2, 0.28), (3, 0.09), (4, 0.04)],
+    "piano_feutre", "Muted piano", [(1, 1.0), (2, 0.28), (3, 0.09), (4, 0.04)],
     0.008, 1.2, 0.18, 1.4, 0, 1.0,
-    "Le plus lisible pour comprendre ce que fait la plante."))
+    "The most legible one for understanding what the plant is doing."))
 _add(Instrument(
-    "cordes", "Cordes", [(1, 1.0), (2, 0.4), (3, 0.22), (4, 0.12), (5, 0.06)],
+    "cordes", "Strings", [(1, 1.0), (2, 0.4), (3, 0.22), (4, 0.12), (5, 0.06)],
     0.45, 0.6, 0.72, 1.8, 48, 6.0,
-    "Entrées lentes : les événements se fondent en nappe."))
+    "Slow attacks: the events melt into a pad."))
 _add(Instrument(
-    "flute", "Flûte", [(1, 1.0), (2, 0.14), (3, 0.05)],
+    "flute", "Flute", [(1, 1.0), (2, 0.14), (3, 0.05)],
     0.12, 0.2, 0.85, 0.5, 73, 2.0,
-    "Souffle pur, peu d'harmoniques : très proche du sinus."))
+    "Pure breath, few harmonics: very close to a sine."))
 _add(Instrument(
-    "cloche", "Cloche", [(1, 1.0), (2.76, 0.52), (5.4, 0.28), (8.9, 0.12)],
+    "cloche", "Bell", [(1, 1.0), (2.76, 0.52), (5.4, 0.28), (8.9, 0.12)],
     0.002, 2.4, 0.0, 2.8, 14, 0.0,
-    "Partiels inharmoniques : chaque note sonne comme un événement."))
+    "Inharmonic partials: every note sounds like an event."))
 _add(Instrument(
-    "bourdon", "Bourdon (drone)", [(1, 1.0), (1.5, 0.3), (2, 0.5), (3, 0.16)],
+    "bourdon", "Drone", [(1, 1.0), (1.5, 0.3), (2, 0.5), (3, 0.16)],
     2.0, 1.0, 0.9, 3.0, 89, 8.0,
-    "Tenue continue accordée sur la tonique : le fond de la séance.", -1))
+    "A continuous tone on the root: the background of the session.", -1))
 _add(Instrument(
-    "harpe", "Harpe", [(1, 1.0), (2, 0.36), (3, 0.16), (4, 0.07), (6, 0.03)],
+    "harpe", "Harp", [(1, 1.0), (2, 0.36), (3, 0.16), (4, 0.07), (6, 0.03)],
     0.005, 0.9, 0.1, 1.2, 46, 1.5,
-    "Compromis entre la kalimba et le piano ; supporte les arpèges."))
+    "A compromise between the kalimba and the piano; it takes arpeggios well."))
 _add(Instrument(
-    "verre", "Verre frotté", [(1, 1.0), (2, 0.2), (3.1, 0.3), (4.2, 0.1)],
+    "verre", "Glass harmonica", [(1, 1.0), (2, 0.2), (3.1, 0.3), (4.2, 0.1)],
     0.9, 0.5, 0.86, 2.2, 92, 4.0,
-    "Timbre vitreux, très lent : pour les séances de méditation."))
+    "Glassy, very slow timbre: for meditation sessions."))
 _add(Instrument(
     "marimba", "Marimba", [(1, 1.0), (3.9, 0.4), (10.2, 0.1)],
     0.003, 0.45, 0.02, 0.6, 12, 0.0,
-    "Bois, bref et rond : lisible en extérieur."))
+    "Wooden, short and round: legible outdoors."))
 _add(Instrument(
-    "sinus", "Sinus pur", [(1, 1.0)], 0.02, 0.1, 0.9, 0.3, 80, 0.0,
-    "Aucun timbre : sert à vérifier la justesse et l'étalonnage."))
+    "sinus", "Pure sine", [(1, 1.0)], 0.02, 0.1, 0.9, 0.3, 80, 0.0,
+    "No timbre at all: used to check tuning and calibration."))
 
 
 def instrument_list() -> List[Tuple[str, str]]:

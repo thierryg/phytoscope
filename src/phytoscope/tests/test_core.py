@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/tests/test_core.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Tests des réglages, de l'échantillonnage, de l'analyse et des sources."""
@@ -391,7 +391,7 @@ class TestMajDependances:
     # -- état d'une dépendance ---------------------------------------------
     def test_etats(self):
         from phytoscope.core import dependency_updates as M
-        assert M.Dependance("numpy", installee="", disponible="2.0").etat == "absente"
+        assert M.Dependance("numpy", installee="", disponible="2.0").etat == "missing"
         assert M.Dependance("numpy", installee="1.0", disponible="").etat == "inconnue"
         assert M.Dependance("numpy", installee="1.0", disponible="1.0").etat == "a_jour"
         assert M.Dependance("numpy", installee="1.0", disponible="2.0").etat == "majeure"

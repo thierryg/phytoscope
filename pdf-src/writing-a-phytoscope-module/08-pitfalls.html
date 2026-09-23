@@ -1,0 +1,96 @@
+<section class="chapter pagebreak">
+  <h2 id="pieges" data-toc="chapter">5. Pitfalls</h2>
+
+  <p class="chapo">What costs you an evening when you do not know about it.
+  Every one of these is real: each was met while writing the modules shipped
+  with the software.</p>
+
+  <h3 id="piege-manifeste" data-toc="sub">The manifest has to be literal</h3>
+
+  <pre class="code"><code># NO — will not be read, and the default will apply
+MANIFEST = Manifest(name="my-module", version=read_my_version())
+
+# NO — the same, even with a constant of the module
+VERSION = "1.0.0"
+MANIFEST = Manifest(name="my-module", version=VERSION)
+
+# YES
+MANIFEST = Manifest(name="my-module", version="1.0.0")</code></pre>
+
+  <p>The software parses your file to extract the manifest, <em>before</em>
+  importing it. Running a module in order to find out whether it should be run
+  would be absurd.</p>
+
+  <h3 id="piege-lever" data-toc="sub">Never raise to say "nothing to report"</h3>
+
+  <pre class="code"><code># NO — disables your module for the whole session
+if x.size == 0:
+    raise ValueError("no signal")
+
+# YES
+if x.size == 0:
+    return []</code></pre>
+
+  <h3 id="piege-gabarit" data-toc="sub">Labels containing a number are templates</h3>
+
+  <pre class="code"><code># NO — this sentence cannot go into any translation catalogue
+Quantity(label=f"Allan deviation at {tau} s", ...)
+
+# YES
+Quantity(label="Allan deviation at {tau} s", params={"tau": f"{tau:g}"}, ...)</code></pre>
+
+  <p>The interface translates <strong>first</strong> and fills in afterwards. A
+  label with the number already embedded will stay in English in all the other
+  languages.</p>
+
+  <h3 id="piege-texte" data-toc="sub">The "texte" field carries units only</h3>
+
+  <pre class="code"><code>text="+37.2 dB"                        # YES — symbols are international
+text="+37.2 dB above the floor"        # NO — will stay in English everywhere</code></pre>
+
+  <p>This pitfall is all the easier to fall into because it is invisible from
+  an English interface.</p>
+
+  <h3 id="piege-brut" data-toc="sub">Do not filter before measuring noise</h3>
+
+  <p>The processed signal has been through the mains notch and the 40 Hz
+  low-pass. Measuring noise on it amounts to <strong>measuring your own
+  filter</strong>. Use <code>RAW_SIGNAL = True</code>.</p>
+
+  <h3 id="piege-ecrire" data-toc="sub">Write nowhere but at home</h3>
+
+  <pre class="code"><code>path = os.path.join(self.context.directory(), "my-file.txt")</code></pre>
+
+  <p>Nothing stops you technically. But a module that litters the sessions
+  directory will be uninstalled, and rightly so.</p>
+
+  <h3 id="piege-import" data-toc="sub">Import from phytoscope.api and nowhere else</h3>
+
+  <pre class="code"><code># NO — will break without notice, and we shall not even know
+from phytoscope.core.engine import Engine
+
+# YES
+from phytoscope.api import Analyser, Quantity, Manifest, Module</code></pre>
+
+  <p>The engine changes with every version. <code>phytoscope.api</code> does
+  not change as long as the major does not. If something you need is missing
+  from the interface, <strong>say so</strong>: that is how it will grow.</p>
+
+  <h3 id="piege-resume" data-toc="sub">In one table</h3>
+
+  <table class="tab">
+    <thead><tr><th>The pitfall</th><th>The symptom</th><th>The rule</th></tr></thead>
+    <tbody>
+      <tr><td>a computed manifest</td><td>the defaults apply</td><td>use literals</td></tr>
+      <tr><td>raising for "nothing"</td><td>module disabled</td><td>return <code>[]</code></td></tr>
+      <tr><td>a lengthy <code>__init__</code></td><td>slow start-up</td><td><code>setup()</code></td></tr>
+      <tr><td>a label that is not a template</td><td>untranslatable</td><td><code>{param}</code> + <code>params</code></td></tr>
+      <tr><td>words in <code>text</code></td><td>English everywhere</td><td>symbols only</td></tr>
+      <tr><td>the processed signal for noise</td><td>you measure your filter</td><td><code>RAW_SIGNAL</code></td></tr>
+      <tr><td>writing elsewhere</td><td>module uninstalled</td><td><code>context.directory()</code></td></tr>
+      <tr><td>a lengthy callback</td><td>a jerky display</td><td>note it down, compute elsewhere</td></tr>
+      <tr><td>importing outside the API</td><td>breaks on update</td><td><code>phytoscope.api</code></td></tr>
+      <tr><td>no <code>meaning</code></td><td>the interface tells on you</td><td>always write it</td></tr>
+    </tbody>
+  </table>
+</section>

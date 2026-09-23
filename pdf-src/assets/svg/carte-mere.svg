@@ -2,16 +2,16 @@
   ==========================================================================
   PhytoScope — attribution — pdf-src/assets/svg/carte-mere.svg
 
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
+  Version   : 1.6.0
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
 
   SPDX-License-Identifier: MIT
-  fin de l'attribution
+  end of attribution
   ==========================================================================
 -->
 
@@ -92,27 +92,27 @@
 <line x1="1165.24" y1="690" x2="1165.24" y2="742" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
 <line x1="1040.62" y1="742" x2="1040.62" y2="788" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
 <line x1="1241.62" y1="742" x2="1241.62" y2="788" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
-<text x="1117.0" y="677" font-family="Cormorant Garamond, serif" font-size="20.37" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Gain, filtrage et conversion</text>
+<text x="1117.0" y="677" font-family="Cormorant Garamond, serif" font-size="20.37" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Gain, filtering and conversion</text>
 <text x="1040.62" y="708" font-family="Lato, sans-serif" font-size="16.75" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">PhytoSense One</text>
 <text x="1040.62" y="722" font-family="Cormorant Garamond, serif" font-size="14.48" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
 <text x="1040.62" y="735" font-family="DejaVu Sans Mono, monospace" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
-<text x="1241.62" y="710" font-family="Lato, sans-serif" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Carte mère</text>
+<text x="1241.62" y="710" font-family="Lato, sans-serif" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Main board</text>
 <text x="1241.62" y="726" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">CERN-OHL-P v2</text>
 <text x="1241.62" y="737" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">diffusion libre</text>
-<text x="978.31" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">FEUILLE</text>
+<text x="978.31" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">SHEET</text>
 <text x="978.31" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">3/8</text>
-<text x="1102.93" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">RÉVISION</text>
+<text x="1102.93" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">REVISION</text>
 <text x="1102.93" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">B</text>
 <text x="1203.43" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">DATE</text>
 <text x="1203.43" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2026-09</text>
-<text x="1279.81" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">ÉCHELLE</text>
+<text x="1279.81" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">SCALE</text>
 <text x="1279.81" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">—</text>
-<text x="90" y="76" font-family="Cormorant Garamond, serif" font-size="19.01" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Chaîne principale — gain programmable, filtre de Bessel, convertisseur Δ-Σ 24 bits</text>
+<text x="90" y="76" font-family="Cormorant Garamond, serif" font-size="19.01" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Main chain — programmable gain, Bessel filter, 24-bit Δ-Σ converter</text>
 <polygon points="162,243.0 104,243.0 92,256 104,269.0 162,269.0" fill="#fff" stroke="#2F5E86" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="131.0" y="260" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">SIG_A</text>
 <path d="M 162,256 L 250,256 L 250,256" fill="none" stroke="#23302C" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="round"/>
 <rect x="200" y="100" width="420" height="530" rx="6" fill="none" stroke="#3F7D5A" stroke-width="1.2" stroke-dasharray="7 5"/>
-<text x="410" y="122" font-family="Lato, sans-serif" font-size="14.94" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">GAIN PROGRAMMABLE ×1 … ×200</text>
+<text x="410" y="122" font-family="Lato, sans-serif" font-size="14.94" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">PROGRAMMABLE GAIN x1 … x200</text>
 <polygon points="300,174 430,230.0 300,286" fill="#fff" stroke="#23302C" stroke-width="1.6" stroke-linejoin="round"/>
 <text x="320" y="214.36" font-family="Lato, sans-serif" font-size="21.5" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">−</text>
 <text x="320" y="263.64" font-family="Lato, sans-serif" font-size="21.5" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">+</text>
@@ -210,7 +210,7 @@
 <text x="846.0" y="457.0" font-family="DejaVu Sans Mono, monospace" font-size="14.94" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">68 nF</text>
 <path d="M 884,420 L 1058,420 L 1058,210" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
 <circle cx="1030" cy="210" r="3.6" fill="#23302C"/>
-<text x="880" y="462" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">C21 revient sur la sortie : cellule de Sallen-Key</text>
+<text x="880" y="462" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">C21 returns to the output: a Sallen-Key cell</text>
 <path d="M 1058,210 L 1160,210 L 1160,300" fill="none" stroke="#23302C" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="round"/>
 <rect x="1100" y="300" width="120" height="96" rx="3" fill="#FBFBF7" stroke="#23302C" stroke-width="1.8"/>
 <text x="1160.0" y="322" font-family="Lato, sans-serif" font-size="17.2" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U9</text>
@@ -221,7 +221,7 @@
 <rect x="1060" y="480" width="170" height="160" rx="3" fill="#FBFBF7" stroke="#23302C" stroke-width="1.8"/>
 <text x="1145.0" y="502" font-family="Lato, sans-serif" font-size="17.2" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U10</text>
 <text x="1145.0" y="520" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ADS131M04</text>
-<text x="1145.0" y="538" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">24 bits · Δ-Σ · 4 voies</text>
+<text x="1145.0" y="538" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">24 bits · Δ-Σ · 4 channels</text>
 <text x="1145" y="596" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">32 kSPS · 106 dB</text>
 <text x="1145" y="612" font-family="DejaVu Sans Mono, monospace" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">AIN0…AIN3</text>
 <polygon points="896,487.0 958,487.0 970,500 958,513.0 896,513.0" fill="#fff" stroke="#A8552E" stroke-width="1.4" stroke-linejoin="round"/>
@@ -236,7 +236,7 @@
 <polygon points="896,595.0 958,595.0 970,608 958,621.0 896,621.0" fill="#fff" stroke="#A8552E" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="929.0" y="612" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">DRDY</text>
 <path d="M 970,608 L 1060,608" fill="none" stroke="#A8552E" stroke-width="1.2" stroke-linecap="square" stroke-linejoin="round"/>
-<text x="970" y="492" font-family="Lato, sans-serif" font-size="13.58" fill="#A8552E" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">vers les isolateurs (feuille 4)</text>
+<text x="970" y="492" font-family="Lato, sans-serif" font-size="13.58" fill="#A8552E" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">to the isolators (sheet 4)</text>
 <rect x="660" y="560" width="160" height="86" rx="3" fill="#FBFBF7" stroke="#23302C" stroke-width="1.8"/>
 <text x="740.0" y="582" font-family="Lato, sans-serif" font-size="17.2" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U11</text>
 <text x="740.0" y="600" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ADR4525</text>
@@ -252,7 +252,7 @@
 <path d="M 570,703 L 596,703" fill="none" stroke="#2F5E86" stroke-width="1.4" stroke-linecap="square" stroke-linejoin="round"/>
 <rect x="92" y="660" width="280" height="116" rx="5" fill="#E9F2EC" stroke="#3F7D5A" stroke-width="1.1"/>
 <text x="106" y="688" font-family="Lato, sans-serif" font-size="15.62" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">BASE DE TEMPS</text>
-<text x="106" y="712" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Chaque échantillon est daté par</text>
-<text x="106" y="734" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">son numéro d'ordre, jamais par</text>
+<text x="106" y="712" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Every sample is dated by</text>
+<text x="106" y="734" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">its index, never by</text>
 <text x="106" y="756" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">l'horloge de l'ordinateur.</text>
 </svg>

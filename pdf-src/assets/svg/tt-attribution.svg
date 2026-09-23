@@ -1,20 +1,3 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/tt-attribution.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 470" width="880" height="470">
 
 <defs>
@@ -29,34 +12,32 @@
    <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
 </defs>
 <rect width="880" height="470" fill="#FBF9F1"/>
-<text x="440" y="36" font-family="Cormorant Garamond, serif" font-size="16.68" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2.2">QUI PARLE ? BUDGET D'INFORMATION D'UNE PHRASE GÉNÉRÉE</text>
-<text x="440" y="58" font-family="Lato, sans-serif" font-size="11.89" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Répartition qualitative des sources de contenu dans une sortie textuelle</text>
-<text x="264" y="113" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">Mesure de l'arbre</text>
+<text x="440" y="36" font-family="Cormorant Garamond, serif" font-size="16.68" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2.2">WHO IS SPEAKING? THE INFORMATION BUDGET OF A GENERATED SENTENCE</text>
+<text x="440" y="58" font-family="Lato, sans-serif" font-size="11.89" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">A qualitative breakdown of where the content of a text output comes from</text>
+<text x="264" y="113" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">The tree's measurement</text>
 <rect x="280" y="92" width="520" height="30" rx="5" fill="#EFEDE2"/>
 <rect x="280" y="92" width="62" height="30" rx="5" fill="#3F7D5A"/>
 <text x="354.4" y="113" font-family="Lato, sans-serif" font-size="13.92" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">12 %</text>
-<text x="280" y="138.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Les chiffres : température, humidité, tension. Réellement issus du</text>
-<text x="280" y="149.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">capteur.</text>
-<text x="264" y="197" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">Choix de l'ingénieur</text>
+<text x="280" y="138.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">The numbers: temperature, humidity, voltage. Really out of the sensor.</text>
+<text x="264" y="197" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">The engineer's choices</text>
 <rect x="280" y="176" width="520" height="30" rx="5" fill="#EFEDE2"/>
 <rect x="280" y="176" width="120" height="30" rx="5" fill="#2F5E86"/>
 <text x="411.6" y="197" font-family="Lato, sans-serif" font-size="13.92" fill="#2F5E86" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">23 %</text>
-<text x="280" y="222.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Seuils, fenêtres, quelles grandeurs sont retenues et lesquelles sont</text>
-<text x="280" y="233.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">ignorées.</text>
-<text x="264" y="281" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">Gabarit d'invite</text>
+<text x="280" y="222.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Thresholds, windows, which quantities are kept and which are ignored.</text>
+<text x="264" y="281" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">The prompt template</text>
 <rect x="280" y="260" width="520" height="30" rx="5" fill="#EFEDE2"/>
 <rect x="280" y="260" width="130" height="30" rx="5" fill="#B08528"/>
 <text x="422.0" y="281" font-family="Lato, sans-serif" font-size="13.92" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">25 %</text>
-<text x="280" y="306.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Le rôle assigné au modèle : « tu es un chêne bicentenaire, parle à la</text>
-<text x="280" y="317.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">première personne ».</text>
-<text x="264" y="365" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">Modèle de langage</text>
+<text x="280" y="306.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">The role assigned to the model: “you are a two-hundred-year-old oak,</text>
+<text x="280" y="317.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">speak in the first person”.</text>
+<text x="264" y="365" font-family="Lato, sans-serif" font-size="14.5" fill="#0E2A22" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">The language model</text>
 <rect x="280" y="344" width="520" height="30" rx="5" fill="#EFEDE2"/>
 <rect x="280" y="344" width="208" height="30" rx="5" fill="#A8552E"/>
 <text x="500.0" y="365" font-family="Lato, sans-serif" font-size="13.92" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">40 %</text>
-<text x="280" y="390.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Syntaxe, ton, métaphores, sentiment exprimé : entièrement produits par</text>
-<text x="280" y="401.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">le modèle.</text>
+<text x="280" y="390.0" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Syntax, tone, metaphor, the feeling expressed: produced entirely by the</text>
+<text x="280" y="401.5" font-family="Lato, sans-serif" font-size="10.73" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">model.</text>
 <rect x="280" y="78" width="520" height="342" rx="6" fill="none" stroke="#D9D9C6" stroke-width="1"/>
 <rect x="60" y="410" width="760" height="44" rx="6" fill="#FBF0E8" stroke="#F0DCC9" stroke-width="1.2"/>
-<text x="440" y="429" font-family="Lato, sans-serif" font-size="12.47" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Ces proportions sont une illustration pédagogique, non une mesure.</text>
-<text x="440" y="445" font-family="Lato, sans-serif" font-size="11.89" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Le point démontrable est l'ordre de grandeur : l'essentiel du texte ne vient pas de l'arbre.</text>
+<text x="440" y="429" font-family="Lato, sans-serif" font-size="12.47" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">These proportions are a teaching illustration, not a measurement.</text>
+<text x="440" y="445" font-family="Lato, sans-serif" font-size="11.89" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">What can be shown is the order of magnitude: most of the text does not come from the tree.</text>
 </svg>

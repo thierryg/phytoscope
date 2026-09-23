@@ -1,34 +1,17 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/three-reads.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 470" width="720" height="470">
 
 <rect width="720" height="470" fill="#FFFFFF"/>
-<text x="360.0" y="32" font-family="Lato, sans-serif" font-size="16.68" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">TROIS LECTURES D'UN MÊME PHÉNOMÈNE</text>
+<text x="360.0" y="32" font-family="Lato, sans-serif" font-size="16.68" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">THREE READINGS OF ONE PHENOMENON</text>
 <circle cx="270" cy="210" r="110" fill="#2F5E86" opacity=".13" stroke="#2F5E86" stroke-width="1.6"/>
 <circle cx="450" cy="210" r="110" fill="#3F7D5A" opacity=".13" stroke="#3F7D5A" stroke-width="1.6"/>
 <circle cx="360" cy="300" r="110" fill="#B08528" opacity=".13" stroke="#B08528" stroke-width="1.6"/>
-<text x="210" y="150" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">MESURE</text>
+<text x="210" y="150" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">MEASUREMENT</text>
 <text x="210" y="166" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">µV, MΩ, ms</text>
-<text x="512" y="150" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">SYMBOLE</text>
-<text x="512" y="166" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">récit, tradition</text>
-<text x="360" y="420" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">EXPÉRIENCE</text>
-<text x="360" y="438" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ressenti, présence</text>
-<text x="360" y="236" font-family="Cormorant Garamond, serif" font-size="18.85" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">MUSIQUE</text>
-<text x="360" y="252" font-family="Cormorant Garamond, serif" font-size="13.05" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">des plantes</text>
-<text x="360.0" y="460" font-family="Cormorant Garamond, serif" font-size="12.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Confondre les trois cercles produit de la confusion ; les séparer produit de la clarté.</text>
+<text x="512" y="150" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">SYMBOL</text>
+<text x="512" y="166" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">story, tradition</text>
+<text x="360" y="420" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">EXPERIENCE</text>
+<text x="360" y="438" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">feeling, presence</text>
+<text x="360" y="236" font-family="Cormorant Garamond, serif" font-size="18.85" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">MUSIC</text>
+<text x="360" y="252" font-family="Cormorant Garamond, serif" font-size="13.05" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">of the plants</text>
+<text x="360.0" y="460" font-family="Cormorant Garamond, serif" font-size="12.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Confusing the three circles produces confusion; separating them produces clarity.</text>
 </svg>

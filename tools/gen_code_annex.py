@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — tools/gen_code_annex.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """
@@ -22,11 +22,11 @@ afin qu'aucune transcription manuelle ne puisse introduire d'erreur.
 Usage : python3 tools/gen_code_annex.py
 Sortie : pdf-src/parts/A0b-codes.html
 """
-import os, html
+import os, html, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "sources")
-OUT = os.path.join(ROOT, "pdf-src", "la-musique-des-plantes", "A0b-codes.html")
+OUT = os.path.join(ROOT, "pdf-src", "the-music-of-plants", "A0b-codes.html")
 
 LARGEUR_MAX = 96   # au-delà, le listing déborde de la colonne
 
@@ -60,20 +60,21 @@ def bloc(titre, chemin, contenu, ident):
 
 SECTIONS = [
     # (titre affiché, chemin relatif à sources/, identifiant d'ancre)
-    ("Fichier principal", "schemas/midisprout/MIDI_Psychogalv_328p_v021/"
+    ("Fichier principal", "schematics/midisprout/MIDI_Psychogalv_328p_v021/"
      "MIDI_Psychogalv_328p_v021.ino", "code-ms-main"),
-    ("Analyse d'échantillons", "schemas/midisprout/MIDI_Psychogalv_328p_v021/"
+    ("Analyse d'échantillons", "schematics/midisprout/MIDI_Psychogalv_328p_v021/"
      "SampleAnalysis.ino", "code-ms-sample"),
-    ("Quantification sur gamme", "schemas/midisprout/MIDI_Psychogalv_328p_v021/"
+    ("Quantification sur gamme", "schematics/midisprout/MIDI_Psychogalv_328p_v021/"
      "Scale.ino", "code-ms-scale"),
-    ("Couche MIDI et polyphonie", "schemas/midisprout/MIDI_Psychogalv_328p_v021/"
+    ("Couche MIDI et polyphonie", "schematics/midisprout/MIDI_Psychogalv_328p_v021/"
      "MIDIserial.ino", "code-ms-midi"),
-    ("Périphériques et contrôle de pile", "schemas/midisprout/"
+    ("Périphériques et contrôle de pile", "schematics/midisprout/"
      "MIDI_Psychogalv_328p_v021/Peripherals.ino", "code-ms-periph"),
 ]
 
 
 def main():
+    manquants = []
     print("• Génération de l'annexe des codes source…")
     parts = []
 
@@ -122,6 +123,7 @@ def main():
             contenu = lire(chemin)
         except FileNotFoundError:
             print(f"  ! introuvable : {chemin}")
+            manquants.append(chemin)
             continue
         parts.append(bloc(titre, chemin, contenu, ident))
         print(f"  · {chemin.split('/')[-1]}")
@@ -158,6 +160,7 @@ def main():
         print("  · DamanhurBridge.ino")
     except FileNotFoundError:
         print("  ! DamanhurBridge.ino introuvable")
+        manquants.append("reverse/damanhur-bridge/DamanhurBridge.ino")
 
     parts.append("""  <div class="recap">
     <h4>À retenir</h4>
@@ -178,6 +181,24 @@ def main():
     taille = os.path.getsize(OUT) // 1024
     print(f"✓ Annexe écrite : {OUT} ({taille} Ko)")
 
+    #  Un listing déclaré et introuvable était signalé, puis oublié : le
+    #  script écrivait l'annexe amputée et rendait 0. Le 2026-09-22, le
+    #  renommage de « sources/schemas » en « sources/schematics » a fait
+    #  disparaître les cinq programmes de MIDI Sprout — 15 Ko, 22 pages de
+    #  l'ouvrage principal — et rien n'a échoué. La pagination l'a dit, trois
+    #  heures plus tard.
+    #
+    #  Une annexe incomplète est un défaut, pas un avertissement.
+    if manquants:
+        print()
+        print(f"  ✗ {len(manquants)} listing(s) déclaré(s) et introuvable(s) :")
+        for chemin in manquants:
+            print(f"      {chemin}")
+        print("    L'annexe est incomplète. Corrigez les chemins de SECTIONS,")
+        print("    ou retirez ce qui n'existe plus.")
+        return 1
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main() or 0)

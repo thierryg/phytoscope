@@ -1,406 +1,490 @@
-# Journal des modifications — projet *La Musique des Plantes*
+# Changelog — the *Music of Plants* project
 
-Ce fichier suit **le projet entier** : l'ouvrage, le hors-série, la carte, le
-micrologiciel et le logiciel. Le détail des versions du logiciel vit dans
-`src/phytoscope/CHANGELOG.txt`, qui est plus fin ; celui-ci donne la vue
-d'ensemble.
+This file follows **the whole project**: the book, the companion volume, the
+board, the firmware and the software. The detail of the software's versions
+lives in `src/phytoscope/CHANGELOG.txt`, which is finer-grained; this one
+gives the overall view.
 
-Format « Keep a Changelog ». Les dates sont celles de la construction des
-documents, vérifiées après reconstruction (`C-64`).
+"Keep a Changelog" format. The dates are those on which the documents were
+built, verified after rebuilding (`C-64`).
 
----
-
-## 2026-09-18 (nuit) — mises à jour des bibliothèques, et la langue en onze voix
-
-### Ajouté
-- **« Aide → Mises à jour des bibliothèques… »** — le logiciel compare les
-  bibliothèques Python installées à ce que publie l'index des paquets, classe
-  les écarts en *correctif*, *mineure*, *majeure*, et **n'installe rien sans
-  demande explicite**. L'interrogation se fait dans un fil séparé et la sortie
-  de `pip` défile ligne à ligne. Aucune dépendance ajoutée pour cela (`C-40`).
-- **La langue est demandée au tout début de l'installation**, dans les **onze
-  langues du logiciel**, chacune proposée dans sa propre écriture. Elle est
-  écrite dans `reglages.json` et reprise par PhytoScope : la question ne
-  revient jamais.
-  - `.run` : première question, avant la licence — qui est donc lue dans la
-    langue retenue. `--langue ja` pour une installation sans surveillance ;
-  - `.exe` : boîte NSIS, **onze langues compilées** au lieu de deux, choix
-    mémorisé sous `HKCU` ;
-  - `.pkg` macOS : liste à la première ouverture ;
-  - `.deb` et `.rpm` : `apt` et `dnf` n'interrogent pas — la question se pose
-    au **premier démarrage du logiciel**.
-- **51 libellés d'installateur × 11 langues = 561 traductions**, dans une
-  source unique (`packaging/langues/installateur.json`), d'où sont générés les
-  catalogues shell du `.run` et les `LangString` de NSIS.
-- **Élévation de droits par `pkexec`, `kdesu` ou `gksu`** quand l'installateur
-  vient d'un bureau — une fenêtre d'authentification est la seule chose
-  correcte alors —, par `sudo` en mode texte.
-- **Bannière ASCII** et **checklist** affichées au lancement par défaut, avec
-  les contrôles avant vol dépendance par dépendance.
-- `INSTALL.md` — ce que fait chaque installateur, étape par étape, par système.
-- Régénération automatique de la **nomenclature logicielle** dès qu'une
-  modification touche `src/phytoscope/` (`.github/workflows/sbom.yml`).
-
-### Corrigé
-- **Une pré-diffusion passait pour plus récente que sa version.** Dans le
-  comparateur neuf : ramasser tous les nombres de « 3.0.0rc1 » donne
-  `(3, 0, 0, 1)`, qui se compare après `(3, 0, 0)`. L'ordre couvre désormais
-  `dev < alpha < beta < rc < (rien) < post`.
-- **Deux tests ne vérifiaient plus rien depuis le rangement du dépôt.**
-  `test_le_sdk_livre_un_exemple_qui_se_charge` et
-  `test_les_identifiants_usb_suivent_le_micrologiciel` cherchaient le SDK et
-  le micrologiciel à leurs anciens emplacements, et **s'ignoraient
-  silencieusement**. Chemins corrigés ; ils passent.
-- La **bannière existait en double** dans `__main__.py`, et son premier trait
-  avait perdu un caractère. Une seule source désormais,
-  `core/console.banniere()`, qui porte aussi la version.
-- « bilan de démarrage » devient « **checklist** », partout.
-
-### Changé
-- **`ruff` dans l'intégration continue** : bloquant sur les plantages (`E9`,
-  `F82x`, `F811`), informatif sur les mille avertissements de style hérités
-  d'un code écrit pour Python 3.9. L'intention est déclarée dans
-  `pyproject.toml`, avec son pourquoi. La configuration précédente aurait fait
-  échouer la chaîne au premier envoi.
-
-### Vérifié
-- **306 tests au vert, 0 ignoré** ; `ruff` essentiel : *All checks passed* ;
-- **11 langues à 100 %** (888 libellés) et 561 traductions d'installateur,
-  champs de substitution préservés ;
-- `.run --langue ja` affiche `[ok] 言語：日本語` — le catalogue japonais est
-  bien chargé.
+Where an entry below names a file that has since been renamed, it is written
+with the name the file carries **today** — that is the name a reader can act
+on. The entry still says what happened, and when.
 
 ---
 
-## 2026-09-18 (fin de journée) — la série « L'Arbre qui Parle », et un dépôt public
+## 2026-09-23 — the module interface turns to English (API 3.0)
 
-### Ajouté
-- **La série « L'Arbre qui Parle »**, fusionnée dans le projet : trois volumes
-  et une annexe technique, **638 pages**, construits par
-  `pdf-src/build_tree.py` et `pdf-src/build_appendix.py` depuis leur propre
-  charte `pdf-src/arbre.css`.
-  - *Dublin — analyse scientifique* (212 p.) — l'enquête sur les « arbres
-    parlants » ;
-  - *Biocommunication végétale et intelligence artificielle* (163 p.) — le
-    traité ;
-  - *Créer un arbre parlant* (198 p.) — le manuel d'atelier ;
-  - *Annexe — planches, nomenclature, programmes* (65 p.).
-- **234 photographies et planches**, avec leurs crédits
-  (`pdf-src/assets/img/photos/CREDITS.md`), et 44 illustrations nouvelles.
-- **Quatre notes de recherche sourcées** (`sources/01-…` à `04-…`).
-- `tools/verify_svg.py` — contrôle que les 104 illustrations sont du XML
-  bien formé. Une illustration mal formée ne casse pas la fabrication :
-  WeasyPrint la laisse tomber et compose un cadre vide, sans rien signaler.
-- `tools/impacted_pdfs.py` — dit quelles publications refaire au vu des
-  fichiers modifiés. Refaire les dix coûte une douzaine de minutes.
-- **Un dépôt git public** : `LICENSE` (MIT) et `LICENSES/CERN-OHL-P-2.0.txt`
-  aux textes officiels SPDX, `SECURITY.md`, `CONTRIBUTING.md`,
-  `CODE_OF_CONDUCT.md`, `AUTHORS`, `.editorconfig`, `.gitattributes`,
-  `.pre-commit-config.yaml`, gabarits de tickets, `CODEOWNERS`.
-- **Six workflows d'intégration continue** : analyse statique puis
-  fabrication des paquets par système (`paquets.yml`), reconstruction des
-  seules publications touchées (`publications.yml`), sept contrôles de
-  sécurité (`securite.yml`), CodeQL sur Python **et** C, OpenSSF Scorecard,
-  et une chaîne de diffusion qui **atteste la provenance** des paquets
-  (Sigstore) après avoir vérifié que l'étiquette correspond à `VERSION`.
+### Changed — BREAKING
+- **`API_VERSION`: 2.0 → 3.0.** The whole public surface of the module
+  contract is renamed to English — 195 identifiers, from `Manifeste`→`Manifest`
+  to `installer()`→`setup()`. A module written for 2.0 is **refused at
+  discovery**, with a readable sentence in Diagnostics, and not loaded
+  halfway: nothing is aliased, and that is exactly what a major number is
+  for.
+- The states displayed (`actif`, `en_faute`, `desactive`) and the capability
+  values (`analyseur`…) turn to English with it.
+- **Migration**: `src/sdk/docs/08-migrating-from-2.0.md`, and chapter 6 of the
+  printed guide. Three steps, and nothing else to do.
+- The **version contract can now be read from both sides**: a module asks
+  `context.api_version` and `context.api_at_least("3.2")`; the host asks
+  `manifest.api_required` and `registry.api_requirements()`. `Manifest.api`
+  has always been a **minimum** — now it says so, and both sides go through
+  the same parser.
 
-### Corrigé
-- **Les illustrations n'échappaient pas le texte qu'on leur donnait.**
-  `pdf-src/assets/svg/gen.py` avait perdu sa fonction `esc()` : `timeline.svg`
-  contenait deux `&` nus et était le **seul SVG mal formé sur 104**. Le
-  cadre correspondant était vide dans l'ouvrage, sans que rien ne l'indique.
-- **Fausse déclaration de licence sur 32 fichiers tiers.** `tools/headers.py`
-  avait apposé « © Bretagne Namasté » et « SPDX-License-Identifier: MIT » sur
-  LEDFader (MIT © Jeremy Gillick), MIDI Sprout (MIT © electricityforprogress)
-  et le micrologiciel **Biotron, qui est en GPL-3.0**. En-têtes retirés,
-  en-têtes d'origine intacts, `sources/` exclu de l'outil, et un job de CI
-  refuse désormais que cela revienne. L'annexe de codes annonçait aussi
-  Biotron en « MIT » : corrigé en GPL-3.0.
-- **Le `.deb` avait disparu de la fabrication.** L'en-tête d'attribution
-  s'était posé sur `packaging/gabarits/debian/control`, et **un fichier
-  `control` n'admet aucun commentaire** : `dpkg-deb` refusait le paquet, mais
-  `make tout` continuait et produisait les sept autres. `"control"` est
-  entré dans les exclusions de `tools/headers.py`.
-- Les chiffres de `sources/INDEX.md` étaient périmés (76 fichiers annoncés,
-  248 réels) : remesurés.
+### Added
+- **The SDK is finished**: the eight chapters, the complete example, the
+  generator and the printed guide (35 pp.) are in technical US English. The
+  generator warns when the capability asked for is one nobody calls.
+- **The firmware answers the UAC2 clock**: `tud_audio_get_req_entity_cb` and
+  its write counterpart report **250 Hz**, the real rate, with a
+  single-value range. A host that refuses a rate below 8 kHz refuses plainly —
+  which is worth more than a wrong timestamp for months.
+- **The audio function is written out by hand**, thirteen descriptors instead
+  of TinyUSB's microphone template, so that the feature unit stops declaring a
+  mute and a volume the board has not got. The isochronous packet goes from
+  256 to **384 bytes** = 32 × 12 exactly, which is the 32 kHz mode the old
+  comment claimed and did not deliver. All three divergences recorded in
+  section 11 of the USB reference are settled.
 
-### Changé
-- **Le dépôt est rangé selon ce que les fichiers sont, non selon leur
-  ancienneté.** Le code sous `src/` (`phytoscope/`, `firmware/`, `sdk/`), les
-  sources d'édition sous `pdf-src/` avec **un dossier par publication**, et
-  `sources/` réservé à la matière de référence — ce que nous n'avons pas
-  écrit. `hardware/` a quitté `sources/` : c'est notre matériel, sous
-  CERN-OHL-P v2.
-- `.gitignore` réécrit — **459 lignes commentées**, couvrant bash, Python, Go,
-  Rust, C/C++, Windows 10/11, macOS/Darwin, Debian/Ubuntu/Mint et
-  Fedora/RHEL, organisées en trois familles : les secrets, ce que nous
-  n'avons pas le droit de rediffuser, ce qui se reconstruit.
-- Les numérisations du domaine public (Bose, Darwin — 258 Mo) sortent du
-  dépôt : elles sont libres de droits, mais un clone de 415 Mo pour des
-  livres retéléchargeables en une commande n'a pas de sens. Les
-  **transcriptions** restent versionnées, et
-  `sources/documents/domaine-public/LISEZ-MOI.md` donne les commandes.
-
-### Vérifié
-- **1 378 pages sur 10 publications**, inchangées après restructuration
-  (0 écart sur les dix décomptes) ;
-- **260 tests** au vert ; **104 illustrations**, 0 mal formée ;
-  **260 en-têtes** à jour ;
-- `make tout` : **8 paquets signés**, 0 échec ; `make verifier` : empreintes
-  SHA-256 conformes ;
-- `git ls-files` : seul le certificat **public** est suivi ; la clé privée est
-  écartée.
+### Fixed
+- **`make` with no argument was broken** in `packaging/` since 2026-09-22:
+  `.DEFAULT_GOAL` named an `aide` target that no longer existed — the one
+  invocation a newcomer types first.
+- **Four `__all__` lists** named classes that did not exist, residue of a
+  rename that stopped halfway. A test now compares them all, module by
+  module, and found the fourth one itself.
+- `new_module.py` read `VERSION_API` from a directory that has never existed,
+  and fell back silently; it also printed a literal `{nom_essais}`.
+- `build/paquets/` becomes `build/packages/`, and the `dernier` link becomes
+  `latest`. `PHYTOSCOPE_OUTPUT` replaces `PHYTOSCOPE_SORTIE`; `SORTIE=` is
+  still honoured.
+- `.ecarte/` deleted — 857 MB of an obsolete virtual environment, exact
+  duplicates and a dead CMake cache.
 
 ---
 
-## 2026-09-18 (soir) — installateurs, signature et attribution
+## 2026-09-22 — the repository turns to technical US English
 
-### Ajouté
-- **Installateur autonome Linux** `PhytoScope-X.Y.Z-Linux.run` — un script et
-  une archive dans un seul fichier, à la manière des `.run` de NVIDIA, et
-  l'équivalent libre de ce que produit InstallShield. Il couvre les
-  distributions sans `.deb` ni `.rpm` (Arch, openSUSE, Alpine, NixOS) et
-  **s'installe sans privilèges**. Trois interfaces : graphique (zenity,
-  kdialog), boîtes en mode texte (`--tui`), lignes brutes (`--texte`). Avec
-  `--uninstall`, `--check`, `--extract` et un registre d'installation.
-- **Installateur macOS `.pkg`** — écrit de bout en bout en Python pur
-  (`macos_pkg.py`) : archive XAR, charge cpio « odc », nomenclature BOM. Ni
-  `pkgbuild`, ni `xar`, ni `mkbom` ne sont nécessaires. Tout ce qui est écrit
-  est relu et recontrôlé.
-- **Paquet Windows `.msi`** par `wixl` — le format que déploient les stratégies
-  de groupe et Intune, avec des identifiants de composants déterministes pour
-  que la mise à jour d'un parc se passe bien. Ce n'est pas InstallShield, qui
-  est un produit commercial ne tournant que sur Windows ; c'est ce
-  qu'InstallShield *produit*.
-- **Signature de tous les paquets** : certificat X.509 de signature de code,
-  Authenticode pour `.exe` et `.msi`, CMS détachée (`.p7s`) pour le reste.
-  Le certificat étant **auto-signé**, chaque paquet dit ce que la signature
-  prouve — intégrité, continuité d'origine — et ce qu'elle ne prouve pas :
-  elle ne fait taire ni SmartScreen ni Gatekeeper.
-- **Chaque installateur demande** l'icône sur le Bureau et le lancement en fin
-  d'installation, et **fournit un désinstallateur**. Aucune désinstallation
-  n'efface réglages ni séances.
-- `phytoscope/AUTEURS` — l'attribution en un seul fichier, lue par le logiciel,
-  par la fabrique de paquets et par le sujet du certificat. Éditeur
-  (Bretagne Namasté) et auteur (Thierry GAYET) y sont distingués.
-- `manuel.txt` par système, en plus de readme, install, licence et changelog.
+### Changed
+- **English becomes the source language**, and French a catalogue like any
+  other. The translation keys are the English sentences themselves;
+  `LANGUE_SOURCE = "en"`; `en.json` was deleted, because a source language
+  has no catalogue to keep up to date, and `fr.json` was created.
+- Comments, docstrings, file names, directory names, Makefile targets,
+  package metadata and the `.ai/` agent memory are written natively in
+  English. Whatever is **not** exposed to an end user is in English without
+  exception; whatever is exposed follows the language the user chose at
+  installation.
+- The event wire names were renamed from French — `mesure.demarree` →
+  `measurement.started`, and nine others — which is what took `API_VERSION`
+  from 1.0 to 2.0.
 
-### Vérifié
-- **Sous Wine 6.0.3** : l'interpréteur Python 3.11.9 embarqué démarre, PySide6,
-  pyserial et sounddevice s'importent, `run.py --version` s'exécute
-  correctement. NumPy échoue faute de `fetestexcept` dans le runtime MSVC de
-  Wine — lacune de Wine, pas du paquet. L'installateur NSIS, étant 32 bits,
-  n'a pas pu être essayé : cette machine n'a que Wine 64 bits.
-- Le `.run` : installation, registre et `--uninstall` éprouvés de bout en bout.
-- 225 essais au vert, 832 libellés à 100 % dans les onze langues.
+### Added
+- `tools/verify_translation.py` — an AST fingerprint per file (code shape with
+  docstrings stripped and literals blanked, plus the literals themselves), so
+  that a prose translation can be **proved** to have moved no code.
+- `tools/verify_installer_i18n.py` — the same office for the shell scripts,
+  where there is no syntax tree to lean on: it finds leaks, dangerous
+  `${T_…:-…}` defaults, missing labels, and fields that disagree across the
+  eleven languages.
 
 ---
 
-## 2026-09-18 (nuit) — les paquets d'installation
+## 2026-09-18 (night) — library updates, and the language in eleven voices
 
-### Ajouté
-- **`packaging/`** — une fabrique de paquets, lancée depuis Debian, Ubuntu ou
-  Mint, qui produit les cinq cibles d'une seule commande :
+### Added
+- **"Help → Library updates…"** — the software compares the installed Python
+  libraries with what the package index publishes, sorts the differences into
+  *patch*, *minor* and *major*, and **installs nothing without being asked
+  explicitly**. The query runs on a separate thread and `pip`'s output
+  scrolls line by line. No dependency was added for it (`C-40`).
+- **The language is asked at the very start of the installation**, in the
+  **software's eleven languages**, each offered in its own script. It is
+  written into `reglages.json` and taken up by PhytoScope: the question never
+  comes back.
+  - `.run`: the first question, before the licence — which is therefore read
+    in the chosen language. `--language ja` for an unattended installation;
+  - `.exe`: an NSIS box, **eleven languages compiled in** instead of two, the
+    choice remembered under `HKCU`;
+  - macOS `.pkg`: a list at first opening;
+  - `.deb` and `.rpm`: `apt` and `dnf` do not ask — the question comes at the
+    **software's first start-up**.
+- **51 installer labels × 11 languages = 561 translations**, from a single
+  source (`packaging/languages/installateur.json`), from which the `.run`'s
+  shell catalogues and NSIS's `LangString`s are generated.
+- **Privilege elevation through `pkexec`, `kdesu` or `gksu`** when the
+  installer comes from a desktop — an authentication window is the only
+  correct thing then — and through `sudo` in text mode.
+- **An ASCII banner** and a **checklist** displayed at launch by default,
+  with the pre-flight checks dependency by dependency.
+- `INSTALL.md` — what each installer does, step by step, system by system.
+- Automatic regeneration of the **software bill of materials** as soon as a
+  change touches `src/phytoscope/` (`.github/workflows/sbom.yml`).
 
-  | Cible | Fichier | Exige sur la machine qui reçoit |
+### Fixed
+- **A pre-release passed for newer than its own version.** In the new
+  comparator, gathering every number out of "3.0.0rc1" gives `(3, 0, 0, 1)`,
+  which compares after `(3, 0, 0)`. The order now covers
+  `dev < alpha < beta < rc < (nothing) < post`.
+- **Two tests had been checking nothing since the repository was tidied.**
+  `test_le_sdk_livre_un_exemple_qui_se_charge` and
+  `test_les_identifiants_usb_suivent_le_micrologiciel` were looking for the
+  SDK and the firmware at their old locations, and **skipping themselves
+  silently**. The paths were fixed; they pass.
+- The **banner existed twice** in `__main__.py`, and its first rule had lost
+  a character. One source now, `core/console.banniere()`, which also carries
+  the version.
+- "start-up report" becomes "**checklist**", everywhere.
+
+### Changed
+- **`ruff` in continuous integration**: blocking on crashes (`E9`, `F82x`,
+  `F811`), informative on the thousand style warnings inherited from code
+  written for Python 3.9. The intent is declared in `pyproject.toml`, with
+  its reasoning. The previous configuration would have failed the chain on
+  the first push.
+
+### Verified
+- **306 tests green, 0 skipped**; essential `ruff`: *All checks passed*;
+- **11 languages at 100 %** (888 labels) and 561 installer translations, with
+  the substitution fields preserved;
+- `.run --language ja` prints `[ok] 言語：日本語` — the Japanese catalogue is
+  indeed loaded.
+
+---
+
+## 2026-09-18 (end of day) — the "Talking Tree" series, and a public repository
+
+### Added
+- **The "Talking Tree" series**, merged into the project: three volumes and a
+  technical appendix, **638 pages**, built by `pdf-src/build_tree.py` and
+  `pdf-src/build_appendix.py` from their own style sheet
+  `pdf-src/tree.css`.
+  - *Dublin — a scientific examination* (212 pp.) — the investigation into
+    the "talking trees";
+  - *Plant biocommunication and artificial intelligence* (163 pp.) — the
+    treatise;
+  - *Building a talking tree* (198 pp.) — the workshop manual;
+  - *Appendix — plates, bill of materials, programs* (65 pp.).
+- **234 photographs and plates**, with their credits
+  (`pdf-src/assets/img/photos/CREDITS.md`), and 44 new illustrations.
+- **Four sourced research notes** (`sources/01-…` to `04-…`).
+- `tools/verify_svg.py` — checks that the 104 illustrations are well-formed
+  XML. A malformed illustration does not break the build: WeasyPrint drops it
+  and composes an empty frame, without a word.
+- `tools/impacted_pdfs.py` — says which publications to remake given the
+  files that changed. Remaking all ten costs a dozen minutes.
+- **A public git repository**: `LICENSE` (MIT) and
+  `LICENSES/CERN-OHL-P-2.0.txt` with the official SPDX texts, `SECURITY.md`,
+  `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `AUTHORS`, `.editorconfig`,
+  `.gitattributes`, `.pre-commit-config.yaml`, issue templates, `CODEOWNERS`.
+- **Six continuous-integration workflows**: static analysis then a package
+  build per system (`packages.yml`), rebuilding only the publications affected
+  (`publications.yml`), seven security checks (`security.yml`), CodeQL on
+  Python **and** C, OpenSSF Scorecard, and a release chain that **attests the
+  provenance** of the packages (Sigstore) after checking that the tag matches
+  `VERSION`.
+
+### Fixed
+- **The illustrations did not escape the text they were given.**
+  `pdf-src/assets/svg/gen.py` had lost its `esc()` function: `timeline.svg`
+  contained two bare `&` and was the **only malformed SVG of 104**. The
+  corresponding frame was empty in the book, with nothing to say so.
+- **A false licence statement on 32 third-party files.** `tools/headers.py`
+  had stamped "© Bretagne Namasté" and "SPDX-License-Identifier: MIT" on
+  LEDFader (MIT © Jeremy Gillick), MIDI Sprout
+  (MIT © electricityforprogress) and the **Biotron firmware, which is
+  GPL-3.0**. The headers were removed, the original headers left intact,
+  `sources/` excluded from the tool, and a CI job now refuses to let it come
+  back. The code appendix also announced Biotron as "MIT": corrected to
+  GPL-3.0.
+- **The `.deb` had disappeared from the build.** The attribution header had
+  been stamped onto `packaging/templates/debian/control`, and **a `control`
+  file admits no comment**: `dpkg-deb` refused the package, but `make all`
+  carried on and produced the other seven. `"control"` went into
+  `tools/headers.py`'s exclusions.
+- The figures in `sources/INDEX.md` were stale (76 files announced, 248 real):
+  measured again.
+
+### Changed
+- **The repository is arranged by what the files are, not by when they
+  arrived.** Code under `src/` (`phytoscope/`, `firmware/`, `sdk/`), the
+  publishing sources under `pdf-src/` with **one directory per publication**,
+  and `sources/` reserved for reference material — things we did not write.
+  `hardware/` left `sources/`: it is our hardware, under CERN-OHL-P v2.
+- `.gitignore` rewritten — **459 commented lines**, covering bash, Python,
+  Go, Rust, C/C++, Windows 10/11, macOS/Darwin, Debian/Ubuntu/Mint and
+  Fedora/RHEL, organised into three families: the secrets, what we have no
+  right to redistribute, what rebuilds itself.
+- The public-domain scans (Bose, Darwin — 258 MB) leave the repository: they
+  are free of rights, but a 415 MB clone for books anybody can download again
+  in one command makes no sense. The **transcriptions** stay
+  version-controlled, and `sources/documents/public-domain/README.md` gives
+  the commands.
+
+### Verified
+- **1,378 pages across 10 publications**, unchanged after the
+  restructuring (0 discrepancy across the ten counts);
+- **260 tests** green; **104 illustrations**, 0 malformed; **260 headers** up
+  to date;
+- `make all`: **8 signed packages**, 0 failure; `make verify`: SHA-256
+  checksums correct;
+- `git ls-files`: only the **public** certificate is tracked; the private key
+  is excluded.
+
+---
+
+## 2026-09-18 (evening) — installers, signing and attribution
+
+### Added
+- **A self-contained Linux installer**, `PhytoScope-X.Y.Z-Linux.run` — a
+  script and an archive in one file, in the manner of NVIDIA's `.run` files,
+  and the free equivalent of what InstallShield produces. It covers the
+  distributions with neither `.deb` nor `.rpm` (Arch, openSUSE, Alpine,
+  NixOS) and **installs without privileges**. Three interfaces: graphical
+  (zenity, kdialog), text-mode boxes (`--tui`), plain lines (`--text`). With
+  `--uninstall`, `--check`, `--extract` and an installation registry.
+- **A macOS `.pkg` installer** — written end to end in pure Python
+  (`macos_pkg.py`): a XAR archive, a cpio "odc" payload, a BOM. Neither
+  `pkgbuild`, nor `xar`, nor `mkbom` is needed. Everything written is read
+  back and checked again.
+- **A Windows `.msi` package** through `wixl` — the format group policy and
+  Intune deploy, with deterministic component identifiers so that updating a
+  fleet goes well. This is not InstallShield, which is a commercial product
+  running only on Windows; it is what InstallShield *produces*.
+- **All packages signed**: an X.509 code-signing certificate, Authenticode
+  for `.exe` and `.msi`, detached CMS (`.p7s`) for the rest. The certificate
+  being **self-signed**, every package says what the signature proves —
+  integrity, continuity of origin — and what it does not: it silences neither
+  SmartScreen nor Gatekeeper.
+- **Every installer asks** about the desktop icon and about launching at the
+  end, and **provides an uninstaller**. No uninstallation erases settings or
+  sessions.
+- `phytoscope/AUTHORS` — the attribution in a single file, read by the
+  software, by the package factory and by the certificate's subject.
+  Publisher (Bretagne Namasté) and author (Thierry GAYET) are distinguished
+  there.
+- `manuel.txt` per system, in addition to readme, install, licence and
+  changelog.
+
+### Verified
+- **Under Wine 6.0.3**: the bundled Python 3.11.9 interpreter starts, PySide6,
+  pyserial and sounddevice import, `run.py --version` runs correctly. NumPy
+  fails for want of `fetestexcept` in Wine's MSVC runtime — a gap in Wine,
+  not in the package. The NSIS installer, being 32-bit, could not be tried:
+  this machine has only 64-bit Wine.
+- The `.run`: installation, registry and `--uninstall` exercised end to end.
+- 225 tests green, 832 labels at 100 % in all eleven languages.
+
+---
+
+## 2026-09-18 (night) — the installation packages
+
+### Added
+- **`packaging/`** — a package factory, run from Debian, Ubuntu or Mint,
+  which produces the five targets in one command:
+
+  | Target | File | Requires on the receiving machine |
   |---|---|---|
-  | Debian, Ubuntu, Mint | `.deb` | rien |
-  | Fedora, RHEL, Rocky, Alma | `.rpm` | rien |
-  | Windows 10 et 11 | `.exe` (NSIS) + `.zip` portable | **rien, pas même Python** |
-  | macOS Intel + Apple Silicon | `.zip` contenant `PhytoScope.app` | Python 3.9+ |
-  | Tous systèmes | `.tar.gz` source | Python 3.9+ |
+  | Debian, Ubuntu, Mint | `.deb` | nothing |
+  | Fedora, RHEL, Rocky, Alma | `.rpm` | nothing |
+  | Windows 10 and 11 | `.exe` (NSIS) + a portable `.zip` | **nothing, not even Python** |
+  | macOS Intel + Apple Silicon | a `.zip` containing `PhytoScope.app` | Python 3.9+ |
+  | Every system | a source `.tar.gz` | Python 3.9+ |
 
-- **L'installateur Windows n'exige rien.** Il embarque l'interpréteur Python
-  (distribution « embarquable » officielle), Qt, NumPy et le logiciel :
-  177 Mo, un double-clic, des raccourcis, une entrée dans « Applications et
-  fonctionnalités » et un désinstallateur. Il est fabriqué depuis Linux, NSIS
-  existant aussi pour ce système.
-- **Les paquets Linux créent un environnement Python privé** dans
-  `/usr/share/phytoscope/venv` plutôt que de dépendre de `python3-pyside6`,
-  qui n'existe pas dans toutes les versions de Debian, d'Ubuntu ni de Fedora.
-  Avec `--hors-ligne`, ils embarquent les bibliothèques pour Python 3.9 à 3.13
-  et s'installent sans réseau — ce qu'il faut pour un atelier ou une salle de
-  classe.
-- **`build.py --deps` installe NSIS sans `sudo`**, dans `~/.local/opt`,
-  comme `build.sh --deps` le fait pour le SDK du micrologiciel.
-- Empreintes SHA-256 de chaque paquet, vérifiables par `sha256sum -c`.
+- **The Windows installer requires nothing.** It bundles the Python
+  interpreter (the official "embeddable" distribution), Qt, NumPy and the
+  software: 177 MB, one double-click, shortcuts, an entry in "Apps &
+  features" and an uninstaller. It is built from Linux, NSIS existing for
+  that system too.
+- **The Linux packages create a private Python environment** in
+  `/usr/share/phytoscope/venv` rather than depend on `python3-pyside6`, which
+  does not exist in every version of Debian, Ubuntu or Fedora. With
+  `--offline` they bundle the libraries for Python 3.9 to 3.13 and install
+  with no network — which is what a workshop or a classroom needs.
+- **`build.py --deps` installs NSIS without `sudo`**, in `~/.local/opt`, as
+  `build.sh --deps` does for the firmware's SDK.
+- SHA-256 checksums for every package, verifiable with `sha256sum -c`.
 
-### Assumé
-- **Rien n'est signé** : une signature Windows exige un certificat payant, une
-  signature Apple un compte développeur et un Mac. Les deux systèmes
-  avertiront à la première ouverture ; le `LISEZ-MOI.txt` de chaque paquet
-  explique comment passer outre. Mieux vaut le dire que laisser croire à une
-  garantie qui n'existe pas.
-- **Aucun de ces paquets n'a été essayé sur une vraie machine Windows ni sur
-  un Mac.** Leur structure est vérifiée (`dpkg-deb`, `rpm -qip`, contenu des
-  archives, type de l'exécutable) ; leur exécution ne l'est pas.
-
----
-
-## 2026-09-18 (nuit) — portabilité
-
-### Corrigé
-- **Logiciel 1.5.1** — revue complète Windows 10/11,
-  macOS (Intel et Apple Silicon) et GNU/Linux (Debian, Ubuntu, Mint, Fedora,
-  Red Hat) : treize points relevés, treize corrigés.
-- **La carte n'était jamais reconnue par ses identifiants USB** : le logiciel
-  cherchait `0x2E8A:0x10F5`, le micrologiciel déclare `0x1209:0x7A01`. Le
-  micrologiciel avait raison — `0x1209` est la plage libre de pid.codes,
-  `0x2E8A` appartient à Raspberry Pi. Sous Windows, le lien de contrôle était
-  inutilisable. Un essai lit désormais `usb_descriptors.c` et compare.
-- **L'entrée audio refusait de s'ouvrir sur Mac et sous Windows** (250 Hz
-  demandés à CoreAudio et WASAPI) : repli sur le débit natif du périphérique
-  et décimation logicielle, sans perdre un échantillon.
-- **Une dépendance facultative faisait échouer toute l'installation** :
-  `requirements-optionnel.txt` est désormais installé à part.
-- **Les polices** étaient nommées en dur à vingt et un endroits, sans repli :
-  `ui/fonts.py` déclare une pile et le genre de la police, et corrige la
-  taille sur macOS (72 ppp contre 96).
-- Périphérique audio résolu par interface hôte sous Windows ; raccourcis
-  affichés comme macOS les présente (⌘) ; port MIDI virtuel expliqué ; voix
-  de synthèse filtrée par moteur ; moteur SAPI créé dans son propre fil ;
-  redémarrage reconstruit ; rotation du journal tolérante ; noms de fichiers
-  translittérés en ASCII (NFD d'APFS, noms réservés de Windows).
-- **Micrologiciel** : `build.sh --deps` détecte l'architecture — il échouait
-  sur Apple Silicon et sur Raspberry Pi — et cherche le point de montage de
-  la carte au lieu de le supposer.
-- **Fabrication des PDF** : le compte de pages ne dépend plus de `pdfinfo` ;
-  les prérequis Pango / HarfBuzz / fontconfig sont déclarés.
-
-### Ajouté
-- `tests/test_portability.py` : vingt-trois essais qui vérifient sous Linux ce
-  qui ne se voit qu'ailleurs. **221 essais au vert.**
+### Owned
+- **Nothing is signed**: a Windows signature requires a paid certificate, an
+  Apple signature a developer account and a Mac. Both systems will warn at
+  first opening; each package's `readme.txt` explains how to get past it.
+  Better to say so than to let anybody believe in a guarantee that does not
+  exist.
+  *(Superseded on 2026-09-18, evening: all packages are now signed with a
+  self-signed certificate, and each says what that does and does not prove.)*
+- **None of these packages has been tried on a real Windows machine or on a
+  Mac.** Their structure is verified (`dpkg-deb`, `rpm -qip`, the archives'
+  contents, the executable's type); their execution is not.
 
 ---
 
-## 2026-09-18 (fin de journée)
+## 2026-09-18 (night) — portability
 
-### Ajouté
-- **Logiciel 1.5.0 « Ce que dit le bruit »** — quinze grandeurs scientifiques
-  dans le Multimètre, au premier rang desquelles la **résistance équivalente**
-  déduite du bruit thermique de Johnson-Nyquist (`R = Sᵥ / 4kT`), annoncée pour
-  ce qu'elle est : un **majorant**, pas une mesure à l'ohmmètre. Avec elle :
-  densité de bruit en nV/√Hz, bruit intégré dans 0,01–10 Hz, résidu de réseau,
-  facteur de crête, pente spectrale, écart d'Allan à 1 s et 10 s, intégration
-  optimale, temps de corrélation, normalité, résolution effective, marge de
-  saturation, taux d'événements et facteur de Fano.
-- **Fenêtre du journal (`Ctrl+L`)** : le fichier en direct, son emplacement en
-  toutes lettres, et « Enregistrer une copie… » vers l'endroit de son choix,
-  archives de rotation comprises. Lecture incrémentale, filtre par texte,
-  niveau réglable à chaud.
+### Fixed
+- **Software 1.5.1** — a complete review of Windows 10/11, macOS (Intel and
+  Apple Silicon) and GNU/Linux (Debian, Ubuntu, Mint, Fedora, Red Hat):
+  thirteen points found, thirteen fixed.
+- **The board was never recognised by its USB identifiers**: the software was
+  looking for `0x2E8A:0x10F5`, the firmware declares `0x1209:0x7A01`. The
+  firmware was right — `0x1209` is the free pid.codes range, `0x2E8A` belongs
+  to Raspberry Pi. On Windows the control link was unusable. A test now reads
+  `usb_descriptors.c` and compares.
+- **The audio input refused to open on Mac and on Windows** (250 Hz asked of
+  CoreAudio and WASAPI): it now falls back to the device's native rate and
+  decimates in software, without losing a sample.
+- **An optional dependency made the whole installation fail**:
+  `requirements-optionnel.txt` is now installed separately.
+- **The fonts** were hard-coded in twenty-one places, with no fallback:
+  `ui/fonts.py` declares a stack and the font's genre, and corrects the size
+  on macOS (72 dpi against 96).
+- The audio device is resolved by host interface on Windows; shortcuts are
+  shown as macOS presents them (⌘); the virtual MIDI port is explained; the
+  synthesis voice is filtered by engine; the SAPI engine is created on its own
+  thread; restart is rebuilt; log rotation is tolerant; file names are
+  transliterated to ASCII (APFS's NFD, Windows's reserved names).
+- **Firmware**: `build.sh --deps` detects the architecture — it failed on
+  Apple Silicon and on Raspberry Pi — and looks for the board's mount point
+  instead of assuming it.
+- **PDF building**: the page count no longer depends on `pdfinfo`; the Pango /
+  HarfBuzz / fontconfig prerequisites are declared.
 
-### Modifié
-- Les grandeurs sont calculées sur le signal **brut** : filtrer avant de
-  mesurer le bruit reviendrait à mesurer son propre filtre.
-- 826 libellés traduisibles (contre 755), 100 % dans les dix langues.
-- Les essais ne peuvent plus toucher la configuration de l'utilisateur
-  (`tests/conftest.py` détourne XDG_CONFIG_HOME et APPDATA).
-
----
-
-## 2026-09-18 (nuit)
-
-### Ajouté
-- **Logiciel 1.4.0 « Le cadran et l'empreinte »** — quatre vumètres à
-  balistique dans le Multimètre, empreinte de mesure du montage avec registre
-  des montages connus, barre de menus (Séance / Affichage / Aide).
-- Hors-série : planche **« Brancher une feuille et une racine »**, section sur
-  le choix de l'électrode de substrat, section sur l'empreinte de mesure et sa
-  limite (192 → 198 pages).
-
-### Corrigé
-- **L'aide et « À propos » étaient devenus inaccessibles** : la barre d'outils
-  avait débordé et Qt les avait escamotées. Elles vivent dans la barre de menus.
-- Le conseil d'électrode de substrat — une tige de laiton — était mauvais :
-  pile galvanique et cuivre toxique pour les racines. C'est désormais inox
-  316L, graphite ou pont salin Ag/AgCl.
+### Added
+- `tests/test_portability.py`: twenty-three tests that check under Linux what
+  only shows elsewhere. **221 tests green.**
 
 ---
 
-## 2026-09-18 (soir)
+## 2026-09-18 (end of day)
 
-### Ajouté
-- **Logiciel 1.3.0 « Le carnet de croquis »** — capture rapide d'échantillons
-  (`Ctrl+E`), relecture des séances et des échantillons **dans le moteur**,
-  surveillance de l'espace disque avec clôture propre avant saturation,
-  sélecteur de langue dans la barre d'outils, retour au zoom d'origine
-  (`Ctrl+0`), onze dictionnaires du mode vocal.
-- **Micrologiciel** : `build.sh` installe le Pico SDK et la chaîne ARM dans le
-  dossier personnel — sans privilège administrateur — et produit
-  `phytosense.uf2` (RP2350, 80 Ko).
-- **Mémoire du projet** : `AGENTS.md`, `constraints.md` (64 contraintes
-  numérotées), `.ai/journal.md`, `.ai/decisions.md`, `.ai/etat.md`.
-- Hors-série : chapitres sur les échantillons, l'espace disque et les langues
+### Added
+- **Software 1.5.0 "What the noise says"** — fifteen scientific quantities in
+  the Multimeter, foremost among them the **equivalent resistance** derived
+  from Johnson-Nyquist thermal noise (`R = Sᵥ / 4kT`), announced for what it
+  is: an **upper bound**, not an ohmmeter reading. With it: noise density in
+  nV/√Hz, noise integrated over 0.01–10 Hz, mains residue, crest factor,
+  spectral slope, Allan deviation at 1 s and 10 s, optimal integration,
+  correlation time, normality, effective resolution, saturation margin, event
+  rate and Fano factor.
+- **The log window (`Ctrl+L`)**: the file live, its location spelled out, and
+  "Save a copy…" to wherever you like, rotated archives included.
+  Incremental reading, a text filter, the level adjustable on the fly.
+
+### Changed
+- The quantities are computed on the **raw** signal: filtering before
+  measuring noise would amount to measuring your own filter.
+- 826 translatable labels (against 755), 100 % in the ten languages.
+- The tests can no longer touch the user's configuration
+  (`tests/conftest.py` redirects XDG_CONFIG_HOME and APPDATA).
+
+---
+
+## 2026-09-18 (night)
+
+### Added
+- **Software 1.4.0 "The dial and the fingerprint"** — four dials with proper
+  ballistics in the Multimeter, a measurement fingerprint of the rig with a
+  registry of known rigs, a menu bar (Session / View / Help).
+- Companion volume: the plate **"Connecting a leaf and a root"**, a section on
+  choosing the substrate electrode, a section on the measurement fingerprint
+  and its limits (192 → 198 pages).
+
+### Fixed
+- **Help and "About" had become unreachable**: the toolbar had overflowed and
+  Qt had tucked them away. They live in the menu bar.
+- The advice on the substrate electrode — a brass rod — was bad: a galvanic
+  cell, and copper is toxic to roots. It is now 316L stainless steel,
+  graphite, or an Ag/AgCl salt bridge.
+
+---
+
+## 2026-09-18 (evening)
+
+### Added
+- **Software 1.3.0 "The sketchbook"** — quick sample capture (`Ctrl+E`),
+  replay of sessions and samples **inside the engine**, disk-space watching
+  with a clean close before saturation, a language selector in the toolbar,
+  return to the original zoom (`Ctrl+0`), eleven Speech-mode dictionaries.
+- **Firmware**: `build.sh` installs the Pico SDK and the ARM toolchain in the
+  home directory — with no administrator privilege — and produces
+  `phytosense.uf2` (RP2350, 80 kB).
+- **The project's memory**: `AGENTS.md`, `constraints.md` (64 numbered
+  constraints), `.ai/journal.md`, `.ai/decisions.md`, `.ai/state.md`.
+- Companion volume: chapters on samples, disk space and languages
   (190 → 192 pages).
 
-### Modifié
-- Le mode vocal **coupe la musique** tant qu'il est actif, et affiche un voyant
-  permanent : le silence d'un mode qui parle rarement ne doit pas passer pour
-  une panne.
-- La **fenêtre se réduit** de nouveau : hauteur minimale de 1094 à 520 pixels.
+### Changed
+- Speech mode **mutes the music** while it is active, and shows a permanent
+  indicator: the silence of a mode that speaks rarely must not pass for a
+  fault.
+- The **window shrinks** again: minimum height from 1094 to 520 pixels.
 
-### Corrigé
-- La relecture rouvrait la sortie audio déjà ouverte — deux fils écrivaient
-  dans le même flux PortAudio.
-- Deux en-têtes manquaient dans `afe.c` : le micrologiciel ne compilait plus.
+### Fixed
+- Replay reopened the audio output that was already open — two threads were
+  writing into the same PortAudio stream.
+- Two headers were missing from `afe.c`: the firmware no longer built.
 
 ---
 
-## 2026-09-18 (matin)
+## 2026-09-18 (morning)
 
-### Ajouté
-- **Logiciel 1.2.0 « Onze langues »** — interface traduite en français (source),
-  anglais américain, espagnol, portugais, italien, indonésien, russe, chinois,
-  japonais, coréen et arabe ; écriture de droite à gauche pour l'arabe ;
-  ajout d'une langue par simple dépôt d'un fichier JSON.
-- **Onze dictionnaires du mode vocal**, un par langue, avec gabarits de phrase
-  propres aux langues dont l'ordre des mots diffère du français.
-- **Surveillance de l'espace disque** pendant l'enregistrement : alerte à vingt
-  minutes d'autonomie, clôture propre de la séance avant saturation.
-- **`build.sh` du micrologiciel** : installe Pico SDK et chaîne ARM dans le
-  dossier personnel, sans privilège administrateur, puis construit
+### Added
+- **Software 1.2.0 "Eleven languages"** — the interface translated into
+  French (then the source), American English, Spanish, Portuguese, Italian,
+  Indonesian, Russian, Chinese, Japanese, Korean and Arabic; right-to-left
+  layout for Arabic; a language added by simply dropping in a JSON file.
+- **Eleven Speech-mode dictionaries**, one per language, with sentence
+  templates of their own for the languages whose word order differs.
+- **Disk-space watching** during recording: a warning at twenty minutes of
+  headroom, and a clean close of the session before saturation.
+- **The firmware's `build.sh`**: installs the Pico SDK and the ARM toolchain
+  in the home directory, with no administrator privilege, then builds
   `phytosense.uf2`.
-- **Mémoire des agents** : `AGENTS.md`, `constraints.md`, `.ai/journal.md`,
-  `.ai/decisions.md`, `.ai/etat.md`.
+- **The agent memory**: `AGENTS.md`, `constraints.md`, `.ai/journal.md`,
+  `.ai/decisions.md`, `.ai/state.md`.
 
-### Modifié
-- Le mode vocal **coupe la musique** tant qu'il est actif, et affiche en
-  permanence son état et son dernier énoncé.
-- Le micrologiciel compile de nouveau : deux en-têtes manquaient dans `afe.c`.
+### Changed
+- Speech mode **mutes the music** while it is active, and shows its state and
+  its last utterance at all times.
+- The firmware builds again: two headers were missing from `afe.c`.
 
-### Corrigé
-- Une option de ligne de commande (`--lang`, `--simulation`, `--theme`…) ne
-  s'inscrit plus dans le fichier de réglages : elle vaut pour la séance.
+### Fixed
+- A command-line option (`--lang`, `--simulation`, `--theme`…) is no longer
+  written into the settings file: it holds for the session.
 
 ---
 
 ## 2026-09-17
 
-### Ajouté
-- **Logiciel 1.1.0 « Les mots et les ondes »** — onglet *Descripteurs* (forme
-  d'onde, FFT, ondelettes de Morlet, MFCC, prédiction linéaire, cepstre) et
-  onglet *Parole* (mode vocal, dictionnaire, synthèse hors ligne).
-- **Ctrl+C interrompt le logiciel**, interface graphique comprise, avec chien
-  de garde et prise en charge de SIGTERM.
-- Page d'aide des raccourcis **vérifiée par le programme** à chaque ouverture.
-- Hors-série : chapitres « Six regards sur le même signal » et « Des mots au
-  lieu des notes », deux planches originales (176 → 186 pages).
+### Added
+- **Software 1.1.0 "Words and waves"** — the *Descriptors* tab (waveform,
+  FFT, Morlet wavelets, MFCC, linear prediction, cepstrum) and the *Speech*
+  tab (Speech mode, dictionary, offline synthesis).
+- **Ctrl+C interrupts the software**, graphical interface included, with a
+  watchdog and SIGTERM handling.
+- The keyboard-shortcut help page is **checked by the program** every time it
+  opens.
+- Companion volume: the chapters "Six looks at the same signal" and "Words
+  instead of notes", two original plates (176 → 186 pages).
 
-### Corrigé
-- Un changement de réglage ne vide plus la mémoire de signal : la chaîne n'est
-  reconstruite que si l'un de ses propres réglages change.
+### Fixed
+- A settings change no longer clears the signal memory: the chain is rebuilt
+  only when one of its own settings changes.
 
 ---
 
 ## 2026-09-15 → 2026-09-17
 
-### Ajouté
-- **L'ouvrage** *La Musique des Plantes* — 478 pages, 10 parties, 40 chapitres,
-  5 annexes, 28 illustrations vectorielles, 21 planches de brevets traduites.
-- **Le hors-série** *La Carte PhytoSense* et ses trois fascicules détachables.
-- **La carte PhytoSense One** : schémas, routage quatre couches, nomenclature
-  chiffrée, gabarits de face avant et arrière.
-- **Le micrologiciel RP2350** : ADS131M04 en SPI/DMA, USB en classe audio 2.0.
-- **Le logiciel PhytoScope 1.0.0 « Première sève »** : quatre sources, quatre
-  instruments, sonification documentée, bibliothèque, diagnostic, mode sans
-  interface, 56 tests.
+### Added
+- **The book** *La Musique des Plantes* — 478 pages, 10 parts, 40 chapters,
+  5 appendices, 28 vector illustrations, 21 translated patent plates.
+- **The companion volume** *La Carte PhytoSense* and its three detachable
+  fascicles.
+- **The PhytoSense One board**: schematics, four-layer routing, a costed bill
+  of materials, front- and rear-panel templates.
+- **The RP2350 firmware**: ADS131M04 over SPI/DMA, USB as audio class 2.0.
+- **The PhytoScope 1.0.0 software, "First sap"**: four sources, four
+  instruments, documented sonification, a library, diagnostics, a headless
+  mode, 56 tests.

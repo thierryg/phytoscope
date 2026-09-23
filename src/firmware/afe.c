@@ -2,37 +2,36 @@
  *  ==========================================================================
  *  PhytoScope — attribution — src/firmware/afe.c
  *
- *  Version  : 1.5.1
- *  Date     : 2026-09-18
- *  Éditeur  : Bretagne Namasté
- *  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
- *  Site     : https://bretagne-namaste.com
- *  Contact  : contact@bretagne-namaste.com
- *  Licence  : MIT — voir LICENCE.txt
+ *  Version   : 1.6.0
+ *  Date      : 2026-09-23
+ *  Publisher : Bretagne Namasté
+ *  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+ *  Website   : https://bretagne-namaste.com
+ *  Contact   : contact@bretagne-namaste.com
+ *  License   : MIT — see LICENSE.txt
  *
  *  SPDX-License-Identifier: MIT
- *  fin de l'attribution
+ *  end of attribution
  *  ==========================================================================
  */
 
 /* ===========================================================================
- *  afe.c — chaîne analogique : convertisseur, gain, gamme, auto-test.
+ *  afe.c — the analog chain: converter, gain, range, self-test.
  *
- *  Tout ce qui touche à la mesure est ici, et rien d'autre. Le reste du
- *  micrologiciel ignore comment un code brut devient des volts : il appelle
- *  afe_en_volts() et se tait.
+ *  Everything that touches the measurement is here, and nothing else. The
+ *  rest of the firmware does not know how a raw code becomes volts: it calls
+ *  afe_to_volts() and keeps quiet.
  *
- *  Le convertisseur ADS131M04 est servi par SPI en accès direct à la mémoire,
- *  déclenché par sa propre broche « données prêtes ». Le microcontrôleur ne
- *  scrute rien : il est réveillé par le convertisseur, ce qui garantit que la
- *  cadence d'échantillonnage est celle du quartz compensé, et non celle d'une
- *  boucle logicielle.
+ *  The ADS131M04 converter is served over SPI by direct memory access,
+ *  triggered by its own "data ready" pin. The microcontroller polls nothing:
+ *  it is woken by the converter, which is what guarantees the sample rate is
+ *  the compensated crystal's and not a software loop's.
  *
- *  Licence MIT — Bretagne Namasté — https://bretagne-namaste.com
+ *  MIT licence — Bretagne Namasté — https://bretagne-namaste.com
  * ======================================================================== */
 
-#include <math.h>        /* sqrt(), pour l'écart-type de l'auto-test          */
-#include <stdio.h>       /* snprintf(), pour lire l'étiquette de la carte     */
+#include <math.h>        /* sqrt(), for the self-test's standard deviation    */
+#include <stdio.h>       /* snprintf(), to read the daughter board's label    */
 #include <string.h>
 
 #include "pico/stdlib.h"
@@ -44,29 +43,29 @@
 #include "afe.h"
 
 /* --------------------------------------------------------------------------
- *  Brochage
+ *  Pin assignment
  * ----------------------------------------------------------------------- */
 #define SPI_PORT        spi0
-#define BR_SCK          2
-#define BR_MOSI         3
-#define BR_MISO         4
-#define BR_CS           5
-#define BR_DRDY         6        /* données prêtes, actif bas */
-#define BR_RESET        7
+#define PIN_SCK          2
+#define PIN_MOSI         3
+#define PIN_MISO         4
+#define PIN_CS           5
+#define PIN_DRDY         6        /* data ready, active low */
+#define PIN_RESET        7
 
 #define I2C_PORT        i2c0
-#define BR_SDA          20
-#define BR_SCL          21
+#define PIN_SDA          20
+#define PIN_SCL          21
 
-#define BR_GAIN_A0      10       /* sélection du gain, multiplexeur U8 */
-#define BR_GAIN_A1      11
-#define BR_GAMME_A0     12       /* sélection de gamme, multiplexeur U6 */
-#define BR_GAMME_A1     13
-#define BR_TEST_A0      14       /* réseau d'auto-test, multiplexeur U50 */
-#define BR_TEST_A1      15
+#define PIN_GAIN_A0      10       /* gain selection, multiplexer U8 */
+#define PIN_GAIN_A1      11
+#define PIN_RANGE_A0     12       /* range selection, multiplexer U6 */
+#define PIN_RANGE_A1     13
+#define PIN_TEST_A0      14       /* self-test network, multiplexer U50 */
+#define PIN_TEST_A1      15
 
 /* --------------------------------------------------------------------------
- *  Registres de l'ADS131M04 (notice SBAS950)
+ *  ADS131M04 registers (datasheet SBAS950)
  * ----------------------------------------------------------------------- */
 #define REG_ID          0x00
 #define REG_STATUS      0x01
@@ -83,312 +82,313 @@
 #define CMD_RREG        0xA000
 #define CMD_WREG        0x6000
 
-/*  MODE : mot de 24 bits, CRC désactivé, données alignées à gauche.
- *  CLOCK : quatre voies actives, suréchantillonnage 4096 → 250 Hz avec
- *  le quartz à 12,288 MHz (12,288 MHz / 2 / 4096 / 6 = 250 Hz).            */
-#define MODE_DEFAUT     0x0510
-#define CLOCK_DEFAUT    0x0F0E   /* voies 0-3 actives, OSR 4096 */
-#define GAIN_DEFAUT     0x0000   /* gain interne ×1 : le gain est analogique */
+/*  MODE: 24-bit word, CRC disabled, data left-aligned.
+ *  CLOCK: four channels active, 4096x oversampling -> 250 Hz with the
+ *  12.288 MHz crystal (12.288 MHz / 2 / 4096 / 6 = 250 Hz).                */
+#define MODE_DEFAULT     0x0510
+#define CLOCK_DEFAULT    0x0F0E   /* channels 0-3 enabled, OSR 4096 */
+#define GAIN_DEFAULT     0x0000   /* internal gain x1: the gain is analog */
 
 /* --------------------------------------------------------------------------
- *  Tables : gains de l'étage programmable, gammes du pont, étalons
+ *  Tables: programmable-stage gains, bridge ranges, reference resistors
  * ----------------------------------------------------------------------- */
-static const uint16_t TABLE_GAINS[AFE_GAINS]   = {2, 10, 20, 200};
-static const uint32_t TABLE_GAMMES[AFE_GAMMES] = {100000u, 1000000u,
+static const uint16_t GAIN_TABLE[AFE_GAINS]   = {2, 10, 20, 200};
+static const uint32_t RANGE_TABLE[AFE_RANGES] = {100000u, 1000000u,
                                                   10000000u, 100000000u};
-static const uint32_t TABLE_ETALONS[AFE_ETALONS] = {1000000u, 10000000u,
+static const uint32_t REFERENCE_TABLE[AFE_STANDARDS] = {1000000u, 10000000u,
                                                     100000000u};
 
-#define PLEINE_ECHELLE_V   1.2f      /* ±1,2 V avec la référence à 2,5 V */
-#define CODE_PLEINE_ECHELLE 8388608.0f
+#define FULL_SCALE_V   1.2f      /* +/-1.2 V with the 2.5 V reference */
+#define FULL_SCALE_CODE 8388608.0f
 
 /* --------------------------------------------------------------------------
  *  État interne
  * ----------------------------------------------------------------------- */
-static afe_etat_t etat = {
-    .gain = 1, .gamme = 1, .auto_gain = true, .offset_cna = 32768,
-    .sature = false, .temperature_c = 0.0f,
+static afe_state_t state = {
+    .gain = 1, .range = 1, .auto_gain = true, .dac_offset = 32768,
+    .saturated = false, .temperature_c = 0.0f,
 };
-static volatile bool pret = false;
-static uint8_t trame[ (AFE_VOIES + 2) * 3 ];   /* état + 4 voies + CRC */
+static volatile bool ready = false;
+static uint8_t frame[ (AFE_CHANNELS + 2) * 3 ];   /* status + 4 channels + CRC */
 
 /* --------------------------------------------------------------------------
- *  Accès SPI de bas niveau
+ *  Low-level SPI access
  * ----------------------------------------------------------------------- */
-static void cs(bool actif)
+static void cs(bool active)
 {
-    gpio_put(BR_CS, actif ? 0 : 1);
+    gpio_put(PIN_CS, active ? 0 : 1);
     asm volatile("nop \n nop \n nop");
 }
 
-static uint16_t spi_mot(uint16_t sortie)
+static uint16_t spi_word(uint16_t out)
 {
-    uint8_t tx[3] = { (uint8_t)(sortie >> 8), (uint8_t)(sortie & 0xFF), 0 };
+    uint8_t tx[3] = { (uint8_t)(out >> 8), (uint8_t)(out & 0xFF), 0 };
     uint8_t rx[3] = {0};
     spi_write_read_blocking(SPI_PORT, tx, rx, 3);
     return (uint16_t)((rx[0] << 8) | rx[1]);
 }
 
-static uint16_t reg_lire(uint8_t adresse)
+static uint16_t reg_read(uint8_t address)
 {
     cs(true);
-    spi_mot(CMD_RREG | ((uint16_t)adresse << 7));
-    uint16_t valeur = spi_mot(CMD_NULL);
+    spi_word(CMD_RREG | ((uint16_t)address << 7));
+    uint16_t value = spi_word(CMD_NULL);
     cs(false);
-    return valeur;
+    return value;
 }
 
-static void reg_ecrire(uint8_t adresse, uint16_t valeur)
+static void reg_write(uint8_t address, uint16_t value)
 {
     cs(true);
-    spi_mot(CMD_WREG | ((uint16_t)adresse << 7));
-    spi_mot(valeur);
+    spi_word(CMD_WREG | ((uint16_t)address << 7));
+    spi_word(value);
     cs(false);
 }
 
 /* --------------------------------------------------------------------------
- *  Interruption « données prêtes »
+ *  The "data ready" interrupt
  * ----------------------------------------------------------------------- */
-static void sur_drdy(uint gpio, uint32_t evenements)
+static void on_drdy(uint gpio, uint32_t events)
 {
-    (void)gpio; (void)evenements;
-    pret = true;
+    (void)gpio; (void)events;
+    ready = true;
 }
 
 /* --------------------------------------------------------------------------
- *  Sélection du gain et de la gamme
+ *  Gain and range selection
  *
- *  Les deux multiplexeurs sont pilotés par deux broches chacun. On attend
- *  ensuite quelques millisecondes : changer de gain fait sauter la sortie,
- *  et les échantillons de la transition ne valent rien. Le micrologiciel les
- *  marque plutôt que de les jeter en silence — c'est à l'ordinateur de
- *  décider quoi en faire.
+ *  Each of the two multiplexers is driven by two pins. We then wait a few
+ *  milliseconds: changing the gain makes the output jump,
+ *  and the samples taken during the transition are worthless. The firmware
+ *  MARKS them rather than dropping them silently — what to do with them is
+ *  the computer's decision, not ours.
  * ----------------------------------------------------------------------- */
-bool afe_set_gain(int indice)
+bool afe_set_gain(int idx)
 {
-    if (indice < 0) {
-        etat.auto_gain = true;
+    if (idx < 0) {
+        state.auto_gain = true;
         return true;
     }
-    if (indice >= AFE_GAINS) {
+    if (idx >= AFE_GAINS) {
         return false;
     }
-    etat.auto_gain = false;
-    etat.gain = (uint8_t)indice;
-    gpio_put(BR_GAIN_A0, indice & 1);
-    gpio_put(BR_GAIN_A1, (indice >> 1) & 1);
+    state.auto_gain = false;
+    state.gain = (uint8_t)idx;
+    gpio_put(PIN_GAIN_A0, idx & 1);
+    gpio_put(PIN_GAIN_A1, (idx >> 1) & 1);
     sleep_ms(2);
     return true;
 }
 
-bool afe_set_gamme(int indice)
+bool afe_set_range(int idx)
 {
-    if (indice < 0 || indice >= AFE_GAMMES) {
+    if (idx < 0 || idx >= AFE_RANGES) {
         return false;
     }
-    etat.gamme = (uint8_t)indice;
-    gpio_put(BR_GAMME_A0, indice & 1);
-    gpio_put(BR_GAMME_A1, (indice >> 1) & 1);
+    state.range = (uint8_t)idx;
+    gpio_put(PIN_RANGE_A0, idx & 1);
+    gpio_put(PIN_RANGE_A1, (idx >> 1) & 1);
     sleep_ms(2);
     return true;
 }
 
 void afe_set_offset(uint16_t code)
 {
-    etat.offset_cna = code;
-    /* Le convertisseur numérique-analogique de recentrage partage le bus I²C.
-     * Adresse 0x4C, deux octets, poids fort en tête. */
+    state.dac_offset = code;
+    /* The re-centring DAC shares the I2C bus. Address 0x4C, two bytes,
+     * most significant first. */
     uint8_t message[3] = { 0x00, (uint8_t)(code >> 8), (uint8_t)(code & 0xFF) };
     i2c_write_blocking(I2C_PORT, 0x4C, message, sizeof(message), false);
 }
 
-const uint16_t *afe_table_gains(void)   { return TABLE_GAINS; }
-const uint32_t *afe_table_gammes(void)  { return TABLE_GAMMES; }
+const uint16_t *afe_gain_table(void)   { return GAIN_TABLE; }
+const uint32_t *afe_range_table(void)  { return RANGE_TABLE; }
 
 /* --------------------------------------------------------------------------
- *  Boucle d'auto-échelle
+ *  Auto-ranging loop
  *
- *  Règle : on descend d'un cran dès que l'on dépasse 90 % de la pleine
- *  échelle, on remonte quand on est resté sous 20 % pendant plus d'une
- *  seconde. L'hystérésis évite le battement sur un signal qui oscille
- *  autour d'un seuil — défaut classique des auto-échelles naïves.
+ *  The rule: step down as soon as 90 % of full scale is exceeded; step back
+ *  up after more than a second below 20 %. The hysteresis is what keeps a
+ *  signal oscillating around a threshold from making the range chatter — the
+ *  classic failing of a naive auto-range.
  * ----------------------------------------------------------------------- */
-static void auto_echelle(int32_t code)
+static void auto_range(int32_t code)
 {
-    static uint32_t bas_depuis = 0;
-    float fraction = (float)(code < 0 ? -code : code) / CODE_PLEINE_ECHELLE;
+    static uint32_t low_since = 0;
+    float fraction = (float)(code < 0 ? -code : code) / FULL_SCALE_CODE;
 
     if (fraction > 0.90f) {
-        etat.sature = true;
-        if (etat.gain > 0) {
-            afe_set_gain(etat.gain - 1);
-            etat.auto_gain = true;
+        state.saturated = true;
+        if (state.gain > 0) {
+            afe_set_gain(state.gain - 1);
+            state.auto_gain = true;
         }
-        bas_depuis = 0;
+        low_since = 0;
         return;
     }
-    etat.sature = false;
+    state.saturated = false;
 
     if (fraction < 0.20f) {
-        if (++bas_depuis > 250u && etat.gain < AFE_GAINS - 1) {
-            afe_set_gain(etat.gain + 1);
-            etat.auto_gain = true;
-            bas_depuis = 0;
+        if (++low_since > 250u && state.gain < AFE_GAINS - 1) {
+            afe_set_gain(state.gain + 1);
+            state.auto_gain = true;
+            low_since = 0;
         }
     } else {
-        bas_depuis = 0;
+        low_since = 0;
     }
 }
 
 /* --------------------------------------------------------------------------
- *  Lecture d'un échantillon
+ *  Reading one sample set
  * ----------------------------------------------------------------------- */
-bool afe_lire(afe_echantillon_t *sortie)
+bool afe_read(afe_sample_t *out)
 {
-    if (!pret) {
+    if (!ready) {
         return false;
     }
-    pret = false;
+    ready = false;
 
     cs(true);
-    uint8_t tx[sizeof(trame)];
+    uint8_t tx[sizeof(frame)];
     memset(tx, 0, sizeof(tx));
-    spi_write_read_blocking(SPI_PORT, tx, trame, sizeof(trame));
+    spi_write_read_blocking(SPI_PORT, tx, frame, sizeof(frame));
     cs(false);
 
-    /* Le premier mot est l'état ; viennent ensuite les quatre voies, chacune
-     * sur trois octets, en complément à deux. */
-    for (int v = 0; v < AFE_VOIES; v++) {
-        const uint8_t *p = &trame[3 + v * 3];
+    /* The first word is the status; then the four channels, three bytes
+     * each, in two's complement. */
+    for (int v = 0; v < AFE_CHANNELS; v++) {
+        const uint8_t *p = &frame[3 + v * 3];
         int32_t code = ((int32_t)p[0] << 16) | ((int32_t)p[1] << 8) | p[2];
         if (code & 0x800000) {
-            code -= 0x1000000;        /* extension de signe sur 24 bits */
+            code -= 0x1000000;        /* sign-extend from 24 bits */
         }
-        sortie->voie[v] = code;
+        out->channel[v] = code;
     }
-    if (etat.auto_gain) {
-        auto_echelle(sortie->voie[0]);
+    if (state.auto_gain) {
+        auto_range(out->channel[0]);
     }
     return true;
 }
 
-void afe_etat(afe_etat_t *sortie) { *sortie = etat; }
+void afe_state(afe_state_t *out) { *out = state; }
 
-float afe_en_volts(int32_t code, const afe_etat_t *e)
+float afe_to_volts(int32_t code, const afe_state_t *e)
 {
-    float gain = (float)TABLE_GAINS[e->gain < AFE_GAINS ? e->gain : 0];
-    return ((float)code / CODE_PLEINE_ECHELLE) * PLEINE_ECHELLE_V / gain;
+    float gain = (float)GAIN_TABLE[e->gain < AFE_GAINS ? e->gain : 0];
+    return ((float)code / FULL_SCALE_CODE) * FULL_SCALE_V / gain;
 }
 
 /* --------------------------------------------------------------------------
- *  Auto-test sur les étalons internes
+ *  Self-test against the internal reference resistors
  *
- *  Trois résistances à 0,1 % sont substituées tour à tour au végétal. On
- *  mesure, on compare, on rend l'écart. C'est cette fonction qui permet de
- *  répondre en trente secondes à la seule question qui compte devant une
- *  mesure surprenante : est-ce la plante, ou est-ce l'appareil ?
+ *  Three 0.1 % resistors are substituted for the plant in turn. Measure,
+ *  compare, report the error. This is the function that answers, in thirty
+ *  seconds, the only question that matters in front of a surprising
+ *  measurement: is it the plant, or is it the instrument?
  * ----------------------------------------------------------------------- */
-static void test_selectionner(int indice)
+static void test_select(int idx)
 {
-    gpio_put(BR_TEST_A0, indice & 1);
-    gpio_put(BR_TEST_A1, (indice >> 1) & 1);
-    sleep_ms(50);                      /* laisser le filtre s'établir */
+    gpio_put(PIN_TEST_A0, idx & 1);
+    gpio_put(PIN_TEST_A1, (idx >> 1) & 1);
+    sleep_ms(50);                      /* let the filter settle */
 }
 
-static float moyenne_sur(int echantillons)
+static float average_over(int samples)
 {
-    double somme = 0.0;
-    afe_echantillon_t e;
-    int obtenus = 0;
-    absolute_time_t limite = make_timeout_time_ms(2000);
-    while (obtenus < echantillons && !time_reached(limite)) {
-        if (afe_lire(&e)) {
-            somme += afe_en_volts(e.voie[0], &etat);
-            obtenus++;
+    double sum = 0.0;
+    afe_sample_t e;
+    int got = 0;
+    absolute_time_t deadline = make_timeout_time_ms(2000);
+    while (got < samples && !time_reached(deadline)) {
+        if (afe_read(&e)) {
+            sum += afe_to_volts(e.channel[0], &state);
+            got++;
         }
     }
-    return obtenus ? (float)(somme / obtenus) : 0.0f;
+    return got ? (float)(sum / got) : 0.0f;
 }
 
-bool afe_autotest(afe_autotest_t *rapport)
+bool afe_selftest(afe_selftest_t *report)
 {
-    if (rapport == NULL) {
+    if (report == NULL) {
         return false;
     }
-    memset(rapport, 0, sizeof(*rapport));
+    memset(report, 0, sizeof(*report));
 
-    const uint8_t gain_initial = etat.gain;
-    const bool auto_initial = etat.auto_gain;
-    afe_set_gain(1);                   /* ×10 : compromis pour les trois */
+    const uint8_t initial_gain = state.gain;
+    const bool initial_auto = state.auto_gain;
+    afe_set_gain(1);                   /* x10: a compromise for all three */
 
-    /* 1. plancher de bruit, entrée sur l'étalon le plus élevé */
-    test_selectionner(3);
-    float base = moyenne_sur(200);
-    double somme_carres = 0.0;
-    afe_echantillon_t e;
+    /* 1. noise floor, input on the highest reference */
+    test_select(3);
+    float base = average_over(200);
+    double sum_of_squares = 0.0;
+    afe_sample_t e;
     for (int i = 0; i < 200; i++) {
-        while (!afe_lire(&e)) { tight_loop_contents(); }
-        float v = afe_en_volts(e.voie[0], &etat) - base;
-        somme_carres += (double)v * v;
+        while (!afe_read(&e)) { tight_loop_contents(); }
+        float v = afe_to_volts(e.channel[0], &state) - base;
+        sum_of_squares += (double)v * v;
     }
-    rapport->bruit_v = (float)sqrt(somme_carres / 200.0);
+    report->noise_v = (float)sqrt(sum_of_squares / 200.0);
 
-    /* 2. les trois étalons */
-    bool reussi = true;
-    for (int i = 0; i < AFE_ETALONS; i++) {
-        test_selectionner(i);
-        float mesure = moyenne_sur(100);
-        /* La conversion tension → résistance dépend du courant d'excitation,
-         * calibré en usine et rangé en mémoire. Ici, forme simplifiée. */
-        float attendu = (float)TABLE_ETALONS[i];
-        float ohms = mesure / 1.0e-7f;          /* 100 nA d'excitation */
-        rapport->mesure_ohm[i] = ohms;
-        rapport->ecart_pourcent[i] = 100.0f * (ohms - attendu) / attendu;
-        if (rapport->ecart_pourcent[i] > 0.5f ||
-            rapport->ecart_pourcent[i] < -0.5f) {
-            reussi = false;
+    /* 2. the three references */
+    bool passed = true;
+    for (int i = 0; i < AFE_STANDARDS; i++) {
+        test_select(i);
+        float measurement = average_over(100);
+        /* Converting voltage to resistance depends on the excitation
+         * current, calibrated in the factory and stored in memory. A
+         * simplified form is used here. */
+        float expected = (float)REFERENCE_TABLE[i];
+        float ohms = measurement / 1.0e-7f;          /* 100 nA d'excitation */
+        report->measured_ohm[i] = ohms;
+        report->error_percent[i] = 100.0f * (ohms - expected) / expected;
+        if (report->error_percent[i] > 0.5f ||
+            report->error_percent[i] < -0.5f) {
+            passed = false;
         }
     }
 
-    /* 3. courant de fuite, par la méthode de la capacité de charge */
-    test_selectionner(3);              /* entrée ouverte sur 100 pF */
-    float v0 = moyenne_sur(20);
+    /* 3. leakage current, by the charge-capacitance method */
+    test_select(3);              /* open input onto 100 pF */
+    float v0 = average_over(20);
     sleep_ms(1000);
-    float v1 = moyenne_sur(20);
-    rapport->fuite_fa = (v1 - v0) * 100e-12f * 1e15f;   /* I = C·dV/dt */
+    float v1 = average_over(20);
+    report->leakage_fa = (v1 - v0) * 100e-12f * 1e15f;   /* I = C·dV/dt */
 
-    test_selectionner(0);
-    afe_set_gain(auto_initial ? -1 : gain_initial);
-    rapport->reussi = reussi;
+    test_select(0);
+    afe_set_gain(initial_auto ? -1 : initial_gain);
+    report->passed = passed;
     return true;
 }
 
 /* --------------------------------------------------------------------------
- *  Mémoire d'identification de la carte fille
+ *  The daughter board's identification memory
  *
- *  Chaque carte fille porte une 24AA02 sur le bus I²C isolé. Les seize
- *  premiers octets suffisent : type, numéro de série, date d'étalonnage.
- *  Le microcontrôleur les lit au démarrage et les transmet à l'ordinateur,
- *  qui adapte alors ses unités sans que l'utilisateur ait rien à déclarer.
+ *  Every daughter board carries a 24AA02 on the isolated I2C bus. The first
+ *  sixteen bytes are enough: type, serial number, calibration date. The
+ *  microcontroller reads them at start-up and passes them to the computer,
+ *  which then adapts its units without the user having to declare anything.
  * ----------------------------------------------------------------------- */
-bool afe_lire_eeprom_carte_fille(char *type, size_t type_max,
-                                 char *serie, size_t serie_max)
+bool afe_read_daughter_eeprom(char *type, size_t type_max,
+                                 char *serial, size_t serial_max)
 {
-    uint8_t adresse = 0x00;
+    uint8_t address = 0x00;
     uint8_t donnees[32] = {0};
 
-    if (i2c_write_blocking(I2C_PORT, 0x50, &adresse, 1, true) < 0) {
+    if (i2c_write_blocking(I2C_PORT, 0x50, &address, 1, true) < 0) {
         return false;
     }
     if (i2c_read_blocking(I2C_PORT, 0x50, donnees, sizeof(donnees), false) < 0) {
         return false;
     }
-    /*  Format : 'P','S','1',version | type[8] | série[12] | date[8] | somme */
+    /*  Layout: 'P','S','1',version | type[8] | serial[12] | date[8] | sum */
     if (donnees[0] != 'P' || donnees[1] != 'S' || donnees[2] != '1') {
         return false;
     }
     snprintf(type, type_max, "%.8s", (const char *)&donnees[4]);
-    snprintf(serie, serie_max, "%.12s", (const char *)&donnees[12]);
+    snprintf(serial, serial_max, "%.12s", (const char *)&donnees[12]);
     return true;
 }
 
@@ -397,66 +397,66 @@ bool afe_lire_eeprom_carte_fille(char *type, size_t type_max,
  * ----------------------------------------------------------------------- */
 bool afe_init(void)
 {
-    /* SPI à 8 MHz : le convertisseur accepte 25 MHz, mais rien n'oblige à
-     * courir, et des fronts plus lents rayonnent moins. */
+    /* SPI at 8 MHz: the converter accepts 25 MHz, but there is no reason to
+     * fast, and slower edges radiate less. */
     spi_init(SPI_PORT, 8 * 1000 * 1000);
     spi_set_format(SPI_PORT, 8, SPI_CPOL_0, SPI_CPHA_1, SPI_MSB_FIRST);
-    gpio_set_function(BR_SCK, GPIO_FUNC_SPI);
-    gpio_set_function(BR_MOSI, GPIO_FUNC_SPI);
-    gpio_set_function(BR_MISO, GPIO_FUNC_SPI);
+    gpio_set_function(PIN_SCK, GPIO_FUNC_SPI);
+    gpio_set_function(PIN_MOSI, GPIO_FUNC_SPI);
+    gpio_set_function(PIN_MISO, GPIO_FUNC_SPI);
 
-    gpio_init(BR_CS);   gpio_set_dir(BR_CS, GPIO_OUT);   gpio_put(BR_CS, 1);
-    gpio_init(BR_RESET); gpio_set_dir(BR_RESET, GPIO_OUT); gpio_put(BR_RESET, 1);
+    gpio_init(PIN_CS);   gpio_set_dir(PIN_CS, GPIO_OUT);   gpio_put(PIN_CS, 1);
+    gpio_init(PIN_RESET); gpio_set_dir(PIN_RESET, GPIO_OUT); gpio_put(PIN_RESET, 1);
 
     for (int b = 0; b < 6; b++) {
-        const uint broches[] = { BR_GAIN_A0, BR_GAIN_A1, BR_GAMME_A0,
-                                 BR_GAMME_A1, BR_TEST_A0, BR_TEST_A1 };
+        const uint broches[] = { PIN_GAIN_A0, PIN_GAIN_A1, PIN_RANGE_A0,
+                                 PIN_RANGE_A1, PIN_TEST_A0, PIN_TEST_A1 };
         gpio_init(broches[b]);
         gpio_set_dir(broches[b], GPIO_OUT);
         gpio_put(broches[b], 0);
     }
 
     i2c_init(I2C_PORT, 400 * 1000);
-    gpio_set_function(BR_SDA, GPIO_FUNC_I2C);
-    gpio_set_function(BR_SCL, GPIO_FUNC_I2C);
-    gpio_pull_up(BR_SDA);
-    gpio_pull_up(BR_SCL);
+    gpio_set_function(PIN_SDA, GPIO_FUNC_I2C);
+    gpio_set_function(PIN_SCL, GPIO_FUNC_I2C);
+    gpio_pull_up(PIN_SDA);
+    gpio_pull_up(PIN_SCL);
 
-    /* Réinitialisation matérielle, puis logicielle */
-    gpio_put(BR_RESET, 0);
+    /* Hardware reset, then software reset */
+    gpio_put(PIN_RESET, 0);
     sleep_ms(2);
-    gpio_put(BR_RESET, 1);
+    gpio_put(PIN_RESET, 1);
     sleep_ms(10);
-    cs(true); spi_mot(CMD_RESET); cs(false);
+    cs(true); spi_word(CMD_RESET); cs(false);
     sleep_ms(10);
 
-    if ((reg_lire(REG_ID) & 0xFF00) == 0) {
-        return false;                  /* aucun convertisseur sur le bus */
+    if ((reg_read(REG_ID) & 0xFF00) == 0) {
+        return false;                  /* no converter on the bus */
     }
 
-    reg_ecrire(REG_MODE, MODE_DEFAUT);
-    reg_ecrire(REG_CLOCK, CLOCK_DEFAUT);
-    reg_ecrire(REG_GAIN1, GAIN_DEFAUT);
+    reg_write(REG_MODE, MODE_DEFAULT);
+    reg_write(REG_CLOCK, CLOCK_DEFAULT);
+    reg_write(REG_GAIN1, GAIN_DEFAULT);
 
-    gpio_init(BR_DRDY);
-    gpio_set_dir(BR_DRDY, GPIO_IN);
-    gpio_pull_up(BR_DRDY);
-    gpio_set_irq_enabled_with_callback(BR_DRDY, GPIO_IRQ_EDGE_FALL, true,
-                                       &sur_drdy);
+    gpio_init(PIN_DRDY);
+    gpio_set_dir(PIN_DRDY, GPIO_IN);
+    gpio_pull_up(PIN_DRDY);
+    gpio_set_irq_enabled_with_callback(PIN_DRDY, GPIO_IRQ_EDGE_FALL, true,
+                                       &on_drdy);
 
     afe_set_gain(1);
-    afe_set_gamme(1);
+    afe_set_range(1);
     afe_set_offset(32768);
     return true;
 }
 
-void afe_demarrer(uint32_t frequence_hz)
+void afe_start(uint32_t frequency_hz)
 {
-    (void)frequence_hz;                /* fixée par CLOCK_DEFAUT et le TCXO */
-    cs(true); spi_mot(CMD_WAKEUP); cs(false);
+    (void)frequency_hz;                /* set by CLOCK_DEFAULT and the TCXO */
+    cs(true); spi_word(CMD_WAKEUP); cs(false);
 }
 
-void afe_arreter(void)
+void afe_stop(void)
 {
-    cs(true); spi_mot(CMD_STANDBY); cs(false);
+    cs(true); spi_word(CMD_STANDBY); cs(false);
 }

@@ -1,10 +1,10 @@
 # ===========================================================================
-#  PhytoScope — conventions d'édition, valables pour tous les éditeurs
+#  PhytoScope — editing conventions, for every editor
 # ===========================================================================
-#  Ce fichier existe pour une raison précise : une recette de Makefile
-#  indentée par des espaces est silencieusement ignorée par make, et un
-#  fichier source dont les fins de ligne changent d'un poste à l'autre
-#  produit des différences qui ne disent rien. On fixe donc les deux.
+#  This file exists for one precise reason: a Makefile recipe indented with
+#  spaces is silently ignored by make, and a source file whose line endings
+#  change from one machine to another produces differences that say nothing.
+#  So both are fixed here.
 # ===========================================================================
 root = true
 
@@ -17,7 +17,7 @@ indent_style = space
 indent_size = 4
 max_line_length = 96
 
-#  Les Makefile exigent la tabulation : ce n'est pas un goût, c'est la syntaxe.
+#  Makefiles require the tab: that is not a taste, it is the syntax.
 [{Makefile,*.mk,makefile,GNUmakefile}]
 indent_style = tab
 
@@ -26,9 +26,8 @@ indent_size = 2
 
 [*.{html,css,svg,xml}]
 indent_size = 2
-#  Une illustration générée n'est jamais éditée à la main (C-45) : on ne
-#  touche pas à ses espaces de fin, cela ferait une différence à chaque
-#  régénération.
+#  A generated illustration is never edited by hand (C-45): we leave its
+#  trailing whitespace alone, or every regeneration would show a difference.
 trim_trailing_whitespace = false
 
 [*.{c,h,cpp,hpp}]
@@ -38,24 +37,24 @@ indent_size = 4
 indent_size = 2
 
 [*.md]
-#  En Markdown, deux espaces en fin de ligne font un retour à la ligne.
+#  In Markdown, two trailing spaces make a line break.
 trim_trailing_whitespace = false
 
 [*.{csv,tsv}]
 trim_trailing_whitespace = false
 insert_final_newline = true
 
-#  Ces fichiers sont lus par une analyse stricte « clé = valeur » : on n'y
-#  touche pas automatiquement.
-[{VERSION,AUTEURS}]
+#  These files are read by a strict "key = value" parse: nothing touches them
+#  automatically.
+[{VERSION,AUTHORS}]
 trim_trailing_whitespace = false
 
-#  Les fichiers Windows de la fabrique doivent garder des fins de ligne CRLF,
-#  sinon NSIS et cmd.exe ne les lisent pas.
+#  The factory's Windows files must keep CRLF line endings, or NSIS and
+#  cmd.exe will not read them.
 [*.{bat,cmd,nsi,nsh}]
 end_of_line = crlf
 
-#  Le code tiers garde ses conventions : ce n'est pas le nôtre.
+#  Third-party code keeps its own conventions: it is not ours.
 [sources/**]
 indent_style = unset
 indent_size = unset

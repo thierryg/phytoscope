@@ -1,20 +1,3 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/tt-word-keyboard.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
 
 <defs>
@@ -29,27 +12,27 @@
    <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
 </defs>
 <rect width="900" height="500" fill="#FBF9F1"/>
-<text x="450" y="34" font-family="Cormorant Garamond, serif" font-size="18.12" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="3">LE CLAVIER DE MOTS</text>
-<text x="450" y="55" font-family="Lato, sans-serif" font-size="11.89" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Remplacer les notes par des mots : le geste, et ce qu'il déplace</text>
+<text x="450" y="34" font-family="Cormorant Garamond, serif" font-size="18.12" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="3">THE WORD KEYBOARD</text>
+<text x="450" y="55" font-family="Lato, sans-serif" font-size="11.89" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Replacing notes with words: the gesture, and what it shifts</text>
 <rect x="26" y="92" width="150" height="62" rx="8" fill="#FFFFFF" stroke="#3F7D5A" stroke-width="1.6"/>
-<text x="101.0" y="109" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Plante + pinces</text>
-<text x="101.0" y="124.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">variation d'impédance</text>
+<text x="101.0" y="109" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Plant + clips</text>
+<text x="101.0" y="124.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">impedance variation</text>
 <line x1="178" y1="123" x2="202" y2="123" stroke="#3F7D5A" stroke-width="2.0" marker-end="url(#ahv)"/>
 <rect x="204" y="92" width="150" height="62" rx="8" fill="#FFFFFF" stroke="#3F7D5A" stroke-width="1.6"/>
-<text x="279.0" y="109" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Pont de Wheatstone</text>
-<text x="279.0" y="124.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">→ tension</text>
+<text x="279.0" y="109" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Wheatstone bridge</text>
+<text x="279.0" y="124.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">→ voltage</text>
 <line x1="356" y1="123" x2="380" y2="123" stroke="#3F7D5A" stroke-width="2.0" marker-end="url(#ahv)"/>
 <rect x="382" y="92" width="150" height="62" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
-<text x="457.0" y="109" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Conversion MIDI</text>
-<text x="457.0" y="124.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">→ numéro de note</text>
+<text x="457.0" y="109" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">MIDI conversion</text>
+<text x="457.0" y="124.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">→ a note number</text>
 <line x1="534" y1="123" x2="558" y2="123" stroke="#2F5E86" stroke-width="2.0" marker-end="url(#ahb)"/>
 <rect x="560" y="92" width="150" height="62" rx="8" fill="#FFFFFF" stroke="#B08528" stroke-width="1.6"/>
-<text x="635.0" y="109" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Seuil de 4 s</text>
-<text x="635.0" y="124.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">filtre anti-rebond</text>
+<text x="635.0" y="109" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">A 4 s threshold</text>
+<text x="635.0" y="124.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">a debounce filter</text>
 <line x1="712" y1="123" x2="736" y2="123" stroke="#B08528" stroke-width="2.0" marker-end="url(#ah)"/>
 <rect x="738" y="92" width="150" height="62" rx="8" fill="#FFFFFF" stroke="#A8552E" stroke-width="1.6"/>
-<text x="813.0" y="109" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Échantillonneur</text>
-<text x="813.0" y="124.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">note → fichier son</text>
+<text x="813.0" y="109" font-family="Lato, sans-serif" font-size="13.63" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Sampler</text>
+<text x="813.0" y="124.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">note → sound file</text>
 <rect x="120" y="214" width="42" height="94" rx="3" fill="#FFFFFF" stroke="#6B7A72" stroke-width="1.2"/>
 <rect x="164" y="214" width="42" height="94" rx="3" fill="#FFFFFF" stroke="#6B7A72" stroke-width="1.2"/>
 <rect x="208" y="214" width="42" height="94" rx="3" fill="#FFFFFF" stroke="#6B7A72" stroke-width="1.2"/>
@@ -65,40 +48,40 @@
 <rect x="648" y="214" width="42" height="94" rx="3" fill="#FFFFFF" stroke="#6B7A72" stroke-width="1.2"/>
 <rect x="692" y="214" width="42" height="94" rx="3" fill="#FFFFFF" stroke="#6B7A72" stroke-width="1.2"/>
 <rect x="120" y="214" width="42" height="94" rx="3" fill="#FBF3DF" stroke="#B08528" stroke-width="1.6"/>
-<text x="141" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 141 288)">SOLEIL</text>
+<text x="141" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 141 288)">SUN</text>
 <rect x="164" y="214" width="42" height="94" rx="3" fill="#FBF3DF" stroke="#B08528" stroke-width="1.6"/>
-<text x="185" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 185 288)">AIDE</text>
+<text x="185" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 185 288)">HELP</text>
 <rect x="208" y="214" width="42" height="94" rx="3" fill="#FBF3DF" stroke="#B08528" stroke-width="1.6"/>
-<text x="229" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 229 288)">MALADE</text>
+<text x="229" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 229 288)">ILL</text>
 <rect x="252" y="214" width="42" height="94" rx="3" fill="#FBF3DF" stroke="#B08528" stroke-width="1.6"/>
-<text x="273" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 273 288)">TERRE</text>
+<text x="273" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 273 288)">EARTH</text>
 <rect x="296" y="214" width="42" height="94" rx="3" fill="#FBF3DF" stroke="#B08528" stroke-width="1.6"/>
-<text x="317" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 317 288)">CHAUD</text>
+<text x="317" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 317 288)">HOT</text>
 <rect x="340" y="214" width="42" height="94" rx="3" fill="#FBF3DF" stroke="#B08528" stroke-width="1.6"/>
-<text x="361" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 361 288)">MERCI</text>
+<text x="361" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 361 288)">THANK YOU</text>
 <rect x="384" y="214" width="42" height="94" rx="3" fill="#FBF3DF" stroke="#B08528" stroke-width="1.6"/>
-<text x="405" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 405 288)">OUI</text>
+<text x="405" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 405 288)">YES</text>
 <rect x="428" y="214" width="42" height="94" rx="3" fill="#FBF3DF" stroke="#B08528" stroke-width="1.6"/>
-<text x="449" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 449 288)">NON</text>
-<text x="450" y="330" font-family="Lato, sans-serif" font-size="12.18" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">≈ 50 mots, choisis par l'opérateur, un par touche</text>
+<text x="449" y="288" font-family="Lato, sans-serif" font-size="9.6" fill="#0E2A22" text-anchor="middle" font-weight="700" transform="rotate(-90 449 288)">NO</text>
+<text x="450" y="330" font-family="Lato, sans-serif" font-size="12.18" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">≈ 50 words, chosen by the operator, one per key</text>
 <path d="M779,156 v26 H450" fill="none" stroke="#A8552E" stroke-width="2.2"/>
 <line x1="450" y1="182" x2="450" y2="208" stroke="#A8552E" stroke-width="2.2" marker-end="url(#ah)"/>
 <rect x="60" y="348" width="370" height="132" rx="7" fill="#FFFFFF" stroke="#3F7D5A" stroke-width="1.6"/>
-<text x="245" y="370" font-family="Lato, sans-serif" font-size="13.34" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">CE QUE CELA CHANGE</text>
-<text x="80" y="390" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Le signal est inchangé : mêmes</text>
-<text x="80" y="403" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">variations, même appareil, même</text>
-<text x="80" y="416" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">seuil. Seule la banque de sons</text>
-<text x="80" y="429" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">a été remplacée.</text>
+<text x="245" y="370" font-family="Lato, sans-serif" font-size="13.34" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">WHAT THIS CHANGES</text>
+<text x="80" y="390" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">The signal is unchanged: the same</text>
+<text x="80" y="403" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">variations, the same instrument, the</text>
+<text x="80" y="416" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">same threshold. Only the sound bank</text>
+<text x="80" y="429" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">has been swapped.</text>
 <text x="80" y="442" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0"></text>
-<text x="80" y="455" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Aucune information nouvelle</text>
-<text x="80" y="468" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">n'entre dans le système.</text>
+<text x="80" y="455" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">No new information enters</text>
+<text x="80" y="468" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">the system at all.</text>
 <rect x="470" y="348" width="370" height="132" rx="7" fill="#FFFFFF" stroke="#A8552E" stroke-width="1.6"/>
-<text x="655" y="370" font-family="Lato, sans-serif" font-size="13.34" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">CE QUE CELA DÉPLACE</text>
-<text x="490" y="390" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Une note n'a pas de référent ;</text>
-<text x="490" y="403" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">un mot en a un. L'auditeur</text>
-<text x="490" y="416" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">fournit désormais le sens.</text>
+<text x="655" y="370" font-family="Lato, sans-serif" font-size="13.34" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">WHAT THIS SHIFTS</text>
+<text x="490" y="390" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">A note has no referent;</text>
+<text x="490" y="403" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">a word has one. The listener now</text>
+<text x="490" y="416" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">supplies the meaning.</text>
 <text x="490" y="429" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0"></text>
-<text x="490" y="442" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">La charge interprétative migre</text>
-<text x="490" y="455" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">de l'appareil vers l'humain —</text>
-<text x="490" y="468" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">et devient invisible.</text>
+<text x="490" y="442" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">The interpretive load migrates</text>
+<text x="490" y="455" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">from the instrument to the human —</text>
+<text x="490" y="468" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">and becomes invisible.</text>
 </svg>

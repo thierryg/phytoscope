@@ -2,16 +2,16 @@
   ==========================================================================
   PhytoScope — attribution — pdf-src/assets/svg/sdk-cycle.svg
 
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
+  Version   : 1.6.0
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
 
   SPDX-License-Identifier: MIT
-  fin de l'attribution
+  end of attribution
   ==========================================================================
 -->
 
@@ -20,38 +20,38 @@
       refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#3F7D5A"/></marker></defs>
 <rect width="900" height="380" fill="#FBF9F1"/>
-<text x="450.0" y="38" text-anchor="middle" font-size="17" font-weight="bold" fill="#23302C">Le cycle de vie d'un module</text>
-<text x="450.0" y="60" text-anchor="middle" font-size="12" fill="#6B7A72">Une faute, à n'importe lequel de ces moments, désactive le module — et lui seul.</text>
+<text x="450.0" y="38" text-anchor="middle" font-size="17" font-weight="bold" fill="#23302C">A module's life cycle</text>
+<text x="450.0" y="60" text-anchor="middle" font-size="12" fill="#6B7A72">A fault, at any one of these moments, disables the module — and nothing else.</text>
 <rect x="61.0" y="92" width="178" height="96" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.6"/>
 <circle cx="81.0" cy="112" r="12" fill="#3F7D5A"/>
 <text x="81.0" y="117" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">1</text>
 <text x="101.0" y="117" font-size="13.5" font-weight="bold" font-family="DejaVu Sans Mono, monospace" fill="#23302C">__init__</text>
-<text x="75.0" y="144" font-size="11" fill="#6B7A72">on reçoit le contexte</text>
-<text x="75.0" y="166" font-size="11" fill="#3F7D5A">ne rien faire de long</text>
+<text x="75.0" y="144" font-size="11" fill="#6B7A72">the context arrives</text>
+<text x="75.0" y="166" font-size="11" fill="#3F7D5A">nothing lengthy here</text>
 <path d="M 242.0 140 L 256.0 140" stroke="#3F7D5A" stroke-width="1.6" fill="none" marker-end="url(#fleche)"/>
 <rect x="261.0" y="92" width="178" height="96" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.6"/>
 <circle cx="281.0" cy="112" r="12" fill="#3F7D5A"/>
 <text x="281.0" y="117" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">2</text>
 <text x="301.0" y="117" font-size="13.5" font-weight="bold" font-family="DejaVu Sans Mono, monospace" fill="#23302C">installer()</text>
-<text x="275.0" y="144" font-size="11" fill="#6B7A72">une fois, au démarrage</text>
-<text x="275.0" y="166" font-size="11" fill="#3F7D5A">s'abonner, préparer</text>
+<text x="275.0" y="144" font-size="11" fill="#6B7A72">once, at start-up</text>
+<text x="275.0" y="166" font-size="11" fill="#3F7D5A">subscribe, prepare</text>
 <path d="M 442.0 140 L 456.0 140" stroke="#3F7D5A" stroke-width="1.6" fill="none" marker-end="url(#fleche)"/>
 <rect x="461.0" y="92" width="178" height="96" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.6"/>
 <circle cx="481.0" cy="112" r="12" fill="#3F7D5A"/>
 <text x="481.0" y="117" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">3</text>
-<text x="501.0" y="117" font-size="13.5" font-weight="bold" font-family="DejaVu Sans Mono, monospace" fill="#23302C">les capacités</text>
-<text x="475.0" y="144" font-size="11" fill="#6B7A72">pendant la séance</text>
-<text x="475.0" y="166" font-size="11" fill="#3F7D5A">analyser, décrire…</text>
+<text x="501.0" y="117" font-size="13.5" font-weight="bold" font-family="DejaVu Sans Mono, monospace" fill="#23302C">the capabilities</text>
+<text x="475.0" y="144" font-size="11" fill="#6B7A72">during the session</text>
+<text x="475.0" y="166" font-size="11" fill="#3F7D5A">analyse, describe…</text>
 <path d="M 642.0 140 L 656.0 140" stroke="#3F7D5A" stroke-width="1.6" fill="none" marker-end="url(#fleche)"/>
 <rect x="661.0" y="92" width="178" height="96" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.6"/>
 <circle cx="681.0" cy="112" r="12" fill="#3F7D5A"/>
 <text x="681.0" y="117" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">4</text>
 <text x="701.0" y="117" font-size="13.5" font-weight="bold" font-family="DejaVu Sans Mono, monospace" fill="#23302C">arreter()</text>
-<text x="675.0" y="144" font-size="11" fill="#6B7A72">à la fermeture</text>
-<text x="675.0" y="166" font-size="11" fill="#3F7D5A">fermer ce qu'on a ouvert</text>
+<text x="675.0" y="144" font-size="11" fill="#6B7A72">at shutdown</text>
+<text x="675.0" y="166" font-size="11" fill="#3F7D5A">close what you opened</text>
 <rect x="61.0" y="242" width="778.0" height="62" rx="7" fill="#fff" stroke="#A8552E" stroke-width="1.6" stroke-dasharray="5 3"/>
-<text x="450.0" y="267" text-anchor="middle" font-size="13" font-weight="bold" fill="#A8552E">Une exception, où qu'elle survienne</text>
-<text x="450.0" y="288" text-anchor="middle" font-size="11.5" fill="#23302C">le module est désactivé et inscrit au journal · les autres continuent · la séance n'est pas perdue</text>
+<text x="450.0" y="267" text-anchor="middle" font-size="13" font-weight="bold" fill="#A8552E">An exception, wherever it happens</text>
+<text x="450.0" y="288" text-anchor="middle" font-size="11.5" fill="#23302C">the module is disabled and logged · the others carry on · the session is not lost</text>
 <path d="M 150.0 188 L 150.0 242" stroke="#A8552E" stroke-width="1" stroke-dasharray="3 3" fill="none" opacity="0.55"/>
 <path d="M 350.0 188 L 350.0 242" stroke="#A8552E" stroke-width="1" stroke-dasharray="3 3" fill="none" opacity="0.55"/>
 <path d="M 550.0 188 L 550.0 242" stroke="#A8552E" stroke-width="1" stroke-dasharray="3 3" fill="none" opacity="0.55"/>

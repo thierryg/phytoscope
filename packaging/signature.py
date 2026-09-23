@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — packaging/signature.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Certificat et signature des paquets — ce que cela prouve, et ce que non.
@@ -102,12 +102,12 @@ OSSLSIGNCODE_MAISON = os.path.expanduser("~/.local/opt/osslsigncode")
 #  La clé PRIVÉE, elle, ne quitte jamais ~/.local/share — un dépôt se recopie,
 #  s'archive et se publie, et une clé privée n'y a pas sa place.
 #
-#  Dans `certificat/`, et non plus à la racine : le rangement du 2026-09-18 a
+#  Dans `certificate/`, et non plus à la racine : le rangement du 2026-09-18 a
 #  donné un dossier à tout ce qui touche au certificat, et en laisser une
 #  copie à la racine en faisait un doublon que personne ne savait à jour.
 #  C'est `packaging/certificate.py` qui remplit ce dossier.
 from common import RACINE as _RACINE                      # noqa: E402
-CERTIFICAT_PROJET = os.path.join(_RACINE, "certificat",
+CERTIFICAT_PROJET = os.path.join(_RACINE, "certificate",
                                  "phytoscope-certificate.pem")
 
 
@@ -146,7 +146,7 @@ def installer_osslsigncode() -> bool:
 #  Le certificat
 # ---------------------------------------------------------------------------
 def sujet(id_: Identite) -> str:
-    """Le sujet X.509, bâti sur le fichier `AUTEURS` — une seule source.
+    """Le sujet X.509, bâti sur le fichier `AUTHORS` — une seule source.
 
     L'ordre est celui qu'attend OpenSSL, du plus général au plus précis. Les
     champs vides sont omis : un certificat portant « L= » vide est mal formé.
@@ -364,7 +364,7 @@ def signer_tout(id_: Optional[Identite] = None) -> Tuple[int, int]:
     """
     id_ = id_ or Identite.lire()
     if not certificat_existe():
-        echec("aucun certificat — lancez d'abord : make certificat")
+        echec("aucun certificat — lancez d'abord : make certificate")
         return (0, 0)
 
     dire(f"\nSignature des paquets — {id_.attribution}\n", JAUNE)
@@ -537,18 +537,18 @@ def main(argv: Optional[List[str]] = None) -> int:
     p.add_argument("--sortie", default="", help=argparse.SUPPRESS)
     args = p.parse_args(argv)
 
-    from common import VARIABLE_SORTIE, derniere_fabrication
+    from common import OUTPUT_VARIABLE, derniere_fabrication
     if args.sortie:
-        os.environ[VARIABLE_SORTIE] = os.path.abspath(args.sortie)
-    elif not os.environ.get(VARIABLE_SORTIE):
+        os.environ[OUTPUT_VARIABLE] = os.path.abspath(args.sortie)
+    elif not os.environ.get(OUTPUT_VARIABLE):
         #  Sans indication, on travaille sur la fabrication la plus récente
         #  QUI CONTIENT QUELQUE CHOSE — et surtout pas sur un dossier neuf,
         #  qu'on créerait au passage et qui serait vide.
         recente = derniere_fabrication()
         if recente:
-            os.environ[VARIABLE_SORTIE] = recente
+            os.environ[OUTPUT_VARIABLE] = recente
         elif args.signer or args.verifier:
-            echec("aucune fabrication à signer — lancez d'abord « make tout »")
+            echec("aucune fabrication à signer — lancez d'abord « make all »")
             return 1
 
     id_ = Identite.lire()

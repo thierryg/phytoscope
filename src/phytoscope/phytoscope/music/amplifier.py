@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/music/amplifier.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Étage de sortie — amplification, compression, limitation, bip.
@@ -319,8 +319,8 @@ class OutputStage:
             self._dernier_reglage = signature
             log.info("Sortie audio : gain %+.1f dB, amplification %+.1f dB, "
                      "compression %s, limiteur %s", s.gain_db, s.boost_db,
-                     "oui" if s.compressor else "non",
-                     "oui" if s.limiter else "non")
+                     "oui" if s.compressor else "no",
+                     "oui" if s.limiter else "no")
 
     def process(self, x: np.ndarray) -> np.ndarray:
         """Traite un bloc de synthèse et y mêle les bips éventuels."""

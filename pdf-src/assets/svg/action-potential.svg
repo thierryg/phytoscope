@@ -1,20 +1,3 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/action-potential.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400">
 
 <defs>
@@ -29,11 +12,11 @@
    <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
 </defs>
 <rect width="760" height="400" fill="#FFFFFF"/>
-<text x="380.0" y="30" font-family="Lato, sans-serif" font-size="16.68" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">TROIS SIGNAUX ÉLECTRIQUES DU VÉGÉTAL</text>
+<text x="380.0" y="30" font-family="Lato, sans-serif" font-size="16.68" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">THREE ELECTRICAL SIGNALS OF A PLANT</text>
 <line x1="90" y1="60" x2="90" y2="300" stroke="#6B7A72" stroke-width="1.4"/>
 <line x1="90" y1="300" x2="720" y2="300" stroke="#6B7A72" stroke-width="1.4"/>
 <text x="78" y="72" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">mV</text>
-<text x="720" y="320" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">temps</text>
+<text x="720" y="320" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">time</text>
 <line x1="86" y1="300" x2="90" y2="300" stroke="#6B7A72" stroke-width="1"/>
 <text x="80" y="304" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">−160</text>
 <line x1="86" y1="240" x2="90" y2="240" stroke="#6B7A72" stroke-width="1"/>
@@ -45,17 +28,17 @@
 <line x1="86" y1="60" x2="90" y2="60" stroke="#6B7A72" stroke-width="1"/>
 <text x="80" y="64" font-family="Lato, sans-serif" font-size="9.6" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">0</text>
 <line x1="90" y1="210" x2="710" y2="210" stroke="#D9D9C6" stroke-width="1.2" stroke-dasharray="5 4"/>
-<text x="326" y="202" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">potentiel de repos ≈ −120 mV</text>
+<text x="326" y="202" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">resting potential ≈ −120 mV</text>
 <path d="M130,210 L186,210 C194,210 198,68 208,68 C220,68 224,240 242,230 C262,220 276,210 306,210" fill="none" stroke="#2F5E86" stroke-width="2.4"/>
-<text x="208" y="56" font-family="Lato, sans-serif" font-size="12.18" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Potentiel d'action (PA)</text>
+<text x="208" y="56" font-family="Lato, sans-serif" font-size="12.18" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Action potential (AP)</text>
 <text x="208" y="68" font-family="Lato, sans-serif" font-size="10.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0"></text>
-<text x="208" y="282" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">1–5 s · tout ou rien</text>
+<text x="208" y="282" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">1–5 s · all or nothing</text>
 <path d="M340,210 C358,208 366,102 390,108 C420,116 446,174 490,196 C520,208 534,210 556,210" fill="none" stroke="#A8552E" stroke-width="2.4"/>
-<text x="420" y="86" font-family="Lato, sans-serif" font-size="12.18" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Potentiel de variation (PV)</text>
-<text x="420" y="282" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">10 s – plusieurs minutes · gradué</text>
+<text x="420" y="86" font-family="Lato, sans-serif" font-size="12.18" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Variation potential (VP)</text>
+<text x="420" y="282" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">10 s – several minutes · graded</text>
 <polyline points="590,210.0 594,214.4 598,218.3 602,221.2 606,222.9 610,223.3 614,222.5 618,220.8 622,218.7 626,216.6 630,214.9 634,214.1 638,214.2 642,215.2 646,217.0 650,219.0 654,220.9 658,222.2 662,222.5 666,221.5 670,219.3 674,215.9 678,211.8 682,207.3 686,203.1 690,199.6 694,197.1 698,196.0 702,196.2 706,197.5 710,199.5 714,201.8 718,204.0 722,205.5 726,206.1 730,205.8 734,204.6 738,202.8" fill="none" stroke="#3F7D5A" stroke-width="2.2"/>
 <text x="664" y="166" font-family="Lato, sans-serif" font-size="12.18" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Micro-fluctuations</text>
-<text x="664" y="178" font-family="Lato, sans-serif" font-size="12.18" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">de conductance</text>
-<text x="664" y="282" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">continu · ce que « lisent » les boîtiers</text>
-<text x="380.0" y="386" font-family="Cormorant Garamond, serif" font-size="13.05" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Seule la troisième famille alimente la musique des plantes grand public.</text>
+<text x="664" y="178" font-family="Lato, sans-serif" font-size="12.18" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">in conductance</text>
+<text x="664" y="282" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">continuous · what the devices “read”</text>
+<text x="380.0" y="386" font-family="Cormorant Garamond, serif" font-size="13.05" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Only the third family feeds the consumer music of the plants.</text>
 </svg>

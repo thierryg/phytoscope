@@ -2,16 +2,16 @@
   ==========================================================================
   PhytoScope — attribution — pdf-src/assets/svg/pcb-implantation.svg
 
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
+  Version   : 1.6.0
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
 
   SPDX-License-Identifier: MIT
-  fin de l'attribution
+  end of attribution
   ==========================================================================
 -->
 
@@ -92,22 +92,22 @@
 <line x1="1165.24" y1="690" x2="1165.24" y2="742" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
 <line x1="1040.62" y1="742" x2="1040.62" y2="788" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
 <line x1="1241.62" y1="742" x2="1241.62" y2="788" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
-<text x="1117.0" y="677" font-family="Cormorant Garamond, serif" font-size="20.37" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Implantation et sérigraphie</text>
+<text x="1117.0" y="677" font-family="Cormorant Garamond, serif" font-size="20.37" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Placement and silkscreen</text>
 <text x="1040.62" y="708" font-family="Lato, sans-serif" font-size="16.75" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">PhytoSense One</text>
 <text x="1040.62" y="722" font-family="Cormorant Garamond, serif" font-size="14.48" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
 <text x="1040.62" y="735" font-family="DejaVu Sans Mono, monospace" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
-<text x="1241.62" y="710" font-family="Lato, sans-serif" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Circuit imprimé</text>
+<text x="1241.62" y="710" font-family="Lato, sans-serif" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Printed circuit board</text>
 <text x="1241.62" y="726" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">CERN-OHL-P v2</text>
 <text x="1241.62" y="737" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">diffusion libre</text>
-<text x="978.31" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">FEUILLE</text>
+<text x="978.31" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">SHEET</text>
 <text x="978.31" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2/3</text>
-<text x="1102.93" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">RÉVISION</text>
+<text x="1102.93" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">REVISION</text>
 <text x="1102.93" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">B</text>
 <text x="1203.43" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">DATE</text>
 <text x="1203.43" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2026-09</text>
-<text x="1279.81" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">ÉCHELLE</text>
+<text x="1279.81" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">SCALE</text>
 <text x="1279.81" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">—</text>
-<text x="90" y="74" font-family="Cormorant Garamond, serif" font-size="18.56" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Implantation vue de dessus — repères de sérigraphie et zones fonctionnelles</text>
+<text x="90" y="74" font-family="Cormorant Garamond, serif" font-size="18.56" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Placement seen from above — silkscreen markings and functional zones</text>
 <rect x="140.0" y="140.0" width="819.9999999999999" height="492.0" rx="4" fill="#F7F9F7" stroke="#0E2A22" stroke-width="2.0"/>
 <line x1="599.1999999999999" y1="142.0" x2="599.1999999999999" y2="630.0" stroke="#A8552E" stroke-width="2.0" stroke-linecap="round" stroke-dasharray="8 5"/>
 <circle cx="172.8" cy="172.8" r="13.12" fill="#fff" stroke="#6B7A72" stroke-width="1.2"/>
@@ -199,11 +199,11 @@
 <text x="222.0" y="609.04" font-family="Lato, sans-serif" font-size="12.67" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0.6">PHYTOSENSE ONE</text>
 <text x="222.0" y="617.65" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0.5">BRETAGNE NAMASTÉ</text>
 <text x="877.9999999999999" y="609.04" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
-<text x="877.9999999999999" y="617.65" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">RÉV. B · CERN-OHL-P v2</text>
+<text x="877.9999999999999" y="617.65" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">REV. B · CERN-OHL-P v2</text>
 <text x="550.0" y="648.0" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">100 mm</text>
 <g transform="rotate(-90,126.0,386.0)"><text x="126.0" y="386.0" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">60 mm</text></g>
 <line x1="189.2" y1="238.39999999999998" x2="108" y2="238.39999999999998" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
-<text x="118" y="241.39999999999998" font-family="Lato, sans-serif" font-size="12.67" fill="#23302C" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">J1 — entrée voie A</text>
+<text x="118" y="241.39999999999998" font-family="Lato, sans-serif" font-size="12.67" fill="#23302C" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">J1 — channel A input</text>
 <line x1="353.2" y1="254.79999999999998" x2="108" y2="255.39999999999998" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
 <text x="118" y="258.4" font-family="Lato, sans-serif" font-size="12.67" fill="#23302C" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">U1 — ADA4530-1</text>
 <line x1="320.4" y1="336.79999999999995" x2="108" y2="336.79999999999995" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
@@ -215,7 +215,7 @@
 <line x1="320.4" y1="365.5" x2="108" y2="387.79999999999995" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
 <text x="118" y="390.79999999999995" font-family="Lato, sans-serif" font-size="12.67" fill="#23302C" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">D1 — BAV199</text>
 <line x1="189.2" y1="386.0" x2="108" y2="404.79999999999995" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
-<text x="118" y="407.79999999999995" font-family="Lato, sans-serif" font-size="12.67" fill="#23302C" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">J2 — entrée voie B</text>
+<text x="118" y="407.79999999999995" font-family="Lato, sans-serif" font-size="12.67" fill="#23302C" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">J2 — channel B input</text>
 <line x1="386.0" y1="517.2" x2="108" y2="517.2" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
 <text x="118" y="520.2" font-family="Lato, sans-serif" font-size="12.67" fill="#23302C" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">T1 — transformateur</text>
 <line x1="533.5999999999999" y1="517.2" x2="108" y2="534.2" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
@@ -253,11 +253,11 @@
 <line x1="648.4" y1="517.2" x2="993.9999999999999" y2="534.8" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
 <text x="983.9999999999999" y="537.8" font-family="Lato, sans-serif" font-size="12.67" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">U24 — ADuM4151</text>
 <rect x="164.6" y="205.6" width="254.2" height="295.2" rx="0" fill="none" stroke="#B08528" stroke-width="1.2" stroke-dasharray="4 3"/>
-<text x="168.6" y="217.6" font-family="Lato, sans-serif" font-size="13.13" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">entrées et garde</text>
+<text x="168.6" y="217.6" font-family="Lato, sans-serif" font-size="13.13" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">inputs and guard</text>
 <rect x="517.2" y="205.6" width="229.59999999999997" height="245.99999999999997" rx="0" fill="none" stroke="#3F7D5A" stroke-width="1.2" stroke-dasharray="4 3"/>
 <text x="521.2" y="217.6" font-family="Lato, sans-serif" font-size="13.13" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">conditionnement</text>
 <rect x="254.79999999999998" y="484.4" width="344.4" height="131.2" rx="0" fill="none" stroke="#A8552E" stroke-width="1.2" stroke-dasharray="4 3"/>
-<text x="258.79999999999995" y="496.4" font-family="Lato, sans-serif" font-size="13.13" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">alimentation isolée</text>
+<text x="258.79999999999995" y="496.4" font-family="Lato, sans-serif" font-size="13.13" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">isolated supply</text>
 <rect x="746.8" y="238.39999999999998" width="196.79999999999998" height="328.0" rx="0" fill="none" stroke="#2F5E86" stroke-width="1.2" stroke-dasharray="4 3"/>
-<text x="750.8" y="250.39999999999998" font-family="Lato, sans-serif" font-size="13.13" fill="#2F5E86" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">numérique et USB</text>
+<text x="750.8" y="250.39999999999998" font-family="Lato, sans-serif" font-size="13.13" fill="#2F5E86" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">digital and USB</text>
 </svg>

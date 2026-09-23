@@ -1,55 +1,58 @@
-# SDK PhytoScope
+# PhytoScope SDK
 
-De quoi écrire un module : la documentation, un exemple complet, et un outil
-qui crée un squelette qui fonctionne déjà.
+What you need in order to write a module: the documentation, a complete
+example, and a tool that creates a skeleton which already works.
 
 ```
 sdk/
-  README.md              ce fichier
-  docs/                  la documentation, pas à pas
-  bonjour-monde/         l'exemple complet, avec ses essais
-  outils/
-    new_module.py    crée un module prêt à l'essai
+  README.md            this file
+  docs/                the documentation, step by step
+  hello-world/         the complete example, with its tests
+  tools/
+    new_module.py      creates a module ready to be tested
 ```
 
-## En trois commandes
+## In three commands
 
 ```bash
-python3 src/sdk/outils/new_module.py mon-module     # créer
-python3 -m pytest mon-module/ -v                    # éprouver
-cp -r mon-module ~/.config/phytoscope/modules/      # installer
+python3 src/sdk/tools/new_module.py my-module      # create
+python3 -m pytest my-module/ -v                    # test
+cp -r my-module ~/.config/phytoscope/modules/      # install
 ```
 
-Relancez PhytoScope : vos valeurs s'affichent dans l'onglet **Multimètre →
-Grandeurs scientifiques**, et le module apparaît dans **Diagnostic → Modules**.
+Restart PhytoScope: your values appear in the **Multimeter → Scientific
+quantities** tab, and the module shows up in **Diagnostics → Modules**.
 
-## La documentation
-
-| | |
-|---|---|
-| [1. Démarrage pas à pas](docs/01-demarrage.md) | de zéro à un module installé |
-| [2. L'interface, en détail](docs/02-api.md) | chaque classe, chaque champ, chaque méthode |
-| [3. Les cinq capacités](docs/03-capacites.md) | analyser, décrire, sonifier, exporter, mesurer |
-| [4. Les événements](docs/04-evenements.md) | s'abonner à ce qui se passe |
-| [5. Éprouver son module](docs/05-essais.md) | sans logiciel, sans matériel |
-| [6. Publier](docs/06-publier.md) | diffuser, versionner, empaqueter |
-| [7. Les pièges](docs/07-pieges.md) | ce qui coûte une soirée quand on l'ignore |
-
-Le même contenu, mis en page pour l'impression, est dans
-`build/Ecrire-un-module-PhytoScope.pdf` (`python3 build_sdk.py`).
-
-## Ce qu'il faut retenir
+## The documentation
 
 | | |
 |---|---|
-| Importer | seulement depuis `phytoscope.api` |
-| Écrire | seulement dans `contexte.dossier()` |
-| Lever | jamais pour dire « rien à signaler » — rendre une liste vide |
-| `sens` | toujours renseigné : ce que le nombre dit, et ce qu'il ne dit pas |
-| Rappels | courts : ils s'exécutent dans le fil de l'interface |
-| Libellés | des gabarits (`« à {tau} s »`), jamais des phrases composées |
-| Manifeste | des valeurs littérales : il est lu sans exécuter votre code |
+| [1. Getting started, step by step](docs/01-getting-started.md) | from nothing to an installed module |
+| [2. The interface, in detail](docs/02-api.md) | every class, every field, every method |
+| [3. The five capabilities](docs/03-capabilities.md) | analyse, describe, sonify, export, measure |
+| [4. Events](docs/04-events.md) | subscribing to what happens |
+| [5. Testing your module](docs/05-testing.md) | with no software and no hardware |
+| [6. Publishing](docs/06-publishing.md) | distributing, versioning, packaging |
+| [7. Pitfalls](docs/07-pitfalls.md) | what costs you an evening when you do not know it |
+| [8. Migrating from 2.0](docs/08-migrating-from-2.0.md) | every name that changed, and why nothing is aliased |
+
+The same content, laid out for print, is in
+`build/writing-a-phytoscope-module.pdf` (`python3 pdf-src/build_sdk.py`).
+
+## What to remember
+
+| | |
+|---|---|
+| Import | only from `phytoscope.api` |
+| Write | only inside `context.directory()` |
+| Raise | never to say "nothing to report" — return an empty list |
+| `meaning` | always filled in: what the number says, and what it does not |
+| Callbacks | short: they run in the interface thread |
+| Labels | templates (`"at {tau} s"`), never composed sentences |
+| Manifest | literal values: it is read without running your code |
+| API | `3.0` since 2026-09-23 — a 2.0 module is refused, not half-loaded |
+| `api=` | a **minimum**: declare the lowest that suffices, then ask `context.api_at_least()` |
 
 ---
 
-*Bretagne Namasté — Thierry GAYET — https://bretagne-namaste.com — licence MIT*
+*Bretagne Namasté — Thierry GAYET — https://bretagne-namaste.com — MIT licence*

@@ -1,11 +1,11 @@
 ================================================================================
 
    PhytoScope 1.4.0 « Le cadran et l'empreinte »
-   Écoute, mesure et enregistrement des signaux végétaux
+   Listen to, measure and record plant signals
 
    Bretagne Namasté
    https://bretagne-namaste.com  ·  contact@bretagne-namaste.com
-   Licence MIT — voir LICENCE.txt
+   Licence MIT — voir LICENSE.txt
 
 ================================================================================
 
@@ -617,7 +617,7 @@ Le logiciel n'exige pas la carte décrite dans le document compagnon.
    avec le monde végétal ».
 
    Bibliothèques utilisées : NumPy, PySide6 (Qt 6), pyqtgraph, sounddevice
-   (PortAudio), pyserial, python-rtmidi. Voir LICENCE.txt pour le détail des
+   (PortAudio), pyserial, python-rtmidi. Voir LICENSE.txt pour le détail des
    licences.
 
    Les marques Music of the Plants, PlantWave, Plants Play, Scion et Biotron

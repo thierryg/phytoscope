@@ -13,7 +13,7 @@
       "shape": "ec7737ddc59a8dcd"
     },
     "packaging/build_macos.py": {
-      "literals": "2f75c91382110a14",
+      "literals": "3d3369f3439fca4e",
       "shape": "461d6be50d9558f1"
     },
     "packaging/build_source.py": {
@@ -21,27 +21,27 @@
       "shape": "706bf60ebea613cd"
     },
     "packaging/build_windows.py": {
-      "literals": "e22fb80273203361",
+      "literals": "eee3a0e0a532fc7f",
       "shape": "267fc543918b4ad1"
     },
     "packaging/certificate.py": {
-      "literals": "18906e84d3738798",
+      "literals": "2a62f42ba6199083",
       "shape": "fa4410c772649baf"
     },
     "packaging/common.py": {
-      "literals": "a30c84c40900e6ab",
+      "literals": "96213f0dea8680e1",
       "shape": "e2eb668a0eb2b71f"
     },
     "packaging/languages.py": {
-      "literals": "bd14462ce337e5f0",
-      "shape": "7176dbb5f1652bbb"
+      "literals": "6596b0b82589b186",
+      "shape": "ae05e6552c23f909"
     },
     "packaging/macos_pkg.py": {
       "literals": "b7df486249073477",
       "shape": "285a853cf2c2d233"
     },
     "packaging/signature.py": {
-      "literals": "2fda9e9858330d8e",
+      "literals": "0659e1163bd3fa1e",
       "shape": "05b7061c0f6bb688"
     },
     "packaging/verify.py": {
@@ -69,51 +69,55 @@
       "shape": "e9a988c6bbdf6eba"
     },
     "pdf-src/build.py": {
-      "literals": "7a79d989afe763bb",
+      "literals": "ffabe075e98b16d1",
       "shape": "9778ec367cd726df"
     },
     "pdf-src/build_appendix.py": {
-      "literals": "5ae1049d34b7d740",
+      "literals": "1301994d641cc1b9",
       "shape": "4d42e54b31858ea8"
     },
     "pdf-src/build_board.py": {
-      "literals": "f0cab49503d3de70",
+      "literals": "4062a15b9d6771d9",
       "shape": "79d1462dd6f5c0d0"
     },
     "pdf-src/build_sdk.py": {
-      "literals": "811032f1ee996feb",
-      "shape": "05643af2ce1e5571"
+      "literals": "aeae08d29a0a1e05",
+      "shape": "c797899be208cbca"
     },
     "pdf-src/build_tree.py": {
-      "literals": "c038a74fda98d96a",
+      "literals": "bd8e2505e3ffaf2b",
       "shape": "48e985f2533fb639"
+    },
+    "sources/build_references.py": {
+      "literals": "c4ffe0227edd3680",
+      "shape": "9a7e1f8977bc12d6"
     },
     "src/phytoscope/phytoscope/__init__.py": {
       "literals": "48216bcb5c859d3b",
       "shape": "b5ba48efa46f70eb"
     },
     "src/phytoscope/phytoscope/__main__.py": {
-      "literals": "9ec5ca16e5195d00",
-      "shape": "051684ca19569355"
+      "literals": "ea34993d76250af9",
+      "shape": "d77e9f557a16c99c"
     },
     "src/phytoscope/phytoscope/api/__init__.py": {
-      "literals": "18aa37a85c23e332",
-      "shape": "27949dbc7ff3c61e"
+      "literals": "a403826b116beed0",
+      "shape": "5855ed115960677b"
     },
     "src/phytoscope/phytoscope/api/context.py": {
       "literals": "05740649a6930778",
       "shape": "f44739f0e1ec1ef3"
     },
     "src/phytoscope/phytoscope/api/contract.py": {
-      "literals": "d7889fb17978ad3b",
+      "literals": "01218a65ffa3ed1b",
       "shape": "7290112d105fd5fa"
     },
     "src/phytoscope/phytoscope/api/events.py": {
-      "literals": "0407a69d3af9f2ff",
-      "shape": "c0cef17be6a7c5c3"
+      "literals": "d8685d44aad36fb4",
+      "shape": "2f736b0b577e906e"
     },
     "src/phytoscope/phytoscope/api/registry.py": {
-      "literals": "0a449a94b02bc5a3",
+      "literals": "71d8dce7994d2f27",
       "shape": "3fabdaf211a7118b"
     },
     "src/phytoscope/phytoscope/config.py": {
@@ -221,27 +225,27 @@
       "shape": "93807a6f305a37bd"
     },
     "src/phytoscope/phytoscope/i18n.py": {
-      "literals": "2d08114a8a1bd748",
-      "shape": "1807493b1de9f387"
+      "literals": "956edb2b47d226e5",
+      "shape": "fac14b2e0c83f9b7"
     },
     "src/phytoscope/phytoscope/modules/__init__.py": {
       "literals": "ccdee505c02b1e17",
       "shape": "ccdee505c02b1e17"
     },
-    "src/phytoscope/phytoscope/modules/descripteurs-avances/module.py": {
-      "literals": "91f653228ebf0ec6",
+    "src/phytoscope/phytoscope/modules/advanced-descriptors/module.py": {
+      "literals": "1ee3240abb33c12d",
       "shape": "232ba8bdec3ec625"
     },
-    "src/phytoscope/phytoscope/modules/empreinte-montage/module.py": {
-      "literals": "04db923227914270",
-      "shape": "e89a9e529ad1ca99"
-    },
     "src/phytoscope/phytoscope/modules/export-csv/module.py": {
-      "literals": "ded411eda6a5e3ce",
+      "literals": "fef671132f2035d2",
       "shape": "ad31ef6d8aa6b5bb"
     },
-    "src/phytoscope/phytoscope/modules/grandeurs-scientifiques/module.py": {
-      "literals": "accdad750c80917e",
+    "src/phytoscope/phytoscope/modules/rig-fingerprint/module.py": {
+      "literals": "5b3bf4d0a2f52c51",
+      "shape": "e89a9e529ad1ca99"
+    },
+    "src/phytoscope/phytoscope/modules/scientific-quantities/module.py": {
+      "literals": "3a0f8d1b9bf55a18",
       "shape": "41730c4292de75e0"
     },
     "src/phytoscope/phytoscope/music/__init__.py": {
@@ -257,7 +261,7 @@
       "shape": "872cefb776d1c2c5"
     },
     "src/phytoscope/phytoscope/music/lexicon.py": {
-      "literals": "4abbc17e8c5526d1",
+      "literals": "f4c63a655cede579",
       "shape": "a42138e9efd6664b"
     },
     "src/phytoscope/phytoscope/music/mapper.py": {
@@ -289,32 +293,32 @@
       "shape": "ad2e13b69c4fc1fd"
     },
     "src/phytoscope/phytoscope/ui/about.py": {
-      "literals": "96d395e621d530a7",
-      "shape": "6205869eb064d688"
+      "literals": "3e80b3b7ac3f5901",
+      "shape": "a5570fa5d60a803f"
     },
     "src/phytoscope/phytoscope/ui/diag_tab.py": {
-      "literals": "78971e557331ab56",
-      "shape": "84377f5f550425ea"
+      "literals": "da71799bf2b4b77e",
+      "shape": "fa62fef4661b30da"
     },
     "src/phytoscope/phytoscope/ui/features_tab.py": {
-      "literals": "b33eb8d1c8caef22",
-      "shape": "921fe4ea24ac4050"
+      "literals": "d1b9fabe286c8fbb",
+      "shape": "11459336d78c8276"
     },
     "src/phytoscope/phytoscope/ui/fonts.py": {
       "literals": "c14d315d4eb9186d",
       "shape": "e49c43da95e678c1"
     },
     "src/phytoscope/phytoscope/ui/help_dialog.py": {
-      "literals": "52acacf6ed19f36b",
-      "shape": "3f85d9f65293a88a"
+      "literals": "e54355947e2db05e",
+      "shape": "1b860b2e0c1b2929"
     },
     "src/phytoscope/phytoscope/ui/icon.py": {
       "literals": "ba7afd0ac301fc58",
       "shape": "eab59d907d7db74f"
     },
     "src/phytoscope/phytoscope/ui/language_dialog.py": {
-      "literals": "7872f89881667f72",
-      "shape": "5471af44039f79cd"
+      "literals": "bc4ae41d5af8630e",
+      "shape": "feaa7bd466829e1a"
     },
     "src/phytoscope/phytoscope/ui/library_tab.py": {
       "literals": "2015a3a5b31a6f06",
@@ -325,28 +329,28 @@
       "shape": "d69a8c4599b09cf5"
     },
     "src/phytoscope/phytoscope/ui/main_window.py": {
-      "literals": "0752a851b0fbfc3c",
-      "shape": "31109d3e7a34dc92"
+      "literals": "b17fc1bc0c99571d",
+      "shape": "dd5bf2fa2dd640c0"
     },
     "src/phytoscope/phytoscope/ui/plot_tab.py": {
-      "literals": "a85736f8f7834e26",
-      "shape": "785e3e0402fd754c"
+      "literals": "6cb179890fe3b35a",
+      "shape": "52c7feec2c0f4b2f"
     },
     "src/phytoscope/phytoscope/ui/settings_tab.py": {
-      "literals": "2e14fd90d6237a5c",
-      "shape": "e7d36b7e45e35adf"
+      "literals": "e4ce544f165a3f15",
+      "shape": "73e6a672dc1ee397"
     },
     "src/phytoscope/phytoscope/ui/splash.py": {
       "literals": "77c8da9c5022e5d8",
       "shape": "6d2eea417aae1abc"
     },
     "src/phytoscope/phytoscope/ui/startup_dialog.py": {
-      "literals": "78a0a50e38ef630a",
-      "shape": "505245c3b33eea18"
+      "literals": "44fa7fc4f2de94a9",
+      "shape": "9984f4b120aada26"
     },
     "src/phytoscope/phytoscope/ui/tabs.py": {
-      "literals": "7c3d9aaedc98f546",
-      "shape": "4316d5b7b46b1de4"
+      "literals": "9d30c8a28cf1baaa",
+      "shape": "e604f1c7331c91ef"
     },
     "src/phytoscope/phytoscope/ui/theme.py": {
       "literals": "e49c6ca1dbfb57d5",
@@ -357,15 +361,15 @@
       "shape": "c06777f2b77ae797"
     },
     "src/phytoscope/phytoscope/ui/voice_tab.py": {
-      "literals": "f748b6dd15a0513b",
-      "shape": "2425bb9bf09a4c79"
+      "literals": "61e7efbe1a0ffd83",
+      "shape": "a31f4f0fc196557f"
     },
     "src/phytoscope/phytoscope/ui/widgets.py": {
       "literals": "5ea8ac5b3bd8fda0",
       "shape": "c1855af2236796cc"
     },
     "src/phytoscope/phytoscope/version.py": {
-      "literals": "d5aa495386cc3650",
+      "literals": "5a9c233ca8c5054f",
       "shape": "ab0374e32f1b9cce"
     },
     "src/phytoscope/run.py": {
@@ -377,7 +381,7 @@
       "shape": "2ad38ecd7ea69ff8"
     },
     "src/phytoscope/tests/test_api_modules.py": {
-      "literals": "99f770bcf28e8808",
+      "literals": "20746593a6c78851",
       "shape": "66938d08c09c791c"
     },
     "src/phytoscope/tests/test_core.py": {
@@ -397,8 +401,8 @@
       "shape": "818ee4ecb2029ce0"
     },
     "src/phytoscope/tests/test_i18n.py": {
-      "literals": "19a55c2e942eba48",
-      "shape": "8dbe73f0b12fa47e"
+      "literals": "91e84cf5fd495d03",
+      "shape": "d5478fc582250e48"
     },
     "src/phytoscope/tests/test_log_window.py": {
       "literals": "217851829de41c17",
@@ -409,7 +413,7 @@
       "shape": "747a5755f29e5447"
     },
     "src/phytoscope/tests/test_portability.py": {
-      "literals": "d2cc47f98759f5be",
+      "literals": "1c56dbaae8c49827",
       "shape": "cf55df3cb2298ae9"
     },
     "src/phytoscope/tests/test_quantities.py": {
@@ -437,7 +441,7 @@
       "shape": "2989e2b1835b323f"
     },
     "src/phytoscope/tools/release.py": {
-      "literals": "77de297eb52c2b49",
+      "literals": "4b847db8fe0ddb9f",
       "shape": "66de8fd4181d1f25"
     },
     "src/phytoscope/tools/sbom.py": {
@@ -452,60 +456,60 @@
       "literals": "8be8ca847a832302",
       "shape": "2342f076408c8ca6"
     },
-    "src/sdk/bonjour-monde/module.py": {
-      "literals": "507d29ae7aee6b4a",
-      "shape": "e561cc6f7252478d"
+    "src/sdk/hello-world/module.py": {
+      "literals": "9a1c8aceeb6544ff",
+      "shape": "f17ef822f5dd0d77"
     },
-    "src/sdk/bonjour-monde/test_hello_world.py": {
-      "literals": "af04e7f14a35a33e",
-      "shape": "9a4eeb3b1fac8cb4"
+    "src/sdk/hello-world/test_hello_world.py": {
+      "literals": "662fc12e27783ac3",
+      "shape": "d8b6c9eed06784a0"
     },
-    "src/sdk/outils/new_module.py": {
-      "literals": "c7bbb595acffc95b",
+    "src/sdk/tools/new_module.py": {
+      "literals": "3e7a2841e0c46de0",
       "shape": "143dc843f4c79e54"
     },
     "tools/apply_renames.py": {
-      "literals": "6ab1a2482f5fad9e",
-      "shape": "e58bde37a6037c39"
+      "literals": "d8d6da895dfb524c",
+      "shape": "c0ebbf6caf01ff98"
     },
     "tools/fetch-software.py": {
       "literals": "cc4d0f9cd6d935f0",
       "shape": "dd3f2d572ddeae1e"
     },
     "tools/gen-appendix-parts.py": {
-      "literals": "f64189a7aac108d9",
+      "literals": "81e69c3f846513cc",
       "shape": "9fc823d0b5a20cfe"
     },
     "tools/gen_bom.py": {
-      "literals": "2133ecc69cc1e1f2",
+      "literals": "b18ca2ce56c7cf92",
       "shape": "2f999411b87135c2"
     },
     "tools/gen_code_annex.py": {
-      "literals": "3a5fb0c19fb179ba",
-      "shape": "86fdf39a91fb9a43"
+      "literals": "765b71e8d19977ae",
+      "shape": "dec95c07d585d383"
     },
     "tools/gen_credits.py": {
-      "literals": "a52782615536f7a4",
+      "literals": "b4beab6291b39289",
       "shape": "f86f901e4fd33b95"
     },
     "tools/gen_glossary.py": {
-      "literals": "f3a1bf89d7e373b7",
+      "literals": "d03adf0f2e6c75ca",
       "shape": "fd218a5173381e74"
     },
     "tools/gen_index.py": {
-      "literals": "2ba032a0a0240089",
+      "literals": "300e6d9cd54ac874",
       "shape": "060ee4796da62e66"
     },
     "tools/headers.py": {
-      "literals": "fb8fe90edaecd904",
-      "shape": "214f96ae091534ee"
+      "literals": "1b8d32bf41d5c6fc",
+      "shape": "86527f7a79579896"
     },
     "tools/impacted_pdfs.py": {
-      "literals": "b39db985d241cb39",
+      "literals": "c52d25ceec32d3c3",
       "shape": "045bb02f5572324a"
     },
     "tools/sbom.py": {
-      "literals": "177c898f6c62dca2",
+      "literals": "858cb5305738a082",
       "shape": "e584e0ada3450052"
     },
     "tools/verify_actions.py": {
@@ -516,8 +520,12 @@
       "literals": "5d05282f87121fac",
       "shape": "fc293cf4b2803926"
     },
+    "tools/verify_translatable.py": {
+      "literals": "fa570c10eeff9b71",
+      "shape": "bbb037837c62f909"
+    },
     "tools/verify_translation.py": {
-      "literals": "25377584d03a303e",
+      "literals": "9f2c9b5198c76366",
       "shape": "1bea6a8b201a4f0a"
     }
   }

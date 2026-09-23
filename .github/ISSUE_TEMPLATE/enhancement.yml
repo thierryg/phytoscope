@@ -1,0 +1,53 @@
+name: Enhancement
+description: Propose a change or an addition
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before writing: `constraints.md` is authoritative, and
+        `.ai/decisions.md` keeps the trace of the decisions **and of their
+        reasons**. A great many proposals already have an answer there —
+        which does not mean the answer is final, but that the argument
+        should be picked up where it stopped.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: >
+        What is wrong today, from the point of view of somebody using the
+        project. Not the solution — the problem.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you propose
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What you ruled out, and why
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Compatibility with the requirements
+      options:
+        - label: >
+            It adds no mandatory dependency (C-40), and above all not SciPy
+        - label: It does not require `sudo` (C-55)
+        - label: >
+            It does not make the project say that a plant "speaks" or
+            "feels" without a measurement and without the warning (C-5)
+        - label: >
+            It edits no generated file by hand (C-45) — if a generated file
+            changes, it is its generator that changes
+        - label: >
+            If it touches the module contract: it accepts that the major
+            changes and the migration is documented (C-49)
+        - label: I read .ai/decisions.md and the question is not settled there

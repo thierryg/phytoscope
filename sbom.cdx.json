@@ -1,10 +1,10 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:02954c2b-fcfd-45e0-b67c-63fe0bfdf3af",
+  "serialNumber": "urn:uuid:c56c1b3f-ec3c-4354-a0cf-40be2dc9265a",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-09-18T19:41:26.245426+00:00",
+    "timestamp": "2026-09-22T12:49:09.946354+00:00",
     "tools": {
       "components": [
         {
@@ -139,8 +139,8 @@
         {
           "type": "library",
           "name": "cffi",
-          "version": "2.1.1",
-          "purl": "pkg:pypi/cffi@2.1.1",
+          "version": "2.0.0",
+          "purl": "pkg:pypi/cffi@2.0.0",
           "publisher": "Armin Rigo, Maciej Fijalkowski",
           "description": "interface C, requise par sounddevice",
           "licenses": [

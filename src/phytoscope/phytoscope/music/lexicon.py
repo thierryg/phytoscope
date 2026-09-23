@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/music/lexicon.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Le mode vocal : des mots au lieu des notes.
@@ -99,7 +99,7 @@ __all__ = ["Enonce", "Lexique", "VocalMapper", "LEXIQUE_PAR_DEFAUT",
 
 #  Les dictionnaires livrés, un par langue de l'interface.
 DOSSIER_LEXIQUES = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "lexiques")
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "lexicons")
 
 
 # ---------------------------------------------------------------------------
@@ -258,21 +258,18 @@ class Lexique:
 #  résolu selon la direction. Un gabarit tiré au sort évite la litanie.
 GRAMMAIRES: Dict[str, Dict[str, object]] = {
     "minimale": {
-        "titre": "Minimale — un mot",
-        "description": "Un seul mot par événement. Le plus honnête : rien n'est "
-                       "ajouté qui ne soit mesuré.",
+        "titre": "Minimal — one word",
+        "description": "One word per event. The most honest setting: nothing is added that has not been measured.",
         "gabarits": ["{verbe}"],
     },
     "telegraphique": {
-        "titre": "Télégraphique — deux mots",
-        "description": "Le verbe et son intensité. Court, lisible, sans syntaxe "
-                       "qui suggérerait une pensée.",
+        "titre": "Telegraphic — two words",
+        "description": "The verb and its intensity. Short, legible, with no syntax that would suggest a thought.",
         "gabarits": ["{verbe} {intensite}"],
     },
     "contemplative": {
-        "titre": "Contemplative — phrase courte",
-        "description": "Sujet, verbe, intensité, parfois une circonstance. "
-                       "C'est le réglage livré par défaut.",
+        "titre": "Contemplative — a short sentence",
+        "description": "Subject, verb, intensity, sometimes a circumstance. This is the setting shipped by default.",
         "gabarits": [
             "{sujet} {verbe} {intensite}",
             "{tempo}, {sujet} {verbe} {intensite}",
@@ -280,9 +277,8 @@ GRAMMAIRES: Dict[str, Dict[str, object]] = {
         ],
     },
     "descriptive": {
-        "titre": "Descriptive — toutes les dimensions",
-        "description": "Chaque axe mesuré donne un mot. Verbeux, mais rien n'y "
-                       "est laissé implicite.",
+        "titre": "Descriptive — every dimension",
+        "description": "Every measured axis gives a word. Verbose, but nothing is left implicit.",
         "gabarits": [
             "{tempo}, {sujet} {verbe} {intensite}, {couleur}",
             "{sujet} {verbe} {intensite} {liaison} {couleur}",
@@ -470,20 +466,19 @@ class VocalMapper:
     def describe_rules(self) -> List[str]:
         v = getattr(self.settings, "voice", None)
         if v is None:
-            return [t("Mode vocal indisponible.")]
+            return [t("Speech mode unavailable.")]
         g = GRAMMAIRES.get(v.grammar, GRAMMAIRES["contemplative"])
         return [
-            t("Dictionnaire : {nom} — {n} mots").format(
+            t("Dictionary: {nom} — {n} words").format(
                 nom=self.lexique.nom, n=self.lexique.taille()),
-            t("Grammaire : {nom}").format(nom=t(str(g["titre"]))),
-            t("Verbe ← sens de la pente (montée ou descente)"),
-            t("Intensité ← amplitude de l'événement, en écarts-types"),
-            t("Circonstance ← temps écoulé depuis l'énoncé précédent"),
-            t("Qualification ← centre de gravité spectral du signal"),
-            t("Densité maximale : {n:g} énoncés par minute").format(
+            t("Grammar: {nom}").format(nom=t(str(g["titre"]))),
+            t("Verb ← direction of the slope (rise or fall)"),
+            t("Intensity ← amplitude of the event, in standard deviations"),
+            t("Circumstance ← time elapsed since the previous utterance"),
+            t("Qualifier ← spectral centroid of the signal"),
+            t("Maximum density: {n:g} utterances per minute").format(
                 n=v.density_per_min),
-            t("Aucune de ces règles ne traduit quoi que ce soit : elles "
-              "décrivent le signal avec les mots du dictionnaire choisi."),
+            t("None of these rules translates anything: they describe the signal with the words of the chosen dictionary."),
         ]
 
 

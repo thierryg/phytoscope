@@ -1,31 +1,31 @@
 # ===========================================================================
-#  PhytoScope — qui a écrit ce dépôt
+#  PhytoScope — who wrote this repository
 # ===========================================================================
-#  Ce fichier est une COURTOISIE, pas une source de vérité. La source de
-#  vérité est src/phytoscope/phytoscope/AUTEURS, que le logiciel lit pour
-#  sa fenêtre « À propos » et que la fabrique de paquets lit pour estampiller
-#  le .deb, le .rpm, le .msi et le .pkg. Une seconde copie finirait par
-#  diverger : si vous corrigez quelque chose ici, corrigez-le d'abord là-bas.
+#  This file is a COURTESY, not a source of truth. The source of truth is
+#  src/phytoscope/phytoscope/AUTHORS, which the software reads for its
+#  "About" window and which the package factory reads in order to stamp the
+#  .deb, the .rpm, the .msi and the .pkg. A second copy would end up
+#  diverging: if you correct something here, correct it there first.
 # ===========================================================================
 
-Éditeur
+Publisher
     Bretagne Namasté — https://bretagne-namaste.com
     contact@bretagne-namaste.com
 
-Conception, écriture, développement
+Design, writing, development
     Thierry GAYET
 
-Droits
+Rights
     © 2026 Bretagne Namasté — Thierry GAYET
-    Logiciel et micrologiciel sous MIT ; matériel sous CERN-OHL-P v2.
-    Voir LICENSES/README.md.
+    Software and firmware under MIT; hardware under CERN-OHL-P v2.
+    See LICENSES/README.md.
 
-Travaux tiers
-    Ce dépôt s'appuie sur des projets libres qui gardent leurs propres auteurs
-    et leur propre licence. Ils sont recensés, avec leur provenance, dans
-    sources/software/MANIFESTE.md et sources/INDEX.md. Les bibliothèques
-    Python sont recensées dans src/phytoscope/sbom.cdx.json.
+Third-party work
+    This repository builds on free software projects that keep their own
+    authors and their own licence. They are listed, with their provenance, in
+    sources/software/MANIFESTE.md and sources/INDEX.md. The Python libraries
+    are listed in src/phytoscope/sbom.cdx.json.
 
 Contributions
-    Les contributions sont bienvenues : voir CONTRIBUTING.md. Les personnes
-    qui contribuent sont ajoutées ci-dessous, par ordre d'arrivée.
+    Contributions are welcome: see CONTRIBUTING.md. People who contribute are
+    added below, in the order they arrive.

@@ -1,0 +1,483 @@
+# ===========================================================================
+#  PhytoScope — static analysis, then the package build
+# ===========================================================================
+#  Triggered as soon as a change touches the package factory (`packaging/`)
+#  or the code (`src/`): those are the only two things a package depends on.
+#  Editing a book does not restart this chain — `publications.yml` sees to
+#  that.
+#
+#  Two stages, in this order:
+#
+#    1. `lint` — the static analysis of EVERYTHING executable: Python,
+#       shell, Makefile, YAML. Nothing is built if it fails: a package built
+#       on a faulty script is a package that will have to be republished.
+#
+#    2. `packages` — one build per target system, in parallel, so that a
+#       failure reads at a glance: it is Windows that broke, or Fedora. Then
+#       `signed-packages` replays the whole chain in the right order,
+#       signing included, because the Authenticode signature MODIFIES the
+#       .exe and the .msi and the checksums are computed after it.
+#
+#  The signing uses a SELF-SIGNED certificate made on the runner and thrown
+#  away with it. The project's real private key never enters here: it lives
+#  in ~/.local/share/phytoscope-signature/ on the publisher's machine, and no
+#  repository secret is declared for this chain (C-2R).
+# ===========================================================================
+name: Packages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packaging/**'
+      - 'src/**'
+      - '.github/workflows/packages.yml'
+  pull_request:
+    paths:
+      - 'packaging/**'
+      - 'src/**'
+      - '.github/workflows/packages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paquets-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: '3.12'
+
+jobs:
+
+  # -------------------------------------------------------------------------
+  #  1. Analyse statique
+  # -------------------------------------------------------------------------
+  lint:
+    name: Analyse statique
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Outils d'analyse
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install ruff yamllint
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends shellcheck
+
+      # --- Python -----------------------------------------------------------
+      #  Syntax first: a file that does not compile makes everything else
+      #  unreadable. Then ruff, which carries the project's rules.
+      - name: Python — syntax
+        run: |
+          python -m compileall -q packaging src/phytoscope tools \
+            build.py build_tree.py build_board.py build_sdk.py
+
+      #  This step BLOCKS: syntax and names that do not exist. Those are
+      #  crashes, not questions of style. The rule set is declared in
+      #  src/phytoscope/pyproject.toml, [tool.ruff.lint], with its reasoning.
+      - name: Python — real errors (blocking)
+        run: |
+          ruff check --output-format=github \
+            --select E9,F821,F822,F823,F811 \
+            packaging tools src/phytoscope pdf-src/build.py \
+            pdf-src/build_tree.py pdf-src/build_appendix.py \
+            pdf-src/build_board.py pdf-src/build_sdk.py
+
+      #  These steps INFORM without blocking: more than a thousand style
+      #  warnings are inherited from code written for Python 3.9, and fixing
+      #  them in one go would produce an unreadable revision. The count is
+      #  printed on every run, which makes the debt visible without stopping
+      #  the chain.
+      - name: Python — style and modernisation (informative)
+        run: |
+          ruff check --statistics --select ALL --ignore D,ANN,COM812,ISC001 \
+            packaging tools src/phytoscope || true
+        continue-on-error: true
+
+      - name: Python — formatting (informative)
+        run: ruff format --check --diff packaging tools src/phytoscope
+        continue-on-error: true
+
+      # --- Shell ------------------------------------------------------------
+      #  `src/firmware/_make_.sh` is strict bash and deliberately not
+      #  portable (see .ai/portability.md): shellcheck is run in bash mode,
+      #  not sh, or it reports false positives.
+      - name: Shell — shellcheck
+        run: |
+          mapfile -t scripts < <(git ls-files '*.sh' | grep -v '^sources/')
+          if [ ${#scripts[@]} -eq 0 ]; then echo "no script"; exit 0; fi
+          printf '  · %s\n' "${scripts[@]}"
+          shellcheck --shell=bash --severity=warning --color=always "${scripts[@]}"
+
+      - name: Shell — are the .run files produced valid shell?
+        run: |
+          for f in $(git ls-files 'packaging/templates/*.run*' 2>/dev/null); do
+            bash -n "$f" && echo "  · $f: syntax correct"
+          done
+
+      # --- Makefile ---------------------------------------------------------
+      #  One cannot `make -n` the factory without its tools; so we check
+      #  what can be checked without them: that make can read the file, and
+      #  that every target it declares .PHONY really is defined.
+      #
+      #  The list used to be written out here, in French. The rename of
+      #  2026-09-22 turned `tout` into `all` and five others with it, and
+      #  this step went on looking for the old names: it failed on the first
+      #  one, and `lint` gates every other job — so the CI built nothing at
+      #  all, quietly, for a day. The list is now read from the Makefile
+      #  itself, which cannot drift from it.
+      - name: Makefile — readable, and every .PHONY target is defined
+        run: |
+          for mf in packaging/Makefile src/phytoscope/Makefile; do
+            echo "── $mf"
+            make -f "$mf" -p --question >/dev/null 2>&1 || true
+            make -f "$mf" --dry-run help >/dev/null && echo "  · make can read it"
+          done
+          echo "── the .PHONY targets of packaging/Makefile are all defined"
+          phony=$(sed -n '/^\.PHONY:/,/[^\\]$/p' packaging/Makefile \
+                  | sed 's/^\.PHONY://; s/\\$//')
+          test -n "$phony" || { echo "  ! no .PHONY found"; exit 1; }
+          for target in $phony; do
+            grep -qE "^${target}:" packaging/Makefile \
+              && echo "  · $target" \
+              || { echo "  ! declared .PHONY but never defined: $target"; exit 1; }
+          done
+
+      - name: Makefile — tabs (a recipe indented with spaces is mute)
+        run: |
+          for mf in $(git ls-files '*Makefile' 'Makefile' | grep -v '^sources/'); do
+            if grep -nP '^    [a-zA-Z@$]' "$mf"; then
+              echo "! $mf: a recipe is indented with spaces"; exit 1
+            fi
+          done
+          echo "  · the indentation is right"
+
+      # --- YAML et divers ---------------------------------------------------
+      - name: YAML — yamllint
+        run: |
+          yamllint -c .yamllint.yml .github/
+
+      - name: Are the attribution headers up to date?
+        run: python3 tools/headers.py --verifier
+
+  # -------------------------------------------------------------------------
+  #  2a. One build per target system, in parallel
+  # -------------------------------------------------------------------------
+  packages:
+    name: Packages — ${{ matrix.label }}
+    needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: source
+            label: Source (.tar.gz, .zip)
+            apt: ''
+          - target: debian
+            label: Debian / Ubuntu / Mint (.deb, .run)
+            apt: dpkg-dev fakeroot
+          - target: fedora
+            label: Fedora / RHEL (.rpm)
+            apt: rpm
+          - target: windows
+            label: Windows 10/11 (.exe, .msi, .zip)
+            apt: nsis msitools osslsigncode
+          - target: macos
+            label: macOS / Darwin (.pkg, .zip)
+            #  Nothing to install: `macos_pkg.py` writes the .pkg format end
+            #  to end in Python — XAR, cpio "odc" and BOM — precisely
+            #  because `xar` and `mkbom` are no longer available on Linux.
+            #  This field used to ask for "xar cpio": `xar` is in no Ubuntu
+            #  repository, so the install failed before the build even
+            #  started.
+            apt: ''
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: The target's system tools
+        if: matrix.apt != ''
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ${{ matrix.apt }}
+
+      - name: What the factory can see
+        run: cd packaging && make tools
+
+      #  `make deps` unpacks NSIS, msitools and osslsigncode into
+      #  ~/.local/opt without sudo (C-55). On the runner apt already has
+      #  them: the target is a net, and its failure is not blocking.
+      - name: Fill in the missing tools, without sudo
+        run: cd packaging && make deps
+        continue-on-error: true
+
+      - name: Build — ${{ matrix.target }}
+        run: cd packaging && make ${{ matrix.target }}
+
+      - name: What came out
+        run: |
+          find build/packages -type f -printf '%10s  %p\n' | sort -k2
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packages-${{ matrix.target }}
+          path: build/packages/
+          if-no-files-found: error
+          retention-days: 14
+
+  # -------------------------------------------------------------------------
+  #  2b. The whole chain, in order, signing included
+  # -------------------------------------------------------------------------
+  signed-packages:
+    name: The whole chain, signed and verified
+    needs: lint
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Every packaging tool
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            dpkg-dev fakeroot rpm nsis msitools osslsigncode
+          cd packaging && make deps || true
+
+      #  A SELF-SIGNED certificate made here and thrown away with the
+      #  runner. It serves to prove the signing chain works, nothing more: it
+      #  silences neither SmartScreen nor Gatekeeper (C-2Q), and it is not
+      #  the project's release certificate.
+      - name: An ephemeral certificate for CI
+        run: cd packaging && make certificate
+
+      - name: make all
+        run: cd packaging && make all
+
+      - name: make verify — reopen and check every package
+        run: cd packaging && make verify
+
+      - name: No secret leaked into the packages
+        run: |
+          if find build/packages -name '*.key' -o -name 'phytoscope.key' | grep -q .; then
+            echo "! a private key is inside the packages"; exit 1
+          fi
+          echo "  · no private key among the products"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packages-complete-signed
+          path: build/packages/
+          if-no-files-found: error
+          retention-days: 30
+
+  # -------------------------------------------------------------------------
+  #  2c. The firmware — a deliverable in its own right
+  # -------------------------------------------------------------------------
+  #  The `.uf2` is what one copies onto the board: without it, the packages
+  #  install software that has nothing to listen to. It is built here, every
+  #  time, rather than by hand on the publisher's machine — a binary made by
+  #  hand is a binary nobody can tie to a commit.
+  #
+  #  `build.sh --deps` installs the Pico SDK and the ARM toolchain in $HOME,
+  #  without sudo (C-55). Only cmake and the cross-compiler come from apt.
+  firmware:
+    name: RP2350 firmware (.uf2)
+    needs: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: The cross-compilation toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential \
+            libstdc++-arm-none-eabi-newlib
+
+      #  The SDK is bulky and its version is fixed in _make_.sh: it is kept
+      #  from one run to the next rather than downloaded again.
+      - name: Reuse the Pico SDK between runs
+        id: sdk
+        uses: actions/cache@v4
+        with:
+          path: ~/pico
+          key: pico-sdk-${{ hashFiles('src/firmware/_make_.sh') }}
+
+      - name: Pico SDK and ARM toolchain, in $HOME and without sudo
+        if: steps.sdk.outputs.cache-hit != 'true'
+        working-directory: src/firmware
+        run: ./build.sh --deps
+
+      #  `build.sh` builds AND THEN files the deliverable in build/packages/,
+      #  named with its version and accompanied by its checksums and a
+      #  notice. That is the same output as the package factory: the
+      #  firmware is a deliverable, not an intermediate product.
+      - name: Build and file the deliverable
+        working-directory: src/firmware
+        run: ./build.sh
+
+      #  A .uf2 of a few kilobytes is an empty .uf2: the threshold catches a
+      #  collapse, not a variation. The USB identifiers are checked by the
+      #  test suite instead — it reads the source.
+      - name: Is the deliverable there, and the right size?
+        run: |
+          uf2=$(find build/packages -name 'phytosense-*.uf2' | head -1)
+          test -n "$uf2" || { echo "! no .uf2 was filed"; exit 1; }
+          size=$(stat -c%s "$uf2")
+          echo "  · $uf2: $size bytes"
+          if [ "$size" -lt 32768 ]; then
+            echo "! too small — the build produced an empty binary"
+            exit 1
+          fi
+          test -f "$(dirname "$uf2")/LISEZ-MOI.txt" \
+            || { echo "! notice absente du livrable"; exit 1; }
+          arm-none-eabi-size src/firmware/build/phytosense.elf
+          echo "── empreintes"
+          cat "$(dirname "$uf2")"/phytosense-*.sha256
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firmware-phytosense
+          path: build/packages/*/Firmware/
+          if-no-files-found: error
+          retention-days: 30
+
+  # -------------------------------------------------------------------------
+  #  3. The software on each system, for real
+  # -------------------------------------------------------------------------
+  #  Building a .pkg from Linux does not say the software runs on macOS. The
+  #  tests do say it — and .ai/portability.md keeps the record of the
+  #  differences between systems.
+  software:
+    name: Tests — ${{ matrix.os }}
+    needs: lint
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.10', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Dependencies
+        working-directory: src/phytoscope
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -r requirements-dev.txt
+
+      #  No test needs hardware or a network, but Qt needs a display
+      #  server: in "offscreen" mode it asks for none. XDG_CONFIG_HOME is
+      #  redirected to a throwaway directory: the software must never write
+      #  into the settings of whoever is running it.
+      - name: Tests
+        working-directory: src/phytoscope
+        env:
+          QT_QPA_PLATFORM: offscreen
+        shell: bash
+        run: |
+          export XDG_CONFIG_HOME="$(mktemp -d)"
+          python -m pytest tests -q
+
+  # -------------------------------------------------------------------------
+  #  `latest`: the downloadable packages, on every push to main
+  # -------------------------------------------------------------------------
+  #  Why this job exists. The jobs above deposit CI ARTEFACTS: they expire
+  #  after a few days, and a GitHub account is needed in order to download
+  #  them. That is not what one wants to give somebody who simply wishes to
+  #  try the software.
+  #
+  #  So this job republishes the same files as a rolling pre-release tagged
+  #  `latest`, which downloads without an account and whose link never
+  #  changes.
+  #
+  #  It is NOT a release. A release is laid down with a `vX.Y.Z` tag and goes
+  #  through release.yml, which checks the number agrees, signs, and attaches
+  #  a provenance attestation. `latest` is the build of the moment: useful
+  #  for trying, never for citing.
+  latest:
+    name: Publish `latest`
+    needs: [signed-packages, firmware]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: recu
+
+      #  The artefacts arrive in one directory per name; a release wants
+      #  flat files. We flatten, then compute the checksums — on the files
+      #  PUBLISHED, not on the ones before.
+      - name: Gather and compute the checksums
+        run: |
+          mkdir -p latest
+          find recu -type f \
+               \( -name '*.deb' -o -name '*.rpm' -o -name '*.run' \
+                  -o -name '*.exe' -o -name '*.msi' -o -name '*.pkg' \
+                  -o -name '*.zip' -o -name '*.tar.gz' -o -name '*.p7s' \
+                  -o -name '*.uf2' -o -name '*.elf' -o -name '*.bin' \) \
+               -exec cp -n {} latest/ \;
+          cd latest
+          [ -n "$(ls -A)" ] || { echo "::error::no artefact received"; exit 1; }
+          sha256sum -- * > SHA256SUMS.txt
+          echo "  $(ls -1 | wc -l) file(s):"
+          ls -1sh
+
+      #  The rolling tag follows the current commit. Without moving it,
+      #  `latest` would name the first commit that created it, which misleads
+      #  whoever reads the release page.
+      #
+      #  Pushing a tag with the GITHUB_TOKEN triggers no workflow, and
+      #  `latest` does not match release.yml's pattern (`v[0-9]+…`): there is
+      #  therefore no loop possible.
+      - name: Move the rolling tag
+        run: |
+          git tag -f latest
+          git push -f origin latest
+
+      - name: Publish
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65  # v2.6.2
+        with:
+          tag_name: latest
+          name: The latest build of main
+          prerelease: true
+          make_latest: false
+          target_commitish: ${{ github.sha }}
+          files: latest/*
+          body: |
+            **An automatic build of the `main` branch** — commit
+            `${{ github.sha }}`, remade on every push.
+
+            This is not a published release. The packages are signed with the
+            project's self-signed certificate, which silences neither
+            SmartScreen nor Gatekeeper (`C-2Q`): the operating system's
+            warnings are normal and expected.
+
+            `SHA256SUMS.txt` holds the checksums of the files on this page.
+            For a citable version, see the releases tagged `vX.Y.Z`.

@@ -2,16 +2,16 @@
   ==========================================================================
   PhytoScope — attribution — pdf-src/assets/svg/logiciel-mapping.svg
 
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
+  Version   : 1.6.0
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
 
   SPDX-License-Identifier: MIT
-  fin de l'attribution
+  end of attribution
   ==========================================================================
 -->
 
@@ -40,37 +40,37 @@
    <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
 </defs>
 <rect width="980" height="600" fill="#FFFFFF"/>
-<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">De la microvolt à la note</text>
-<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Chaque flèche est un choix esthétique : le document dit lequel, et pourquoi</text>
+<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">From the microvolt to the note</text>
+<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Every arrow is an aesthetic choice: the document says which, and why</text>
 <rect x="40" y="110" width="300" height="66" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.4"/>
-<text x="190.0" y="142" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Amplitude de l'événement</text>
+<text x="190.0" y="142" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Event amplitude</text>
 <text x="190.0" y="162" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">µV</text>
 <rect x="40" y="198" width="300" height="66" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.4"/>
-<text x="190.0" y="230" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Pente à l'origine</text>
+<text x="190.0" y="230" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Initial slope</text>
 <text x="190.0" y="250" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">µV/s</text>
 <rect x="40" y="286" width="300" height="66" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.4"/>
-<text x="190.0" y="318" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Durée au-dessus du seuil</text>
+<text x="190.0" y="318" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Time above threshold</text>
 <text x="190.0" y="338" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">s</text>
 <rect x="40" y="374" width="300" height="66" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.4"/>
-<text x="190.0" y="406" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Variabilité sur 60 s</text>
+<text x="190.0" y="406" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Variability over 60 s</text>
 <text x="190.0" y="426" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">µV eff.</text>
 <rect x="40" y="462" width="300" height="66" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.4"/>
-<text x="190.0" y="494" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Température, lumière</text>
+<text x="190.0" y="494" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Temperature, light</text>
 <text x="190.0" y="514" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">capteurs</text>
 <rect x="640" y="110" width="300" height="66" rx="7" fill="#fff" stroke="#2F5E86" stroke-width="1.4"/>
 <text x="790.0" y="142" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Hauteur de note</text>
-<text x="790.0" y="162" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">degré dans la gamme</text>
+<text x="790.0" y="162" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">degree in the scale</text>
 <rect x="640" y="198" width="300" height="66" rx="7" fill="#fff" stroke="#2F5E86" stroke-width="1.4"/>
-<text x="790.0" y="230" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Nuance (vélocité)</text>
+<text x="790.0" y="230" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Dynamics (velocity)</text>
 <text x="790.0" y="250" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">1 – 127</text>
 <rect x="640" y="286" width="300" height="66" rx="7" fill="#fff" stroke="#2F5E86" stroke-width="1.4"/>
-<text x="790.0" y="318" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Durée de la note</text>
+<text x="790.0" y="318" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Note length</text>
 <text x="790.0" y="338" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">0,2 – 8 s</text>
 <rect x="640" y="374" width="300" height="66" rx="7" fill="#fff" stroke="#2F5E86" stroke-width="1.4"/>
-<text x="790.0" y="406" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Densité rythmique</text>
+<text x="790.0" y="406" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Rhythmic density</text>
 <text x="790.0" y="426" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">notes / minute</text>
 <rect x="640" y="462" width="300" height="66" rx="7" fill="#fff" stroke="#2F5E86" stroke-width="1.4"/>
-<text x="790.0" y="494" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Timbre, réverbération</text>
+<text x="790.0" y="494" font-family="Cormorant Garamond, serif" font-size="20.47" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Timbre, reverberation</text>
 <text x="790.0" y="514" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">instrument, envoi</text>
 <path d="M340,143 C480,143 500,143 636,143" fill="none" stroke="#B08528" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah)"/>
 <path d="M340,231 C480,231 500,231 636,231" fill="none" stroke="#B08528" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah)"/>
@@ -83,8 +83,8 @@
 <text x="490.0" y="286" font-family="Cormorant Garamond, serif" font-size="22.13" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Moteur de</text>
 <text x="490.0" y="306" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">correspondance</text>
 <text x="490.0" y="332" font-family="Lato, sans-serif" font-size="16.87" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">quantification</text>
-<text x="490.0" y="351" font-family="Lato, sans-serif" font-size="16.87" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">à la gamme</text>
-<text x="490.0" y="370" font-family="Lato, sans-serif" font-size="16.87" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">et anti-répétition</text>
+<text x="490.0" y="351" font-family="Lato, sans-serif" font-size="16.87" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">to the scale</text>
+<text x="490.0" y="370" font-family="Lato, sans-serif" font-size="16.87" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">and anti-repetition</text>
 <text x="28" y="592" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
 <text x="952" y="592" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
 </svg>

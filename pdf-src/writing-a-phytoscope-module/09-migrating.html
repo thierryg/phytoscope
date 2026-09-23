@@ -1,0 +1,133 @@
+<section class="chapter pagebreak">
+  <h2 id="migrer" data-toc="chapter">6. Migrating from API 2.0</h2>
+
+  <p class="chapo">Every name in the interface changed on 2026-09-23: the
+  surface was French, and the repository turned to technical US English.
+  <code>API_VERSION</code> went from <code>"2.0"</code> to <code>"3.0"</code>
+  in the same change, which is exactly what a major number is for.</p>
+
+  <div class="callout important">
+    <h4>Your 2.0 module will not run, and it will not half-run</h4>
+    <p>The host reads the manifest without importing the module, sees
+    <code>api="2.0"</code>, and refuses it <em>at discovery</em>, with one
+    sentence in Diagnostics:</p>
+    <pre class="code"><code>incompatible — targets API 2.0, but this software offers 3.0</code></pre>
+    <p>Nothing is aliased, deliberately. An alias would let the module load
+    and then fail on the first field it read, halfway through a session —
+    which is the failure a major bump exists to prevent. A refusal you can
+    read at start-up is worth more than a module that works until it does
+    not.</p>
+  </div>
+
+  <h3 id="migrer-faire" data-toc="sub">Doing it</h3>
+
+  <ol>
+    <li><code>api="3.0"</code> in the manifest.</li>
+    <li><strong>Rename</strong>, with the table below. Every one is a plain
+      rename: no behaviour changed, no argument moved, nothing was added or
+      taken away.</li>
+    <li><strong>Run your tests.</strong> If they use the SDK's fake context,
+      copy the current one out of
+      <code>src/sdk/hello-world/test_hello_world.py</code> — shorter than
+      patching the old one.</li>
+  </ol>
+
+  <p>There is no step four. The interface does the same things it did, under
+  names somebody who does not read French can follow.</p>
+
+  <h3 id="migrer-table" data-toc="sub">What changed</h3>
+
+  <table class="tab">
+    <thead><tr><th>2.0</th><th>3.0</th></tr></thead>
+    <tbody>
+      <tr><td><code>VERSION_API</code></td><td><code>API_VERSION</code></td></tr>
+      <tr><td><code>Manifeste</code> · <code>MANIFESTE</code></td>
+          <td><code>Manifest</code> · <code>MANIFEST</code></td></tr>
+      <tr><td><code>Capacite.ANALYSEUR</code> …</td>
+          <td><code>Capability.ANALYSER</code> …</td></tr>
+      <tr><td><code>nom</code> · <code>titre</code> · <code>auteur</code> ·
+          <code>site</code></td>
+          <td><code>name</code> · <code>title</code> · <code>author</code> ·
+          <code>website</code></td></tr>
+      <tr><td><code>capacites</code> · <code>depend_de</code> ·
+          <code>exige</code></td>
+          <td><code>capabilities</code> · <code>depends_on</code> ·
+          <code>requires</code></td></tr>
+      <tr><td><code>installer()</code> · <code>arreter()</code></td>
+          <td><code>setup()</code> · <code>shutdown()</code></td></tr>
+      <tr><td><code>reglages_par_defaut()</code> · <code>self.contexte</code></td>
+          <td><code>default_settings()</code> · <code>self.context</code></td></tr>
+      <tr><td><code>analyser()</code> · <code>decrire()</code> ·
+          <code>sonifier()</code> · <code>exporter()</code></td>
+          <td><code>analyse()</code> · <code>describe()</code> ·
+          <code>sonify()</code> · <code>export()</code></td></tr>
+      <tr><td><code>FENETRE_S</code> · <code>SIGNAL_BRUT</code> ·
+          <code>LIBELLE</code></td>
+          <td><code>WINDOW_S</code> · <code>RAW_SIGNAL</code> ·
+          <code>LABEL</code></td></tr>
+      <tr><td><code>Grandeur</code>: <code>cle</code>, <code>libelle</code>,
+          <code>valeur</code>, <code>texte</code>, <code>sens</code>,
+          <code>alerte</code></td>
+          <td><code>Quantity</code>: <code>key</code>, <code>label</code>,
+          <code>value</code>, <code>text</code>, <code>meaning</code>,
+          <code>alert</code></td></tr>
+      <tr><td><code>NoteProposee</code>: <code>hauteur_midi</code>,
+          <code>velocite</code>, <code>duree_s</code>, <code>origine_v</code></td>
+          <td><code>ProposedNote</code>: <code>midi_pitch</code>,
+          <code>velocity</code>, <code>duration_s</code>,
+          <code>source_v</code></td></tr>
+      <tr><td><code>Contexte</code> · <code>EtatMesure</code></td>
+          <td><code>Context</code> · <code>MeasurementState</code></td></tr>
+      <tr><td><code>contexte.dossier()</code> · <code>.reglages</code> ·
+          <code>.journal()</code> · <code>.traduire()</code> ·
+          <code>.abonner()</code></td>
+          <td><code>context.directory()</code> · <code>.settings</code> ·
+          <code>.log()</code> · <code>.translate()</code> ·
+          <code>.subscribe()</code></td></tr>
+      <tr><td><code>"actif"</code> · <code>"en_faute"</code> ·
+          <code>"desactive"</code></td>
+          <td><code>"active"</code> · <code>"faulted"</code> ·
+          <code>"disabled"</code></td></tr>
+    </tbody>
+  </table>
+
+  <p>The complete table, field by field, is in
+  <code>src/sdk/docs/08-migrating-from-2.0.md</code>.</p>
+
+  <h3 id="migrer-neuf" data-toc="sub">What 3.0 added</h3>
+
+  <p>Renaming was the occasion, not the whole of it. Three members on each
+  side are new, so that the version contract can be <em>read</em> rather than
+  guessed: <code>context.api_version</code>,
+  <code>context.api_required</code> and
+  <code>context.api_at_least(v)</code> for the module;
+  <code>manifest.api_required</code>,
+  <code>manifest.api_satisfied_by</code> and
+  <code>registry.api_requirements()</code> for the host; and
+  <code>parse_version()</code> for both, so that neither writes its own
+  regular expression.</p>
+
+  <p><code>Manifest.api</code> had always been a <em>minimum</em> — that is
+  what <code>compatible()</code> computed — but nothing said so, and nothing
+  handed it back parsed. The refusal now names both versions and what would
+  satisfy the module:</p>
+
+  <pre class="code"><code>needs at least API 2.0, but this software offers 3.0 — it wants API 2.0 or any later 2.x</code></pre>
+
+  <h3 id="migrer-pas" data-toc="sub">What did not change</h3>
+
+  <ul>
+    <li>the <strong>event wire names</strong> — <code>measurement.started</code>,
+      <code>signal.event</code> and the nine others. They were renamed in 2.0,
+      and renaming them twice would have been its own kind of cruelty;</li>
+    <li><strong>subscribing to an unknown event is still not an error</strong>;</li>
+    <li>the <strong>session files on disk</strong>: <code>mesures.csv</code>,
+      <code>evenements.csv</code>, <code>seance.json</code>. An exporter reads
+      the names it always did;</li>
+    <li>the <strong>settings file</strong>: your module's settings are still
+      stored under its name, and what you had is what you get back;</li>
+    <li>the <strong>guarantees</strong>: a module that raises still never
+      brings the software down, load order is still deterministic, and nothing
+      is still called on the acquisition thread.</li>
+  </ul>
+</section>

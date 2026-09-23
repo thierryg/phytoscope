@@ -2,23 +2,23 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/ui/settings_tab.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Réglages — assistant d'auto-configuration, puis tout le reste.
 
 Deux niveaux cohabitent volontairement :
 
-* **l'assistant**, qui écoute quelques secondes et propose un jeu complet de
+* **l'assistant**, qui écoute quelques seconds et propose un jeu complet de
   réglages en expliquant chacun de ses choix ;
 * **les réglages détaillés**, où rien n'est caché — jusqu'au coefficient de
   qualité du réjecteur et au facteur de conversion en volts.
@@ -59,24 +59,24 @@ class SettingsTab(QWidget):
         self._auto_result = None
 
         tabs = QTabWidget()
-        tabs.addTab(self._page_assistant(), t("Assistant"))
+        tabs.addTab(self._page_assistant(), t("Wizard"))
         tabs.addTab(_scroll(self._page_acquisition()), t("Acquisition"))
-        tabs.addTab(_scroll(self._page_processing()), t("Traitement"))
-        tabs.addTab(_scroll(self._page_music()), t("Musique"))
-        tabs.addTab(_scroll(self._page_recording()), t("Enregistrement"))
+        tabs.addTab(_scroll(self._page_processing()), t("Processing"))
+        tabs.addTab(_scroll(self._page_music()), t("Music"))
+        tabs.addTab(_scroll(self._page_recording()), t("Recording"))
         tabs.addTab(_scroll(self._page_ui()), t("Interface"))
         tabs.addTab(_scroll(self._page_modules()), t("Modules"))
         tabs.addTab(_scroll(self._page_expert()), t("Expert"))
 
         bar = QHBoxLayout()
-        self.btn_apply = QPushButton(t("Appliquer"))
+        self.btn_apply = QPushButton(t("Apply"))
         self.btn_apply.clicked.connect(self._apply)
-        self.btn_save = QPushButton(t("Enregistrer les réglages"))
+        self.btn_save = QPushButton(t("Save the settings"))
         self.btn_save.clicked.connect(self._save)
-        self.btn_reset = QPushButton(t("Revenir aux valeurs par défaut"))
+        self.btn_reset = QPushButton(t("Restore the default values"))
         self.btn_reset.clicked.connect(self._reset)
         self.lab_path = QLabel("")
-        self.lab_path.setStyleSheet(f"color:{palette['texte2']};font-size:8pt;")
+        self.lab_path.setStyleSheet(f"color:{palette['text2']};font-size:8pt;")
         bar.addWidget(self.btn_apply)
         bar.addWidget(self.btn_save)
         bar.addWidget(self.btn_reset)
@@ -93,10 +93,7 @@ class SettingsTab(QWidget):
         w = QWidget()
         lay = QVBoxLayout(w)
         intro = QLabel(
-            t("L'assistant écoute le signal pendant quelques secondes, mesure le "
-            "bruit, la dérive et la présence du réseau, puis propose un jeu "
-            "complet de réglages — en expliquant chaque choix. Rien n'est "
-            "appliqué sans votre accord."))
+            t("The wizard listens to the signal for a few seconds, measures the noise, the drift and the presence of the mains, then proposes a complete set of settings — explaining every choice. Nothing is applied without your agreement."))
         intro.setWordWrap(True)
         lay.addWidget(intro)
 
@@ -104,8 +101,8 @@ class SettingsTab(QWidget):
         self.sp_auto_seconds = QSpinBox()
         self.sp_auto_seconds.setRange(3, 120)
         self.sp_auto_seconds.setValue(12)
-        self.sp_auto_seconds.setSuffix(t(" s d'écoute"))
-        self.btn_auto = QPushButton(t("Lancer l'auto-configuration"))
+        self.sp_auto_seconds.setSuffix(t(" s of listening"))
+        self.btn_auto = QPushButton(t("Run the auto-setup"))
         self.btn_auto.clicked.connect(self._start_auto)
         self.progress = QProgressBar()
         self.progress.setRange(0, 100)
@@ -118,12 +115,11 @@ class SettingsTab(QWidget):
         self.auto_report = QPlainTextEdit()
         self.auto_report.setReadOnly(True)
         self.auto_report.setPlaceholderText(
-            t("Le rapport de mesure et la justification de chaque réglage "
-            "s'afficheront ici."))
+            t("The measurement report and the reason for each setting will appear here."))
         lay.addWidget(self.auto_report, 1)
 
         row2 = QHBoxLayout()
-        self.btn_auto_apply = QPushButton(t("Appliquer les réglages proposés"))
+        self.btn_auto_apply = QPushButton(t("Apply the proposed settings"))
         self.btn_auto_apply.setEnabled(False)
         self.btn_auto_apply.clicked.connect(self._apply_auto)
         row2.addWidget(self.btn_auto_apply)
@@ -181,18 +177,18 @@ class SettingsTab(QWidget):
         w = QWidget()
         lay = QVBoxLayout(w)
 
-        box = QGroupBox(t("Source du signal"))
+        box = QGroupBox(t("Signal source"))
         f = QFormLayout(box)
         self.cb_source = QComboBox()
-        for key, label in (("auto", t("Détection automatique (recommandé)")),
-                           ("phytosense", t("Carte PhytoSense (classe audio)")),
-                           ("audio", t("Entrée audio quelconque")),
-                           ("serie", t("Port série (montage maison)")),
-                           ("simulation", t("Générateur interne (sans matériel)"))):
+        for key, label in (("auto", t("Automatic detection (recommended)")),
+                           ("phytosense", t("PhytoSense board (audio class)")),
+                           ("audio", t("Any audio input")),
+                           ("serie", t("Serial port (home-made circuit)")),
+                           ("simulation", t("Internal generator (no hardware)"))):
             self.cb_source.addItem(label, key)
         self.cb_device = QComboBox()
         self.cb_device.setEditable(True)
-        self.btn_scan = QPushButton(t("Rechercher les périphériques"))
+        self.btn_scan = QPushButton(t("Scan for devices"))
         self.btn_scan.clicked.connect(self._scan_devices)
         self.sp_rate = QDoubleSpinBox()
         self.sp_rate.setRange(1.0, 48000.0)
@@ -201,13 +197,13 @@ class SettingsTab(QWidget):
         self.sp_channels = QSpinBox()
         self.sp_channels.setRange(1, 4)
         f.addRow(t("Source"), self.cb_source)
-        f.addRow(t("Périphérique"), self.cb_device)
+        f.addRow(t("Device"), self.cb_device)
         f.addRow("", self.btn_scan)
-        f.addRow(t("Échantillonnage"), self.sp_rate)
-        f.addRow(t("Voies"), self.sp_channels)
+        f.addRow(t("Sampling"), self.sp_rate)
+        f.addRow(t("Channels"), self.sp_channels)
         lay.addWidget(box)
 
-        box2 = QGroupBox(t("Étalonnage de l'entrée"))
+        box2 = QGroupBox(t("Input calibration"))
         f2 = QFormLayout(box2)
         self.sp_full_scale = QDoubleSpinBox()
         self.sp_full_scale.setRange(0.001, 100.0)
@@ -217,13 +213,13 @@ class SettingsTab(QWidget):
         self.sp_vpu.setRange(1e-9, 1e6)
         self.sp_vpu.setDecimals(9)
         self.cb_gain = QComboBox()
-        self.cb_gain.addItem("automatique", 0)
+        self.cb_gain.addItem(t("automatic"), 0)
         for g in (1, 2, 5, 10, 20, 50, 100, 200):
             self.cb_gain.addItem(f"×{g}", g)
-        self.chk_invert = QCheckBox(t("inverser le signe du signal"))
-        f2.addRow(t("Pleine échelle"), self.sp_full_scale)
-        f2.addRow(t("Volts par unité source"), self.sp_vpu)
-        f2.addRow(t("Gain matériel"), self.cb_gain)
+        self.chk_invert = QCheckBox(t("invert the sign of the signal"))
+        f2.addRow(t("Full scale"), self.sp_full_scale)
+        f2.addRow(t("Volts per source unit"), self.sp_vpu)
+        f2.addRow(t("Hardware gain"), self.cb_gain)
         f2.addRow(self.chk_invert)
         lay.addWidget(box2)
         lay.addStretch(1)
@@ -233,56 +229,54 @@ class SettingsTab(QWidget):
         self.cb_device.clear()
         #  L'interface hôte est affichée : sous Windows le même matériel
         #  apparaît quatre fois, et c'est le seul moyen de savoir lequel on
-        #  choisit. La valeur stockée reste le nom seul, pour ne pas invalider
+        #  choisit. La value stockée reste le name seul, pour ne pas invalider
         #  les fichiers de réglages existants — `AudioSource.resoudre()` se
-        #  charge de retrouver la bonne occurrence au moment d'ouvrir.
+        #  charge de retrouver la bonne occurrence au moment d'open.
         for d in AudioSource.list_devices():
             api = f" — {d['api']}" if d.get("api") else ""
             self.cb_device.addItem(
-                f"{d['name']}{api}  ({d['channels']} voies)", d["name"])
+                f"{d['name']}{api}  "
+                + t("({n} channels)").format(n=d["channels"]), d["name"])
         from ..core.protocol import ControlLink
         for p in ControlLink.discover():
-            self.cb_device.addItem(f"série : {p}", p)
+            self.cb_device.addItem(t("serial: {port}").format(port=p), p)
         if self.cb_device.count() == 0:
-            self.cb_device.addItem(t("aucun périphérique détecté"), "")
+            self.cb_device.addItem(t("no device detected"), "")
 
     # ------------------------------------------------------------- traitement
     def _page_processing(self) -> QWidget:
         w = QWidget()
         lay = QVBoxLayout(w)
-        box = QGroupBox(t("Filtrage"))
+        box = QGroupBox(t("Filtering"))
         f = QFormLayout(box)
         self.sp_hp = _spin(0.0, 100.0, 4, " Hz")
         self.sp_lp = _spin(0.0, 20000.0, 2, " Hz")
         self.cb_notch = QComboBox()
-        for v, lab in ((0.0, t("désactivé")), (50.0, t("50 Hz (Europe)")),
-                       (60.0, t("60 Hz (Amérique, Japon)"))):
+        for v, lab in ((0.0, t("disabled")), (50.0, t("50 Hz (Europe)")),
+                       (60.0, t("60 Hz (Americas, Japan)"))):
             self.cb_notch.addItem(lab, v)
         self.sp_notch_q = _spin(1.0, 200.0, 1, "")
         self.sp_detrend = _spin(1.0, 3600.0, 1, " s")
-        f.addRow(t("Passe-haut"), self.sp_hp)
-        f.addRow(t("Passe-bas"), self.sp_lp)
-        f.addRow(t("Réjecteur réseau"), self.cb_notch)
-        f.addRow(t("Facteur Q du réjecteur"), self.sp_notch_q)
-        f.addRow(t("Constante de la ligne de base"), self.sp_detrend)
+        f.addRow(t("High-pass"), self.sp_hp)
+        f.addRow(t("Low-pass"), self.sp_lp)
+        f.addRow(t("Mains notch"), self.cb_notch)
+        f.addRow(t("Notch Q factor"), self.sp_notch_q)
+        f.addRow(t("Baseline time constant"), self.sp_detrend)
         lay.addWidget(box)
 
-        box2 = QGroupBox(t("Détection d'événements"))
+        box2 = QGroupBox(t("Event detection"))
         f2 = QFormLayout(box2)
         self.sp_sigma = _spin(0.5, 20.0, 2, " σ")
         self.sp_refractory = _spin(10.0, 10000.0, 0, " ms")
         self.sp_minamp = _spin(0.0, 10000.0, 1, " µV")
-        f2.addRow(t("Seuil"), self.sp_sigma)
-        f2.addRow(t("Période réfractaire"), self.sp_refractory)
-        f2.addRow(t("Amplitude minimale"), self.sp_minamp)
+        f2.addRow(t("Threshold"), self.sp_sigma)
+        f2.addRow(t("Refractory period"), self.sp_refractory)
+        f2.addRow(t("Minimum amplitude"), self.sp_minamp)
         lay.addWidget(box2)
         help_ = QLabel(
-            t("Le seuil est exprimé en écarts-types du signal courant : un "
-            "montage bruyant déclenche donc autant qu'un montage propre. "
-            "L'amplitude minimale, elle, est absolue : c'est elle qui empêche "
-            "de sonifier le bruit de fond quand la plante ne fait rien."))
+            t("The threshold is expressed in standard deviations of the current signal: a noisy setup therefore triggers as often as a clean one. The minimum amplitude, on the other hand, is absolute: it is what keeps the background noise from being sonified when the plant is doing nothing."))
         help_.setWordWrap(True)
-        help_.setStyleSheet(f"color:{self.p['texte2']};")
+        help_.setStyleSheet(f"color:{self.p['text2']};")
         lay.addWidget(help_)
         lay.addStretch(1)
         return w
@@ -291,32 +285,32 @@ class SettingsTab(QWidget):
     def _page_music(self) -> QWidget:
         w = QWidget()
         lay = QVBoxLayout(w)
-        box = QGroupBox(t("Nuances et durées"))
+        box = QGroupBox(t("Dynamics and durations"))
         f = QFormLayout(box)
         self.sp_vmin = QSpinBox(); self.sp_vmin.setRange(1, 127)
         self.sp_vmax = QSpinBox(); self.sp_vmax.setRange(1, 127)
         self.sp_dmin = _spin(0.05, 30.0, 2, " s")
         self.sp_dmax = _spin(0.05, 60.0, 2, " s")
         self.sp_quant = _spin(0.0, 4000.0, 0, " ms")
-        f.addRow(t("Nuance minimale"), self.sp_vmin)
-        f.addRow(t("Nuance maximale"), self.sp_vmax)
-        f.addRow(t("Durée minimale"), self.sp_dmin)
-        f.addRow(t("Durée maximale"), self.sp_dmax)
-        f.addRow(t("Quantification rythmique"), self.sp_quant)
+        f.addRow(t("Minimum dynamic"), self.sp_vmin)
+        f.addRow(t("Maximum dynamic"), self.sp_vmax)
+        f.addRow(t("Minimum duration"), self.sp_dmin)
+        f.addRow(t("Maximum duration"), self.sp_dmax)
+        f.addRow(t("Rhythmic quantisation"), self.sp_quant)
         lay.addWidget(box)
 
-        box2 = QGroupBox(t("Sortie MIDI"))
+        box2 = QGroupBox(t("MIDI output"))
         f2 = QFormLayout(box2)
-        self.chk_midi = QCheckBox(t("activer la sortie MIDI"))
+        self.chk_midi = QCheckBox(t("enable MIDI output"))
         self.cb_midi_port = QComboBox()
         self.cb_midi_port.setEditable(True)
-        self.btn_midi_scan = QPushButton(t("Rechercher les ports MIDI"))
+        self.btn_midi_scan = QPushButton(t("Scan for MIDI ports"))
         self.btn_midi_scan.clicked.connect(self._scan_midi)
         self.sp_midi_channel = QSpinBox(); self.sp_midi_channel.setRange(1, 16)
         f2.addRow(self.chk_midi)
         f2.addRow(t("Port"), self.cb_midi_port)
         f2.addRow("", self.btn_midi_scan)
-        f2.addRow(t("Canal"), self.sp_midi_channel)
+        f2.addRow(t("Channel"), self.sp_midi_channel)
         lay.addWidget(box2)
         lay.addStretch(1)
         return w
@@ -325,7 +319,7 @@ class SettingsTab(QWidget):
         self.cb_midi_port.clear()
         ports = MidiOut.list_ports()
         if not ports:
-            self.cb_midi_port.addItem(t("aucun port — un port virtuel sera créé"), "")
+            self.cb_midi_port.addItem(t("no port — a virtual one will be created"), "")
         for p in ports:
             self.cb_midi_port.addItem(p, p)
 
@@ -333,81 +327,77 @@ class SettingsTab(QWidget):
     def _page_recording(self) -> QWidget:
         w = QWidget()
         lay = QVBoxLayout(w)
-        box = QGroupBox(t("Fichiers"))
+        box = QGroupBox(t("Files"))
         f = QFormLayout(box)
         self.ed_dir = QLineEdit()
-        self.btn_dir = QPushButton(t("Choisir…"))
+        self.btn_dir = QPushButton(t("Choose…"))
         self.btn_dir.clicked.connect(self._pick_dir)
-        self.chk_auto_rec = QCheckBox(t("démarrer l'enregistrement au lancement"))
-        self.chk_wav = QCheckBox(t("signal brut (WAV 24 bits)"))
-        self.chk_audio = QCheckBox(t("rendu musical (WAV 16 bits)"))
-        self.chk_csv = QCheckBox(t("événements et notes (CSV)"))
-        self.chk_raw_csv = QCheckBox(t("toutes les valeurs en CSV (fichiers volumineux)"))
+        self.chk_auto_rec = QCheckBox(t("start recording at launch"))
+        self.chk_wav = QCheckBox(t("raw signal (24-bit WAV)"))
+        self.chk_audio = QCheckBox(t("musical rendering (16-bit WAV)"))
+        self.chk_csv = QCheckBox(t("events and notes (CSV)"))
+        self.chk_raw_csv = QCheckBox(t("every value as CSV (large files)"))
         self.sp_echantillon = QDoubleSpinBox()
         self.sp_echantillon.setRange(2.0, 600.0)
         self.sp_echantillon.setDecimals(0)
         self.sp_echantillon.setSuffix(t(" s"))
         self.sp_echantillon.setToolTip(
-            t("Durée gardée par la capture rapide (Ctrl+E). Le logiciel tient "
-              "dix minutes de signal en mémoire : on peut donc remonter loin "
-              "en arrière, après coup."))
+            t("Duration kept by the quick capture (Ctrl+E). The software holds ten minutes of signal in memory: you can therefore reach far back, after the fact."))
         row = QHBoxLayout()
         row.addWidget(self.ed_dir, 1)
         row.addWidget(self.btn_dir)
-        f.addRow(t("Répertoire"), row)
+        f.addRow(t("Folder"), row)
         f.addRow(self.chk_auto_rec)
         f.addRow(self.chk_wav)
         f.addRow(self.chk_audio)
         f.addRow(self.chk_csv)
         f.addRow(self.chk_raw_csv)
-        f.addRow(t("Durée d'un échantillon (Ctrl+E)"), self.sp_echantillon)
+        f.addRow(t("Sample duration (Ctrl+E)"), self.sp_echantillon)
         lay.addWidget(box)
 
         #  L'espace disque : ce qui reste, pour combien de temps, et à partir
         #  de quand le logiciel refermera la séance de lui-même.
-        boite_disque = QGroupBox(t("Espace disque"))
+        boite_disque = QGroupBox(t("Disk space"))
         fd = QFormLayout(boite_disque)
-        self.chk_disque = QCheckBox(t("surveiller l'espace pendant l'enregistrement"))
+        self.chk_disque = QCheckBox(t("watch the free space while recording"))
         self.chk_disque.setToolTip(
-            t("Le rendu musical écrit environ trois cents mégaoctets par "
-              "heure : un disque de démonstration se remplit en une nuit."))
+            t("The musical rendering writes about three hundred megabytes an hour: a demonstration disk fills up in one night."))
         self.sp_reserve = QDoubleSpinBox()
         self.sp_reserve.setRange(50.0, 100000.0)
         self.sp_reserve.setDecimals(0)
-        self.sp_reserve.setSuffix(t(" Mo"))
+        self.sp_reserve.setSuffix(t(" MB"))
         self.sp_reserve.setToolTip(
-            t("L'enregistrement est clos proprement en deçà. Cette réserve "
-              "n'est pas pour le logiciel mais pour le système."))
+            t("Recording is closed cleanly below this. That reserve is not for the software but for the system."))
         self.sp_alerte = QDoubleSpinBox()
         self.sp_alerte.setRange(1.0, 600.0)
         self.sp_alerte.setDecimals(0)
         self.sp_alerte.setSuffix(t(" min"))
         self.lab_disque = QLabel("")
         self.lab_disque.setWordWrap(True)
-        self.lab_disque.setStyleSheet(f"color:{self.p['texte2']};")
+        self.lab_disque.setStyleSheet(f"color:{self.p['text2']};")
         fd.addRow(self.chk_disque)
-        fd.addRow(t("Réserve à préserver"), self.sp_reserve)
-        fd.addRow(t("Prévenir quand il reste"), self.sp_alerte)
+        fd.addRow(t("Reserve to preserve"), self.sp_reserve)
+        fd.addRow(t("Warn when there is less than"), self.sp_alerte)
         fd.addRow(self.lab_disque)
         lay.addWidget(boite_disque)
 
-        box2 = QGroupBox(t("Métadonnées de la séance"))
+        box2 = QGroupBox(t("Session metadata"))
         f2 = QFormLayout(box2)
         self.ed_plante = QLineEdit()
         self.ed_lieu = QLineEdit()
         self.ed_operateur = QLineEdit()
         self.ed_notes = QPlainTextEdit()
         self.ed_notes.setMaximumHeight(90)
-        f2.addRow(t("Plante"), self.ed_plante)
-        f2.addRow(t("Lieu"), self.ed_lieu)
-        f2.addRow(t("Opérateur"), self.ed_operateur)
+        f2.addRow(t("Plant"), self.ed_plante)
+        f2.addRow(t("Place"), self.ed_lieu)
+        f2.addRow(t("Operator"), self.ed_operateur)
         f2.addRow(t("Notes"), self.ed_notes)
         lay.addWidget(box2)
         lay.addStretch(1)
         return w
 
     def _pick_dir(self) -> None:
-        d = QFileDialog.getExistingDirectory(self, t("Répertoire des séances"),
+        d = QFileDialog.getExistingDirectory(self, t("Sessions folder"),
                                              self.ed_dir.text())
         if d:
             self.ed_dir.setText(d)
@@ -422,21 +412,19 @@ class SettingsTab(QWidget):
         deux heures.
         """
         from ..core import disk_space
-        chemin = self.ed_dir.text() or self.engine.settings.recording.directory
-        etat = disk_space.mesurer(chemin)
-        if not etat.mesure:
-            self.lab_disque.setText(t("Répertoire introuvable — il sera créé "
-                                      "au premier enregistrement."))
+        path = self.ed_dir.text() or self.engine.settings.recording.directory
+        state = disk_space.mesurer(path)
+        if not state.mesure:
+            self.lab_disque.setText(t("Folder not found — it will be created at the first recording."))
             return
-        reglages = self.engine.settings
-        debit = disk_space.debit_mo_par_heure(reglages)
-        reste = disk_space.autonomie_heures(etat.libre_mo,
+        settings = self.engine.settings
+        debit = disk_space.debit_mo_par_heure(settings)
+        reste = disk_space.autonomie_heures(state.libre_mo,
                                         float(self.sp_reserve.value()), debit)
         self.lab_disque.setText(t(
-            "{libre} libres sur {total} · {debit:.0f} Mo par heure "
-            "d'enregistrement · autonomie {duree}").format(
-                libre=disk_space.formater_mo(etat.libre_mo),
-                total=disk_space.formater_mo(etat.total_mo),
+            "{libre} free of {total} · {debit:.0f} MB per hour of recording · autonomy {duree}").format(
+                libre=disk_space.formater_mo(state.libre_mo),
+                total=disk_space.formater_mo(state.total_mo),
                 debit=debit, duree=disk_space.formater_duree(reste)))
 
     # -------------------------------------------------------------- interface
@@ -444,73 +432,65 @@ class SettingsTab(QWidget):
         w = QWidget()
         lay = QVBoxLayout(w)
         lay.addWidget(self._groupe_langue())
-        box = QGroupBox(t("Apparence"))
+        box = QGroupBox(t("Appearance"))
         f = QFormLayout(box)
         self.cb_theme = QComboBox()
-        for key, lab in (("sombre", t("Sombre (défaut)")), ("clair", t("Clair")),
-                         ("contraste", t("Contraste renforcé (accessibilité)"))):
+        for key, lab in (("sombre", t("Dark (default)")), ("clair", t("Light")),
+                         ("contraste", t("High contrast (accessibility)"))):
             self.cb_theme.addItem(lab, key)
         self.sp_refresh = QSpinBox(); self.sp_refresh.setRange(5, 60)
-        self.sp_refresh.setSuffix(t(" images/s"))
+        self.sp_refresh.setSuffix(t(" frames/s"))
         self.sp_font = _spin(0.8, 2.0, 2, " ×")
-        f.addRow(t("Thème"), self.cb_theme)
-        f.addRow(t("Rafraîchissement"), self.sp_refresh)
-        f.addRow(t("Taille du texte"), self.sp_font)
+        f.addRow(t("Theme"), self.cb_theme)
+        f.addRow(t("Refresh rate"), self.sp_refresh)
+        f.addRow(t("Text size"), self.sp_font)
         lay.addWidget(box)
-        note = QLabel(t("Le thème et la taille du texte s'appliquent immédiatement. "
-                      "Le contraste renforcé respecte le niveau AAA des règles "
-                      "d'accessibilité."))
+        note = QLabel(t("The theme and the text size apply immediately. High contrast meets level AAA of the accessibility guidelines."))
         note.setWordWrap(True)
-        note.setStyleSheet(f"color:{self.p['texte2']};")
+        note.setStyleSheet(f"color:{self.p['text2']};")
         lay.addWidget(note)
         lay.addStretch(1)
         return w
 
     # ------------------------------------------------------------------ langue
     def _groupe_langue(self) -> QWidget:
-        """Le choix de la langue, et de quoi en ajouter une.
+        """Le choix de la langue, et de quoi en add une.
 
         Le taux de couverture est affiché sans fard : une langue traduite aux
-        trois quarts reste utilisable — le quart manquant s'affiche en
+        trois quarts reste usable — le quart manquant s'affiche en
         français — mais l'utilisateur a le droit de le savoir avant de choisir.
         """
         from ..i18n import LANGUE_SOURCE, langues_disponibles
 
-        boite = QGroupBox(t("Langue"))
+        boite = QGroupBox(t("Language"))
         f = QFormLayout(boite)
         self.cb_langue = QComboBox()
         cles = len(self._cles_traduisibles())
-        for code, nom, nom_fr, n, sens in langues_disponibles():
+        for code, name, nom_fr, n, meaning in langues_disponibles():
             if code == LANGUE_SOURCE:
-                origine = t("langue d'origine")
-                libelle = f"{nom} — {origine}"
+                origin = t("source language")
+                label = f"{name} — {origin}"
             else:
                 part = 100.0 * n / max(cles, 1)
-                libelle = f"{nom} — {t(nom_fr)} · {part:.0f} %"
-            self.cb_langue.addItem(libelle, code)
+                label = f"{name} — {t(nom_fr)} · {part:.0f} %"
+            self.cb_langue.addItem(label, code)
         _set_data(self.cb_langue, self.engine.settings.ui.language)
 
-        self.btn_modele_langue = QPushButton(t("Écrire un modèle de traduction…"))
+        self.btn_modele_langue = QPushButton(t("Write a translation template…"))
         self.btn_modele_langue.setToolTip(
-            t("Produit un fichier JSON contenant tous les libellés du logiciel, "
-              "à traduire avec un éditeur de texte."))
+            t("Produces a JSON file containing every label in the software, to be translated with a text editor."))
         self.btn_modele_langue.clicked.connect(self._ecrire_modele_langue)
 
-        note = QLabel(t("Le changement de langue prend effet au redémarrage. "
-                        "Pour ajouter une langue : écrivez un modèle, "
-                        "traduisez-le, et déposez-le dans le dossier "
-                        "« langues » — elle apparaîtra dans cette liste au "
-                        "démarrage suivant. Ce qui n'est pas traduit reste "
-                        "affiché en français."))
+        note = QLabel(t("The change of language takes effect on restart. To add a language: write a template, translate it, and drop it into the “languages” folder — it will appear in this list at the next start. Anything left untranslated is shown in English."))
         note.setWordWrap(True)
-        note.setStyleSheet(f"color:{self.p['texte2']};")
+        note.setStyleSheet(f"color:{self.p['text2']};")
 
-        f.addRow(t("Langue de l'interface"), self.cb_langue)
+        f.addRow(t("Interface language"), self.cb_langue)
         f.addRow(self.btn_modele_langue)
         f.addRow(note)
         return boite
 
-    _cles_cache = None                    # inventaire calculé une seule fois
+    _cles_cache = None                    # inventory calculé une seule fois
 
     def _cles_traduisibles(self) -> list:
         if self._cles_cache is None:
@@ -524,31 +504,29 @@ class SettingsTab(QWidget):
     def _ecrire_modele_langue(self) -> None:
         from ..i18n import DOSSIER, ecrire_modele
         code = self.cb_langue.currentData() or ""
-        defaut = os.path.join(DOSSIER, f"{code or 'xx'}.json")
-        chemin, _ = QFileDialog.getSaveFileName(
-            self, t("Écrire un modèle de traduction"), defaut,
-            t("Catalogue de traduction (*.json)"))
-        if not chemin:
+        fallback = os.path.join(DOSSIER, f"{code or 'xx'}.json")
+        path, _ = QFileDialog.getSaveFileName(
+            self, t("Write a translation template"), fallback,
+            t("Translation catalogue (*.json)"))
+        if not path:
             return
         cles = self._cles_traduisibles()
         try:
-            neuves = ecrire_modele(chemin, cles, code)
+            neuves = ecrire_modele(path, cles, code)
         except OSError as exc:
-            QMessageBox.warning(self, t("Traduction"),
-                                t("Écriture impossible : {erreur}").format(erreur=exc))
+            QMessageBox.warning(self, t("Translation"),
+                                t("Cannot write: {erreur}").format(erreur=exc))
             return
         QMessageBox.information(
-            self, t("Traduction"),
-            t("{total} libellés écrits dans :\n{chemin}\n\n"
-              "{neuves} restent à traduire. Les valeurs laissées vides "
-              "s'afficheront en français.").format(
-                  total=len(cles), chemin=os.path.abspath(chemin), neuves=neuves))
+            self, t("Translation"),
+            t("{total} labels written to:\n{path}\n\n{neuves} still to be translated. Values left empty will be shown in English.").format(
+                  total=len(cles), path=os.path.abspath(path), neuves=neuves))
 
     # ----------------------------------------------------------------- expert
     def _page_modules(self) -> QWidget:
         """Lister les modules, et en activer ou désactiver un.
 
-        Un module désactivé n'est pas désinstallé : son dossier reste, il
+        Un module désactivé n'est pas désinstallé : son directory reste, il
         cesse simplement d'être chargé. C'est ce qu'on veut quand on soupçonne
         un module d'être en cause — on l'écarte, on redémarre, on voit.
         """
@@ -556,16 +534,14 @@ class SettingsTab(QWidget):
         lay = QVBoxLayout(w)
 
         entete = QLabel(t(
-            "Les modules étendent le logiciel : analyses, représentations, "
-            "sonifications, formats d'export. Décocher un module le laisse en "
-            "place mais l'empêche d'être chargé au prochain démarrage."))
+            "Modules extend the software: analyses, representations, sonifications, export formats. Unchecking a module leaves it in place but prevents it from being loaded at the next start."))
         entete.setWordWrap(True)
-        entete.setStyleSheet(f"color:{self.p['texte2']};")
+        entete.setStyleSheet(f"color:{self.p['text2']};")
         lay.addWidget(entete)
 
         self.liste_modules = QTableWidget(0, 5)
         self.liste_modules.setHorizontalHeaderLabels(
-            ["", t("Module"), t("Version"), t("Fournit"), t("État")])
+            ["", t("Module"), t("Version"), t("Provides"), t("State")])
         self.liste_modules.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.liste_modules.setAlternatingRowColors(True)
         self.liste_modules.verticalHeader().setVisible(False)
@@ -573,41 +549,38 @@ class SettingsTab(QWidget):
         self.liste_modules.itemSelectionChanged.connect(self._module_choisi)
         lay.addWidget(self.liste_modules, 1)
 
-        #  Le détail du module choisi : sa description, son auteur, ses
-        #  réglages. Une liste seule ne dit pas ce qu'un module fait.
-        self.detail_module = QLabel(t("Choisissez un module pour le décrire."))
+        #  Le détail du module choisi : sa description, son author, ses
+        #  réglages. Une entries seule ne dit pas ce qu'un module fait.
+        self.detail_module = QLabel(t("Choose a module to describe it."))
         self.detail_module.setWordWrap(True)
         self.detail_module.setTextInteractionFlags(Qt.TextBrowserInteraction)
         self.detail_module.setOpenExternalLinks(True)
         self.detail_module.setStyleSheet(
-            f"background:{self.p['fond3']};border:1px solid {self.p['trait']};"
+            f"background:{self.p['background3']};border:1px solid {self.p['line']};"
             f"border-radius:5px;padding:8px;")
         self.detail_module.setMinimumHeight(110)
         lay.addWidget(self.detail_module)
 
         barre = QHBoxLayout()
-        self.chk_modules_actifs = QCheckBox(t("Charger les modules au démarrage"))
+        self.chk_modules_actifs = QCheckBox(t("Load modules at startup"))
         self.chk_modules_actifs.setToolTip(t(
-            "Décocher démarre le logiciel SANS aucun module. C'est le mode "
-            "sans échec : à employer quand un module empêche l'ouverture."))
+            "Unchecking starts the software with NO module at all. This is the safe mode: use it when a module prevents the software from opening."))
         self.chk_modules_actifs.setChecked(
             getattr(self.engine.settings.modules, "charger_au_demarrage", True))
         self.chk_modules_actifs.stateChanged.connect(self._marquer_redemarrage)
         barre.addWidget(self.chk_modules_actifs)
         barre.addStretch(1)
 
-        self.btn_modules_dossier = QPushButton(t("Ouvrir le dossier des modules"))
+        self.btn_modules_dossier = QPushButton(t("Open the modules folder"))
         self.btn_modules_dossier.setToolTip(t(
-            "C'est là qu'on dépose un module écrit soi-même. Le SDK, livré "
-            "avec le code source, contient un exemple et un outil qui en crée "
-            "un nouveau."))
+            "This is where you drop a module of your own. The SDK, shipped with the source code, contains an example and a tool that creates a new one."))
         self.btn_modules_dossier.clicked.connect(self._ouvrir_dossier_modules)
         barre.addWidget(self.btn_modules_dossier)
         lay.addLayout(barre)
 
         self.lab_modules_redemarrage = QLabel("")
         self.lab_modules_redemarrage.setStyleSheet(
-            f"color:{self.p['or']};font-weight:bold;")
+            f"color:{self.p['gold']};font-weight:bold;")
         lay.addWidget(self.lab_modules_redemarrage)
 
         self._remplir_modules()
@@ -617,124 +590,124 @@ class SettingsTab(QWidget):
         registre = getattr(self.engine, "modules", None)
         if registre is None:
             return
-        desactives = set(getattr(self.engine.settings.modules, "desactives", ()))
-        lignes = registre.rapport()
-        self.liste_modules.setRowCount(len(lignes))
+        disabled = set(getattr(self.engine.settings.modules, "disabled", ()))
+        rows = registre.report()
+        self.liste_modules.setRowCount(len(rows))
         self._cases_modules = {}
-        for i, l in enumerate(lignes):
+        for i, l in enumerate(rows):
             case = QCheckBox()
-            case.setChecked(l["nom"] not in desactives)
+            case.setChecked(l["name"] not in disabled)
             #  Un module intégré se désactive comme les autres : c'est le
             #  seul moyen de savoir si c'est lui qui pose problème.
             case.stateChanged.connect(
-                lambda _=0, nom=l["nom"]: self._basculer_module(nom))
+                lambda _=0, name=l["name"]: self._basculer_module(name))
             conteneur = QWidget()
             boite = QHBoxLayout(conteneur)
             boite.setContentsMargins(6, 0, 0, 0)
             boite.addWidget(case)
             boite.addStretch(1)
             self.liste_modules.setCellWidget(i, 0, conteneur)
-            self._cases_modules[l["nom"]] = case
+            self._cases_modules[l["name"]] = case
 
-            etat = l["faute"] or t(l["etat"])
-            for col, valeur in enumerate((l["titre"], l["version"],
-                                          l["capacites"] or t("aucune"), etat),
+            state = l["fault"] or t(l["state"])
+            for col, value in enumerate((l["title"], l["version"],
+                                          l["capabilities"] or t("none"), state),
                                          start=1):
-                cellule = QTableWidgetItem(str(valeur))
-                cellule.setData(Qt.UserRole, l["nom"])
-                if l["faute"]:
-                    cellule.setForeground(QColor(self.p["alerte"]))
-                    cellule.setToolTip(l["faute"])
+                cellule = QTableWidgetItem(str(value))
+                cellule.setData(Qt.UserRole, l["name"])
+                if l["fault"]:
+                    cellule.setForeground(QColor(self.p["alert"]))
+                    cellule.setToolTip(l["fault"])
                 self.liste_modules.setItem(i, col, cellule)
         self.liste_modules.resizeColumnsToContents()
 
-    def _basculer_module(self, nom: str) -> None:
-        case = self._cases_modules.get(nom)
+    def _basculer_module(self, name: str) -> None:
+        case = self._cases_modules.get(name)
         if case is None:
             return
-        desactives = list(getattr(self.engine.settings.modules, "desactives", []))
+        disabled = list(getattr(self.engine.settings.modules, "disabled", []))
         if case.isChecked():
-            desactives = [d for d in desactives if d != nom]
-        elif nom not in desactives:
-            desactives.append(nom)
-        self.engine.settings.modules.desactives = sorted(desactives)
+            disabled = [d for d in disabled if d != name]
+        elif name not in disabled:
+            disabled.append(name)
+        self.engine.settings.modules.desactives = sorted(disabled)
         self._marquer_redemarrage()
 
     def _marquer_redemarrage(self) -> None:
         #  On ne recharge PAS à chaud. Recharger un module dont des objets
         #  sont déjà référencés ailleurs laisse deux versions en mémoire et
-        #  produit des bogues qu'on ne sait pas lire. Un redémarrage coûte
-        #  trois secondes ; un bogue de rechargement coûte une soirée.
+        #  produit des bogues qu'on ne sait pas read. Un redémarrage coûte
+        #  trois seconds ; un bogue de rechargement coûte une soirée.
         self.engine.settings.modules.charger_au_demarrage = \
             self.chk_modules_actifs.isChecked()
         self.lab_modules_redemarrage.setText(
-            t("⟳ Le changement prendra effet au prochain démarrage."))
+            t("⟳ The change will take effect at the next start."))
 
     def _module_choisi(self) -> None:
-        lignes = self.liste_modules.selectedItems()
-        if not lignes:
+        rows = self.liste_modules.selectedItems()
+        if not rows:
             return
-        nom = lignes[0].data(Qt.UserRole)
+        name = rows[0].data(Qt.UserRole)
         registre = getattr(self.engine, "modules", None)
-        m = registre.modules.get(nom) if registre else None
+        m = registre.modules.get(name) if registre else None
         if m is None:
             return
-        man = m.manifeste
-        morceaux = [f"<b>{man.titre}</b> — {man.version}"]
+        man = m.manifest
+        morceaux = [f"<b>{man.title}</b> — {man.version}"]
         if man.description:
             morceaux.append(t(man.description))
         details = []
-        if man.auteur:
-            details.append(f"{t('Auteur')} : {man.auteur}")
+        if man.author:
+            details.append(f"{t('Author')} : {man.author}")
         if man.licence:
-            details.append(f"{t('Licence')} : {man.licence}")
+            details.append(f"{t('License')} : {man.licence}")
         details.append(f"API : {man.api}")
-        details.append(f"{t('Origine')} : {t(m.origine)}")
-        if man.exige:
-            details.append(f"{t('Exige')} : {', '.join(man.exige)}")
-        if man.depend_de:
-            details.append(f"{t('Dépend de')} : {', '.join(man.depend_de)}")
+        details.append(f"{t('Origin')} : {t(m.origin)}")
+        if man.requires:
+            details.append(f"{t('Requires')} : {', '.join(man.requires)}")
+        if man.depends_on:
+            details.append(f"{t('Depends on')} : {', '.join(man.depends_on)}")
         morceaux.append("<span style='color:%s'>%s</span>"
-                        % (self.p["texte2"], " · ".join(details)))
-        if man.site:
-            morceaux.append(f"<a href='{man.site}' style='color:{self.p['accent2']}'>"
-                            f"{man.site}</a>")
-        if m.faute:
+                        % (self.p["text2"], " · ".join(details)))
+        if man.website:
+            morceaux.append(f"<a href='{man.website}' style='color:{self.p['accent2']}'>"
+                            f"{man.website}</a>")
+        if m.fault:
             morceaux.append("<span style='color:%s'><b>%s</b> %s</span>"
-                            % (self.p["alerte"], t("Écarté :"), m.faute))
+                            % (self.p["alert"], t("Set aside:"), m.fault))
         self.detail_module.setText("<br/>".join(morceaux))
 
     def _ouvrir_dossier_modules(self) -> None:
         import os
-        from ..api import Registre
-        dossier = Registre.dossier_utilisateur()
-        os.makedirs(dossier, exist_ok=True)
+        from ..api import Registry
+        directory = Registry.user_directory()
+        os.makedirs(directory, exist_ok=True)
         from PySide6.QtCore import QUrl
         from PySide6.QtGui import QColor, QDesktopServices
-        QDesktopServices.openUrl(QUrl.fromLocalFile(dossier))
+        QDesktopServices.openUrl(QUrl.fromLocalFile(directory))
 
     def _page_expert(self) -> QWidget:
         w = QWidget()
         lay = QVBoxLayout(w)
-        box = QGroupBox(t("Profils de réglages"))
+        box = QGroupBox(t("Setting presets"))
         f = QFormLayout(box)
         self.cb_profile = QComboBox()
-        self.btn_profile_load = QPushButton(t("Charger"))
+        self.btn_profile_load = QPushButton(t("Load"))
         self.btn_profile_load.clicked.connect(self._load_profile)
         self.ed_profile = QLineEdit()
-        self.btn_profile_save = QPushButton(t("Enregistrer sous ce nom"))
+        self.btn_profile_save = QPushButton(t("Save under this name"))
         self.btn_profile_save.clicked.connect(self._save_profile)
-        f.addRow(t("Profils disponibles"), self.cb_profile)
+        f.addRow(t("Available presets"), self.cb_profile)
         f.addRow("", self.btn_profile_load)
-        f.addRow(t("Nouveau profil"), self.ed_profile)
+        f.addRow(t("New preset"), self.ed_profile)
         f.addRow("", self.btn_profile_save)
         lay.addWidget(box)
 
-        box2 = QGroupBox(t("Diagnostic"))
+        box2 = QGroupBox(t("Diagnostics"))
         f2 = QFormLayout(box2)
         self.lab_diag = QPlainTextEdit()
         self.lab_diag.setReadOnly(True)
-        self.btn_diag = QPushButton(t("Rafraîchir le diagnostic"))
+        self.btn_diag = QPushButton(t("Refresh the diagnostics"))
         self.btn_diag.clicked.connect(self._diagnose)
         f2.addRow(self.btn_diag)
         f2.addRow(self.lab_diag)
@@ -911,16 +884,15 @@ class SettingsTab(QWidget):
 
         Les libellés sont traduits à la construction de l'interface, non à
         l'affichage. Les réécrire à chaud demanderait que chaque widget se
-        souvienne de sa phrase d'origine — beaucoup de code pour une opération
+        souvienne de sa phrase d'origin — beaucoup de code pour une opération
         qu'on fait une fois. On propose donc de relancer, après avoir sauvé les
         réglages : un enregistrement en cours est clos proprement au passage.
         """
         from ..i18n import langue_courante, meta
-        nom = meta(self.engine.settings.ui.language)["nom"]
+        name = meta(self.engine.settings.ui.language)["name"]
         reponse = QMessageBox.question(
-            self, t("Langue"),
-            t("L'interface sera en {langue} au prochain démarrage.\n\n"
-              "Redémarrer maintenant ?").format(langue=nom),
+            self, t("Language"),
+            t("The interface will be in {langue} at the next start.\n\nRestart now?").format(langue=name),
             QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
         try:
             self.engine.settings.save()
@@ -944,12 +916,12 @@ class SettingsTab(QWidget):
     def _save(self) -> None:
         self._collect()
         path = self.engine.settings.save()
-        QMessageBox.information(self, t("Réglages enregistrés"), path)
+        QMessageBox.information(self, t("Settings saved"), path)
 
     def _reset(self) -> None:
         from ..config import Settings
-        if QMessageBox.question(self, t("Réinitialiser"),
-                                t("Revenir à tous les réglages par défaut ?")) \
+        if QMessageBox.question(self, t("Reset"),
+                                t("Restore every setting to its default value?")) \
                 != QMessageBox.Yes:
             return
         fresh = Settings()
@@ -958,7 +930,7 @@ class SettingsTab(QWidget):
         self._apply()
 
     def refresh(self, state) -> None:
-        #  Une fois toutes les cinq secondes suffit : c'est un disque, pas un
+        #  Une fois toutes les cinq seconds suffit : c'est un disque, pas un
         #  signal.
         import time as _t
         if _t.monotonic() - getattr(self, "_disque_vu", 0.0) > 5.0:
@@ -1000,8 +972,8 @@ def _commande_de_relance():
 
     `sys.argv[0]` n'est pas toujours relançable. Lancé par
     ``python -m phytoscope``, il vaut ``…/phytoscope/__main__.py`` ; réexécuter
-    ce fichier directement casse tous les imports relatifs — ``from .config
-    import Settings`` ne trouve plus son paquet. On reconstruit donc la
+    ce file_path directement casse tous les imports relatifs — ``from .config
+    import Settings`` ne trouve plus son package. On reconstruit donc la
     commande : ``-m phytoscope`` dans ce cas, le script tel quel s'il en est un,
     et l'exécutable lui-même s'il s'agit d'un binaire gelé.
     """
@@ -1010,7 +982,7 @@ def _commande_de_relance():
     if getattr(sys, "frozen", False):                  # PyInstaller et consorts
         return sys.executable, list(sys.argv[1:])
     premier = sys.argv[0] if sys.argv else ""
-    nom = os.path.basename(premier)
-    if nom == "__main__.py" or not premier:
+    name = os.path.basename(premier)
+    if name == "__main__.py" or not premier:
         return sys.executable, ["-m", "phytoscope"] + list(sys.argv[1:])
     return sys.executable, [premier] + list(sys.argv[1:])

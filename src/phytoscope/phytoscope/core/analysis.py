@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/core/analysis.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Mesures scientifiques — ce qu'on peut affirmer d'un enregistrement.
@@ -175,7 +175,7 @@ def allan_deviation(x: np.ndarray, fs: float,
     if ok.sum() >= 3:
         pente = float(np.polyfit(np.log10(taus_a[ok]), np.log10(devs_a[ok]), 1)[0])
     if pente < -0.35:
-        regime = "bruit blanc dominant (moyenner améliore la mesure)"
+        regime = "dominant white noise (averaging improves the measurement)"
     elif pente < 0.15:
         regime = "palier de scintillation (moyenner n'améliore plus rien)"
     elif pente < 0.75:
@@ -505,7 +505,7 @@ def rapport_complet(x: np.ndarray, fs: float,
         ["  " + l for l in q.resume()] + [""]
 
     d = derive(x, fs)
-    lignes += ["DÉRIVE", "-" * 60, "  " + d.resume(), ""]
+    lignes += ["DRIFT", "-" * 60, "  " + d.resume(), ""]
 
     a = allan_deviation(x, fs)
     if a.taus.size:

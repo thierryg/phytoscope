@@ -2,16 +2,16 @@
   ==========================================================================
   PhytoScope — attribution — pdf-src/assets/svg/gabarit-carte.svg
 
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
+  Version   : 1.6.0
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
 
   SPDX-License-Identifier: MIT
-  fin de l'attribution
+  end of attribution
   ==========================================================================
 -->
 
@@ -41,8 +41,8 @@
 </defs>
 <rect width="1800" height="1340" fill="#FFFFFF"/>
 <rect x="180" y="150" width="1000.0" height="600.0" rx="6" fill="#F7F9F7" stroke="#3F7D5A" stroke-width="2.2" stroke-dasharray="10 6"/>
-<text x="180" y="98" font-family="Cormorant Garamond, serif" font-size="35.28" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Fond du boîtier — gabarit 1:1</text>
-<text x="1180.0" y="98" font-family="Lato, sans-serif" font-size="22.58" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">contour de la carte, 100 × 60 mm</text>
+<text x="180" y="98" font-family="Cormorant Garamond, serif" font-size="35.28" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Enclosure base — 1:1 template</text>
+<text x="1180.0" y="98" font-family="Lato, sans-serif" font-size="22.58" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">board outline, 100 × 60 mm</text>
 <rect x="180.0" y="210.0" width="120.0" height="120.0" rx="0" fill="#EEF2F0" stroke="#6B7A72" stroke-width="1.0" stroke-dasharray="4 3"/>
 <text x="240.0" y="274.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">J1</text>
 <rect x="180.0" y="390.0" width="120.0" height="120.0" rx="0" fill="#EEF2F0" stroke="#6B7A72" stroke-width="1.0" stroke-dasharray="4 3"/>
@@ -83,7 +83,7 @@
 <text x="1140.0" y="662.0" font-family="Lato, sans-serif" font-size="21.87" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">F4</text>
 <text x="1140.0" y="770.0" font-family="DejaVu Sans Mono, monospace" font-size="20.46" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Ø 3,2</text>
 <text x="1140.0" y="784.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">entretoise</text>
-<text x="680.0" y="846.0" font-family="Lato, sans-serif" font-size="21.17" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">les rectangles grisés sont les empreintes des connecteurs et des pièces hautes : vérifier leur dégagement avant de percer</text>
+<text x="680.0" y="846.0" font-family="Lato, sans-serif" font-size="21.17" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">the grey rectangles are the footprints of the connectors and the tall parts: check their clearance before drilling</text>
 <rect x="180" y="890.0" width="1000.0" height="26" rx="0" fill="none" stroke="#23302C" stroke-width="1.4"/>
 <line x1="180.0" y1="890.0" x2="180.0" y2="916.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
 <text x="180.0" y="932.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">0</text>
@@ -197,10 +197,10 @@
 <line x1="1170.0" y1="906.0" x2="1170.0" y2="916.0" stroke="#D9D9C6" stroke-width="0.7" stroke-linecap="round"/>
 <line x1="1180.0" y1="890.0" x2="1180.0" y2="916.0" stroke="#23302C" stroke-width="1.2" stroke-linecap="round"/>
 <text x="1180.0" y="932.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">100</text>
-<text x="680.0" y="880.0" font-family="Lato, sans-serif" font-size="22.58" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0.8">RÉGLETTE DE CONTRÔLE — CETTE BARRE DOIT MESURER 100 mm</text>
-<text x="180" y="1000.0" font-family="Lato, sans-serif" font-size="23.99" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.2">PERÇAGES DU FOND — origine : coin supérieur gauche de la carte</text>
-<text x="180" y="1016.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">origine : coin supérieur gauche · X vers la droite, Y vers le bas</text>
-<text x="180" y="1040.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0.6">REPÈRE</text>
+<text x="680.0" y="880.0" font-family="Lato, sans-serif" font-size="22.58" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0.8">CHECK RULER — THIS BAR MUST MEASURE 100 mm</text>
+<text x="180" y="1000.0" font-family="Lato, sans-serif" font-size="23.99" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.2">HOLES IN THE BASE — origin: the board's top-left corner</text>
+<text x="180" y="1016.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">origin: top-left corner · X to the right, Y downward</text>
+<text x="180" y="1040.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0.6">DATUM</text>
 <text x="290" y="1040.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0.6">X (mm)</text>
 <text x="380" y="1040.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0.6">Y (mm)</text>
 <text x="470" y="1040.0" font-family="Lato, sans-serif" font-size="19.76" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0.6">COTE</text>
@@ -210,37 +210,37 @@
 <text x="290" y="1068.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">4</text>
 <text x="380" y="1068.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">4</text>
 <text x="470" y="1068.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Ø 3,2</text>
-<text x="600" y="1068.0" font-family="Lato, sans-serif" font-size="21.87" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">entretoise M3, hauteur 6 mm, PTFE — côté analogique</text>
+<text x="600" y="1068.0" font-family="Lato, sans-serif" font-size="21.87" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">M3 spacer, 6 mm tall, PTFE — analog side</text>
 <rect x="172" y="1075.0" width="916" height="21" rx="0" fill="#FAFBFA" stroke="none" stroke-width="1.4"/>
 <text x="180" y="1090.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">F2</text>
 <text x="290" y="1090.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">96</text>
 <text x="380" y="1090.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">4</text>
 <text x="470" y="1090.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Ø 3,2</text>
-<text x="600" y="1090.0" font-family="Lato, sans-serif" font-size="21.87" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">entretoise M3, hauteur 6 mm, PTFE — isolée</text>
+<text x="600" y="1090.0" font-family="Lato, sans-serif" font-size="21.87" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">M3 spacer, 6 mm tall, PTFE — isolated</text>
 <text x="180" y="1112.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">F3</text>
 <text x="290" y="1112.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">4</text>
 <text x="380" y="1112.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">56</text>
 <text x="470" y="1112.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Ø 3,2</text>
-<text x="600" y="1112.0" font-family="Lato, sans-serif" font-size="21.87" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">entretoise M3, hauteur 6 mm, PTFE — côté analogique</text>
+<text x="600" y="1112.0" font-family="Lato, sans-serif" font-size="21.87" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">M3 spacer, 6 mm tall, PTFE — analog side</text>
 <rect x="172" y="1119.0" width="916" height="21" rx="0" fill="#FAFBFA" stroke="none" stroke-width="1.4"/>
 <text x="180" y="1134.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">F4</text>
 <text x="290" y="1134.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">96</text>
 <text x="380" y="1134.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">56</text>
 <text x="470" y="1134.0" font-family="DejaVu Sans Mono, monospace" font-size="21.87" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Ø 3,2</text>
-<text x="600" y="1134.0" font-family="Lato, sans-serif" font-size="21.87" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">entretoise M3, hauteur 6 mm, PTFE — isolée</text>
+<text x="600" y="1134.0" font-family="Lato, sans-serif" font-size="21.87" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">M3 spacer, 6 mm tall, PTFE — isolated</text>
 <rect x="180" y="1140" width="760" height="138" rx="5" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.1"/>
 <text x="194" y="1168" font-family="Lato, sans-serif" font-size="24.34" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">LES ENTRETOISES NE SONT PAS NEUTRES</text>
-<text x="194" y="1192" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Entretoises en PTFE, jamais en nylon : le nylon absorbe l'humidité et</text>
-<text x="194" y="1214" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">conduit assez, en surface, pour dégrader une mesure à 10¹⁵ ohms.</text>
-<text x="194" y="1236" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Seules F1 et F3, du côté analogique, touchent un plan de masse ; F2 et F4</text>
-<text x="194" y="1258" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">restent isolées, sous peine de refermer la boucle ouverte par la fente.</text>
+<text x="194" y="1192" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">PTFE spacers, never nylon: nylon takes up moisture and conducts</text>
+<text x="194" y="1214" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">quite enough, across its surface, to degrade a 10¹⁵ ohm measurement.</text>
+<text x="194" y="1236" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Only F1 and F3, on the analog side, touch a ground plane; F2 and F4 stay</text>
+<text x="194" y="1258" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">isolated, on pain of closing the loop that the slot opened.</text>
 <rect x="1000" y="1140" width="740" height="182" rx="5" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.1"/>
-<text x="1014" y="1168" font-family="Lato, sans-serif" font-size="24.34" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">AVANT DE PERCER — À LIRE</text>
-<text x="1014" y="1192" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Imprimer à 100 %, sans « ajuster à la page ».</text>
-<text x="1014" y="1214" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Vérifier la réglette à la règle AVANT de percer :</text>
-<text x="1014" y="1236" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">4 % d'erreur décalent le dernier trou de 4 mm.</text>
-<text x="1014" y="1258" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Coller le gabarit à la face au ruban adhésif,</text>
+<text x="1014" y="1168" font-family="Lato, sans-serif" font-size="24.34" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">BEFORE YOU DRILL — READ THIS</text>
+<text x="1014" y="1192" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Print at 100 %, with no “fit to page”.</text>
+<text x="1014" y="1214" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Check the ruler with a ruler BEFORE drilling:</text>
+<text x="1014" y="1236" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">a 4 % error shifts the last hole by 4 mm.</text>
+<text x="1014" y="1258" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Tape the template to the panel,</text>
 <text x="1014" y="1280" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">pointer au pointeau, puis percer en deux passes :</text>
 <text x="1014" y="1302" font-family="Lato, sans-serif" font-size="22.22" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">avant-trou de 3 mm, puis cote finale.</text>
-<text x="900" y="1320" font-family="Lato, sans-serif" font-size="20.46" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté · bretagne-namaste.com · révision B</text>
+<text x="900" y="1320" font-family="Lato, sans-serif" font-size="20.46" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté · bretagne-namaste.com · revision B</text>
 </svg>

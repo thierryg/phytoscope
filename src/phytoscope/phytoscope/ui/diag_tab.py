@@ -2,30 +2,30 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/ui/diag_tab.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
-"""Diagnostic — USB, journal, échantillonnage, sortie sonore.
+"""Diagnostic — USB, log, échantillonnage, sortie sonore.
 
 Quatre panneaux, qui répondent aux quatre questions posées quand « ça ne
 marche pas » :
 
 * **USB** : qu'est-ce qui est branché, sous quel VID/PID, et le lien tient-il ?
-* **Journal** : qu'a fait le logiciel, et à quel niveau de détail ?
+* **Journal** : qu'a fait le logiciel, et à quel level de détail ?
 * **Échantillonnage** : que prélève-t-on exactement, et avec quel gain de bruit ?
-* **Sortie sonore** : entend-on quelque chose, et à quel niveau ?
+* **Sortie sonore** : entend-on quelque chose, et à quel level ?
 
 C'est aussi ici que s'activent les fonctions de mise au point : capture des
-trames dans un fichier, et passage du journal en mode « debug ».
+trames dans un file_path, et passage du log en mode « debug ».
 """
 from __future__ import annotations
 
@@ -63,11 +63,11 @@ class DiagTab(QWidget):
         self._rapport: Optional[usbdiag.UsbReport] = None
 
         tabs = QTabWidget()
-        tabs.addTab(_rouleau(self._page_usb()), t("Lien USB"))
-        tabs.addTab(_rouleau(self._page_echantillonnage()), t("Échantillonnage"))
-        tabs.addTab(_rouleau(self._page_audio()), t("Sortie sonore"))
+        tabs.addTab(_rouleau(self._page_usb()), t("USB link"))
+        tabs.addTab(_rouleau(self._page_echantillonnage()), t("Sampling"))
+        tabs.addTab(_rouleau(self._page_audio()), t("Audio output"))
         tabs.addTab(_rouleau(self._page_modules()), t("Modules"))
-        tabs.addTab(_rouleau(self._page_journal()), t("Journal"))
+        tabs.addTab(_rouleau(self._page_journal()), t("Log"))
         lay = QVBoxLayout(self)
         lay.addWidget(tabs)
         self._compteur = 0
@@ -79,9 +79,9 @@ class DiagTab(QWidget):
         lay = QVBoxLayout(w)
 
         barre = QHBoxLayout()
-        self.btn_scan = QPushButton(t("Analyser le bus USB"))
+        self.btn_scan = QPushButton(t("Scan the USB bus"))
         self.btn_scan.clicked.connect(self._scanner)
-        self.btn_copier_usb = QPushButton(t("Copier le rapport"))
+        self.btn_copier_usb = QPushButton(t("Copy the report"))
         self.btn_copier_usb.clicked.connect(self._copier_usb)
         self.lab_verdict = QLabel("—")
         self.lab_verdict.setWordWrap(True)
@@ -93,50 +93,50 @@ class DiagTab(QWidget):
 
         self.table_usb = QTableWidget(0, 6)
         self.table_usb.setHorizontalHeaderLabels(
-            [t("VID:PID"), t("Fabricant"), t("Produit"), t("N° de série"), t("Port"), t("Source")])
+            [t("VID:PID"), t("Vendor"), t("Product"), t("Serial number"), t("Port"), t("Source")])
         self.table_usb.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table_usb.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.table_usb.setAlternatingRowColors(True)
         lay.addWidget(self.table_usb, 1)
 
-        gmon = QGroupBox(t("Surveillance du lien"))
+        gmon = QGroupBox(t("Link monitoring"))
         f = QFormLayout(gmon)
-        self.lab_lien = QLabel("inactive")
-        self.chk_surveiller = QCheckBox(t("surveiller la présence de la carte"))
+        self.lab_lien = QLabel(t("inactive"))
+        self.chk_surveiller = QCheckBox(t("watch for the board"))
         self.chk_surveiller.stateChanged.connect(self._surveillance)
         self.sp_periode = QDoubleSpinBox()
         self.sp_periode.setRange(1.0, 60.0)
         self.sp_periode.setValue(self.engine.settings.diagnostics.usb_poll_seconds)
         self.sp_periode.setSuffix(t(" s"))
         f.addRow(self.chk_surveiller)
-        f.addRow(t("Période"), self.sp_periode)
-        f.addRow(t("État"), self.lab_lien)
+        f.addRow(t("Period"), self.sp_periode)
+        f.addRow(t("State"), self.lab_lien)
         lay.addWidget(gmon)
 
-        gcap = QGroupBox(t("Capture des trames (mise au point)"))
+        gcap = QGroupBox(t("Frame capture (debugging)"))
         f2 = QFormLayout(gcap)
-        self.chk_debug = QCheckBox(t("mode de mise au point"))
+        self.chk_debug = QCheckBox(t("debug mode"))
         self.chk_debug.setChecked(self.engine.settings.diagnostics.debug_mode)
         self.chk_debug.stateChanged.connect(self._mode_debug)
         self.cb_format = QComboBox()
-        for k, v in (("texte", t("texte — lisible immédiatement")),
-                     ("hexa", t("hexadécimal — analyse fine")),
-                     ("binaire", t("binaire — compact"))):
+        for k, v in (("text", t("text — readable straight away")),
+                     ("hexa", t("hexadecimal — detailed analysis")),
+                     ("binaire", t("binary — compact"))):
             self.cb_format.addItem(v, k)
         self.sp_max = QSpinBox()
         self.sp_max.setRange(1000, 5_000_000)
         self.sp_max.setValue(self.engine.settings.diagnostics.capture_max_frames)
-        self.btn_capture = QPushButton(t("Démarrer la capture"))
+        self.btn_capture = QPushButton(t("Start capture"))
         self.btn_capture.setCheckable(True)
         self.btn_capture.clicked.connect(self._capture)
-        self.lab_capture = QLabel("inactive")
-        self.btn_ouvrir_capture = QPushButton(t("Ouvrir le dossier des captures"))
+        self.lab_capture = QLabel(t("inactive"))
+        self.btn_ouvrir_capture = QPushButton(t("Open the capture folder"))
         self.btn_ouvrir_capture.clicked.connect(self._ouvrir_captures)
         f2.addRow(self.chk_debug)
         f2.addRow(t("Format"), self.cb_format)
-        f2.addRow(t("Plafond de trames"), self.sp_max)
+        f2.addRow(t("Frame limit"), self.sp_max)
         f2.addRow(self.btn_capture)
-        f2.addRow(t("État"), self.lab_capture)
+        f2.addRow(t("State"), self.lab_capture)
         f2.addRow(self.btn_ouvrir_capture)
         lay.addWidget(gcap)
         return w
@@ -146,18 +146,19 @@ class DiagTab(QWidget):
             self._rapport = usbdiag.diagnose(self.engine.settings)
         except Exception as exc:                       # noqa: BLE001
             log.exception("Diagnostic USB impossible")
-            self.lab_verdict.setText(f"diagnostic impossible : {exc}")
+            self.lab_verdict.setText(
+                    t("diagnostics failed: {erreur}").format(erreur=exc))
             return
         rep = self._rapport
         self.table_usb.setRowCount(len(rep.devices))
         for i, d in enumerate(rep.devices):
-            for j, texte in enumerate(d.to_row()):
-                item = QTableWidgetItem(texte)
+            for j, text in enumerate(d.to_row()):
+                item = QTableWidgetItem(text)
                 if d.is_phytosense:
                     item.setFont(QFont("", -1, QFont.Bold))
                 self.table_usb.setItem(i, j, item)
         self.table_usb.resizeColumnsToContents()
-        couleur = self.p["trace"] if rep.target else self.p["or"]
+        couleur = self.p["trace"] if rep.target else self.p["gold"]
         conseils = ("<br>".join("• " + a for a in rep.advice)) if rep.advice else ""
         self.lab_verdict.setText(f"<b style='color:{couleur}'>{rep.verdict}</b>"
                                  + (f"<br>{conseils}" if conseils else ""))
@@ -168,7 +169,7 @@ class DiagTab(QWidget):
         cb = QGuiApplication.clipboard()
         if cb is not None:
             cb.setText(self._rapport.as_text())
-        self.btn_copier_usb.setText(t("Rapport copié ✓"))
+        self.btn_copier_usb.setText(t("Report copied ✓"))
 
     def _surveillance(self) -> None:
         self.engine.settings.diagnostics.usb_poll_seconds = self.sp_periode.value()
@@ -191,9 +192,9 @@ class DiagTab(QWidget):
         d.capture_format = self.cb_format.currentData()
         d.capture_max_frames = self.sp_max.value()
         if self.btn_capture.isChecked():
-            chemin = self.engine.start_capture()
-            if chemin:
-                self.btn_capture.setText(t("Arrêter la capture"))
+            path = self.engine.start_capture()
+            if path:
+                self.btn_capture.setText(t("Stop capture"))
             else:
                 self.btn_capture.setChecked(False)
                 QMessageBox.warning(self, t("Capture"),
@@ -201,22 +202,22 @@ class DiagTab(QWidget):
                                     "capture impossible")
         else:
             self.engine.stop_capture()
-            self.btn_capture.setText(t("Démarrer la capture"))
+            self.btn_capture.setText(t("Start capture"))
 
     def _ouvrir_captures(self) -> None:
         import subprocess
         import sys as _sys
-        chemin = self.engine.settings.capture_dir()
-        os.makedirs(chemin, exist_ok=True)
+        path = self.engine.settings.capture_dir()
+        os.makedirs(path, exist_ok=True)
         try:
             if _sys.platform.startswith("win"):
-                os.startfile(chemin)                   # noqa: S606
+                os.startfile(path)                   # noqa: S606
             elif _sys.platform == "darwin":
-                subprocess.Popen(["open", chemin])
+                subprocess.Popen(["open", path])
             else:
-                subprocess.Popen(["xdg-open", chemin])
+                subprocess.Popen(["xdg-open", path])
         except Exception as exc:                       # noqa: BLE001
-            QMessageBox.information(self, t("Captures"), chemin + f"\n\n({exc})")
+            QMessageBox.information(self, t("Captures"), path + f"\n\n({exc})")
 
     # -------------------------------------------------------- échantillonnage
     def _page_echantillonnage(self) -> QWidget:
@@ -224,12 +225,12 @@ class DiagTab(QWidget):
         lay = QVBoxLayout(w)
         s = self.engine.settings.sampling
 
-        g = QGroupBox(t("Prélèvement"))
+        g = QGroupBox(t("Acquisition"))
         f = QFormLayout(g)
         self.cb_mode = QComboBox()
-        for k, v in (("continu", t("continu — écoute, aucun découpage")),
-                     ("bloc", t("bloc — analyse par tranches fenêtrées")),
-                     ("declenche", t("déclenché — comme un oscilloscope"))):
+        for k, v in (("continu", t("continuous — listening, no slicing")),
+                     ("bloc", t("block — analysis in windowed slices")),
+                     ("declenche", t("triggered — like an oscilloscope"))):
             self.cb_mode.addItem(v, k)
         _choisir(self.cb_mode, s.mode)
         self.sp_bloc = QSpinBox()
@@ -246,23 +247,23 @@ class DiagTab(QWidget):
             self.cb_fenetre.addItem(t(v), k)
         _choisir(self.cb_fenetre, s.window)
         f.addRow(t("Mode"), self.cb_mode)
-        f.addRow(t("Taille du bloc"), self.sp_bloc)
-        f.addRow(t("Décimation"), self.sp_decim)
-        f.addRow(t("Moyennage de blocs"), self.sp_moy)
-        f.addRow(t("Fenêtre"), self.cb_fenetre)
+        f.addRow(t("Block size"), self.sp_bloc)
+        f.addRow(t("Decimation"), self.sp_decim)
+        f.addRow(t("Block averaging"), self.sp_moy)
+        f.addRow(t("Window"), self.cb_fenetre)
         lay.addWidget(g)
 
-        g2 = QGroupBox(t("Déclenchement"))
+        g2 = QGroupBox(t("Trigger"))
         f2 = QFormLayout(g2)
         self.cb_trig_mode = QComboBox()
-        for k, v in (("auto", t("auto — trace même sans déclenchement")),
-                     ("normal", t("normal — n'affiche que sur déclenchement")),
-                     ("unique", t("unique — une seule capture"))):
+        for k, v in (("auto", t("auto — draws even without a trigger")),
+                     ("normal", t("normal — draws only on a trigger")),
+                     ("unique", t("single — one capture only"))):
             self.cb_trig_mode.addItem(v, k)
         _choisir(self.cb_trig_mode, s.trigger_mode)
         self.cb_trig_edge = QComboBox()
-        for k, v in (("montant", t("front montant")), ("descendant", t("front descendant")),
-                     ("les_deux", t("les deux"))):
+        for k, v in (("montant", t("rising edge")), ("descendant", t("falling edge")),
+                     ("les_deux", t("both"))):
             self.cb_trig_edge.addItem(v, k)
         _choisir(self.cb_trig_edge, s.trigger_edge)
         self.sp_niveau = QDoubleSpinBox()
@@ -279,16 +280,16 @@ class DiagTab(QWidget):
         self.sp_holdoff.setSuffix(t(" ms"))
         self.sp_holdoff.setValue(s.holdoff_ms)
         f2.addRow(t("Mode"), self.cb_trig_mode)
-        f2.addRow(t("Front"), self.cb_trig_edge)
-        f2.addRow(t("Niveau"), self.sp_niveau)
-        f2.addRow(t("Pré-déclenchement"), self.sp_pre)
-        f2.addRow(t("Temps mort"), self.sp_holdoff)
+        f2.addRow(t("Edge"), self.cb_trig_edge)
+        f2.addRow(t("Level"), self.sp_niveau)
+        f2.addRow(t("Pre-trigger"), self.sp_pre)
+        f2.addRow(t("Hold-off"), self.sp_holdoff)
         lay.addWidget(g2)
 
         barre = QHBoxLayout()
-        self.btn_ech_appliquer = QPushButton(t("Appliquer"))
+        self.btn_ech_appliquer = QPushButton(t("Apply"))
         self.btn_ech_appliquer.clicked.connect(self._appliquer_echantillonnage)
-        self.btn_ech_vider = QPushButton(t("Vider les blocs"))
+        self.btn_ech_vider = QPushButton(t("Clear the blocks"))
         self.btn_ech_vider.clicked.connect(lambda: self.engine.sampler.clear())
         barre.addWidget(self.btn_ech_appliquer)
         barre.addWidget(self.btn_ech_vider)
@@ -297,7 +298,7 @@ class DiagTab(QWidget):
 
         self.lab_ech = QLabel("")
         self.lab_ech.setWordWrap(True)
-        self.lab_ech.setStyleSheet(f"color:{self.p['texte2']};")
+        self.lab_ech.setStyleSheet(f"color:{self.p['text2']};")
         lay.addWidget(self.lab_ech)
         lay.addStretch(1)
         return w
@@ -324,7 +325,7 @@ class DiagTab(QWidget):
         lay = QVBoxLayout(w)
         a = self.engine.settings.audio_out
 
-        g = QGroupBox(t("Amplification"))
+        g = QGroupBox(t("Boost"))
         f = QFormLayout(g)
         self.sp_gain = QDoubleSpinBox()
         self.sp_gain.setRange(-60.0, 12.0)
@@ -338,7 +339,7 @@ class DiagTab(QWidget):
         self.sp_presence.setRange(0.0, 18.0)
         self.sp_presence.setSuffix(t(" dB"))
         self.sp_presence.setValue(a.presence_boost_db)
-        self.chk_comp = QCheckBox("compresseur")
+        self.chk_comp = QCheckBox(t("compressor"))
         self.chk_comp.setChecked(a.compressor)
         self.sp_seuil = QDoubleSpinBox()
         self.sp_seuil.setRange(-60.0, 0.0)
@@ -347,55 +348,52 @@ class DiagTab(QWidget):
         self.sp_ratio = QDoubleSpinBox()
         self.sp_ratio.setRange(1.0, 20.0)
         self.sp_ratio.setValue(a.comp_ratio)
-        self.chk_lim = QCheckBox("limiteur")
+        self.chk_lim = QCheckBox(t("limiter"))
         self.chk_lim.setChecked(a.limiter)
         self.cb_mode_audio = QComboBox()
-        for k, v in (("ecriture", t("écriture bloquante — robuste (défaut)")),
-                     ("rappel", t("rappel — tampon circulaire"))):
+        for k, v in (("ecriture", t("blocking write — robust (default)")),
+                     ("callback", t("callback — ring buffer"))):
             self.cb_mode_audio.addItem(v, k)
         _choisir(self.cb_mode_audio, a.mode)
         self.cb_bloc_audio = QComboBox()
         for n in (512, 1024, 2048, 4096, 8192):
-            self.cb_bloc_audio.addItem(f"{n} échantillons", n)
+            self.cb_bloc_audio.addItem(
+                    t("{n} samples").format(n=n), n)
         _choisir(self.cb_bloc_audio, a.block_size)
         self.cb_latence = QComboBox()
-        for k, v in (("0.2", t("0,2 s — réactif")), ("0.3", t("0,3 s")),
-                     ("0.5", t("0,5 s — recommandé")), ("1.0", t("1,0 s — très sûr")),
-                     ("high", t("laisser le système choisir"))):
+        for k, v in (("0.2", t("0.2 s — responsive")), ("0.3", t("0.3 s")),
+                     ("0.5", t("0.5 s — recommended")), ("1.0", t("1.0 s — very safe")),
+                     ("high", t("let the system choose"))):
             self.cb_latence.addItem(v, k)
         _choisir(self.cb_latence, str(a.latency))
         f.addRow(t("Gain"), self.sp_gain)
-        f.addRow(t("Amplification"), self.sp_boost)
-        f.addRow(t("Présence (1–4 kHz)"), self.sp_presence)
+        f.addRow(t("Boost"), self.sp_boost)
+        f.addRow(t("Presence (1–4 kHz)"), self.sp_presence)
         f.addRow(self.chk_comp)
-        f.addRow(t("Seuil de compression"), self.sp_seuil)
-        f.addRow(t("Rapport"), self.sp_ratio)
+        f.addRow(t("Compression threshold"), self.sp_seuil)
+        f.addRow(t("Ratio"), self.sp_ratio)
         f.addRow(self.chk_lim)
         lay.addWidget(g)
 
-        gflux = QGroupBox(t("Flux audio — à ajuster si le son craque"))
+        gflux = QGroupBox(t("Audio stream — adjust if the sound crackles"))
         f3 = QFormLayout(gflux)
         f3.addRow(t("Mode"), self.cb_mode_audio)
-        f3.addRow(t("Taille de bloc"), self.cb_bloc_audio)
-        f3.addRow(t("Latence"), self.cb_latence)
+        f3.addRow(t("Block size"), self.cb_bloc_audio)
+        f3.addRow(t("Latency"), self.cb_latence)
         aide = QLabel(
-            t("Un bloc plus grand et une latence plus longue suppriment les "
-            "craquements sur une machine chargée, au prix de quelques "
-            "centaines de millisecondes de retard — sans conséquence ici, "
-            "puisque la plante n'attend pas de réponse. Ces réglages ne "
-            "prennent effet qu'au redémarrage de l'acquisition."))
+            t("A larger block and a longer latency remove crackles on a busy machine, at the cost of a few hundred milliseconds of delay — of no consequence here, since the plant expects no answer. These settings only take effect when acquisition restarts."))
         aide.setWordWrap(True)
-        aide.setStyleSheet(f"color:{self.p['texte2']};font-size:8pt;")
+        aide.setStyleSheet(f"color:{self.p['text2']};font-size:8pt;")
         f3.addRow(aide)
         lay.addWidget(gflux)
 
-        g2 = QGroupBox(t("Bips de repérage"))
+        g2 = QGroupBox(t("Marker beeps"))
         f2 = QFormLayout(g2)
-        self.chk_bip = QCheckBox(t("activer les bips"))
+        self.chk_bip = QCheckBox(t("enable beeps"))
         self.chk_bip.setChecked(a.beep_enabled)
-        self.chk_bip_ev = QCheckBox(t("à chaque événement détecté"))
+        self.chk_bip_ev = QCheckBox(t("on every detected event"))
         self.chk_bip_ev.setChecked(a.beep_on_event)
-        self.chk_bip_sat = QCheckBox(t("en cas de saturation"))
+        self.chk_bip_sat = QCheckBox(t("on saturation"))
         self.chk_bip_sat.setChecked(a.beep_on_saturation)
         self.sp_bip_gain = QDoubleSpinBox()
         self.sp_bip_gain.setRange(-40.0, 6.0)
@@ -404,15 +402,15 @@ class DiagTab(QWidget):
         f2.addRow(self.chk_bip)
         f2.addRow(self.chk_bip_ev)
         f2.addRow(self.chk_bip_sat)
-        f2.addRow(t("Niveau du bip"), self.sp_bip_gain)
+        f2.addRow(t("Beep level"), self.sp_bip_gain)
         lay.addWidget(g2)
 
         barre = QHBoxLayout()
-        self.btn_audio_appliquer = QPushButton(t("Appliquer"))
+        self.btn_audio_appliquer = QPushButton(t("Apply"))
         self.btn_audio_appliquer.clicked.connect(self._appliquer_audio)
-        self.btn_test = QPushButton(t("Essai du haut-parleur (1 kHz)"))
+        self.btn_test = QPushButton(t("Speaker test (1 kHz)"))
         self.btn_test.clicked.connect(self.engine.test_haut_parleur)
-        self.btn_bip = QPushButton(t("Bip d'essai"))
+        self.btn_bip = QPushButton(t("Test beep"))
         self.btn_bip.clicked.connect(lambda: self.engine.output.bip("marqueur"))
         barre.addWidget(self.btn_audio_appliquer)
         barre.addWidget(self.btn_test)
@@ -420,12 +418,12 @@ class DiagTab(QWidget):
         barre.addStretch(1)
         lay.addLayout(barre)
 
-        self.niveau = LevelBar(self.p)
-        lay.addWidget(QLabel(t("Niveau de sortie")))
-        lay.addWidget(self.niveau)
+        self.level = LevelBar(self.p)
+        lay.addWidget(QLabel(t("Output level")))
+        lay.addWidget(self.level)
         self.lab_audio = QLabel("")
         self.lab_audio.setWordWrap(True)
-        self.lab_audio.setStyleSheet(f"color:{self.p['texte2']};")
+        self.lab_audio.setStyleSheet(f"color:{self.p['text2']};")
         lay.addWidget(self.lab_audio)
 
         lay.addWidget(self._groupe_voix())
@@ -435,24 +433,24 @@ class DiagTab(QWidget):
     def _groupe_voix(self) -> QWidget:
         """Ce qui est installé pour prononcer les énoncés du mode Parole.
 
-        Cette liste répond à la question posée chaque fois : « pourquoi le
+        Cette entries répond à la question posée chaque fois : « pourquoi le
         logiciel n'a-t-il rien dit ? ». Elle distingue la synthèse absente de
         la synthèse présente mais coupée, ce qui n'a rien à voir.
         """
         from ..music.voice import strategies_disponibles
 
-        g = QGroupBox(t("Synthèse vocale (mode Parole)"))
+        g = QGroupBox(t("Speech synthesis (Speech mode)"))
         f = QVBoxLayout(g)
         aucune = True
-        for nom, description, disponible in strategies_disponibles():
-            if nom == "silencieuse":
+        for name, description, disponible in strategies_disponibles():
+            if name == "silencieuse":
                 continue
             if disponible:
                 aucune = False
-            etat = "présente" if disponible else "absente"
-            couleur = self.p["trace"] if disponible else self.p["texte2"]
-            ligne = QLabel(f"<b style='color:{couleur}'>{etat:>8}</b>  "
-                           f"<b>{nom}</b> — {description}")
+            state = "présente" if disponible else "missing"
+            couleur = self.p["trace"] if disponible else self.p["text2"]
+            ligne = QLabel(f"<b style='color:{couleur}'>{state:>8}</b>  "
+                           f"<b>{name}</b> — {description}")
             ligne.setTextFormat(Qt.RichText)
             ligne.setWordWrap(True)
             f.addWidget(ligne)
@@ -461,10 +459,10 @@ class DiagTab(QWidget):
             "enregistrés, mais rien ne sera prononcé. Sous Linux : "
             "« sudo apt install espeak-ng », ou « pip install pyttsx3 »."
             if aucune else
-            "Tout se passe hors ligne : aucun texte ne quitte cette machine.")
+            "Tout se passe hors ligne : aucun text ne quitte cette machine.")
         conseil.setWordWrap(True)
         conseil.setStyleSheet(
-            f"color:{self.p['alerte'] if aucune else self.p['texte2']};"
+            f"color:{self.p['alert'] if aucune else self.p['text2']};"
             f"font-size:8pt;")
         f.addWidget(conseil)
         return g
@@ -489,32 +487,29 @@ class DiagTab(QWidget):
         if self.on_apply:
             self.on_apply()
 
-    # -------------------------------------------------------------- journal
+    # -------------------------------------------------------------- log
     def _page_modules(self) -> QWidget:
         """L'état de chaque module — et pourquoi celui qui manque n'est pas là.
 
         C'est la page qu'on regarde quand un module qu'on vient d'écrire ne
         s'affiche nulle part. Elle dit en une phrase ce qui s'est passé :
-        manifeste invalide, API visée inconnue, bibliothèque absente, faute au
-        chargement. Sans elle, on chercherait dans le journal, et l'on
+        manifest invalide, API visée inconnue, bibliothèque absente, fault au
+        chargement. Sans elle, on chercherait dans le log, et l'on
         commencerait par douter de soi.
         """
         w = QWidget()
         lay = QVBoxLayout(w)
 
         entete = QLabel(t(
-            "Les modules étendent le logiciel : analyses, représentations, "
-            "sonifications, formats d'export. Ceux qui sont livrés avec lui "
-            "passent par la même interface de programmation que les vôtres — "
-            "c'est ce qui garantit qu'elle suffit."))
+            "Modules extend the software: analyses, representations, sonifications, export formats. Those shipped with it go through the very same programming interface as yours — which is what guarantees that it suffices."))
         entete.setWordWrap(True)
-        entete.setStyleSheet(f"color:{self.p['texte2']};")
+        entete.setStyleSheet(f"color:{self.p['text2']};")
         lay.addWidget(entete)
 
         self.table_modules = QTableWidget(0, 6)
         self.table_modules.setHorizontalHeaderLabels(
-            [t("Module"), t("Version"), t("API"), t("Origine"), t("État"),
-             t("Capacités — ou pourquoi il est écarté")])
+            [t("Module"), t("Version"), t("API"), t("Origin"), t("State"),
+             t("Capabilities — or why it was set aside")])
         self.table_modules.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table_modules.setAlternatingRowColors(True)
         self.table_modules.verticalHeader().setVisible(False)
@@ -523,14 +518,12 @@ class DiagTab(QWidget):
 
         barre = QHBoxLayout()
         self.lab_modules = QLabel("—")
-        self.lab_modules.setStyleSheet(f"color:{self.p['texte2']};")
-        self.btn_modules_rafraichir = QPushButton(t("Rafraîchir"))
+        self.lab_modules.setStyleSheet(f"color:{self.p['text2']};")
+        self.btn_modules_rafraichir = QPushButton(t("Refresh"))
         self.btn_modules_rafraichir.clicked.connect(self._lire_modules)
-        self.btn_modules_dossier = QPushButton(t("Ouvrir le dossier des modules"))
+        self.btn_modules_dossier = QPushButton(t("Open the modules folder"))
         self.btn_modules_dossier.setToolTip(t(
-            "C'est là qu'on dépose un module écrit soi-même. Le SDK, livré "
-            "avec le code source, contient un exemple complet et un outil qui "
-            "en crée un nouveau."))
+            "This is where you drop a module of your own. The SDK, shipped with the source code, contains a complete example and a tool that creates a new one."))
         self.btn_modules_dossier.clicked.connect(self._ouvrir_dossier_modules)
         barre.addWidget(self.lab_modules, 1)
         barre.addWidget(self.btn_modules_rafraichir)
@@ -543,46 +536,46 @@ class DiagTab(QWidget):
     def _lire_modules(self) -> None:
         registre = getattr(self.engine, "modules", None)
         if registre is None:
-            self.lab_modules.setText(t("Registre des modules indisponible."))
+            self.lab_modules.setText(t("Module registry unavailable."))
             return
-        lignes = registre.rapport()
-        self.table_modules.setRowCount(len(lignes))
-        couleurs = {"actif": self.p["trace"], "en_faute": self.p["alerte"],
-                    "incompatible": self.p["alerte"],
-                    "desactive": self.p["texte2"]}
-        for i, l in enumerate(lignes):
+        rows = registre.report()
+        self.table_modules.setRowCount(len(rows))
+        couleurs = {"active": self.p["trace"], "faulted": self.p["alert"],
+                    "incompatible": self.p["alert"],
+                    "disabled": self.p["text2"]}
+        for i, l in enumerate(rows):
             #  Quand un module est écarté, c'est la RAISON qui occupe la
             #  dernière colonne : c'est ce qu'on est venu chercher.
-            derniere = l["faute"] or l["capacites"]
-            for col, valeur in enumerate((l["titre"], l["version"], l["api"],
-                                          t(l["origine"]), t(l["etat"]),
+            derniere = l["fault"] or l["capabilities"]
+            for col, value in enumerate((l["title"], l["version"], l["api"],
+                                          t(l["origin"]), t(l["state"]),
                                           derniere)):
-                cellule = QTableWidgetItem(str(valeur))
+                cellule = QTableWidgetItem(str(value))
                 if col == 4:
                     cellule.setForeground(QColor(
-                        couleurs.get(l["etat"], self.p["texte"])))
-                if l["faute"]:
-                    cellule.setToolTip(l["faute"])
+                        couleurs.get(l["state"], self.p["text"])))
+                if l["fault"]:
+                    cellule.setToolTip(l["fault"])
                 self.table_modules.setItem(i, col, cellule)
         self.table_modules.resizeColumnsToContents()
 
-        actifs = sum(1 for l in lignes if l["etat"] == "actif")
-        ecartes = sum(1 for l in lignes if l["etat"] in ("en_faute",
+        active = sum(1 for l in rows if l["state"] == "active")
+        ecartes = sum(1 for l in rows if l["state"] in ("faulted",
                                                          "incompatible"))
-        from ..api import VERSION_API
-        texte = t("{actifs} module(s) actif(s) sur {total} — API {api}").format(
-            actifs=actifs, total=len(lignes), api=VERSION_API)
+        from ..api import API_VERSION
+        text = t("{active} module(s) active out of {total} — API {api}").format(
+            active=active, total=len(rows), api=API_VERSION)
         if ecartes:
-            texte += "  ·  " + t("{n} écarté(s)").format(n=ecartes)
-        self.lab_modules.setText(texte)
+            text += "  ·  " + t("{n} set aside").format(n=ecartes)
+        self.lab_modules.setText(text)
 
     def _ouvrir_dossier_modules(self) -> None:
-        from ..api import Registre
-        dossier = Registre.dossier_utilisateur()
-        os.makedirs(dossier, exist_ok=True)
+        from ..api import Registry
+        directory = Registry.user_directory()
+        os.makedirs(directory, exist_ok=True)
         from PySide6.QtCore import QUrl
         from PySide6.QtGui import QDesktopServices
-        QDesktopServices.openUrl(QUrl.fromLocalFile(dossier))
+        QDesktopServices.openUrl(QUrl.fromLocalFile(directory))
 
     def _page_journal(self) -> QWidget:
         w = QWidget()
@@ -594,21 +587,21 @@ class DiagTab(QWidget):
             self.cb_niveau.addItem(f"{k} — {t(v)}", k)
         _choisir(self.cb_niveau, logging_setup.current_level())
         self.cb_niveau.currentIndexChanged.connect(self._changer_niveau)
-        self.btn_rafraichir = QPushButton(t("Rafraîchir"))
+        self.btn_rafraichir = QPushButton(t("Refresh"))
         self.btn_rafraichir.clicked.connect(self._lire_journal)
-        self.btn_vider = QPushButton(t("Vider"))
+        self.btn_vider = QPushButton(t("Clear"))
         self.btn_vider.clicked.connect(self._vider_journal)
-        self.btn_ouvrir_journal = QPushButton(t("Enregistrer une copie…"))
+        self.btn_ouvrir_journal = QPushButton(t("Save a copy…"))
         self.btn_ouvrir_journal.clicked.connect(self._copier_journal)
-        barre.addWidget(QLabel(t("Niveau")))
+        barre.addWidget(QLabel(t("Level")))
         barre.addWidget(self.cb_niveau, 1)
         barre.addWidget(self.btn_rafraichir)
         barre.addWidget(self.btn_vider)
         barre.addWidget(self.btn_ouvrir_journal)
         lay.addLayout(barre)
 
-        self.lab_fichier = QLabel(logging_setup.log_path() or "(aucun fichier)")
-        self.lab_fichier.setStyleSheet(f"color:{self.p['texte2']};font-size:8pt;")
+        self.lab_fichier = QLabel(logging_setup.log_path() or "(no file)")
+        self.lab_fichier.setStyleSheet(f"color:{self.p['text2']};font-size:8pt;")
         lay.addWidget(self.lab_fichier)
 
         self.vue_journal = QPlainTextEdit()
@@ -617,17 +610,16 @@ class DiagTab(QWidget):
         lay.addWidget(self.vue_journal, 1)
 
         bas = QHBoxLayout()
-        self.chk_suivre = QCheckBox(t("suivre en continu"))
+        self.chk_suivre = QCheckBox(t("follow continuously"))
         bas.addWidget(self.chk_suivre)
         bas.addStretch(1)
-        #  Cet aperçu relit tout le fichier et n'en garde que 500 lignes : il
+        #  Cet aperçu relit tout le file_path et n'en kept que 500 rows : il
         #  suffit pour un coup d'œil au milieu d'un diagnostic. Pour chercher
         #  vraiment — filtre, lecture incrémentale, archives de rotation —, la
         #  fenêtre dédiée fait mieux, et on y va d'ici.
-        self.btn_fenetre_journal = QPushButton(t("Ouvrir dans une fenêtre…"))
+        self.btn_fenetre_journal = QPushButton(t("Open in a window…"))
         self.btn_fenetre_journal.setToolTip(
-            t("Fenêtre du journal : lecture en direct, filtre, et copie vers "
-              "l'emplacement de votre choix (Ctrl+L)"))
+            t("Log window: live reading, filtering, and copying to the location of your choice (Ctrl+L)"))
         self.btn_fenetre_journal.clicked.connect(self._ouvrir_fenetre_journal)
         bas.addWidget(self.btn_fenetre_journal)
         lay.addLayout(bas)
@@ -635,7 +627,7 @@ class DiagTab(QWidget):
         return w
 
     def _ouvrir_fenetre_journal(self) -> None:
-        """Passe la main à la fenêtre du journal, qu'elle soit ouverte ou non."""
+        """Passe la main à la fenêtre du log, qu'elle soit ouverte ou non."""
         fenetre = self.window()
         if hasattr(fenetre, "_journal"):
             fenetre._journal()
@@ -649,13 +641,13 @@ class DiagTab(QWidget):
         self._fen_journal.raise_()
 
     def _changer_niveau(self) -> None:
-        niveau = self.cb_niveau.currentData()
-        applique = logging_setup.set_level(niveau)
+        level = self.cb_niveau.currentData()
+        applique = logging_setup.set_level(level)
         self.engine.settings.logging.level = applique
         self._lire_journal()
 
     def _lire_journal(self) -> None:
-        self.lab_fichier.setText(logging_setup.log_path() or t("(aucun fichier)"))
+        self.lab_fichier.setText(logging_setup.log_path() or t("(no file)"))
         self.vue_journal.setPlainText(logging_setup.tail(500))
         self.vue_journal.verticalScrollBar().setValue(
             self.vue_journal.verticalScrollBar().maximum())
@@ -668,15 +660,15 @@ class DiagTab(QWidget):
         source = logging_setup.log_path()
         if not source or not os.path.exists(source):
             return
-        cible, _ = QFileDialog.getSaveFileName(self, t("Enregistrer le journal"),
-                                               "phytoscope.log", t("Journal (*.log)"))
-        if not cible:
+        target, _ = QFileDialog.getSaveFileName(self, t("Save the log"),
+                                               "phytoscope.log", t("Log (*.log)"))
+        if not target:
             return
         try:
             import shutil
-            shutil.copyfile(source, cible)
+            shutil.copyfile(source, target)
         except OSError as exc:                         # pragma: no cover
-            QMessageBox.warning(self, t("Copie impossible"), str(exc))
+            QMessageBox.warning(self, t("Copy failed"), str(exc))
 
     # -------------------------------------------------------------- rendu
     def refresh(self, state) -> None:
@@ -685,7 +677,7 @@ class DiagTab(QWidget):
         self.lab_lien.setText(self.engine.monitor.summary())
         self.lab_capture.setText(self.engine.capture.status())
         m = self.engine.output.metrics
-        self.niveau.set_value(m.peak)
+        self.level.set_value(m.peak)
         from ..core import audio_quiet
         audio = self.engine.audio
         self.lab_audio.setText(
@@ -713,8 +705,8 @@ def _rouleau(w: QWidget) -> QScrollArea:
     return sa
 
 
-def _choisir(combo: QComboBox, valeur) -> None:
+def _choisir(combo: QComboBox, value) -> None:
     for i in range(combo.count()):
-        if combo.itemData(i) == valeur:
+        if combo.itemData(i) == value:
             combo.setCurrentIndex(i)
             return

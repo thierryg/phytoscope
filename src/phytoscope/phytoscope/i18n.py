@@ -2,25 +2,25 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/i18n.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Traduction de l'interface — le français pour source, tout le reste en JSON.
 
-Ajouter une langue ne demande **aucune modification du code** : on dépose un
-fichier :file:`<code>.json` dans :file:`phytoscope/langues/`, et la langue
+Ajouter une langue ne requested **aucune modification du code** : on dépose un
+file_path :file:`<code>.json` dans :file:`phytoscope/langues/`, et la langue
 apparaît dans les réglages au démarrage suivant. Le logiciel découvre les
-catalogues présents plutôt que de connaître une liste ; c'est la seule façon
-qu'un utilisateur puisse ajouter la sienne sans nous attendre.
+catalogues présents plutôt que de connaître une entries ; c'est la seule façon
+qu'un utilisateur puisse add la sienne sans nous attendre.
 
 Structure d'un catalogue
 ------------------------
@@ -29,13 +29,13 @@ Structure d'un catalogue
 
     {
       "_langue": {
-        "nom": "Bahasa Indonesia",      nom de la langue, dans la langue
-        "nom_fr": "indonésien",         son nom en français
-        "direction": "ltr",             "rtl" pour l'arabe, l'hébreu, le persan
-        "auteur": "qui l'a traduite"
+        "name": "Bahasa Indonesia",     the language's name, in that language
+        "english_name": "Indonesian",   its name in the source language
+        "direction": "ltr",             "rtl" for Arabic, Hebrew, Persian
+        "author": "who translated it"
       },
       "Oscilloscope": "Osiloskop",
-      "Calculer maintenant": "Hitung sekarang"
+      "Compute now": "Hitung sekarang"
     }
 
 Trois décisions de conception, et leurs raisons
@@ -46,7 +46,7 @@ abstraits du genre ``menu.file.open``. Le code reste donc lisible —
 ``t("Oscilloscope")`` se comprend sans consulter un catalogue — et, surtout, une
 traduction manquante retombe silencieusement sur un français correct plutôt que
 sur un identifiant nu. Un logiciel de mesure à moitié traduit doit rester
-utilisable ; il ne doit jamais afficher ``tab.scope.title``.
+usable ; il ne doit jamais afficher ``tab.scope.title``.
 
 **Une entrée vide vaut une entrée absente.** On peut donc livrer un catalogue
 complet aux trois quarts, et le compléter phrase par phrase : rien ne casse, et
@@ -83,37 +83,87 @@ from .core.logging_setup import get_logger
 log = get_logger(__name__)
 
 __all__ = ["t", "definir_langue", "langue_courante", "direction_courante",
-           "langues_disponibles", "catalogue", "manquantes", "meta",
+           "langues_disponibles", "catalogue", "missing", "meta",
            "chemin_catalogue", "DOSSIER", "LANGUE_SOURCE", "ecrire_modele",
            "couverture", "collecter_cles"]
 
-LANGUE_SOURCE = "fr"
+#  English has been the SOURCE language since 2026-09-22: the code's labels
+#  are written in English, and French became a catalogue like any other. That
+#  is not a display detail — it is what makes the code readable by somebody
+#  who does not speak French, and a source language has, by construction, no
+#  catalogue to keep up to date.
+#
+#  The third field of LIVREES was called `nom_fr` and held the name in the
+#  source language, which is to say in English. Renamed `english_name` on
+#  2026-09-23, in the table and in the ten catalogues' `_langue` block, which
+#  is the only thing that reads it.
+LANGUE_SOURCE = "en"
 
-#  Les langues livrées avec le logiciel. Cette table ne sert qu'à deux choses :
-#  afficher un nom lisible avant d'avoir ouvert le fichier, et fixer l'ordre du
-#  menu. Une langue absente d'ici mais présente dans le dossier apparaît quand
-#  même — c'est tout l'intérêt.
+#  Les langues connues du logiciel : leur name lisible, leur name français
+#  et leur meaning de lecture. La table ne fait que cela — afficher un name
+#  avant d'avoir ouvert le file_path, et fixer l'order du menu.
+#
+#  Une langue déclarée ici SANS son catalogue n'apparaît pas : voir
+#  codes_presents(), qui ne retient que ce qui existe sur le disque. La
+#  table peut donc annoncer une ambition — les 48 langues demandées le
+#  2026-09-22 — sans prétendre que le travail est fait. « couverture »
+#  dit la vérité, langue par langue.
+#
+#  Et une langue PRÉSENTE mais absente d'ici apparaît quand même, rangée
+#  après les autres : c'est ce qui permet d'en déposer une soi-même.
 LIVREES = (
-    ("fr", "Français", "français", "ltr"),
-    ("en", "English (US)", "américain", "ltr"),
-    ("es", "Español", "espagnol", "ltr"),
-    ("pt", "Português", "portugais", "ltr"),
-    ("it", "Italiano", "italien", "ltr"),
-    ("id", "Bahasa Indonesia", "indonésien", "ltr"),
-    ("ru", "Русский", "russe", "ltr"),
-    ("zh", "中文", "chinois", "ltr"),
-    ("ja", "日本語", "japonais", "ltr"),
-    ("ko", "한국어", "coréen", "ltr"),
-    ("ar", "العربية", "arabe", "rtl"),
+    #  --- livrées et complètes ---
+    ("en", "English (US)", "American English", "ltr"),
+    ("fr", "Français", "French", "ltr"),
+    ("es", "Español", "Spanish", "ltr"),
+    ("pt", "Português", "Portuguese", "ltr"),
+    ("it", "Italiano", "Italian", "ltr"),
+    ("id", "Bahasa Indonesia", "Indonesian", "ltr"),
+    ("ru", "Русский", "Russian", "ltr"),
+    ("zh", "中文", "Chinese", "ltr"),
+    ("ja", "日本語", "Japanese", "ltr"),
+    ("ko", "한국어", "Korean", "ltr"),
+    ("ar", "العربية", "Arabic", "rtl"),
+    #  --- demandées, catalogue à écrire ---
+    ("de", "Deutsch", "German", "ltr"),
+    ("nl", "Nederlands", "Dutch", "ltr"),
+    ("pl", "Polski", "Polish", "ltr"),
+    ("el", "Ελληνικά", "Greek", "ltr"),
+    ("tr", "Türkçe", "Turkish", "ltr"),
+    ("fi", "Suomi", "Finnish", "ltr"),
+    ("hu", "Magyar", "Hungarian", "ltr"),
+    ("et", "Eesti", "Estonian", "ltr"),
+    ("he", "עברית", "Hebrew", "rtl"),
+    ("fa", "فارسی", "Persian", "rtl"),
+    ("hi", "हिन्दी", "Hindi", "ltr"),
+    ("bn", "বাংলা", "Bengali", "ltr"),
+    ("ta", "தமிழ்", "Tamil", "ltr"),
+    ("te", "తెలుగు", "Telugu", "ltr"),
+    ("kn", "ಕನ್ನಡ", "Kannada", "ltr"),
+    ("yue", "粵語", "Cantonese", "ltr"),
+    ("th", "ไทย", "Thai", "ltr"),
+    ("vi", "Tiếng Việt", "Vietnamese", "ltr"),
+    ("ms", "Bahasa Melayu", "Malay", "ltr"),
+    ("tl", "Tagalog", "Tagalog", "ltr"),
+    ("mg", "Malagasy", "Malagasy", "ltr"),
+    ("mi", "Te Reo Māori", "Māori", "ltr"),
+    ("sw", "Kiswahili", "Swahili", "ltr"),
+    ("yo", "Yorùbá", "Yoruba", "ltr"),
+    ("zu", "isiZulu", "Zulu", "ltr"),
+    ("ig", "Igbo", "Igbo", "ltr"),
+    ("am", "አማርኛ", "Amharic", "ltr"),
+    ("ha", "Hausa", "Hausa", "ltr"),
+    ("kk", "Қазақ тілі", "Kazakh", "ltr"),
+    ("uz", "Oʻzbekcha", "Uzbek", "ltr"),
 )
 
-DOSSIER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "langues")
+DOSSIER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "languages")
 
 _courante = LANGUE_SOURCE
 _catalogue: Dict[str, str] = {}
 _chargees: Dict[str, Dict[str, str]] = {}
 _metas: Dict[str, Dict[str, str]] = {}
-#  Tout ce qui a été demandé sans traduction : sert au rapport de couverture.
+#  Tout ce qui a été demandé sans traduction : sert au report de couverture.
 _absentes: Dict[str, set] = {}
 
 
@@ -132,18 +182,18 @@ def catalogue(code: str) -> Dict[str, str]:
     table: Dict[str, str] = {}
     info: Dict[str, str] = {}
     if code != LANGUE_SOURCE:
-        chemin = chemin_catalogue(code)
+        path = chemin_catalogue(code)
         try:
-            with open(chemin, encoding="utf-8") as f:
-                brut = json.load(f)
-            info = dict(brut.get("_langue") or {})
+            with open(path, encoding="utf-8") as f:
+                raw = json.load(f)
+            info = dict(raw.get("_langue") or {})
             #  Une traduction vide retombe sur le français : elle ne doit
             #  jamais afficher une étiquette blanche.
-            table = {str(k): str(v) for k, v in brut.items()
+            table = {str(k): str(v) for k, v in raw.items()
                      if not k.startswith("_") and isinstance(v, str) and v.strip()}
         except FileNotFoundError:
             log.warning("Catalogue de traduction absent : %s — "
-                        "l'interface restera en français.", chemin)
+                        "l'interface restera en français.", path)
         except (OSError, ValueError) as exc:
             log.error("Catalogue « %s » illisible (%s) — repli sur le français.",
                       code, exc)
@@ -157,13 +207,13 @@ def meta(code: str) -> Dict[str, str]:
     code = (code or LANGUE_SOURCE).lower()
     catalogue(code)
     info = dict(_metas.get(code) or {})
-    for c, nom, nom_fr, direction in LIVREES:
+    for c, name, english_name, direction in LIVREES:
         if c == code:
-            info.setdefault("nom", nom)
-            info.setdefault("nom_fr", nom_fr)
+            info.setdefault("name", name)
+            info.setdefault("english_name", english_name)
             info.setdefault("direction", direction)
-    info.setdefault("nom", code)
-    info.setdefault("nom_fr", code)
+    info.setdefault("name", code)
+    info.setdefault("english_name", code)
     info.setdefault("direction", "ltr")
     return info
 
@@ -171,30 +221,31 @@ def meta(code: str) -> Dict[str, str]:
 def codes_presents() -> List[str]:
     """Les langues réellement disponibles : le français, plus les catalogues.
 
-    L'ordre est celui de :data:`LIVREES` pour ce qui est connu, alphabétique
+    L'order est celui de :data:`LIVREES` pour ce qui est connu, alphabétique
     pour ce qui a été ajouté ensuite — une langue déposée par l'utilisateur
-    n'est pas reléguée, elle est simplement rangée après celles d'origine.
+    n'est pas reléguée, elle est simplement rangée après celles d'origin.
     """
-    trouves = set()
+    found = set()
     try:
-        for nom in os.listdir(DOSSIER):
-            if nom.endswith(".json") and not nom.startswith("_"):
-                trouves.add(nom[:-5].lower())
+        for name in os.listdir(DOSSIER):
+            if name.endswith(".json") and not name.startswith("_"):
+                found.add(name[:-5].lower())
     except OSError:
         pass
-    ordre = [c for c, _, _, _ in LIVREES if c == LANGUE_SOURCE or c in trouves]
-    ordre += sorted(c for c in trouves
+    order = [c for c, _, _, _ in LIVREES if c == LANGUE_SOURCE or c in found]
+    order += sorted(c for c in found
                     if c not in {x for x, _, _, _ in LIVREES})
-    return ordre
+    return order
 
 
 def langues_disponibles() -> List[tuple]:
-    """(code, nom local, nom français, entrées traduites, direction)."""
+    """(code, name local, name français, entrées traduites, direction)."""
     out = []
     for code in codes_presents():
         info = meta(code)
         n = -1 if code == LANGUE_SOURCE else len(catalogue(code))
-        out.append((code, info["nom"], info["nom_fr"], n, info["direction"]))
+        out.append((code, info["name"], info["english_name"], n,
+                    info["direction"]))
     return out
 
 
@@ -224,23 +275,23 @@ def direction_courante() -> str:
     return meta(_courante)["direction"]
 
 
-def t(texte: str) -> str:
-    """Le libellé dans la langue courante, ou le français s'il manque.
+def t(text: str) -> str:
+    """Le libellé dans la langue current, ou le français s'il manque.
 
     C'est volontairement une fonction triviale : elle est appelée des centaines
     de fois à la construction de l'interface, et tout ce qui coûte doit rester
     dans le chargement, pas ici.
     """
-    if _courante == LANGUE_SOURCE or not texte:
-        return texte
-    traduit = _catalogue.get(texte)
+    if _courante == LANGUE_SOURCE or not text:
+        return text
+    traduit = _catalogue.get(text)
     if traduit is None:
-        _absentes.setdefault(_courante, set()).add(texte)
-        return texte
+        _absentes.setdefault(_courante, set()).add(text)
+        return text
     return traduit
 
 
-def manquantes(code: Optional[str] = None) -> List[str]:
+def missing(code: Optional[str] = None) -> List[str]:
     """Les libellés demandés pendant cette session et non traduits.
 
     Une traduction incomplète doit être visible par celui qui l'entretient,
@@ -259,25 +310,25 @@ def couverture(code: str, cles: Optional[List[str]] = None) -> float:
     return 1.0 if table else 0.0
 
 
-def ecrire_modele(chemin: str, cles: List[str], code: str = "",
+def ecrire_modele(path: str, cles: List[str], code: str = "",
                   garder: bool = True) -> int:
-    """Écrit un catalogue à compléter : toutes les clés, valeurs vides.
+    """Écrit un catalogue à compléter : toutes les clés, values vides.
 
     Si un catalogue existe déjà pour ``code``, ses traductions sont conservées
     et seules les clés nouvelles arrivent vides — c'est ce qui permet de
     maintenir une traduction au fil des versions sans tout relire.
     """
     existant = catalogue(code) if (code and garder) else {}
-    info = meta(code) if code else {"nom": "", "nom_fr": "", "direction": "ltr"}
+    info = meta(code) if code else {"name": "", "english_name": "", "direction": "ltr"}
     sortie: Dict[str, object] = {"_langue": {
-        "nom": info.get("nom", ""), "nom_fr": info.get("nom_fr", ""),
+        "name": info.get("name", ""), "english_name": info.get("english_name", ""),
         "direction": info.get("direction", "ltr"),
-        "auteur": info.get("auteur", ""),
+        "author": info.get("author", ""),
     }}
-    for cle in cles:
-        sortie[cle] = existant.get(cle, "")
-    os.makedirs(os.path.dirname(os.path.abspath(chemin)), exist_ok=True)
-    with open(chemin, "w", encoding="utf-8") as f:
+    for key in cles:
+        sortie[key] = existant.get(key, "")
+    os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(sortie, f, ensure_ascii=False, indent=2)
         f.write("\n")
     return sum(1 for c in cles if not existant.get(c))
@@ -287,58 +338,58 @@ def ecrire_modele(chemin: str, cles: List[str], code: str = "",
 #  Inventaire des libellés — la source unique de vérité
 # ---------------------------------------------------------------------------
 def collecter_cles() -> List[str]:
-    """Tous les libellés traduisibles du logiciel, dans l'ordre de rencontre.
+    """Tous les libellés traduisibles du logiciel, dans l'order de rencontre.
 
     Deux gisements, parce que l'interface en a deux :
 
     * les appels ``t("…")`` du code, trouvés par **analyse syntaxique** — jamais
       par expression régulière, qui se tromperait sur les chaînes réparties sur
-      plusieurs lignes ;
+      plusieurs rows ;
     * les **tables de données** — instruments, gammes, profils, descripteurs,
       grammaires, textes de l'aide — dont le contenu est traduit au moment de
       l'affichage, et qu'il serait absurde de recopier ici.
 
     Utilisé par l'outil ``tools/i18n.py`` et par le bouton « Écrire un modèle de
-    traduction » des réglages : les deux voient exactement la même liste.
+    traduction » des réglages : les deux voient exactement la même entries.
     """
     import ast
 
     racine = os.path.dirname(os.path.abspath(__file__))
     vues, cles = set(), []
 
-    def ajouter(texte):
-        texte = str(texte or "")
-        if texte and texte not in vues:
-            vues.add(texte)
-            cles.append(texte)
+    def add(text):
+        text = str(text or "")
+        if text and text not in vues:
+            vues.add(text)
+            cles.append(text)
 
     class _Collecteur(ast.NodeVisitor):
         def visit_Call(self, node):
-            nom = getattr(node.func, "id", None) or getattr(node.func, "attr", None)
-            if nom == "t" and node.args:
+            name = getattr(node.func, "id", None) or getattr(node.func, "attr", None)
+            if name == "t" and node.args:
                 a = node.args[0]
                 if isinstance(a, ast.Constant) and isinstance(a.value, str):
-                    ajouter(a.value)
+                    add(a.value)
             self.generic_visit(node)
 
-    for dossier, _, fichiers in os.walk(racine):
-        if "__pycache__" in dossier:
+    for directory, _, fichiers in os.walk(racine):
+        if "__pycache__" in directory:
             continue
-        for nom in sorted(fichiers):
-            if not nom.endswith(".py"):
+        for name in sorted(fichiers):
+            if not name.endswith(".py"):
                 continue
-            chemin = os.path.join(dossier, nom)
+            path = os.path.join(directory, name)
             try:
-                _Collecteur().visit(ast.parse(open(chemin, encoding="utf-8").read()))
+                _Collecteur().visit(ast.parse(open(path, encoding="utf-8").read()))
             except (OSError, SyntaxError) as exc:       # pragma: no cover
-                log.warning("Inventaire : %s illisible (%s)", chemin, exc)
+                log.warning("Inventaire : %s illisible (%s)", path, exc)
 
     #  Les tables de données. Importées tardivement : ce module est chargé très
-    #  tôt, et rien de tout cela n'est nécessaire pour traduire.
+    #  tôt, et rien de tout cela n'est nécessaire pour translate.
     try:
-        from .core.fingerprint import DESCRIPTEURS as EMPREINTE, SEUILS
-        from .core.features import DESCRIPTEURS
-        from .core.quantities import inventaire as GRANDEURS
+        from .core.fingerprint import DESCRIPTORS as EMPREINTE, THRESHOLDS
+        from .core.features import DESCRIPTORS
+        from .core.quantities import inventory as GRANDEURS
         from .core.logging_setup import NIVEAUX_FR
         from .core.sampling import FENETRES
         from .music.instruments import get as _instr, instrument_list
@@ -352,51 +403,53 @@ def collecter_cles() -> List[str]:
         log.warning("Inventaire des tables impossible : %s", exc)
         return cles
 
-    for cle, libelle in instrument_list():
-        ajouter(libelle)
+    for key, label in instrument_list():
+        add(label)
         try:
-            ajouter(_instr(cle).description)
+            add(_instr(key).description)
         except Exception:                               # noqa: BLE001
             pass
-    for _, libelle in scale_names():
-        ajouter(libelle)
-    for _, libelle in profile_list():
-        ajouter(libelle)
-    for valeur in FENETRES.values():
-        ajouter(valeur)
-    for triplet in DESCRIPTEURS.values():
+    for _, label in scale_names():
+        add(label)
+    for _, label in profile_list():
+        add(label)
+    for value in FENETRES.values():
+        add(value)
+    for triplet in DESCRIPTORS.values():
         for x in triplet:
-            ajouter(x)
+            add(x)
     for g in GRAMMAIRES.values():
-        ajouter(g["titre"])
-        ajouter(g["description"])
-    for titre, lignes in RACCOURCIS:
-        ajouter(titre)
-        for _, role in lignes:
-            ajouter(role)
-    for nom, texte in ONGLETS:
-        ajouter(nom)
-        ajouter(texte)
-    for _, titre, texte in DEMARRAGE:
-        ajouter(titre)
-        ajouter(texte)
-    for valeur in SOURCES.values():
-        ajouter(valeur)
-    for valeur in NIVEAUX_FR.values():
-        ajouter(valeur)
-    ajouter(AVERTISSEMENT)
-    #  Les descripteurs de l'empreinte et les phrases de qualification : ils
+        #  GRAMMAIRES lives in `music/lexicon.py`, whose keys are still
+        #  French: this one is its key, not ours.
+        add(g["titre"])
+        add(g["description"])
+    for title, rows in RACCOURCIS:
+        add(title)
+        for _, role in rows:
+            add(role)
+    for name, text in ONGLETS:
+        add(name)
+        add(text)
+    for _, title, text in DEMARRAGE:
+        add(title)
+        add(text)
+    for value in SOURCES.values():
+        add(value)
+    for value in NIVEAUX_FR.values():
+        add(value)
+    add(AVERTISSEMENT)
+    #  Les descripteurs de l'fingerprint et les phrases de qualification : ils
     #  sont traduits à l'affichage, comme les autres tables de données.
-    for _cle, libelle, _unite, _poids, _log in EMPREINTE:
-        ajouter(libelle)
-    for _borne, phrase in SEUILS:
-        ajouter(phrase)
+    for _cle, label, _unite, _poids, _log in EMPREINTE:
+        add(label)
+    for _borne, phrase in THRESHOLDS:
+        add(phrase)
     #  Les grandeurs scientifiques du multimètre : récoltées en faisant
     #  tourner le calcul, jamais recopiées — une grandeur ajoutée sans
     #  traduction doit faire échouer la couverture.
     for phrase in GRANDEURS():
-        ajouter(phrase)
-    #  Le nom français de chaque langue, affiché dans la liste des réglages.
-    for _, _, nom_fr, _ in LIVREES:
-        ajouter(nom_fr)
+        add(phrase)
+    #  Le name français de chaque langue, affiché dans la entries des réglages.
+    for _, _, english_name, _ in LIVREES:
+        add(english_name)
     return cles

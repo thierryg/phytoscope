@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/tools/write_language.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Écrit dans les réglages la langue choisie à l'installation.
@@ -45,10 +45,27 @@ import json
 import os
 import sys
 
-#  Les langues que le logiciel sait parler. Écrire un code inconnu ne casse
-#  rien — le logiciel retombe sur le français — mais autant le refuser tout
-#  de suite plutôt que de laisser croire que cela a marché.
-LANGUES = ("fr", "en", "es", "pt", "it", "id", "ru", "zh", "ja", "ko", "ar")
+#  Which languages the software speaks. Writing an unknown code breaks
+#  nothing — the software falls back to its source language — but refusing it
+#  at once beats letting the installer believe it succeeded.
+#
+#  The list is READ FROM DISK rather than written here. A hardcoded copy is a
+#  fourth list of languages to keep in step with the other three, and the one
+#  that would go stale unnoticed: nothing fails when it is short, the code is
+#  simply refused. A catalogue sitting next to this script is the authority.
+def langues_connues() -> tuple:
+    """The language codes this installation can actually display."""
+    ici = os.path.dirname(os.path.abspath(__file__))
+    codes = set()
+    for base in (ici, os.path.dirname(ici)):
+        dossier = os.path.join(base, "phytoscope", "languages")
+        if os.path.isdir(dossier):
+            codes |= {
+                nom[:-5] for nom in os.listdir(dossier) if nom.endswith(".json")
+            }
+    #  The source language needs no catalogue, so it never appears on disk.
+    codes.add("en")
+    return tuple(sorted(codes))
 
 
 def chemin_des_reglages() -> str:
@@ -64,10 +81,11 @@ def chemin_des_reglages() -> str:
 
 
 def ecrire(langue: str, chemin: str = "") -> int:
-    """Pose `ui.language` sans toucher au reste ; rend un code de sortie."""
-    if langue not in LANGUES:
-        print(f"langue inconnue : {langue!r} — attendu l'un de "
-              f"{', '.join(LANGUES)}", file=sys.stderr)
+    """Set `ui.language`, touch nothing else, and return an exit status."""
+    connues = langues_connues()
+    if langue not in connues:
+        print(f"unknown language: {langue!r} — expected one of "
+              f"{', '.join(connues)}", file=sys.stderr)
         return 2
 
     chemin = chemin or chemin_des_reglages()

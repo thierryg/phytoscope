@@ -1,20 +1,3 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/tt-sensor-map.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 640" width="900" height="640">
 
 <defs>
@@ -6819,67 +6802,67 @@
 <path d="M430,518 q56,78 111,118" fill="none" stroke="#6B5A42" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
 <path d="M430,518 q57,47 114,55" fill="none" stroke="#6B5A42" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
 <rect x="92" y="118" width="178" height="62" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
-<text x="181.0" y="135" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Capteur climatique</text>
-<text x="181.0" y="150.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">T° air · HR · pression</text>
+<text x="181.0" y="135" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Climate sensor</text>
+<text x="181.0" y="150.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">air T° · RH · pressure</text>
 <circle cx="270" cy="149" r="11" fill="#2F5E86"/>
 <text x="270" y="152.5" font-family="Lato, sans-serif" font-size="11.02" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">S1</text>
 <path d="M281,149 Q334.5,192.5 388,236" fill="none" stroke="#2F5E86" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.8"/>
 <circle cx="388" cy="236" r="4.5" fill="#B08528" stroke="#FFF" stroke-width="1.4"/>
 <rect x="92" y="206" width="178" height="62" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
-<text x="181.0" y="223" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Lumière / PAR</text>
+<text x="181.0" y="223" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Light / PAR</text>
 <text x="181.0" y="238.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">lux · µmol·m⁻²·s⁻¹</text>
 <circle cx="270" cy="237" r="11" fill="#2F5E86"/>
 <text x="270" y="240.5" font-family="Lato, sans-serif" font-size="11.02" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">S2</text>
 <path d="M281,237 Q339.5,268.5 398,300" fill="none" stroke="#2F5E86" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.8"/>
 <circle cx="398" cy="300" r="4.5" fill="#B08528" stroke="#FFF" stroke-width="1.4"/>
 <rect x="92" y="294" width="178" height="62" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
-<text x="181.0" y="311" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Anémomètre</text>
-<text x="181.0" y="326.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">vitesse · direction du vent</text>
+<text x="181.0" y="311" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Anemometer</text>
+<text x="181.0" y="326.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">wind speed · direction</text>
 <circle cx="270" cy="325" r="11" fill="#2F5E86"/>
 <text x="270" y="328.5" font-family="Lato, sans-serif" font-size="11.02" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">S3</text>
 <path d="M281,325 Q332.5,296.5 384,268" fill="none" stroke="#2F5E86" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.8"/>
 <circle cx="384" cy="268" r="4.5" fill="#B08528" stroke="#FFF" stroke-width="1.4"/>
 <rect x="92" y="382" width="178" height="62" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
-<text x="181.0" y="399" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Électrodes tronc</text>
-<text x="181.0" y="414.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">ΔV bioélectrique (mV)</text>
+<text x="181.0" y="399" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Trunk electrodes</text>
+<text x="181.0" y="414.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">bioelectric ΔV (mV)</text>
 <circle cx="270" cy="413" r="11" fill="#2F5E86"/>
 <text x="270" y="416.5" font-family="Lato, sans-serif" font-size="11.02" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">S4</text>
 <path d="M281,413 Q347.0,416.5 413,420" fill="none" stroke="#2F5E86" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.8"/>
 <circle cx="413" cy="420" r="4.5" fill="#B08528" stroke="#FFF" stroke-width="1.4"/>
 <rect x="630" y="118" width="178" height="62" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
-<text x="719.0" y="135" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Capteur acoustique</text>
+<text x="719.0" y="135" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Acoustic sensor</text>
 <text x="719.0" y="150.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">20 Hz – 200 kHz</text>
 <circle cx="630" cy="149" r="11" fill="#2F5E86"/>
 <text x="630" y="152.5" font-family="Lato, sans-serif" font-size="11.02" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">S5</text>
 <path d="M619,149 Q545.5,193.5 472,238" fill="none" stroke="#2F5E86" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.8"/>
 <circle cx="472" cy="238" r="4.5" fill="#B08528" stroke="#FFF" stroke-width="1.4"/>
 <rect x="630" y="206" width="178" height="62" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
-<text x="719.0" y="223" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Dendromètre</text>
-<text x="719.0" y="238.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Δ circonférence (µm)</text>
+<text x="719.0" y="223" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Dendrometer</text>
+<text x="719.0" y="238.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Δ circumference (µm)</text>
 <circle cx="630" cy="237" r="11" fill="#2F5E86"/>
 <text x="630" y="240.5" font-family="Lato, sans-serif" font-size="11.02" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">S6</text>
 <path d="M619,237 Q533.0,316.5 447,396" fill="none" stroke="#2F5E86" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.8"/>
 <circle cx="447" cy="396" r="4.5" fill="#B08528" stroke="#FFF" stroke-width="1.4"/>
 <rect x="630" y="294" width="178" height="62" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
-<text x="719.0" y="311" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Flux de sève</text>
-<text x="719.0" y="326.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">densité de flux (cm·h⁻¹)</text>
+<text x="719.0" y="311" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Sap flow</text>
+<text x="719.0" y="326.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">flux density (cm·h⁻¹)</text>
 <circle cx="630" cy="325" r="11" fill="#2F5E86"/>
 <text x="630" y="328.5" font-family="Lato, sans-serif" font-size="11.02" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">S7</text>
 <path d="M619,325 Q533.0,390.5 447,456" fill="none" stroke="#2F5E86" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.8"/>
 <circle cx="447" cy="456" r="4.5" fill="#B08528" stroke="#FFF" stroke-width="1.4"/>
 <rect x="630" y="382" width="178" height="62" rx="8" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
-<text x="719.0" y="399" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Sonde de sol</text>
-<text x="719.0" y="414.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">T° sol · θ volumique · CE</text>
+<text x="719.0" y="399" font-family="Lato, sans-serif" font-size="14.79" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Soil probe</text>
+<text x="719.0" y="414.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">soil T° · volumetric θ · EC</text>
 <circle cx="630" cy="413" r="11" fill="#2F5E86"/>
 <text x="630" y="416.5" font-family="Lato, sans-serif" font-size="11.02" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">S8</text>
 <path d="M619,413 Q573.5,462.5 528,512" fill="none" stroke="#2F5E86" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.8"/>
 <circle cx="528" cy="512" r="4.5" fill="#B08528" stroke="#FFF" stroke-width="1.4"/>
 <rect x="352" y="556" width="196" height="56" rx="8" fill="#FFF8E8" stroke="#B08528" stroke-width="1.6"/>
-<text x="450.0" y="573" font-family="Lato, sans-serif" font-size="15.22" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Nœud d'acquisition</text>
-<text x="450.0" y="588.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">MCU · ADC · horloge · radio</text>
+<text x="450.0" y="573" font-family="Lato, sans-serif" font-size="15.22" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Acquisition node</text>
+<text x="450.0" y="588.0" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">MCU · ADC · clock · radio</text>
 <line x1="450" y1="500" x2="450" y2="552" stroke="#B08528" stroke-width="2.4" marker-end="url(#ah)"/>
-<text x="450" y="630" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Alimentation solaire + accumulateur LiFePO₄ · liaison LoRaWAN / Wi-Fi</text>
+<text x="450" y="630" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Solar supply + LiFePO₄ battery · LoRaWAN / Wi-Fi link</text>
 <rect x="0" y="0" width="900" height="72" fill="#FBF9F1"/>
-<text x="450" y="40" font-family="Cormorant Garamond, serif" font-size="18.85" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="3.4">L'ARBRE INSTRUMENTÉ</text>
-<text x="450" y="60" font-family="Lato, sans-serif" font-size="12.18" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Huit familles de mesures, une seule chaîne d'acquisition</text>
+<text x="450" y="40" font-family="Cormorant Garamond, serif" font-size="18.85" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="3.4">THE INSTRUMENTED TREE</text>
+<text x="450" y="60" font-family="Lato, sans-serif" font-size="12.18" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Eight families of measurement, one acquisition chain</text>
 </svg>

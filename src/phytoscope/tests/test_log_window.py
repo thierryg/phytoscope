@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/tests/test_log_window.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """La fenêtre du journal : elle doit suivre le fichier, pas le relire.
@@ -167,3 +167,86 @@ def test_la_taille_est_dite_en_octets_quand_le_fichier_est_petit(journal, qapp):
     f = LogWindow(palette("sombre"))
     f._rafraichir(force=True)
     assert " o," in f.lab_etat.text() or " o " in f.lab_etat.text()
+
+
+class TestTheme:
+    """The palette, and the stylesheet built from it.
+
+    Why this class exists. `theme.py` builds a Qt stylesheet by interpolating
+    palette entries into an f-string:
+
+        gridline-color: {p['grille']};
+
+    The palette key is `grid`, and has always been. So that line raised
+    `KeyError: 'grille'` every time the stylesheet was built — a crash at
+    startup, reported on 2026-09-22 with a fatal-error dialog saying nothing
+    but `'grille'`.
+
+    Nothing caught it, because an f-string is not checked by anything: not by
+    the linter, not by the type checker, and not by a test that never builds
+    the stylesheet. So this one builds it, for every theme.
+    """
+
+    def test_every_theme_has_the_same_keys(self):
+        """A key present in one palette and absent from another is a crash.
+
+        The stylesheet is the same text for all three themes, so any key it
+        reads must exist in all three.
+        """
+        from phytoscope.ui import theme
+        reference = None
+        for nom in theme.PALETTES:
+            cles = set(theme.PALETTES[nom])
+            if reference is None:
+                reference, premier = cles, nom
+                continue
+            assert cles == reference, (
+                f"{nom} and {premier} do not declare the same keys: "
+                f"{cles ^ reference}")
+
+    def test_every_theme_builds_its_stylesheet(self):
+        """The test the 'grille' crash needed, and did not have."""
+        from phytoscope.ui import theme
+        for nom in theme.PALETTES:
+            feuille = theme.stylesheet(nom)
+            assert feuille and len(feuille) > 500, nom
+            #  A Qt stylesheet is CSS, so it is full of braces: asserting
+            #  that none remain was wrong, and this test failed on its first
+            #  run for that reason. What matters is that no *placeholder*
+            #  survived — `{p[` is the shape one would take.
+            assert "{p[" not in feuille, f"{nom}: placeholder left unresolved"
+            #  And that the palette really was interpolated: every colour is
+            #  a hex triplet, so at least a few must appear.
+            import re
+            couleurs = re.findall(r"#[0-9A-Fa-f]{6}", feuille)
+            assert len(couleurs) >= 8, f"{nom}: only {len(couleurs)} colours"
+
+    def test_the_stylesheet_reads_no_key_that_does_not_exist(self):
+        """Read the source and check every `p['…']` against the palette.
+
+        Building the stylesheet would already fail on a missing key, so this
+        is belt and braces — but it names the offending key and line, which
+        a bare KeyError does not.
+        """
+        import ast
+        import os
+        import re
+        from phytoscope.ui import theme
+
+        chemin = os.path.join(os.path.dirname(os.path.abspath(theme.__file__)),
+                              "theme.py")
+        with open(chemin, encoding="utf-8") as f:
+            source = f.read()
+
+        definies = set()
+        for noeud in ast.walk(ast.parse(source)):
+            if isinstance(noeud, ast.Dict):
+                for cle in noeud.keys:
+                    if isinstance(cle, ast.Constant) and \
+                            isinstance(cle.value, str):
+                        definies.add(cle.value)
+
+        lues = set(re.findall(r"p\[['\"](\w+)['\"]\]", source))
+        absentes = sorted(lues - definies)
+        assert not absentes, (
+            f"the stylesheet reads {absentes}, which no palette declares")

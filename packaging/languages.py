@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — packaging/languages.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Les libellés des installateurs, dans onze langues.
@@ -56,25 +56,93 @@ import sys
 from typing import Dict, List, Tuple
 
 ICI = os.path.dirname(os.path.abspath(__file__))
-CATALOGUE = os.path.join(ICI, "langues", "installateur.json")
+CATALOGUE = os.path.join(ICI, "languages", "installateur.json")
 
 #  Le nom que NSIS donne à chaque langue. Il doit correspondre exactement aux
 #  fichiers de `Contrib/Language files` : une faute et `makensis` s'arrête.
+#
+#  La liste installée en compte soixante-sept, relevée le 2026-09-22 par
+#
+#      find ~/.local/opt/nsis -iname '*.nlf'
+#
+#  et non supposée. Les vingt-sept ci-dessous sont celles que le logiciel
+#  parle ET que NSIS sait afficher.
 NOMS_NSIS = {
     "fr": "French", "en": "English", "es": "Spanish", "pt": "Portuguese",
     "it": "Italian", "id": "Indonesian", "ru": "Russian",
     "zh": "SimpChinese", "ja": "Japanese", "ko": "Korean", "ar": "Arabic",
+    "de": "German", "nl": "Dutch", "pl": "Polish", "el": "Greek",
+    "tr": "Turkish", "fi": "Finnish", "hu": "Hungarian", "et": "Estonian",
+    "he": "Hebrew", "fa": "Farsi", "hi": "Hindi", "th": "Thai",
+    "vi": "Vietnamese", "ms": "Malay", "uz": "Uzbek",
+    #  Le cantonais s'écrit en caractères traditionnels : le fichier de langue
+    #  « TradChinese » est le plus proche que NSIS possède. C'est une
+    #  approximation, et elle est dite ici plutôt que subie.
+    "yue": "TradChinese",
 }
+
+#  Les langues que le logiciel parle et que NSIS ne connaît pas. L'installateur
+#  Windows les affichera en anglais ; le .run, le .deb, le .rpm et le .pkg, qui
+#  utilisent notre propre catalogue, les affichent normalement.
+#
+#  Ce n'est pas une liste à maintenir à la main : `verifier()` la recalcule et
+#  la rapporte. Elle est écrite ici pour que le lecteur sache à quoi s'attendre
+#  sans lancer l'outil.
+SANS_NSIS_CONNUES = (
+    "bn", "ta", "te", "kn", "tl", "mg", "mi", "sw", "yo", "zu", "ig",
+    "am", "ha", "kk",
+)
 
 #  Les champs nommés d'un libellé : ils doivent survivre à la traduction.
 _CHAMPS = re.compile(r"\{(\w+)\}")
 
 
+def langues_du_logiciel() -> List[Dict[str, str]]:
+    """Les langues que le LOGICIEL livre réellement, lues chez lui.
+
+    Pourquoi ici et pas dans le catalogue de l'installateur. Il y avait deux
+    listes : celle du logiciel, dans `phytoscope/i18n.py`, et celle de
+    `languages/installateur.json`. Deux listes qui doivent être égales
+    finissent par ne plus l'être, et un essai qui compare deux listes ne fait
+    que signaler la divergence après coup.
+
+    Alors il n'y en a plus qu'une. L'installateur propose exactement ce que le
+    logiciel parle, par construction : ajouter une langue au logiciel la rend
+    disponible dans les installateurs sans toucher à ce fichier.
+
+    « Livrées » veut dire « dont le catalogue existe ». La table du logiciel
+    en annonce quarante-huit ; celles dont le catalogue reste à écrire ne sont
+    offertes ni par le logiciel, ni par l'installateur — il serait absurde de
+    proposer une langue d'installation que le logiciel ne saura pas tenir.
+    """
+    racine = os.path.dirname(ICI)
+    logiciel = os.path.join(racine, "src", "phytoscope")
+    if logiciel not in sys.path:
+        sys.path.insert(0, logiciel)
+    try:
+        from phytoscope import i18n                   # noqa: PLC0415
+    except ImportError as erreur:                     # pragma: no cover
+        raise SystemExit(
+            f"  ✗ impossible de lire les langues du logiciel : {erreur}\n"
+            f"    attendu : {logiciel}/phytoscope/i18n.py") from erreur
+
+    livrees = []
+    connues = {code: (nom, sens) for code, nom, _, sens in i18n.LIVREES}
+    for code in i18n.codes_presents():
+        nom, sens = connues.get(code, (code, "ltr"))
+        livrees.append({"code": code, "nom": nom, "direction": sens})
+    return livrees
+
+
 def charger() -> Tuple[List[Dict[str, str]], Dict[str, Dict[str, str]]]:
-    """Rend (langues, libellés)."""
+    """Rend (langues, libellés).
+
+    Les langues viennent du logiciel — voir `langues_du_logiciel()`. Le
+    catalogue n'apporte que les libellés.
+    """
     with open(CATALOGUE, encoding="utf-8") as f:
         d = json.load(f)
-    return d["_langues"], d["libelles"]
+    return langues_du_logiciel(), d["libelles"]
 
 
 def verifier() -> int:
@@ -98,7 +166,9 @@ def verifier() -> int:
             print(f"  ! {cle} : absent en {', '.join(manquantes)}")
             fautes += 1
 
-        reference = set(_CHAMPS.findall(traductions.get("fr", "")))
+        #  English is the source language, so it is the reference the
+        #  other catalogues are measured against.
+        reference = set(_CHAMPS.findall(traductions["en"]))
         for code in codes:
             if not traductions.get(code):
                 continue
@@ -149,14 +219,14 @@ def ecrire_shell(dossier: str) -> List[str]:
             f"{langue['nom']} ({code}).",
             "#",
             "#  FICHIER GÉNÉRÉ par packaging/languages.py — ne pas éditer à la",
-            "#  main (C-45). La source est packaging/langues/installateur.json.",
+            "#  main (C-45). La source est packaging/languages/installateur.json.",
             f"T_LANGUE_CODE=\"{code}\"",
             f"T_LANGUE_NOM=\"{_echapper_shell(langue['nom'])}\"",
             f"T_LANGUE_SENS=\"{langue['direction']}\"",
             "",
         ]
         for cle in sorted(libelles):
-            valeur = libelles[cle].get(code) or libelles[cle].get("fr", "")
+            valeur = libelles[cle].get(code) or libelles[cle]["en"]
             lignes.append(f'T_{cle}="{_echapper_shell(valeur)}"')
         lignes.append("")
 
@@ -185,7 +255,7 @@ def bloc_nsis() -> str:
         ";  Libellés de l'installateur, en onze langues.",
         ";",
         ";  BLOC GÉNÉRÉ par packaging/languages.py — ne pas éditer à la main",
-        ";  (C-45). La source est packaging/langues/installateur.json.",
+        ";  (C-45). La source est packaging/languages/installateur.json.",
         ";",
         ";  NSIS affiche lui-même le choix de la langue au démarrage, par",
         ";  MUI_LANGDLL_DISPLAY : ces chaînes le remplissent.",
@@ -205,7 +275,7 @@ def bloc_nsis() -> str:
             nsis = NOMS_NSIS.get(code)
             if not nsis:
                 continue
-            valeur = libelles[cle].get(code) or libelles[cle].get("fr", "")
+            valeur = libelles[cle].get(code) or libelles[cle]["en"]
             #  NSIS échappe par `$\"` et veut ses retours à la ligne en `$\r$\n`.
             valeur = (valeur.replace('"', '$\\"')
                             .replace("\n", "$\\r$\\n"))

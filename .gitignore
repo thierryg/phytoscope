@@ -1,30 +1,31 @@
 # ===========================================================================
-#  PhytoScope — ce qui ne doit jamais entrer dans le dépôt
+#  PhytoScope — what must never enter the repository
 # ===========================================================================
-#  Le dépôt est PUBLIC. Trois familles de choses en sont écartées :
+#  The repository is PUBLIC. Three families of thing are kept out of it:
 #
-#    1. les secrets — la clé privée de signature avant tout ;
-#    2. ce que nous n'avons pas le droit de rediffuser — ouvrages sous droits,
-#       articles payants, notices constructeurs, dépôts tiers recopiés ;
-#    3. ce qui se reconstruit — PDF, paquets, caches, environnements.
+#    1. secrets — the private signing key above all;
+#    2. what we have no right to redistribute — books under copyright, paywalled
+#       articles, manufacturers' datasheets, third-party repositories copied in;
+#    3. what rebuilds itself — PDFs, packages, caches, environments.
 #
-#  Attention : .gitignore protège de git, pas d'une sauvegarde ni d'une
-#  archive du dossier. Voir certificat/LISEZ-MOI.md et SECURITY.md.
+#  Careful: .gitignore protects against git, not against a backup or an
+#  archive of the directory. See certificate/README.md and SECURITY.md.
 # ===========================================================================
 
 
 # ###########################################################################
-#  1. SECRETS — rien de ce bloc ne doit jamais être publié
+#  1. SECRETS — nothing in this block may ever be published
 # ###########################################################################
 
-# --- La clé privée de signature --------------------------------------------
-#  Elle reste locale. Sa copie de référence vit dans
-#  ~/.local/share/phytoscope-signature/ ; celle de certificat/ est une copie
-#  de travail. Le certificat PUBLIC, lui, se diffuse : voir l'exception plus bas.
-certificat/phytoscope.key
-certificat/*.key
+# --- The private signing key -----------------------------------------------
+#  It stays local. Its reference copy lives in
+#  ~/.local/share/phytoscope-signature/ ; the one in certificate/ is a
+#  working copy. The PUBLIC certificate is distributed — see the exception
+#  further down.
+certificate/phytoscope.key
+certificate/*.key
 
-# --- Clés et matériel cryptographique, quel que soit l'endroit --------------
+# --- Keys and cryptographic material, wherever they are --------------------
 *.key
 *.pem
 *.der
@@ -44,12 +45,12 @@ id_ed25519
 .ssh/
 secring.*
 
-#  Exception : le certificat X.509 PUBLIC se diffuse — c'est lui qui permet
-#  de vérifier une signature. Il est ré-autorisé nommément.
-!certificat/phytoscope-certificat.pem
-!certificat/phytoscope.crt
+#  Exception: the PUBLIC X.509 certificate is meant to be distributed — it is
+#  what lets anyone verify a signature. Re-allowed here by name.
+!certificate/phytoscope-certificate.pem
+!certificate/phytoscope.crt
 
-# --- Secrets d'application, jetons, mots de passe ---------------------------
+# --- Application secrets, tokens, passwords --------------------------------
 .env
 .env.*
 !.env.example
@@ -72,69 +73,17 @@ credentials.*
 *.token
 
 # ###########################################################################
-#  2. CE QUE NOUS N'AVONS PAS LE DROIT DE REDIFFUSER
+#  3. WHAT REBUILDS ITSELF
 # ###########################################################################
 
-# --- Ouvrages et documents sous droits, gardés pour le travail seulement ----
-sources/ebooks/
-
-# --- Articles scientifiques payants -----------------------------------------
-#  Les PDF sont sous droits ; nos NOTES de lecture (.md) se publient, elles.
-sources/documents/articles-scientifiques/*.pdf
-
-# --- Notices constructeurs et brevets en fac-similé -------------------------
-sources/datasheets/*.pdf
-sources/manuels-constructeurs/*.pdf
-sources/brevets/*.pdf
-
-# --- Fac-similés du domaine public ------------------------------------------
-#  Bose (1902-1907) et Darwin (1880) sont dans le domaine public : rien
-#  n'interdirait de les rediffuser. Ils sont écartés pour une autre raison —
-#  ce sont des numérisations de 15 à 71 Mo, 260 Mo à elles seules, pour un
-#  dépôt qui en pèse 155 sans elles. Un clone de 415 Mo pour des livres que
-#  l'on peut retélécharger en une commande n'a pas de sens.
-#
-#  Leurs identifiants archive.org sont consignés dans sources/INDEX.md, et
-#  sources/documents/domaine-public/LISEZ-MOI.md donne la commande.
-#
-#  Les TRANSCRIPTIONS, elles, restent versionnées : ce sont elles que l'on
-#  cite et que l'on recherche en plein texte, et elles pèsent 2 Mo.
-sources/documents/domaine-public/*.pdf
-
-# --- Dépôts tiers recopiés (817 Mo) -----------------------------------------
-#  Reconstituables par « python3 tools/fetch-software.py ». La provenance et
-#  les licences sont consignées dans les manifestes, qui eux sont versionnés.
-sources/code/*.zip
-sources/software/**/*.zip
-!sources/software/MANIFESTE.md
-!sources/software/MANIFESTE.json
-
-# --- Dossier de mise à l'écart (doublons, environnements périmés) -----------
-.ecarte/
-
-# --- Un clone du dépôt déposé dans le dépôt --------------------------------
-#  Le 2026-09-22, un clone complet de ce dépôt s'est retrouvé dans
-#  « phytoscope/ », à sa propre racine. Un « git add -A » l'a aussitôt avalé
-#  comme sous-module (« adding embedded git repository »), ce qui produit un
-#  lien vers un commit que personne d'autre ne peut résoudre.
-#
-#  La règle n'exclut pas src/phytoscope/ — c'est le logiciel, et le « / »
-#  initial ancre le motif à la racine du dépôt.
-/phytoscope/
-
-
-# ###########################################################################
-#  3. CE QUI SE RECONSTRUIT
-# ###########################################################################
-
-# --- Ouvrages et paquets produits -------------------------------------------
+# --- Books and packages produced -------------------------------------------
 build/
 !build/.gitkeep
 dist/
 out/
 target/
 
-# --- Paquets d'installation, quel que soit l'endroit ------------------------
+# --- Installation packages, wherever they are ------------------------------
 *.deb
 *.rpm
 *.msi
@@ -157,12 +106,12 @@ target/
 *.7z
 *.rar
 *.iso
-#  ... mais les archives de dépôts tiers listées au manifeste sont déjà
-#  couvertes plus haut, et un gabarit d'empaquetage doit rester versionné :
-!packaging/gabarits/**
-!sources/schemas/**
+#  ... but the third-party archives listed in the manifest are already
+#  covered above, and a packaging template has to stay version-controlled:
+!packaging/templates/**
+!sources/schematics/**
 
-# --- Signatures et empreintes de publication --------------------------------
+# --- Signatures and publication checksums ----------------------------------
 *.p7s
 *.sig
 *.sha256
@@ -171,7 +120,7 @@ target/
 
 
 # ###########################################################################
-#  4. LANGAGES
+#  4. LANGUAGES
 # ###########################################################################
 
 # --- Bash / shell -----------------------------------------------------------
@@ -311,7 +260,7 @@ config.status
 .libs/
 builddir/
 subprojects/*/
-#  Le micrologiciel RP2350 : le SDK et les objets sont récupérés par build.sh
+#  The RP2350 firmware: the SDK and the objects are fetched by build.sh
 src/firmware/build/
 *.uf2
 !firmware/**/*.uf2.md5
@@ -368,7 +317,7 @@ ntuser.dat*
 .com.apple.timemachine.donotpresent
 .apdisk
 Icon?
-#  Sur un volume réseau ou une clé formatée par macOS
+#  On a network volume, or a stick formatted by macOS
 .AppleDB
 .AppleDesktop
 Network Trash Folder
@@ -459,7 +408,7 @@ cscope.*
 .clangd/
 .history/
 
-# --- Journaux et états locaux ------------------------------------------------
+# --- Logs and local state --------------------------------------------------
 *.log
 logs/
 *.log.[0-9]*
@@ -470,16 +419,16 @@ reglages.json.avant-correction
 *.sqlite3
 *.db-journal
 
-# --- Rapports d'analyse (produits en intégration continue) -------------------
+# --- Analysis reports (produced by continuous integration) -----------------
 rapports/
 *.sarif
 bandit-rapport.json
 pip-audit.json
 /sbom*.json
-#  Les DEUX nomenclatures sont des livrables : elles restent versionnées.
-#  Celle du logiciel est livrée dans les paquets ; celle du projet couvre
-#  aussi le micrologiciel (Pico SDK, TinyUSB, chaîne ARM). La règle
-#  ci-dessus ne visait que les rapports produits en intégration continue.
+#  BOTH bills of materials are deliverables: they stay version-controlled.
+#  The software's ships inside the packages; the project's also covers the
+#  firmware (Pico SDK, TinyUSB, ARM toolchain). The rule above was only ever
+#  aimed at the reports produced by continuous integration.
 !/sbom.cdx.json
 !src/phytoscope/sbom.cdx.json
 !sources/software/MANIFESTE.json

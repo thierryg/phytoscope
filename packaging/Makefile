@@ -1,49 +1,52 @@
 #  ==========================================================================
 #  PhytoScope — attribution — packaging/Makefile
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 # ===========================================================================
-#  PhytoScope — fabrique des paquets d'installation
+#  PhytoScope — the installation-package factory
 #
-#  Tout se construit depuis Debian, Ubuntu ou Mint. Une cible par système,
-#  et « make tout » pour l'ensemble.
+#  Everything builds from Debian, Ubuntu or Mint. One target per system, and
+#  "make all" for the lot.
 #
-#      make outils      ce qui est installé, ce qui manque
-#      make deps        installe NSIS et msitools dans ~/.local/opt, sans sudo
+#      make tools       what is installed, what is missing
+#      make deps        installs NSIS and msitools in ~/.local/opt, no sudo
 #
 #      make debian      → .deb                    (Debian, Ubuntu, Mint)
 #      make fedora      → .rpm                    (Fedora, RHEL, Rocky, Alma)
-#      make windows     → .zip + .exe + .msi      (Windows 10 et 11)
-#      make macos       → .zip + .pkg             (Intel et Apple Silicon)
-#      make source      → .tar.gz                 (tous systèmes)
+#      make windows     → .zip + .exe + .msi      (Windows 10 and 11)
+#      make macos       → .zip + .pkg             (Intel and Apple Silicon)
+#      make source      → .tar.gz                 (every system)
 #
-#      make tout        les cinq, dans l'ordre du plus rapide au plus long
-#      make linux       seulement .deb et .rpm
-#      make hors-ligne  les paquets qui embarquent leurs bibliothèques
+#      make all         the five, fastest first
+#      make linux       .deb and .rpm only
+#      make offline     the packages that carry their own libraries
 #
-#      make verifier    relit et contrôle ce qui a été produit
-#      make empreintes  recalcule le fichier .sha256
-#      make propre      vide build/paquets
+#      make verify      reopens and checks what was produced
+#      make checksums   recomputes the .sha256 file
+#      make clean       empties build/packages
 #
-#  Licence MIT — Bretagne Namasté — https://bretagne-namaste.com
+#  MIT licence — Bretagne Namasté — https://bretagne-namaste.com
 # ===========================================================================
 
 SHELL      := /bin/sh
-.DEFAULT_GOAL := aide
+#  It said "aide" until 2026-09-23 — a target that had not existed since the
+#  rename of 2026-09-22. A bare `make` died on "No rule to make target
+#  'aide'": the one invocation a newcomer types first.
+.DEFAULT_GOAL := help
 
-ICI        := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-RACINE     := $(abspath $(ICI)..)
+HERE       := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+RACINE     := $(abspath $(HERE)..)
 
 #  L'interpréteur : celui du logiciel s'il existe — il a PySide6, dont la
 #  fabrication des icônes a besoin —, sinon celui du système. Les scripts
@@ -53,113 +56,146 @@ PY         := $(shell test -x "$(RACINE)/src/phytoscope/.venv/bin/python" \
                 || echo python3)
 
 #  La version vient du fichier VERSION du logiciel — seule source de vérité.
-#  On peut l'imposer :  make tout VERSION=1.6.0-rc1
+#  On peut l'imposer :  make all VERSION=1.6.0-rc1
 VERSION    ?= $(shell sed -n 's/^ *version *= *//p' \
                 "$(RACINE)/src/phytoscope/phytoscope/VERSION" | head -1)
 
 #  L'itération d'empaquetage : elle change quand l'empaquetage change sans que
-#  le logiciel bouge.  make tout RELEASE=2
+#  le logiciel bouge.  make all RELEASE=2
 RELEASE    ?= 1
 
-#  Un dossier par invocation de make, horodaté. Il est calculé UNE fois, avec
-#  « := », et exporté : sans cela chaque cible créerait le sien, et les
-#  paquets d'une même fabrication se retrouveraient éparpillés dans cinq
-#  dossiers différents.
-HORODATAGE := $(shell date +%Y%m%d-%H%M)
-SORTIE     ?= $(RACINE)/build/paquets/$(VERSION)-$(HORODATAGE)
-export PHYTOSCOPE_SORTIE := $(SORTIE)
+#  One directory per invocation of make, timestamped. It is computed ONCE,
+#  with ":=", and exported: without that each target would make its own, and
+#  the packages of one fabrication would end up scattered across five
+#  different directories.
+#
+#  SORTIE is still honoured: it was the documented name until 2026-09-23, and
+#  somebody's habit is not a reason to break their command line.
+TIMESTAMP  := $(shell date +%Y%m%d-%H%M)
+OUTPUT     ?= $(if $(SORTIE),$(SORTIE),$(RACINE)/build/packages/$(VERSION)-$(TIMESTAMP))
+export PHYTOSCOPE_OUTPUT := $(OUTPUT)
+
+#  The directory the AFTER-THE-FACT targets work on — documents, verify,
+#  checksums, sign. It is not $(OUTPUT).
+#
+#  $(OUTPUT) carries this invocation's timestamp, so on a bare `make verify`
+#  it names a directory that does not exist; `dossier_fabrication()` then
+#  CREATED it and repointed `latest` at it. Running `make verify` after a
+#  build therefore destroyed the very thing it was meant to check — the empty
+#  new build became `latest` (found 2026-09-23).
+#
+#  Resolved lazily, with `=`, so each rule asks at the moment it runs:
+#    · a directory given on the command line wins — that is what it is for;
+#    · else, if this invocation's own $(OUTPUT) exists, we are inside a build
+#      that created it, and that is the one to work on;
+#    · else fall back to the existing `latest`.
+LATEST_LINK := $(RACINE)/build/packages/latest
+#  On ONE line, and wrapped in $(strip): a `\`-continued assignment joins its
+#  lines with a space, and those spaces end up inside the value — which is
+#  how the first attempt handed verify.py a path with two leading blanks.
+TARGET_DIR = $(strip $(if $(filter command line,$(origin OUTPUT) $(origin SORTIE)),$(OUTPUT),$(if $(wildcard $(OUTPUT)),$(OUTPUT),$(shell test -d "$(LATEST_LINK)" && readlink -f "$(LATEST_LINK)" || echo "$(OUTPUT)"))))
 
 #  Passé à chaque générateur, pour que tous estampillent la même chose.
 IDENT      := --version "$(VERSION)" --release "$(RELEASE)"
 
-.PHONY: aide outils deps debian fedora windows macos source tout linux \
-        hors-ligne micrologiciel livrables verifier documents empreintes propre version \
-        certificat signer empreinte-certificat
+.PHONY: help tools deps debian fedora windows macos source all linux \
+        offline firmware deliverables verify documents checksums clean version \
+        certificate certificate-status certificate-verify \
+        certificate-renew sign certificate-fingerprint
 
-aide:
+help:
 	@echo
-	@echo "  PhytoScope $(VERSION) — fabrique des paquets"
+	@echo "  PhytoScope $(VERSION) — package factory"
 	@echo
-	@echo "  Préparation"
-	@echo "    make outils       ce qui est installé, ce qui manque"
-	@echo "    make deps         installe NSIS et msitools sans sudo"
+	@echo "  Preparation"
+	@echo "    make tools                    what is installed, what is missing"
+	@echo "    make deps                     install NSIS and msitools, no sudo"
 	@echo
-	@echo "  Un système"
-	@echo "    make debian       .deb        Debian, Ubuntu, Mint"
-	@echo "    make fedora       .rpm        Fedora, RHEL, Rocky, Alma"
-	@echo "    make windows      .zip .exe .msi"
-	@echo "    make macos        .zip .pkg   Intel et Apple Silicon"
-	@echo "    make source       .tar.gz     tous systèmes"
+	@echo "  One system"
+	@echo "    make debian                   .deb        Debian, Ubuntu, Mint"
+	@echo "    make fedora                   .rpm        Fedora, RHEL, Rocky, Alma"
+	@echo "    make windows                  .zip .exe .msi"
+	@echo "    make macos                    .zip .pkg   Intel and Apple Silicon"
+	@echo "    make source                   .tar.gz     every system"
 	@echo
-	@echo "  Plusieurs"
-	@echo "    make tout         les cinq"
-	@echo "    make linux        .deb et .rpm"
-	@echo "    make hors-ligne   avec les bibliothèques embarquées"
-	@echo ""
-	@echo "  Micrologiciel"
-	@echo "    make micrologiciel  compile le .uf2 et le range dans la fabrication"
-	@echo "    make livrables      les paquets ET le micrologiciel"
+	@echo "  Several"
+	@echo "    make all                      all five"
+	@echo "    make linux                    .deb and .rpm"
+	@echo "    make offline                  with the libraries bundled"
 	@echo
-	@echo "  Signature"
-	@echo "    make certificat   cree le certificat et remplit certificat/"
-	@echo "    make certificat-etat        ce qui existe, et ou"
-	@echo "    make certificat-verifier    les deux copies concordent ?"
-	@echo "    make certificat-refait      REMPLACE la cle (rompt le lien)"
-	@echo "    make signer       signe les paquets de la fabrication"
-	@echo "    make empreinte-certificat   son empreinte SHA-256"
+	@echo "  Firmware"
+	@echo "    make firmware                 build the .uf2 and file it with the rest"
+	@echo "    make deliverables             the packages AND the firmware"
 	@echo
-	@echo "  Après coup"
-	@echo "    make documents    readme, install, licence, changelog, empreintes"
-	@echo "    make verifier     relit et contrôle ce qui a été produit"
-	@echo "    make empreintes   recalcule le fichier .sha256"
-	@echo "    make propre       vide build/paquets"
+	@echo "  Signing"
+	@echo "    make certificate              create it, and fill certificate/"
+	@echo "    make certificate-status       what exists, and where"
+	@echo "    make certificate-verify       do both copies agree?"
+	@echo "    make certificate-renew        REPLACE the key (breaks the link)"
+	@echo "    make sign                     sign this build's packages"
+	@echo "    make certificate-fingerprint  its SHA-256 fingerprint"
 	@echo
-	@echo "  Cette fabrication irait dans :"
-	@echo "    $(SORTIE)"
+	@echo "  Afterwards"
+	@echo "    make documents                readme, install, licence, changelog, checksums"
+	@echo "    make verify                   reopen and check what was produced"
+	@echo "    make checksums                recompute the .sha256 file"
+	@echo "    make clean                    empty build/packages"
 	@echo
-	@echo "  On peut imposer :  make tout VERSION=1.6.0 RELEASE=2"
+	@echo "  This build would go to:"
+	@echo "    $(OUTPUT)"
+	@echo
+	@echo "  You can force:  make all VERSION=1.6.0 RELEASE=2"
 	@echo
 
 version:
 	@echo "$(VERSION)"
 
-outils:
-	@$(PY) "$(ICI)build.py" --outils
+tools:
+	@$(PY) "$(HERE)build.py" --outils
 
 deps:
-	@$(PY) "$(ICI)build.py" --deps
+	@$(PY) "$(HERE)build.py" --deps
 
 # --- une cible par système -------------------------------------------------
 debian:
-	@$(PY) "$(ICI)build_debian.py" $(IDENT)
+	@$(PY) "$(HERE)build_debian.py" $(IDENT)
 
 fedora:
-	@$(PY) "$(ICI)build_fedora.py" $(IDENT)
+	@$(PY) "$(HERE)build_fedora.py" $(IDENT)
 
 windows:
-	@$(PY) "$(ICI)build_windows.py" $(IDENT)
+	@$(PY) "$(HERE)build_windows.py" $(IDENT)
 
 macos:
-	@$(PY) "$(ICI)build_macos.py" $(IDENT)
+	@$(PY) "$(HERE)build_macos.py" $(IDENT)
 
 source:
-	@$(PY) "$(ICI)build_source.py" $(IDENT)
+	@$(PY) "$(HERE)build_source.py" $(IDENT)
 
-# --- micrologiciel ---------------------------------------------------------
-#  Volontairement HORS de « tout » : compiler le micrologiciel demande une
-#  chaîne croisée ARM que la machine qui empaquette n'a pas forcément, et un
-#  `make tout` qui échouerait faute de `arm-none-eabi-gcc` serait une
-#  mauvaise surprise. La cible existe pour qui veut les deux d'un coup.
+# --- firmware --------------------------------------------------------------
+#  Deliberately OUTSIDE `all`: building the firmware needs an ARM
+#  cross-toolchain that the packaging machine may not have, and a `make all`
+#  that failed for want of `arm-none-eabi-gcc` would be an unpleasant
+#  surprise. The target exists for whoever wants both at once.
 #
-#  SORTIE lui est passée : le livrable se range alors dans la MÊME
-#  fabrication que les .deb et les .msi.
-micrologiciel:
-	@PHYTOSCOPE_SORTIE="$(SORTIE)" "$(RACINE)/src/firmware/build.sh"
+#  OUTPUT is handed to it, so the deliverable is filed in the SAME build as
+#  the .deb and the .msi.
+firmware:
+	@PHYTOSCOPE_OUTPUT="$(OUTPUT)" "$(RACINE)/src/firmware/build.sh"
 
-#  Les paquets ET le micrologiciel, dans la même fabrication.
-livrables: tout micrologiciel
+#  The packages AND the firmware, in one build.
+#
+#  `documents` runs AGAIN at the end, and that is not redundant: `all` writes
+#  the six documents and the checksums into each system directory, and
+#  `firmware` then creates `Firmware/` — which would have none of them.
+#  `make verify` rejected exactly that, so every `make deliverables` produced
+#  a build its own checker refused (found 2026-09-23). C-2O asks that a
+#  directory copied on its own still make sense; the firmware's is a
+#  deliverable like the others.
+deliverables: all firmware
+	@$(MAKE) --no-print-directory documents OUTPUT="$(OUTPUT)"
 	@echo
-	@echo "  Paquets et micrologiciel : $(SORTIE)"
+	@echo "  Packages and firmware: $(OUTPUT)"
 
 # --- groupes ---------------------------------------------------------------
 #  L'ordre n'est pas indifférent : les cibles rapides d'abord, de sorte qu'une
@@ -170,61 +206,61 @@ linux: debian fedora
 #  L'ordre compte : la signature Authenticode MODIFIE le .exe et le .msi,
 #  et les empreintes doivent donc être calculées après elle. « documents »
 #  écrit les empreintes ; il vient en dernier.
-tout: source linux macos windows certificat signer documents
+all: source linux macos windows certificate sign documents
 	@echo
-	@echo "  Fabrication terminée : $(SORTIE)"
-	@$(PY) "$(ICI)verify.py" "$(SORTIE)" | tail -n 20
+	@echo "  Fabrication terminée : $(OUTPUT)"
+	@$(PY) "$(HERE)verify.py" "$(OUTPUT)" | tail -n 20
 	@echo
 
-hors-ligne:
-	@$(PY) "$(ICI)build_debian.py" $(IDENT) --hors-ligne
-	@$(PY) "$(ICI)build_fedora.py" $(IDENT) --hors-ligne
-	@$(PY) "$(ICI)build_macos.py"  $(IDENT) --hors-ligne
-	@$(PY) "$(ICI)build_windows.py" $(IDENT)
+offline:
+	@$(PY) "$(HERE)build_debian.py" $(IDENT) --offline
+	@$(PY) "$(HERE)build_fedora.py" $(IDENT) --offline
+	@$(PY) "$(HERE)build_macos.py"  $(IDENT) --offline
+	@$(PY) "$(HERE)build_windows.py" $(IDENT)
 
 # --- signature -------------------------------------------------------------
 #  Le certificat est AUTO-SIGNÉ : il prouve l'intégrité et la continuité
 #  d'origine, il ne fait taire ni SmartScreen ni Gatekeeper. Voir signature.py.
 #  Le certificat de signature. `certificate.py` est le point d'entrée : il
-#  appelle `signature.py` pour la cryptographie, et remplit `certificat/`.
-certificat:
-	@$(PY) "$(ICI)certificate.py" --creer
+#  appelle `signature.py` pour la cryptographie, et remplit `certificate/`.
+certificate:
+	@$(PY) "$(HERE)certificate.py" --creer
 
-certificat-etat:
-	@$(PY) "$(ICI)certificate.py"
+certificate-status:
+	@$(PY) "$(HERE)certificate.py"
 
-certificat-verifier:
-	@$(PY) "$(ICI)certificate.py" --verifier
+certificate-verify:
+	@$(PY) "$(HERE)certificate.py" --verifier
 
 #  REMPLACE la clé : rompt le lien avec tout ce qui a déjà été signé.
 #  Demande une confirmation explicite, et refuse sans terminal.
-certificat-refait:
-	@$(PY) "$(ICI)certificate.py" --refaire
+certificate-renew:
+	@$(PY) "$(HERE)certificate.py" --refaire
 
-signer:
-	@$(PY) "$(ICI)signature.py" --signer --sortie "$(SORTIE)"
+sign:
+	@$(PY) "$(HERE)signature.py" --signer --sortie "$(TARGET_DIR)"
 
-empreinte-certificat:
-	@$(PY) "$(ICI)signature.py" --empreinte
+certificate-fingerprint:
+	@$(PY) "$(HERE)signature.py" --empreinte
 
 
 # --- après coup ------------------------------------------------------------
 documents:
-	@$(PY) -c "import sys; sys.path.insert(0, '$(ICI)'); import commun; \
-		id_ = commun.Identite.lire('$(VERSION)', '$(RELEASE)'); \
-		n = len(commun.ecrire_les_documents(id_)); \
-		commun.ecrire_les_empreintes(id_); \
+	@PHYTOSCOPE_OUTPUT="$(TARGET_DIR)" $(PY) -c "import sys; sys.path.insert(0, '$(HERE)'); import common; \
+		id_ = common.Identite.lire('$(VERSION)', '$(RELEASE)'); \
+		n = len(common.ecrire_les_documents(id_)); \
+		common.ecrire_les_empreintes(id_); \
 		print(f'  {n} documents et les empreintes écrits')"
 
-verifier:
-	@$(PY) "$(ICI)verify.py" $(if $(wildcard $(SORTIE)),"$(SORTIE)",)
-	@$(PY) "$(ICI)signature.py" --verifier --sortie "$(SORTIE)" 2>/dev/null || true
+verify:
+	@$(PY) "$(HERE)verify.py" "$(TARGET_DIR)"
+	@$(PY) "$(HERE)signature.py" --verifier --sortie "$(TARGET_DIR)" 2>/dev/null || true
 
-empreintes:
-	@$(PY) -c "import sys; sys.path.insert(0, '$(ICI)'); import commun; \
-		commun.ecrire_les_empreintes(commun.Identite.lire('$(VERSION)')); \
+checksums:
+	@PHYTOSCOPE_OUTPUT="$(TARGET_DIR)" $(PY) -c "import sys; sys.path.insert(0, '$(HERE)'); import common; \
+		common.ecrire_les_empreintes(common.Identite.lire('$(VERSION)')); \
 		print('  empreintes recalculées')"
 
-propre:
-	@rm -rf "$(RACINE)/build/paquets"
-	@echo "  $(RACINE)/build/paquets vidé"
+clean:
+	@rm -rf "$(RACINE)/build/packages"
+	@echo "  $(RACINE)/build/packages emptied"

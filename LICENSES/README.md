@@ -32,7 +32,7 @@ python3 tools/headers.py --verifier
 
 Le dépôt s'appuie sur des travaux tiers qui gardent **leur propre licence** :
 
-- `sources/schemas/` — schémas et bibliothèques tiers, recopiés **avec** leur
+- `sources/schematics/` — schémas et bibliothèques tiers, recopiés **avec** leur
   fichier de licence (LEDFader, biotron-firmware, midisprout) ;
 - `sources/software/MANIFESTE.md` — la liste des dépôts tiers utilisés, avec
   leur licence et leur provenance. Les archives elles-mêmes ne sont pas

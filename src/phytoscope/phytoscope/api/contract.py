@@ -2,66 +2,66 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/api/contract.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
-"""Le contrat des modules — ce qu'un module promet, ce que l'hôte garantit.
+"""The plug-in contract — what a module promises, what the host guarantees.
 
-Ce fichier est la **pièce la plus engageante du logiciel**. Tout le reste peut
-changer d'une version à l'autre ; ceci, non : dès qu'un module écrit par
-quelqu'un d'autre s'y appuie, le casser casse son travail. On l'a donc écrit
-en se demandant, pour chaque ligne, si l'on accepterait de la maintenir dix
-ans.
+This file is **the most binding piece of the software**. Everything else may
+change from one release to the next; this may not. The moment a module written
+by somebody else relies on it, breaking it breaks their work. So it was
+written by asking, line by line, whether we would be willing to maintain that
+line for ten years.
 
-Ce qui en découle, et qui explique les choix ci-dessous :
+What follows from that, and what explains the choices below:
 
-* **Un numéro de version explicite.** ``VERSION_API`` suit la numérotation
-  sémantique. Un module déclare la version qu'il vise ; l'hôte refuse de
-  charger ce qu'il ne sait pas honorer, plutôt que de le charger à moitié.
-* **Des capacités déclarées, pas devinées.** Un module dit ce qu'il fournit.
-  L'hôte ne va pas fouiller ses attributs pour deviner : ce qui n'est pas
-  déclaré n'existe pas.
-* **Aucun accès au moteur.** Un module reçoit un `Contexte` — une surface
-  étroite, documentée, stable. Il ne reçoit jamais l'objet `Engine`, dont la
-  forme interne change à chaque version.
-* **Rien n'est obligatoire sauf le manifeste.** Un module qui ne fournit
-  qu'une seule capacité n'écrit qu'une seule méthode.
+* **An explicit version number.** ``API_VERSION`` follows semantic
+  versioning. A module declares the version it targets; the host refuses to
+  load what it cannot honor, rather than loading it halfway.
+* **Declared capabilities, not guessed ones.** A module states what it
+  provides. The host does not rummage through its attributes to find out:
+  what is not declared does not exist.
+* **No access to the engine.** A module receives a `Context` — a narrow,
+  documented, stable surface. It never receives the `Engine` object, whose
+  internal shape changes with every release.
+* **Nothing is mandatory except the manifest.** A module that provides a
+  single capability writes a single method.
 
-Les cinq capacités
-------------------
+The five capabilities
+---------------------
 
 ===============  ==========================================================
-`Analyseur`      calcule des grandeurs sur une fenêtre de signal
-`Descripteur`    produit une représentation du signal (une image, une courbe)
-`Sonificateur`   transforme le signal en notes
-`Exportateur`    écrit une séance dans un autre format
-`Source`         fournit un flux de mesure
+`Analyser`      computes quantities over a window of signal
+`Descriptor`    produces a representation of the signal (an image, a curve)
+`Sonifier`   turns the signal into notes
+`Exporter`    writes a session out in another format
+`Source`         supplies a stream of measurements
 ===============  ==========================================================
 
-Un module peut en fournir plusieurs, ou aucune — dans ce dernier cas il n'a
-d'intérêt que par ce qu'il fait à l'installation et à l'arrêt, ce qui est
-légitime (un module de journalisation, par exemple).
+A module may provide several of them, or none — in that last case it is only
+useful for what it does at install and shutdown time, which is a legitimate
+thing to be (a logging module, for instance).
 
-Ce que l'hôte garantit
-----------------------
+What the host guarantees
+------------------------
 
-1. **Un module qui lève ne fait jamais tomber le logiciel.** Toute méthode est
-   appelée sous protection ; une faute désactive le module, l'inscrit au
-   journal, et la séance continue.
-2. **L'ordre de chargement est déterministe** : les dépendances d'abord, puis
-   l'ordre alphabétique. Deux démarrages donnent le même ordre.
-3. **Rien n'est appelé pendant l'acquisition sur le fil des données.** Les
-   modules travaillent sur des instantanés, jamais sur le flux : un module lent
-   ralentit son propre affichage, pas la mesure (`C-20`).
+1. **A module that raises never brings the software down.** Every method is
+   called under protection; a fault disables the module, records it in the
+   log, and the session carries on.
+2. **Load order is deterministic**: dependencies first, then alphabetical
+   order. Two launches give the same order.
+3. **Nothing is called on the data thread during acquisition.** Modules work
+   on snapshots, never on the live stream: a slow module slows down its own
+   display, not the measurement (`C-20`).
 """
 from __future__ import annotations
 
@@ -72,105 +72,173 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 import numpy as np
 
 __all__ = [
-    "VERSION_API", "Manifeste", "Module", "Capacite",
-    "Analyseur", "Descripteur", "Sonificateur", "Exportateur", "Source",
-    "Grandeur", "Trace", "NoteProposee", "compatible",
+    "API_VERSION", "parse_version", "Manifest", "Module", "Capability",
+    "Analyser", "Descriptor", "Sonifier", "Exporter", "Source",
+    "Quantity", "Trace", "ProposedNote", "compatible",
 ]
 
-#  Version du contrat, en numérotation sémantique.
+#  The contract version, in semantic versioning.
 #
-#    majeur  une promesse est rompue — un module ancien cesse de fonctionner ;
-#    mineur  une capacité ou un paramètre s'ajoute, sans rien casser ;
-#    correctif  une précision de comportement, jamais de forme.
+#    major  a promise is broken — an older module stops working;
+#    minor  a capability or a parameter is added, breaking nothing;
+#    patch  a clarification of behavior, never of shape.
 #
-#  Un module déclarant « 1.0 » fonctionne avec toute API « 1.x ». Il ne
-#  fonctionne pas avec « 2.x », et l'hôte le lui dira plutôt que d'échouer
-#  au milieu d'une séance.
-VERSION_API = "1.0"
+#  A module declaring "3.0" works with any "3.x" API. It does not work with
+#  "4.x", and the host will say so rather than failing in the middle of a
+#  session.
+#
+#  1.0 -> 2.0 on 2026-09-22: the event wire names were renamed from French
+#  (`mesure.demarree` -> `measurement.started`, and nine others). That breaks
+#  any module subscribing to the old names, and because subscribing to an
+#  unknown event is deliberately not an error, such a module would have gone
+#  quiet instead of failing. The major bump is what turns that silence into a
+#  refusal the author can read.
+#
+#  2.0 -> 3.0 on 2026-09-23: the whole surface was renamed from French to
+#  English, on request. `Manifeste` is `Manifest`, `installer()` is `setup()`,
+#  `Grandeur.libelle` is `Quantity.label`, and a hundred and seventy other
+#  names besides — the full table is in the SDK, "Migrating from 2.0".
+#
+#  This is exactly the break the contract was written to handle, and it is
+#  handled the way this file promised it would be: the major changes, so a
+#  module declaring "2.0" is refused **at discovery**, with a sentence naming
+#  the version it asked for and the version on offer. It is not loaded and
+#  then found wanting halfway through a method call; it never runs at all.
+#  Nothing is aliased, because an alias would let a 2.0 module load and then
+#  fail on the first field it reads — which is the failure mode a major bump
+#  exists to prevent.
+API_VERSION = "3.0"
 
 
-def compatible(demande: str, offerte: str = VERSION_API) -> bool:
-    """Le module demandant `demande` peut-il tourner sur l'API `offerte` ?
+def parse_version(v: Any) -> Tuple[int, int]:
+    """"3.1" -> (3, 1). An unreadable version gives (-1, -1).
 
-    Règle : même majeur, et mineur offert au moins égal au mineur demandé.
-    Un module qui vise 1.2 ne tourne pas sur une API 1.1, qui ne connaît pas
-    encore ce qu'il attend.
+    Public, because both sides of the contract need it and neither should be
+    writing its own regular expression: a module that adapts its behaviour to
+    the host's version asks this, and the host asks it of every manifest it
+    reads. Two parsers would disagree on "3.1.4" or " 3.0 " sooner or later.
+
+    The patch number is deliberately ignored. A patch clarifies behaviour,
+    never shape (see API_VERSION above), so it cannot make a module
+    compatible or incompatible — and letting it into the comparison would
+    invite modules to require one.
     """
-    def decouper(v: str) -> Tuple[int, int]:
-        m = re.match(r"^\s*(\d+)\.(\d+)", str(v))
-        return (int(m.group(1)), int(m.group(2))) if m else (-1, -1)
+    m = re.match(r"^\s*(\d+)\.(\d+)", str(v))
+    return (int(m.group(1)), int(m.group(2))) if m else (-1, -1)
 
-    dm, dn = decouper(demande)
-    om, on = decouper(offerte)
-    if dm < 0 or om < 0:
+
+def compatible(requested: str, offered: str = API_VERSION) -> bool:
+    """Can a module needing **at least** `requested` run on `offered`?
+
+    The rule: same major, and the offered minor at least equal to the one
+    required. A module needing 3.2 does not run on a 3.1 API, which does not
+    yet know what it expects; it does run on 3.3, which knows more.
+
+    `requested` is therefore a **minimum**, not an exact match — which is why
+    `Manifest.api` is documented as the lowest version the module needs, and
+    why `Manifest.api_required` returns it parsed.
+    """
+    rm, rn = parse_version(requested)
+    om, on = parse_version(offered)
+    if rm < 0 or om < 0:
         return False
-    return dm == om and dn <= on
+    return rm == om and rn <= on
 
 
 # ---------------------------------------------------------------------------
-#  Ce qu'un module dit de lui-même
+#  What a module says about itself
 # ---------------------------------------------------------------------------
-class Capacite:
-    """Les noms des capacités, pour éviter les chaînes en dur."""
-    ANALYSEUR = "analyseur"
-    DESCRIPTEUR = "descripteur"
-    SONIFICATEUR = "sonificateur"
-    EXPORTATEUR = "exportateur"
+class Capability:
+    """The capability names, so that they are not hard-coded as strings."""
+    ANALYSER = "analyser"
+    DESCRIPTOR = "descriptor"
+    SONIFIER = "sonifier"
+    EXPORTER = "exporter"
     SOURCE = "source"
 
-    TOUTES = (ANALYSEUR, DESCRIPTEUR, SONIFICATEUR, EXPORTATEUR, SOURCE)
+    ALL = (ANALYSER, DESCRIPTOR, SONIFIER, EXPORTER, SOURCE)
 
 
 @dataclass
-class Manifeste:
-    """L'identité d'un module — la seule chose qu'il doit obligatoirement dire.
+class Manifest:
+    """A module's identity — the one thing it is required to state.
 
-    Elle est lue **avant** d'importer quoi que ce soit du module : c'est ce qui
-    permet de lister les modules présents, d'en désactiver un, et de refuser
-    d'importer celui qui vise une API qu'on ne sait pas honorer. Importer pour
-    savoir s'il faut importer serait absurde.
+    It is read **before** importing anything from the module: that is what
+    makes it possible to list the modules present, to disable one, and to
+    refuse to import one targeting an API we cannot honor. Importing in order
+    to find out whether to import would be absurd.
     """
-    nom: str                        # identifiant technique : a-z, 0-9, tiret
-    titre: str = ""                 # ce qui s'affiche ; à défaut, `nom`
+    name: str                        # technical identifier: a-z, 0-9, hyphen
+    title: str = ""                 # what is displayed; falls back to `name`
     version: str = "0.1.0"
-    api: str = VERSION_API          # la version de contrat visée
+    #  The **minimum** API version this module needs, "major.minor". The host
+    #  accepts it on any later minor of the same major, and refuses it on any
+    #  other major — see `compatible()`. Declare the lowest version that
+    #  actually suffices: a module claiming 3.4 because that is what its
+    #  author had installed is a module refused on a 3.2 host for no reason.
+    api: str = API_VERSION
     description: str = ""
-    auteur: str = ""
+    author: str = ""
     licence: str = ""
-    site: str = ""
-    #  Ce que le module fournit. Déclaratif : ce qui n'est pas là n'est pas
-    #  proposé à l'utilisateur, même si la méthode existe.
-    capacites: Tuple[str, ...] = ()
-    #  Les modules qui doivent être chargés avant celui-ci, par leur `nom`.
-    depend_de: Tuple[str, ...] = ()
-    #  Les bibliothèques Python nécessaires. Vérifiées avant le chargement :
-    #  mieux vaut « module désactivé : scipy absent » qu'une trace d'import.
-    exige: Tuple[str, ...] = ()
-    #  Un module interne au logiciel, livré avec lui. Il ne se désinstalle pas.
-    integre: bool = False
+    website: str = ""
+    #  What the module provides. Declarative: what is not listed here is not
+    #  offered to the user, even if the method exists.
+    capabilities: Tuple[str, ...] = ()
+    #  The modules that must be loaded before this one, by their `name`.
+    depends_on: Tuple[str, ...] = ()
+    #  The Python libraries required. Checked before loading: "module
+    #  disabled: scipy missing" beats an import traceback.
+    requires: Tuple[str, ...] = ()
+    #  A module internal to the software, shipped with it. It cannot be
+    #  uninstalled.
+    built_in: bool = False
 
     def __post_init__(self) -> None:
-        if not self.titre:
-            self.titre = self.nom
+        if not self.title:
+            self.title = self.name
 
     @property
-    def valide(self) -> bool:
-        return bool(re.match(r"^[a-z][a-z0-9-]{1,48}$", self.nom or ""))
+    def valid(self) -> bool:
+        return bool(re.match(r"^[a-z][a-z0-9-]{1,48}$", self.name or ""))
 
-    def defauts(self) -> List[str]:
-        """Ce qui empêche ce manifeste d'être accepté, en clair."""
-        soucis = []
-        if not self.valide:
-            soucis.append(
-                f"nom « {self.nom} » invalide : lettres minuscules, chiffres "
-                "et tirets, 2 à 49 caractères, commençant par une lettre")
+    def problems(self) -> List[str]:
+        """What keeps this manifest from being accepted, in plain words."""
+        problems_found = []
+        if not self.valid:
+            problems_found.append(
+                f"invalid name “{self.name}”: lowercase letters, "
+                "digits and hyphens, 2 to 49 characters, starting with a "
+                "letter")
         if not compatible(self.api):
-            soucis.append(
-                f"vise l'API {self.api}, or ce logiciel offre {VERSION_API}")
-        inconnues = [c for c in self.capacites if c not in Capacite.TOUTES]
-        if inconnues:
-            soucis.append(f"capacité(s) inconnue(s) : {', '.join(inconnues)}")
-        return soucis
+            problems_found.append(
+                f"needs at least API {self.api}, but this software offers "
+                f"{API_VERSION} — it wants {self.api_satisfied_by}")
+        unknown = [c for c in self.capabilities if c not in Capability.ALL]
+        if unknown:
+            problems_found.append(f"unknown capability/capabilities: "
+                          f"{', '.join(unknown)}")
+        return problems_found
+
+    @property
+    def api_required(self) -> Tuple[int, int]:
+        """The minimum API version this module needs, as (major, minor).
+
+        The host reads this rather than parsing `api` itself; `(-1, -1)` means
+        the field could not be read at all, which `problems()` reports.
+        """
+        return parse_version(self.api)
+
+    @property
+    def api_satisfied_by(self) -> str:
+        """In plain words, what would satisfy this module.
+
+        Displayed in Diagnostics next to a refusal, so that the sentence says
+        what to install rather than only what is wrong.
+        """
+        major, minor = self.api_required
+        if major < 0:
+            return f"an unreadable API version: “{self.api}”"
+        return f"API {major}.{minor} or any later {major}.x"
 
     def to_dict(self) -> Dict[str, Any]:
         from dataclasses import asdict
@@ -178,202 +246,202 @@ class Manifeste:
 
 
 # ---------------------------------------------------------------------------
-#  Les objets que les capacités échangent
+#  The objects the capabilities exchange
 # ---------------------------------------------------------------------------
 @dataclass
-class Grandeur:
-    """Une quantité mesurée, avec ce qu'elle dit et ce qu'elle ne dit pas.
+class Quantity:
+    """A measured quantity, with what it says and what it does not.
 
-    Le champ `sens` n'est pas décoratif : `C-15` impose que toute
-    représentation affiche ce qu'elle suppose et ce qu'elle ne permet pas de
-    conclure. Un module qui rend une grandeur sans l'expliquer sera chargé,
-    mais l'interface écrira « (le module n'explique pas cette valeur) », ce
-    qui se remarque.
+    The `meaning` field is not decoration: `C-15` requires every representation
+    to state what it assumes and what it does not allow you to conclude. A
+    module that returns a quantity without explaining it will still be
+    loaded, but the interface will print "(the module does not explain this
+    value)", which is hard to miss.
     """
-    cle: str
-    libelle: str
-    valeur: float
-    texte: str = ""                 # la valeur mise en forme, unité comprise
-    sens: str = ""                  # ce que ce nombre dit — en une phrase
-    alerte: bool = False
+    key: str
+    label: str
+    value: float
+    text: str = ""                 # the formatted value, unit included
+    meaning: str = ""                  # what this number says — in one sentence
+    alert: bool = False
     params: Dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        if not self.texte:
-            self.texte = f"{self.valeur:.3g}"
+        if not self.text:
+            self.text = f"{self.value:.3g}"
 
 
 @dataclass
 class Trace:
-    """Une courbe à afficher : des abscisses, des ordonnées, des légendes."""
+    """A curve to display: abscissas, ordinates, and labels."""
     x: np.ndarray
     y: np.ndarray
-    titre: str = ""
-    x_libelle: str = ""
-    y_libelle: str = ""
+    title: str = ""
+    x_label: str = ""
+    y_label: str = ""
     x_log: bool = False
     y_log: bool = False
-    #  Ce que la représentation suppose, et ce qu'elle ne permet pas de
-    #  conclure. Affiché sous la courbe (`C-15`).
-    avertissement: str = ""
+    #  What the representation assumes, and what it does not allow you to
+    #  conclude. Displayed beneath the curve (`C-15`).
+    warning: str = ""
 
     def __post_init__(self) -> None:
         self.x = np.asarray(self.x, dtype=np.float64).ravel()
         self.y = np.asarray(self.y, dtype=np.float64).ravel()
         if self.x.size != self.y.size:
             raise ValueError(
-                f"trace « {self.titre} » : {self.x.size} abscisses pour "
-                f"{self.y.size} ordonnées")
+                f"trace “{self.title}”: {self.x.size} abscissas "
+                f"for {self.y.size} ordinates")
 
 
 @dataclass
-class NoteProposee:
-    """Une note qu'un sonificateur propose. L'hôte décide de la jouer."""
-    hauteur_midi: int
-    velocite: int = 80
-    duree_s: float = 0.4
-    canal: int = 0
-    #  La valeur mesurée qui a produit cette note. Conservée dans le rendu :
-    #  une sonification dont on ne peut pas remonter à la mesure n'est plus
-    #  une mesure (`C-15`).
-    origine_v: float = 0.0
+class ProposedNote:
+    """A note a sonify proposes. The host decides whether to play it."""
+    midi_pitch: int
+    velocity: int = 80
+    duration_s: float = 0.4
+    channel: int = 0
+    #  The measured value that produced this note. Kept in the rendering: a
+    #  sonification you cannot trace back to the measurement is no longer a
+    #  measurement (`C-15`).
+    source_v: float = 0.0
 
 
 # ---------------------------------------------------------------------------
-#  Le module lui-même
+#  The module itself
 # ---------------------------------------------------------------------------
 class Module:
-    """Ce dont hérite tout module de PhytoScope.
+    """What every PhytoScope module inherits from.
 
-    Le seul élément obligatoire est `MANIFESTE`. Tout le reste a un
-    comportement par défaut qui ne fait rien, de sorte qu'un module minimal
-    tient en quinze lignes — voir le SDK, module « bonjour-monde ».
+    The only required element is `MANIFEST`. Everything else has a default
+    behavior that does nothing, so a minimal module fits in fifteen lines —
+    see the SDK, module "hello-world".
 
-    Cycle de vie, dans cet ordre :
+    Life cycle, in this order:
 
-    1. ``__init__(contexte)`` — on reçoit le contexte. **Ne rien faire de
-       long ici** : c'est appelé au démarrage du logiciel, et tous les
-       modules passent par là.
-    2. ``installer()`` — une fois, après le chargement de tous les modules.
-       C'est ici qu'on s'abonne aux événements et qu'on prépare ses fichiers.
-    3. les capacités sont appelées à la demande, pendant la séance.
-    4. ``arreter()`` — une fois, à la fermeture. Fermer ce qu'on a ouvert.
+    1. ``__init__(context)`` — the context is handed over. **Do nothing
+       lengthy here**: this runs at startup, and every module goes through
+       it.
+    2. ``setup()`` — once, after all modules have been loaded. This is
+       where you subscribe to events and prepare your files.
+    3. the capabilities are called on demand, during the session.
+    4. ``shutdown()`` — once, at shutdown. Close what you opened.
 
-    Une exception levée dans n'importe laquelle de ces étapes désactive le
-    module et l'inscrit au journal. Elle ne fait jamais tomber le logiciel.
+    An exception raised in any of these steps disables the module and records
+    it in the log. It never brings the software down.
     """
 
-    #: Obligatoire. Redéfini par chaque module.
-    MANIFESTE: Manifeste = Manifeste(nom="module-sans-nom")
+    #: Required. Redefined by every module.
+    MANIFEST: Manifest = Manifest(name="module-with-no-name")
 
-    def __init__(self, contexte: "Contexte") -> None:   # noqa: F821
-        self.contexte = contexte
+    def __init__(self, context: "Context") -> None:   # noqa: F821
+        self.context = context
 
-    # -- cycle de vie --------------------------------------------------------
-    def installer(self) -> None:
-        """Appelé une fois, après le chargement de tous les modules."""
+    # -- life cycle ----------------------------------------------------------
+    def setup(self) -> None:
+        """Called once, after all modules have been loaded."""
 
-    def arreter(self) -> None:
-        """Appelé une fois, à la fermeture. Fermer ce qu'on a ouvert."""
+    def shutdown(self) -> None:
+        """Called once, at shutdown. Close what you opened."""
 
-    # -- réglages ------------------------------------------------------------
-    def reglages_par_defaut(self) -> Dict[str, Any]:
-        """Les réglages du module et leurs valeurs initiales.
+    # -- settings ------------------------------------------------------------
+    def default_settings(self) -> Dict[str, Any]:
+        """The module's settings and their initial values.
 
-        L'hôte les conserve dans son propre fichier, sous le nom du module, et
-        les rend par `contexte.reglages`. Un module n'écrit jamais dans le
-        fichier de réglages du logiciel.
+        The host keeps them in its own file, under the module's name, and
+        hands them back through `context.settings`. A module never writes to
+        the software's settings file.
         """
         return {}
 
 
 # ---------------------------------------------------------------------------
-#  Les cinq capacités
+#  The five capabilities
 # ---------------------------------------------------------------------------
-class Analyseur:
-    """Calcule des grandeurs sur une fenêtre de signal.
+class Analyser:
+    """Computes quantities over a window of signal.
 
-    Appelé par l'onglet Multimètre, à cadence réduite et seulement quand la
-    page est visible. Le signal reçu est **en volts** et, sauf demande
-    contraire, **brut** — avant réjecteur et passe-bas : filtrer avant de
-    mesurer le bruit revient à mesurer son propre filtre (`C-1B`).
+    Called by the Multimeter tab, at a reduced rate and only while the page
+    is visible. The signal received is **in volts** and, unless asked
+    otherwise, **raw** — before the notch and low-pass filters: filtering
+    before measuring noise amounts to measuring your own filter (`C-1B`).
     """
 
-    #: Durée de signal souhaitée, en secondes. L'hôte donne ce qu'il a.
-    FENETRE_S: float = 120.0
-    #: Faux pour recevoir le signal traité plutôt que le signal brut.
-    SIGNAL_BRUT: bool = True
+    #: Length of signal wanted, in seconds. The host gives what it has.
+    WINDOW_S: float = 120.0
+    #: False to receive the processed signal rather than the raw one.
+    RAW_SIGNAL: bool = True
 
-    def analyser(self, x: np.ndarray, fs: float,
-                 contexte: "Contexte") -> Sequence[Grandeur]:  # noqa: F821
-        """Rend les grandeurs calculées. Une liste vide est acceptable."""
+    def analyse(self, x: np.ndarray, fs: float,
+                 context: "Context") -> Sequence[Quantity]:  # noqa: F821
+        """Returns the computed quantities. An empty list is acceptable."""
         raise NotImplementedError
 
 
-class Descripteur:
-    """Produit une représentation du signal — une courbe, un spectre, une carte.
+class Descriptor:
+    """Produces a representation of the signal — a curve, a spectrum, a map.
 
-    Appelé par l'onglet Descripteurs, à la demande de l'utilisateur. Ce n'est
-    donc pas un chemin critique : un calcul d'une seconde est acceptable.
+    Called by the Descriptors tab, at the user's request. It is therefore not
+    a critical path: a computation taking a second is acceptable.
     """
 
-    FENETRE_S: float = 60.0
-    SIGNAL_BRUT: bool = False
+    WINDOW_S: float = 60.0
+    RAW_SIGNAL: bool = False
 
-    def decrire(self, x: np.ndarray, fs: float,
-                contexte: "Contexte") -> Sequence[Trace]:      # noqa: F821
+    def describe(self, x: np.ndarray, fs: float,
+                context: "Context") -> Sequence[Trace]:      # noqa: F821
         raise NotImplementedError
 
 
-class Sonificateur:
-    """Transforme une valeur mesurée en notes.
+class Sonifier:
+    """Turns a measured value into notes.
 
-    Appelé pour chaque événement détecté. **Doit être rapide** : il s'exécute
-    dans la boucle de rendu musical. Rendre une liste vide signifie « pas de
-    note pour cette valeur », ce qui est une réponse légitime.
+    Called for every detected event. **Must be fast**: it runs inside the
+    music rendering loop. Returning an empty list means "no note for this
+    value", which is a legitimate answer.
     """
 
-    def sonifier(self, valeur_v: float, contexte: "Contexte"  # noqa: F821
-                 ) -> Sequence[NoteProposee]:
+    def sonify(self, value_v: float, context: "Context"  # noqa: F821
+                 ) -> Sequence[ProposedNote]:
         raise NotImplementedError
 
 
-class Exportateur:
-    """Écrit une séance dans un autre format.
+class Exporter:
+    """Writes a session out in another format.
 
-    Proposé dans la bibliothèque, à côté des formats livrés. Le module reçoit
-    le répertoire de la séance et écrit où on le lui dit — jamais ailleurs.
+    Offered in the library, alongside the formats that ship with the
+    software. The module receives the session directory and writes where it
+    is told to — never anywhere else.
     """
 
-    #: Ce qui s'affiche dans la liste des formats.
+    #: What appears in the list of formats.
     FORMAT: str = ""
-    #: L'extension du fichier produit, point compris.
+    #: The extension of the file produced, dot included.
     EXTENSION: str = ""
 
-    def exporter(self, seance: str, cible: str,
-                 contexte: "Contexte") -> bool:                # noqa: F821
-        """Rend vrai si l'écriture a réussi."""
+    def export(self, session: str, target: str,
+                 context: "Context") -> bool:                # noqa: F821
+        """Returns true if the write succeeded."""
         raise NotImplementedError
 
 
 class Source:
-    """Fournit un flux de mesure — une carte, un fichier, un générateur.
+    """Supplies a stream of measurements — a board, a file, a generator.
 
-    La capacité la plus délicate : elle s'exécute sur le chemin des données.
-    Un module de source doit être **irréprochable** sur ce point, et l'hôte
-    l'isole autant qu'il peut — mais il ne peut pas l'isoler du temps qu'il
-    prend.
+    The most delicate capability: it runs on the data path. A source module
+    has to be **beyond reproach** on that point, and the host isolates it as
+    far as it can — but it cannot isolate it from the time it takes.
     """
 
-    #: Ce qui s'affiche dans la liste des sources d'acquisition.
-    LIBELLE: str = ""
+    #: What appears in the list of acquisition sources.
+    LABEL: str = ""
 
-    def ouvrir(self, contexte: "Contexte") -> bool:            # noqa: F821
+    def open(self, context: "Context") -> bool:            # noqa: F821
         raise NotImplementedError
 
-    def lire(self) -> Optional[np.ndarray]:
-        """Rend le bloc d'échantillons disponible, en volts, ou None."""
+    def read(self) -> Optional[np.ndarray]:
+        """Returns the available block of samples, in volts, or None."""
         raise NotImplementedError
 
-    def fermer(self) -> None:
-        """Referme ce qui a été ouvert."""
+    def close(self) -> None:
+        """Closes what was opened."""

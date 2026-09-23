@@ -1,0 +1,67 @@
+#!/bin/sh
+#  ==========================================================================
+#  PhytoScope — attribution — packaging/templates/debian/lanceur
+#
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
+#
+#  SPDX-License-Identifier: MIT
+#  end of attribution
+#  ==========================================================================
+
+# ===========================================================================
+#  PhytoScope — system launcher (/usr/bin/phytoscope)
+#
+#  The software lives in /usr/share/phytoscope with a Python environment of
+#  its own. This launcher picks the interpreter and gives a usable message
+#  when something is missing, rather than an import traceback nobody can
+#  read.
+#
+#  Everything it prints is addressed to the person who typed `phytoscope`, so
+#  it speaks the language they chose at installation. The labels are read
+#  without Python, deliberately: the reason this script has anything to say
+#  is usually that Python is not there.
+# ===========================================================================
+CIBLE="/usr/share/phytoscope"
+VENV="$CIBLE/venv"
+
+if [ -f "$CIBLE/labels.sh" ]; then
+    # shellcheck disable=SC1091
+    . "$CIBLE/labels.sh"
+    charger_libelles "$CIBLE/languages" || true
+else
+    #  No catalogue shipped: every call site carries its English default, so
+    #  a stub is enough to keep the script running.
+    tl() { _d="$2"; shift 2; while [ "$#" -ge 2 ]; do
+               _d="$(printf '%s' "$_d" | sed "s|{$1}|$2|g")"; shift 2; done
+           printf '%s' "$_d"; }
+fi
+
+if [ -x "$VENV/bin/python" ]; then
+    PY="$VENV/bin/python"
+elif command -v python3 >/dev/null 2>&1; then
+    #  The private environment is gone (a cleanup, or /usr mounted read-only):
+    #  try the system Python, which is enough when the packages are there.
+    PY="python3"
+else
+    echo "$(tl T_PY3_ABSENT "PhytoScope: no Python 3 found. Install “python3”.")" >&2
+    exit 1
+fi
+
+#  An import test before launching: when Qt is missing, a sentence beats a
+#  "ModuleNotFoundError" in the middle of a call stack.
+if ! "$PY" -c "import PySide6" >/dev/null 2>&1; then
+    echo "$(tl T_PYSIDE_ABSENT "PhytoScope: PySide6 is not installed in {directory}." \
+                directory "$VENV")" >&2
+    echo "  $(tl T_REPARER "Repair") :  sudo $VENV/bin/pip install -r $CIBLE/requirements.txt" >&2
+    echo "  $(tl T_OU_BIEN "Or") :  sudo dpkg-reconfigure phytoscope   (Debian, Ubuntu, Mint)" >&2
+    echo "  $(tl T_DIAGNOSTIC_COMPLET "Full diagnostics") :  $PY $CIBLE/run.py --check" >&2
+    exit 1
+fi
+
+exec "$PY" "$CIBLE/run.py" "$@"

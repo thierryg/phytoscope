@@ -2,16 +2,16 @@
   ==========================================================================
   PhytoScope — attribution — pdf-src/assets/svg/carte-mezzanine.svg
 
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
+  Version   : 1.6.0
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
 
   SPDX-License-Identifier: MIT
-  fin de l'attribution
+  end of attribution
   ==========================================================================
 -->
 
@@ -40,63 +40,63 @@
    <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
 </defs>
 <rect width="980" height="460" fill="#FFFFFF"/>
-<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Le connecteur mezzanine, 20 points</text>
-<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Une carte fille se déclare seule : le logiciel la reconnaît au branchement</text>
+<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">The 20-pin mezzanine connector</text>
+<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">A daughter board declares itself: the software recognises it when plugged in</text>
 <rect x="60" y="100" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="80" y="117" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">1</text>
 <rect x="104" y="100" width="78" height="24" rx="3" fill="#E9F2EC" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="143" y="117" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">+5 VA</text>
-<text x="190" y="117" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">alimentation analogique</text>
+<text x="190" y="117" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">analog supply</text>
 <rect x="60" y="132" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="80" y="149" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">3</text>
 <rect x="104" y="132" width="78" height="24" rx="3" fill="#E9F2EC" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="143" y="149" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">−5 VA</text>
-<text x="190" y="149" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">alimentation analogique</text>
+<text x="190" y="149" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">analog supply</text>
 <rect x="60" y="164" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="80" y="181" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">5</text>
 <rect x="104" y="164" width="78" height="24" rx="3" fill="#E9F2EC" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="143" y="181" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">AGND</text>
-<text x="190" y="181" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">masse analogique</text>
+<text x="190" y="181" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">analog ground</text>
 <rect x="60" y="196" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="80" y="213" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">7</text>
 <rect x="104" y="196" width="78" height="24" rx="3" fill="#E9F2EC" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="143" y="213" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">AGND</text>
-<text x="190" y="213" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">masse analogique</text>
+<text x="190" y="213" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">analog ground</text>
 <rect x="60" y="228" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="80" y="245" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">9</text>
 <rect x="104" y="228" width="78" height="24" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="1.0"/>
-<text x="143" y="245" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">GARDE</text>
-<text x="190" y="245" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">sortie du tampon de garde</text>
+<text x="143" y="245" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">GUARD</text>
+<text x="190" y="245" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">guard buffer output</text>
 <rect x="60" y="260" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="80" y="277" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">11</text>
 <rect x="104" y="260" width="78" height="24" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="143" y="277" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">SIG_A</text>
-<text x="190" y="277" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">voie A vers le PGA</text>
+<text x="190" y="277" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">channel A to the PGA</text>
 <rect x="60" y="292" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="80" y="309" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">13</text>
 <rect x="104" y="292" width="78" height="24" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="143" y="309" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">SIG_B</text>
-<text x="190" y="309" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">voie B vers le PGA</text>
+<text x="190" y="309" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">channel B to the PGA</text>
 <rect x="60" y="324" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="80" y="341" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">15</text>
 <rect x="104" y="324" width="78" height="24" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="143" y="341" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">EXC</text>
-<text x="190" y="341" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">excitation, CNA du MCU</text>
+<text x="190" y="341" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">excitation, MCU DAC</text>
 <rect x="60" y="356" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="80" y="373" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">17</text>
 <rect x="104" y="356" width="78" height="24" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="143" y="373" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">SDA</text>
-<text x="190" y="373" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">I²C isolé — EEPROM</text>
+<text x="190" y="373" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">isolated I²C — EEPROM</text>
 <rect x="60" y="388" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="80" y="405" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">19</text>
 <rect x="104" y="388" width="78" height="24" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="143" y="405" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">SCL</text>
-<text x="190" y="405" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">I²C isolé — EEPROM</text>
+<text x="190" y="405" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">isolated I²C — EEPROM</text>
 <rect x="520" y="100" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="540" y="117" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2</text>
 <rect x="564" y="100" width="78" height="24" rx="3" fill="#E9F2EC" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="603" y="117" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">+3V3</text>
-<text x="650" y="117" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">logique de la carte fille</text>
+<text x="650" y="117" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">daughter-board logic</text>
 <rect x="520" y="132" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="540" y="149" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">4</text>
 <rect x="564" y="132" width="78" height="24" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="1.0"/>
@@ -106,42 +106,42 @@
 <text x="540" y="181" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">6</text>
 <rect x="564" y="164" width="78" height="24" rx="3" fill="#E9F2EC" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="603" y="181" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">AGND</text>
-<text x="650" y="181" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">masse analogique</text>
+<text x="650" y="181" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">analog ground</text>
 <rect x="520" y="196" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="540" y="213" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">8</text>
 <rect x="564" y="196" width="78" height="24" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="603" y="213" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">REF_C</text>
-<text x="650" y="213" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">référence carrée 1 kHz</text>
+<text x="650" y="213" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">1 kHz square reference</text>
 <rect x="520" y="228" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="540" y="245" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">10</text>
 <rect x="564" y="228" width="78" height="24" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="1.0"/>
-<text x="603" y="245" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">GARDE</text>
-<text x="650" y="245" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">second point de garde</text>
+<text x="603" y="245" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">GUARD</text>
+<text x="650" y="245" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">second guard point</text>
 <rect x="520" y="260" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="540" y="277" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">12</text>
 <rect x="564" y="260" width="78" height="24" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="603" y="277" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">SEL0</text>
-<text x="650" y="277" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">sélection de gamme</text>
+<text x="650" y="277" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">range selection</text>
 <rect x="520" y="292" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="540" y="309" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">14</text>
 <rect x="564" y="292" width="78" height="24" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="603" y="309" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">SEL1</text>
-<text x="650" y="309" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">sélection de gamme</text>
+<text x="650" y="309" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">range selection</text>
 <rect x="520" y="324" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="540" y="341" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">16</text>
 <rect x="564" y="324" width="78" height="24" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="603" y="341" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">TEMP</text>
-<text x="650" y="341" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">sonde de la carte fille</text>
+<text x="650" y="341" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">daughter-board sensor</text>
 <rect x="520" y="356" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="540" y="373" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">18</text>
 <rect x="564" y="356" width="78" height="24" rx="3" fill="#fff" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="603" y="373" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">PRES</text>
-<text x="650" y="373" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">détection de présence</text>
+<text x="650" y="373" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">presence detection</text>
 <rect x="520" y="388" width="40" height="24" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.1"/>
 <text x="540" y="405" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">20</text>
 <rect x="564" y="388" width="78" height="24" rx="3" fill="#E9F2EC" stroke="#D9D9C6" stroke-width="1.0"/>
 <text x="603" y="405" font-family="DejaVu Sans Mono, monospace" font-size="17.7" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">AGND</text>
-<text x="650" y="405" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">masse analogique</text>
+<text x="650" y="405" font-family="Lato, sans-serif" font-size="17.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">analog ground</text>
 <text x="28" y="452" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
 <text x="952" y="452" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
 </svg>

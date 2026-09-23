@@ -1,0 +1,150 @@
+<section class="chapter">
+  <h2 id="c20-refaire" data-toc="chapter">Peut-on refaire l'expérience ?</h2>
+  <p class="chapo">Distinguons trois questions que l'on confond systématiquement : reproduire à l'identique, reproduire le résultat, et reproduire l'effet. Les réponses sont différentes.</p>
+
+  <p class="lettrine noindent">« Reproductible » est un mot qui recouvre au moins trois exigences distinctes, de difficulté très inégale. Les séparer permet de répondre précisément plutôt que d'osciller entre « c'est impossible » et « c'est facile ».</p>
+
+  <table>
+    <thead><tr><th>Niveau</th><th>Ce qu'il exige</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Réplication exacte</strong><br/><span class="small">refaire <em>ce</em> dispositif</span></td><td>Références de capteurs, schémas, code, invite, modèle, réglages</td><td><strong>Impossible.</strong> Rien n'a été publié.</td></tr>
+      <tr><td><strong>2. Réplication fonctionnelle</strong><br/><span class="small">refaire <em>un</em> dispositif équivalent</span></td><td>Des capteurs comparables, une chaîne vocale locale, un modèle de langage</td><td><strong>Faisable.</strong> Entièrement en logiciel libre. C'est l'objet du volume III.</td></tr>
+      <tr><td><strong>3. Réplication de l'effet</strong><br/><span class="small">produire la même émotion</span></td><td>Un lieu, un arbre remarquable, une scénographie, un tournage</td><td><strong>Faisable, mais ce n'est pas de la technique.</strong> C'est de la mise en scène.</td></tr>
+    </tbody>
+    <caption>La confusion entre les niveaux 2 et 3 explique beaucoup de déceptions : on monte le dispositif, il fonctionne, et « il ne se passe rien ». C'est normal : l'effet du niveau 3 tenait au cadre, pas au circuit.</caption>
+  </table>
+
+  <h3 id="c20-etat" data-toc="sub">L'état de l'ouverture, poste par poste</h3>
+
+  <table class="tight">
+    <thead><tr><th>Poste</th><th>Ouvert ?</th><th>Substitut disponible</th></tr></thead>
+    <tbody>
+      <tr><td>Capteurs environnementaux</td><td>—</td><td><strong>Sans objet</strong> : composants du commerce, documentés par leurs fiches techniques constructeur</td></tr>
+      <tr><td>Chaîne bioélectrique</td><td>✗</td><td>Montages publiés dans la littérature scientifique (Hao 2021, Gibert 2006, Tran 2019)</td></tr>
+      <tr><td>Firmware du nœud</td><td>✗</td><td><strong>Plusieurs projets libres</strong> couvrent ce besoin de bout en bout</td></tr>
+      <tr><td>Collecte et stockage</td><td>✗</td><td><strong>Entièrement libre</strong> : courtier de messages, base de séries temporelles, tableaux de bord</td></tr>
+      <tr><td>Reconnaissance vocale</td><td>✗</td><td><strong>Modèles libres</strong> exécutables localement</td></tr>
+      <tr><td>Modèle de langage</td><td>✗ <span class="small">(annoncé libre, jamais nommé)</span></td><td><strong>Nombreux modèles libres</strong> de taille adaptée à une machine de bureau</td></tr>
+      <tr><td>Synthèse vocale</td><td>✗</td><td><strong>Moteurs libres</strong> de qualité, avec voix françaises</td></tr>
+      <tr><td>Invite système</td><td>✗</td><td>À réécrire — et c'est une bonne nouvelle (chapitre 24)</td></tr>
+      <tr><td>Données collectées</td><td>✗</td><td>Aucun substitut. Il faudra produire les siennes.</td></tr>
+    </tbody>
+    <caption>Aucun poste n'est ouvert côté projet. Tous, sauf les données, ont un substitut libre. La reproductibilité ne vient donc pas du projet : elle vient de l'écosystème.</caption>
+  </table>
+
+  <div class="callout key">
+    <div class="callout-title">✦ Le renversement à opérer</div>
+    <p>La question n'est pas « comment obtenir ce que Droga5 n'a pas publié&nbsp;? » — on ne l'obtiendra pas. La question est : <strong>« de quoi ai-je réellement besoin&nbsp;? »</strong></p>
+    <p>Et la réponse est libératrice. Vous n'avez pas besoin de leur code. Vous avez besoin d'un arbre, de quelques capteurs, d'une chaîne d'acquisition propre, d'un modèle de langage local et — surtout — d'une <strong>méthodologie</strong> qu'eux n'avaient pas. Sur ce dernier point, vous partez avec une avance.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Trois niveaux : réplication exacte (impossible), fonctionnelle (faisable), de l'effet (mise en scène).</li>
+      <li>Aucun poste du projet original n'est ouvert.</li>
+      <li>Tous les postes, sauf les données, ont un substitut libre et mature.</li>
+      <li>La reproductibilité vient de l'écosystème, pas du projet.</li>
+      <li>L'avance à prendre n'est pas technique : elle est méthodologique.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="c21-materiel" data-toc="chapter">Matériel, budget et arbitrages</h2>
+  <p class="chapo">Trois niveaux d'ambition, trois budgets, trois listes de courses. Le facteur limitant n'est jamais l'argent : c'est le temps d'étalonnage.</p>
+
+  <p class="lettrine noindent">Voici trois configurations, de la démonstration de table à l'installation permanente. Les ordres de grandeur budgétaires sont donnés à titre indicatif pour l'Europe en 2026 ; ils varient avec les approvisionnements et ne comptent ni l'outillage ni le temps.</p>
+
+  <h3 id="c21-niveau1" data-toc="sub">Niveau 1 — La démonstration de table</h3>
+
+  <div class="fiche">
+    <div class="f-head">
+      <div class="f-name">Configuration « plant de menthe »</div>
+      <div class="f-maker">Un week-end · 100 à 200 € · intérieur</div>
+    </div>
+    <div class="f-body">
+      <dl>
+        <dt>Objectif</dt>
+        <dd>Comprendre la chaîne complète, faire les trois tests de contrôle, se former.</dd>
+        <dt>Matériel</dt>
+        <dd>Une carte microcontrôleur à Wi-Fi intégré ; un capteur température-humidité-pression I²C ; une sonde d'humidité du sol capacitive ; un convertisseur analogique-numérique 16 bits ; deux électrodes adhésives de type ECG ; une plaque d'essai et du fil.</dd>
+        <dt>Logiciel</dt>
+        <dd>Un firmware libre déclaratif sur le microcontrôleur ; un courtier de messages et une base de séries temporelles sur un ordinateur portable ; un modèle de langage local de petite taille.</dd>
+        <dt>Ce qu'on apprend</dt>
+        <dd>Tout. Cette configuration suffit pour découvrir la dérive d'électrode, le couplage 50 Hz, la sensibilité à l'humidité de contact — et pour réaliser l'épreuve du vide en une après-midi.</dd>
+        <dt>Limite</dt>
+        <dd>Ce n'est pas un arbre. Les grandeurs, les constantes de temps et les artefacts sont différents.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <h3 id="c21-niveau2" data-toc="sub">Niveau 2 — L'arbre instrumenté saisonnier</h3>
+
+  <div class="fiche">
+    <div class="f-head">
+      <div class="f-name">Configuration « une saison de mesure »</div>
+      <div class="f-maker">Un mois de montage · 600 à 1 200 € · extérieur</div>
+    </div>
+    <div class="f-body">
+      <dl>
+        <dt>Objectif</dt>
+        <dd>Obtenir une série temporelle exploitable sur plusieurs mois, avec les voies de contexte nécessaires à l'interprétation.</dd>
+        <dt>Ajouts par rapport au niveau 1</dt>
+        <dd>Coffret étanche IP65 ; abri météorologique ventilé ; panneau solaire et accumulateur LiFePO₄ ; liaison radio longue portée ; sondes de sol à deux profondeurs ; capteur de lumière ; anémomètre ; électrodes impolarisables et amplificateur d'instrumentation dédié.</dd>
+        <dt>Le vrai coût</dt>
+        <dd><strong>Le temps.</strong> Comptez deux à trois semaines entre la première mise sous tension et des données dont vous êtes sûr. L'essentiel de ce temps passe en étalonnage et en élimination d'artefacts, non en montage.</dd>
+        <dt>Autorisations</dt>
+        <dd>Indispensables si l'arbre n'est pas chez vous. Voir le chapitre 24.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <h3 id="c21-niveau3" data-toc="sub">Niveau 3 — L'installation publique</h3>
+
+  <div class="fiche">
+    <div class="f-head">
+      <div class="f-name">Configuration « arbre parlant »</div>
+      <div class="f-maker">Plusieurs mois · 2 000 à 5 000 € · espace public</div>
+    </div>
+    <div class="f-body">
+      <dl>
+        <dt>Objectif</dt>
+        <dd>Un dispositif interactif accessible au public, avec dialogue vocal.</dd>
+        <dt>Ajouts</dt>
+        <dd>Machine d'inférence locale suffisamment puissante ; microphone directionnel ; haut-parleur ; alimentation renforcée ; mobilier ; signalétique explicative ; protection contre le vandalisme et les intempéries.</dd>
+        <dt>Postes sous-estimés</dt>
+        <dd>L'<strong>alimentation</strong> — une machine d'inférence consomme cent fois plus qu'un nœud de capteurs, et le solaire seul n'y suffit généralement pas. La <strong>maintenance</strong> — une installation publique exige une visite hebdomadaire. L'<strong>assurance</strong> et les <strong>autorisations</strong>.</dd>
+        <dt>Poste incompressible</dt>
+        <dd>La <strong>signalétique</strong>. Un panneau qui explique ce que fait le dispositif, ce qu'il mesure et ce qu'il n'établit pas. C'est peu coûteux, et c'est ce qui distingue une médiation d'une mystification.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <figure class="full">
+    <img src="assets/svg/tt-network-power.svg" alt="Topologie radio et budget énergétique journalier"/>
+    <figcaption><span class="fig-n">Fig. ##.</span> Topologie radio et budget énergétique d'un nœud de capteurs. Le dimensionnement se fait sur la <em>marge</em> — dix jours sans soleil — et non sur la moyenne annuelle. C'est décembre qui tue les installations, pas juillet.</figcaption>
+  </figure>
+  <div class="duo">
+    <figure class="photo"><img src="assets/img/p/electronics-esp32-board-01.jpg" alt="Une carte à microcontrôleur avec radio intégrée : le cœur d'un nœud de capteurs, pour qu"/><figcaption><span class="fig-n">Fig. ##.</span> Une carte à microcontrôleur avec radio intégrée : le cœur d'un nœud de capteurs, pour quelques euros.<span class="credit">ESP32 Dev Board — Edwiyanto, CC BY-SA 4.0.</span></figcaption></figure>
+    <figure class="photo"><img src="assets/img/p/electronics-solar-panel-12.jpg" alt="Panneau solaire. Le dimensionnement se fait sur le mois le plus défavorable, jamais sur "/><figcaption><span class="fig-n">Fig. ##.</span> Panneau solaire. Le dimensionnement se fait sur le mois le plus défavorable, jamais sur la moyenne.<span class="credit">Ground mounted solar panels.gk — Grendelkhan, CC BY-SA 4.0.</span></figcaption></figure>
+  </div>
+
+
+  <div class="callout caution">
+    <div class="callout-title">⚠️ Le poste que personne ne budgète</div>
+    <p>Dans toutes les configurations, le coût dominant n'est pas le matériel : c'est le <strong>temps d'étalonnage et de déverminage</strong>. Un praticien expérimenté compte, pour une installation extérieure, environ <strong>une heure de mise au point par capteur et par semaine du premier mois</strong>.</p>
+    <p>Si votre planning ne prévoit pas ce temps, votre installation produira des données. Elles seront simplement fausses, et vous ne le saurez pas.</p>
+  </div>
+
+  <div class="recap">
+    <h4>À retenir</h4>
+    <ul>
+      <li>Trois niveaux : démonstration de table (100-200 €), arbre saisonnier (600-1 200 €), installation publique (2 000-5 000 €).</li>
+      <li>Le niveau 1 suffit à tout comprendre et à pratiquer les trois tests de contrôle.</li>
+      <li>Le facteur limitant est toujours le temps d'étalonnage, jamais le budget.</li>
+      <li>Dimensionner l'énergie sur la marge — dix jours sans soleil — et non sur la moyenne.</li>
+      <li>La signalétique est le poste le moins cher et le plus décisif.</li>
+    </ul>
+  </div>
+</section>

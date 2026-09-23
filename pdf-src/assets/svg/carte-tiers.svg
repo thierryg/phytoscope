@@ -2,16 +2,16 @@
   ==========================================================================
   PhytoScope — attribution — pdf-src/assets/svg/carte-tiers.svg
 
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
+  Version   : 1.6.0
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
 
   SPDX-License-Identifier: MIT
-  fin de l'attribution
+  end of attribution
   ==========================================================================
 -->
 
@@ -40,7 +40,7 @@
    <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
 </defs>
 <rect width="980" height="520" fill="#FFFFFF"/>
-<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Où se situe cette carte</text>
+<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Where this board sits</text>
 <text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Trois niveaux d'instrument, trois usages, trois budgets</text>
 <rect x="40" y="96" width="288" height="340" rx="8" fill="#EDF5F0" stroke="#3F7D5A" stroke-width="1.8"/>
 <rect x="40" y="96" width="288" height="34" rx="8" fill="#3F7D5A" stroke="#3F7D5A" stroke-width="1.8"/>
@@ -48,34 +48,34 @@
 <text x="184" y="158" font-family="Cormorant Garamond, serif" font-size="24.89" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Oscillateur NE555</text>
 <text x="184" y="182" font-family="DejaVu Sans Mono, monospace" font-size="21.02" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">25 – 40 €</text>
 <text x="64" y="216" font-family="Lato, sans-serif" font-size="22.13" fill="#3F7D5A" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
-<text x="80" y="216" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">mesure : une période</text>
+<text x="80" y="216" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">measures: a period</text>
 <text x="64" y="242" font-family="Lato, sans-serif" font-size="22.13" fill="#3F7D5A" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
 <text x="80" y="242" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">sortie : MIDI</text>
 <text x="64" y="268" font-family="Lato, sans-serif" font-size="22.13" fill="#3F7D5A" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
-<text x="80" y="268" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">aucun étalonnage</text>
+<text x="80" y="268" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">no calibration</text>
 <text x="64" y="294" font-family="Lato, sans-serif" font-size="22.13" fill="#3F7D5A" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
-<text x="80" y="294" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">idéal pour comprendre</text>
+<text x="80" y="294" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">ideal for understanding</text>
 <line x1="64" y1="340" x2="304" y2="340" stroke="#3F7D5A" stroke-width="1.0" stroke-linecap="round"/>
-<text x="184" y="362" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">décrit dans</text>
-<text x="184" y="382" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">La Musique des Plantes</text>
-<text x="184" y="397" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">partie X</text>
+<text x="184" y="362" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">described in</text>
+<text x="184" y="382" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">The Music of Plants</text>
+<text x="184" y="397" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">part X</text>
 <rect x="346" y="96" width="288" height="340" rx="8" fill="#EEF3FA" stroke="#2F5E86" stroke-width="1.8"/>
 <rect x="346" y="96" width="288" height="34" rx="8" fill="#2F5E86" stroke="#2F5E86" stroke-width="1.8"/>
 <text x="490" y="118" font-family="Lato, sans-serif" font-size="18.81" fill="#fff" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">NIVEAU 2</text>
 <text x="490" y="158" font-family="Cormorant Garamond, serif" font-size="24.89" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">INA333 + ADS1115</text>
 <text x="490" y="182" font-family="DejaVu Sans Mono, monospace" font-size="21.02" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">60 – 120 €</text>
 <text x="370" y="216" font-family="Lato, sans-serif" font-size="22.13" fill="#2F5E86" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
-<text x="386" y="216" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">mesure : une tension</text>
+<text x="386" y="216" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">measures: a voltage</text>
 <text x="370" y="242" font-family="Lato, sans-serif" font-size="22.13" fill="#2F5E86" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
-<text x="386" y="242" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">16 bits, 860 éch./s</text>
+<text x="386" y="242" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">16 bits, 860 samples/s</text>
 <text x="370" y="268" font-family="Lato, sans-serif" font-size="22.13" fill="#2F5E86" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
-<text x="386" y="268" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">étalonnage relatif</text>
+<text x="386" y="268" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">relative calibration</text>
 <text x="370" y="294" font-family="Lato, sans-serif" font-size="22.13" fill="#2F5E86" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
-<text x="386" y="294" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">idéal pour l'atelier</text>
+<text x="386" y="294" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">ideal for a workshop</text>
 <line x1="370" y1="340" x2="610" y2="340" stroke="#2F5E86" stroke-width="1.0" stroke-linecap="round"/>
-<text x="490" y="362" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">décrit dans</text>
-<text x="490" y="382" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Créer un Arbre Parlant</text>
-<text x="490" y="397" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">planche 2</text>
+<text x="490" y="362" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">described in</text>
+<text x="490" y="382" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Build a Talking Tree</text>
+<text x="490" y="397" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">figure 2</text>
 <rect x="652" y="96" width="288" height="340" rx="8" fill="#FBF5E6" stroke="#B08528" stroke-width="1.8"/>
 <rect x="652" y="96" width="288" height="34" rx="8" fill="#B08528" stroke="#B08528" stroke-width="1.8"/>
 <text x="796" y="118" font-family="Lato, sans-serif" font-size="18.81" fill="#fff" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">NIVEAU 3</text>
@@ -84,15 +84,15 @@
 <text x="676" y="216" font-family="Lato, sans-serif" font-size="22.13" fill="#B08528" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
 <text x="692" y="216" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">mesure : volts et ohms</text>
 <text x="676" y="242" font-family="Lato, sans-serif" font-size="22.13" fill="#B08528" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
-<text x="692" y="242" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">24 bits, isolée, datée</text>
+<text x="692" y="242" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">24 bits, isolated, timestamped</text>
 <text x="676" y="268" font-family="Lato, sans-serif" font-size="22.13" fill="#B08528" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
-<text x="692" y="268" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">étalonnage absolu</text>
+<text x="692" y="268" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">absolute calibration</text>
 <text x="676" y="294" font-family="Lato, sans-serif" font-size="22.13" fill="#B08528" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">·</text>
-<text x="692" y="294" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">idéal pour publier</text>
+<text x="692" y="294" font-family="Lato, sans-serif" font-size="17.7" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">ideal for publishing</text>
 <line x1="676" y1="340" x2="916" y2="340" stroke="#B08528" stroke-width="1.0" stroke-linecap="round"/>
-<text x="796" y="362" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">décrit dans</text>
-<text x="796" y="382" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Le présent document</text>
-<text x="490" y="470" font-family="Lato, sans-serif" font-size="18.25" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Les trois montages partagent les mêmes électrodes et le même logiciel : on monte d'un niveau sans rien jeter.</text>
+<text x="796" y="362" font-family="Lato, sans-serif" font-size="16.04" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">described in</text>
+<text x="796" y="382" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">This document</text>
+<text x="490" y="470" font-family="Lato, sans-serif" font-size="18.25" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">The three builds share the same electrodes and the same software: you move up a level without throwing anything away.</text>
 <text x="28" y="512" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
 <text x="952" y="512" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
 </svg>

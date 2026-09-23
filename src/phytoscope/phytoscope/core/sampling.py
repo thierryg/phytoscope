@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/core/sampling.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Module d'échantillonnage — prélever proprement, et savoir ce qu'on a prélevé.
@@ -59,11 +59,11 @@ log = get_logger(__name__)
 #  (gain cohérent = moyenne ; gain de bruit = racine de la moyenne des carrés)
 # ---------------------------------------------------------------------------
 FENETRES: Dict[str, str] = {
-    "rectangle": "Rectangulaire — aucune apodisation, fuite maximale",
-    "hann": "Hann — le compromis habituel",
-    "hamming": "Hamming — lobes latéraux plus bas, décroissance plus lente",
-    "blackman": "Blackman — fuite très faible, résolution dégradée",
-    "flattop": "Flat-top — amplitude exacte, résolution médiocre",
+    "rectangle": "Rectangular — no windowing, maximum leakage",
+    "hann": "Hann — the usual compromise",
+    "hamming": "Hamming — lower side lobes, slower roll-off",
+    "blackman": "Blackman — very low leakage, degraded resolution",
+    "flattop": "Flat-top — exact amplitude, poor resolution",
 }
 
 

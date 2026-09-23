@@ -1,16 +1,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/Makefile
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 # ============================================================================
@@ -60,7 +60,7 @@ endif
 PIP := $(PY) -m pip
 
 .DEFAULT_GOAL := help
-.PHONY: help install install-dev system-deps sanity run run-silencieux demo headless test check lint \
+.PHONY: help install install-dev system-deps sanity run run-quiet demo headless test check lint \
         clean distclean freeze doctor version bump-patch bump-minor bump-major \
         release-check dist tag release
 
@@ -119,7 +119,7 @@ run: $(VENV)              ## bilan de démarrage, puis lance le logiciel
 	@$(PY) run.py --diagnostic || \
 	  (echo ""; echo "→ Diagnostic détaillé :  make sanity"; exit 1)
 
-run-silencieux: $(VENV)   ## lance le logiciel sans le bilan
+run-quiet: $(VENV)   ## lance le logiciel sans le bilan
 	@$(PY) run.py --no-diagnostic
 
 demo: $(VENV)             ## lance le logiciel avec la plante simulée

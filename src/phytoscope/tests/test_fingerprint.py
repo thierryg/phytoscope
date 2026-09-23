@@ -2,24 +2,24 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/tests/test_fingerprint.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
-"""Tests de l'empreinte de mesure.
+"""Tests de l'fingerprint de mesure.
 
 Ce que ces tests protègent est autant déontologique que technique : une
-empreinte doit **séparer deux montages différents** et **rapprocher deux
+fingerprint doit **séparer deux montages différents** et **rapprocher deux
 mesures du même montage**, sans jamais prétendre identifier un végétal. Si la
-ressemblance ne distinguait rien, l'afficher serait trompeur ; si elle
+resemblance ne distinguait rien, l'afficher serait trompeur ; si elle
 distinguait trop, on lui ferait dire ce qu'elle ne sait pas.
 """
 import json
@@ -48,99 +48,102 @@ def montage(bruit_uv=3.0, derive_uv_min=20.0, graine=1, duree=120.0,
 class TestCalcul:
     def test_descripteurs_renseignes(self):
         x, evs = montage()
-        e = emp.calculer(x, FS, evs, nom="essai")
-        valeurs = e.valeurs()
-        assert len(valeurs) == len(emp.DESCRIPTEURS)
-        assert e.bruit_uv > 0 and e.duree_s == pytest.approx(120.0)
+        e = emp.compute(x, FS, evs, name="essai")
+        values = e.values()
+        assert len(values) == len(emp.DESCRIPTORS)
+        assert e.bruit_uv > 0 and e.duration_s == pytest.approx(120.0)
         assert e.evenements_min > 0
-        assert all(v == v for v in valeurs.values())    # aucun NaN
+        assert all(v == v for v in values.values())    # aucun NaN
 
     def test_signal_trop_court(self):
-        e = emp.calculer(np.zeros(10), FS)
-        assert e.duree_s == 0.0 and e.bruit_uv == 0.0
+        e = emp.compute(np.zeros(10), FS)
+        assert e.duration_s == 0.0 and e.bruit_uv == 0.0
 
     def test_le_bruit_se_retrouve(self):
         x, evs = montage(bruit_uv=12.0)
-        e = emp.calculer(x, FS, evs)
-        #  L'empreinte mesure le signal complet (bruit + dérive) : on vérifie
-        #  l'ordre de grandeur, pas l'égalité.
+        e = emp.compute(x, FS, evs)
+        #  L'fingerprint mesure le signal complet (bruit + dérive) : on vérifie
+        #  l'order de grandeur, pas l'égalité.
         assert 5.0 < e.bruit_uv < 60.0
 
     def test_aller_retour_json(self):
         x, evs = montage()
-        e = emp.calculer(x, FS, evs, nom="ficus")
-        relu = emp.Empreinte.from_dict(json.loads(json.dumps(e.to_dict())))
-        assert relu.nom == "ficus"
-        assert relu.valeurs() == e.valeurs()
+        e = emp.compute(x, FS, evs, name="ficus")
+        relu = emp.Fingerprint.from_dict(json.loads(json.dumps(e.to_dict())))
+        assert relu.name == "ficus"
+        assert relu.values() == e.values()
 
     def test_lignes_lisibles(self):
-        e = emp.calculer(*montage()[:1], FS)
-        for libelle, valeur in e.lignes():
-            assert libelle and valeur
+        e = emp.compute(*montage()[:1], FS)
+        for label, value in e.rows():
+            assert label and value
 
 
 class TestRessemblance:
     def test_une_empreinte_se_ressemble(self):
         x, evs = montage()
-        e = emp.calculer(x, FS, evs)
-        score, detail = emp.ressembler(e, e)
+        e = emp.compute(x, FS, evs)
+        score, detail = emp.resemble(e, e)
         assert score == pytest.approx(1.0)
-        assert len(detail) == len(emp.DESCRIPTEURS)
+        assert len(detail) == len(emp.DESCRIPTORS)
 
     def test_deux_moments_du_meme_montage_se_ressemblent(self):
-        a = emp.calculer(*montage(3.0, 20.0, graine=1)[:1], FS)
-        b = emp.calculer(*montage(3.3, 23.0, graine=2)[:1], FS)
-        assert emp.ressembler(a, b)[0] > 0.85
+        a = emp.compute(*montage(3.0, 20.0, graine=1)[:1], FS)
+        b = emp.compute(*montage(3.3, 23.0, graine=2)[:1], FS)
+        assert emp.resemble(a, b)[0] > 0.85
 
     def test_un_contact_degrade_se_distingue(self):
-        bon = emp.calculer(*montage(3.0, 20.0, graine=1)[:1], FS)
-        sec = emp.calculer(*montage(60.0, 500.0, graine=3)[:1], FS)
-        proche, lointain = emp.ressembler(bon, bon)[0], emp.ressembler(bon, sec)[0]
+        bon = emp.compute(*montage(3.0, 20.0, graine=1)[:1], FS)
+        sec = emp.compute(*montage(60.0, 500.0, graine=3)[:1], FS)
+        proche, lointain = emp.resemble(bon, bon)[0], emp.resemble(bon, sec)[0]
         assert lointain < proche - 0.1
 
     def test_la_ressemblance_est_symetrique(self):
-        a = emp.calculer(*montage(graine=1)[:1], FS)
-        b = emp.calculer(*montage(20.0, 100.0, graine=5)[:1], FS)
-        assert emp.ressembler(a, b)[0] == pytest.approx(emp.ressembler(b, a)[0])
+        a = emp.compute(*montage(graine=1)[:1], FS)
+        b = emp.compute(*montage(20.0, 100.0, graine=5)[:1], FS)
+        assert emp.resemble(a, b)[0] == pytest.approx(emp.resemble(b, a)[0])
 
     def test_qualification_prudente(self):
-        #  Aucun seuil ne doit produire le mot « identique ».
-        for borne, phrase in emp.SEUILS:
+        #  No threshold may produce the word "identical" — in any language.
+        #  The English wording says "the same setup, most likely", and the
+        #  hedge is the point: the fingerprint compares rigs, it does not
+        #  identify a plant.
+        for borne, phrase in emp.THRESHOLDS:
             assert "identi" not in phrase.lower()
-            assert emp.qualifier(borne) == phrase
-        assert emp.qualifier(0.99).startswith("le même montage")
-        assert emp.qualifier(0.10) == "un autre montage"
+            assert emp.qualify(borne) == phrase
+        assert emp.qualify(0.99).startswith("the same setup")
+        assert emp.qualify(0.10) == "a different setup"
 
 
 class TestRegistre:
     def test_ajouter_relire_retirer(self, tmp_path):
-        chemin = str(tmp_path / "montages.json")
-        r = emp.Registre(chemin)
+        path = str(tmp_path / "montages.json")
+        r = emp.Registry(path)
         assert r.empreintes == []
-        e = emp.calculer(*montage()[:1], FS, nom="ficus du salon")
-        r.ajouter(e)
-        assert len(emp.Registre(chemin).empreintes) == 1
-        r.retirer("ficus du salon")
-        assert emp.Registre(chemin).empreintes == []
+        e = emp.compute(*montage()[:1], FS, name="ficus du salon")
+        r.add(e)
+        assert len(emp.Registry(path).empreintes) == 1
+        r.remove("ficus du salon")
+        assert emp.Registry(path).empreintes == []
 
     def test_un_nom_ne_se_duplique_pas(self, tmp_path):
-        chemin = str(tmp_path / "montages.json")
-        r = emp.Registre(chemin)
+        path = str(tmp_path / "montages.json")
+        r = emp.Registry(path)
         for graine in (1, 2, 3):
-            r.ajouter(emp.calculer(*montage(graine=graine)[:1], FS, nom="même nom"))
+            r.add(emp.compute(*montage(graine=graine)[:1], FS, name="même name"))
         assert len(r.empreintes) == 1
 
     def test_reconnaitre_classe_par_ressemblance(self, tmp_path):
-        chemin = str(tmp_path / "montages.json")
-        r = emp.Registre(chemin)
-        r.ajouter(emp.calculer(*montage(3.0, 20.0, graine=1)[:1], FS, nom="frais"))
-        r.ajouter(emp.calculer(*montage(80.0, 600.0, graine=9)[:1], FS, nom="sec"))
-        courant = emp.calculer(*montage(3.2, 22.0, graine=2)[:1], FS)
-        classement = r.reconnaitre(courant)
-        assert [e.nom for e, _ in classement][0] == "frais"
+        path = str(tmp_path / "montages.json")
+        r = emp.Registry(path)
+        r.add(emp.compute(*montage(3.0, 20.0, graine=1)[:1], FS, name="frais"))
+        r.add(emp.compute(*montage(80.0, 600.0, graine=9)[:1], FS, name="sec"))
+        courant = emp.compute(*montage(3.2, 22.0, graine=2)[:1], FS)
+        classement = r.recognise(courant)
+        assert [e.name for e, _ in classement][0] == "frais"
         assert classement[0][1] > classement[1][1]
 
     def test_fichier_illisible_ne_bloque_pas(self, tmp_path):
-        chemin = tmp_path / "montages.json"
-        chemin.write_text("{pas du json", encoding="utf-8")
-        assert emp.Registre(str(chemin)).empreintes == []
+        path = tmp_path / "montages.json"
+        path.write_text("{pas du json", encoding="utf-8")
+        assert emp.Registry(str(path)).empreintes == []

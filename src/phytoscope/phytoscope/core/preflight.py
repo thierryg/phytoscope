@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/core/preflight.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Contrôles avant vol — ce qui manque, pourquoi, et comment l'obtenir.
@@ -534,7 +534,7 @@ class PreflightReport:
     # -- rendus --------------------------------------------------------------
     def to_console(self) -> str:
         lignes: List[str] = []
-        lignes.append(C.titre("Contrôles avant vol"))
+        lignes.append(C.titre("Pre-flight checks"))
         lignes.append("")
         etat = "ok" if self.python_ok else "err"
         lignes.append(C.ligne_statut(etat, f"Python {self.python_version}",

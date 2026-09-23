@@ -1,357 +1,425 @@
-# 2. L'interface, en détail
+# 2. The interface, in detail
 
-Tout ce qu'un module importe vient de `phytoscope.api`, et de nulle part
-ailleurs. **Ce qui n'est pas dans ce fichier n'est pas de l'interface** : cela
-peut changer d'une version à l'autre sans préavis.
+Everything a module imports comes from `phytoscope.api`, and from nowhere
+else. **What is not in that file is not part of the interface**: it may change
+from one version to the next without notice.
 
 ```python
 from phytoscope.api import (
-    # le contrat
-    VERSION_API, compatible, Manifeste, Module, Capacite,
-    # les capacités
-    Analyseur, Descripteur, Sonificateur, Exportateur, Source,
-    # ce qu'elles échangent
-    Grandeur, Trace, NoteProposee,
-    # ce qu'on reçoit
-    Contexte, EtatMesure,
-    # les événements
-    BUS, EVENEMENTS, MESURE_DEMARREE, EVENEMENT_DETECTE, ...,
+    # the contract
+    API_VERSION, compatible, Manifest, Module, Capability,
+    # the capabilities
+    Analyser, Descriptor, Sonifier, Exporter, Source,
+    # what they exchange
+    Quantity, Trace, ProposedNote,
+    # what you are given
+    Context, MeasurementState,
+    # the events
+    BUS, EVENTS, MEASUREMENT_STARTED, EVENT_DETECTED, ...,
 )
 ```
 
 ---
 
-## `VERSION_API` et la promesse de compatibilité
+## `API_VERSION` and the compatibility promise
 
 ```python
-VERSION_API = "1.0"
+API_VERSION = "3.0"
 ```
 
-Numérotation sémantique :
+Semantic numbering:
 
 | | |
 |---|---|
-| **majeur** | une promesse est rompue — un module ancien cesse de fonctionner |
-| **mineur** | une capacité ou un paramètre s'ajoute, sans rien casser |
-| **correctif** | une précision de comportement, jamais de forme |
+| **major** | a promise is broken — an older module stops working |
+| **minor** | a capability or a parameter is added, breaking nothing |
+| **patch** | a clarification of behaviour, never of shape |
+
+What `compatible()` actually answers on a 3.0 host:
 
 ```python
-compatible("1.0")      # True  — même majeur, mineur suffisant
-compatible("1.2")      # False sur une API 1.0 : elle ne connaît pas encore
-compatible("2.0")      # False — majeur différent
+compatible("3.0")      # True  — same major, and the host knows this minor
+compatible("3.1")      # False — the host does not know 3.1 yet
+compatible("2.0")      # False — different major
+compatible("4.0")      # False — different major
 ```
 
-**La promesse :** tant que le majeur ne change pas, un module écrit aujourd'hui
-fonctionnera. On peut ajouter, on ne peut pas retirer.
+**The promise:** as long as the major does not change, a module written today
+will go on working. Things can be added; nothing can be taken away.
 
-Un module déclarant `api="1.0"` tourne sur toute API `1.x`. Il ne tourne pas
-sur `2.x`, et le logiciel le lui dira plutôt que d'échouer au milieu d'une
-séance.
+A module declaring `api="3.0"` runs on any host whose API is `3.0` or a later
+`3.x`. It does not run on `4.x`, and the software will say so rather than
+failing in the middle of a session.
+
+> **Coming from 2.0?** Every name on this page changed on 2026-09-23, and a
+> module written against 2.0 is refused at discovery rather than half-loaded.
+> The table is in [Migrating from 2.0](08-migrating-from-2.0.md).
+
+### The version contract goes both ways
+
+`api` in your manifest is a **minimum**, and the host reads it as one. The
+question can be asked from either side, and both sides go through the same
+parser — so the two answers cannot drift apart.
+
+**You, asking what you are running on:**
+
+```python
+context.api_version          # "3.0" — the host's API version
+context.api_required         # "3.0" — what YOUR manifest asked for
+context.api_at_least("3.2")  # bool — same major, minor at least
+```
+
+**The host, asking what you need:**
+
+```python
+manifest.api                 # "3.0" — the minimum, as you wrote it
+manifest.api_required        # (3, 0) — the same, parsed
+manifest.api_satisfied_by    # "API 3.0 or any later 3.x" — for Diagnostics
+registry.api_requirements()  # {"my-module": (3, 0), …} for every module
+```
+
+And the parser itself, because neither side should write its own:
+
+```python
+from phytoscope.api import parse_version
+parse_version("3.1")     # (3, 1)
+parse_version("3.1.4")   # (3, 1) — the patch never decides
+parse_version("three")   # (-1, -1) — and `compatible()` then refuses
+```
+
+> **Why `api_at_least()` matters.** Declare the **lowest** version that
+> actually suffices, and ask at run time for anything newer you would merely
+> *like*:
+>
+> ```python
+> def analyse(self, x, fs, context):
+>     if context.api_at_least("3.2"):
+>         return self._with_the_field_added_in_3_2(x, fs, context)
+>     return self._the_way_that_works_on_3_0(x, fs, context)
+> ```
+>
+> A module that declares `api="3.2"` because that is what its author had
+> installed is a module refused on every 3.0 and 3.1 host, for nothing. The
+> manifest states what you *need*; the context tells you what you *got*.
 
 ---
 
-## `Manifeste`
+## `Manifest`
 
-La carte d'identité. **Lue sans exécuter votre code** — voir
-[les pièges](07-pieges.md#le-manifeste-est-lu-sans-executer-votre-code).
+The identity card. **Read without running your code** — see
+[the pitfalls](07-pitfalls.md#the-manifest-is-read-without-running-your-code).
 
 ```python
-Manifeste(
-    nom="mon-module",
-    titre="Mon module",
+Manifest(
+    name="my-module",
+    title="My module",
     version="1.0.0",
-    api="1.0",
+    api="3.0",
     description="",
-    auteur="",
+    author="",
     licence="",
-    site="",
-    capacites=(),
-    depend_de=(),
-    exige=(),
+    website="",
+    capabilities=(),
+    depends_on=(),
+    requires=(),
 )
 ```
 
-### Les champs
+### The fields
 
-| Champ | Type | Défaut | Rôle |
+| Field | Type | Default | Role |
 |---|---|---|---|
-| `nom` | `str` | *obligatoire* | l'identifiant : `^[a-z][a-z0-9-]{1,48}$`. Sert de clé pour les réglages, le dossier, le journal. |
-| `titre` | `str` | le nom | ce que l'utilisateur lit |
-| `version` | `str` | `"0.1.0"` | la vôtre, en sémantique |
-| `api` | `str` | la courante | la version d'interface visée |
-| `description` | `str` | `""` | une phrase, affichée au Diagnostic |
-| `auteur` | `str` | `""` | |
+| `name` | `str` | *required* | the identifier: `^[a-z][a-z0-9-]{1,48}$`. Used as the key for settings |
+| `title` | `str` | the name | what the user reads |
+| `version` | `str` | `"0.1.0"` | yours, semantic |
+| `api` | `str` | the current one | the **minimum** interface version you need. Accepted on any later minor of the same major |
+| `description` | `str` | `""` | one sentence, shown in Diagnostics |
+| `author` | `str` | `""` | |
 | `licence` | `str` | `""` | |
-| `site` | `str` | `""` | |
-| `capacites` | `tuple[str]` | `()` | **déclaratif** : ce qui n'est pas là n'est pas proposé, même si la méthode existe |
-| `depend_de` | `tuple[str]` | `()` | les modules chargés avant le vôtre, par leur `nom` |
-| `exige` | `tuple[str]` | `()` | les bibliothèques Python. Vérifiées **avant** l'import |
+| `website` | `str` | `""` | |
+| `capabilities` | `tuple[str]` | `()` | **declarative**: what is not listed is not offered, even if the method exists |
+| `depends_on` | `tuple[str]` | `()` | the modules loaded before yours, by their `name` |
+| `requires` | `tuple[str]` | `()` | the Python libraries. Checked **before** the import |
 
-### Les méthodes
+### The methods
 
 ```python
-manifeste.valide        # bool — le nom respecte-t-il la forme ?
-manifeste.defauts()     # list[str] — ce qui empêche l'acceptation, en clair
-manifeste.to_dict()     # dict
+manifest.valid              # bool — does the name match the required shape?
+manifest.problems()         # list[str] — what prevents acceptance, in words
+manifest.api_required       # (major, minor) — the minimum, parsed
+manifest.api_satisfied_by   # str — "API 3.0 or any later 3.x"
+manifest.to_dict()          # dict
 ```
 
-`defauts()` est ce que le Diagnostic affiche. Appelez-le dans vos essais :
+`problems()` is what Diagnostics displays. Call it in your tests:
 
 ```python
-def test_le_manifeste_est_valide(instance):
-    assert instance.MANIFESTE.defauts() == [], instance.MANIFESTE.defauts()
+def test_the_manifest_is_valid(instance):
+    assert instance.MANIFEST.problems() == [], instance.MANIFEST.problems()
 ```
 
-### `Capacite`
+### `Capability`
 
-Des constantes, pour éviter les chaînes en dur :
+Constants, to avoid hardcoded strings:
 
 ```python
-Capacite.ANALYSEUR      # "analyseur"
-Capacite.DESCRIPTEUR    # "descripteur"
-Capacite.SONIFICATEUR   # "sonificateur"
-Capacite.EXPORTATEUR    # "exportateur"
-Capacite.SOURCE         # "source"
-Capacite.TOUTES         # le tuple des cinq
+Capability.ANALYSER      # "analyser"
+Capability.DESCRIPTOR    # "descriptor"
+Capability.SONIFIER   # "sonifier"
+Capability.EXPORTER    # "exporter"
+Capability.SOURCE         # "source"
+Capability.ALL         # the tuple of all five
 ```
 
 ---
 
 ## `Module`
 
-Ce dont hérite tout module. **Seul `MANIFESTE` est obligatoire** ; tout le
-reste a un comportement par défaut qui ne fait rien.
+What every module inherits from. **Only `MANIFEST` is required**; everything
+else has a default behaviour that does nothing.
 
 ```python
 class Module:
-    MANIFESTE: Manifeste
+    MANIFEST: Manifest
 
-    def __init__(self, contexte: Contexte) -> None
-    def installer(self) -> None
-    def arreter(self) -> None
-    def reglages_par_defaut(self) -> dict
+    def __init__(self, context: Context) -> None
+    def setup(self) -> None
+    def shutdown(self) -> None
+    def default_settings(self) -> dict
 ```
 
-### `__init__(contexte)`
+### `__init__(context)`
 
-Appelé au chargement. `self.contexte` est posé pour vous.
+Called at load time. `self.context` is set for you.
 
-> **Ne faites rien de long ici.** C'est appelé pour tous les modules, l'un
-> après l'autre, au démarrage du logiciel. Une seconde ici, c'est une seconde
-> de plus avant que l'utilisateur ne voie quoi que ce soit.
+> **Do nothing lengthy here.** This is called for every module, one after
+> another, as the software starts. A second here is a second more before the
+> user sees anything at all.
 
-### `installer()`
+### `setup()`
 
-Une fois, **après** le chargement de tous les modules. C'est ici qu'on
-s'abonne et qu'on prépare ses fichiers.
+Once, **after** every module has been loaded. This is where you subscribe and
+prepare your files.
 
-Pourquoi après tous les autres : si votre module dépend d'un autre
-(`depend_de`), celui-ci est déjà chargé quand on vous appelle.
+Why after all the others: if your module depends on another (`depends_on`), that
+one is already loaded when you are called.
 
-### `arreter()`
+### `shutdown()`
 
-Une fois, à la fermeture. Fermez ce que vous avez ouvert. **Les abonnements
-sont retirés pour vous** : inutile de s'en occuper.
+Once, at shutdown. Close what you opened. **Your subscriptions are removed for
+you**: there is no need to deal with them.
 
-### `reglages_par_defaut()`
+### `default_settings()`
 
 ```python
-def reglages_par_defaut(self):
+def default_settings(self):
     return {"seuil_uv": 8.0, "montrer_le_detail": True}
 ```
 
-Le logiciel les conserve sous le nom de votre module et vous les rend par
-`contexte.reglages`. **N'écrivez jamais dans le fichier de réglages du
-logiciel** : il ne vous appartient pas, et sa forme peut changer.
+The software keeps them under your module's name and hands them back through
+`context.settings`. **Never write into the software's own settings file**: it
+is not yours, and its shape may change.
 
 ---
 
-## `Contexte`
+## `Context`
 
-Ce que votre module reçoit. **Vous ne recevez jamais l'objet moteur** : c'est
-délibéré, et c'est ce qui rend l'interface tenable dans le temps.
+What your module is given. **You are never given the engine object**: that is
+deliberate, and it is what makes the interface sustainable over time.
 
-### Lire le signal
+### Which API you are running on
 
 ```python
-contexte.signal(secondes=60.0, brut=False) -> np.ndarray
+context.api_version            # str — the host's API version
+context.api_required           # str — the minimum your manifest declared
+context.api_at_least("3.2")    # bool
 ```
 
-Les N dernières secondes, **en volts**, dans l'ordre chronologique. Rend un
-tableau vide s'il n'y a rien encore — ce n'est pas une erreur, c'est le cas au
-démarrage, et votre module doit le prévoir.
+See [the version contract](#the-version-contract-goes-both-ways) above. The
+short of it: declare the lowest you need, and ask here for anything newer you
+would only like to have.
 
-`brut=True` donne le signal **avant** réjecteur et passe-bas.
+### Reading the signal
 
-> **Quand employer le brut :** pour toute mesure de bruit. Filtrer avant de
-> mesurer le bruit revient à mesurer son propre filtre — le réjecteur
-> effacerait le résidu de secteur, le passe-bas à 40 Hz effacerait la bande où
-> se lit le bruit thermique.
+```python
+context.signal(seconds=60.0, raw=False) -> np.ndarray
+```
+
+The last N seconds, **in volts**, in chronological order. Returns an empty
+array when there is nothing yet — that is not an error, it is the situation at
+start-up, and your module must expect it.
+
+`raw=True` gives the signal **before** the notch filter and the low-pass.
+
+> **When to use the raw signal:** for any noise measurement. Filtering before
+> measuring noise amounts to measuring your own filter — the notch would erase
+> the mains residue, and the 40 Hz low-pass would erase the band in which
+> thermal noise is read.
 >
-> **Quand employer le traité :** pour analyser l'*activité* de la plante
-> plutôt que la chaîne de mesure.
+> **When to use the processed signal:** to analyse the plant's *activity*
+> rather than the measurement chain.
 
-### Les paramètres de la mesure
-
-```python
-contexte.frequence_hz       # float — la cadence réelle
-contexte.pleine_echelle_v   # float — la pleine échelle du convertisseur
-contexte.reseau_hz          # float — 50 ou 60, selon les réglages
-```
-
-### L'état
+### The measurement's parameters
 
 ```python
-etat = contexte.etat()      # EtatMesure — une copie, jamais une référence
+context.rate_hz       # float — the actual rate
+context.full_scale_v   # float — the converter's full scale
+context.mains_hz          # float — 50 or 60, per the settings
 ```
 
-| Champ | Type | |
+### The state
+
+```python
+state = context.state()      # MeasurementState — a copy, never a reference
+```
+
+| Field | Type | |
 |---|---|---|
-| `en_marche` | `bool` | l'acquisition tourne |
-| `source` | `str` | le nom de la source |
-| `duree_s` | `float` | depuis le début de la séance |
-| `frequence_hz` | `float` | |
-| `tension_v` | `float` | la valeur instantanée |
-| `ligne_de_base_v` | `float` | |
-| `bruit_efficace_v` | `float` | |
-| `crete_a_crete_v` | `float` | |
-| `derive_v_par_min` | `float` | |
-| `sature` | `bool` | le convertisseur bute |
-| `evenements` | `int` | depuis le début |
+| `running` | `bool` | the acquisition is running |
+| `source` | `str` | the source's name |
+| `duration_s` | `float` | since the session began |
+| `rate_hz` | `float` | |
+| `value_v` | `float` | the instantaneous value |
+| `baseline_v` | `float` | |
+| `rms_v` | `float` | |
+| `pp_v` | `float` | |
+| `drift_v_per_min` | `float` | |
+| `saturated` | `bool` | the converter is railed |
+| `events` | `int` | since the beginning |
 | `notes` | `int` | |
-| `enregistre` | `bool` | une séance est en cours d'écriture |
-| `relecture` | `bool` | **on rejoue un enregistrement, on ne mesure pas** |
+| `recording` | `bool` | a session is being written |
+| `replaying` | `bool` | **a recording is being replayed; nothing is being measured** |
 
-> `relecture` mérite l'attention : un module qui écrit quelque part doit
-> savoir qu'il ne mesure pas.
-
-```python
-contexte.instants_evenements()   # list[float] — en secondes depuis le début
-```
-
-### Écrire
+> `replaying` deserves attention: a module that writes anywhere must know when
+> it is not measuring.
 
 ```python
-contexte.dossier()    # str — votre répertoire, créé au besoin
+context.event_times()   # list[float] — seconds since the beginning
 ```
 
-`<configuration>/modules/<votre-nom>/`. Il survit aux mises à jour et n'est
-jamais effacé par le logiciel.
-
-> **Écrivez ici, et ici seul.** Rien ne vous en empêche techniquement — c'est
-> du Python, pas une prison. Mais le dossier des séances appartient à
-> l'utilisateur, et celui du logiciel au logiciel.
-
-### Dire quelque chose
+### Writing
 
 ```python
-contexte.journal("ce qui s'est passé", niveau="info")   # debug|info|warning|error
-contexte.message("visible dans la barre d'état")
-contexte.traduire("un libellé")
+context.directory()    # str — your directory, created if needed
 ```
 
-`journal()` écrit sous le nom de votre module : on retrouve vos lignes en
-cherchant `module.<votre-nom>`.
+`<configuration>/modules/<your-name>/`. It survives updates and is never
+erased by the software.
 
-`message()` **avec parcimonie** : un module qui parle sans cesse finit par ne
-plus être lu.
+> **Write here, and only here.** Nothing stops you technically — this is
+> Python, not a prison. But the sessions directory belongs to the user, and the
+> software's own belongs to the software.
 
-### S'abonner
+### Saying something
 
 ```python
-contexte.abonner(EVENEMENT_DETECTE, self._sur_evenement)
+context.log("what happened", level="info")   # debug|info|warning|error
+context.message("visible in the status bar")
+context.translate("a label")
 ```
 
-Voir [4. Les événements](04-evenements.md).
+`log()` writes under your module's name: your lines are found by searching
+for `module.<your-name>`.
+
+`message()` **sparingly**: a module that talks constantly ends up not being
+read at all.
+
+### Subscribing
+
+```python
+context.subscribe(EVENT_DETECTED, self._sur_evenement)
+```
+
+See [4. Events](04-events.md).
 
 ---
 
-## `Grandeur`
+## `Quantity`
 
-Ce que rend un analyseur.
+What an analyser returns.
 
 ```python
-Grandeur(
-    cle="mon-indicateur",       # identifiant, stable d'une version à l'autre
-    libelle="Mon indicateur",   # un GABARIT si un nombre y figure
-    valeur=3.14,                # le nombre, toujours fini
-    texte="3,14 µV",            # la valeur mise en forme, unité comprise
-    sens="Ce que ce nombre dit, et ce qu'il ne dit pas.",
-    alerte=False,               # True → affiché en rouge
-    params={},                  # les valeurs du gabarit
+Quantity(
+    key="my-indicator",         # identifier, stable across versions
+    label="My indicator",     # a TEMPLATE if a number appears in it
+    value=3.14,                # the number, always finite
+    text="3.14 µV",            # the formatted value, unit included
+    meaning="What this number says, and what it does not say.",
+    alert=False,               # True → shown in red
+    params={},                  # the template's values
 )
 ```
 
-### `sens` n'est pas décoratif
+### `meaning` is not decorative
 
-Le logiciel impose que toute valeur affichée dise ce qu'elle signifie **et ce
-qu'elle ne permet pas de conclure**. Un module qui ne l'explique pas est
-chargé quand même, mais l'interface écrit *« le module n'explique pas cette
-valeur »* — ce qui se remarque.
+The software requires every displayed value to say what it means **and what it
+does not allow one to conclude**. A module that does not explain it is still
+loaded, but the interface writes *"this module does not explain this value"* —
+which gets noticed.
 
-### `libelle` et `params` : les gabarits
+### `label` and `params`: the templates
 
-Un libellé qui contient un nombre doit être un **gabarit** :
-
-```python
-#  NON — cette phrase ne peut pas entrer dans un catalogue de traduction
-Grandeur(libelle=f"Écart d'Allan à {tau} s", ...)
-
-#  OUI
-Grandeur(libelle="Écart d'Allan à {tau} s", params={"tau": f"{tau:g}"}, ...)
-```
-
-L'interface traduit **puis** remplit les trous. Une phrase où le nombre est
-déjà incrusté est intraduisible.
-
-### `texte` : des symboles, pas des mots
+A label containing a number must be a **template**:
 
 ```python
-texte="+37.2 dB"                        # OUI
-texte="+37.2 dB au-dessus du plancher"  # NON — reste en français partout
+#  NO — this sentence cannot go into a translation catalogue
+Quantity(label=f"Allan deviation at {tau} s", ...)
+
+#  YES
+Quantity(label="Allan deviation at {tau} s", params={"tau": f"{tau:g}"}, ...)
 ```
 
-Les symboles d'unité sont internationaux ; les mots vont dans `libelle` ou
-`sens`, qui sont traduits.
+The interface translates **and then** fills the holes. A sentence with the
+number already embedded cannot be translated.
+
+### `text`: symbols, not words
+
+```python
+text="+37.2 dB"                       # YES
+text="+37.2 dB above the floor"       # NO — stays in one language everywhere
+```
+
+Unit symbols are international; words belong in `label` or `meaning`, which are
+translated.
 
 ---
 
 ## `Trace`
 
-Ce que rend un descripteur.
+What a descriptor returns.
 
 ```python
 Trace(
-    x=np.ndarray, y=np.ndarray,   # même taille, sinon ValueError
-    titre="",
-    x_libelle="", y_libelle="",
+    x=np.ndarray, y=np.ndarray,   # the same length, or ValueError
+    title="",
+    x_label="", y_label="",
     x_log=False, y_log=False,
-    avertissement="",             # affiché sous la courbe
+    warning="",             # shown under the curve
 )
 ```
 
-`avertissement` joue le rôle de `sens` : ce que la représentation suppose, et
-ce qu'elle ne permet pas de conclure.
+`warning` plays the part of `meaning`: what the view assumes, and what it
+does not allow one to conclude.
 
 ---
 
-## `NoteProposee`
+## `ProposedNote`
 
-Ce que rend un sonificateur. **L'hôte décide de la jouer.**
+What a sonifier returns. **The host decides whether to play it.**
 
 ```python
-NoteProposee(
-    hauteur_midi=60,    # 0–127
-    velocite=80,        # 0–127
-    duree_s=0.4,
-    canal=0,
-    origine_v=0.0,      # la valeur mesurée qui a produit cette note
+ProposedNote(
+    midi_pitch=60,    # 0–127
+    velocity=80,        # 0–127
+    duration_s=0.4,
+    channel=0,
+    source_v=0.0,      # the measured value that produced this note
 )
 ```
 
-`origine_v` est conservée dans le rendu. Une sonification dont on ne peut plus
-remonter à la mesure n'est plus une mesure.
+`source_v` is kept in the rendering. A sonification from which one can no
+longer get back to the measurement is no longer a measurement.
 
 ---
 
-**Suite :** [3. Les cinq capacités](03-capacites.md)
+**Next:** [3. The five capabilities](03-capabilities.md)

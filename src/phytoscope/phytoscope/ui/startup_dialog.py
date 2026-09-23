@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/ui/startup_dialog.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Fenêtre de démarrage — ce qui manque, et comment l'obtenir, sans terminal.
@@ -71,7 +71,7 @@ class StartupDialog(QDialog):
         self.p = theme.palette(settings.ui.theme)
         self._installateur: Optional[_Installateur] = None
 
-        self.setWindowTitle(t("PhytoScope — contrôles avant vol"))
+        self.setWindowTitle(t("PhytoScope — pre-flight checks"))
         self.setMinimumSize(760, 560)
         try:
             from .icon import app_icon
@@ -83,7 +83,7 @@ class StartupDialog(QDialog):
 
         lay = QVBoxLayout(self)
 
-        titre = QLabel(t("Contrôles avant vol"))
+        titre = QLabel(t("Pre-flight checks"))
         titre.setObjectName("titre")
         lay.addWidget(titre)
 
@@ -102,7 +102,7 @@ class StartupDialog(QDialog):
                                    "<br>".join("• " + c for c in conseils))
             self.conseils.setTextFormat(Qt.RichText)
             self.conseils.setWordWrap(True)
-            self.conseils.setStyleSheet(f"color:{self.p['or']};")
+            self.conseils.setStyleSheet(f"color:{self.p['gold']};")
             lay.addWidget(self.conseils)
 
         self.journal = QPlainTextEdit()
@@ -118,23 +118,24 @@ class StartupDialog(QDialog):
         lay.addWidget(self.progression)
 
         self.chk_ne_plus_afficher = QCheckBox(
-            t("Ne plus afficher cette fenêtre tant que rien ne change"))
+            t("Do not show this window again while nothing changes"))
         lay.addWidget(self.chk_ne_plus_afficher)
 
         boutons = QHBoxLayout()
         paquets = rapport.paquets_a_installer(tous=True)
         self.btn_installer = QPushButton(
-            f"Installer les paquets manquants ({len(paquets)})")
+            t("Install the missing packages ({n})").format(
+                n=len(paquets)))
         self.btn_installer.setEnabled(bool(paquets) and
                                       bool(preflight.strategies(rapport.env)))
         self.btn_installer.clicked.connect(self._installer)
-        self.btn_copier = QPushButton(t("Copier la commande système"))
+        self.btn_copier = QPushButton(t("Copy the system command"))
         self.btn_copier.setEnabled(bool(rapport.commande_systeme()))
         self.btn_copier.clicked.connect(self._copier)
-        self.btn_continuer = QPushButton(t("Continuer"))
+        self.btn_continuer = QPushButton(t("Continue"))
         self.btn_continuer.setDefault(True)
         self.btn_continuer.clicked.connect(self.accept)
-        self.btn_quitter = QPushButton(t("Quitter"))
+        self.btn_quitter = QPushButton(t("Quit"))
         self.btn_quitter.clicked.connect(self.reject)
 
         boutons.addWidget(self.btn_installer)
@@ -166,7 +167,7 @@ class StartupDialog(QDialog):
         cb = QApplication.clipboard()
         if cb is not None:
             cb.setText(self.rapport.commande_systeme())
-        self.btn_copier.setText(t("Commande copiée ✓"))
+        self.btn_copier.setText(t("Command copied ✓"))
 
     def _installer(self) -> None:
         paquets = self.rapport.paquets_a_installer(tous=True)
@@ -193,8 +194,7 @@ class StartupDialog(QDialog):
         self.btn_continuer.setEnabled(nouveau.peut_demarrer)
         self.btn_installer.setEnabled(bool(nouveau.paquets_a_installer(tous=True)))
         if ok and nouveau.peut_demarrer:
-            self.etat.setText(t("Tout est en place. Certaines bibliothèques ne "
-                              "seront prises en compte qu'au prochain démarrage."))
+            self.etat.setText(t("Everything is in place. Some libraries will only be taken into account at the next start."))
 
     # -- utilisation ---------------------------------------------------------
     def exec_si_necessaire(self) -> bool:

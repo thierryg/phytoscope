@@ -1,52 +1,54 @@
 <section class="chapter">
-  <h2 id="p-fabrication" data-toc="chapter">Dossier de fabrication</h2>
+  <h2 id="p-fabrication" data-toc="chapter">Fabrication package</h2>
 
   <figure class="figframe">
-    <img src="assets/svg/pcb-empilage.svg" alt="Empilage et règles de fabrication"/>
-    <figcaption><span class="fig-n">PLANCHE 3 / 3</span> — Empilage, impédances contrôlées et
-    règles de perçage.</figcaption>
+    <img src="assets/svg/pcb-empilage.svg" alt="Stack-up and fabrication rules"/>
+    <figcaption><span class="fig-n">PLATE 3 / 3</span> — Stack-up, controlled impedances and
+    drilling rules.</figcaption>
   </figure>
 
-  <h3 id="p-commande" data-toc="sub">Ce qu'il faut indiquer au fabricant</h3>
+  <h3 id="p-commande" data-toc="sub">What to tell the fabricator</h3>
   <table class="tight">
-    <thead><tr><th>Paramètre</th><th>Valeur</th></tr></thead>
+    <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
     <tbody>
-      <tr><td>Nombre de couches</td><td>4</td></tr>
+      <tr><td>Layer count</td><td>4</td></tr>
       <tr><td>Dimensions</td><td>100 × 60 mm</td></tr>
-      <tr><td>Épaisseur</td><td>1,6 mm</td></tr>
-      <tr><td>Cuivre</td><td>35 µm (1 oz), toutes couches</td></tr>
-      <tr><td>Matériau</td><td>FR4 Tg 150</td></tr>
-      <tr><td>Finition de surface</td><td><strong>ENIG</strong> (or chimique sur nickel)</td></tr>
-      <tr><td>Vernis</td><td>vert, deux faces — <strong>ne pas modifier les ouvertures</strong></td></tr>
-      <tr><td>Sérigraphie</td><td>blanche, deux faces</td></tr>
-      <tr><td>Percements</td><td>traversants uniquement, 0,30 mm minimum</td></tr>
-      <tr><td>Classe</td><td>IPC 2</td></tr>
-      <tr><td>Test électrique</td><td>oui</td></tr>
+      <tr><td>Thickness</td><td>1.6 mm</td></tr>
+      <tr><td>Copper</td><td>35 µm (1 oz), all layers</td></tr>
+      <tr><td>Material</td><td>FR4 Tg 150</td></tr>
+      <tr><td>Surface finish</td><td><strong>ENIG</strong> (immersion gold over nickel)</td></tr>
+      <tr><td>Solder mask</td><td>green, both sides — <strong>do not alter the openings</strong></td></tr>
+      <tr><td>Silkscreen</td><td>white, both sides</td></tr>
+      <tr><td>Drilling</td><td>through-hole only, 0.30 mm minimum</td></tr>
+      <tr><td>Class</td><td>IPC 2</td></tr>
+      <tr><td>Electrical test</td><td>yes</td></tr>
     </tbody>
   </table>
 
-  <h3 id="p-fichiers" data-toc="sub">Les fichiers</h3>
+  <h3 id="p-fichiers" data-toc="sub">The files</h3>
   <table class="tight">
-    <thead><tr><th>Fichier</th><th>Contenu</th></tr></thead>
+    <thead><tr><th>File</th><th>Contents</th></tr></thead>
     <tbody>
-      <tr><td><span class="phon">F_Cu · In1_Cu · In2_Cu · B_Cu</span></td><td>les quatre couches de cuivre</td></tr>
-      <tr><td><span class="phon">F_Mask · B_Mask</span></td><td>vernis épargné, <em>y compris la zone d'entrée</em></td></tr>
-      <tr><td><span class="phon">F_Silkscreen · B_Silkscreen</span></td><td>sérigraphie</td></tr>
-      <tr><td><span class="phon">Edge_Cuts</span></td><td>contour</td></tr>
-      <tr><td><span class="phon">phytosense.drl</span></td><td>percements</td></tr>
-      <tr><td><span class="phon">top-pos.csv</span></td><td>positions pour placement automatique</td></tr>
+      <tr><td><span class="phon">F_Cu · In1_Cu · In2_Cu · B_Cu</span></td><td>the four copper layers</td></tr>
+      <tr><td><span class="phon">F_Mask · B_Mask</span></td><td>solder mask, <em>including the input area</em></td></tr>
+      <tr><td><span class="phon">F_Silkscreen · B_Silkscreen</span></td><td>silkscreen</td></tr>
+      <tr><td><span class="phon">Edge_Cuts</span></td><td>board outline</td></tr>
+      <tr><td><span class="phon">phytosense.drl</span></td><td>drill file</td></tr>
+      <tr><td><span class="phon">top-pos.csv</span></td><td>positions for pick and place</td></tr>
     </tbody>
   </table>
 
-  <h3 id="p-controle" data-toc="sub">Contrôle à réception</h3>
+  <h3 id="p-controle" data-toc="sub">Incoming inspection</h3>
   <ul class="steps">
-    <li>Vérifier <strong>à l'œil</strong> que le vernis est bien absent autour des pastilles
-    d'entrée J1 et J2. C'est le défaut le plus fréquent, et le plus silencieux.</li>
-    <li>Vérifier que la fente du plan de masse est nette et continue, sur les deux faces visibles.</li>
-    <li>À l'ohmmètre, contrôler l'isolement entre les deux plans de masse : il doit être infini.</li>
-    <li>Contrôler la planéité : une carte gauchie rend le placement des boîtiers QFN aléatoire.</li>
+    <li>Check <strong>by eye</strong> that the solder mask really is absent around the input
+    pads J1 and J2. This is the most frequent defect, and the most silent.</li>
+    <li>Check that the slot in the ground plane is clean and continuous, on both visible
+    sides.</li>
+    <li>With an ohmmeter, check the isolation between the two ground planes: it must be
+    infinite.</li>
+    <li>Check flatness: a warped board makes placing the QFN packages a matter of luck.</li>
   </ul>
 
-  <p class="copyright">Dessin publié sous licence CERN-OHL-P v2. Révision B, septembre 2026.
-  Bretagne Namasté — bretagne-namaste.com — contact@bretagne-namaste.com</p>
+  <p class="copyright">Design published under the CERN-OHL-P v2 licence. Revision B, September
+  2026. Bretagne Namasté — bretagne-namaste.com — contact@bretagne-namaste.com</p>
 </section>

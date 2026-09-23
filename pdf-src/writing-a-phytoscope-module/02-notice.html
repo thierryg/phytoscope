@@ -1,0 +1,44 @@
+<section class="notice pagebreak">
+  <h2 id="notice" data-toc="chapter">Before you start</h2>
+
+  <p class="chapo">This document is addressed to somebody who can program in
+  Python and wants to add something to PhytoScope: an analysis, a
+  representation, a sonification, an export format, a measurement source. It
+  assumes no knowledge of the software's own code — that, indeed, is the whole
+  point of the interface described here.</p>
+
+  <div class="callout">
+    <h4>What you will not have to do</h4>
+    <p>Read the engine. Understand how acquisition is scheduled. Know what an
+    <code>EngineState</code> is. A module is handed a narrow, documented
+    surface, and that is deliberately all it is handed.</p>
+  </div>
+
+  <h3 id="notice-promesse" data-toc="sub">What we promise</h3>
+
+  <p>The interface carries a version number, in semantic numbering. As long as
+  the major figure does not change, <strong>a module written today will go on
+  working</strong>: we may add, we may not take away. If the day comes when
+  that promise has to be broken, the major number will change, the software
+  will refuse to load the older modules while saying so clearly, and this
+  document will explain the migration.</p>
+
+  <p>We also promise that <strong>your module will never bring the software
+  down</strong>. A fault, wherever it happens, disables your module and writes
+  it to the log; the session goes on. That is as much for you as for the user:
+  one writes more freely knowing that a slip will not cost somebody eight
+  hours of measurement.</p>
+
+  <h3 id="notice-limite" data-toc="sub">What we do not promise</h3>
+
+  <p>This is not a sandbox. Your module runs in the same process, with the
+  same rights as the software: it can write where it likes and read what it
+  likes. We have neither the means nor the intention of preventing it — Python
+  does not lend itself to that, and a badly made sandbox inspires a confidence
+  it has not earned.</p>
+
+  <p>What we do instead is more honest: we say clearly what a module
+  <em>ought</em> to do, we make that path easy, and we isolate faults. A
+  module that writes outside its own directory is not blocked; it is
+  ill-mannered, and that will get about.</p>
+</section>

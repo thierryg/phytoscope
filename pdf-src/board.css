@@ -1,0 +1,115 @@
+/*
+ *  ==========================================================================
+ *  PhytoScope — attribution — pdf-src/board.css
+ *
+ *  Version   : 1.6.0
+ *  Date      : 2026-09-23
+ *  Publisher : Bretagne Namasté
+ *  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+ *  Website   : https://bretagne-namaste.com
+ *  Contact   : contact@bretagne-namaste.com
+ *  License   : MIT — see LICENSE.txt
+ *
+ *  SPDX-License-Identifier: MIT
+ *  end of attribution
+ *  ==========================================================================
+ */
+
+/* ============================================================
+   LA CARTE PHYTOSENSE — compléments de charte
+   Chargé APRÈS book.css : n'ajoute que ce qui manque pour un
+   document technique (planches paysage, nomenclatures, brochages).
+   ============================================================ */
+
+body{ string-set: booktitle "La Carte PhytoSense"; }
+
+/* ---------- Planches techniques : page paysage pleine ---------- */
+@page planche{
+  size: 240mm 170mm;
+  margin: 12mm 13mm 13mm 13mm;
+  background: var(--ivoire);
+  @top-left{ content:none; } @top-right{ content:none; }
+  /* Une planche circule seule : elle doit porter son origine. */
+  @bottom-left{ content:"Bretagne Namasté — bretagne-namaste.com";
+    font-family:"Lato", sans-serif; font-size:7pt; letter-spacing:.4pt;
+    color: var(--violet); padding-bottom:4mm; }
+  @bottom-right{ content:"PhytoSense One · CERN-OHL-P v2";
+    font-family:"Lato", sans-serif; font-size:7pt; letter-spacing:.4pt;
+    color: var(--gris); padding-bottom:4mm; }
+  @bottom-center{ content: counter(page);
+    font-family:"Cormorant Garamond", serif; font-size:10pt;
+    color: var(--nuit); padding-bottom:4mm; }
+}
+section.planche-page{ page: planche; break-before:page; }
+section.planche-page + *{ break-before:page; }
+figure.planche{ margin:0; text-align:center; }
+figure.planche img{ max-width:100%; max-height:132mm; width:auto; height:auto;
+  border:1px solid var(--trait); border-radius:2mm; }
+figure.planche figcaption{ margin-top:2.5mm; font-size:8.6pt; text-align:left;
+  color: var(--gris); }
+figcaption .fig-n{ font-weight:700; color: var(--violet); letter-spacing:.5pt; }
+
+/* ---------- Nomenclatures ---------- */
+table.bom{ font-size:7.4pt; }
+table.bom th{ font-size:6.4pt; padding:1.4mm 1.4mm; letter-spacing:.2pt; }
+table.bom td{ padding:1.3mm 1.4mm; vertical-align:top; }
+table.bom td:first-child{ font-family:"DejaVu Sans Mono",monospace;
+  font-size:6.8pt; color: var(--bleu); white-space:nowrap; }
+table.bom td.num{ text-align:right; font-family:"DejaVu Sans Mono",monospace;
+  white-space:nowrap; }
+table.bom tr.groupe td{ background: var(--nuit); color: var(--or-cl);
+  font-family:"Cinzel",serif; font-size:7pt; letter-spacing:1.4pt;
+  text-transform:uppercase; }
+tr.tot td{ background: var(--or-pl) !important; font-weight:700; }
+td{ text-align:left; hyphens:none; }
+
+/* ---------- Brochages ---------- */
+table.pinout{ font-size:8pt; }
+table.pinout td:first-child, table.pinout td:nth-child(2){
+  font-family:"DejaVu Sans Mono",monospace; white-space:nowrap; }
+table.pinout th{ font-size:6.8pt; }
+
+/* ---------- Encadré « valeur remarquable » ---------- */
+.chiffre{ display:flex; gap:4mm; margin:1.3em 0; break-inside:avoid; }
+.chiffre .val{ font-family:"Cormorant Garamond",serif; font-weight:700;
+  font-size:26pt; color: var(--or); line-height:1; min-width:32mm;
+  text-align:right; }
+.chiffre .txt{ font-size:9.5pt; align-self:center; }
+
+/* ---------- Fiche de recette (mesures à relever) ---------- */
+table.recette td.mes{ background:#fff; height:7mm; width:26mm; }
+table.recette td.att{ font-family:"DejaVu Sans Mono",monospace; font-size:8pt;
+  color: var(--violet); white-space:nowrap; }
+
+/* ---------- Lignes de commande et sorties de terminal ---------- */
+.term{ background:#12201B; color:#EAF2EC; border-radius:2mm; padding:4mm 5mm;
+  margin:1.2em 0; break-inside:avoid; }
+.term pre{ font-family:"DejaVu Sans Mono",monospace; font-size:7.4pt;
+  line-height:1.4; margin:0; white-space:pre-wrap; color:#EAF2EC;
+  text-align:left; hyphens:none; }
+.term .t-h{ font-family:"Lato",sans-serif; font-size:7pt; letter-spacing:1.4pt;
+  text-transform:uppercase; color: var(--or-cl); margin-bottom:2mm; }
+.term .c{ color:#7FE0A8; } .term .k{ color:#E0C073; } .term .g{ color:#9fb8ab; }
+
+/* ---------- Deux colonnes de texte court ---------- */
+.deuxcol{ column-count:2; column-gap:7mm; font-size:9.3pt; }
+.deuxcol p{ margin:0 0 .5em; }
+
+/* ---------- Avertissement de sécurité en pied de partie ---------- */
+.securite{ border:1.5px solid var(--cuivre); border-left-width:4px;
+  background: #FBEEE6; border-radius:0 3mm 3mm 0; padding:4mm 5mm;
+  margin:1.4em 0; font-size:9.4pt; break-inside:avoid; }
+.securite .s-h{ font-family:"Cormorant Garamond",serif; font-weight:700;
+  font-size:12.5pt; color: var(--cuivre); margin-bottom:1.5mm; }
+
+/* ---------- Bandeau d'origine des nomenclatures ---------- */
+.origine{ border:1px solid var(--or); border-left-width:3px;
+  background: var(--or-pl); border-radius:0 2mm 2mm 0;
+  padding:2.5mm 4mm; margin:0 0 3mm; font-size:8pt; line-height:1.45;
+  break-inside:avoid; }
+.origine b{ font-family:"Cormorant Garamond",serif; font-size:11pt;
+  color: var(--nuit); }
+.origine span{ font-size:7.6pt; color: var(--gris); }
+.origine a{ color: var(--violet); }
+tr.origine-pied td{ background: var(--nuit) !important; color:#9fb8ab;
+  font-size:6.6pt; letter-spacing:.3pt; text-align:center; padding:1.6mm; }

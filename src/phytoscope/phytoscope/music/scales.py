@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/music/scales.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Gammes, modes et quantification.
@@ -55,36 +55,36 @@ DIAPASON_DEFAUT = 440.0
 
 
 SCALES: Dict[str, Tuple[str, List[int]]] = {
-    "pentatonique_majeure": ("Pentatonique majeure", [0, 2, 4, 7, 9]),
-    "pentatonique_mineure": ("Pentatonique mineure", [0, 3, 5, 7, 10]),
-    "majeure":              ("Majeure (ionien)", [0, 2, 4, 5, 7, 9, 11]),
-    "mineure_naturelle":    ("Mineure naturelle (éolien)", [0, 2, 3, 5, 7, 8, 10]),
-    "dorien":               ("Dorien", [0, 2, 3, 5, 7, 9, 10]),
-    "lydien":               ("Lydien", [0, 2, 4, 6, 7, 9, 11]),
-    "mixolydien":           ("Mixolydien", [0, 2, 4, 5, 7, 9, 10]),
-    "hirajoshi":            ("Hirajōshi (Japon)", [0, 2, 3, 7, 8]),
-    "in_sen":               ("In sen (Japon)", [0, 1, 5, 7, 10]),
-    "raga_bhairav":         ("Rāga Bhairav (Inde)", [0, 1, 4, 5, 7, 8, 11]),
-    "hijaz":                ("Hijaz (maqâm)", [0, 1, 4, 5, 7, 8, 10]),
-    "chromatique":          ("Chromatique (aucune quantification)",
+    "pentatonique_majeure": ("Major pentatonic", [0, 2, 4, 7, 9]),
+    "pentatonique_mineure": ("Minor pentatonic", [0, 3, 5, 7, 10]),
+    "majeure":              ("Major (Ionian)", [0, 2, 4, 5, 7, 9, 11]),
+    "mineure_naturelle":    ("Natural minor (Aeolian)", [0, 2, 3, 5, 7, 8, 10]),
+    "dorien":               ("Dorian", [0, 2, 3, 5, 7, 9, 10]),
+    "lydien":               ("Lydian", [0, 2, 4, 6, 7, 9, 11]),
+    "mixolydien":           ("Mixolydian", [0, 2, 4, 5, 7, 9, 10]),
+    "hirajoshi":            ("Hirajōshi (Japan)", [0, 2, 3, 7, 8]),
+    "in_sen":               ("In sen (Japan)", [0, 1, 5, 7, 10]),
+    "raga_bhairav":         ("Rāga Bhairav (India)", [0, 1, 4, 5, 7, 8, 11]),
+    "hijaz":                ("Hijaz (maqam)", [0, 1, 4, 5, 7, 8, 10]),
+    "chromatique":          ("Chromatic (no quantisation)",
                              [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]),
-    "harmoniques":          ("Série harmonique (justesse naturelle)",
+    "harmoniques":          ("Harmonic series (just intonation)",
                              [0, 2, 4, 7, 9, 10]),
     # --- gammes supplémentaires, pour atteindre les dix-neuf proposées par
     #     les appareils du commerce et couvrir d'autres traditions ---------
-    "phrygien":             ("Phrygien", [0, 1, 3, 5, 7, 8, 10]),
-    "locrien":              ("Locrien", [0, 1, 3, 5, 6, 8, 10]),
-    "mineure_harmonique":   ("Mineure harmonique", [0, 2, 3, 5, 7, 8, 11]),
-    "mineure_melodique":    ("Mineure mélodique", [0, 2, 3, 5, 7, 9, 11]),
+    "phrygien":             ("Phrygian", [0, 1, 3, 5, 7, 8, 10]),
+    "locrien":              ("Locrian", [0, 1, 3, 5, 6, 8, 10]),
+    "mineure_harmonique":   ("Harmonic minor", [0, 2, 3, 5, 7, 8, 11]),
+    "mineure_melodique":    ("Melodic minor", [0, 2, 3, 5, 7, 9, 11]),
     "blues":                ("Blues", [0, 3, 5, 6, 7, 10]),
-    "tons_entiers":         ("Par tons entiers", [0, 2, 4, 6, 8, 10]),
-    "diminuee":             ("Diminuée (ton–demi-ton)", [0, 2, 3, 5, 6, 8, 9, 11]),
-    "egyptienne":           ("Égyptienne (suspendue)", [0, 2, 5, 7, 10]),
-    "kumoi":                ("Kumoï (Japon)", [0, 2, 3, 7, 9]),
-    "iwato":                ("Iwato (Japon)", [0, 1, 5, 6, 10]),
-    "raga_todi":            ("Rāga Todi (Inde)", [0, 1, 3, 6, 7, 8, 11]),
-    "raga_yaman":           ("Rāga Yaman (Inde)", [0, 2, 4, 6, 7, 9, 11]),
-    "hongroise":            ("Tsigane hongroise", [0, 2, 3, 6, 7, 8, 11]),
+    "tons_entiers":         ("Whole tone", [0, 2, 4, 6, 8, 10]),
+    "diminuee":             ("Diminished (tone–semitone)", [0, 2, 3, 5, 6, 8, 9, 11]),
+    "egyptienne":           ("Egyptian (suspended)", [0, 2, 5, 7, 10]),
+    "kumoi":                ("Kumoi (Japan)", [0, 2, 3, 7, 9]),
+    "iwato":                ("Iwato (Japan)", [0, 1, 5, 6, 10]),
+    "raga_todi":            ("Rāga Todi (India)", [0, 1, 3, 6, 7, 8, 11]),
+    "raga_yaman":           ("Rāga Yaman (India)", [0, 2, 4, 6, 7, 9, 11]),
+    "hongroise":            ("Hungarian gypsy", [0, 2, 3, 6, 7, 8, 11]),
 }
 
 

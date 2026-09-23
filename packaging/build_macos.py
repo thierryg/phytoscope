@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — packaging/build_macos.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Génère les paquets macOS : l'archive du paquet .app, et l'installateur .pkg.
@@ -43,7 +43,7 @@ l'essentiel serait identique.
 
     python3 packaging/build_macos.py                # zip + pkg
     python3 packaging/build_macos.py --pkg          # seulement le .pkg
-    python3 packaging/build_macos.py --hors-ligne   # avec les bibliothèques
+    python3 packaging/build_macos.py --offline   # avec les bibliothèques
 
 Ce script est autonome : il ne dépend que de `common.py` et de `macos_pkg.py`,
 et se lance seul ou par le Makefile du même dossier (`make macos`).
@@ -63,7 +63,7 @@ import macos_pkg  # noqa: E402
 import platform  # noqa: E402
 
 from common import (  # noqa: E402
-    GABARITS, GRIS, LOGICIEL, PYTHONS_MACOS, RACINE_SORTIE, VERT, Identite,
+    GABARITS, GRIS, LOGICIEL, PYTHONS_MACOS, OUTPUT_ROOT, VERT, Identite,
     appliquer_les_arguments, arguments_communs, bien, copier_le_logiciel,
     dire, dossier_sortie, echec, ecrire, ecrire_les_documents,
     ecrire_les_empreintes, etape, fabriquer_icone, icone_svg, lisible,
@@ -135,6 +135,19 @@ def construire_macos(id_: Identite, embarquer: bool = False,
                open(os.path.join(GABARITS, "macos", "lanceur"),
                     encoding="utf-8").read(), executable=True)
         ecrire(os.path.join(ressources, "phytoscope.svg"), icone_svg())
+
+        #  The label catalogues, inside the bundle. Three things read them:
+        #  the post-install script, which asks the language as its first
+        #  question; the launcher, whose windows must then be in that
+        #  language; and the uninstaller the post-install writes, which reads
+        #  them when it runs rather than having them baked in — the user may
+        #  have changed language since.
+        etape("installer labels (11 languages)")
+        shutil.copy2(os.path.join(GABARITS, "common", "labels.sh"),
+                     os.path.join(ressources, "labels.sh"))
+        import languages as _langues
+        _cat = _langues.ecrire_shell(os.path.join(ressources, "languages"))
+        dire(f"      {len(_cat)} catalogues", GRIS)
         #  L'icône que `Info.plist` annonce. Sans elle, le Finder affiche
         #  l'icône générique d'une application inconnue.
         if not fabriquer_icone(os.path.join(ressources, "phytoscope.icns"),
@@ -145,8 +158,8 @@ def construire_macos(id_: Identite, embarquer: bool = False,
         ecrire(os.path.join(app, "Contents", "PkgInfo"), "APPL????")
 
         ecrire(os.path.join(bac, "LISEZ-MOI.txt"), _lisez_moi_macos(id_))
-        shutil.copy2(os.path.join(LOGICIEL, "LICENCE.txt"),
-                     os.path.join(bac, "LICENCE.txt"))
+        shutil.copy2(os.path.join(LOGICIEL, "LICENSE.txt"),
+                     os.path.join(bac, "LICENSE.txt"))
 
         marque = "-horsligne" if embarquer else ""
         produits: List[str] = []
@@ -184,7 +197,7 @@ def _construire_pkg(id_: Identite, bac: str, app: str,
                     symlinks=True)
 
     licence = ""
-    chemin_licence = os.path.join(LOGICIEL, "LICENCE.txt")
+    chemin_licence = os.path.join(LOGICIEL, "LICENSE.txt")
     if os.path.exists(chemin_licence):
         licence = open(chemin_licence, encoding="utf-8").read()
 
@@ -295,7 +308,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                    choices=["", "x86_64", "arm64"],
                    help="architecture de l'interpréteur embarqué "
                         "(x86_64 ou arm64 ; par défaut celle de cette machine)")
-    p.add_argument("--hors-ligne", action="store_true",
+    p.add_argument("--offline", "--hors-ligne", dest="hors_ligne",
+                   action="store_true",
                    help="embarquer les bibliothèques (Qt pèse 450 Mo en "
                         "« universal2 ») pour une installation sans connexion")
     args = p.parse_args(argv)
@@ -310,7 +324,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ecrire_les_empreintes(id_)
         ecrire_les_documents(id_)
     for f in produits:
-        dire(f"    {os.path.relpath(f, RACINE_SORTIE)}", GRIS)
+        dire(f"    {os.path.relpath(f, OUTPUT_ROOT)}", GRIS)
     return 0 if produits else 1
 
 

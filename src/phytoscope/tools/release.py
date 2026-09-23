@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/tools/release.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Gestion des versions et fabrication des archives de diffusion.
@@ -57,7 +57,7 @@ DIST = os.path.join(ROOT, "dist")
 
 INCLUDE = ["phytoscope", "tests", "tools", "run.py", "Makefile", "make.bat",
            "requirements.txt", "requirements-dev.txt", "pyproject.toml",
-           "README.txt", "CHANGELOG.txt", "LICENCE.txt"]
+           "README.txt", "CHANGELOG.txt", "LICENSE.txt"]
 EXCLUDE_DIRS = {"__pycache__", ".venv", ".git", "dist", "build",
                 ".pytest_cache", ".ruff_cache"}
 
@@ -131,9 +131,21 @@ def changelog_has(version: str) -> bool:
 
 
 def changelog_open_section(version: str, date: str, name: str) -> None:
-    """Insère une section vide en tête du journal, à compléter à la main."""
+    """Insère une section vide en tête du journal, à compléter à la main.
+
+    La section se pose **juste avant la première section de version**, que
+    HEADER_RE reconnaît. C'est le seul repère qui ne dépende pas de la mise
+    en page de l'en-tête.
+
+    Ce point a un passé. La version précédente cherchait un séparateur
+    « = » × 78, alors que le journal en porte 80 : le motif trouvait donc les
+    78 premiers caractères de la bannière de la ligne 1, coupait au milieu,
+    insérait la section **avant l'en-tête du fichier**, et laissait deux « = »
+    orphelins douze lignes plus bas. `release.py bump minor` du 2026-09-23 l'a
+    fait, et `release.py check` n'a rien vu — il vérifie qu'une section existe
+    et que « (à compléter) » a disparu, pas que l'en-tête est intact.
+    """
     text = open(CHANGELOG, encoding="utf-8").read() if os.path.exists(CHANGELOG) else ""
-    marker = "=" * 78
     section = (f"{version} — {date} « {name} »\n"
                f"{'-' * 78}\n"
                f"  Ajouté\n"
@@ -142,12 +154,14 @@ def changelog_open_section(version: str, date: str, name: str) -> None:
                f"    · (à compléter)\n"
                f"  Corrigé\n"
                f"    · (à compléter)\n\n")
-    if marker in text:
-        head, rest = text.split(marker, 1)
-        rest = rest.lstrip("\n")
-        text = head + marker + "\n\n" + section + rest
+    premiere = HEADER_RE.search(text)
+    if premiere:
+        coupe = premiere.start()
+        text = text[:coupe] + section + text[coupe:]
     else:
-        text = section + text
+        #  Journal sans aucune section : on ajoute à la fin, derrière
+        #  l'en-tête, plutôt que devant lui.
+        text = text.rstrip("\n") + "\n\n" + section
     with open(CHANGELOG, "w", encoding="utf-8") as f:
         f.write(text)
 
@@ -195,7 +209,7 @@ def cmd_check(_args) -> int:
                         "ce n'est pas une version diffusable")
     if not changelog_has(v["string"]):
         problems.append(f"aucune section {v['string']} dans CHANGELOG.txt")
-    for name in ("README.txt", "LICENCE.txt", "CHANGELOG.txt",
+    for name in ("README.txt", "LICENSE.txt", "CHANGELOG.txt",
                  "requirements.txt"):
         if not os.path.exists(os.path.join(ROOT, name)):
             problems.append(f"fichier manquant : {name}")

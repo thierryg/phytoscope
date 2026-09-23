@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/music/profiles.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Profils musicaux préréglés et banque General MIDI.
@@ -83,55 +83,55 @@ class Profile:
 
 
 PROFILS: Tuple[Profile, ...] = (
-    Profile("meditation", "1 · Méditation",
+    Profile("meditation", "1 · Meditation",
             "Notes rares et longues, bourdon tenu : pour une séance assise.",
             "pentatonique_majeure", "D", "verre", 432.0, 2, 3, 8.0, 3.0, 9.0,
             0.55, 0.2, 0.4, 1, True),
-    Profile("decouverte", "2 · Découverte",
+    Profile("decouverte", "2 · Discovery",
             "Chaque événement s'entend distinctement : le profil qui fait "
             "comprendre ce que mesure l'appareil.",
             "pentatonique_majeure", "C", "kalimba", 440.0, 3, 3, 30.0, 0.2, 2.0,
             0.25, 0.0, 0.0, 3, False),
-    Profile("atelier", "3 · Atelier",
+    Profile("atelier", "3 · Workshop",
             "Lisible dans une salle bruyante, avec du relief et peu de traîne.",
             "majeure", "G", "marimba", 440.0, 3, 3, 36.0, 0.15, 1.5,
             0.2, 0.1, 0.0, 3, False),
-    Profile("foret", "4 · Forêt",
+    Profile("foret", "4 · Forest",
             "Registre grave, cordes lentes : pour un arbre, dehors.",
             "dorien", "A", "cordes", 432.0, 2, 3, 12.0, 2.0, 8.0,
             0.6, 0.3, 0.5, 3, True),
-    Profile("aube", "5 · Aube",
+    Profile("aube", "5 · Dawn",
             "Clair et aérien, sans basse : accompagne un lever de jour.",
             "lydien", "F", "flute", 440.0, 4, 2, 20.0, 0.6, 3.0,
             0.4, 0.15, 0.2, 2, False),
-    Profile("nuit", "6 · Nuit",
+    Profile("nuit", "6 · Night",
             "Cloches espacées sur un bourdon grave : veille nocturne.",
             "hirajoshi", "E", "cloche", 432.0, 2, 3, 6.0, 2.0, 10.0,
             0.65, 0.1, 0.6, 2, True),
-    Profile("japon", "7 · Japon",
+    Profile("japon", "7 · Japan",
             "Gamme in sen, harpe : intervalles serrés, couleur modale.",
             "in_sen", "A", "harpe", 440.0, 3, 2, 18.0, 0.5, 4.0,
             0.35, 0.0, 0.1, 3, True),
-    Profile("inde", "8 · Inde",
+    Profile("inde", "8 · India",
             "Rāga Bhairav sur bourdon : la référence tonale ne bouge jamais.",
             "raga_bhairav", "C", "cordes", 432.0, 3, 2, 14.0, 1.0, 6.0,
             0.5, 0.2, 0.3, 2, True),
-    Profile("celtique", "9 · Celtique",
+    Profile("celtique", "9 · Celtic",
             "Mixolydien à la harpe, tempo souple.",
             "mixolydien", "D", "harpe", 440.0, 3, 3, 22.0, 0.4, 3.5,
             0.4, 0.1, 0.2, 3, True),
-    Profile("minimaliste", "10 · Minimaliste",
+    Profile("minimaliste", "10 · Minimalist",
             "Une seule voix, piano feutré : rien ne masque le signal.",
             "pentatonique_mineure", "A", "piano_feutre", 440.0, 3, 2, 16.0,
             0.8, 5.0, 0.3, 0.0, 0.0, 1, False),
-    Profile("mesure", "11 · Mesure",
+    Profile("mesure", "11 · Measurement",
             "Sinus pur, gamme chromatique : la note suit l'amplitude sans "
             "aucun habillage. C'est le profil à utiliser pour vérifier "
             "l'étalonnage — et pour se rappeler ce que fait vraiment "
             "l'appareil.",
             "chromatique", "C", "sinus", 440.0, 4, 2, 60.0, 0.15, 1.0,
             0.0, 0.0, 0.0, 1, False),
-    Profile("verdi", "12 · Historique",
+    Profile("verdi", "12 · Historical",
             "Diapason de Verdi à 426,7 Hz, cordes : une autre couleur.",
             "mineure_naturelle", "D", "cordes", 426.7, 3, 3, 18.0, 1.0, 5.0,
             0.45, 0.25, 0.3, 3, True),
@@ -173,7 +173,7 @@ GM_INSTRUMENTS: Tuple[str, ...] = (
     "Basse acoustique", "Basse doigt", "Basse médiator", "Basse fretless",
     "Basse slap 1", "Basse slap 2", "Basse synthé 1", "Basse synthé 2",
     "Violon", "Alto", "Violoncelle", "Contrebasse",
-    "Cordes trémolo", "Cordes pizzicato", "Harpe", "Timbales",
+    "Cordes trémolo", "Cordes pizzicato", "Harp", "Timbales",
     "Ensemble à cordes 1", "Ensemble à cordes 2", "Cordes synthé 1",
     "Cordes synthé 2", "Chœur « aah »", "Voix « ooh »", "Voix synthé",
     "Coup d'orchestre",

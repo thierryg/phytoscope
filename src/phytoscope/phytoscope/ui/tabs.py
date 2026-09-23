@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/ui/tabs.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Les quatre instruments : oscilloscope, multimètre, analyseur, écoute."""
@@ -62,7 +62,7 @@ class ScopeTab(QWidget):
         self.level = LevelBar(palette)
 
         right = QVBoxLayout()
-        box = QGroupBox(t("Réglages rapides"))
+        box = QGroupBox(t("Quick settings"))
         form = QFormLayout(box)
         self.cb_window = QComboBox()
         for v, lab in self.WINDOWS:
@@ -70,22 +70,21 @@ class ScopeTab(QWidget):
         self.cb_window.setCurrentIndex(2)
         self.cb_window.currentIndexChanged.connect(self._apply_range)
         self.cb_sens = QComboBox()
-        self.cb_sens.addItem("automatique", 0.0)
+        self.cb_sens.addItem(t("automatic"), 0.0)
         for v, lab in self.SENSITIVITIES:
             self.cb_sens.addItem(lab + " / div", v)
         self.cb_sens.currentIndexChanged.connect(self._apply_range)
-        self.chk_raw = QCheckBox(t("signal brut (avant filtrage)"))
-        self.chk_raw.setToolTip(t("Montre ce qui entre réellement dans le "
-                                "convertisseur : indispensable pour diagnostiquer."))
-        self.chk_baseline = QCheckBox(t("suivre la ligne de base"))
+        self.chk_raw = QCheckBox(t("raw signal (before filtering)"))
+        self.chk_raw.setToolTip(t("Shows what really enters the converter: essential for diagnosis."))
+        self.chk_baseline = QCheckBox(t("follow the baseline"))
         self.chk_baseline.setChecked(True)
-        form.addRow(t("Fenêtre"), self.cb_window)
-        form.addRow(t("Sensibilité"), self.cb_sens)
+        form.addRow(t("Window"), self.cb_window)
+        form.addRow(t("Sensitivity"), self.cb_sens)
         form.addRow(self.chk_raw)
         form.addRow(self.chk_baseline)
         right.addWidget(box)
 
-        stats = QGroupBox(t("Mesures"))
+        stats = QGroupBox(t("Measurements"))
         g = QGridLayout(stats)
         self.r_value = Readout("INSTANTANÉ", "µV", palette)
         self.r_rms = Readout("EFFICACE (30 s)", "µV", palette)
@@ -93,9 +92,9 @@ class ScopeTab(QWidget):
         g.addWidget(self.r_rms, 1, 0)
         right.addWidget(stats)
 
-        marks = QGroupBox(t("Marqueurs"))
+        marks = QGroupBox(t("Markers"))
         mv = QVBoxLayout(marks)
-        for label in ("Début", "Contact", "Arrosage", "Parole", "Fin"):
+        for label in ("Début", "Contact", "Arrosage", "Speech", "Fin"):
             b = QPushButton(label)
             b.clicked.connect(lambda _=False, t=label: self._mark(t))
             mv.addWidget(b)
@@ -106,7 +105,7 @@ class ScopeTab(QWidget):
         left = QVBoxLayout()
         left.addWidget(self.plot, 1)
         lv = QHBoxLayout()
-        lv.addWidget(QLabel(t("niveau d'entrée")))
+        lv.addWidget(QLabel(t("input level")))
         lv.addWidget(self.level, 1)
         left.addLayout(lv)
         lay.addLayout(left, 1)
@@ -175,14 +174,14 @@ class MeterTab(QWidget):
         self.vus = {}
         rang = QHBoxLayout()
         cadrans = (
-            ("tension", t("TENSION"), "µV", 100.0, True),
-            ("efficace", t("BRUIT EFFICACE"), "µV", 50.0, False),
-            ("crete", t("CRÊTE À CRÊTE"), "µV", 200.0, False),
-            ("derive", t("DÉRIVE"), "µV/min", 200.0, True),
+            ("tension", t("VOLTAGE"), "µV", 100.0, True),
+            ("efficace", t("RMS NOISE"), "µV", 50.0, False),
+            ("crete", t("PEAK TO PEAK"), "µV", 200.0, False),
+            ("derive", t("DRIFT"), "µV/min", 200.0, True),
         )
-        for cle, titre, unite, maxi, signe in cadrans:
-            vu = VuMetre(palette, titre, unite, maximum=maxi, centre_zero=signe)
-            self.vus[cle] = vu
+        for key, title, unite, maxi, signe in cadrans:
+            vu = VuMetre(palette, title, unite, maximum=maxi, centre_zero=signe)
+            self.vus[key] = vu
             rang.addWidget(vu)
         haut_lay.addLayout(rang)
 
@@ -190,10 +189,10 @@ class MeterTab(QWidget):
         self.readouts = {}
         #  Les six premiers sont instantanés ; les deux derniers sont calculés
         #  sur une fenêtre glissante, et n'apparaissent donc qu'au bout de
-        #  quelques secondes de signal.
-        fields = [("tension", "TENSION", "µV"), ("efficace", "BRUIT EFFICACE", "µV"),
-                  ("crete", "CRÊTE À CRÊTE", "µV"), ("derive", "DÉRIVE", "µV/min"),
-                  ("ligne", "LIGNE DE BASE", "mV"), ("evenements", "ÉVÉNEMENTS", ""),
+        #  quelques seconds de signal.
+        fields = [("tension", "VOLTAGE", "µV"), ("efficace", "RMS NOISE", "µV"),
+                  ("crete", "PEAK TO PEAK", "µV"), ("derive", "DRIFT", "µV/min"),
+                  ("ligne", "LIGNE DE BASE", "mV"), ("events", "ÉVÉNEMENTS", ""),
                   ("resistance", "RÉSISTANCE ÉQUIV.", ""),
                   ("plancher", "PLANCHER DE BRUIT", "nV/√Hz"),
                   ("reseau", "RÉSEAU", "dB")]
@@ -202,32 +201,26 @@ class MeterTab(QWidget):
             self.readouts[key] = r
             g.addWidget(r, i // 3, i % 3)
         self.readouts["resistance"].setToolTip(t(
-            "Majorant déduit du bruit thermique de Johnson-Nyquist, et non une "
-            "mesure à l'ohmmètre : la source ne peut pas être plus résistive "
-            "que cela. C'est sa VARIATION qui informe — un contact qui sèche "
-            "fait grimper ce nombre d'une décade."))
+            "An upper bound derived from Johnson-Nyquist thermal noise, not an ohmmeter reading: the source cannot be more resistive than this. It is its VARIATION that tells you something — a drying contact sends this number up by a decade."))
         self.readouts["plancher"].setToolTip(t(
-            "Densité de bruit de la chaîne, mesurée au-dessus de la bande "
-            "biologique. C'est le bruit du montage, pas celui de la plante."))
+            "Noise density of the chain, measured above the biological band. This is the rig's noise, not the plant's."))
         self.readouts["reseau"].setToolTip(t(
-            "De combien le secteur dépasse le plancher de bruit, sur le signal "
-            "AVANT réjecteur. Au-delà de 20 dB, c'est le blindage qu'il faut "
-            "revoir : le réjecteur masque le problème sans le résoudre."))
+            "How far the mains rises above the noise floor, on the signal BEFORE the notch filter. Past 20 dB it is the shielding that needs attention: the notch hides the problem without solving it."))
         haut_lay.addLayout(g)
 
-        box = QGroupBox(t("Impédance et contact"))
+        box = QGroupBox(t("Impedance and contact"))
         form = QFormLayout(box)
-        self.lab_impedance = QLabel(t("mesure indisponible sur cette source"))
+        self.lab_impedance = QLabel(t("measurement unavailable on this source"))
         self.lab_contact = QLabel("—")
-        self.btn_test = QPushButton(t("Lancer l'auto-test de la carte"))
+        self.btn_test = QPushButton(t("Run the board self-test"))
         self.btn_test.clicked.connect(self._self_test)
-        form.addRow(t("Électrodes"), self.lab_impedance)
-        form.addRow(t("Qualité du contact"), self.lab_contact)
+        form.addRow(t("Electrodes"), self.lab_impedance)
+        form.addRow(t("Contact quality"), self.lab_contact)
         form.addRow(self.btn_test)
         haut_lay.addWidget(box)
         haut_lay.addStretch(1)
 
-        #  En bas, deux pages : le journal des mesures, et l'empreinte du
+        #  En bas, deux pages : le log des mesures, et l'fingerprint du
         #  montage — qui n'identifie pas la plante, et le dit.
         bas = QTabWidget()
         self.log = QListWidget()
@@ -236,9 +229,9 @@ class MeterTab(QWidget):
         pj = QVBoxLayout(page_journal)
         pj.setContentsMargins(0, 0, 0, 0)
         pj.addWidget(self.log)
-        bas.addTab(page_journal, t("Journal des mesures"))
-        bas.addTab(self._page_empreinte(), t("Empreinte du montage"))
-        bas.addTab(self._page_grandeurs(), t("Grandeurs scientifiques"))
+        bas.addTab(page_journal, t("Measurement log"))
+        bas.addTab(self._page_empreinte(), t("Setup fingerprint"))
+        bas.addTab(self._page_grandeurs(), t("Scientific quantities"))
         self._bas = bas
         self._prochain_calcul = 0.0
 
@@ -266,25 +259,21 @@ class MeterTab(QWidget):
         Les afficheurs du haut donnent l'état du signal ; ils ne disent pas si
         la mesure vaut quelque chose. Cette page répond à la question suivante :
         d'où vient ce bruit, quelle résistance il suppose, jusqu'où l'on peut
-        moyenner, et si un seuil en écarts-types a encore un sens ici.
+        moyenner, et si un seuil en écarts-types a encore un meaning ici.
         """
         w = QWidget()
         lay = QVBoxLayout(w)
         lay.setContentsMargins(0, 6, 0, 0)
 
         entete = QLabel(t(
-            "Calculé toutes les deux secondes sur la dernière fenêtre de "
-            "signal BRUT — avant le réjecteur et le passe-bas, sans quoi on "
-            "mesurerait ses propres filtres plutôt que son montage. Chaque "
-            "ligne indique ce que le nombre dit, et ce qu'il ne dit pas — "
-            "survolez-la pour lire l'explication entière."))
+            "Computed every two seconds on the latest window of RAW signal — before the notch and the low-pass, otherwise you would be measuring your own filters rather than your rig. Each row states what the number says, and what it does not — hover over it to read the full explanation."))
         entete.setWordWrap(True)
-        entete.setStyleSheet(f"color:{self.p['texte2']};")
+        entete.setStyleSheet(f"color:{self.p['text2']};")
         lay.addWidget(entete)
 
         self.table_grandeurs = QTableWidget(0, 3)
         self.table_grandeurs.setHorizontalHeaderLabels(
-            [t("Grandeur"), t("Valeur"), t("Ce que cela dit")])
+            [t("Quantity"), t("Value"), t("What it tells you")])
         self.table_grandeurs.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table_grandeurs.setAlternatingRowColors(True)
         self.table_grandeurs.verticalHeader().setVisible(False)
@@ -295,11 +284,10 @@ class MeterTab(QWidget):
 
         barre = QHBoxLayout()
         self.lab_fenetre_grandeurs = QLabel("—")
-        self.lab_fenetre_grandeurs.setStyleSheet(f"color:{self.p['texte2']};")
-        self.btn_copier_grandeurs = QPushButton(t("Copier dans le journal"))
+        self.lab_fenetre_grandeurs.setStyleSheet(f"color:{self.p['text2']};")
+        self.btn_copier_grandeurs = QPushButton(t("Copy to the log"))
         self.btn_copier_grandeurs.setToolTip(
-            t("Recopie les valeurs courantes dans le journal des mesures, "
-              "pour les retrouver dans le compte rendu de la séance."))
+            t("Copies the current values into the measurement log, so they turn up in the session report."))
         self.btn_copier_grandeurs.clicked.connect(self._journaliser_grandeurs)
         barre.addWidget(self.lab_fenetre_grandeurs)
         barre.addStretch(1)
@@ -311,27 +299,27 @@ class MeterTab(QWidget):
         return w
 
     def _fenetre_grandeurs(self) -> float:
-        """Assez longue pour que 0,01 Hz ait un sens, sans plomber l'affichage."""
+        """Assez longue pour que 0,01 Hz ait un meaning, sans plomber l'affichage."""
         return 120.0
 
     def _calculer_grandeurs(self) -> None:
         """Interroge les modules qui fournissent la capacité « analyseur ».
 
         Le calcul ne vit plus ici : il est passé dans des modules, et cette
-        page n'est qu'un afficheur. Ce qui change tout pour la suite — ajouter
-        une grandeur ne demande plus de toucher à l'interface, et un module
+        page n'est qu'un afficheur. Ce qui change tout pour la suite — add
+        une grandeur ne requested plus de toucher à l'interface, et un module
         écrit par quelqu'un d'autre s'y affiche de la même façon que les
         nôtres.
         """
-        from ..api import Capacite
+        from ..api import Capability
 
         registre = getattr(self.engine, "modules", None)
         if registre is None:
             return
-        fournisseurs = registre.fournisseurs(Capacite.ANALYSEUR)
-        if not fournisseurs:
+        providers = registre.providers(Capability.ANALYSER)
+        if not providers:
             self.lab_fenetre_grandeurs.setText(
-                t("Aucun module d'analyse actif — voir l'onglet Diagnostic."))
+                t("No analysis module active — see the Diagnostics tab."))
             self._grandeurs = []
             self.table_grandeurs.setRowCount(0)
             return
@@ -339,26 +327,26 @@ class MeterTab(QWidget):
         fs = float(self.engine.settings.acquisition.sample_rate)
         collectees = []
         duree_reelle = 0.0
-        for m in fournisseurs:
+        for m in providers:
             instance = m.instance
-            fenetre = float(getattr(instance, "FENETRE_S", 120.0))
-            #  Chaque module dit s'il veut le signal brut ou traité. Le brut
-            #  pour tout ce qui mesure du bruit : filtrer avant de mesurer le
-            #  bruit revient à mesurer son propre filtre (`C-1B`).
-            brut = bool(getattr(instance, "SIGNAL_BRUT", True))
-            x = self.engine.recent(fenetre, raw=brut)
+            fenetre = float(getattr(instance, "WINDOW_S", 120.0))
+            #  Chaque module dit s'il veut le signal raw ou traité. Le raw
+            #  pour tout ce qui mesure du bruit : filtrer avant de measure le
+            #  bruit revient à measure son propre filtre (`C-1B`).
+            raw = bool(getattr(instance, "RAW_SIGNAL", True))
+            x = self.engine.recent(fenetre, raw=raw)
             if x.size < max(64, int(4 * fs)):
                 continue
             duree_reelle = max(duree_reelle, x.size / fs)
-            #  Sous protection : une faute désactive le module, pas la page.
-            rendues = registre.appeler(m, "analyser", x, fs, m.contexte,
-                                       defaut=[])
+            #  Sous protection : une fault désactive le module, pas la page.
+            rendues = registre.call(m, "analyse", x, fs, m.context,
+                                       fallback=[])
             for g in (rendues or []):
                 collectees.append((m, g))
 
         if not collectees:
             self.lab_fenetre_grandeurs.setText(
-                t("En attente de signal — il en faut quelques secondes."))
+                t("Waiting for signal — a few seconds are needed."))
             return
 
         self._grandeurs = collectees
@@ -372,44 +360,43 @@ class MeterTab(QWidget):
             return
         self.table_grandeurs.setRowCount(len(collectees))
         for i, (module, item) in enumerate(collectees):
-            libelle = QTableWidgetItem(self._composer(item.libelle, item))
-            valeur = QTableWidgetItem(item.texte)
-            valeur.setFont(fonts.mono())
-            if item.alerte:
-                valeur.setForeground(QColor(self.p["alerte"]))
+            label = QTableWidgetItem(self._composer(item.label, item))
+            value = QTableWidgetItem(item.text)
+            value.setFont(fonts.mono())
+            if item.alert:
+                value.setForeground(QColor(self.p["alert"]))
             #  Un module qui ne dit pas ce que son nombre signifie est chargé
             #  quand même — mais cela se voit (`C-15`).
-            phrase = (self._composer(item.sens, item) if item.sens
-                      else t("(le module « {nom} » n'explique pas cette "
-                             "valeur)").format(nom=module.nom))
-            sens = QTableWidgetItem(phrase)
-            for col, cellule in enumerate((libelle, valeur, sens)):
-                cellule.setToolTip(f"{module.manifeste.titre} — {phrase}")
+            phrase = (self._composer(item.meaning, item) if item.meaning
+                      else t("(module « {name} » does not explain this value)").format(name=module.name))
+            meaning = QTableWidgetItem(phrase)
+            for col, cellule in enumerate((label, value, meaning)):
+                cellule.setToolTip(f"{module.manifest.title} — {phrase}")
                 self.table_grandeurs.setItem(i, col, cellule)
         self.table_grandeurs.resizeColumnsToContents()
         self.table_grandeurs.resizeRowsToContents()
 
-        modules = sorted({m.manifeste.titre for m, _ in collectees})
+        modules = sorted({m.manifest.title for m, _ in collectees})
         self.lab_fenetre_grandeurs.setText(
-            t("Fenêtre : {duree:.0f} s à {fs:.0f} Hz — {modules}").format(
+            t("Window: {duree:.0f} s at {fs:.0f} Hz — {modules}").format(
                 duree=getattr(self, "_duree_grandeurs", 0.0),
                 fs=getattr(self, "_fs_grandeurs", 250.0),
                 modules=", ".join(modules)))
 
         #  Les trois afficheurs du haut se nourrissent du même calcul.
-        par_cle = {g.cle: g for _, g in collectees}
+        par_cle = {g.key: g for _, g in collectees}
         r = self.readouts
         res = par_cle.get("resistance")
         if res is not None:
-            texte, _, unite = res.texte.rpartition(" ")
-            r["resistance"].set_value(texte or "—", res.alerte)
-            r["resistance"].set_unit(unite if texte else "")
+            text, _, unite = res.text.rpartition(" ")
+            r["resistance"].set_value(text or "—", res.alert)
+            r["resistance"].set_unit(unite if text else "")
         plancher = par_cle.get("plancher")
-        if plancher is not None and plancher.valeur > 0:
-            r["plancher"].set_value(f"{plancher.valeur * 1e9:.0f}")
+        if plancher is not None and plancher.value > 0:
+            r["plancher"].set_value(f"{plancher.value * 1e9:.0f}")
         reseau = par_cle.get("reseau")
         if reseau is not None:
-            r["reseau"].set_value(f"{reseau.valeur:+.0f}", reseau.alerte)
+            r["reseau"].set_value(f"{reseau.value:+.0f}", reseau.alert)
 
     @staticmethod
     def _composer(gabarit: str, item) -> str:
@@ -422,19 +409,19 @@ class MeterTab(QWidget):
         Les paramètres textuels — le régime de bruit, par exemple — sont eux
         aussi traduits : ce sont des mots, pas des nombres.
         """
-        texte = t(gabarit)
+        text = t(gabarit)
         params = getattr(item, "params", None) or {}
         if not params:
-            return texte
-        valeurs = {c: (t(v) if isinstance(v, str) and not v[:1].isdigit() else v)
+            return text
+        values = {c: (t(v) if isinstance(v, str) and not v[:1].isdigit() else v)
                    for c, v in params.items()}
         try:
-            return texte.format(**valeurs)
+            return text.format(**values)
         except (KeyError, IndexError, ValueError):
             #  Une traduction dont les accolades ont été abîmées ne doit pas
             #  faire disparaître la ligne : on montre le français.
             try:
-                return gabarit.format(**valeurs)
+                return gabarit.format(**values)
             except (KeyError, IndexError, ValueError):
                 return gabarit
 
@@ -443,33 +430,29 @@ class MeterTab(QWidget):
             self._calculer_grandeurs()
         if not self._grandeurs:
             return
-        self._log("── " + t("Grandeurs scientifiques") +
+        self._log("── " + t("Scientific quantities") +
                   f" ({getattr(self, '_duree_grandeurs', 0.0):.0f} s) ──")
         for module, item in self._grandeurs:
-            self._log(f"   {self._composer(item.libelle, item)} : {item.texte}")
+            self._log(f"   {self._composer(item.label, item)} : {item.text}")
 
-    # -- empreinte du montage ------------------------------------------------
+    # -- fingerprint du montage ------------------------------------------------
     def _page_empreinte(self) -> QWidget:
         """Les descripteurs du montage, et les montages déjà connus."""
         w = QWidget()
         lay = QVBoxLayout(w)
         lay.setContentsMargins(0, 6, 0, 0)
 
-        avertissement = QLabel(t(
-            "⚠ Ceci n'identifie pas une plante. Ce sont les descripteurs du "
-            "montage — plante, électrodes, substrat, câble, carte — tel qu'il "
-            "est en ce moment. Deux mesures du même végétal à deux jours "
-            "d'intervalle diffèrent souvent davantage que deux végétaux "
-            "voisins le même après-midi."))
-        avertissement.setWordWrap(True)
-        avertissement.setStyleSheet(
-            f"color:{self.p['or']};border:1px solid {self.p['or']};"
+        warning = QLabel(t(
+            "⚠ This does not identify a plant. These are the descriptors of the setup — plant, electrodes, substrate, cable, board — as it is right now. Two measurements of the same plant two days apart often differ more than two neighbouring plants on the same afternoon."))
+        warning.setWordWrap(True)
+        warning.setStyleSheet(
+            f"color:{self.p['gold']};border:1px solid {self.p['gold']};"
             f"border-radius:4px;padding:6px;")
-        lay.addWidget(avertissement)
+        lay.addWidget(warning)
 
         corps = QHBoxLayout()
         self.table_empreinte = QTableWidget(0, 2)
-        self.table_empreinte.setHorizontalHeaderLabels([t("Descripteur"), t("Valeur")])
+        self.table_empreinte.setHorizontalHeaderLabels([t("Descriptor"), t("Value")])
         self.table_empreinte.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table_empreinte.setAlternatingRowColors(True)
         self.table_empreinte.verticalHeader().setVisible(False)
@@ -479,19 +462,19 @@ class MeterTab(QWidget):
         self.liste_montages = QListWidget()
         self.liste_montages.setAlternatingRowColors(True)
         droite = QVBoxLayout()
-        droite.addWidget(QLabel(t("Montages connus, par ressemblance")))
+        droite.addWidget(QLabel(t("Known setups, by resemblance")))
         droite.addWidget(self.liste_montages, 1)
         corps.addLayout(droite, 4)
         lay.addLayout(corps, 1)
 
         barre = QHBoxLayout()
-        self.btn_empreinte = QPushButton(t("Calculer l'empreinte"))
+        self.btn_empreinte = QPushButton(t("Compute the fingerprint"))
         self.btn_empreinte.setToolTip(
-            t("Analyse les deux dernières minutes de signal gardées en mémoire."))
+            t("Analyses the last two minutes of signal held in memory."))
         self.btn_empreinte.clicked.connect(self._calculer_empreinte)
-        self.btn_retenir = QPushButton(t("Retenir ce montage…"))
+        self.btn_retenir = QPushButton(t("Remember this setup…"))
         self.btn_retenir.clicked.connect(self._retenir_montage)
-        self.btn_oublier = QPushButton(t("Oublier"))
+        self.btn_oublier = QPushButton(t("Forget"))
         self.btn_oublier.clicked.connect(self._oublier_montage)
         barre.addWidget(self.btn_empreinte)
         barre.addStretch(1)
@@ -503,39 +486,38 @@ class MeterTab(QWidget):
 
     def _registre(self):
         from ..config import config_dir
-        from ..core.fingerprint import Registre
+        from ..core.fingerprint import Registry
         if getattr(self, "_reg", None) is None:
-            self._reg = Registre(os.path.join(config_dir(), "montages.json"))
+            self._reg = Registry(os.path.join(config_dir(), "montages.json"))
         return self._reg
 
     def _calculer_empreinte(self) -> None:
         from ..core import fingerprint as emp
         x = self.engine.recent(120.0)
         if x.size < 64:
-            self._log(t("Pas encore assez de signal pour une empreinte."))
+            self._log(t("Not enough signal yet for a fingerprint."))
             return
         fs = float(self.engine.settings.acquisition.sample_rate)
         instants = [t_ev for t_ev in getattr(self.engine, "_evenements_recents", [])
                     if self.engine.state.elapsed_s - t_ev <= x.size / fs]
-        self._empreinte = emp.calculer(
-            x, fs, instants, nom=self.engine.settings.metadata.get("plante", ""),
-            metadonnees={"source": self.engine.state.source_name})
+        self._empreinte = emp.compute(
+            x, fs, instants, name=self.engine.settings.metadata.get("plante", ""),
+            metadata={"source": self.engine.state.source_name})
 
-        lignes = self._empreinte.lignes()
-        self.table_empreinte.setRowCount(len(lignes))
-        for i, (libelle, valeur) in enumerate(lignes):
-            self.table_empreinte.setItem(i, 0, QTableWidgetItem(t(libelle)))
-            self.table_empreinte.setItem(i, 1, QTableWidgetItem(valeur))
+        rows = self._empreinte.rows()
+        self.table_empreinte.setRowCount(len(rows))
+        for i, (label, value) in enumerate(rows):
+            self.table_empreinte.setItem(i, 0, QTableWidgetItem(t(label)))
+            self.table_empreinte.setItem(i, 1, QTableWidgetItem(value))
         self.table_empreinte.resizeColumnsToContents()
 
         self.liste_montages.clear()
-        for connu, score in self._registre().reconnaitre(self._empreinte):
+        for connu, score in self._registre().recognise(self._empreinte):
             self.liste_montages.addItem(
-                f"{score * 100:5.1f} %   {connu.nom}   —   {t(emp.qualifier(score))}")
+                f"{score * 100:5.1f} %   {connu.name}   —   {t(emp.qualify(score))}")
         if not self.liste_montages.count():
             self.liste_montages.addItem(
-                t("Aucun montage retenu pour l'instant. « Retenir ce "
-                  "montage… » en garde un."))
+                t("No setup remembered yet. “Remember this setup…” keeps one."))
 
     def _retenir_montage(self) -> None:
         from PySide6.QtWidgets import QInputDialog
@@ -543,26 +525,26 @@ class MeterTab(QWidget):
             self._calculer_empreinte()
         if self._empreinte is None:
             return
-        defaut = self._empreinte.nom or self.engine.settings.metadata.get("plante", "")
-        nom, ok = QInputDialog.getText(self, t("Retenir ce montage"),
-                                       t("Sous quel nom ?"), text=defaut)
-        if not ok or not nom.strip():
+        fallback = self._empreinte.name or self.engine.settings.metadata.get("plante", "")
+        name, ok = QInputDialog.getText(self, t("Remember this setup"),
+                                       t("Under what name?"), text=fallback)
+        if not ok or not name.strip():
             return
-        self._empreinte.nom = nom.strip()
-        self._registre().ajouter(self._empreinte)
-        self._log(t("Montage retenu : {nom}").format(nom=nom.strip()))
+        self._empreinte.name = name.strip()
+        self._registre().add(self._empreinte)
+        self._log(t("Setup remembered: {name}").format(name=name.strip()))
         self._calculer_empreinte()
 
     def _oublier_montage(self) -> None:
         item = self.liste_montages.currentItem()
         if item is None:
             return
-        texte = item.text()
-        if "—" not in texte or "%" not in texte:
+        text = item.text()
+        if "—" not in text or "%" not in text:
             return
-        nom = texte.split("%", 1)[1].split("—")[0].strip()
-        self._registre().retirer(nom)
-        self._log(t("Montage oublié : {nom}").format(nom=nom))
+        name = text.split("%", 1)[1].split("—")[0].strip()
+        self._registre().remove(name)
+        self._log(t("Setup forgotten: {name}").format(name=name))
         self._calculer_empreinte()
 
     def _self_test(self) -> None:
@@ -580,7 +562,7 @@ class MeterTab(QWidget):
 
     def refresh(self, state) -> None:
         #  Les aiguilles d'abord : elles amortissent elles-mêmes, il suffit de
-        #  leur donner la valeur brute à chaque rafraîchissement.
+        #  leur donner la value brute à chaque rafraîchissement.
         self.vus["tension"].set_value(state.value_v * 1e6)
         self.vus["efficace"].set_value(state.rms_v * 1e6)
         self.vus["crete"].set_value(state.pp_v * 1e6)
@@ -592,7 +574,7 @@ class MeterTab(QWidget):
         r["crete"].set_value(f"{state.pp_v * 1e6:.1f}")
         r["derive"].set_value(f"{state.drift_v_per_min * 1e6:+.1f}")
         r["ligne"].set_value(f"{state.baseline_v * 1e3:+.3f}")
-        r["evenements"].set_value(str(state.events_total))
+        r["events"].set_value(str(state.events_total))
         # qualité du contact : déduite du bruit et de la dérive
         noise = state.rms_v * 1e6
         drift = abs(state.drift_v_per_min) * 1e6
@@ -608,10 +590,10 @@ class MeterTab(QWidget):
             txt, ok = "correct", True
         self.lab_contact.setText(txt)
         self.lab_contact.setStyleSheet(
-            f"color:{self.p['trace'] if ok else self.p['alerte']};font-weight:bold;")
+            f"color:{self.p['trace'] if ok else self.p['alert']};font-weight:bold;")
 
         #  Les grandeurs scientifiques coûtent quelques millisecondes : on les
-        #  recalcule toutes les deux secondes, et seulement quand leur page est
+        #  recalcule toutes les deux seconds, et seulement quand leur page est
         #  sous les yeux — inutile de faire tourner une FFT pour personne.
         maintenant = state.elapsed_s
         if maintenant >= self._prochain_calcul:
@@ -621,7 +603,7 @@ class MeterTab(QWidget):
 
 
 # ---------------------------------------------------------------------------
-#  Analyseur de spectre
+#  Analyser de spectre
 # ---------------------------------------------------------------------------
 class SpectrumTab(QWidget):
     """Le spectre — où l'on voit tout de suite si le réseau parasite la mesure."""
@@ -638,24 +620,23 @@ class SpectrumTab(QWidget):
         for v, lab in ((30, t("30 s")), (60, t("1 min")), (300, t("5 min"))):
             self.cb_window.addItem(lab, v)
         self.cb_window.setCurrentIndex(1)
-        self.chk_log = QCheckBox(t("échelle logarithmique"))
+        self.chk_log = QCheckBox(t("logarithmic scale"))
         self.chk_log.setChecked(True)
         self.lab_mains = QLabel("—")
-        ctl.addWidget(QLabel(t("Durée analysée")))
+        ctl.addWidget(QLabel(t("Analysed duration")))
         ctl.addWidget(self.cb_window)
         ctl.addWidget(self.chk_log)
         ctl.addStretch(1)
-        ctl.addWidget(QLabel(t("Réseau :")))
+        ctl.addWidget(QLabel(t("Mains:")))
         ctl.addWidget(self.lab_mains)
 
         lay = QVBoxLayout(self)
         lay.addLayout(ctl)
         lay.addWidget(self.plot, 1)
         self.info = QLabel(
-            t("Un pic à 50 Hz signifie que le montage capte le réseau : vérifiez "
-            "le blindage, la garde et la masse avant d'activer le réjecteur."))
+            t("A peak at 50 Hz means the setup is picking up the mains: check the shielding, the guard and the ground before enabling the notch."))
         self.info.setWordWrap(True)
-        self.info.setStyleSheet(f"color:{palette['texte2']};")
+        self.info.setStyleSheet(f"color:{palette['text2']};")
         lay.addWidget(self.info)
         self._count = 0
 
@@ -677,14 +658,14 @@ class SpectrumTab(QWidget):
         m = dominant_mains(x, fs)
         self.lab_mains.setText(f"{m:g} Hz détecté" if m else "non détecté")
         self.lab_mains.setStyleSheet(
-            f"color:{self.p['alerte'] if m else self.p['trace']};font-weight:bold;")
+            f"color:{self.p['alert'] if m else self.p['trace']};font-weight:bold;")
 
 
 # ---------------------------------------------------------------------------
 #  Écoute
 # ---------------------------------------------------------------------------
 class ListenTab(QWidget):
-    """Le choix musical — et le journal de ce qui a été joué."""
+    """Le choix musical — et le log de ce qui a été joué."""
 
     def __init__(self, engine, palette: dict, on_change, parent=None):
         super().__init__(parent)
@@ -705,12 +686,12 @@ class ListenTab(QWidget):
         self.cb_instrument.currentIndexChanged.connect(self._changed)
         self.lab_desc = QLabel("")
         self.lab_desc.setWordWrap(True)
-        self.lab_desc.setStyleSheet(f"color:{palette['texte2']};")
+        self.lab_desc.setStyleSheet(f"color:{palette['text2']};")
         form.addRow(t("Timbre"), self.cb_instrument)
         form.addRow(self.lab_desc)
         left.addWidget(box)
 
-        box2 = QGroupBox(t("Gamme"))
+        box2 = QGroupBox(t("Scale"))
         f2 = QFormLayout(box2)
         self.cb_scale = QComboBox()
         for key, label in scale_names():
@@ -730,24 +711,24 @@ class ListenTab(QWidget):
         self.sp_span.setRange(1, 5)
         self.sp_span.setValue(m.octave_span)
         self.sp_span.valueChanged.connect(self._changed)
-        f2.addRow(t("Gamme"), self.cb_scale)
-        f2.addRow(t("Tonique"), self.cb_root)
-        f2.addRow(t("Octave grave"), self.sp_octave)
-        f2.addRow(t("Étendue (octaves)"), self.sp_span)
+        f2.addRow(t("Scale"), self.cb_scale)
+        f2.addRow(t("Root"), self.cb_root)
+        f2.addRow(t("Low octave"), self.sp_octave)
+        f2.addRow(t("Range (octaves)"), self.sp_span)
         left.addWidget(box2)
 
-        box3 = QGroupBox(t("Jeu"))
+        box3 = QGroupBox(t("Playing"))
         f3 = QFormLayout(box3)
         self.sl_density = _slider(1, 120, int(m.density_per_min), self._changed)
         self.sl_reverb = _slider(0, 100, int(m.reverb * 100), self._changed)
         self.sl_gain = _slider(-40, 6, int(m.master_gain_db), self._changed)
-        self.chk_drone = QCheckBox(t("bourdon sur la tonique"))
+        self.chk_drone = QCheckBox(t("drone on the root"))
         self.chk_drone.setChecked(m.drone_enabled)
         self.chk_drone.stateChanged.connect(self._changed)
-        self.chk_mute = QCheckBox(t("couper le son (garder la détection)"))
+        self.chk_mute = QCheckBox(t("mute (keep detection)"))
         self.chk_mute.stateChanged.connect(self._changed)
-        f3.addRow(t("Densité (notes/min)"), self.sl_density)
-        f3.addRow(t("Réverbération"), self.sl_reverb)
+        f3.addRow(t("Density (notes/min)"), self.sl_density)
+        f3.addRow(t("Reverb"), self.sl_reverb)
         f3.addRow(t("Volume (dB)"), self.sl_gain)
         f3.addRow(self.chk_drone)
         f3.addRow(self.chk_mute)
@@ -760,31 +741,31 @@ class ListenTab(QWidget):
 
         page_notes = QWidget()
         pn = QVBoxLayout(page_notes)
-        pn.addWidget(QLabel(t("Notes jouées (la plus récente en haut)")))
+        pn.addWidget(QLabel(t("Notes played (most recent first)")))
         self.list_notes = QListWidget()
         self.list_notes.setAlternatingRowColors(True)
         self.list_notes.setFont(fonts.mono(8))
         pn.addWidget(self.list_notes, 1)
         self.lab_rules = QLabel("")
         self.lab_rules.setWordWrap(True)
-        self.lab_rules.setStyleSheet(f"color:{palette['texte2']};font-size:8pt;")
+        self.lab_rules.setStyleSheet(f"color:{palette['text2']};font-size:8pt;")
         pn.addWidget(self.lab_rules)
-        droite.addTab(page_notes, t("Journal"))
+        droite.addTab(page_notes, t("Log"))
 
         page_gamme = QWidget()
         pg = QVBoxLayout(page_gamme)
         self.lab_gamme = QLabel("")
         self.lab_gamme.setWordWrap(True)
-        self.lab_gamme.setStyleSheet(f"color:{palette['or']};font-weight:bold;")
+        self.lab_gamme.setStyleSheet(f"color:{palette['gold']};font-weight:bold;")
         pg.addWidget(self.lab_gamme)
         self.table_notes = QTableWidget(0, 5)
         self.table_notes.setHorizontalHeaderLabels(
-            [t("Degré"), t("Note"), t("MIDI"), t("Fréquence"), t("Écart / 440 Hz")])
+            [t("Degree"), t("Note"), t("MIDI"), t("Frequency"), t("Deviation / 440 Hz")])
         self.table_notes.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table_notes.setAlternatingRowColors(True)
         self.table_notes.setFont(fonts.mono(8))
         pg.addWidget(self.table_notes, 1)
-        droite.addTab(page_gamme, t("Gamme et fréquences"))
+        droite.addTab(page_gamme, t("Scale and frequencies"))
 
         page_sci = QWidget()
         ps = QVBoxLayout(page_sci)
@@ -793,7 +774,7 @@ class ListenTab(QWidget):
         self.lab_sci.setTextFormat(Qt.RichText)
         ps.addWidget(self.lab_sci)
         ps.addStretch(1)
-        droite.addTab(page_sci, t("Grandeurs mesurées"))
+        droite.addTab(page_sci, t("Measured quantities"))
 
         lay.addWidget(droite, 1)
         self._changed()
@@ -828,45 +809,48 @@ class ListenTab(QWidget):
         diapason = float(getattr(m, "diapason_hz", 440.0))
         notes = build_notes(m.scale, m.root, m.octave_low, m.octave_span)
         self.lab_gamme.setText(
-            f"{m.scale} sur {m.root} — diapason {diapason:g} Hz — "
-            f"{len(notes)} notes, {m.octave_span} octave(s) à partir de "
-            f"l'octave {m.octave_low}")
+            t("{gamme} on {note} — concert pitch {diapason:g} Hz — {n} notes, {etendue} octave(s) from octave {basse}").format(
+                  gamme=m.scale, note=m.root, diapason=diapason,
+                  n=len(notes), etendue=m.octave_span, basse=m.octave_low))
         self.table_notes.setRowCount(len(notes))
         for i, midi in enumerate(notes):
             f = midi_to_hz(midi, diapason)
             ecart = ecart_cents(f, midi, 440.0)
             cellules = (str(i + 1), note_name(midi), str(midi),
                         f"{f:9.3f} Hz", f"{ecart:+6.1f} cents")
-            for j, texte in enumerate(cellules):
-                self.table_notes.setItem(i, j, QTableWidgetItem(texte))
+            for j, text in enumerate(cellules):
+                self.table_notes.setItem(i, j, QTableWidgetItem(text))
         self.table_notes.resizeColumnsToContents()
 
     def recharger(self) -> None:
         """Resynchronise les commandes depuis les réglages (appel extérieur)."""
         m = self.engine.settings.music
-        for combo, valeur in ((self.cb_instrument, m.instrument),
+        for combo, value in ((self.cb_instrument, m.instrument),
                               (self.cb_scale, m.scale)):
             combo.blockSignals(True)
-            _select(combo, valeur)
+            _select(combo, value)
             combo.blockSignals(False)
         self.cb_root.blockSignals(True)
         _select(self.cb_root, m.root, by_text=True)
         self.cb_root.blockSignals(False)
-        for widget, valeur in ((self.sp_octave, m.octave_low),
+        for widget, value in ((self.sp_octave, m.octave_low),
                                (self.sp_span, m.octave_span),
                                (self.sl_density, int(m.density_per_min)),
                                (self.sl_reverb, int(m.reverb * 100)),
                                (self.sl_gain, int(m.master_gain_db))):
             widget.blockSignals(True)
-            widget.setValue(valeur)
+            widget.setValue(value)
             widget.blockSignals(False)
         self.lab_desc.setText(t(get_instrument(m.instrument).description))
         self.lab_rules.setText("\n".join(self.engine.mapper.describe_rules()))
         self._remplir_gamme()
 
     def add_note(self, note) -> None:
+        #  Une ligne de tableau à colonnes fixes : seule l'abréviation est
+        #  de la prose. Traduire la ligne entière casserait l'alignement.
         self.list_notes.insertItem(
-            0, f"{note.time_s:8.1f} s   {note.name():<6}  vél. {note.velocity:3d}   "
+            0, f"{note.time_s:8.1f} s   {note.name():<6}  "
+               f"{t('vel.')} {note.velocity:3d}   "
                f"{note.duration:.1f} s   [{note.reason}]")
         while self.list_notes.count() > 400:
             self.list_notes.takeItem(self.list_notes.count() - 1)

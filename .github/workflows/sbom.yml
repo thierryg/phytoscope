@@ -1,22 +1,21 @@
 # ===========================================================================
-#  PhytoScope — la nomenclature logicielle suit le code
+#  PhytoScope — the bill of materials follows the code
 # ===========================================================================
-#  Se déclenche dès qu'une modification touche le logiciel, le micrologiciel
-#  ou leurs dépendances déclarées. Elle régénère les **deux** nomenclatures —
-#  celle du logiciel, livrée dans les paquets, et celle du projet entier — et,
-#  si elles ont changé, les ajoute au dépôt.
+#  Triggered as soon as a change touches the software, the firmware or their
+#  declared dependencies. It regenerates **both** bills of materials — the
+#  software's, shipped inside the packages, and the whole project's — and, if
+#  they changed, commits them back.
 #
-#  Pourquoi automatiser plutôt que rappeler de le faire : **un SBOM faux est
-#  pire qu'aucun SBOM.** Il sert à répondre « cette faille me concerne-t-elle ? »
-#  et une réponse fondée sur une liste périmée est une fausse assurance. Le
-#  seul moment où l'on est sûr qu'il correspond au code est celui où le code
-#  vient de changer.
+#  Why automate it rather than remember to do it: **a false SBOM is worse than
+#  no SBOM.** Its purpose is to answer "does this vulnerability concern me?",
+#  and an answer founded on a stale list is a false assurance. The only moment
+#  one is sure it matches the code is the moment the code has just changed.
 #
-#  Sur une demande de fusion, rien n'est écrit — on n'écrit pas dans la
-#  branche de quelqu'un d'autre : le décalage est signalé en commentaire, et
-#  `securite.yml` le refuse s'il persiste.
+#  On a pull request nothing is written — one does not write into somebody
+#  else's branch: the discrepancy is reported as a comment, and
+#  `security.yml` refuses it if it persists.
 # ===========================================================================
-name: Nomenclature logicielle
+name: Bill of materials
 
 on:
   push:
@@ -42,16 +41,16 @@ concurrency:
 
 jobs:
   sbom:
-    name: Régénérer le SBOM
+    name: Regenerate the SBOM
     runs-on: ubuntu-latest
     permissions:
-      contents: write          # pour reverser le SBOM sur main
-      pull-requests: write     # pour le signaler sur une demande de fusion
+      contents: write          # to commit the SBOM back on main
+      pull-requests: write     # to report it on a pull request
     steps:
       - uses: actions/checkout@v4
         with:
-          #  Le jeton par défaut suffit : on pousse sur la même branche.
-          #  `persist-credentials` reste vrai, c'est ce qui le permet.
+          #  The default token is enough: we push to the same branch.
+          #  `persist-credentials` stays true, which is what allows it.
           ref: ${{ github.head_ref || github.ref_name }}
 
       - uses: actions/setup-python@v5
@@ -59,133 +58,132 @@ jobs:
           python-version: '3.12'
           cache: pip
 
-      #  Le SBOM énumère ce qui est RÉELLEMENT installé : il faut donc
-      #  installer les dépendances, et non se contenter de lire
-      #  requirements.txt. C'est la différence entre « ce qu'on demande » et
-      #  « ce qu'on a ».
-      - name: Dépendances du logiciel
+      #  The SBOM enumerates what is REALLY installed, so the dependencies
+      #  have to be installed rather than requirements.txt merely read. That
+      #  is the difference between "what we ask for" and "what we have".
+      - name: The software's dependencies
         working-directory: src/phytoscope
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt -r requirements-optionnel.txt
 
-      #  Deux nomenclatures, deux portées — et c'est voulu :
+      #  Two bills of materials, two scopes — and that is intentional:
       #
-      #    · src/phytoscope/sbom.cdx.json  le LOGICIEL, livré dans les paquets
-      #    · sbom.cdx.json (racine)        le PROJET, micrologiciel compris
+      #    · src/phytoscope/sbom.cdx.json  the SOFTWARE, shipped in packages
+      #    · sbom.cdx.json (at the root)   the PROJECT, firmware included
       #
-      #  La seconde couvre le Pico SDK, TinyUSB et la chaîne ARM, qui ne sont
-      #  pas des paquets Python. Sans elles la liste était partielle, et une
-      #  liste partielle donne une fausse assurance.
-      - name: Régénérer les deux nomenclatures
+      #  The second covers the Pico SDK, TinyUSB and the ARM toolchain, which
+      #  are not Python packages. Without them the list was partial, and a
+      #  partial list gives a false assurance.
+      - name: Regenerate both bills of materials
         run: |
-          cp src/phytoscope/sbom.cdx.json /tmp/avant-logiciel.json 2>/dev/null \
-            || echo '{}' > /tmp/avant-logiciel.json
-          cp sbom.cdx.json /tmp/avant-projet.json 2>/dev/null \
-            || echo '{}' > /tmp/avant-projet.json
+          cp src/phytoscope/sbom.cdx.json /tmp/before-software.json 2>/dev/null \
+            || echo '{}' > /tmp/before-software.json
+          cp sbom.cdx.json /tmp/before-project.json 2>/dev/null \
+            || echo '{}' > /tmp/before-project.json
           python tools/sbom.py --ecrire --logiciel-seul
           python tools/sbom.py
 
-      #  La comparaison ignore l'horodatage : le SBOM porte la date de sa
-      #  production, qui change à chaque passage sans que rien n'ait bougé.
-      #  Comparer les fichiers bruts ferait donc une révision par jour.
-      - name: Ont-elles réellement changé ?
+      #  The comparison ignores the timestamp: the SBOM carries the date it
+      #  was produced, which changes on every run without anything having
+      #  moved. Comparing the raw files would make one revision a day.
+      - name: Did they really change?
         id: diff
         run: |
           python - <<'PY' >> "$GITHUB_OUTPUT"
           import json, os
 
-          def utile(chemin):
-              """Les composants et leur version — pas l'horodatage.
+          def useful(path):
+              """The components and their versions — not the timestamp.
 
-              Le document porte la date de sa production et un numéro de
-              série tiré au hasard : les comparer ferait une révision par
-              jour, sans qu'une dépendance ait bougé.
+              The document carries the date it was produced and a randomly
+              drawn serial number: comparing those would make one revision a
+              day, without a dependency having moved.
               """
               try:
-                  d = json.load(open(chemin))
+                  d = json.load(open(path))
               except Exception:
                   return None
-              trouves = []
+              found = []
 
-              def parcourir(liste):
-                  for c in liste or []:
+              def walk(items):
+                  for c in items or []:
                       if c.get("name"):
-                          trouves.append((c.get("name", ""),
-                                          str(c.get("version", ""))))
-                      parcourir(c.get("components"))
+                          found.append((c.get("name", ""),
+                                        str(c.get("version", ""))))
+                      walk(c.get("components"))
 
-              parcourir(d.get("components"))
-              return sorted(trouves)
+              walk(d.get("components"))
+              return sorted(found)
 
-          avant = (utile("/tmp/avant-logiciel.json"),
-                   utile("/tmp/avant-projet.json"))
-          apres = (utile("src/phytoscope/sbom.cdx.json"),
-                   utile("sbom.cdx.json"))
-          change = avant != apres
-          avant = [x for p in avant for x in (p or [])]
-          apres = [x for p in apres for x in (p or [])]
-          print(f"change={'oui' if change else 'non'}")
-          if change:
-              a = dict(avant or []); b = dict(apres or [])
-              lignes = []
-              for nom in sorted(set(a) | set(b)):
-                  if a.get(nom) != b.get(nom):
-                      lignes.append(f"  {nom} : {a.get(nom, '—')} → {b.get(nom, '—')}")
-              print("resume<<FIN")
-              print("\n".join(lignes) or "  (structure modifiée)")
-              print("FIN")
+          before = (useful("/tmp/before-software.json"),
+                    useful("/tmp/before-project.json"))
+          after = (useful("src/phytoscope/sbom.cdx.json"),
+                   useful("sbom.cdx.json"))
+          changed = before != after
+          before = [x for p in before for x in (p or [])]
+          after = [x for p in after for x in (p or [])]
+          print(f"change={'yes' if changed else 'no'}")
+          if changed:
+              a = dict(before or []); b = dict(after or [])
+              rows = []
+              for name in sorted(set(a) | set(b)):
+                  if a.get(name) != b.get(name):
+                      rows.append(f"  {name} : {a.get(name, '—')} → {b.get(name, '—')}")
+              print("resume<<END")
+              print("\n".join(rows) or "  (the structure changed)")
+              print("END")
           PY
 
-      - name: Ce qui a changé
-        if: steps.diff.outputs.change == 'oui'
+      - name: What changed
+        if: steps.diff.outputs.change == 'yes'
         run: |
           echo "${{ steps.diff.outputs.resume }}"
 
-      # -- sur main : on reverse ------------------------------------------
-      - name: Reverser le SBOM sur main
-        if: steps.diff.outputs.change == 'oui' && github.event_name == 'push'
+      # -- on main: commit it back ----------------------------------------
+      - name: Commit the SBOM back on main
+        if: steps.diff.outputs.change == 'yes' && github.event_name == 'push'
         run: |
-          #  La même adresse que les commits humains : le dépôt ne doit
-          #  montrer que celle-là. Le NOM, lui, reste « phytoscope-ci »,
-          #  pour qu'on voie d'un coup d'œil ce qui vient de la chaîne.
+          #  The same address as the human commits: the repository should
+          #  show only that one. The NAME stays `phytoscope-ci`, so that one
+          #  sees at a glance what came from the chain.
           git config user.name  'phytoscope-ci'
           git config user.email 'thierry.gayet@gmail.com'
           git add src/phytoscope/sbom.cdx.json sbom.cdx.json
-          git commit -m "$(printf 'nomenclature logicielle régénérée\n\nLe logiciel ou ses dépendances ont changé en %s.\nUn SBOM faux est pire qu%s SBOM : il sert à répondre\n« cette faille me concerne-t-elle ? ».\n\n%s' \
-            "${GITHUB_SHA::12}" "'aucun" "${{ steps.diff.outputs.resume }}")"
+          git commit -m "$(printf 'regenerate the bill of materials\n\nThe software or its dependencies changed in %s.\nA false SBOM is worse than no SBOM: its purpose is to answer\n\u201cdoes this vulnerability concern me?\u201d.\n\n%s' \
+            "${GITHUB_SHA::12}" "${{ steps.diff.outputs.resume }}")"
           git push
 
-      # -- sur une demande de fusion : on signale, on n'écrit pas ----------
-      - name: Signaler le décalage sur la demande de fusion
-        if: steps.diff.outputs.change == 'oui' && github.event_name == 'pull_request'
+      # -- on a pull request: report, do not write -------------------------
+      - name: Report the discrepancy on the pull request
+        if: steps.diff.outputs.change == 'yes' && github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
-            const resume = `${{ steps.diff.outputs.resume }}`;
+            const summary = `${{ steps.diff.outputs.resume }}`;
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: [
-                "### La nomenclature logicielle a changé",
+                "### The bill of materials has changed",
                 "",
-                "Les nomenclatures ne correspondent plus aux dépendances",
-                "réellement installées :",
+                "The bills of materials no longer match the dependencies",
+                "that are really installed:",
                 "",
                 "```",
-                resume,
+                summary,
                 "```",
                 "",
-                "À régénérer avant la fusion :",
+                "To regenerate before merging:",
                 "",
                 "```bash",
                 "cd src/phytoscope",
                 "python3 tools/sbom.py --ecrire --logiciel-seul",
                 "```",
                 "",
-                "_Un SBOM faux est pire qu'aucun SBOM : il sert à répondre",
-                "« cette faille me concerne-t-elle ? »._",
+                "_A false SBOM is worse than no SBOM: its purpose is to",
+                "answer \"does this vulnerability concern me?\"._",
               ].join("\n"),
             });
 

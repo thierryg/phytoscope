@@ -1,20 +1,3 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/wood-wide-web.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
 
 <rect width="800" height="500" fill="#FBFAF4"/>
@@ -925,14 +908,14 @@
 <circle cx="650" cy="298" r="3.6" fill="#B08528" opacity=".9"/>
 <circle cx="682" cy="303" r="3.6" fill="#B08528" opacity=".9"/>
 <line x1="40" y1="430" x2="68" y2="430" stroke="#B08528" stroke-width="2.6"/>
-<text x="76" y="434" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">carbone</text>
+<text x="76" y="434" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">carbon</text>
 <line x1="40" y1="448" x2="68" y2="448" stroke="#3F7D5A" stroke-width="2.6"/>
-<text x="76" y="452" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">azote, phosphore</text>
+<text x="76" y="452" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">nitrogen, phosphorus</text>
 <line x1="40" y1="466" x2="68" y2="466" stroke="#A8552E" stroke-width="2.6"/>
-<text x="76" y="470" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">signaux d'alerte</text>
-<text x="760" y="254" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="italic" letter-spacing="0">canopée</text>
-<text x="760" y="290" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="italic" letter-spacing="0">rhizosphère</text>
+<text x="76" y="470" font-family="Lato, sans-serif" font-size="11.02" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">alarm signals</text>
+<text x="760" y="254" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="italic" letter-spacing="0">canopy</text>
+<text x="760" y="290" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="italic" letter-spacing="0">rhizosphere</text>
 <rect x="0" y="0" width="800" height="54" fill="#FBFAF4" opacity=".93"/>
-<text x="400.0" y="34" font-family="Lato, sans-serif" font-size="17.4" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">LE RÉSEAU MYCORHIZIEN — « WOOD WIDE WEB »</text>
-<text x="400.0" y="488" font-family="Cormorant Garamond, serif" font-size="12.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Les électrodes n'écoutent qu'un individu ; l'arbre, lui, est déjà en réseau.</text>
+<text x="400.0" y="34" font-family="Lato, sans-serif" font-size="17.4" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.6">THE MYCORRHIZAL NETWORK — THE “WOOD WIDE WEB”</text>
+<text x="400.0" y="488" font-family="Cormorant Garamond, serif" font-size="12.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">The electrodes listen to a single individual; the tree is already networked.</text>
 </svg>

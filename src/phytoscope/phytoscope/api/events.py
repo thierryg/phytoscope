@@ -2,156 +2,169 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/api/events.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
-"""Le bus d'événements — ce à quoi un module peut s'abonner.
+"""The event bus — what a module can subscribe to.
 
-Un module n'interroge pas le logiciel en boucle : il dit ce qui l'intéresse, et
-l'hôte l'appelle. C'est le seul moyen d'avoir des modules qui ne coûtent rien
-quand il ne se passe rien.
+A module does not poll the software in a loop: it states what interests it,
+and the host calls it back. That is the only way to have modules that cost
+nothing while nothing is happening.
 
-Les événements sont des **chaînes**, listées ci-dessous et nulle part ailleurs.
-Une chaîne plutôt qu'une énumération pour une raison précise : une version
-ultérieure peut en publier de nouveaux sans que les modules anciens aient à
-être recompilés ni même relus. S'abonner à un événement qui n'existe pas encore
-n'est pas une erreur — le rappel ne sera simplement jamais appelé.
+Events are **strings**, listed below and nowhere else. A string rather than
+an enumeration, for one specific reason: a later release can publish new ones
+without older modules having to be recompiled or even re-read. Subscribing to
+an event that does not exist yet is not an error — the callback will simply
+never be called.
 
-Ce que l'hôte garantit
-----------------------
+What the host guarantees
+-----------------------
 
-**Les rappels sont appelés depuis le fil de l'interface**, jamais depuis le fil
-d'acquisition. Un module qui met trente millisecondes à répondre ralentit
-l'affichage ; il ne fait pas tomber un échantillon (`C-20`, `C-28`).
+**Callbacks are called from the interface thread**, never from the
+acquisition thread. A module taking thirty milliseconds to answer slows the
+display down; it does not drop a sample (`C-20`, `C-28`).
 
-**Un rappel qui lève est désabonné.** Immédiatement, et l'incident est inscrit
-au journal avec le nom du module. Un module fautif ne noie pas la séance sous
-les traces, et il ne reste pas à moitié branché.
+**A callback that raises is unsubscribed.** Immediately, and the incident is
+recorded in the log with the module's name. A faulty module does not drown
+the session in tracebacks, and it is not left half-wired.
 
-**L'ordre d'appel est celui de l'abonnement.** Déterministe, donc reproductible.
+**Call order is subscription order.** Deterministic, therefore reproducible.
 """
 from __future__ import annotations
 
 import threading
 from typing import Any, Callable, Dict, List, Tuple
 
-__all__ = ["BUS", "Bus", "EVENEMENTS",
-           "MESURE_DEMARREE", "MESURE_ARRETEE", "EVENEMENT_DETECTE",
-           "NOTE_JOUEE", "ENONCE_PRODUIT", "SEANCE_COMMENCEE",
-           "SEANCE_TERMINEE", "ECHANTILLON_CAPTURE", "REGLAGES_MODIFIES",
-           "SOURCE_CHANGEE", "ALERTE_DISQUE"]
+__all__ = ["BUS", "Bus", "EVENTS",
+           "MEASUREMENT_STARTED", "MEASUREMENT_STOPPED", "EVENT_DETECTED",
+           "NOTE_PLAYED", "UTTERANCE_PRODUCED", "SESSION_STARTED",
+           "SESSION_ENDED", "SAMPLE_CAPTURED", "SETTINGS_CHANGED",
+           "SOURCE_CHANGED", "DISK_ALERT"]
 
-#  --- Les événements publiés, avec ce que reçoit le rappel -----------------
-MESURE_DEMARREE = "mesure.demarree"          # (etat: EtatMesure)
-MESURE_ARRETEE = "mesure.arretee"            # (etat: EtatMesure)
-SOURCE_CHANGEE = "mesure.source"             # (nom: str)
-EVENEMENT_DETECTE = "signal.evenement"       # (instant_s: float, amplitude_v: float)
-NOTE_JOUEE = "musique.note"                  # (hauteur_midi: int, velocite: int)
-ENONCE_PRODUIT = "parole.enonce"             # (texte: str)
-SEANCE_COMMENCEE = "seance.commencee"        # (dossier: str)
-SEANCE_TERMINEE = "seance.terminee"          # (dossier: str)
-ECHANTILLON_CAPTURE = "echantillon.capture"  # (chemin: str)
-REGLAGES_MODIFIES = "reglages.modifies"      # ()
-ALERTE_DISQUE = "disque.alerte"              # (megaoctets_restants: float)
+#  --- The published events, with what the callback receives ----------------
+#
+#  These wire names were renamed from French on 2026-09-22, which **breaks**
+#  every module that subscribed to the old ones. That is why `API_VERSION`
+#  went from 1.0 to 2.0 in the same change.
+#
+#  The version bump is not bureaucracy. Subscribing to an event that does not
+#  exist is deliberately not an error — see the docstring above — so a module
+#  still asking for "mesure.demarree" would simply never be called again, and
+#  nothing would say why. A major bump makes the host refuse that module up
+#  front, with a sentence naming the version it targets. Refusing loudly
+#  beats running silently wrong.
+MEASUREMENT_STARTED = "measurement.started"  # (state: MeasurementState)
+MEASUREMENT_STOPPED = "measurement.stopped"  # (state: MeasurementState)
+SOURCE_CHANGED = "measurement.source"        # (name: str)
+EVENT_DETECTED = "signal.event"              # (instant_s, amplitude_v: float)
+NOTE_PLAYED = "music.note"                   # (midi_pitch, velocity: int)
+UTTERANCE_PRODUCED = "speech.utterance"      # (text: str)
+SESSION_STARTED = "session.started"          # (directory: str)
+SESSION_ENDED = "session.ended"              # (directory: str)
+SAMPLE_CAPTURED = "sample.captured"          # (path: str)
+SETTINGS_CHANGED = "settings.changed"        # ()
+DISK_ALERT = "disk.alert"                    # (megaoctets_restants: float)
 
-#: La liste complète, avec ce que le rappel reçoit. Sert à la documentation et
-#: à l'outil du SDK, qui la lit pour proposer les événements existants.
-EVENEMENTS: Dict[str, str] = {
-    MESURE_DEMARREE: "l'acquisition commence — reçoit l'état de la mesure",
-    MESURE_ARRETEE: "l'acquisition s'arrête — reçoit l'état de la mesure",
-    SOURCE_CHANGEE: "la source d'acquisition a changé — reçoit son nom",
-    EVENEMENT_DETECTE: "un événement franchit le seuil — reçoit (instant_s, amplitude_v)",
-    NOTE_JOUEE: "une note est jouée — reçoit (hauteur_midi, velocite)",
-    ENONCE_PRODUIT: "le mode Parole produit un énoncé — reçoit le texte",
-    SEANCE_COMMENCEE: "un enregistrement démarre — reçoit le dossier",
-    SEANCE_TERMINEE: "un enregistrement se termine — reçoit le dossier",
-    ECHANTILLON_CAPTURE: "un échantillon rapide est écrit — reçoit son chemin",
-    REGLAGES_MODIFIES: "les réglages ont changé — aucun argument",
-    ALERTE_DISQUE: "l'espace disque devient critique — reçoit les Mo restants",
+#: The complete list, with what the callback receives. Used by the
+#: documentation and by the SDK tool, which reads it to offer the events that
+#: actually exist.
+EVENTS: Dict[str, str] = {
+    MEASUREMENT_STARTED: "acquisition starts — receives the measurement state",
+    MEASUREMENT_STOPPED: "acquisition stops — receives the measurement state",
+    SOURCE_CHANGED: "the acquisition source changed — receives its name",
+    EVENT_DETECTED: "an event crosses the threshold — receives "
+                       "(instant_s, amplitude_v)",
+    NOTE_PLAYED: "a note is played — receives (midi_pitch, velocity)",
+    UTTERANCE_PRODUCED: "Speech mode produced an utterance — receives the text",
+    SESSION_STARTED: "a recording starts — receives the directory",
+    SESSION_ENDED: "a recording ends — receives the directory",
+    SAMPLE_CAPTURED: "a quick sample is written — receives its path",
+    SETTINGS_CHANGED: "the settings changed — no argument",
+    DISK_ALERT: "disk space is becoming critical — receives the MB left",
 }
 
 
 class Bus:
-    """Le distributeur d'événements. Un seul par processus : `BUS`."""
+    """The event dispatcher. One per process: `BUS`."""
 
     def __init__(self) -> None:
-        self._abonnes: Dict[str, List[Tuple[Callable, str]]] = {}
-        #  Un verrou, car `abonner` peut être appelé depuis l'installation
-        #  d'un module tandis qu'un événement est en cours de distribution.
-        self._verrou = threading.RLock()
-        self.publies = 0
-        self.desabonnements_sur_faute = 0
+        self._subscribers: Dict[str, List[Tuple[Callable, str]]] = {}
+        #  A lock, because `subscribe` can be called while a module is being
+        #  installed and an event is already being dispatched.
+        self._lock = threading.RLock()
+        self.published = 0
+        self.unsubscribed_on_fault = 0
 
-    def abonner(self, evenement: str, rappel: Callable,
+    def subscribe(self, event: str, callback: Callable,
                 module: str = "") -> None:
-        with self._verrou:
-            self._abonnes.setdefault(evenement, []).append((rappel, module))
+        with self._lock:
+            self._subscribers.setdefault(event, []).append((callback, module))
 
-    def desabonner(self, evenement: str, rappel: Callable) -> None:
-        with self._verrou:
-            liste = self._abonnes.get(evenement)
-            if not liste:
+    def unsubscribe(self, event: str, callback: Callable) -> None:
+        with self._lock:
+            entries = self._subscribers.get(event)
+            if not entries:
                 return
-            self._abonnes[evenement] = [(r, m) for r, m in liste if r is not rappel]
+            self._subscribers[event] = [(r, m) for r, m in entries if r is not callback]
 
-    def desabonner_module(self, module: str) -> int:
-        """Retire tous les abonnements d'un module. Rend leur nombre."""
-        retires = 0
-        with self._verrou:
-            for evenement, liste in list(self._abonnes.items()):
-                garde = [(r, m) for r, m in liste if m != module]
-                retires += len(liste) - len(garde)
-                self._abonnes[evenement] = garde
-        return retires
+    def unsubscribe_module(self, module: str) -> int:
+        """Removes every subscription held by a module. Returns how many."""
+        removed = 0
+        with self._lock:
+            for event, entries in list(self._subscribers.items()):
+                kept = [(r, m) for r, m in entries if m != module]
+                removed += len(entries) - len(kept)
+                self._subscribers[event] = kept
+        return removed
 
-    def publier(self, evenement: str, *args: Any, **kwargs: Any) -> int:
-        """Appelle les abonnés. Rend le nombre d'appels réussis.
+    def publish(self, event: str, *args: Any, **kwargs: Any) -> int:
+        """Calls the subscribers. Returns the number of successful calls.
 
-        Un rappel qui lève est **désabonné sur-le-champ** : laisser branché un
-        module qui échoue reviendrait à inscrire la même trace au journal
-        toutes les secondes, et à rendre le journal inutilisable — celui-là
-        même dont on a besoin pour comprendre la panne.
+        A callback that raises is **unsubscribed on the spot**: leaving a
+        failing module wired up would mean writing the same traceback to the
+        log every second, and making the log unusable — the very log you need
+        in order to understand the failure.
         """
-        with self._verrou:
-            abonnes = list(self._abonnes.get(evenement, ()))
-        if not abonnes:
+        with self._lock:
+            subscribers = list(self._subscribers.get(event, ()))
+        if not subscribers:
             return 0
 
-        self.publies += 1
-        reussis = 0
-        for rappel, module in abonnes:
+        self.published += 1
+        succeeded = 0
+        for callback, module in subscribers:
             try:
-                rappel(*args, **kwargs)
-                reussis += 1
+                callback(*args, **kwargs)
+                succeeded += 1
             except Exception as exc:                       # noqa: BLE001
-                self.desabonner(evenement, rappel)
-                self.desabonnements_sur_faute += 1
+                self.unsubscribe(event, callback)
+                self.unsubscribed_on_fault += 1
                 from ..core.logging_setup import get_logger
                 get_logger(f"module.{module or '?'}").error(
-                    "Abonnement à « %s » retiré après une faute : %s: %s",
-                    evenement, type(exc).__name__, exc)
-        return reussis
+                    "Subscription to “%s” removed after a fault: "
+                    "%s: %s", event, type(exc).__name__, exc)
+        return succeeded
 
-    def abonnes(self, evenement: str = "") -> int:
-        with self._verrou:
-            if evenement:
-                return len(self._abonnes.get(evenement, ()))
-            return sum(len(v) for v in self._abonnes.values())
+    def subscribers(self, event: str = "") -> int:
+        with self._lock:
+            if event:
+                return len(self._subscribers.get(event, ()))
+            return sum(len(v) for v in self._subscribers.values())
 
-    def vider(self) -> None:
-        """Retire tout. Employé par les essais, et à la fermeture."""
-        with self._verrou:
-            self._abonnes.clear()
+    def clear(self) -> None:
+        """Removes everything. Used by the tests, and at shutdown."""
+        with self._lock:
+            self._subscribers.clear()
 
 
-#: L'unique bus du processus.
+#: The one bus of the process.
 BUS = Bus()

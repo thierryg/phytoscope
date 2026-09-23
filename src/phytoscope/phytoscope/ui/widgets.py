@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/ui/widgets.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Widgets communs : tracés, afficheurs, voyants.
@@ -85,19 +85,19 @@ class TracePlot(QWidget):
         #  créé caché : rien à faire tant que la vue n'a pas bougé.
         self.btn_zoom = QToolButton(self)
         self.btn_zoom.setText("⟲")
-        self.btn_zoom.setToolTip(t("Revenir au cadrage d'origine (Ctrl+0)"))
+        self.btn_zoom.setToolTip(t("Back to the original framing (Ctrl+0)"))
         self.btn_zoom.setCursor(Qt.PointingHandCursor)
         self.btn_zoom.setStyleSheet(
-            f"QToolButton{{background:{palette['fond3']};color:{palette['or']};"
-            f"border:1px solid {palette['or']};border-radius:4px;"
+            f"QToolButton{{background:{palette['background3']};color:{palette['gold']};"
+            f"border:1px solid {palette['gold']};border-radius:4px;"
             f"padding:2px 7px;font-weight:bold;}}"
             f"QToolButton:hover{{background:{palette['accent']};color:#fff;}}")
         self.btn_zoom.clicked.connect(self.reinitialiser_zoom)
         self.btn_zoom.hide()
 
         if HAVE_PYQTGRAPH:
-            pg.setConfigOptions(antialias=True, background=palette["fond3"],
-                                foreground=palette["texte2"])
+            pg.setConfigOptions(antialias=True, background=palette["background3"],
+                                foreground=palette["text2"])
             self._pg_plot = pg.PlotWidget()
             self._pg_plot.showGrid(x=True, y=True, alpha=0.22)
             self._pg_plot.setLabel("left", y_label)
@@ -209,22 +209,22 @@ class TracePlot(QWidget):
         qp = QPainter(self)
         qp.setRenderHint(QPainter.Antialiasing, True)
         r = self.rect().adjusted(46, 10, -10, -26)
-        qp.fillRect(self.rect(), QColor(self.p["fond3"]))
-        qp.setPen(QPen(QColor(self.p["grille"]), 1))
+        qp.fillRect(self.rect(), QColor(self.p["background3"]))
+        qp.setPen(QPen(QColor(self.p["grid"]), 1))
         for i in range(1, 8):
             x = r.left() + r.width() * i / 8
             qp.drawLine(int(x), r.top(), int(x), r.bottom())
         for i in range(1, 6):
             y = r.top() + r.height() * i / 6
             qp.drawLine(r.left(), int(y), r.right(), int(y))
-        qp.setPen(QPen(QColor(self.p["trait"]), 1))
+        qp.setPen(QPen(QColor(self.p["line"]), 1))
         qp.drawRect(r)
 
         lo, hi = self._y_range
         if hi - lo < 1e-15:
             hi = lo + 1e-15
         qp.setFont(fonts.mono(7.5))
-        qp.setPen(QColor(self.p["texte2"]))
+        qp.setPen(QColor(self.p["text2"]))
         for i in range(4):
             v = hi - (hi - lo) * i / 3
             y = r.top() + r.height() * i / 3
@@ -258,7 +258,7 @@ class TracePlot(QWidget):
         qp.setPen(QPen(QColor(self.p["trace"]), 1.6))
         qp.drawPath(path)
 
-        qp.setPen(QPen(QColor(self.p["or"]), 1, Qt.DashLine))
+        qp.setPen(QPen(QColor(self.p["gold"]), 1, Qt.DashLine))
         for m in self._marks:
             if x0 <= m <= x1:
                 px = r.left() + (m - x0) / (x1 - x0) * r.width()
@@ -393,8 +393,8 @@ class VuMetre(QWidget):
         qp = QPainter(self)
         qp.setRenderHint(QPainter.Antialiasing, True)
         w, h = self.width(), self.height()
-        qp.fillRect(self.rect(), QColor(self.p["fond3"]))
-        qp.setPen(QPen(QColor(self.p["trait"]), 1))
+        qp.fillRect(self.rect(), QColor(self.p["background3"]))
+        qp.setPen(QPen(QColor(self.p["line"]), 1))
         qp.drawRoundedRect(0, 0, w - 1, h - 1, 5, 5)
 
         #  Le cadran : un arc de 140°, centre bas, comme un galvanomètre.
@@ -414,7 +414,7 @@ class VuMetre(QWidget):
 
         #  Les zones : vert jusqu'au premier seuil, ambre, puis rouge.
         bornes = [0.0] + list(self.seuils) + [1.0]
-        couleurs = [self.p["accent"], self.p["or"], self.p["alerte"]]
+        couleurs = [self.p["accent"], self.p["gold"], self.p["alert"]]
         for (a, b), couleur in zip(zip(bornes[:-1], bornes[1:]), couleurs):
             if self.centre_zero:
                 #  Symétrique : les zones vont du centre vers les deux bords.
@@ -428,7 +428,7 @@ class VuMetre(QWidget):
                 self._arc(qp, cx, cy, rayon, angle(a), angle(b))
 
         #  Graduations.
-        qp.setPen(QPen(QColor(self.p["texte2"]), 1))
+        qp.setPen(QPen(QColor(self.p["text2"]), 1))
         for i in range(11):
             f = i / 10.0
             longue = (i % 5 == 0)
@@ -438,14 +438,14 @@ class VuMetre(QWidget):
 
         #  La mémoire de crête, en or.
         if abs(self._crete) > 1e-15:
-            qp.setPen(QPen(QColor(self.p["or"]), 2))
+            qp.setPen(QPen(QColor(self.p["gold"]), 2))
             fc = self._fraction(self._crete)
             qp.drawLine(point(fc, rayon - 16), point(fc, rayon - 2))
 
         #  L'aiguille.
         f = self._fraction(self._aiguille)
         depasse = abs(self._aiguille) > self.maximum * (1.0 if not self.centre_zero else 1.0)
-        couleur = self.p["alerte"] if depasse else self.p["trace"]
+        couleur = self.p["alert"] if depasse else self.p["trace"]
         qp.setPen(QPen(QColor(couleur), 2.2))
         qp.drawLine(QPointF(cx, cy), point(f, rayon - 12))
         qp.setBrush(QColor(couleur))
@@ -454,7 +454,7 @@ class VuMetre(QWidget):
 
         #  Le titre, la valeur et le fond d'échelle.
         qp.setFont(fonts.texte(7.0))
-        qp.setPen(QColor(self.p["texte2"]))
+        qp.setPen(QColor(self.p["text2"]))
         qp.drawText(QRectF(4, 3, w - 8, 12), Qt.AlignHCenter, self.titre)
 
         qp.setFont(fonts.mono(9.5, gras=True))
@@ -464,7 +464,7 @@ class VuMetre(QWidget):
                     else f"{self._valeur:.2f} {self.unite}")
 
         qp.setFont(fonts.texte(6.2))
-        qp.setPen(QColor(self.p["texte2"]))
+        qp.setPen(QColor(self.p["text2"]))
         borne = self._fond_echelle()
         echelle = f"± {borne}" if self.centre_zero else f"0 – {borne}"
         qp.drawText(QRectF(4, h - 12, w - 8, 11), Qt.AlignHCenter, echelle)
@@ -506,7 +506,7 @@ class Readout(QFrame):
         lay.setContentsMargins(14, 10, 14, 10)
         lay.setSpacing(2)
         self.title = QLabel(title)
-        self.title.setStyleSheet(f"color:{palette['texte2']};letter-spacing:1px;")
+        self.title.setStyleSheet(f"color:{palette['text2']};letter-spacing:1px;")
         self.value = QLabel("—")
         self.value.setObjectName("valeur")
         self.unit = QLabel(unit)
@@ -520,7 +520,7 @@ class Readout(QFrame):
 
     def set_value(self, text: str, alert: bool = False) -> None:
         self.value.setText(text)
-        col = self.p["alerte"] if alert else self.p["trace"]
+        col = self.p["alert"] if alert else self.p["trace"]
         self.value.setStyleSheet(fonts.css_mono(26) + f"color:{col};")
 
     def set_unit(self, unit: str) -> None:
@@ -552,14 +552,14 @@ class LevelBar(QWidget):
     def paintEvent(self, ev):                          # pragma: no cover
         qp = QPainter(self)
         r = self.rect().adjusted(0, 3, 0, -3)
-        qp.fillRect(r, QColor(self.p["fond3"]))
+        qp.fillRect(r, QColor(self.p["background3"]))
         w = int(r.width() * min(self.value, 1.0))
-        col = self.p["trace"] if self.value < 0.85 else self.p["alerte"]
+        col = self.p["trace"] if self.value < 0.85 else self.p["alert"]
         qp.fillRect(r.left(), r.top(), w, r.height(), QColor(col))
         px = int(r.width() * min(self.peak, 1.0))
-        qp.setPen(QPen(QColor(self.p["or"]), 2))
+        qp.setPen(QPen(QColor(self.p["gold"]), 2))
         qp.drawLine(r.left() + px, r.top(), r.left() + px, r.bottom())
-        qp.setPen(QPen(QColor(self.p["trait"]), 1))
+        qp.setPen(QPen(QColor(self.p["line"]), 1))
         qp.drawRect(r)
         qp.end()
 
@@ -573,9 +573,9 @@ class Led(QLabel):
         self.set_state("off")
 
     def set_state(self, state: str) -> None:
-        colors = {"ok": self.p["trace"], "warn": self.p["or"],
-                  "err": self.p["alerte"], "off": self.p["texte2"]}
-        c = colors.get(state, self.p["texte2"])
+        colors = {"ok": self.p["trace"], "warn": self.p["gold"],
+                  "err": self.p["alert"], "off": self.p["text2"]}
+        c = colors.get(state, self.p["text2"])
         self.setStyleSheet(f"color:{c};font-weight:bold;")
 
 
@@ -598,11 +598,11 @@ class StatusStrip(QFrame):
         for f in fields:
             box = QVBoxLayout()
             cap = QLabel(libelles.get(f, f).upper())
-            cap.setStyleSheet(f"color:{palette['texte2']};font-size:7pt;"
+            cap.setStyleSheet(f"color:{palette['text2']};font-size:7pt;"
                               f"letter-spacing:1px;")
             val = QLabel("—")
             val.setStyleSheet(fonts.css_mono() + "font-weight:bold;"
-                              + f"color:{palette['texte']};")
+                              + f"color:{palette['text']};")
             box.addWidget(cap)
             box.addWidget(val)
             lay.addLayout(box)
@@ -614,8 +614,8 @@ class StatusStrip(QFrame):
         lab = self.labels.get(field)
         if lab is None:
             return
-        colors = {"normal": self.p["texte"], "ok": self.p["trace"],
-                  "warn": self.p["or"], "err": self.p["alerte"]}
+        colors = {"normal": self.p["text"], "ok": self.p["trace"],
+                  "warn": self.p["gold"], "err": self.p["alert"]}
         lab.setText(text)
         lab.setStyleSheet(fonts.css_mono() + "font-weight:bold;"
-                          + f"color:{colors.get(state, self.p['texte'])};")
+                          + f"color:{colors.get(state, self.p['text'])};")

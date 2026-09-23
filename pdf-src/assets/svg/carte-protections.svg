@@ -2,16 +2,16 @@
   ==========================================================================
   PhytoScope — attribution — pdf-src/assets/svg/carte-protections.svg
 
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
+  Version   : 1.6.0
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
 
   SPDX-License-Identifier: MIT
-  fin de l'attribution
+  end of attribution
   ==========================================================================
 -->
 
@@ -92,24 +92,24 @@
 <line x1="1165.24" y1="690" x2="1165.24" y2="742" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
 <line x1="1040.62" y1="742" x2="1040.62" y2="788" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
 <line x1="1241.62" y1="742" x2="1241.62" y2="788" stroke="#23302C" stroke-width="1.0" stroke-linecap="round"/>
-<text x="1117.0" y="677" font-family="Cormorant Garamond, serif" font-size="20.37" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Protections et gestion d'alimentation</text>
+<text x="1117.0" y="677" font-family="Cormorant Garamond, serif" font-size="20.37" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Protections and power management</text>
 <text x="1040.62" y="708" font-family="Lato, sans-serif" font-size="16.75" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">PhytoSense One</text>
 <text x="1040.62" y="722" font-family="Cormorant Garamond, serif" font-size="14.48" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
 <text x="1040.62" y="735" font-family="DejaVu Sans Mono, monospace" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
-<text x="1241.62" y="710" font-family="Lato, sans-serif" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Carte mère</text>
+<text x="1241.62" y="710" font-family="Lato, sans-serif" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Main board</text>
 <text x="1241.62" y="726" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">CERN-OHL-P v2</text>
 <text x="1241.62" y="737" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">diffusion libre</text>
-<text x="978.31" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">FEUILLE</text>
+<text x="978.31" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">SHEET</text>
 <text x="978.31" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">7/8</text>
-<text x="1102.93" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">RÉVISION</text>
+<text x="1102.93" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">REVISION</text>
 <text x="1102.93" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">B</text>
 <text x="1203.43" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">DATE</text>
 <text x="1203.43" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">2026-09</text>
-<text x="1279.81" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">ÉCHELLE</text>
+<text x="1279.81" y="760" font-family="Lato, sans-serif" font-size="12.67" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0.8">SCALE</text>
 <text x="1279.81" y="778" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">—</text>
-<text x="90" y="74" font-family="Cormorant Garamond, serif" font-size="19.01" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Deux sources, une priorité, et rien qui casse en cas de fausse manœuvre</text>
+<text x="90" y="74" font-family="Cormorant Garamond, serif" font-size="19.01" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Two sources, one priority, and nothing that breaks if you get it wrong</text>
 <rect x="60" y="104" width="560" height="210" rx="6" fill="#FBF8EF" stroke="#B08528" stroke-width="1.2" stroke-dasharray="7 5"/>
-<text x="340" y="124" font-family="Lato, sans-serif" font-size="14.94" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">ENTRÉE BLOC SECTEUR — 7 à 24 V, polarité indifférente</text>
+<text x="340" y="124" font-family="Lato, sans-serif" font-size="14.94" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">MAINS ADAPTER INPUT — 7 to 24 V, either polarity</text>
 <rect x="82" y="150" width="50" height="146" rx="3" fill="#F7F0DC" stroke="#B08528" stroke-width="1.6"/>
 <line x1="132" y1="170" x2="162" y2="170" stroke="#23302C" stroke-width="1.3" stroke-linecap="round"/>
 <circle cx="122" cy="170" r="4.2" fill="#B08528" stroke="#B08528" stroke-width="1"/>
@@ -126,8 +126,8 @@
 <text x="258.0" y="168" font-family="Lato, sans-serif" font-size="17.2" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Q30</text>
 <text x="258.0" y="186" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">DMP3099L</text>
 <text x="258.0" y="204" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">anti-inversion</text>
-<text x="258" y="222" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">une inversion bloque,</text>
-<text x="258" y="236" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">elle ne détruit rien</text>
+<text x="258" y="222" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">a reversal blocks,</text>
+<text x="258" y="236" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">it destroys nothing</text>
 <path d="M 306,170 L 346,170" fill="none" stroke="#23302C" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="round"/>
 <circle cx="346" cy="170" r="3.6" fill="#23302C"/>
 <line x1="346" y1="240" x2="346" y2="225.0" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
@@ -135,7 +135,7 @@
 <line x1="330" y1="206.0" x2="362" y2="206.0" stroke="#23302C" stroke-width="2.6" stroke-linecap="round"/>
 <line x1="346" y1="206.0" x2="346" y2="180" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
 <text x="316" y="262" font-family="Lato, sans-serif" font-size="14.03" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">D30 · SMAJ18A</text>
-<text x="316" y="276" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">écrête à 18 V, 400 W</text>
+<text x="316" y="276" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">clamps at 18 V, 400 W</text>
 <path d="M 346,240 L 346,262" fill="none" stroke="#23302C" stroke-width="1.35" stroke-linecap="square" stroke-linejoin="round"/>
 <line x1="346" y1="262" x2="346" y2="280" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
 <line x1="322" y1="280" x2="370" y2="280" stroke="#23302C" stroke-width="2.8" stroke-linecap="round"/>
@@ -146,11 +146,11 @@
 <text x="480.0" y="164" font-family="Lato, sans-serif" font-size="17.2" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U60</text>
 <text x="480.0" y="182" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">TPS62932</text>
 <text x="480.0" y="200" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">abaisseur 5,2 V</text>
-<text x="480" y="222" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">2 A · 92 % · protégé en court-circuit</text>
+<text x="480" y="222" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">2 A · 92 % · short-circuit protected</text>
 <path d="M 540,170 L 600,170 L 600,300" fill="none" stroke="#A8552E" stroke-width="2.0" stroke-linecap="square" stroke-linejoin="round"/>
 <text x="572" y="156" font-family="DejaVu Sans Mono, monospace" font-size="14.48" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">5,2 V</text>
 <rect x="60" y="340" width="560" height="190" rx="6" fill="#F2F6FC" stroke="#2F5E86" stroke-width="1.2" stroke-dasharray="7 5"/>
-<text x="340" y="360" font-family="Lato, sans-serif" font-size="14.94" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">ENTRÉE USB — 5 V, 500 mA déclarés</text>
+<text x="340" y="360" font-family="Lato, sans-serif" font-size="14.94" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">USB INPUT — 5 V, 500 mA declared</text>
 <polygon points="146,387.0 94,387.0 82,400 94,413.0 146,413.0" fill="#fff" stroke="#2F5E86" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="118.0" y="404" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#2F5E86" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">VBUS</text>
 <path d="M 146,400 L 190,400" fill="none" stroke="#23302C" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="round"/>
@@ -163,9 +163,9 @@
 <rect x="300" y="372" width="130" height="66" rx="3" fill="#FBFBF7" stroke="#23302C" stroke-width="1.8"/>
 <text x="365.0" y="394" font-family="Lato, sans-serif" font-size="17.2" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U61</text>
 <text x="365.0" y="412" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">TPS2553</text>
-<text x="365.0" y="430" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">limite à 500 mA</text>
-<text x="365" y="452" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">coupe en 2 µs sur court-circuit,</text>
-<text x="365" y="466" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">signale le défaut, se réarme seul</text>
+<text x="365.0" y="430" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">limits to 500 mA</text>
+<text x="365" y="452" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">opens in 2 µs on a short,</text>
+<text x="365" y="466" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">flags the fault, resets itself</text>
 <path d="M 430,400 L 600,400 L 600,330" fill="none" stroke="#A8552E" stroke-width="2.0" stroke-linecap="square" stroke-linejoin="round"/>
 <text x="500" y="390" font-family="DejaVu Sans Mono, monospace" font-size="14.48" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">5,0 V</text>
 <polygon points="300,467.0 358,467.0 370,480 358,493.0 300,493.0" fill="#fff" stroke="#A8552E" stroke-width="1.4" stroke-linejoin="round"/>
@@ -174,10 +174,10 @@
 <rect x="640" y="270" width="150" height="90" rx="3" fill="#FBFBF7" stroke="#23302C" stroke-width="1.8"/>
 <text x="715.0" y="292" font-family="Lato, sans-serif" font-size="17.2" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U62</text>
 <text x="715.0" y="310" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">TPS2116</text>
-<text x="715.0" y="328" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">aiguilleur à priorité</text>
-<text x="715" y="378" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">priorité au bloc secteur ;</text>
-<text x="715" y="392" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">bascule sans coupure ;</text>
-<text x="715" y="406" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">blocage inverse des deux côtés</text>
+<text x="715.0" y="328" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">priority selector</text>
+<text x="715" y="378" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">the mains adapter wins;</text>
+<text x="715" y="392" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">switches without a break;</text>
+<text x="715" y="406" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">reverse blocking on both sides</text>
 <path d="M 600,300 L 640,300" fill="none" stroke="#A8552E" stroke-width="2.0" stroke-linecap="square" stroke-linejoin="round"/>
 <path d="M 600,330 L 640,330" fill="none" stroke="#A8552E" stroke-width="2.0" stroke-linecap="square" stroke-linejoin="round"/>
 <path d="M 790,315 L 850,315" fill="none" stroke="#A8552E" stroke-width="2.4" stroke-linecap="square" stroke-linejoin="round"/>
@@ -191,7 +191,7 @@
 <rect x="980" y="286" width="130" height="62" rx="3" fill="#FBFBF7" stroke="#23302C" stroke-width="1.8"/>
 <text x="1045.0" y="308" font-family="Lato, sans-serif" font-size="17.2" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">U63</text>
 <text x="1045.0" y="326" font-family="DejaVu Sans Mono, monospace" font-size="15.84" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">INA219</text>
-<text x="1045.0" y="344" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">tension et courant</text>
+<text x="1045.0" y="344" font-family="Lato, sans-serif" font-size="13.58" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">voltage and current</text>
 <text x="1045" y="366" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">alimente l'afficheur :</text>
 <text x="1045" y="380" font-family="Lato, sans-serif" font-size="13.13" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">5,03 V · 137 mA · 0,69 W</text>
 <polygon points="980,397.0 1024,397.0 1036,410 1024,423.0 980,423.0" fill="#fff" stroke="#2F5E86" stroke-width="1.4" stroke-linejoin="round"/>
@@ -205,11 +205,11 @@
 <path d="M 1256,315 L 1284,315" fill="none" stroke="#A8552E" stroke-width="2.4" stroke-linecap="square" stroke-linejoin="round"/>
 <line x1="1284" y1="315" x2="1284" y2="295" stroke="#A8552E" stroke-width="1.4" stroke-linecap="round"/>
 <line x1="1265" y1="295" x2="1303" y2="295" stroke="#A8552E" stroke-width="2.4" stroke-linecap="round"/>
-<text x="1284" y="286" font-family="DejaVu Sans Mono, monospace" font-size="14.71" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">5 V carte</text>
+<text x="1284" y="286" font-family="DejaVu Sans Mono, monospace" font-size="14.71" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">5 V board</text>
 <rect x="640" y="430" width="660" height="180" rx="6" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.2" stroke-dasharray="7 5"/>
-<text x="970" y="450" font-family="Lato, sans-serif" font-size="14.94" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">PROTECTION DES ENTRÉES DE MESURE</text>
+<text x="970" y="450" font-family="Lato, sans-serif" font-size="14.94" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1">MEASUREMENT INPUT PROTECTION</text>
 <polygon points="754,477.0 668,477.0 656,490 668,503.0 754,503.0" fill="#fff" stroke="#3F7D5A" stroke-width="1.4" stroke-linejoin="round"/>
-<text x="709.0" y="494" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">ÉLECTRODE</text>
+<text x="709.0" y="494" font-family="DejaVu Sans Mono, monospace" font-size="14.03" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">ELECTRODE</text>
 <path d="M 754,490 L 786,490" fill="none" stroke="#23302C" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="round"/>
 <line x1="786" y1="490" x2="798" y2="490" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
 <rect x="798" y="475" width="52" height="30" rx="5" fill="#e9eceb" stroke="#23302C" stroke-width="1.6"/>
@@ -232,15 +232,15 @@
 <line x1="1010" y1="584" x2="1010" y2="602" stroke="#23302C" stroke-width="1.4" stroke-linecap="round"/>
 <polygon points="988,602 1032,602 1010,624" fill="#23302C" stroke="#23302C" stroke-width="1.0" stroke-linejoin="round"/>
 <path d="M 1010,490 L 1080,490" fill="none" stroke="#23302C" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="round"/>
-<text x="1096" y="486" font-family="Lato, sans-serif" font-size="14.03" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">vers U1</text>
-<text x="1096" y="500" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">(feuille 1)</text>
+<text x="1096" y="486" font-family="Lato, sans-serif" font-size="14.03" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">to U1</text>
+<text x="1096" y="500" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">(sheet 1)</text>
 <text x="1096" y="528" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">0,5 pF seulement :</text>
-<text x="1096" y="542" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">ne charge pas l'entrée</text>
-<text x="700" y="556" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">un branchement sur une source active ouvre le fusible</text>
-<text x="700" y="570" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">au lieu de détruire l'amplificateur d'entrée</text>
+<text x="1096" y="542" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">does not load the input</text>
+<text x="700" y="556" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">connecting to a live source opens the fuse</text>
+<text x="700" y="570" font-family="Lato, sans-serif" font-size="13.13" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">instead of destroying the input amplifier</text>
 <rect x="60" y="560" width="550" height="116" rx="5" fill="#E9F2EC" stroke="#3F7D5A" stroke-width="1.1"/>
 <text x="74" y="588" font-family="Lato, sans-serif" font-size="15.62" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">DEUX SOURCES, AUCUNE MANIPULATION</text>
-<text x="74" y="612" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Toute combinaison est admise : bloc secteur seul, USB seul, ou les deux.</text>
-<text x="74" y="634" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Le passage de l'un à l'autre se fait sans coupure ni redémarrage — on peut</text>
-<text x="74" y="656" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">débrancher l'ordinateur en pleine séance sans perdre un échantillon.</text>
+<text x="74" y="612" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Any combination is allowed: mains adapter alone, USB alone, or both.</text>
+<text x="74" y="634" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Changing from one to the other happens without a break or a restart — you can</text>
+<text x="74" y="656" font-family="Lato, sans-serif" font-size="14.26" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">unplug the computer mid-session without losing a sample.</text>
 </svg>

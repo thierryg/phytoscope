@@ -3,77 +3,81 @@
 #  ==========================================================================
 #  PhytoScope — attribution — pdf-src/build_sdk.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
-"""Build du hors-série développeur « Écrire un module pour PhytoScope ».
+"""Builds the developer companion volume "Writing a module for PhytoScope".
 
-    build/Ecrire-un-module-PhytoScope.pdf
+    build/writing-a-phytoscope-module.pdf
 
-Le document décrit l'interface de programmation des modules, le SDK, et ce
-qu'un module a le droit de faire. Il est fabriqué à partir des fragments de
-`pdf-src/parts-sdk/`, par le même moule que les deux autres ouvrages — mêmes
-feuilles de style, même sommaire cliquable, mêmes métadonnées.
+The document describes the modules' programming interface, the SDK, and what a
+module is allowed to do. It is built from the fragments in
+`pdf-src/writing-a-phytoscope-module/`, by the same mould as the other two
+volumes — the same style sheets, the same clickable contents, the same
+metadata.
 
-Le contenu est le même que celui de `src/sdk/docs/`, mis en page pour l'impression.
-Deux formes, une source de vérité : le Markdown se lit dans le dépôt, le PDF
-s'imprime et s'emporte.
+The content is the same as that of `src/sdk/docs/`, laid out for print. Two
+forms, one source of truth: the Markdown is read in the repository, the PDF is
+printed and carried about.
 
-Usage :
+Usage:
     python3 build_sdk.py
 """
 import os
 import sys
 
-RACINE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, RACINE)
+ROOT = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, ROOT)
 
-#  On emprunte le moule du hors-série : lecture des fragments, numérotation
-#  des figures, sommaire, contrôles. Le recopier aurait garanti qu'il dérive.
-import build_carte as moule
+#  We borrow the companion volume's mould: reading the fragments, numbering
+#  the figures, the contents, the checks. Copying it would have guaranteed it
+#  drifts.
+import build_board as mould
 
-moule.PARTS = os.path.join(moule.SRC, "ecrire-un-module-phytoscope")
+mould.PARTS = os.path.join(mould.SRC, "writing-a-phytoscope-module")
 
-ORDRE = [
+ORDER = [
     "00-cover",
     "01-titlepage",
     "02-notice",
     "03-toc",
-    "04-premier-module",
-    "05-anatomie",
-    "06-capacites",
-    "07-evenements",
-    "08-pieges",
-    "09-fin",
+    "04-first-module",
+    "05-anatomy",
+    "06-capabilities",
+    "07-events",
+    "08-pitfalls",
+    "09-migrating",
+    "10-closing",
 ]
 
 DOCUMENT = {
-    "out": "Ecrire-un-module-PhytoScope.pdf",
-    "title": "Écrire un module pour PhytoScope",
-    "running": "Écrire un module pour PhytoScope",
+    "out": "writing-a-phytoscope-module.pdf",
+    "lang": "en",
+    "title": "Writing a module for PhytoScope",
+    "running": "Writing a module for PhytoScope",
     "description": (
-        "L'interface de programmation des modules de PhytoScope, le SDK, et "
-        "ce qu'un module a le droit de faire : les cinq capacités, les "
-        "événements, les essais sans matériel, et les pièges."),
-    "keywords": ("PhytoScope, module, greffon, SDK, API, Python, "
-                 "extension, plugin, biosignal, plante"),
-    "order": ORDRE,
+        "The programming interface of PhytoScope's modules, the SDK, and what "
+        "a module is allowed to do: the five capabilities, the events, "
+        "testing without hardware, and the pitfalls."),
+    "keywords": ("PhytoScope, module, SDK, API, Python, extension, plugin, "
+                 "biosignal, plant"),
+    "order": ORDER,
 }
 
 
 def main(argv):
-    #  `build` de build_carte lit ses fragments dans `moule.PARTS`, que l'on
-    #  vient de rediriger : il produit donc notre document sans modification.
-    return 0 if moule.build("sdk", DOCUMENT) else 1
+    #  `build_board.build` reads its fragments from `mould.PARTS`, which we
+    #  have just redirected: it therefore produces our document unchanged.
+    return 0 if mould.build("sdk", DOCUMENT) else 1
 
 
 if __name__ == "__main__":

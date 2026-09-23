@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/version.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Identité et version du logiciel — source unique de vérité.
@@ -39,7 +39,7 @@ from typing import Dict, List, Tuple
 
 # --- Identité ---------------------------------------------------------------
 APP_NAME = "PhytoScope"
-APP_TAGLINE = "Écoute, mesure et enregistrement des signaux végétaux"
+APP_TAGLINE = "Listen to, measure and record plant signals"
 
 #  Le numéro de version vit dans le fichier `VERSION`, à côté d'ici, et non
 #  dans ce module. Motif : la fabrique de paquets, les documents et le
@@ -48,7 +48,7 @@ APP_TAGLINE = "Écoute, mesure et enregistrement des signaux végétaux"
 #  versions — elle annonçait encore 1.0.0.
 _ICI = os.path.dirname(os.path.abspath(__file__))
 FICHIER_VERSION = os.path.join(_ICI, "VERSION")
-FICHIER_AUTEURS = os.path.join(_ICI, "AUTEURS")
+FICHIER_AUTEURS = os.path.join(_ICI, "AUTHORS")
 
 
 def lire_fichier_cle_valeur(chemin: str) -> Dict[str, str]:
@@ -79,7 +79,7 @@ def lire_le_fichier_version(chemin: str = "") -> Dict[str, str]:
 
 
 def lire_le_fichier_auteurs(chemin: str = "") -> Dict[str, str]:
-    """Le fichier `AUTEURS`, analysé."""
+    """Le fichier `AUTHORS`, analysé."""
     return lire_fichier_cle_valeur(chemin or FICHIER_AUTEURS)
 
 
@@ -105,7 +105,7 @@ RELEASE_NAME = _V.get("nom", "")            # nom de code de la version
 
 #  Deux niveaux d'attribution, et ils ne disent pas la même chose :
 #  l'ÉDITEUR est l'atelier qui publie, l'AUTEUR la personne qui a écrit. Les
-#  deux viennent du fichier `AUTEURS`, que lisent aussi la fabrique de paquets
+#  deux viennent du fichier `AUTHORS`, que lisent aussi la fabrique de paquets
 #  et la génération du certificat de signature : une seule source, pas de
 #  copie à maintenir.
 AUTHOR = _A.get("editeur", "Bretagne Namasté")
@@ -116,7 +116,7 @@ WEBSITE = _A.get("site", "https://bretagne-namaste.com")
 CONTACT = _A.get("contact", "contact@bretagne-namaste.com")
 COPYRIGHT = _A.get("droits", "© 2026 Bretagne Namasté")
 LICENSE = _A.get("licence", "MIT")
-LICENSE_FILE = "LICENCE.txt"
+LICENSE_FILE = "LICENSE.txt"
 
 # Matériel de référence décrit par le document compagnon
 HARDWARE = "PhytoSense One — révision B"

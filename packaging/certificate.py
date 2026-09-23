@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — packaging/certificate.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Crée, recrée et dépose le certificat qui signe les paquets.
@@ -21,7 +21,7 @@ C'est le point d'entrée unique pour tout ce qui touche au certificat. La
 cryptographie elle-même vit dans `signature.py`, qui sait déjà fabriquer une
 clé et un certificat X.509 auto-signé ; ce script ne la refait pas — il
 l'appelle, et s'occupe de ce que `signature.py` ne fait pas : **remplir le
-dossier `certificat/` du dépôt**.
+dossier `certificate/` du dépôt**.
 
 Deux endroits, et pourquoi
 --------------------------
@@ -29,10 +29,10 @@ Deux endroits, et pourquoi
 | Où | Quoi | Dans le dépôt ? |
 |---|---|---|
 | `~/.local/share/phytoscope-signature/` | la copie de **référence** : clé privée + certificat | non, et jamais |
-| `certificat/` | la copie de **travail** : le certificat public, le `.crt`, et la clé en 0600 | le public oui, la clé **jamais** |
+| `certificate/` | la copie de **travail** : le certificat public, le `.crt`, et la clé en 0600 | le public oui, la clé **jamais** |
 
 La contrainte `C-2R` n'autorise la clé privée qu'à ces deux endroits. Le
-`.gitignore` écarte `certificat/phytoscope.key` nommément, le crochet
+`.gitignore` écarte `certificate/phytoscope.key` nommément, le crochet
 `pre-commit` la refuse sur son seul nom, et le job « secrets » de
 l'intégration continue échoue si elle apparaît. Trois filets, parce qu'une
 clé publiée ne se dépublie pas.
@@ -52,14 +52,14 @@ deux emplacements ci-dessus.
 Usage :
     python3 packaging/certificate.py                 l'état, sans rien changer
     python3 packaging/certificate.py --creer         créer s'il n'existe pas
-    python3 packaging/certificate.py --deposer       remplir certificat/
+    python3 packaging/certificate.py --deposer       remplir certificate/
     python3 packaging/certificate.py --refaire       REMPLACER (rompt le lien)
     python3 packaging/certificate.py --verifier      cohérence des deux copies
 
 Ou par le Makefile :
-    make certificat        crée s'il n'existe pas, puis remplit certificat/
-    make certificat-etat   l'état
-    make certificat-refait REMPLACE, après confirmation
+    make certificate        crée s'il n'existe pas, puis remplit certificate/
+    make certificate-status   l'état
+    make certificate-renew REMPLACE, après confirmation
 """
 from __future__ import annotations
 
@@ -78,11 +78,11 @@ from common import (GRIS, JAUNE, RACINE, ROUGE, VERT, Identite,  # noqa: E402
 import signature  # noqa: E402
 
 #  Le dossier du dépôt qui porte la copie de travail.
-DOSSIER = os.path.join(RACINE, "certificat")
-PUBLIC = os.path.join(DOSSIER, "phytoscope-certificat.pem")
+DOSSIER = os.path.join(RACINE, "certificate")
+PUBLIC = os.path.join(DOSSIER, "phytoscope-certificate.pem")
 CRT = os.path.join(DOSSIER, "phytoscope.crt")
 CLE_TRAVAIL = os.path.join(DOSSIER, "phytoscope.key")
-NOTICE = os.path.join(DOSSIER, "LISEZ-MOI.md")
+NOTICE = os.path.join(DOSSIER, "README.md")
 
 
 # ---------------------------------------------------------------------------
@@ -97,7 +97,7 @@ def etat() -> bool:
     _ligne("clé privée", signature.CLE, secrete=True)
     _ligne("certificat", signature.CERTIFICAT)
 
-    dire("\n  Copie de travail — certificat/", GRIS)
+    dire("\n  Copie de travail — certificate/", GRIS)
     _ligne("certificat public", PUBLIC)
     _ligne("certificat (.crt)", CRT)
     _ligne("clé privée", CLE_TRAVAIL, secrete=True)
@@ -164,7 +164,7 @@ def _expiration() -> str:
 #  Dépôt de la copie de travail
 # ---------------------------------------------------------------------------
 def deposer(id_: Optional[Identite] = None) -> bool:
-    """Remplit `certificat/` depuis la copie de référence.
+    """Remplit `certificate/` depuis la copie de référence.
 
     Rien n'est fabriqué ici : on recopie, et l'on écrit la notice. Si la
     référence manque, on le dit plutôt que de créer une clé à l'improviste —
@@ -200,7 +200,7 @@ def deposer(id_: Optional[Identite] = None) -> bool:
     etape("notice")
     ecrire(NOTICE, _notice(id_))
 
-    bien(f"certificat/ rempli — {os.path.relpath(DOSSIER, RACINE)}")
+    bien(f"certificate/ rempli — {os.path.relpath(DOSSIER, RACINE)}")
     souci("la clé privée qui s'y trouve ne doit JAMAIS être publiée")
     dire("      .gitignore l'écarte, pre-commit la refuse, la CI échoue "
          "si elle apparaît.", GRIS)
@@ -222,10 +222,10 @@ de PhytoScope. La copie de référence, elle, vit dans
 
 | Fichier | Nature | Dans le dépôt ? |
 |---|---|---|
-| `phytoscope-certificat.pem` | certificat **public**, commenté | **oui** — c'est lui qu'on diffuse |
+| `phytoscope-certificate.pem` | certificat **public**, commenté | **oui** — c'est lui qu'on diffuse |
 | `phytoscope.crt` | le même, brut | **oui** |
 | `phytoscope.key` | **la clé privée** | **non, jamais** |
-| `LISEZ-MOI.md` | ce fichier | oui |
+| `README.md` | ce fichier | oui |
 
 Le certificat public **doit** se diffuser : c'est lui qui permet de vérifier
 une signature. Le taire rendrait les signatures invérifiables.
@@ -241,7 +241,7 @@ qu'un paquet vient bien de nous.
 
 ## Trois filets contre la publication de la clé
 
-1. `.gitignore` écarte `certificat/phytoscope.key` nommément, puis `*.key`
+1. `.gitignore` écarte `certificate/phytoscope.key` nommément, puis `*.key`
    et `*.pem` partout, avec deux exceptions nommées pour les fichiers
    publics ;
 2. le crochet `pre-commit` « detect-signing-key » la refuse **sur son seul
@@ -252,7 +252,7 @@ qu'un paquet vient bien de nous.
 Trois filets parce qu'une clé publiée ne se dépublie pas.
 
 > `.gitignore` protège de `git`, **pas d'une sauvegarde ni d'une archive du
-> dossier**. Si vous archivez ce dépôt, excluez `certificat/phytoscope.key`.
+> dossier**. Si vous archivez ce dépôt, excluez `certificate/phytoscope.key`.
 
 ## Recréer, déposer, vérifier
 
@@ -289,7 +289,7 @@ d'une autorité reconnue, payant et nominatif.
 # ---------------------------------------------------------------------------
 def creer(id_: Optional[Identite] = None, refaire: bool = False,
           sans_question: bool = False) -> bool:
-    """Crée le certificat s'il manque, puis remplit `certificat/`."""
+    """Crée le certificat s'il manque, puis remplit `certificate/`."""
     id_ = id_ or Identite.lire()
 
     if refaire and signature.certificat_existe():
@@ -345,7 +345,7 @@ def verifier() -> bool:
 
     for libelle, chemin in (("certificat public", PUBLIC), ("certificat .crt", CRT)):
         if not os.path.exists(chemin):
-            souci(f"{libelle} absent de certificat/")
+            souci(f"{libelle} absent de certificate/")
             fautes += 1
             continue
         empreinte = _empreinte_fichier(chemin)
@@ -408,7 +408,7 @@ def proposer_si_absent(sans_question: bool = False) -> bool:
 
     if sans_question or not sys.stdin.isatty():
         dire("      Pour en créer un :", GRIS)
-        dire("          make certificat", GRIS)
+        dire("          make certificate", GRIS)
         dire("      ou  python3 packaging/certificate.py --creer", GRIS)
         dire("")
         return False
@@ -419,9 +419,9 @@ def proposer_si_absent(sans_question: bool = False) -> bool:
         dire("")
         return False
     if reponse.strip().lower() not in ("o", "oui", "y", "yes"):
-        dire("      Sans certificat, « make tout » produira des paquets non "
+        dire("      Sans certificat, « make all » produira des paquets non "
              "signés.", GRIS)
-        dire("      Pour en créer un plus tard : make certificat", GRIS)
+        dire("      Pour en créer un plus tard : make certificate", GRIS)
         dire("")
         return False
 
@@ -439,9 +439,9 @@ def main(argv: Optional[List[str]] = None) -> int:
         epilog="Sans option : affiche l'état, sans rien changer.")
     p.add_argument("--creer", action="store_true",
                    help="créer le certificat s'il n'existe pas, "
-                        "puis remplir certificat/")
+                        "puis remplir certificate/")
     p.add_argument("--deposer", action="store_true",
-                   help="remplir certificat/ depuis la copie de référence")
+                   help="remplir certificate/ depuis la copie de référence")
     p.add_argument("--refaire", action="store_true",
                    help="REMPLACER le certificat existant — rompt le lien "
                         "avec tout ce qui a déjà été signé")

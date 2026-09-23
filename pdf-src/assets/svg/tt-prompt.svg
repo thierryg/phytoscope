@@ -1,20 +1,3 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/tt-prompt.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 560" width="880" height="560">
 
 <defs>
@@ -29,53 +12,51 @@
    <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
 </defs>
 <rect width="880" height="560" fill="#FBF9F1"/>
-<text x="440" y="34" font-family="Cormorant Garamond, serif" font-size="16.68" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2.2">ANATOMIE D'UNE INVITE « CAPTEURS → PAROLE »</text>
+<text x="440" y="34" font-family="Cormorant Garamond, serif" font-size="16.68" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="2.2">ANATOMY OF A “SENSORS → SPEECH” PROMPT</text>
 <rect x="60" y="66" width="600" height="90" rx="6" fill="#FFFFFF" stroke="#A8552E" stroke-width="1.6"/>
 <rect x="60" y="66" width="600" height="22" rx="6" fill="#A8552E"/>
 <rect x="60" y="80" width="600" height="8" fill="#A8552E"/>
-<text x="76" y="81" font-family="Lato, sans-serif" font-size="11.6" fill="#FFFFFF" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.8">RÔLE</text>
-<text x="78" y="106" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Tu es un chêne pédonculé de deux cents ans.</text>
-<text x="78" y="122" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Tu t'exprimes à la première personne, sobrement.</text>
+<text x="76" y="81" font-family="Lato, sans-serif" font-size="11.6" fill="#FFFFFF" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.8">ROLE</text>
+<text x="78" y="106" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">You are a two-hundred-year-old pedunculate oak.</text>
+<text x="78" y="122" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">You speak in the first person, plainly.</text>
 <path d="M672,111.0 l-8,-6 v12 z" fill="#A8552E"/>
-<text x="684" y="107.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Entièrement écrit par</text>
-<text x="684" y="118.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">l'humain. C'est ici que naît</text>
-<text x="684" y="129.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">le personnage.</text>
+<text x="684" y="107.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Written entirely by the human.</text>
+<text x="684" y="118.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">This is where the character is</text>
+<text x="684" y="129.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">born.</text>
 <line x1="360" y1="158" x2="360" y2="170" stroke="#A8552E" stroke-width="1.8" marker-end="url(#ah)"/>
 <rect x="60" y="172" width="600" height="106" rx="6" fill="#FFFFFF" stroke="#3F7D5A" stroke-width="1.6"/>
 <rect x="60" y="172" width="600" height="22" rx="6" fill="#3F7D5A"/>
 <rect x="60" y="186" width="600" height="8" fill="#3F7D5A"/>
-<text x="76" y="187" font-family="Lato, sans-serif" font-size="11.6" fill="#FFFFFF" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.8">DONNÉES</text>
-<text x="78" y="212" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">T° air 14,2 °C (−1,8 en 3 h) · HR 81 %</text>
-<text x="78" y="228" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">θ sol 0,19 m³/m³ (seuil bas : 0,22) · PAR 340</text>
-<text x="78" y="244" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Δ tronc −41 µm sur 6 h · vent 18 km/h</text>
+<text x="76" y="187" font-family="Lato, sans-serif" font-size="11.6" fill="#FFFFFF" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.8">DATA</text>
+<text x="78" y="212" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">air T° 14.2 °C (−1.8 in 3 h) · RH 81 %</text>
+<text x="78" y="228" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">soil θ 0.19 m³/m³ (low threshold: 0.22) · PAR 340</text>
+<text x="78" y="244" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Δ trunk −41 µm over 6 h · wind 18 km/h</text>
 <path d="M672,225.0 l-8,-6 v12 z" fill="#3F7D5A"/>
-<text x="684" y="221.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">La seule partie qui vient</text>
-<text x="684" y="232.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">réellement de l'arbre.</text>
+<text x="684" y="221.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">The only part that really</text>
+<text x="684" y="232.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">comes from the tree.</text>
 <line x1="360" y1="280" x2="360" y2="292" stroke="#3F7D5A" stroke-width="1.8" marker-end="url(#ahv)"/>
 <rect x="60" y="294" width="600" height="106" rx="6" fill="#FFFFFF" stroke="#2F5E86" stroke-width="1.6"/>
 <rect x="60" y="294" width="600" height="22" rx="6" fill="#2F5E86"/>
 <rect x="60" y="308" width="600" height="8" fill="#2F5E86"/>
-<text x="76" y="309" font-family="Lato, sans-serif" font-size="11.6" fill="#FFFFFF" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.8">CONTRAINTES</text>
-<text x="78" y="334" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Trois phrases au plus. Aucune émotion inventée.</text>
-<text x="78" y="350" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Ne mentionne que les grandeurs fournies.</text>
-<text x="78" y="366" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Si une donnée manque, dis-le au lieu de combler.</text>
+<text x="76" y="309" font-family="Lato, sans-serif" font-size="11.6" fill="#FFFFFF" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.8">CONSTRAINTS</text>
+<text x="78" y="334" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Three sentences at most. No invented emotion.</text>
+<text x="78" y="350" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Mention only the quantities you are given.</text>
+<text x="78" y="366" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">If a datum is missing, say so instead of filling the gap.</text>
 <path d="M672,347.0 l-8,-6 v12 z" fill="#2F5E86"/>
-<text x="684" y="343.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Le garde-fou : c'est lui qui</text>
-<text x="684" y="354.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">sépare l'honnêteté de la</text>
-<text x="684" y="365.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">fable.</text>
+<text x="684" y="343.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">The guard rail: this is what</text>
+<text x="684" y="354.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">separates honesty from fable.</text>
 <line x1="360" y1="402" x2="360" y2="414" stroke="#2F5E86" stroke-width="1.8" marker-end="url(#ahb)"/>
 <rect x="60" y="416" width="600" height="106" rx="6" fill="#FFFFFF" stroke="#B08528" stroke-width="1.6"/>
 <rect x="60" y="416" width="600" height="22" rx="6" fill="#B08528"/>
 <rect x="60" y="430" width="600" height="8" fill="#B08528"/>
-<text x="76" y="431" font-family="Lato, sans-serif" font-size="11.6" fill="#FFFFFF" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.8">SORTIE</text>
-<text x="78" y="456" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">« Le sol autour de mes racines s'assèche :</text>
-<text x="78" y="472" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">  0,19, sous mon seuil de confort. L'air a</text>
-<text x="78" y="488" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">  perdu deux degrés depuis midi. »</text>
+<text x="76" y="431" font-family="Lato, sans-serif" font-size="11.6" fill="#FFFFFF" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="1.8">OUTPUT</text>
+<text x="78" y="456" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">“The soil around my roots is drying out:</text>
+<text x="78" y="472" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">  0.19, below my comfort threshold. The air has</text>
+<text x="78" y="488" font-family="DejaVu Sans Mono, monospace" font-size="11.89" fill="#0E2A22" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">  lost two degrees since noon.”</text>
 <path d="M672,469.0 l-8,-6 v12 z" fill="#B08528"/>
-<text x="684" y="465.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Traçable mot à mot vers les</text>
-<text x="684" y="476.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">chiffres — et seulement vers</text>
-<text x="684" y="487.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">eux.</text>
+<text x="684" y="465.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Traceable word by word to the</text>
+<text x="684" y="476.0" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">numbers — and to nothing else.</text>
 <rect x="60" y="542" width="762" height="44" rx="6" fill="#F7F0DC" stroke="#ECDCB0" stroke-width="1.2"/>
-<text x="440" y="562" font-family="Lato, sans-serif" font-size="13.34" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">La règle d'or de l'atelier</text>
-<text x="440" y="578" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Toute phrase produite doit pouvoir être reliée à un nombre mesuré. Ce qui ne l'est pas est de la décoration — et doit être annoncé comme tel.</text>
+<text x="440" y="562" font-family="Lato, sans-serif" font-size="13.34" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">The golden rule of the workshop</text>
+<text x="440" y="578" font-family="Lato, sans-serif" font-size="11.02" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Every sentence produced must be traceable to a measured number. Whatever is not is decoration — and must be announced as such.</text>
 </svg>

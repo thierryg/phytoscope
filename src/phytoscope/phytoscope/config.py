@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/config.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Réglages de l'application : modèle, valeurs par défaut, persistance.
@@ -283,7 +283,7 @@ class UISettings:
     #  de mesure dont l'interface ne correspond pas à sa documentation coûte
     #  plus cher qu'il ne rapporte. Chacun choisit ensuite sa langue dans les
     #  réglages, ou par « --lang » ; ce choix, lui, est conservé.
-    language: str = "fr"
+    language: str = "en"
     refresh_hz: int = 30
     scope_window_s: float = 60.0
     scope_volts_per_div: float = 200e-6

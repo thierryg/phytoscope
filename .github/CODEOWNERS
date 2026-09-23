@@ -1,33 +1,38 @@
 # ===========================================================================
-#  PhytoScope — qui relit quoi
+#  PhytoScope — who reviews what
 # ===========================================================================
-#  Le projet est porté par une personne : tout lui revient. Ce fichier n'est
-#  donc pas une répartition, c'est un filet — il garantit qu'aucune
-#  modification ne se fusionne sans que quelqu'un l'ait vue, et il rend la
-#  répartition possible le jour où il y aura quelqu'un d'autre.
+#  The project is carried by one person: everything comes back to them. This
+#  file is therefore not a division of labour, it is a net — it guarantees
+#  that no change merges without somebody having seen it, and it makes the
+#  division possible the day there is somebody else.
 # ===========================================================================
 
 *                       @thierryg
 
-# --- Ce qui ne se modifie pas à la légère ----------------------------------
-#  Le cahier des charges fait autorité : une contrainte qui change change le
-#  projet.
+# --- What is not changed lightly -------------------------------------------
+#  The requirements are authoritative: a constraint that changes changes the
+#  project.
 /constraints.md         @thierryg
 
-#  La version et l'attribution sont les SEULES sources de vérité, lues par le
-#  logiciel, la fabrique de paquets et les en-têtes.
+#  The version and the attribution are the ONLY sources of truth, read by the
+#  software, the package factory and the headers.
 /src/phytoscope/phytoscope/VERSION   @thierryg
-/src/phytoscope/phytoscope/AUTEURS   @thierryg
+/src/phytoscope/phytoscope/AUTHORS   @thierryg
 
-#  La chaîne de signature et le certificat.
+#  The signing chain and the certificate. The path said `/certificat/` until
+#  2026-09-23 — a directory that has never existed, so the rule protected
+#  nothing. CODEOWNERS is silent about a path that matches no file.
 /packaging/signature.py @thierryg
-/certificat/            @thierryg
+/certificate/           @thierryg
 
-#  Les licences, et ce qui les pose.
+#  The licences, and what stamps them.
 /LICENSE                @thierryg
 /LICENSES/              @thierryg
 /tools/headers.py       @thierryg
 
-#  L'intégration continue : un workflow est du code qui a des droits.
+#  The module contract: a third-party module depends on it (C-49).
+/src/phytoscope/phytoscope/api/      @thierryg
+
+#  Continuous integration: a workflow is code with rights.
 /.github/               @thierryg
 /.gitignore             @thierryg

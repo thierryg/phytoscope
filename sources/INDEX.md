@@ -11,7 +11,7 @@ Règle appliquée : **accès ouvert et sources officielles uniquement** (PubMed 
 | `documents/presse/` | 12 | ~152 Ko |
 | `brevets/` | 13 | ~17 Mo |
 | `datasheets/` | 9 | ~9,8 Mo |
-| `manuels-constructeurs/` | 11 | ~20 Mo |
+| `manufacturer-manuals/` | 11 | ~20 Mo |
 | `schemas/` | 66 | ~3,0 Mo |
 | `code/` | 17 | ~116 Mo |
 | `software/` | 52 | ~701 Mo |

@@ -2,23 +2,23 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/tests/test_features.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Tests des descripteurs avancés : FFT, ondelettes, MFCC, LPC, cepstre.
 
 Chaque test construit un signal **dont on connaît la réponse** — une sinusoïde
 à 2 Hz, un train d'impulsions de période connue, un processus autorégressif
-d'ordre deux — et vérifie que l'outil la retrouve. C'est la seule façon de
+d'order deux — et vérifie que l'outil la retrouve. C'est la seule façon de
 tester une transformée : comparer à une vérité, pas à une sortie de référence
 que personne n'a vérifiée.
 """
@@ -27,7 +27,7 @@ import math
 import numpy as np
 import pytest
 
-from phytoscope.core.features import (DESCRIPTEURS, banc_de_mel, cepstre, lpc,
+from phytoscope.core.features import (DESCRIPTORS, banc_de_mel, cepstre, lpc,
                                       mfcc, ondelettes_morlet,
                                       spectre_instantane)
 
@@ -74,7 +74,7 @@ class TestOndelettes:
         assert np.median(crete) == pytest.approx(3.0, rel=0.15)
 
     def test_situe_une_bouffee_dans_le_temps(self):
-        #  Vingt secondes de silence, une bouffée de 2 s au milieu : la FFT la
+        #  Vingt seconds de silence, une bouffée de 2 s au milieu : la FFT la
         #  noierait, l'ondelette doit la placer.
         x = np.zeros(int(20 * FS))
         debut = int(9 * FS)
@@ -133,13 +133,13 @@ class TestMFCC:
 class TestLPC:
     def test_modele_stable_sur_du_bruit(self):
         rng = np.random.default_rng(20260917)
-        s = lpc(rng.normal(size=4000), FS, ordre=8)
-        assert s.ordre == 8
+        s = lpc(rng.normal(size=4000), FS, order=8)
+        assert s.order == 8
         assert s.erreur_residuelle > 0
         assert s.enveloppe_db.size == 512
 
     def test_retrouve_une_resonance(self):
-        #  Processus autorégressif d'ordre 2 : un pôle à 10 Hz, module 0,97.
+        #  Processus autorégressif d'order 2 : un pôle à 10 Hz, module 0,97.
         rng = np.random.default_rng(7)
         f0, r = 10.0, 0.97
         theta = 2 * np.pi * f0 / FS
@@ -149,18 +149,18 @@ class TestLPC:
         bruit = rng.normal(size=n)
         for i in range(2, n):
             x[i] = -a1 * x[i - 1] - a2 * x[i - 2] + bruit[i]
-        s = lpc(x, FS, ordre=6)
+        s = lpc(x, FS, order=6)
         assert s.formants_hz.size >= 1
         assert min(abs(s.formants_hz - f0)) < 1.5
 
     def test_bruit_blanc_predit_mal(self):
         rng = np.random.default_rng(3)
-        blanc = lpc(rng.normal(size=6000), FS, ordre=10)
+        blanc = lpc(rng.normal(size=6000), FS, order=10)
         assert blanc.gain_prediction_db < 3.0
 
     def test_signal_trop_court(self):
         s = lpc(np.zeros(4), FS)
-        assert s.ordre == 0
+        assert s.order == 0
 
 
 class TestCepstre:
@@ -187,7 +187,7 @@ class TestCepstre:
 
 class TestTableDesDescripteurs:
     def test_six_entrees_completes(self):
-        assert len(DESCRIPTEURS) == 6
-        for cle, valeur in DESCRIPTEURS.items():
-            titre, resume, avertissement = valeur
-            assert titre and resume and avertissement, cle
+        assert len(DESCRIPTORS) == 6
+        for key, value in DESCRIPTORS.items():
+            title, resume, warning = value
+            assert title and resume and warning, key

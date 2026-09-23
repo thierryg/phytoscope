@@ -1,0 +1,369 @@
+# ===========================================================================
+#  PhytoScope — publishing a version
+# ===========================================================================
+#  Triggered by a `v1.6.0` tag. It does the following, in this order:
+#
+#    1. checks that the tag matches the version declared in
+#       src/phytoscope/phytoscope/VERSION — the only source of truth. A tag
+#       that did not match would produce packages stamped with a number
+#       nobody could find again;
+#    2. replays the tests and the static analysis;
+#    3. builds the packages for every system, signed;
+#    4. produces the software bill of materials (SBOM, CycloneDX);
+#    5. **attests the provenance** of every package to GitHub — a Sigstore
+#       signature saying which repository, which commit and which workflow
+#       produced this file. That is what tells "a .deb found somewhere" from
+#       "this .deb, out of that commit";
+#    6. publishes the release, with the checksums.
+#
+#  The project's own Authenticode/CMS signature is still made offline, with
+#  the private key that never enters here (C-2R). What the CI signs is the
+#  provenance; what the publisher signs is the origin. Both are useful and
+#  neither replaces the other.
+# ===========================================================================
+name: Release
+
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (without the `v`), for a dry run"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+
+  # -------------------------------------------------------------------------
+  #  1. Does the tag tell the truth?
+  # -------------------------------------------------------------------------
+  check-version:
+    name: The tag matches VERSION
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.lire.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: lire
+        run: |
+          declared=$(grep -E '^version\s*=' src/phytoscope/phytoscope/VERSION \
+                     | head -1 | cut -d= -f2 | tr -d ' ')
+          echo "version=$declared" >> "$GITHUB_OUTPUT"
+          echo "  · VERSION declares: $declared"
+
+          if [ "${{ github.event_name }}" = "push" ]; then
+            tag="${GITHUB_REF#refs/tags/v}"
+            echo "  · the tag is      : $tag"
+            if [ "$tag" != "$declared" ]; then
+              echo "! the tag ($tag) does not match VERSION ($declared)"
+              echo "  fix VERSION with 'make bump-patch', or fix the tag."
+              exit 1
+            fi
+          fi
+          echo "  · they agree"
+
+      #  A suffixed version (-dev, -rc1) is not meant to be distributed: the
+      #  software's Makefile knows that, so we ask it.
+      - name: Is this version fit to publish?
+        run: cd src/phytoscope && make release-check
+
+  # -------------------------------------------------------------------------
+  #  2. Nothing is published that has not been checked
+  # -------------------------------------------------------------------------
+  checks:
+    name: Tests and static analysis
+    needs: check-version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Dependencies
+        working-directory: src/phytoscope
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -r requirements-dev.txt ruff
+      - name: Tests
+        working-directory: src/phytoscope
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          export XDG_CONFIG_HOME="$(mktemp -d)"
+          python -m pytest tests -q
+      - name: ruff
+        run: ruff check packaging tools src/phytoscope pdf-src/build*.py
+      - name: Attribution headers
+        run: python3 tools/headers.py --verifier
+
+  # -------------------------------------------------------------------------
+  #  3, 4, 5. Paquets, nomenclature logicielle, attestation de provenance
+  # -------------------------------------------------------------------------
+  packages:
+    name: Packages, SBOM and provenance
+    needs: [check-version, checks]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write       # required by the Sigstore attestation
+      attestations: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: The packaging tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            dpkg-dev fakeroot rpm nsis msitools osslsigncode
+          cd packaging && make deps || true
+
+      #  An ephemeral certificate, made here and thrown away with the
+      #  runner: it proves the signing chain works. The project's RELEASE
+      #  certificate never leaves the publisher's machine (C-2R).
+      - name: An ephemeral certificate
+        run: cd packaging && make certificate
+
+      - name: Build every package
+        run: cd packaging && make all
+
+      - name: Reopen and check every package
+        run: cd packaging && make verify
+
+      - name: Bill of materials (CycloneDX)
+        working-directory: src/phytoscope
+        run: |
+          python -m pip install -r requirements.txt
+          python tools/sbom.py --json > "$GITHUB_WORKSPACE/sbom.cdx.json"
+          python -c "import json;d=json.load(open('$GITHUB_WORKSPACE/sbom.cdx.json'));print('  ·',len(d.get('components',[])),'composants')"
+
+      - name: No secret among the products
+        run: |
+          if find build/packages -name '*.key' -o -name '*.p12' -o -name '*.pfx' | grep -q .; then
+            echo "! a private key is inside the packages"; exit 1
+          fi
+          echo "  · no private key among the products"
+
+      #  The attestation ties every file to its commit and to this
+      #  workflow. Whoever downloads verifies it with:
+      #      gh attestation verify phytoscope_1.5.1_all.deb --repo thierryg/phytoscope
+      - name: Attest the packages' provenance
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: |
+            build/packages/**/*.deb
+            build/packages/**/*.rpm
+            build/packages/**/*.run
+            build/packages/**/*.exe
+            build/packages/**/*.msi
+            build/packages/**/*.pkg
+            build/packages/**/*.zip
+            build/packages/**/*.tar.gz
+
+      - name: Attest the bill of materials
+        uses: actions/attest-sbom@v1
+        with:
+          subject-path: sbom.cdx.json
+          sbom-path: sbom.cdx.json
+        continue-on-error: true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packages-${{ needs.check-version.outputs.version }}
+          path: |
+            build/packages/
+            sbom.cdx.json
+          if-no-files-found: error
+          retention-days: 90
+
+  # -------------------------------------------------------------------------
+  #  Le micrologiciel accompagne la version
+  # -------------------------------------------------------------------------
+  #  The `.uf2` is a deliverable in its own right: without it the board has
+  #  nothing to run. It is built here, from the tagged commit, and its
+  #  provenance is attested like the packages' — a firmware binary found
+  #  somewhere does not say where it came from.
+  firmware:
+    name: RP2350 firmware
+    needs: [check-version, checks]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: The cross-compilation toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential \
+            libstdc++-arm-none-eabi-newlib
+
+      - uses: actions/cache@v4
+        id: sdk
+        with:
+          path: ~/pico
+          key: pico-sdk-${{ hashFiles('src/firmware/_make_.sh') }}
+
+      - name: Pico SDK and ARM toolchain, in $HOME and without sudo
+        if: steps.sdk.outputs.cache-hit != 'true'
+        working-directory: src/firmware
+        run: ./build.sh --deps
+
+      #  `build.sh` names the deliverable with its version, computes its
+      #  checksums and writes the notice: nothing to redo here. A bare
+      #  "phytosense.uf2" on somebody's disk would not say which version it
+      #  came from.
+      - name: Build and file the deliverable
+        working-directory: src/firmware
+        run: ./build.sh --output "$GITHUB_WORKSPACE/release-firmware-raw"
+
+      - name: Gather
+        run: |
+          mkdir -p diffusion-firmware
+          cp release-firmware-raw/Firmware/* diffusion-firmware/
+          ls -la diffusion-firmware/
+          cat diffusion-firmware/phytosense-*.sha256
+
+      - name: Attest the firmware's provenance
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: diffusion-firmware/*.uf2
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firmware
+          path: diffusion-firmware/
+          if-no-files-found: error
+          retention-days: 90
+
+  # -------------------------------------------------------------------------
+  #  Les publications PDF accompagnent la version
+  # -------------------------------------------------------------------------
+  publications:
+    name: The ten PDF publications
+    needs: checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rendering libraries
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            libpango-1.0-0 libpangoft2-1.0-0 libcairo2 libharfbuzz0b \
+            libfribidi0 libgdk-pixbuf-2.0-0 fonts-dejavu-core poppler-utils
+          python -m pip install --upgrade pip weasyprint pillow
+      - name: Illustrations, fragments, then the four factories
+        run: |
+          for g in gen gen_carte gen_sch gen_sdk gen_tt; do
+            python3 pdf-src/assets/svg/$g.py
+          done
+          python3 tools/verify_svg.py
+          python3 tools/gen_bom.py
+          python3 tools/gen_code_annex.py
+          python3 pdf-src/build.py
+          python3 pdf-src/build_tree.py
+          python3 pdf-src/build_board.py
+          python3 pdf-src/build_sdk.py
+      - name: How many pages came out
+        run: |
+          total=0
+          for f in build/*.pdf; do
+            n=$(pdfinfo "$f" | awk '/^Pages/ {print $2}')
+            printf '%5d p.  %s\n' "$n" "${f##*/}"
+            total=$((total + n))
+          done
+          printf '%5d p.  TOTAL\n' "$total"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: publications-pdf
+          path: build/*.pdf
+          retention-days: 90
+
+  # -------------------------------------------------------------------------
+  #  6. The release itself
+  # -------------------------------------------------------------------------
+  publish:
+    name: Publish the release
+    needs: [check-version, packages, firmware, publications]
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: recolte
+
+      - name: Gather and compute the checksums
+        run: |
+          mkdir -p diffusion
+          find recolte -type f \
+            \( -name '*.deb' -o -name '*.rpm' -o -name '*.run' \
+               -o -name '*.exe' -o -name '*.msi' -o -name '*.pkg' \
+               -o -name '*.zip' -o -name '*.tar.gz' -o -name '*.p7s' \
+               -o -name '*.pdf' -o -name 'sbom.cdx.json' \
+               -o -name '*.uf2' -o -name '*.elf' \
+               -o -name 'AUTHENTICITE.txt' -o -name '*.pem' \) \
+            -exec cp -n {} diffusion/ \;
+          cd diffusion && sha256sum -- * > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Publish
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65  # v2.6.2
+        with:
+          name: PhytoScope ${{ needs.check-version.outputs.version }}
+          files: diffusion/*
+          generate_release_notes: true
+          body: |
+            ## PhytoScope ${{ needs.check-version.outputs.version }}
+
+            The detail of the changes is in
+            [`CHANGELOG.md`](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md).
+
+            ### Checking what you download
+
+            **The checksum** — it says the file is intact:
+
+            ```bash
+            sha256sum -c SHA256SUMS.txt --ignore-missing
+            ```
+
+            **The provenance** — it says where the file came from, which is
+            stronger:
+
+            ```bash
+            gh attestation verify <file> --repo ${{ github.repository }}
+            ```
+
+            **The publisher's signature** — see `AUTHENTICITE.txt`, attached.
+            The certificate is **self-signed**: it proves integrity and
+            continuity of origin. It silences neither SmartScreen nor
+            Gatekeeper, and has never claimed to.
+
+            ### The firmware
+
+            `phytosense-<version>.uf2` is the PhytoSense One board's
+            firmware. To flash it: plug the board in while holding
+            **BOOTSEL**, then copy the file onto the removable disk that
+            appears. See `INSTALL.md`.
+
+            ### The bill of materials
+
+            `sbom.cdx.json` (CycloneDX) lists every dependency and its
+            version — **firmware included**: Pico SDK, TinyUSB, ARM
+            toolchain.

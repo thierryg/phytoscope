@@ -3,16 +3,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — tools/verify_translation.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Prove that translating prose did not change any code.
@@ -121,16 +121,30 @@ AREAS = (
 
 #  Words that occur in French prose and essentially never in English
 #  technical writing. Accented characters alone are not enough: proper nouns
-#  such as « Bretagne Namasté » stay as they are, and so do quoted French
+#  such as "Bretagne Namasté" stay as they are, and so do quoted French
 #  titles in the bibliographies.
+#
+#  Four words were removed from this list after it reported 21 markers in
+#  `phytoscope/api/`, a package that had just been translated in full. All 21
+#  were the English word "on". A meter that overstates gets ignored, and then
+#  it protects nothing, so the ambiguous ones are out:
+#
+#      on      "called on the data thread"
+#      plus    "plus the appendix"
+#      si      SI units — in a measurement program, of all things
+#      fait    "fait accompli", rare but it appears in prose
+#
+#  What remains is still an approximation, and it is meant to be watched
+#  going down rather than read as "this area is finished". For that, grep the
+#  file and look.
 FRENCH_WORDS = re.compile(
     r"\b(?:le|la|les|un|une|des|du|de|et|ou|mais|donc|car|ni|que|qui|quoi"
     r"|dont|où|ce|cet|cette|ces|son|sa|ses|leur|leurs|nos|notre|votre|vos"
-    r"|est|sont|était|étaient|sera|seront|a|ont|avait|avaient|fait|faire"
-    r"|peut|peuvent|doit|doivent|faut|il|elle|ils|elles|on|nous|vous|je"
-    r"|pas|plus|moins|très|bien|alors|ainsi|aussi|encore|déjà|jamais"
+    r"|est|sont|était|étaient|sera|seront|a|ont|avait|avaient|faire"
+    r"|peut|peuvent|doit|doivent|faut|il|elle|ils|elles|nous|vous|je"
+    r"|pas|moins|très|bien|alors|ainsi|aussi|encore|déjà|jamais"
     r"|toujours|sans|sous|sur|avec|dans|pour|par|vers|chez|entre|depuis"
-    r"|pendant|avant|après|quand|comme|si|non|oui|tout|tous|toute|toutes"
+    r"|pendant|avant|après|quand|comme|non|oui|tout|tous|toute|toutes"
     r"|même|autre|autres|chaque|aucun|aucune|quelque|quelques|celui|celle"
     r"|ceux|celles|lorsque|puisque|parce|afin|lequel|laquelle)\b",
     re.IGNORECASE)

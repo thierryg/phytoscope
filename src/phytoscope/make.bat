@@ -1,16 +1,16 @@
 rem  ==========================================================================
 rem  PhytoScope  attribution  src/phytoscope/make.bat
 rem
-rem  Version  : 1.5.1
-rem  Date     : 2026-09-18
-rem  Editeur  : Bretagne Namaste
-rem  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-rem  Site     : https://bretagne-namaste.com
-rem  Contact  : contact@bretagne-namaste.com
-rem  Licence  : MIT  voir LICENCE.txt
+rem  Version   : 1.6.0
+rem  Date      : 2026-09-23
+rem  Publisher : Bretagne Namaste
+rem  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+rem  Website   : https://bretagne-namaste.com
+rem  Contact   : contact@bretagne-namaste.com
+rem  License   : MIT  see LICENSE.txt
 rem
 rem  SPDX-License-Identifier: MIT
-rem  fin de l'attribution
+rem  end of attribution
 rem  ==========================================================================
 
 @echo off

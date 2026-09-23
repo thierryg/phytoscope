@@ -2,16 +2,16 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/phytoscope/phytoscope/ui/library_tab.py
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 """Bibliothèque : retrouver, relire et exporter — séances et échantillons.
@@ -67,32 +67,30 @@ class LibraryTab(QWidget):
 
         # --- barre commune ---------------------------------------------------
         top = QHBoxLayout()
-        self.btn_reload = QPushButton(t("Actualiser"))
+        self.btn_reload = QPushButton(t("Refresh"))
         self.btn_reload.clicked.connect(self.reload)
-        self.btn_open = QPushButton(t("Ouvrir le dossier"))
+        self.btn_open = QPushButton(t("Open the folder"))
         self.btn_open.clicked.connect(self._open_folder)
-        self.btn_charger = QPushButton(t("Charger un enregistrement…"))
+        self.btn_charger = QPushButton(t("Load a recording…"))
         self.btn_charger.setToolTip(
-            t("Rejoue un fichier pris n'importe où : un échantillon, le "
-              "signal.wav d'une séance, ou tout WAV. Pendant la relecture, "
-              "l'acquisition en direct est suspendue."))
+            t("Replays a file taken from anywhere: a sample, the signal.wav of a session, or any WAV. While replaying, live acquisition is suspended."))
         self.btn_charger.clicked.connect(self._charger_fichier)
         self.cb_speed = QComboBox()
-        for v, lab in ((1, t("×1 (temps réel)")), (10, t("×10")), (60, t("×60")),
+        for v, lab in ((1, t("×1 (real time)")), (10, t("×10")), (60, t("×60")),
                        (600, t("×600"))):
             self.cb_speed.addItem(lab, v)
-        self.btn_play = QPushButton(t("Rejouer"))
+        self.btn_play = QPushButton(t("Replay"))
         self.btn_play.setCheckable(True)
         self.btn_play.clicked.connect(self._toggle_play)
-        self.btn_live = QPushButton(t("Revenir en direct"))
+        self.btn_live = QPushButton(t("Back to live"))
         self.btn_live.setToolTip(
-            t("Referme la relecture et rend la main à la plante branchée."))
+            t("Closes the replay and hands control back to the connected plant."))
         self.btn_live.clicked.connect(self._revenir_en_direct)
         top.addWidget(self.btn_reload)
         top.addWidget(self.btn_open)
         top.addWidget(self.btn_charger)
         top.addStretch(1)
-        top.addWidget(QLabel(t("Vitesse de relecture")))
+        top.addWidget(QLabel(t("Replay speed")))
         top.addWidget(self.cb_speed)
         top.addWidget(self.btn_play)
         top.addWidget(self.btn_live)
@@ -100,14 +98,14 @@ class LibraryTab(QWidget):
         # --- page des séances ------------------------------------------------
         self.table = QTableWidget(0, 6)
         self.table.setHorizontalHeaderLabels(
-            [t("Date"), t("Plante"), t("Durée"), t("Événements"), t("Notes"),
-             t("Répertoire")])
+            [t("Date"), t("Plant"), t("Duration"), t("Events"), t("Notes"),
+             t("Folder")])
         self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table.itemSelectionChanged.connect(self._selected)
         self.table.setAlternatingRowColors(True)
 
-        self.btn_export = QPushButton(t("Exporter le résumé…"))
+        self.btn_export = QPushButton(t("Export the summary…"))
         self.btn_export.clicked.connect(self._export)
         bas_seances = QHBoxLayout()
         bas_seances.addStretch(1)
@@ -122,21 +120,20 @@ class LibraryTab(QWidget):
         # --- page des échantillons -------------------------------------------
         self.table_ech = QTableWidget(0, 6)
         self.table_ech.setHorizontalHeaderLabels(
-            [t("Date"), t("Durée"), t("Plante"), t("Cadence"), t("Pleine échelle"),
-             t("Fichier")])
+            [t("Date"), t("Duration"), t("Plant"), t("Rate"), t("Full scale"),
+             t("File")])
         self.table_ech.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.table_ech.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table_ech.itemSelectionChanged.connect(self._selection_echantillon)
         self.table_ech.setAlternatingRowColors(True)
 
-        self.btn_capturer = QPushButton(t("⧉ Capturer maintenant"))
+        self.btn_capturer = QPushButton(t("⧉ Capture now"))
         self.btn_capturer.setToolTip(
-            t("Garde le signal qui vient de passer — même chose que Ctrl+E "
-              "dans la barre d'outils."))
+            t("Keeps the signal that has just gone by — the same as Ctrl+E in the toolbar."))
         self.btn_capturer.clicked.connect(self._capturer)
-        self.btn_renommer = QPushButton(t("Renommer…"))
+        self.btn_renommer = QPushButton(t("Rename…"))
         self.btn_renommer.clicked.connect(self._renommer)
-        self.btn_supprimer = QPushButton(t("Supprimer"))
+        self.btn_supprimer = QPushButton(t("Delete"))
         self.btn_supprimer.clicked.connect(self._supprimer)
         bas_ech = QHBoxLayout()
         bas_ech.addWidget(self.btn_capturer)
@@ -151,8 +148,8 @@ class LibraryTab(QWidget):
         pe.addLayout(bas_ech)
 
         self.pages = QTabWidget()
-        self.pages.addTab(page_seances, t("Séances"))
-        self.pages.addTab(page_ech, t("Échantillons"))
+        self.pages.addTab(page_seances, t("Sessions"))
+        self.pages.addTab(page_ech, t("Samples"))
         self.pages.currentChanged.connect(lambda _: self._maj_boutons())
 
         # --- aperçu commun ---------------------------------------------------
@@ -198,9 +195,7 @@ class LibraryTab(QWidget):
         self.table.resizeColumnsToContents()
         if not self.refs:
             self.detail.setPlainText(t(
-                "Aucune séance dans :\n{dossier}\n\nLancez un enregistrement "
-                "depuis la barre d'outils (Ctrl+R), ou gardez simplement ce qui "
-                "vient de passer avec Ctrl+E : le répertoire sera créé.").format(
+                "No session in:\n{dossier}\n\nStart a recording from the toolbar (Ctrl+R), or simply keep what has just gone by with Ctrl+E: the folder will be created.").format(
                     dossier=directory))
 
     def recharger_echantillons(self) -> None:
@@ -212,7 +207,7 @@ class LibraryTab(QWidget):
             echelle = (f"{r.full_scale_v * 1e6:.0f} µV" if r.full_scale_v < 1e-3
                        else f"{r.full_scale_v * 1e3:.1f} mV")
             if not r.complet:
-                echelle = t("supposée")
+                echelle = t("assumed")
             for j, texte in enumerate((r.pretty_date(), r.pretty_duration(),
                                        r.plante or "—", f"{r.sample_rate:g} Hz",
                                        echelle, os.path.basename(r.path))):
@@ -258,28 +253,25 @@ class LibraryTab(QWidget):
 
     def _resume_echantillon(self, ref, data, fs: float) -> str:
         lignes = [
-            t("Échantillon : {nom}").format(nom=ref.name),
-            t("Date : {date}   Durée : {duree}").format(
+            t("Sample: {nom}").format(nom=ref.name),
+            t("Date: {date}   Duration: {duree}").format(
                 date=ref.pretty_date(), duree=ref.pretty_duration()),
-            t("Échantillonnage : {fs:g} Hz sur {voies} voie(s)").format(
+            t("Sampling: {fs:g} Hz on {voies} channel(s)").format(
                 fs=ref.sample_rate, voies=ref.channels),
         ]
         if data is not None and data.size:
             y = data[:, 0]
-            lignes.append(t("Amplitude : {pp:.1f} µV crête à crête, "
-                            "{eff:.2f} µV efficaces").format(
+            lignes.append(t("Amplitude: {pp:.1f} µV peak to peak, {eff:.2f} µV RMS").format(
                                 pp=float(y.max() - y.min()) * 1e6,
                                 eff=float(np.std(y)) * 1e6))
         if ref.plante or ref.lieu:
-            lignes.append(t("Plante : {plante}   Lieu : {lieu}").format(
+            lignes.append(t("Plant: {plante}   Place: {lieu}").format(
                 plante=ref.plante or "—", lieu=ref.lieu or "—"))
         evenements = (ref.meta or {}).get("evenements_dans_la_fenetre")
         if evenements is not None:
-            lignes.append(t("Événements dans la fenêtre : {n}").format(n=evenements))
+            lignes.append(t("Events within the window: {n}").format(n=evenements))
         if not ref.complet:
-            lignes.append(t("Ce fichier n'a pas son JSON compagnon : l'amplitude "
-                            "affichée est supposée d'après les réglages courants, "
-                            "la forme du signal est intacte."))
+            lignes.append(t("This file has no companion JSON: the amplitude shown is assumed from the current settings; the shape of the signal is intact."))
         lignes.append(ref.path)
         return "\n".join(lignes)
 
@@ -308,7 +300,7 @@ class LibraryTab(QWidget):
             else:
                 subprocess.Popen(["xdg-open", path])
         except Exception as exc:                       # pragma: no cover
-            QMessageBox.warning(self, t("Ouverture impossible"), str(exc))
+            QMessageBox.warning(self, t("Cannot open"), str(exc))
 
     def _capturer(self) -> None:
         chemin = self.engine.capturer_echantillon()
@@ -327,8 +319,8 @@ class LibraryTab(QWidget):
         """
         depart = samples.dossier_par_defaut(self.engine.settings)
         chemin, _ = QFileDialog.getOpenFileName(
-            self, t("Charger un enregistrement"), depart,
-            t("Enregistrements (*.wav);;Tous les fichiers (*)"))
+            self, t("Load a recording"), depart,
+            t("Recordings (*.wav);;All files (*)"))
         if not chemin:
             return
         ref = samples.EchantillonRef(path=chemin,
@@ -338,8 +330,8 @@ class LibraryTab(QWidget):
         data, fs = samples.charger(
             ref, self.engine.settings.acquisition.input_range_v)
         if data is None or not data.size:
-            QMessageBox.warning(self, t("Relecture"),
-                                t("Ce fichier ne contient pas de signal lisible."))
+            QMessageBox.warning(self, t("Replay"),
+                                t("This file contains no readable signal."))
             return
         self.courant_ech = ref
         self._apercu(data, fs)
@@ -347,14 +339,14 @@ class LibraryTab(QWidget):
         vitesse = float(self.cb_speed.currentData())
         if self.engine.rejouer(data, fs, vitesse, nom=ref.name):
             self.btn_play.setChecked(True)
-            self.btn_play.setText(t("Arrêter la relecture"))
+            self.btn_play.setText(t("Stop the replay"))
             self._maj_boutons()
 
     def _toggle_play(self) -> None:
         """Rejoue la sélection **dans le moteur** — tout le logiciel suit."""
         if not self.btn_play.isChecked():
             self.engine.arreter_relecture(revenir_en_direct=True)
-            self.btn_play.setText(t("Rejouer"))
+            self.btn_play.setText(t("Replay"))
             self._maj_boutons()
             return
 
@@ -371,27 +363,27 @@ class LibraryTab(QWidget):
             return
 
         if data is None or not data.size:
-            QMessageBox.information(self, t("Relecture"),
-                                    t("Cette séance ne contient pas de signal."))
+            QMessageBox.information(self, t("Replay"),
+                                    t("This session contains no signal."))
             self.btn_play.setChecked(False)
             return
         if not self.engine.rejouer(data, fs, vitesse, nom=nom):
             self.btn_play.setChecked(False)
             return
-        self.btn_play.setText(t("Arrêter la relecture"))
+        self.btn_play.setText(t("Stop the replay"))
         self._maj_boutons()
 
     def _revenir_en_direct(self) -> None:
         self.engine.arreter_relecture(revenir_en_direct=True)
         self.btn_play.setChecked(False)
-        self.btn_play.setText(t("Rejouer"))
+        self.btn_play.setText(t("Replay"))
         self._maj_boutons()
 
     def _renommer(self) -> None:
         if self.courant_ech is None:
             return
         nouveau, ok = QInputDialog.getText(
-            self, t("Renommer l'échantillon"), t("Nouveau nom :"),
+            self, t("Rename the sample"), t("New name:"),
             text=self.courant_ech.name)
         if not ok or not nouveau.strip():
             return
@@ -403,9 +395,8 @@ class LibraryTab(QWidget):
         if self.courant_ech is None:
             return
         reponse = QMessageBox.question(
-            self, t("Supprimer l'échantillon"),
-            t("Supprimer définitivement « {nom} » ?\n\nLe fichier WAV et son "
-              "JSON seront effacés.").format(nom=self.courant_ech.name),
+            self, t("Delete the sample"),
+            t("Permanently delete “{nom}”?\n\nThe WAV file and its JSON will be erased.").format(nom=self.courant_ech.name),
             QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reponse != QMessageBox.Yes:
             return
@@ -419,20 +410,20 @@ class LibraryTab(QWidget):
         if self.current is None:
             return
         path, _ = QFileDialog.getSaveFileName(
-            self, t("Exporter le résumé"), f"{self.current.name}.txt",
-            t("Texte (*.txt)"))
+            self, t("Export the summary"), f"{self.current.name}.txt",
+            t("Text (*.txt)"))
         if not path:
             return
         try:
             with open(path, "w", encoding="utf-8") as f:
                 f.write(sess.export_summary(self.current) + "\n")
         except OSError as exc:                         # pragma: no cover
-            QMessageBox.warning(self, t("Écriture impossible"), str(exc))
+            QMessageBox.warning(self, t("Cannot write"), str(exc))
 
     # ------------------------------------------------------------ rafraîchi
     def refresh(self, state) -> None:
         if state.replaying and state.replay_length > 0:
-            self.btn_play.setText(t("Arrêter — {position:.0f} s / {duree:.0f} s").format(
+            self.btn_play.setText(t("Stop — {position:.0f} s / {duree:.0f} s").format(
                 position=state.replay_position, duree=state.replay_length))
             if not self.btn_play.isChecked():
                 self.btn_play.setChecked(True)

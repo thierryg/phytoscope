@@ -1,0 +1,73 @@
+<section class="chapter pagebreak">
+  <h2 id="fin" data-toc="chapter">7. Going further</h2>
+
+  <h3 id="fin-lire" data-toc="sub">Read the shipped modules</h3>
+
+  <p>They go through the same interface as yours — no privilege, no shortcut.
+  That is what guarantees the interface really is enough, and it has an
+  agreeable consequence: <strong>to learn how to write a module, it is enough
+  to read one</strong>.</p>
+
+  <table class="tab">
+    <thead><tr><th>Module</th><th>What it shows</th></tr></thead>
+    <tbody>
+      <tr><td><code>scientific-quantities</code></td>
+          <td>an analyser that computes a great deal, and explains every
+          number</td></tr>
+      <tr><td><code>advanced-descriptors</code></td>
+          <td>six representations, with their warnings</td></tr>
+      <tr><td><code>rig-fingerprint</code></td>
+          <td>a module that keeps state on the disk</td></tr>
+      <tr><td><code>export-csv</code></td>
+          <td>the shortest complete example — sixty lines</td></tr>
+    </tbody>
+  </table>
+
+  <p>They live in <code>src/phytoscope/phytoscope/modules/</code>.</p>
+
+  <h3 id="fin-sdk" data-toc="sub">The SDK</h3>
+
+  <p>In <code>src/sdk/</code>, with the source code:</p>
+
+  <ul>
+    <li><code>docs/</code> — this documentation, in eight parts, in Markdown;</li>
+    <li><code>hello-world/</code> — a complete example with its tests;</li>
+    <li><code>tools/new_module.py</code> — creates a module that already
+      works.</li>
+  </ul>
+
+  <h3 id="fin-manque" data-toc="sub">If something you need is missing</h3>
+
+  <p>Say so. The interface was written by trying to anticipate, and
+  anticipation is always a little wrong. A capability that is missing, an event
+  nobody foresaw, a piece of data you are not given: those are the requests
+  that move an interface forward, and they are more useful than
+  compliments.</p>
+
+  <p>We shall not, however, grow it one request at a time. A capability added
+  is a capability to be honoured for ten years; we would rather wait for the
+  same request to come from three directions than add it the first time and
+  have to carry it afterwards.</p>
+
+  <div class="callout">
+    <h4>What we shall not do</h4>
+    <p><strong>A sandbox.</strong> Python does not lend itself to it, and a
+    badly made sandbox inspires a confidence it has not earned. We would rather
+    say clearly what a module ought to do, make that path easy, and isolate
+    faults.</p>
+    <p><strong>Hot reloading.</strong> Reloading a module whose objects are
+    already referenced elsewhere leaves two versions in memory and produces
+    bugs nobody can read. A restart costs three seconds.</p>
+  </div>
+
+  <h3 id="fin-contact" data-toc="sub">Writing to us</h3>
+
+  <p>Bretagne Namasté — Thierry GAYET<br/>
+  <code>contact@bretagne-namaste.com</code> ·
+  <code>Thierry.Gayet@gmail.com</code><br/>
+  <a href="https://bretagne-namaste.com">bretagne-namaste.com</a></p>
+
+  <p class="small">The software, the SDK and this document are published under
+  the MIT licence. The example code is yours to copy, with no conditions
+  attached.</p>
+</section>

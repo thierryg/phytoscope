@@ -1,20 +1,3 @@
-<!--
-  ==========================================================================
-  PhytoScope — attribution — pdf-src/assets/svg/tt-site-plan.svg
-
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
-
-  SPDX-License-Identifier: MIT
-  fin de l'attribution
-  ==========================================================================
--->
-
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 470" width="840" height="470">
 
 <defs>
@@ -29,54 +12,54 @@
    <path d="M0,0 L10,5 L0,10 z" fill="#3F7D5A"/></marker>
 </defs>
 <rect width="840" height="470" fill="#FBF9F1"/>
-<text x="420" y="34" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="3">PLAN D'IMPLANTATION</text>
-<text x="420" y="55" font-family="Lato, sans-serif" font-size="11.89" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Vue de dessus — un arbre, ses capteurs et sa zone de protection</text>
+<text x="420" y="34" font-family="Cormorant Garamond, serif" font-size="17.4" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="3">THE SITE PLAN</text>
+<text x="420" y="55" font-family="Lato, sans-serif" font-size="11.89" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Seen from above — a tree, its sensors and its protection zone</text>
 <circle cx="330" cy="262" r="170" fill="#EDEADB" stroke="#6FA98A" stroke-width="1.6" stroke-dasharray="7 5"/>
-<text x="330" y="110" font-family="Lato, sans-serif" font-size="10.73" fill="#3F7D5A" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">zone racinaire protégée — aucun engin, aucun tassement</text>
+<text x="330" y="110" font-family="Lato, sans-serif" font-size="10.73" fill="#3F7D5A" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">protected root zone — no machinery, no compaction</text>
 <circle cx="330" cy="262" r="118" fill="#D7E3D2" opacity="0.75"/>
-<text x="414" y="170" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">projection du houppier</text>
+<text x="414" y="170" font-family="Lato, sans-serif" font-size="10.44" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">the crown projection</text>
 <circle cx="330" cy="262" r="26" fill="#8A7455" stroke="#5C4B34" stroke-width="2"/>
 <circle cx="330" cy="236" r="9" fill="#A8552E" stroke="#FFF" stroke-width="1.8"/>
 <text x="330" y="239.2" font-family="Lato, sans-serif" font-size="9.6" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">E1</text>
-<text x="330" y="192" font-family="Lato, sans-serif" font-size="10.44" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">électrodes nord</text>
+<text x="330" y="192" font-family="Lato, sans-serif" font-size="10.44" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">north electrodes</text>
 <circle cx="356" cy="262" r="9" fill="#A8552E" stroke="#FFF" stroke-width="1.8"/>
 <text x="356" y="265.2" font-family="Lato, sans-serif" font-size="9.6" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">E2</text>
-<text x="400" y="268" font-family="Lato, sans-serif" font-size="10.44" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">électrodes sud</text>
+<text x="400" y="268" font-family="Lato, sans-serif" font-size="10.44" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">south electrodes</text>
 <circle cx="238" cy="302" r="9" fill="#3F7D5A" stroke="#FFF" stroke-width="1.8"/>
 <text x="238" y="305.2" font-family="Lato, sans-serif" font-size="9.6" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">P1</text>
-<text x="178" y="326" font-family="Lato, sans-serif" font-size="10.44" fill="#3F7D5A" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">sonde de sol 20 cm</text>
+<text x="178" y="326" font-family="Lato, sans-serif" font-size="10.44" fill="#3F7D5A" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">soil probe 20 cm</text>
 <circle cx="426" cy="324" r="9" fill="#3F7D5A" stroke="#FFF" stroke-width="1.8"/>
 <text x="426" y="327.2" font-family="Lato, sans-serif" font-size="9.6" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">P2</text>
-<text x="470" y="342" font-family="Lato, sans-serif" font-size="10.44" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">sonde de sol 60 cm</text>
+<text x="470" y="342" font-family="Lato, sans-serif" font-size="10.44" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">soil probe 60 cm</text>
 <circle cx="322" cy="144" r="9" fill="#2F5E86" stroke="#FFF" stroke-width="1.8"/>
 <text x="322" y="147.2" font-family="Lato, sans-serif" font-size="9.6" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">M1</text>
-<text x="292" y="120" font-family="Lato, sans-serif" font-size="10.44" fill="#2F5E86" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">abri météo 2 m</text>
+<text x="292" y="120" font-family="Lato, sans-serif" font-size="10.44" fill="#2F5E86" text-anchor="end" font-weight="700" font-style="normal" letter-spacing="0">weather shelter 2 m</text>
 <circle cx="392" cy="178" r="9" fill="#B08528" stroke="#FFF" stroke-width="1.8"/>
 <text x="392" y="181.2" font-family="Lato, sans-serif" font-size="9.6" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">A1</text>
-<text x="444" y="164" font-family="Lato, sans-serif" font-size="10.44" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">capteur acoustique</text>
+<text x="444" y="164" font-family="Lato, sans-serif" font-size="10.44" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">acoustic sensor</text>
 <circle cx="480" cy="122" r="9" fill="#B08528" stroke="#FFF" stroke-width="1.8"/>
 <text x="480" y="125.2" font-family="Lato, sans-serif" font-size="9.6" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">S1</text>
-<text x="496" y="104" font-family="Lato, sans-serif" font-size="10.44" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">panneau solaire plein sud</text>
+<text x="496" y="104" font-family="Lato, sans-serif" font-size="10.44" fill="#B08528" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">solar panel facing due south</text>
 <rect x="580" y="96" width="242" height="304" rx="7" fill="#FFFFFF" stroke="#D9D9C6" stroke-width="1.2"/>
-<text x="701" y="118" font-family="Lato, sans-serif" font-size="13.92" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Règles d'implantation</text>
+<text x="701" y="118" font-family="Lato, sans-serif" font-size="13.92" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Siting rules</text>
 <line x1="596" y1="130" x2="806" y2="130" stroke="#D9D9C6" stroke-width="1.3" stroke-dasharray="5 4"/>
-<text x="596" y="146" font-family="Lato, sans-serif" font-size="11.6" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Électrodes</text>
-<text x="596" y="158.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Deux paires opposées : le différentiel</text>
-<text x="596" y="168.5" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">annule le mode commun.</text>
-<text x="596" y="190" font-family="Lato, sans-serif" font-size="11.6" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Sondes de sol</text>
-<text x="596" y="202.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Deux profondeurs au moins, hors du</text>
-<text x="596" y="212.5" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">cheminement piéton.</text>
-<text x="596" y="234" font-family="Lato, sans-serif" font-size="11.6" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Abri météo</text>
-<text x="596" y="246.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">À 2 m, ventilé, jamais contre le tronc</text>
-<text x="596" y="256.5" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">ni en plein soleil.</text>
-<text x="596" y="278" font-family="Lato, sans-serif" font-size="11.6" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Coffret</text>
-<text x="596" y="290.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Au nord du tronc, sur collier large, à</text>
-<text x="596" y="300.5" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">1,80 m du sol.</text>
-<text x="596" y="322" font-family="Lato, sans-serif" font-size="11.6" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Câbles</text>
-<text x="596" y="334.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">En goulotte souple, boucle de dilatation</text>
-<text x="596" y="344.5" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">à chaque extrémité.</text>
-<text x="596" y="366" font-family="Lato, sans-serif" font-size="11.6" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Signalétique</text>
-<text x="596" y="378.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Un panneau explique l'installation : il</text>
-<text x="596" y="388.5" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">évite le vandalisme.</text>
-<text x="420" y="440" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Le plan est daté, photographié et archivé : sans lui, aucune mesure ne sera réinterprétable dans cinq ans.</text>
+<text x="596" y="146" font-family="Lato, sans-serif" font-size="11.6" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Electrodes</text>
+<text x="596" y="158.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Two opposed pairs: the differential</text>
+<text x="596" y="168.5" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">cancels the common mode.</text>
+<text x="596" y="190" font-family="Lato, sans-serif" font-size="11.6" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Soil probes</text>
+<text x="596" y="202.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Two depths at least, away from the</text>
+<text x="596" y="212.5" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">footpath.</text>
+<text x="596" y="234" font-family="Lato, sans-serif" font-size="11.6" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Weather shelter</text>
+<text x="596" y="246.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">At 2 m, ventilated, never against the</text>
+<text x="596" y="256.5" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">trunk nor in full sun.</text>
+<text x="596" y="278" font-family="Lato, sans-serif" font-size="11.6" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Enclosure</text>
+<text x="596" y="290.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">North of the trunk, on a wide collar,</text>
+<text x="596" y="300.5" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">1.80 m above the ground.</text>
+<text x="596" y="322" font-family="Lato, sans-serif" font-size="11.6" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Cables</text>
+<text x="596" y="334.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">In flexible trunking, with an expansion</text>
+<text x="596" y="344.5" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">loop at each end.</text>
+<text x="596" y="366" font-family="Lato, sans-serif" font-size="11.6" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">Signage</text>
+<text x="596" y="378.0" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">A sign explains the installation: it is</text>
+<text x="596" y="388.5" font-family="Lato, sans-serif" font-size="10.15" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">what prevents vandalism.</text>
+<text x="420" y="440" font-family="Lato, sans-serif" font-size="11.6" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">The plan is dated, photographed and archived: without it, no measurement will be re-readable in five years.</text>
 </svg>

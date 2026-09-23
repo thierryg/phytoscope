@@ -2,16 +2,16 @@
   ==========================================================================
   PhytoScope — attribution — pdf-src/assets/svg/logiciel-lexique.svg
 
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
+  Version   : 1.6.0
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
 
   SPDX-License-Identifier: MIT
-  fin de l'attribution
+  end of attribution
   ==========================================================================
 -->
 
@@ -40,70 +40,70 @@
    <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
 </defs>
 <rect width="980" height="836" fill="#FFFFFF"/>
-<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Du microvolt au mot</text>
-<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Le mode vocal, axe par axe — et ce que l'utilisateur apporte lui-même</text>
+<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">From the microvolt to the word</text>
+<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Voice mode, axis by axis — and what the user brings themselves</text>
 <rect x="30" y="104" width="250" height="62" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.4"/>
-<text x="155.0" y="136" font-family="Cormorant Garamond, serif" font-size="19.36" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Sens de la pente</text>
-<text x="155.0" y="156" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">montée ou descente</text>
+<text x="155.0" y="136" font-family="Cormorant Garamond, serif" font-size="19.36" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Direction of slope</text>
+<text x="155.0" y="156" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">rise or fall</text>
 <rect x="30" y="188" width="250" height="62" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.4"/>
 <text x="155.0" y="220" font-family="Cormorant Garamond, serif" font-size="19.36" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Amplitude</text>
-<text x="155.0" y="240" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">en écarts-types</text>
+<text x="155.0" y="240" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">in standard deviations</text>
 <rect x="30" y="272" width="250" height="62" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.4"/>
-<text x="155.0" y="304" font-family="Cormorant Garamond, serif" font-size="19.36" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Temps écoulé</text>
-<text x="155.0" y="324" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">depuis l'énoncé précédent</text>
+<text x="155.0" y="304" font-family="Cormorant Garamond, serif" font-size="19.36" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Time elapsed</text>
+<text x="155.0" y="324" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">since the previous statement</text>
 <rect x="30" y="356" width="250" height="62" rx="7" fill="#fff" stroke="#3F7D5A" stroke-width="1.4"/>
-<text x="155.0" y="388" font-family="Cormorant Garamond, serif" font-size="19.36" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Gravité du spectre</text>
-<text x="155.0" y="408" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">centre de gravité, en hertz</text>
+<text x="155.0" y="388" font-family="Cormorant Garamond, serif" font-size="19.36" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Spectral centroid</text>
+<text x="155.0" y="408" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">centre of gravity, in hertz</text>
 <rect x="360" y="104" width="250" height="62" rx="7" fill="#F7F0DC" stroke="#B08528" stroke-width="1.4"/>
 <text x="485.0" y="136" font-family="Cormorant Garamond, serif" font-size="19.36" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">verbe</text>
-<text x="485.0" y="156" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">cinq mots, du faible au fort</text>
+<text x="485.0" y="156" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">five words, from weak to strong</text>
 <line x1="284" y1="135" x2="356" y2="135" stroke="#B08528" stroke-width="1.5" marker-end="url(#ah)"/>
 <line x1="614" y1="135" x2="686" y2="306" stroke="#B08528" stroke-width="1.1" marker-end="url(#ah)"/>
 <rect x="360" y="188" width="250" height="62" rx="7" fill="#F7F0DC" stroke="#B08528" stroke-width="1.4"/>
-<text x="485.0" y="220" font-family="Cormorant Garamond, serif" font-size="19.36" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">intensité</text>
+<text x="485.0" y="220" font-family="Cormorant Garamond, serif" font-size="19.36" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">intensity</text>
 <text x="485.0" y="240" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">l'adverbe</text>
 <line x1="284" y1="219" x2="356" y2="219" stroke="#B08528" stroke-width="1.5" marker-end="url(#ah)"/>
 <line x1="614" y1="219" x2="686" y2="306" stroke="#B08528" stroke-width="1.1" marker-end="url(#ah)"/>
 <rect x="360" y="272" width="250" height="62" rx="7" fill="#F7F0DC" stroke="#B08528" stroke-width="1.4"/>
 <text x="485.0" y="304" font-family="Cormorant Garamond, serif" font-size="19.36" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">tempo</text>
-<text x="485.0" y="324" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">la circonstance de temps</text>
+<text x="485.0" y="324" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">the temporal circumstance</text>
 <line x1="284" y1="303" x2="356" y2="303" stroke="#B08528" stroke-width="1.5" marker-end="url(#ah)"/>
 <line x1="614" y1="303" x2="686" y2="306" stroke="#B08528" stroke-width="1.1" marker-end="url(#ah)"/>
 <rect x="360" y="356" width="250" height="62" rx="7" fill="#F7F0DC" stroke="#B08528" stroke-width="1.4"/>
 <text x="485.0" y="388" font-family="Cormorant Garamond, serif" font-size="19.36" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">couleur</text>
-<text x="485.0" y="408" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">la qualification</text>
+<text x="485.0" y="408" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">the qualifier</text>
 <line x1="284" y1="387" x2="356" y2="387" stroke="#B08528" stroke-width="1.5" marker-end="url(#ah)"/>
 <line x1="614" y1="387" x2="686" y2="306" stroke="#B08528" stroke-width="1.1" marker-end="url(#ah)"/>
 <rect x="30" y="452" width="250" height="62" rx="7" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.6"/>
 <text x="155.0" y="484" font-family="Cormorant Garamond, serif" font-size="19.36" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Sujet</text>
-<text x="155.0" y="504" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">choisi par l'utilisateur</text>
+<text x="155.0" y="504" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">chosen by the user</text>
 <line x1="284" y1="483" x2="356" y2="483" stroke="#A8552E" stroke-width="1.5" marker-end="url(#ah)"/>
 <rect x="360" y="452" width="250" height="62" rx="7" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.6"/>
 <text x="485.0" y="484" font-family="Cormorant Garamond, serif" font-size="19.36" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">sujet</text>
-<text x="485.0" y="504" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">qui parle — rien ne le mesure</text>
+<text x="485.0" y="504" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">who speaks — nothing measures it</text>
 <line x1="614" y1="483" x2="686" y2="372" stroke="#A8552E" stroke-width="1.1" marker-end="url(#ah)"/>
 <rect x="690" y="276" width="260" height="122" rx="7" fill="#E9F2EC" stroke="#3F7D5A" stroke-width="1.6"/>
 <text x="820.0" y="308" font-family="Cormorant Garamond, serif" font-size="21.02" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Grammaire</text>
-<text x="820.0" y="328" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">un gabarit tiré au sort</text>
-<text x="820.0" y="354" font-family="Lato, sans-serif" font-size="16.87" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">minimale · télégraphique</text>
+<text x="820.0" y="328" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">a template drawn at random</text>
+<text x="820.0" y="354" font-family="Lato, sans-serif" font-size="16.87" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">minimal · telegraphic</text>
 <text x="820.0" y="373" font-family="Lato, sans-serif" font-size="16.87" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">contemplative · descriptive</text>
 <line x1="820" y1="402" x2="820" y2="446" stroke="#3F7D5A" stroke-width="1.6" marker-end="url(#ah)"/>
 <rect x="690" y="450" width="260" height="96" rx="6" fill="#fff" stroke="#0E2A22" stroke-width="1.6"/>
-<text x="820" y="478" font-family="Cormorant Garamond, serif" font-size="22.68" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">« La feuille frémit</text>
+<text x="820" y="478" font-family="Cormorant Garamond, serif" font-size="22.68" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">“The leaf shivers</text>
 <text x="820" y="498" font-family="Cormorant Garamond, serif" font-size="22.68" fill="#0E2A22" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">doucement, sourd »</text>
 <text x="820" y="520" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">σ=4,1 · pente +2e−5</text>
 <text x="820" y="534" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">Δt=38 s · f=0,21 Hz</text>
-<text x="820" y="560" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">chaque énoncé porte les valeurs</text>
-<text x="820" y="574" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">qui l'ont déclenché</text>
+<text x="820" y="560" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">every statement carries the values</text>
+<text x="820" y="574" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">that triggered it</text>
 <rect x="30" y="600" width="920" height="204" rx="5" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.1"/>
 <text x="44" y="628" font-family="Lato, sans-serif" font-size="19.08" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">CE N'EST PAS UNE TRADUCTION</text>
-<text x="44" y="652" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">La plante n'émet pas de mots et n'a pas de langage : rien dans son signal électrique ne</text>
-<text x="44" y="674" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">correspond à un vocabulaire. Ce dispositif applique des règles explicites, réglables et</text>
-<text x="44" y="696" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">consignées, qui associent une région de l'espace des descripteurs à un mot choisi par</text>
-<text x="44" y="718" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">l'utilisateur. Le mot qui sort est donc dans le dictionnaire de celui qui l'a écrit : il dit</text>
-<text x="44" y="740" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">quelque chose du signal — intensité, sens de variation, rythme, couleur spectrale — et</text>
-<text x="44" y="762" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">rien de ce que « pense » la plante. Le dialogue qui s'installe est un dialogue entre</text>
-<text x="44" y="784" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">l'utilisateur et sa propre grille de lecture ; il peut être fécond, à condition de le savoir.</text>
+<text x="44" y="652" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">The plant emits no words and has no language: nothing in its electrical signal</text>
+<text x="44" y="674" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">corresponds to a vocabulary. This arrangement applies explicit, adjustable and</text>
+<text x="44" y="696" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">recorded rules, which map a region of the descriptor space to a word chosen by</text>
+<text x="44" y="718" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">the user. The word that comes out is therefore from the dictionary of whoever wrote it: it says</text>
+<text x="44" y="740" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">something about the signal — intensity, direction of change, rhythm, spectral colour — and</text>
+<text x="44" y="762" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">nothing of what the plant “thinks”. The dialogue that sets in is a dialogue between</text>
+<text x="44" y="784" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">the user and their own reading grid; it can be fruitful, provided one knows it.</text>
 <text x="28" y="828" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
 <text x="952" y="828" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
 </svg>

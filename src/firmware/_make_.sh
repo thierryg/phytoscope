@@ -2,49 +2,50 @@
 #  ==========================================================================
 #  PhytoScope — attribution — src/firmware/_make_.sh
 #
-#  Version  : 1.5.1
-#  Date     : 2026-09-18
-#  Éditeur  : Bretagne Namasté
-#  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-#  Site     : https://bretagne-namaste.com
-#  Contact  : contact@bretagne-namaste.com
-#  Licence  : MIT — voir LICENCE.txt
+#  Version   : 1.6.0
+#  Date      : 2026-09-23
+#  Publisher : Bretagne Namasté
+#  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+#  Website   : https://bretagne-namaste.com
+#  Contact   : contact@bretagne-namaste.com
+#  License   : MIT — see LICENSE.txt
 #
 #  SPDX-License-Identifier: MIT
-#  fin de l'attribution
+#  end of attribution
 #  ==========================================================================
 
 # ===========================================================================
-#  Construction du micrologiciel PhytoSense One — RP2350
+#  Building the PhytoSense One firmware — RP2350
 #
-#  Ce script COMPILE, et rien de plus. Il s'appelait « build.sh » jusqu'au
-#  2026-09-18 ; il a été renommé pour laisser ce nom à un script qui fait la
-#  chaîne complète — compiler PUIS ranger le livrable dans build/paquets/.
-#  Voir ./build.sh, qui appelle celui-ci.
+#  This script COMPILES, and nothing more. It was called "build.sh" until
+#  2026-09-18; it was renamed to free that name for the script that runs the
+#  whole chain — compile AND file the deliverable under build/packages/. See
+#  ./build.sh, which calls this one.
 #
-#    ./_make_.sh            construit (et dit quoi faire s'il manque quelque chose)
-#    ./_make_.sh --deps     installe SDK et chaîne de compilation dans $HOME,
-#                          sans toucher au système ni demander de mot de passe
-#    ./_make_.sh --propre   repart d'un répertoire de construction vide
+#    ./_make_.sh           build (and say what to do if something is missing)
+#    ./_make_.sh --deps    install the SDK and the toolchain under $HOME,
+#                          touching nothing system-wide and asking for no
+#                          password
+#    ./_make_.sh --clean   start again from an empty build directory
 #
-#  Rien n'est installé à l'échelle du système : le SDK va dans ~/pico/pico-sdk
-#  et la chaîne ARM dans ~/.local/opt/. Qui préfère les paquets de sa
-#  distribution les installe lui-même — le script les trouvera aussi.
+#  Nothing is installed system-wide: the SDK goes to ~/pico/pico-sdk and the
+#  ARM toolchain to ~/.local/opt/. Anyone who prefers their distribution's
+#  packages installs them themselves — the script will find those too.
 #
-#  Licence MIT — Bretagne Namasté — https://bretagne-namaste.com
+#  MIT licence — Bretagne Namasté — https://bretagne-namaste.com
 # ===========================================================================
 set -euo pipefail
 
 ICI="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SDK_VERSION="2.3.1"          # 2.0.0 minimum pour le RP2350
+SDK_VERSION="2.3.1"          # 2.0.0 is the minimum for the RP2350
 ARM_VERSION="14.2.rel1"
 SDK_DEFAUT="$HOME/pico/pico-sdk"
 CARTE="${PICO_BOARD:-pico2}"
 
-#  --- Quelle chaîne ARM télécharger ? --------------------------------------
-#  ARM publie une archive par couple système/architecture. L'ancienne version
-#  de ce script codait « x86_64 » en dur : `--deps` échouait donc sur un Mac
-#  Apple Silicon comme sur un Raspberry Pi, avec une erreur 404 peu parlante.
+#  --- Which ARM toolchain to download? -------------------------------------
+#  ARM publishes one archive per system/architecture pair. An earlier version
+#  of this script hardcoded "x86_64", so `--deps` failed on an Apple Silicon
+#  Mac and on a Raspberry Pi alike, with an unhelpful 404.
 hote_arm() {
     local systeme machine
     systeme="$(uname -s)"
@@ -59,7 +60,7 @@ hote_arm() {
             case "$machine" in
                 aarch64|arm64) echo "aarch64" ;;
                 x86_64|amd64)  echo "x86_64" ;;
-                *)             echo "" ;;     # architecture non publiée par ARM
+                *)             echo "" ;;     # architecture ARM does not publish
             esac ;;
         *)  echo "" ;;
     esac
@@ -72,7 +73,7 @@ vert()  { printf '\033[0;32m%s\033[0m\n' "$*"; }
 jaune() { printf '\033[0;33m%s\033[0m\n' "$*"; }
 rouge() { printf '\033[0;31m%s\033[0m\n' "$*"; }
 
-# --- 1. où est le SDK ? ----------------------------------------------------
+# --- 1. where is the SDK? --------------------------------------------------
 trouver_sdk() {
     for c in "${PICO_SDK_PATH:-}" "$SDK_DEFAUT" /usr/share/pico-sdk \
              /opt/pico-sdk "$HOME/pico-sdk"; do
@@ -80,7 +81,7 @@ trouver_sdk() {
     done
 }
 
-# --- 2. où est la chaîne ARM ? --------------------------------------------
+# --- 2. where is the ARM toolchain? ---------------------------------------
 trouver_arm() {
     command -v arm-none-eabi-gcc >/dev/null 2>&1 && { dirname "$(command -v arm-none-eabi-gcc)"; return; }
     for c in "$ARM_DEFAUT/bin" "$HOME"/.local/opt/arm-gnu-toolchain-*/bin; do
@@ -90,25 +91,25 @@ trouver_arm() {
 
 installer_deps() {
     if [ -z "$(trouver_sdk)" ]; then
-        jaune "· Téléchargement du Pico SDK ${SDK_VERSION} → ${SDK_DEFAUT}"
+        jaune "· Downloading Pico SDK ${SDK_VERSION} -> ${SDK_DEFAUT}"
         mkdir -p "$(dirname "$SDK_DEFAUT")"
         git clone --branch "$SDK_VERSION" --depth 1 \
             https://github.com/raspberrypi/pico-sdk.git "$SDK_DEFAUT"
-        #  Sans TinyUSB, la compilation échoue sur « tusb.h: No such file ».
+        #  Without TinyUSB the build fails on "tusb.h: No such file".
         git -C "$SDK_DEFAUT" submodule update --init --depth 1 lib/tinyusb
-        vert "✓ SDK installé"
+        vert "✓ SDK installed"
     else
-        vert "✓ SDK déjà présent : $(trouver_sdk)"
+        vert "✓ SDK already present: $(trouver_sdk)"
     fi
 
     if [ -z "$(trouver_arm)" ]; then
         if [ -z "$HOTE_ARM" ]; then
-            rouge "✗ ARM ne publie pas de chaîne précompilée pour $(uname -s)/$(uname -m)."
+            rouge "✗ ARM publishes no prebuilt toolchain for $(uname -s)/$(uname -m)."
             rouge "  Installez « gcc-arm-none-eabi » par votre gestionnaire de paquets,"
-            rouge "  ou indiquez une chaîne existante : ARM_TOOLCHAIN_PATH=/chemin ./_make_.sh"
+            rouge "  or point at an existing one: ARM_TOOLCHAIN_PATH=/path ./_make_.sh"
             exit 2
         fi
-        jaune "· Téléchargement de la chaîne ARM ${ARM_VERSION} pour ${HOTE_ARM} (≈ 140 Mo)"
+        jaune "· Downloading ARM toolchain ${ARM_VERSION} for ${HOTE_ARM} (~140 MB)"
         jaune "  → ${ARM_DEFAUT}"
         mkdir -p "$HOME/.local/opt"
         local url="https://developer.arm.com/-/media/Files/downloads/gnu/${ARM_VERSION}/binrel/arm-gnu-toolchain-${ARM_VERSION}-${HOTE_ARM}-arm-none-eabi.tar.xz"
@@ -116,25 +117,29 @@ installer_deps() {
         curl -L --progress-bar "$url" -o "$tmp/arm.tar.xz"
         tar -xf "$tmp/arm.tar.xz" -C "$HOME/.local/opt"
         rm -rf "$tmp"
-        vert "✓ Chaîne ARM installée"
+        vert "✓ ARM toolchain installed"
     else
-        vert "✓ Chaîne ARM déjà présente : $(trouver_arm)"
+        vert "✓ ARM toolchain already present: $(trouver_arm)"
     fi
 }
 
-# --- 3. déroulement --------------------------------------------------------
+# --- 3. the run itself -----------------------------------------------------
 [ "${1:-}" = "--deps" ] && { installer_deps; shift || true; }
-[ "${1:-}" = "--propre" ] && { rm -rf "$ICI/build"; shift || true; }
+#  --clean is the English name; --propre stays accepted so that a script
+#  or a habit built on the old name keeps working.
+case "${1:-}" in
+    --clean|--propre) rm -rf "$ICI/build"; shift || true ;;
+esac
 
 SDK="$(trouver_sdk || true)"
 ARM="$(trouver_arm || true)"
 
 if [ -z "$SDK" ] || [ -z "$ARM" ]; then
     rouge "Il manque de quoi construire :"
-    [ -z "$SDK" ] && echo "  · le Pico SDK 2.x (RP2350)"
-    [ -z "$ARM" ] && echo "  · la chaîne de compilation arm-none-eabi"
+    [ -z "$SDK" ] && echo "  · the Pico SDK 2.x (RP2350)"
+    [ -z "$ARM" ] && echo "  · the arm-none-eabi toolchain"
     echo
-    echo "  Tout installer dans votre dossier personnel, sans mot de passe :"
+    echo "  Install everything under your home directory, with no password:"
     echo "      ./_make_.sh --deps"
     echo
     echo "  Ou par votre gestionnaire de paquets :"
@@ -148,40 +153,40 @@ if [ -z "$SDK" ] || [ -z "$ARM" ]; then
     echo "          brew install cmake git"
     echo "          brew install --cask gcc-arm-embedded"
     echo
-    echo "  Windows : ce script demande un shell POSIX. Passez par WSL 2"
-    echo "  (« wsl --install », puis Ubuntu) et relancez-le depuis Linux."
+    echo "  Windows: this script needs a POSIX shell. Use WSL 2"
+    echo "  (\"wsl --install\", then Ubuntu) and run it again from Linux."
     exit 2
 fi
 
 export PICO_SDK_PATH="$SDK"
 export PATH="$ARM:$PATH"
 
-#  Ce fichier appartient au SDK et doit rester synchronisé avec lui : on le
-#  recopie à chaque construction plutôt que de le figer dans le dépôt.
+#  This file belongs to the SDK and must stay in step with it, so it is
+#  copied at every build rather than frozen into the repository.
 cp "$SDK/external/pico_sdk_import.cmake" "$ICI/pico_sdk_import.cmake"
 
 vert "· SDK   : $SDK"
 vert "· ARM   : $(arm-none-eabi-gcc --version | head -1)"
-vert "· Carte : $CARTE"
+vert "· Board: $CARTE"
 
 mkdir -p "$ICI/build"
 
-#  Un cache CMake retient le chemin ABSOLU des sources. Déplacer ou
-#  renommer la copie de travail — ce qui est arrivé le 2026-09-18, quand le
-#  micrologiciel a quitté sources/ pour src/firmware/ — le rend donc périmé,
+#  A CMake cache remembers the ABSOLUTE path of the sources. Moving or
+#  renaming the working copy — which happened on 2026-09-18, when the
+#  firmware left sources/ for src/firmware/ — therefore makes it stale,
 #  et cmake refuse de continuer :
 #
 #      The current CMakeCache.txt directory … is different than the
 #      directory … where CMakeCache.txt was created.
 #
-#  Le message est juste mais décourageant, et la réponse est toujours la
-#  même : jeter le cache. On le fait donc ici, plutôt que de laisser
-#  chacun la retrouver.
+#  The message is accurate but discouraging, and the answer is always the
+#  same: throw the cache away. So we do it here, rather than leaving every
+#  person who hits it to work that out for themselves.
 if [ -f "$ICI/build/CMakeCache.txt" ]; then
     cache_source="$(sed -n 's/^CMAKE_HOME_DIRECTORY:INTERNAL=//p' \
                     "$ICI/build/CMakeCache.txt" | head -1)"
     if [ -n "$cache_source" ] && [ "$cache_source" != "$ICI" ]; then
-        jaune "· Cache CMake périmé (il pointe sur $cache_source) — on le jette"
+        jaune "· Stale CMake cache (it points at $cache_source) — discarding it"
         rm -rf "$ICI/build"
         mkdir -p "$ICI/build"
     fi
@@ -192,16 +197,16 @@ cmake .. -DPICO_BOARD="$CARTE" -DCMAKE_BUILD_TYPE=Release >/dev/null
 cmake --build . -j"$(nproc 2>/dev/null || echo 4)"
 
 echo
-vert "✓ Construit :"
+vert "✓ Built:"
 for f in phytosense.uf2 phytosense.elf phytosense.bin; do
     [ -f "$f" ] && printf '    %-18s %s\n' "$f" "$(du -h "$f" | cut -f1)"
 done
 arm-none-eabi-size phytosense.elf | tail -1 | awk \
-    '{printf "    mémoire            %d octets de code, %d de données\n", $1, $3}'
+    '{printf "    memory             %d bytes of code, %d of data\n", $1, $3}'
 echo
-#  Le point de montage de la carte diffère d'un système à l'autre : Debian et
-#  Ubuntu montent sous /media/$USER, Fedora et Red Hat sous /run/media/$USER,
-#  macOS sous /Volumes. On cherche plutôt que de deviner.
+#  The board's mount point differs from system to system: Debian and
+#  Ubuntu mount under /media/$USER, Fedora and Red Hat under /run/media/$USER,
+#  macOS under /Volumes. We look rather than guess.
 monter_ou() {
     local d
     for d in "/media/$USER/RP2350" "/run/media/$USER/RP2350" \
@@ -212,16 +217,16 @@ monter_ou() {
     echo ""
 }
 
-echo "  Programmer : brancher la carte en maintenant BOOTSEL, puis"
+echo "  To flash: plug the board in while holding BOOTSEL, then"
 CIBLE="$(monter_ou)"
 if [ -n "$CIBLE" ]; then
-    vert "      cp build/phytosense.uf2 $CIBLE/       ← carte détectée"
+    vert "      cp build/phytosense.uf2 $CIBLE/       <- board detected"
 else
-    echo "      cp build/phytosense.uf2 <point de montage>/"
+    echo "      cp build/phytosense.uf2 <mount point>/"
     echo
     echo "      Debian, Ubuntu, Mint  : /media/\$USER/RP2350/"
     echo "      Fedora, Red Hat       : /run/media/\$USER/RP2350/"
     echo "      macOS                 : /Volumes/RP2350/"
-    echo "      Windows (WSL)         : /mnt/<lettre>/ — la carte apparaît"
-    echo "                              comme un disque amovible"
+    echo "      Windows (WSL)         : /mnt/<letter>/ — the board shows up"
+    echo "                              as a removable disk"
 fi

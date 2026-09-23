@@ -1,133 +1,138 @@
-# Contribuer à PhytoScope
+# Contributing to PhytoScope
 
-Merci de vous y intéresser. Ce fichier dit comment travailler ici sans perdre
-de temps — le vôtre ni celui des autres.
+Thank you for the interest. This file says how to work here without losing
+time — yours or anybody else's.
 
-## Avant d'écrire une ligne : lire, dans cet ordre
+## Before writing a line: read, in this order
 
-| Ordre | Fichier | Ce qu'on y trouve |
+| Order | File | What is in it |
 |---|---|---|
-| 1 | [`AGENTS.md`](AGENTS.md) | Le point d'entrée : l'ordre de lecture, ce qu'on ne fait pas ici, comment laisser une trace. |
-| 2 | [`constraints.md`](constraints.md) | **Le cahier des charges**, contraintes numérotées `C-1`…`C-64`. Il fait autorité : une contribution qui contredit une contrainte est refusée, ou la contrainte change d'abord. |
-| 3 | [`.ai/etat.md`](.ai/etat.md) | Où en est le travail. |
-| 4 | [`.ai/decisions.md`](.ai/decisions.md) | Les décisions de conception **et leurs raisons**. Beaucoup de « pourquoi pas comme ça ? » y ont déjà leur réponse. |
+| 1 | [`AGENTS.md`](AGENTS.md) | The way in: the reading order, what we do not do here, how to leave a trace. |
+| 2 | [`constraints.md`](constraints.md) | **The requirements**, numbered `C-1`…`C-64`. They are authoritative: a contribution that contradicts a constraint is refused, or the constraint changes first. |
+| 3 | [`.ai/state.md`](.ai/state.md) | Where the work stands. |
+| 4 | [`.ai/decisions.md`](.ai/decisions.md) | The design decisions **and their reasons**. A great many "why not do it like this?" already have their answer there. |
 
-## Les cinq règles qui coûtent cher quand on les oublie
+## The five rules that cost dearly when forgotten
 
-1. **Le français partout** — code, commentaires, docstrings, interface,
-   documents, messages de commit. Typographie française : « guillemets »,
-   espace insécable avant `: ; ! ?`.
+1. **Technical US English everywhere** — code, comments, docstrings,
+   documents, file names, commit messages. The interface is the exception: it
+   follows the language the user chose at installation, through the
+   catalogues (`C-42`, `C-31`).
 
-2. **Expliquer le pourquoi.** Un commentaire qui paraphrase le code est à
-   supprimer ; un commentaire qui dit *pourquoi* le code est ainsi est à
-   garder. C'est la règle qui fait la différence entre ce dépôt et un autre.
+2. **Explain the why.** A comment that paraphrases the code is to be deleted;
+   a comment that says *why* the code is as it is, is to be kept. That is the
+   rule that makes the difference between this repository and another.
 
-3. **Vérifier, ne pas supposer.** Toute affirmation chiffrée — nombre de
-   pages, de tests, de références, un débit, un prix — se **mesure par une
-   commande** avant d'être écrite.
+3. **Verify, do not assume.** Every stated figure — a page count, a number of
+   tests, of references, a data rate, a price — is **measured by a command**
+   before it is written down.
 
-4. **Ne jamais modifier un fichier généré** (`C-45`). On modifie la source et
-   on relance le générateur. Les fichiers générés sont repérables : nom
-   commençant par `_`, ou dossier `build/`, ou `pdf-src/assets/svg/*.svg`.
+4. **Never edit a generated file** (`C-45`). Edit the source and run the
+   generator again. Generated files are recognisable: a name starting with
+   `_`, or the `build/` directory, or `pdf-src/assets/svg/*.svg`.
 
-5. **Tester avant de conclure.** `cd src/phytoscope && make test` — sans
-   matériel ni réseau.
+5. **Test before concluding.** `cd src/phytoscope && make test` — no hardware,
+   no network.
 
-## Ce qu'on ne fait pas ici
+## What we do not do here
 
-- ❌ **Écrire dans les réglages de qui exécute le logiciel**
-  (`~/.config/phytoscope/reglages.json`) pendant un essai. Détourner
-  `XDG_CONFIG_HOME` vers un dossier temporaire.
-  *(Cette règle vient d'un incident réel : voir le journal du 2026-09-18.)*
-- ❌ Ajouter une détection automatique de la locale (`C-31`).
-- ❌ Ajouter une dépendance obligatoire (`C-40`), ou SciPy sous quelque
-  prétexte.
-- ❌ Employer le vocabulaire de la parole sans son avertissement (`C-5`).
-  Une plante n'exprime rien ; un signal est transposé. La nuance est le cœur
-  de l'honnêteté du projet.
-- ❌ `sudo` : tout s'installe dans le dossier personnel (`C-55`).
-- ❌ **Copier la clé privée de signature** ailleurs que dans
-  `~/.local/share/phytoscope-signature/` et `certificat/` (`C-2R`).
-- ❌ Poser notre en-tête d'attribution sur du code tiers. `sources/` est
-  exclu de `tools/headers.py` pour cette raison : y écrire
-  « SPDX-License-Identifier: MIT » sur du GPL est une fausse déclaration.
+- ❌ **Write into the settings of whoever is running the software**
+  (`~/.config/phytoscope/reglages.json`) during a test. Point
+  `XDG_CONFIG_HOME` at a temporary directory instead.
+  *(That rule comes from a real incident: see the journal for 2026-09-18.)*
+- ❌ Add automatic locale detection (`C-31`).
+- ❌ Add a mandatory dependency (`C-40`), or SciPy on any pretext.
+- ❌ Use the vocabulary of speech without its warning (`C-5`). A plant
+  expresses nothing; a signal is transposed. That distinction is the heart of
+  the project's honesty.
+- ❌ `sudo`: everything installs in the home directory (`C-55`).
+- ❌ **Copy the private signing key** anywhere but
+  `~/.local/share/phytoscope-signature/` and `certificate/` (`C-2R`).
+- ❌ Stamp our attribution header on third-party code. `sources/` is excluded
+  from `tools/headers.py` for that reason: writing
+  "SPDX-License-Identifier: MIT" on GPL code is a false statement.
+- ❌ Declare in a descriptor what the hardware has not got (`C-56`). A
+  template is a way to start, not a way to finish.
 
-## Mettre en place son poste
+## Setting up
 
 ```bash
 git clone https://github.com/thierryg/phytoscope.git
 cd phytoscope
 
-# Le logiciel
+# The software
 cd src/phytoscope
-make install-dev            # environnement virtuel + outils de développement
-make test                   # la suite complète, sans matériel ni réseau
-make doctor                 # dit ce qui est installé et ce qui manque
+make install-dev            # a virtual environment + the development tools
+make test                   # the whole suite, no hardware and no network
+make doctor                 # says what is installed and what is missing
 cd ../..
 
-# Les garde-fous avant commit (fortement conseillé)
+# The pre-commit guards (strongly advised)
 python3 -m pip install --user pre-commit
 pre-commit install
-pre-commit run --all-files  # pour voir l'état du dépôt entier
+pre-commit run --all-files  # to see the state of the whole repository
 ```
 
-Les archives de dépôts tiers (`sources/code/`, `sources/software/`) ne sont
-pas versionnées — elles pèsent 817 Mo. Pour les récupérer :
+The archives of third-party repositories (`sources/code/`,
+`sources/software/`) are not version-controlled — they weigh 817 MB. To fetch
+them:
 
 ```bash
 python3 tools/fetch-software.py
 ```
 
-## Les commandes utiles
+## The useful commands
 
 ```bash
-# Logiciel
+# The software
 cd src/phytoscope
-make test                                        # la suite de tests
+make test                                        # the test suite
 make lint                                        # ruff
-make demo                                        # sans matériel
-.venv/bin/python tools/i18n.py --couverture      # état des 10 traductions
-.venv/bin/python tools/sbom.py --json            # nomenclature logicielle
+make demo                                        # with no hardware
+.venv/bin/python tools/i18n.py --couverture      # the 10 translations' state
+.venv/bin/python tools/sbom.py --json            # the bill of materials
 
-# Publications (depuis la racine)
-python3 pdf-src/assets/svg/gen.py       && python3 pdf-src/build.py         # l'ouvrage
-python3 pdf-src/assets/svg/gen_board.py && python3 pdf-src/build_board.py   # le hors-série
-python3 pdf-src/assets/svg/gen_tt.py    && python3 pdf-src/build_tree.py   # la série
-python3 pdf-src/assets/svg/gen_sdk.py   && python3 pdf-src/build_sdk.py     # le guide du SDK
-python3 tools/verify_svg.py                                   # XML bien formé
-python3 tools/headers.py --verifier                             # en-têtes à jour
+# The publications (from the root)
+python3 pdf-src/assets/svg/gen.py       && python3 pdf-src/build.py         # the book
+python3 pdf-src/assets/svg/gen_board.py && python3 pdf-src/build_board.py   # the companion volume
+python3 pdf-src/assets/svg/gen_tt.py    && python3 pdf-src/build_tree.py    # the series
+python3 pdf-src/assets/svg/gen_sdk.py   && python3 pdf-src/build_sdk.py     # the SDK guide
+python3 tools/verify_svg.py                                   # well-formed XML
+python3 tools/headers.py --verifier                           # headers up to date
 
-# Paquets (depuis Debian, Ubuntu ou Mint)
+# The packages (from Debian, Ubuntu or Mint)
 cd packaging
-make outils        # ce qui manque pour empaqueter
-make deps          # NSIS, msitools, osslsigncode — sans sudo
-make tout          # .deb .rpm .run .exe .msi .pkg .zip .tar.gz, signés
-make verifier      # rouvre et contrôle tout ce qui a été produit
+make                # the target list — `help` is the default goal
+make tools          # what is missing in order to package
+make deps           # NSIS, msitools, osslsigncode — without sudo
+make all            # .deb .rpm .run .exe .msi .pkg .zip .tar.gz, signed
+make deliverables   # the packages AND the firmware, in one build
+make verify         # reopens and checks everything produced
 
-# Micrologiciel
+# The firmware
 cd src/firmware
-./_make_.sh --deps # SDK + chaîne ARM dans $HOME, sans sudo
-./build.sh         # compile ET range le livrable
+./_make_.sh --deps  # the SDK + the ARM toolchain in $HOME, without sudo
+./build.sh          # builds AND files the deliverable
 ```
 
-## Proposer une modification
+## Proposing a change
 
-1. **Ouvrez un ticket d'abord** si le changement touche une contrainte, une
-   interface, ou plus de quelques fichiers. Cela évite d'écrire du code qui
-   sera refusé pour une raison déjà consignée dans `.ai/decisions.md`.
-2. Créez une branche : `git checkout -b sujet-court`.
-3. Faites une chose à la fois. Une branche = un sujet.
-4. **Messages de commit en français**, à l'impératif, avec le pourquoi :
+1. **Open an issue first** if the change touches a constraint, an interface,
+   or more than a few files. That avoids writing code which will be refused
+   for a reason already recorded in `.ai/decisions.md`.
+2. Make a branch: `git checkout -b short-subject`.
+3. Do one thing at a time. One branch, one subject.
+4. **Commit messages in English**, in the imperative, with the why:
 
    ```
-   corrige l'échappement des & dans les illustrations générées
+   escape & in the generated illustrations
 
-   Le générateur écrivait le texte tel quel dans le SVG. Un « & » nu rend
-   le fichier mal formé ; WeasyPrint le laisse alors tomber et compose un
-   cadre vide, sans rien signaler. timeline.svg en était victime.
+   The generator wrote the text straight into the SVG. A bare "&" makes the
+   file malformed; WeasyPrint then drops it and composes an empty frame,
+   without a word. timeline.svg was the victim.
    ```
 
-5. Avant de pousser :
+5. Before pushing:
 
    ```bash
    pre-commit run --all-files
@@ -135,38 +140,37 @@ cd src/firmware
    python3 tools/headers.py --verifier
    ```
 
-6. **Consignez** : ajoutez une entrée datée dans [`.ai/journal.md`](.ai/journal.md)
-   et mettez [`.ai/etat.md`](.ai/etat.md) à jour. C'est ce qui permet à la
-   personne suivante — ou à vous, trois semaines plus tard — de reprendre.
-7. Ouvrez la demande de fusion. L'intégration continue passera l'analyse
-   statique, les tests sur Linux, Windows et macOS, la fabrication des
-   paquets et les contrôles de sécurité.
+6. **Record it**: add a dated entry to [`.ai/journal.md`](.ai/journal.md) and
+   bring [`.ai/state.md`](.ai/state.md) up to date. That is what lets the next
+   person — or you, three weeks later — pick the work up.
+7. Open the pull request. Continuous integration will run the static
+   analysis, the tests on Linux, Windows and macOS, the package build and the
+   security checks.
 
-## Signaler une anomalie
+## Reporting a fault
 
-Ouvrez un ticket avec ce qu'il faut pour la reproduire : la version
-(`phytoscope --version`), le système, la version de Python, et la suite
-d'actions minimale. Un gabarit vous y aidera.
+Open an issue with what it takes to reproduce it: the version
+(`phytoscope --version`), the operating system, the Python version, and the
+shortest sequence of actions. A template will help you.
 
-**Sauf s'il s'agit d'une faille de sécurité** : dans ce cas, n'ouvrez pas de
-ticket public. Lisez [`SECURITY.md`](SECURITY.md).
+**Unless it is a security problem**: in that case, do not open a public
+issue. Read [`SECURITY.md`](SECURITY.md).
 
-## Les licences, et ce que votre contribution devient
+## The licences, and what becomes of your contribution
 
-Le dépôt porte deux licences (`C-53`) :
+The repository carries two licences (`C-53`):
 
-- **MIT** pour le logiciel, le micrologiciel, la trousse et les outils ;
-- **CERN-OHL-P v2** pour le matériel (`hardware/`).
+- **MIT** for the software, the firmware, the SDK and the tools;
+- **CERN-OHL-P v2** for the hardware (`hardware/`).
 
-Voir [`LICENSES/README.md`](LICENSES/README.md). En proposant une
-contribution, vous acceptez qu'elle soit diffusée sous la licence du fichier
-concerné. Les personnes qui contribuent sont ajoutées à [`AUTHORS`](AUTHORS).
+See [`LICENSES/README.md`](LICENSES/README.md). By proposing a contribution
+you agree to it being distributed under the licence of the file concerned.
+People who contribute are added to [`AUTHORS`](AUTHORS).
 
-## Le ton
+## The tone
 
-Le projet parle de plantes et de signaux électriques, sujet où l'enthousiasme
-déborde vite sur des affirmations qu'on ne peut pas tenir. La règle
-rédactionnelle du dépôt est donc simple : **dire ce qui est mesuré, dire ce
-qui est supposé, et ne jamais confondre les deux.** Une contribution qui
-améliore cette honnêteté est toujours bienvenue, même si elle ne change pas
-une ligne de code.
+The project is about plants and electrical signals, a subject where
+enthusiasm spills quickly into claims one cannot stand behind. The
+repository's editorial rule is therefore simple: **say what is measured, say
+what is assumed, and never confuse the two.** A contribution that improves
+that honesty is always welcome, even if it does not change a line of code.

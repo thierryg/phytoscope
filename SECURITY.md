@@ -1,111 +1,110 @@
-# Politique de sécurité
+# Security policy
 
-## Signaler une faille
+## Reporting a vulnerability
 
-**N'ouvrez pas de ticket public pour une faille de sécurité.** Un ticket est
-visible de tous, y compris de qui voudrait s'en servir avant le correctif.
+**Do not open a public issue for a security problem.** An issue is visible to
+everybody, including whoever would like to use it before the fix exists.
 
-Écrivez à **contact@bretagne-namaste.com**, avec en objet `[sécurité]`.
-Si vous le pouvez, passez plutôt par l'avis de sécurité privé de GitHub :
-onglet *Security* → *Report a vulnerability*.
+Write to **contact@bretagne-namaste.com**, with `[security]` in the subject.
+If you can, use GitHub's private advisory instead: the *Security* tab →
+*Report a vulnerability*.
 
-Merci d'indiquer :
+Please state:
 
-- ce que fait la faille, et ce qu'elle permet d'obtenir ;
-- la version concernée (`phytoscope --version`, ou le contenu de
-  `src/phytoscope/phytoscope/VERSION`) ;
-- le système et la version de Python ;
-- de quoi reproduire — la suite d'actions minimale, un fichier d'exemple ;
-- si la faille est déjà connue ailleurs (CVE, avis amont).
+- what the flaw does, and what it lets someone obtain;
+- the version affected (`phytoscope --version`, or the contents of
+  `src/phytoscope/phytoscope/VERSION`);
+- the operating system and the Python version;
+- enough to reproduce it — the shortest sequence of actions, an example file;
+- whether it is already known elsewhere (a CVE, an upstream advisory).
 
-### Ce à quoi vous pouvez vous attendre
+### What you can expect
 
-| Étape | Délai visé |
+| Step | Target |
 |---|---|
-| Accusé de réception | 5 jours ouvrés |
-| Première évaluation (recevable ? gravité ?) | 15 jours |
-| Correctif ou calendrier annoncé | 60 jours |
-| Publication coordonnée de l'avis | après le correctif, avec votre accord |
+| Acknowledgement | 5 working days |
+| First assessment (is it in scope? how serious?) | 15 days |
+| A fix, or an announced schedule | 60 days |
+| Coordinated publication of the advisory | after the fix, with your agreement |
 
-Ce projet est porté par une petite structure : ces délais sont un engagement
-d'effort, pas un contrat de service. Vous serez crédité dans l'avis et dans
-le `CHANGELOG.md` si vous le souhaitez.
+This project is carried by a small outfit: those are a commitment of effort,
+not a service contract. You will be credited in the advisory and in
+`CHANGELOG.md` if you wish.
 
-## Versions suivies
+## Versions supported
 
-Seule la **dernière version publiée** reçoit des correctifs de sécurité. La
-version en cours est dans `src/phytoscope/phytoscope/VERSION`.
+Only the **latest published version** receives security fixes. The current
+one is in `src/phytoscope/phytoscope/VERSION`.
 
-## Portée
+## Scope
 
-### Dans la portée
+### In scope
 
-- le logiciel `src/phytoscope/` (Python, Qt) ;
-- le micrologiciel `firmware/` (RP2350, C) ;
-- la fabrique de paquets `packaging/` — en particulier la chaîne de
-  **signature** (`packaging/signature.py`) et la vérification des paquets ;
-- les outils `tools/` et les scripts de construction des ouvrages.
+- the software, `src/phytoscope/` (Python, Qt);
+- the firmware, `src/firmware/` (RP2350, C);
+- the package factory, `packaging/` — in particular the **signing** chain
+  (`packaging/signature.py`) and the package verification;
+- the tools in `tools/` and the scripts that build the books.
 
-### Hors portée
+### Out of scope
 
-- le fait qu'un **certificat auto-signé ne fait pas taire SmartScreen ni
-  Gatekeeper**. Ce n'est pas une faille, c'est le fonctionnement attendu, et
-  c'est écrit noir sur blanc dans `packaging/README.md` (contrainte `C-2Q`) ;
-- les dépôts tiers recopiés sous `sources/` : signalez la faille **en amont**,
-  chez le projet concerné, puis prévenez-nous pour que nous mettions à jour ;
-- les documents et ouvrages (`pdf-src/`, `build/`) : une erreur de contenu n'est
-  pas une faille — ouvrez un ticket ordinaire.
+- the fact that a **self-signed certificate silences neither SmartScreen nor
+  Gatekeeper**. That is not a flaw, it is the expected behaviour, and it is
+  written out in `packaging/README.md` (constraint `C-2Q`);
+- third-party repositories copied under `sources/`: report the flaw
+  **upstream**, to the project concerned, then tell us so that we can update;
+- the documents and books (`pdf-src/`, `build/`): a mistake in the content is
+  not a vulnerability — open an ordinary issue.
 
-## Le secret qui compte dans ce dépôt : la clé privée de signature
+## The one secret that matters in this repository: the signing key
 
-La clé privée qui signe les paquets **n'est pas dans le dépôt et ne doit
-jamais y entrer**.
+The private key that signs the packages **is not in the repository and must
+never enter it**.
 
-- sa copie de référence vit dans `~/.local/share/phytoscope-signature/` ;
-- `certificat/phytoscope.key` est une copie de travail, **écartée par
-  `.gitignore`** (contrainte `C-2R`) ;
-- le certificat X.509 **public** (`certificat/phytoscope-certificat.pem`,
-  `certificat/phytoscope.crt`) est versionné : c'est lui qui permet de
-  vérifier une signature, il est fait pour être diffusé.
+- its reference copy lives in `~/.local/share/phytoscope-signature/`;
+- `certificate/phytoscope.key` is a working copy, **excluded by
+  `.gitignore`** (constraint `C-2R`);
+- the **public** X.509 certificate (`certificate/phytoscope-certificate.pem`,
+  `certificate/phytoscope.crt`) is version-controlled: it is what lets anyone
+  verify a signature, and it is meant to be distributed.
 
-`.gitignore` protège de `git`, **pas d'une sauvegarde ni d'une archive du
-dossier**. Voir `certificat/LISEZ-MOI.md`.
+`.gitignore` protects against `git`, **not against a backup or an archive of
+the directory**. See `certificate/README.md`.
 
-Si vous pensez que la clé a fuité : écrivez à l'adresse ci-dessus en urgence.
-La conduite à tenir est de révoquer, régénérer, et republier les paquets avec
-de nouvelles empreintes.
+If you believe the key has leaked: write to the address above, urgently. The
+course of action is to revoke, regenerate, and republish the packages with
+new checksums.
 
-### Vérifier qu'aucun secret n'est entré dans le dépôt
+### Checking that no secret has entered the repository
 
 ```bash
-# Ce que git suit, qui ressemble à une clé
+# What git tracks that looks like a key
 git ls-files | grep -Ei '\.(key|pem|p12|pfx|jks|keystore|asc|gpg)$'
-# → seuls certificat/phytoscope-certificat.pem et certificat/phytoscope.crt
-#   (publics) doivent apparaître.
+# → only certificate/phytoscope-certificate.pem and certificate/phytoscope.crt
+#   (both public) should appear.
 
-# Le garde-fou local, posé par pre-commit
+# The local guard, installed by pre-commit
 pre-commit run --all-files detect-signing-key
 ```
 
-## Vérifier l'authenticité d'un paquet
+## Checking a package is authentic
 
-Chaque paquet publié est accompagné de son empreinte (`.sha256`) et de sa
-signature CMS (`.p7s`). La marche à suivre est dans le fichier
-`AUTHENTICITE.txt` livré avec les paquets, et la vérification complète se
-relance par :
+Every published package comes with its checksum (`.sha256`) and its detached
+CMS signature (`.p7s`). The procedure is in the `AUTHENTICITE.txt` file
+shipped alongside them, and the whole verification runs again with:
 
 ```bash
-cd packaging && make verifier
+cd packaging && make verify
 ```
 
-## Ce que le projet fait pour sa propre sécurité
+## What the project does for its own security
 
-- **aucune dépendance obligatoire** ajoutée à la légère (contrainte `C-40`) ;
-- **aucun `sudo`** : tout s'installe dans le dossier personnel (`C-55`) ;
-- une **nomenclature logicielle** (SBOM, CycloneDX) versionnée dans
-  `src/phytoscope/sbom.cdx.json`, régénérée par
-  `.venv/bin/python tools/sbom.py --json` ;
-- l'intégration continue passe `ruff`, `bandit`, `pip-audit`, `gitleaks` et
-  la suite de tests à chaque poussée (voir `.github/workflows/`) ;
-- les mises à jour de dépendances arrivent par Dependabot
+- **no mandatory dependency** added lightly (constraint `C-40`);
+- **no `sudo`**: everything installs in the home directory (`C-55`);
+- a **software bill of materials** (SBOM, CycloneDX) version-controlled in
+  `src/phytoscope/sbom.cdx.json`, regenerated with
+  `.venv/bin/python tools/sbom.py --json`;
+- continuous integration runs `ruff`, `bandit`, `pip-audit`, `gitleaks` and
+  the test suite on every push (see `.github/workflows/`);
+- dependency updates arrive through Dependabot
   (`.github/dependabot.yml`).

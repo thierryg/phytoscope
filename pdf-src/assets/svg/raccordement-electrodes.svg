@@ -2,16 +2,16 @@
   ==========================================================================
   PhytoScope — attribution — pdf-src/assets/svg/raccordement-electrodes.svg
 
-  Version  : 1.5.1
-  Date     : 2026-09-18
-  Éditeur  : Bretagne Namasté
-  Auteur   : Thierry GAYET <Thierry.Gayet@gmail.com>
-  Site     : https://bretagne-namaste.com
-  Contact  : contact@bretagne-namaste.com
-  Licence  : MIT — voir LICENCE.txt
+  Version   : 1.6.0
+  Date      : 2026-09-23
+  Publisher : Bretagne Namasté
+  Author    : Thierry GAYET <Thierry.Gayet@gmail.com>
+  Website   : https://bretagne-namaste.com
+  Contact   : contact@bretagne-namaste.com
+  License   : MIT — see LICENSE.txt
 
   SPDX-License-Identifier: MIT
-  fin de l'attribution
+  end of attribution
   ==========================================================================
 -->
 
@@ -40,10 +40,10 @@
    <line x1="0" y1="0" x2="0" y2="7" stroke="#cfe0f2" stroke-width="2.8"/></pattern>
 </defs>
 <rect width="980" height="1060" fill="#FFFFFF"/>
-<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Raccordement des électrodes</text>
-<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Où poser, avec quoi, et avec quel câble</text>
+<text x="490.0" y="35.95503184" font-family="Cormorant Garamond, serif" font-size="30.42" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">Wiring the electrodes</text>
+<text x="490.0" y="66.37852031999999" font-family="Lato, sans-serif" font-size="20.47" fill="#6B7A72" text-anchor="middle" font-weight="400" font-style="italic" letter-spacing="0">Where to place them, with what, and with which cable</text>
 <rect x="30" y="110" width="440" height="510" rx="10" fill="#E9F2EC" stroke="#3F7D5A" stroke-width="1.4" stroke-dasharray="8 5"/>
-<text x="250" y="136" font-family="Lato, sans-serif" font-size="18.25" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">CÔTÉ PLANTE</text>
+<text x="250" y="136" font-family="Lato, sans-serif" font-size="18.25" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">PLANT SIDE</text>
 <rect x="226" y="300" width="44" height="190" rx="4" fill="#D8CBB4" stroke="#9C8A6E" stroke-width="1.4"/>
 <path d="M248 302 C 248 250, 186 248, 186 214" fill="none" stroke="#9C8A6E" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M248 302 C 248 254, 316 252, 316 220" fill="none" stroke="#9C8A6E" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
@@ -61,30 +61,30 @@
 <text x="306" y="497" font-family="Lato, sans-serif" font-size="18.81" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">E3</text>
 <circle cx="58" cy="548" r="6" fill="#A8552E" stroke="none" stroke-width="0"/>
 <text x="74" y="552" font-family="Lato, sans-serif" font-size="17.15" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">E1</text>
-<text x="104" y="552" font-family="Lato, sans-serif" font-size="16.04" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">mesure — sous une feuille</text>
+<text x="104" y="552" font-family="Lato, sans-serif" font-size="16.04" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">measurement — under a leaf</text>
 <circle cx="58" cy="572" r="6" fill="#2F5E86" stroke="none" stroke-width="0"/>
 <text x="74" y="576" font-family="Lato, sans-serif" font-size="17.15" fill="#2F5E86" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">E2</text>
-<text x="104" y="576" font-family="Lato, sans-serif" font-size="16.04" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">référence — tronc, 10 à 30 cm plus bas</text>
+<text x="104" y="576" font-family="Lato, sans-serif" font-size="16.04" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">reference — trunk, 10 to 30 cm lower</text>
 <circle cx="58" cy="596" r="6" fill="#0E2A22" stroke="none" stroke-width="0"/>
 <text x="74" y="600" font-family="Lato, sans-serif" font-size="17.15" fill="#0E2A22" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">E3</text>
-<text x="104" y="600" font-family="Lato, sans-serif" font-size="16.04" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">terre — tige inox 316L dans le substrat</text>
+<text x="104" y="600" font-family="Lato, sans-serif" font-size="16.04" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">earth — 316L stainless rod in the substrate</text>
 <rect x="500" y="110" width="450" height="250" rx="10" fill="#fff" stroke="#0E2A22" stroke-width="1.6"/>
-<text x="725" y="136" font-family="Lato, sans-serif" font-size="18.25" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">LE CÂBLE</text>
+<text x="725" y="136" font-family="Lato, sans-serif" font-size="18.25" fill="#0E2A22" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.2">THE CABLE</text>
 <rect x="522" y="243" width="160" height="38" rx="4" fill="#D7D7C6" stroke="#23302C" stroke-width="1.3"/>
 <rect x="682" y="249" width="68" height="26" rx="3" fill="#6FA98A" stroke="#3F7D5A" stroke-width="1.3"/>
 <rect x="750" y="254" width="52" height="16" rx="2" fill="#FBF9F1" stroke="#23302C" stroke-width="1.1"/>
 <line x1="802" y1="262" x2="862" y2="262" stroke="#A8552E" stroke-width="4.0" stroke-linecap="round"/>
 <line x1="602" y1="284" x2="602" y2="302" stroke="#6B7A72" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="3 3"/>
-<text x="602" y="314" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">gaine extérieure</text>
+<text x="602" y="314" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">outer jacket</text>
 <line x1="716" y1="240" x2="716" y2="236" stroke="#3F7D5A" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="3 3"/>
 <text x="716" y="224" font-family="Lato, sans-serif" font-size="16.59" fill="#3F7D5A" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">tresse → BAGUE (garde)</text>
 <line x1="776" y1="284" x2="776" y2="302" stroke="#6B7A72" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="3 3"/>
-<text x="776" y="314" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">diélectrique</text>
+<text x="776" y="314" font-family="Lato, sans-serif" font-size="16.59" fill="#6B7A72" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">dielectric</text>
 <line x1="832" y1="240" x2="832" y2="212" stroke="#A8552E" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="3 3"/>
 <text x="832" y="200" font-family="Lato, sans-serif" font-size="16.59" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">âme → POINTE (mesure)</text>
-<text x="725" y="336" font-family="DejaVu Sans Mono, monospace" font-size="16.59" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">RG-174 · Belden 8216 · 2 m au plus</text>
+<text x="725" y="336" font-family="DejaVu Sans Mono, monospace" font-size="16.59" fill="#23302C" text-anchor="middle" font-weight="400" font-style="normal" letter-spacing="0">RG-174 · Belden 8216 · 2 m at most</text>
 <rect x="500" y="384" width="450" height="236" rx="10" fill="#fff" stroke="#B08528" stroke-width="1.6"/>
-<text x="725" y="410" font-family="Lato, sans-serif" font-size="18.25" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.0">LE CONNECTEUR — J1 · JACK TRS 3,5 mm</text>
+<text x="725" y="410" font-family="Lato, sans-serif" font-size="18.25" fill="#B08528" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="1.0">THE CONNECTOR — J1 · 3.5 mm TRS JACK</text>
 <rect x="548" y="442" width="300" height="30" rx="4" fill="#E8E4D6" stroke="#23302C" stroke-width="1.4"/>
 <rect x="552" y="446" width="56" height="22" rx="2" fill="#A8552E" stroke="none" stroke-width="0"/>
 <rect x="616" y="446" width="78" height="22" rx="2" fill="#3F7D5A" stroke="none" stroke-width="0"/>
@@ -92,28 +92,28 @@
 <circle cx="848" cy="457" r="15" fill="#E8E4D6" stroke="#23302C" stroke-width="1.4"/>
 <rect x="548" y="499" width="16" height="14" rx="2" fill="#A8552E" stroke="none" stroke-width="0"/>
 <text x="574" y="510" font-family="Lato, sans-serif" font-size="17.15" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">T · pointe</text>
-<text x="676" y="510" font-family="Lato, sans-serif" font-size="16.59" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">E1 — électrode de mesure</text>
+<text x="676" y="510" font-family="Lato, sans-serif" font-size="16.59" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">E1 — measurement electrode</text>
 <rect x="548" y="525" width="16" height="14" rx="2" fill="#3F7D5A" stroke="none" stroke-width="0"/>
 <text x="574" y="536" font-family="Lato, sans-serif" font-size="17.15" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">R · bague</text>
-<text x="676" y="536" font-family="Lato, sans-serif" font-size="16.59" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">garde et tresse du câble</text>
+<text x="676" y="536" font-family="Lato, sans-serif" font-size="16.59" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">guard and cable braid</text>
 <rect x="548" y="551" width="16" height="14" rx="2" fill="#2F5E86" stroke="none" stroke-width="0"/>
 <text x="574" y="562" font-family="Lato, sans-serif" font-size="17.15" fill="#2F5E86" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">S · corps</text>
-<text x="676" y="562" font-family="Lato, sans-serif" font-size="16.59" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">E2 — électrode de référence</text>
-<text x="725" y="600" font-family="Lato, sans-serif" font-size="17.15" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">La tresse va sur la bague, jamais sur le corps.</text>
+<text x="676" y="562" font-family="Lato, sans-serif" font-size="16.59" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">E2 — reference electrode</text>
+<text x="725" y="600" font-family="Lato, sans-serif" font-size="17.15" fill="#A8552E" text-anchor="middle" font-weight="700" font-style="normal" letter-spacing="0">The braid goes to the ring, never to the sleeve.</text>
 <rect x="30" y="652" width="920" height="160" rx="5" fill="#E9F2EC" stroke="#3F7D5A" stroke-width="1.1"/>
 <text x="44" y="680" font-family="Lato, sans-serif" font-size="19.08" fill="#3F7D5A" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">CE QU'IL FAUT FAIRE</text>
-<text x="44" y="704" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Électrodes Ag/AgCl adhésives d'électrocardiographie : le contact le plus stable, plusieurs</text>
-<text x="44" y="726" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">heures sans dérive. Une noisette de gel conducteur sans chlorure prolonge encore la tenue.</text>
-<text x="44" y="748" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Sur feuille épaisse ou sur écorce, pince crocodile à mors cuivre garnie d'une éponge humide.</text>
-<text x="44" y="770" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Deux électrodes espacées de 10 à 30 cm sur le même individu ; jamais sur deux plantes.</text>
-<text x="44" y="792" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Câble de deux mètres au plus, fixé par un serre-câble à vingt centimètres du contact.</text>
+<text x="44" y="704" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Adhesive Ag/AgCl ECG electrodes: the most stable contact there is, good for several</text>
+<text x="44" y="726" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">hours without drift. A dab of chloride-free conductive gel extends it further.</text>
+<text x="44" y="748" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">On a thick leaf or on bark, a copper-jawed crocodile clip lined with a damp sponge.</text>
+<text x="44" y="770" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Two electrodes 10 to 30 cm apart on the same individual; never across two plants.</text>
+<text x="44" y="792" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">A cable of two metres at most, strain-relieved twenty centimetres from the contact.</text>
 <rect x="30" y="832" width="920" height="160" rx="5" fill="#FBEEE6" stroke="#A8552E" stroke-width="1.1"/>
 <text x="44" y="860" font-family="Lato, sans-serif" font-size="19.08" fill="#A8552E" text-anchor="start" font-weight="700" font-style="normal" letter-spacing="0">CE QU'IL NE FAUT PAS FAIRE</text>
-<text x="44" y="884" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Pas d'aluminium ménager : il s'oxyde en quelques heures et fabrique une pile parasite.</text>
-<text x="44" y="906" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Pas d'aiguille plantée dans le tronc : blessure inutile, et le signal n'y gagne rien.</text>
-<text x="44" y="928" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Pas de câble non blindé ni de rallonge : chaque mètre nu ajoute le réseau à cinquante hertz.</text>
-<text x="44" y="950" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Pas de tresse reliée à la masse du boîtier : c'est la faute la plus fréquente, et elle fait</text>
-<text x="44" y="972" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">perdre d'un seul coup tout le bénéfice de l'étage électrométrique.</text>
+<text x="44" y="884" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">No kitchen foil: it oxidises within hours and makes a parasitic cell.</text>
+<text x="44" y="906" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">No needle driven into the trunk: a pointless wound, and the signal gains nothing.</text>
+<text x="44" y="928" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">No unshielded cable and no extension: every bare metre adds mains hum.</text>
+<text x="44" y="950" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">No braid tied to the enclosure ground: it is the commonest mistake, and it throws</text>
+<text x="44" y="972" font-family="Lato, sans-serif" font-size="17.42" fill="#23302C" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">away the whole benefit of the electrometer stage at a stroke.</text>
 <text x="28" y="1052" font-family="Lato, sans-serif" font-size="15.49" fill="#6B7A72" text-anchor="start" font-weight="400" font-style="normal" letter-spacing="0">Bretagne Namasté</text>
 <text x="952" y="1052" font-family="DejaVu Sans Mono, monospace" font-size="15.49" fill="#6B7A72" text-anchor="end" font-weight="400" font-style="normal" letter-spacing="0">bretagne-namaste.com</text>
 </svg>
