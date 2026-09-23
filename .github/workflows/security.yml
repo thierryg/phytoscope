@@ -41,12 +41,12 @@ jobs:
     steps:
       #  fetch-depth: 0 — gitleaks has to see the whole history: a secret
       #  removed in the next commit stays in the git objects.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: gitleaks
-        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7  # v2.3.9
+        uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e  # v3.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -76,9 +76,9 @@ jobs:
     name: Code analysis
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
           cache: pip
@@ -104,7 +104,7 @@ jobs:
                  --exclude '**/tests/**' \
                  --format sarif --output bandit.sarif || true
 
-      - uses: github/codeql-action/upload-sarif@v3
+      - uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: bandit.sarif
@@ -115,9 +115,9 @@ jobs:
     name: Known vulnerabilities in the dependencies
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
@@ -159,7 +159,7 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       #  This check requires "Dependency graph" to be enabled on the
       #  repository — Settings → Code security and analysis. It is not
@@ -182,7 +182,7 @@ jobs:
       #
       #  Once "Dependency graph" is enabled, remove the `continue-on-error`
       #  below: the check becomes blocking again, which is its purpose.
-      - uses: actions/dependency-review-action@v4
+      - uses: actions/dependency-review-action@v5
         with:
           fail-on-severity: moderate
           comment-summary-in-pr: on-failure
@@ -203,7 +203,7 @@ jobs:
       contents: read
       security-events: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: trivy — the filesystem
         #  Pinned by commit fingerprint, not by tag: a tag moves, a
@@ -233,7 +233,7 @@ jobs:
           skip-dirs: sources,build
         continue-on-error: true
 
-      - uses: github/codeql-action/upload-sarif@v3
+      - uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: trivy.sarif
@@ -253,7 +253,7 @@ jobs:
     name: Licence consistency
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Our header is never stamped on third-party code
         run: |
@@ -319,11 +319,11 @@ jobs:
       contents: read
       security-events: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
@@ -346,7 +346,7 @@ jobs:
           zizmor .github/workflows/ || true
         continue-on-error: true
 
-      - uses: github/codeql-action/upload-sarif@v3
+      - uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: zizmor.sarif

@@ -58,9 +58,9 @@ jobs:
     name: Analyse statique
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pip
@@ -201,9 +201,9 @@ jobs:
             #  started.
             apt: ''
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -230,7 +230,7 @@ jobs:
         run: |
           find build/packages -type f -printf '%10s  %p\n' | sort -k2
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: packages-${{ matrix.target }}
           path: build/packages/
@@ -246,9 +246,9 @@ jobs:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -279,7 +279,7 @@ jobs:
           fi
           echo "  · no private key among the products"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: packages-complete-signed
           path: build/packages/
@@ -302,7 +302,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: The cross-compilation toolchain
         run: |
@@ -315,7 +315,7 @@ jobs:
       #  from one run to the next rather than downloaded again.
       - name: Reuse the Pico SDK between runs
         id: sdk
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/pico
           key: pico-sdk-${{ hashFiles('src/firmware/_make_.sh') }}
@@ -352,7 +352,7 @@ jobs:
           echo "── empreintes"
           cat "$(dirname "$uf2")"/phytosense-*.sha256
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: firmware-phytosense
           path: build/packages/*/Firmware/
@@ -375,9 +375,9 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: ['3.10', '3.12']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -425,9 +425,9 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           path: recu
 
@@ -462,7 +462,7 @@ jobs:
           git push -f origin latest
 
       - name: Publish
-        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65  # v2.6.2
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64  # v3.0.3
         with:
           tag_name: latest
           name: The latest build of main
