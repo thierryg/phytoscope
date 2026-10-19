@@ -57,11 +57,11 @@ jobs:
     steps:
       #  fetch-depth: 0 — the history is needed in order to know what
       #  changed with respect to the pull request's base.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
           cache: pip
@@ -214,7 +214,7 @@ jobs:
           printf '%5d p.  TOTAL\n' "$total"
           exit $ec
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: steps.cibles.outputs.rien != 'oui'
         with:
           name: publications-pdf
@@ -241,7 +241,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: publications-pdf
           path: latest
@@ -267,7 +267,7 @@ jobs:
 
       - name: Publish
         if: steps.pret.outputs.rien != 'oui'
-        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65  # v2.6.2
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64  # v3.0.3
         with:
           tag_name: latest
           name: Latest build of main
