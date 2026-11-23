@@ -47,13 +47,13 @@ jobs:
       contents: write          # to commit the SBOM back on main
       pull-requests: write     # to report it on a pull request
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           #  The default token is enough: we push to the same branch.
           #  `persist-credentials` stays true, which is what allows it.
           ref: ${{ github.head_ref || github.ref_name }}
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
           cache: pip
@@ -157,7 +157,7 @@ jobs:
       # -- on a pull request: report, do not write -------------------------
       - name: Report the discrepancy on the pull request
         if: steps.diff.outputs.change == 'yes' && github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const summary = `${{ steps.diff.outputs.resume }}`;
@@ -187,7 +187,7 @@ jobs:
               ].join("\n"),
             });
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: sbom
